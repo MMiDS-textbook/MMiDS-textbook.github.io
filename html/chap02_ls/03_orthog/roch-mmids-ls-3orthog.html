@@ -1,0 +1,1224 @@
+
+
+<!DOCTYPE html>
+
+
+<html data-content_root="" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>2.3. A key concept: orthogonality &#8212; MMiDS Online Book</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=5b4479735964841361fd" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" href="../../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=5b4479735964841361fd" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd" />
+  <script src="../../_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=5b4479735964841361fd"></script>
+
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/clipboard.min.js"></script>
+    <script src="../../_static/copybutton.js"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="../../_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'chap02_ls/03_orthog/roch-mmids-ls-3orthog';</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="2.4. Overdetermined linear systems and regression analysis" href="../04_overdetermined/roch-mmids-ls-4overdetermined.html" />
+    <link rel="prev" title="2.2. Background: linear spaces" href="../02_subspaces/roch-mmids-ls-2spaces.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="None"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+
+<a class="navbar-brand logo" href="../../intro.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/mmids-cover.png" class="logo__image only-light" alt="MMiDS Online Book - Home"/>
+    <script>document.write(`<img src="../../_static/mmids-cover.png" class="logo__image only-dark" alt="MMiDS Online Book - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">MMiDS</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../chap01_intro/00_intro/roch-mmids-intro-0intro.html">1. Introduction</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../chap01_intro/01_motiv/roch-mmids-intro-1motiv.html">1.1. Motivating example: species delimitation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap01_intro/02_review/roch-mmids-intro-2review.html">1.2. Background: review of basic linear algebra, calculus, and probability</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap01_intro/03_clustering/roch-mmids-intro-3clustering.html">1.3. Clustering: an objective, an algorithm and a guarantee</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap01_intro/04_highdim/roch-mmids-intro-4highdim.html">1.4. Some observations about high-dimensional data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap01_intro/05_adv/roch-mmids-intro-5adv.html">1.5. Advanced material</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="../00_intro/roch-mmids-ls-intro.html">2. Least squares</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../01_motiv/roch-mmids-ls-1motiv.html">2.1. Motivating example: predicting sales</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../02_subspaces/roch-mmids-ls-2spaces.html">2.2. Background: linear spaces</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">2.3. A key concept: orthogonality</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../04_overdetermined/roch-mmids-ls-4overdetermined.html">2.4. Overdetermined linear systems and regression analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../05_qr/roch-mmids-ls-5qr.html">2.5. QR decomposition and Householder transformations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../06_adv/roch-mmids-ls-6adv.html">2.6. Advanced material</a></li>
+</ul>
+</li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>A key concept: orthogonality</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#orthonormal-basis-expansion">2.3.1. Orthonormal basis expansion</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#orthogonal-projection">2.3.2. Orthogonal projection</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#orthogonal-decomposition">2.3.3. Orthogonal decomposition</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#orthogonality-in-high-dimension">2.3.4. Orthogonality in high dimension</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <section id="a-key-concept-orthogonality">
+<h1><span class="section-number">2.3. </span>A key concept: orthogonality<a class="headerlink" href="#a-key-concept-orthogonality" title="Permalink to this headline">#</a></h1>
+<p>Orthogonality plays a key role in linear algebra for data science thanks to its computational properties and its connection to the least-squares problem.</p>
+<p><strong>DEFINITION</strong> <strong>(Orthogonality)</strong> Vectors <span class="math notranslate nohighlight">\(\mathbf{u}\)</span> and <span class="math notranslate nohighlight">\(\mathbf{v}\)</span> in <span class="math notranslate nohighlight">\(\mathbb{R}^n\)</span> are orthogonal if their inner product is zero</p>
+<div class="math notranslate nohighlight">
+\[
+\langle \mathbf{u}, \mathbf{v} \rangle 
+=\mathbf{u}^T \mathbf{v}
+= \sum_{i=1}^n u_i v_i 
+= 0.
+\]</div>
+<p><span class="math notranslate nohighlight">\(\natural\)</span></p>
+<p>Throughout this section, we will need a few standard properties of inner products. For one, they are symmetric in the sense that</p>
+<div class="math notranslate nohighlight">
+\[
+\langle \mathbf{x}, \mathbf{y} \rangle 
+= \langle \mathbf{y}, \mathbf{x} \rangle \qquad \forall \mathbf{x}, \mathbf{y} \in \mathbb{R}^n.
+\]</div>
+<p>Second, they are linear in each input: for any <span class="math notranslate nohighlight">\(\mathbf{x}_1, \mathbf{x}_2, \mathbf{x}_3 \in \mathbb{R}^n\)</span> and <span class="math notranslate nohighlight">\(\beta \in \mathbb{R}\)</span>, it holds that</p>
+<div class="math notranslate nohighlight">
+\[
+\langle \beta \,\mathbf{x}_1 + \mathbf{x}_2, \mathbf{x}_3 \rangle = \beta \,\langle \mathbf{x}_1,\mathbf{x}_3\rangle + \langle \mathbf{x}_2,\mathbf{x}_3\rangle.
+\]</div>
+<p>Repeated application of the latter property implies for instance that: for any <span class="math notranslate nohighlight">\(\mathbf{x}_1, \ldots, \mathbf{x}_m, \mathbf{y}_1, \ldots, \mathbf{y}_\ell, \in \mathbb{R}^n\)</span>,</p>
+<div class="math notranslate nohighlight">
+\[
+\left\langle \sum_{i=1}^m \mathbf{x}_i, \sum_{j=1}^\ell \mathbf{y}_j \right\rangle
+= \sum_{i=1}^m \sum_{j=1}^\ell \langle \mathbf{x}_i,\mathbf{y}_j\rangle.
+\]</div>
+<p>Finally recall that <span class="math notranslate nohighlight">\(\|\mathbf{x}\|^2 = \langle \mathbf{x}, \mathbf{x} \rangle\)</span>. Some of these properties are proved in <em>Exercises 2.30</em> and <em>2.65</em>.</p>
+<p>Orthogonality has important implications. The following classical result will be useful below. Throughout, we use <span class="math notranslate nohighlight">\(\|\mathbf{u}\|\)</span> for the Euclidean norm of <span class="math notranslate nohighlight">\(\mathbf{u}\)</span>.</p>
+<p><strong>LEMMA</strong> <strong>(Pythagoras)</strong> Let <span class="math notranslate nohighlight">\(\mathbf{u}, \mathbf{v} \in \mathbb{R}^n\)</span> be orthogonal. Then
+<span class="math notranslate nohighlight">\(\|\mathbf{u} + \mathbf{v}\|^2 = \|\mathbf{u}\|^2 + \|\mathbf{v}\|^2\)</span>. <span class="math notranslate nohighlight">\(\flat\)</span></p>
+<p><em>Proof:</em> Using <span class="math notranslate nohighlight">\(\|\mathbf{w}\|^2 = \langle \mathbf{w}, \mathbf{w}\rangle\)</span>, we get</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{align*}
+\|\mathbf{u} + \mathbf{v}\|^2
+&amp;= \langle \mathbf{u} + \mathbf{v}, \mathbf{u} + \mathbf{v}\rangle\\
+&amp;= \langle \mathbf{u}, \mathbf{u}\rangle
++ 2 \,\langle \mathbf{u}, \mathbf{v}\rangle
++ \langle \mathbf{v}, \mathbf{v}\rangle\\
+&amp;= \|\mathbf{u}\|^2 + \|\mathbf{v}\|^2.
+\end{align*}
+\end{split}\]</div>
+<p><span class="math notranslate nohighlight">\(\square\)</span></p>
+<p>Here is an application of <em>Pythagoras</em>.</p>
+<p><strong>LEMMA</strong> <strong>(Cauchy-Schwarz)</strong> For any <span class="math notranslate nohighlight">\(\mathbf{u}, \mathbf{v} \in \mathbb{R}^n\)</span>,
+<span class="math notranslate nohighlight">\(|\langle \mathbf{u}, \mathbf{v}\rangle| \leq \|\mathbf{u}\| \|\mathbf{v}\|\)</span>. <span class="math notranslate nohighlight">\(\flat\)</span></p>
+<p><em>Proof:</em> Let <span class="math notranslate nohighlight">\(\mathbf{q} = \frac{\mathbf{v}}{\|\mathbf{v}\|}\)</span> be the unit vector in the direction of <span class="math notranslate nohighlight">\(\mathbf{v}\)</span>. We want to show <span class="math notranslate nohighlight">\(|\langle \mathbf{u}, \mathbf{q}\rangle| \leq \|\mathbf{u}\|\)</span>. Decompose <span class="math notranslate nohighlight">\(\mathbf{u}\)</span> as follows:</p>
+<div class="math notranslate nohighlight">
+\[
+\mathbf{u} 
+= \left\langle \mathbf{u}, \mathbf{q}\right\rangle \mathbf{q}
++ \left\{\mathbf{u} - \left\langle \mathbf{u}, \mathbf{q}\right\rangle \mathbf{q}\right\}.
+\]</div>
+<p>The two terms on the right-hand side are orthogonal:</p>
+<div class="math notranslate nohighlight">
+\[
+\left\langle
+\left\langle \mathbf{u}, \mathbf{q}\right\rangle \mathbf{q},
+\mathbf{u} - \left\langle \mathbf{u}, \mathbf{q}\right\rangle \mathbf{q}
+\right\rangle
+= \left\langle \mathbf{u}, \mathbf{q}\right\rangle^2  - 
+\left\langle \mathbf{u}, \mathbf{q}\right\rangle^2 \left\langle \mathbf{q}, \mathbf{q}\right\rangle
+= 0.
+\]</div>
+<p>So <em>Pythagoras</em> gives</p>
+<div class="math notranslate nohighlight">
+\[
+\|\mathbf{u}\|^2
+= \left\|\left\langle \mathbf{u}, \mathbf{q}\right\rangle \mathbf{q}\right\|^2
++ \left\|\mathbf{u} - \left\langle \mathbf{u}, \mathbf{q}\right\rangle \mathbf{q}\right\|^2
+\geq \left\|\left\langle \mathbf{u}, \mathbf{q}\right\rangle \mathbf{q}\right\|^2
+= \left\langle \mathbf{u}, \mathbf{q}\right\rangle^2.
+\]</div>
+<p>Taking a square root gives the claim. <span class="math notranslate nohighlight">\(\square\)</span></p>
+<section id="orthonormal-basis-expansion">
+<h2><span class="section-number">2.3.1. </span>Orthonormal basis expansion<a class="headerlink" href="#orthonormal-basis-expansion" title="Permalink to this headline">#</a></h2>
+<p>To begin to see the power of orthogonality, consider the following. A list of vectors <span class="math notranslate nohighlight">\(\{\mathbf{u}_1,\ldots,\mathbf{u}_m\}\)</span> is an orthonormal list if the <span class="math notranslate nohighlight">\(\mathbf{u}_i\)</span>’s are pairwise orthogonal and each has norm 1, that is, for all <span class="math notranslate nohighlight">\(i\)</span> and all <span class="math notranslate nohighlight">\(j \neq i\)</span>, we have <span class="math notranslate nohighlight">\(\|\mathbf{u}_i\| = 1\)</span> and <span class="math notranslate nohighlight">\(\langle \mathbf{u}_i, \mathbf{u}_j \rangle = 0\)</span>. Alternatively,</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\langle \mathbf{u}_i, \mathbf{u}_j \rangle
+= \begin{cases}
+1 &amp; \text{if $i=j$}\\
+0 &amp; \text{if $i\neq j$}.
+\end{cases}
+\end{split}\]</div>
+<p><strong>LEMMA</strong> <strong>(Properties of Orthonormal Lists)</strong> Let <span class="math notranslate nohighlight">\(\{\mathbf{u}_1,\ldots,\mathbf{u}_m\}\)</span> be an orthonormal list. Then:</p>
+<ol class="arabic simple">
+<li><p>for any <span class="math notranslate nohighlight">\(\alpha_j \in \mathbb{R}\)</span>, <span class="math notranslate nohighlight">\(j=1,\ldots,m\)</span>, we have</p></li>
+</ol>
+<div class="math notranslate nohighlight">
+\[
+\left\|\sum_{j=1}^m \alpha_j \mathbf{u}_j\right\|^2 = \sum_{j=1}^m \alpha_j^2,
+\]</div>
+<ol class="arabic simple" start="2">
+<li><p>the vectors <span class="math notranslate nohighlight">\(\{\mathbf{u}_1,\ldots,\mathbf{u}_m\}\)</span> are linearly independent.</p></li>
+</ol>
+<p><span class="math notranslate nohighlight">\(\flat\)</span></p>
+<p><em>Proof:</em> For 1., using that <span class="math notranslate nohighlight">\(\|\mathbf{x}\|^2 = \langle \mathbf{x}, \mathbf{x} \rangle\)</span>, we have</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{align*}
+\left\|\sum_{j=1}^m \alpha_j \mathbf{u}_j\right\|^2
+&amp;= \left\langle
+\sum_{i=1}^m \alpha_i \mathbf{u}_i, \sum_{j=1}^m \alpha_j \mathbf{u}_j
+\right\rangle\\
+&amp;= \sum_{i=1}^m \alpha_i \left\langle
+ \mathbf{u}_i, \sum_{j=1}^m \alpha_j \mathbf{u}_j
+\right\rangle\\
+&amp;= \sum_{i=1}^m \sum_{j=1}^m \alpha_i \alpha_j \left\langle
+ \mathbf{u}_i,  \mathbf{u}_j
+\right\rangle\\
+&amp;= \sum_{i=1}^m \alpha_i^2
+\end{align*}
+\end{split}\]</div>
+<p>where we used orthonormality in the last equation, that is, <span class="math notranslate nohighlight">\(\langle
+ \mathbf{u}_i,  \mathbf{u}_j \rangle\)</span> is <span class="math notranslate nohighlight">\(1\)</span> if <span class="math notranslate nohighlight">\(i=j\)</span> and <span class="math notranslate nohighlight">\(0\)</span> otherwise.</p>
+<p>For 2., suppose <span class="math notranslate nohighlight">\(\sum_{i=1}^m \beta_i \mathbf{u}_i = \mathbf{0}\)</span>, then we must have by 1. that <span class="math notranslate nohighlight">\(\sum_{i=1}^m \beta_i^2 = 0\)</span>. That implies <span class="math notranslate nohighlight">\(\beta_i = 0\)</span> for all <span class="math notranslate nohighlight">\(i\)</span>. Hence the <span class="math notranslate nohighlight">\(\mathbf{u}_i\)</span>’s are linearly independent. <span class="math notranslate nohighlight">\(\square\)</span></p>
+<p>Given a basis <span class="math notranslate nohighlight">\(\{\mathbf{u}_1,\ldots,\mathbf{u}_m\}\)</span> of <span class="math notranslate nohighlight">\(U\)</span>, we know that: for any <span class="math notranslate nohighlight">\(\mathbf{w} \in U\)</span>, <span class="math notranslate nohighlight">\(\mathbf{w} = \sum_{i=1}^m \alpha_i \mathbf{u}_i\)</span> for some <span class="math notranslate nohighlight">\(\alpha_i\)</span>’s. It is not immediately obvious in general how to find the <span class="math notranslate nohighlight">\(\alpha_i\)</span>’s. In the orthonormal case, however, there is a formula. We say that the basis <span class="math notranslate nohighlight">\(\{\mathbf{u}_1,\ldots,\mathbf{u}_m\}\)</span> is orthonormal if it forms an orthonormal list.</p>
+<p><strong>THEOREM</strong> <strong>(Orthonormal Expansion)</strong> Let <span class="math notranslate nohighlight">\(\mathbf{q}_1,\ldots,\mathbf{q}_m\)</span> be an orthonormal basis of <span class="math notranslate nohighlight">\(U\)</span> and let <span class="math notranslate nohighlight">\(\mathbf{w} \in U\)</span>. Then</p>
+<div class="math notranslate nohighlight">
+\[
+\mathbf{w}
+= \sum_{j=1}^m \langle \mathbf{w}, \mathbf{q}_j\rangle \,\mathbf{q}_j.
+\]</div>
+<p><span class="math notranslate nohighlight">\(\sharp\)</span></p>
+<p><em>Proof:</em> Because <span class="math notranslate nohighlight">\(\mathbf{w} \in U\)</span>, <span class="math notranslate nohighlight">\(\mathbf{w} = \sum_{i=1}^m \alpha_i \mathbf{q}_i\)</span> for some <span class="math notranslate nohighlight">\(\alpha_i\)</span>. Take the inner product with <span class="math notranslate nohighlight">\(\mathbf{q}_j\)</span> and use orthonormality:</p>
+<div class="math notranslate nohighlight">
+\[
+\langle \mathbf{w}, \mathbf{q}_j\rangle 
+= \left\langle \sum_{i=1}^m \alpha_i \mathbf{q}_i, \mathbf{q}_j\right\rangle 
+= \sum_{i=1}^m \alpha_i \langle \mathbf{q}_i, \mathbf{q}_j\rangle 
+= \alpha_j.
+\]</div>
+<p>Hence, we have determined all <span class="math notranslate nohighlight">\(\alpha_j\)</span>’s in the basis expansion of <span class="math notranslate nohighlight">\(\mathbf{w}\)</span>. <span class="math notranslate nohighlight">\(\square\)</span></p>
+<p><strong>EXAMPLE:</strong> Consider again the linear subspace <span class="math notranslate nohighlight">\(W = \mathrm{span}(\mathbf{w}_1,\mathbf{w}_2,\mathbf{w}_3)\)</span>, where <span class="math notranslate nohighlight">\(\mathbf{w}_1 = (1,0,1)^T\)</span>, <span class="math notranslate nohighlight">\(\mathbf{w}_2 = (0,1,1)^T\)</span>, and <span class="math notranslate nohighlight">\(\mathbf{w}_3 = (1,-1,0)^T\)</span>. We have shown that in fact</p>
+<div class="math notranslate nohighlight">
+\[
+\mathrm{span}(\mathbf{w}_1,\mathbf{w}_2,\mathbf{w}_3) = \mathrm{span}(\mathbf{w}_1,\mathbf{w}_2).
+\]</div>
+<p>as <span class="math notranslate nohighlight">\(\mathbf{w}_1,\mathbf{w}_2\)</span> form a basis of <span class="math notranslate nohighlight">\(W\)</span>. On the other hand,</p>
+<div class="math notranslate nohighlight">
+\[
+\langle\mathbf{w}_1,\mathbf{w}_2\rangle
+= (1)(0) + (0)(1) + (1)(1) = 0 + 0 + 1 = 1 \neq 0
+\]</div>
+<p>so this basis is not orthonormal. Indeed, an orthonormal list is necessarily an independent list, but the opposite may not hold.</p>
+<p>To produce an orthonormal basis of <span class="math notranslate nohighlight">\(W\)</span>, we can first proceed by normalizing <span class="math notranslate nohighlight">\(\mathbf{w}_1\)</span></p>
+<div class="math notranslate nohighlight">
+\[
+\mathbf{q}_1 
+= \frac{\mathbf{w}_1}{\|\mathbf{w}_1\|}
+= \frac{\mathbf{w}_1}{\sqrt{1^2 + 0^2 + 1^2}}
+= \frac{1}{\sqrt{2}} \mathbf{w}_1.
+\]</div>
+<p>Then <span class="math notranslate nohighlight">\(\|\mathbf{q}_1\| = 1\)</span> since, in general, by homogeneity of the norm</p>
+<div class="math notranslate nohighlight">
+\[
+\left\|\frac{\mathbf{w}_1}{\|\mathbf{w}_1\|}\right\|
+= \frac{1}{\|\mathbf{w}_1\|} \|\mathbf{w}_1\| = 1.
+\]</div>
+<p>We then seek a second basis vector. It must satisfy two conditions in this case:</p>
+<ul class="simple">
+<li><p>it must be of unit norm and be orthogonal to <span class="math notranslate nohighlight">\(\mathbf{q}_1\)</span>; and</p></li>
+<li><p><span class="math notranslate nohighlight">\(\mathbf{w}_2\)</span> must be a linear combination of <span class="math notranslate nohighlight">\(\mathbf{q}_1\)</span> and <span class="math notranslate nohighlight">\(\mathbf{q}_2\)</span>.</p></li>
+</ul>
+<p>The latter condition guarantees that <span class="math notranslate nohighlight">\(\mathrm{span}(\mathbf{q}_1,\mathbf{q}_2) = \mathrm{span}(\mathbf{w}_1,\mathbf{w}_2)\)</span>. (Formally, that would imply only that <span class="math notranslate nohighlight">\(\mathrm{span}(\mathbf{w}_1,\mathbf{w}_2) \subseteq \mathrm{span}(\mathbf{q}_1,\mathbf{q}_2)\)</span>. In this case, it is easy to see that the containment must go in the opposite direction as well. Why?)</p>
+<p>The first condition translates into</p>
+<div class="math notranslate nohighlight">
+\[
+1 = \|\mathbf{q}_2\|^2
+= q_{21}^2 + q_{22}^2 + q_{23}^2,
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(\mathbf{q}_2 = (q_{21},q_{22},q_{23})^T\)</span>, and</p>
+<div class="math notranslate nohighlight">
+\[
+0 = \langle\mathbf{q}_1, \mathbf{q}_2\rangle = \frac{1}{\sqrt{2}}\left[1\cdot q_{21} + 0 \cdot q_{22} + 1 \cdot q_{23}\right] = \frac{1}{\sqrt{2}}\left[q_{21} + q_{23}\right].
+\]</div>
+<p>That is, simplifying the second display and plugging into the first, <span class="math notranslate nohighlight">\(q_{23} = -q_{21}\)</span> and <span class="math notranslate nohighlight">\(q_{22} = \sqrt{1 - 2 q_{21}^2}\)</span>.</p>
+<p>The second condition translates into: there is <span class="math notranslate nohighlight">\(\beta_1, \beta_2 \in \mathbb{R}\)</span> such that</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\mathbf{w}_2 
+= \begin{pmatrix}
+0 \\
+1 \\
+1
+\end{pmatrix}
+=
+\beta_1 \mathbf{q}_1 + \beta_2 \mathbf{q}_2
+= \beta_1 
+\frac{1}{\sqrt{2}}
+\begin{pmatrix}
+1 \\
+0 \\
+1
+\end{pmatrix}
++
+\beta_2
+\begin{pmatrix}
+q_{21} \\
+\sqrt{1-2 q_{21}^2} \\
+-q_{21}
+\end{pmatrix}.
+\end{split}\]</div>
+<p>The first entry gives <span class="math notranslate nohighlight">\(\beta_1/\sqrt{2} + \beta_2 q_{21} = 0\)</span> while the third entry gives
+<span class="math notranslate nohighlight">\(\beta_1/\sqrt{2} - \beta_2 q_{21} = 1\)</span>. Adding up the equations gives <span class="math notranslate nohighlight">\(\beta_1 = 1/\sqrt{2}\)</span>. Plugging back into the first one gives <span class="math notranslate nohighlight">\(\beta_2 = -1/(2q_{21})\)</span>. Returning to the equation for <span class="math notranslate nohighlight">\(\mathbf{w}_2\)</span>, we get from the second entry</p>
+<div class="math notranslate nohighlight">
+\[
+1 = - \frac{1}{2 q_{21}} \sqrt{1 - 2 q_{21}^2}.
+\]</div>
+<p>Rearranging and taking a square, we want the negative solution to</p>
+<div class="math notranslate nohighlight">
+\[
+4 q_{21}^2 = 1 - 2 q_{21}^2,
+\]</div>
+<p>that is, <span class="math notranslate nohighlight">\(q_{21} = - 1/\sqrt{6}\)</span>. Finally, we get <span class="math notranslate nohighlight">\(q_{23} = - q_{21} = 1/\sqrt{6}\)</span> and
+<span class="math notranslate nohighlight">\(q_{22} = \sqrt{1 - 2 q_{21}^2} = \sqrt{1 - 1/3} = \sqrt{2/3} = 2/\sqrt{6}\)</span>.</p>
+<p>To summarize, we have</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\mathbf{q}_1
+= \frac{1}{\sqrt{2}} \begin{pmatrix}
+1\\
+0\\
+1
+\end{pmatrix},
+\quad
+\mathbf{q}_2
+= \frac{1}{\sqrt{6}} \begin{pmatrix}
+-1\\
+2\\
+1
+\end{pmatrix}.
+\end{split}\]</div>
+<p>We confirm that</p>
+<div class="math notranslate nohighlight">
+\[
+\langle \mathbf{q}_1, \mathbf{q}_2\rangle
+= \frac{1}{\sqrt{2}\sqrt{6}}[(1)(-1) + (0)(2) + (1)(1)]
+= 0
+\]</div>
+<p>and</p>
+<div class="math notranslate nohighlight">
+\[
+\|\mathbf{q}_2\|^2
+= \left(-\frac{1}{\sqrt{6}}\right)^2 
++ \left(\frac{2}{\sqrt{6}}\right)^2 
++ \left(\frac{1}{\sqrt{6}}\right)^2
+= \frac{1}{6} + \frac{4}{6} + \frac{1}{6}
+= 1.
+\]</div>
+<p>We can use the <em>Orthonormal Expansion</em> to write <span class="math notranslate nohighlight">\(\mathbf{w}_2\)</span> as a linear combination of <span class="math notranslate nohighlight">\(\mathbf{q}_1\)</span> and <span class="math notranslate nohighlight">\(\mathbf{q}_2\)</span>. The inner products are</p>
+<div class="math notranslate nohighlight">
+\[
+\langle
+\mathbf{w}_2, \mathbf{q}_1
+\rangle
+= 0 \left(\frac{1}{\sqrt{2}}\right)
++ 1 \left(\frac{0}{\sqrt{2}}\right)
++ 1 \left(\frac{1}{\sqrt{2}}\right)
+= \frac{1}{\sqrt{2}},
+\]</div>
+<div class="math notranslate nohighlight">
+\[
+\langle
+\mathbf{w}_2, \mathbf{q}_2
+\rangle
+= 0 \left(-\frac{1}{\sqrt{6}}\right)
++ 1 \left(\frac{2}{\sqrt{6}}\right)
++ 1 \left(\frac{1}{\sqrt{6}}\right)
+= \frac{3}{\sqrt{6}}.
+\]</div>
+<p>So</p>
+<div class="math notranslate nohighlight">
+\[
+\mathbf{w}_2
+= \frac{1}{\sqrt{2}} \mathbf{q}_1 + \frac{3}{\sqrt{6}} \mathbf{q}_2.
+\]</div>
+<p>Check it! Try <span class="math notranslate nohighlight">\(\mathbf{w}_3\)</span>. <span class="math notranslate nohighlight">\(\lhd\)</span></p>
+<p>We have shown that working with orthonormal bases is desirable. What if we do not have one? We could try to construct one by hand as we did in the previous example. But there are better ways. We review the <a class="reference external" href="https://en.wikipedia.org/wiki/Gram%E2%80%93Schmidt_process">Gram-Schmidt algorithm</a> in an upcoming section, which will imply that every linear subspace has an orthonormal basis. That is, we will prove the following theorem.</p>
+<p><strong>THEOREM</strong> <strong>(Gram-Schmidt)</strong> Let <span class="math notranslate nohighlight">\(\mathbf{a}_1,\ldots,\mathbf{a}_m\)</span> be linearly independent. Then there exists an orthonormal basis <span class="math notranslate nohighlight">\(\mathbf{q}_1,\ldots,\mathbf{q}_m\)</span> of
+<span class="math notranslate nohighlight">\(\mathrm{span}(\mathbf{a}_1,\ldots,\mathbf{a}_m)\)</span>. <span class="math notranslate nohighlight">\(\sharp\)</span></p>
+<p>But, first, we define the orthogonal projection, which will play a key role in our applications.</p>
+</section>
+<section id="orthogonal-projection">
+<h2><span class="section-number">2.3.2. </span>Orthogonal projection<a class="headerlink" href="#orthogonal-projection" title="Permalink to this headline">#</a></h2>
+<p>Let’s consider the following problem. We have a linear subspace <span class="math notranslate nohighlight">\(U \subseteq \mathbb{R}^n\)</span> and a vector <span class="math notranslate nohighlight">\(\mathbf{v} \notin U\)</span>. We want to find the vector <span class="math notranslate nohighlight">\(\mathbf{p}\)</span> in <span class="math notranslate nohighlight">\(U\)</span> that is closest to <span class="math notranslate nohighlight">\(\mathbf{v}\)</span> in <span class="math notranslate nohighlight">\(2\)</span>-norm, that is, we want to solve</p>
+<div class="math notranslate nohighlight">
+\[
+\min_{\mathbf{p} \in U} \|\mathbf{p} - \mathbf{v}\|.
+\]</div>
+<p><strong>EXAMPLE:</strong> Consider the two-dimensional case with a one-dimensional subspace, say <span class="math notranslate nohighlight">\(U = \mathrm{span}(\mathbf{u_1})\)</span> with <span class="math notranslate nohighlight">\(\|\mathbf{u}_1\|=1\)</span>. The geometrical intuition is in the following figure. The solution <span class="math notranslate nohighlight">\(\mathbf{p} = \mathbf{v}^*\)</span> has the property that the difference <span class="math notranslate nohighlight">\(\mathbf{v} - \mathbf{v}^*\)</span> makes a right angle with <span class="math notranslate nohighlight">\(\mathbf{u}_1\)</span>, that is, it is orthogonal to it.</p>
+<p><img alt="Orthogonal projection on a line" src="https://upload.wikimedia.org/wikipedia/commons/1/17/Linalg_projection_4.png" /></p>
+<p>(<a class="reference external" href="https://commons.wikimedia.org/wiki/File:Linalg_projection_4.png">Source</a>)</p>
+<p>Letting <span class="math notranslate nohighlight">\(\mathbf{v}^* = \alpha^* \,\mathbf{u}_1\)</span>, the geometrical condition above translates into</p>
+<div class="math notranslate nohighlight">
+\[
+0
+= \langle \mathbf{u}_1, \mathbf{v} - \mathbf{v}^* \rangle 
+= \langle \mathbf{u}_1, \mathbf{v} - \alpha^* \,\mathbf{u}_1 \rangle 
+= \langle \mathbf{u}_1, \mathbf{v} \rangle 
+- \alpha^* \,\langle \mathbf{u}_1, \mathbf{u}_1 \rangle 
+= \langle \mathbf{u}_1, \mathbf{v} \rangle - \alpha^*
+\]</div>
+<p>so</p>
+<div class="math notranslate nohighlight">
+\[
+\mathbf{v}^* = \langle \mathbf{u}_1, \mathbf{v} \rangle \,\mathbf{u}_1.
+\]</div>
+<p>By <em>Pythagoras</em>, we then have for any <span class="math notranslate nohighlight">\(\alpha \in \mathbb{R}\)</span></p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{align*}
+\|\mathbf{v}
+- \alpha \,\mathbf{u}_1\|^2 
+&amp;= \|\mathbf{v}- \mathbf{v}^*
++ \mathbf{v}^* - \alpha \,\mathbf{u}_1\|^2\\
+&amp;= \|\mathbf{v}- \mathbf{v}^*
++ (\alpha^* - \alpha) \,\mathbf{u}_1\|^2\\
+&amp;= \|\mathbf{v}- \mathbf{v}^*\|^2
++ \| (\alpha^* - \alpha) \,\mathbf{u}_1\|^2\\
+&amp;\geq \|\mathbf{v}- \mathbf{v}^*\|^2,
+\end{align*}
+\end{split}\]</div>
+<p>where we used that <span class="math notranslate nohighlight">\(\mathbf{v} - \mathbf{v}^*\)</span> is orthogonal to <span class="math notranslate nohighlight">\(\mathbf{u}_1\)</span> (and therefore <span class="math notranslate nohighlight">\((\alpha^* - \alpha) \mathbf{u}_1\)</span>) on the third line.</p>
+<p>That confirms the optimality of <span class="math notranslate nohighlight">\(\mathbf{v}^*\)</span>. The argument in this example carries through in higher dimension, as we show next. <span class="math notranslate nohighlight">\(\lhd\)</span></p>
+<p><strong>DEFINITION</strong> <strong>(Orthogonal Projection on an Orthonormal List)</strong> Let <span class="math notranslate nohighlight">\(\mathbf{q}_1,\ldots,\mathbf{q}_m\)</span> be an orthonormal list. The orthogonal projection of <span class="math notranslate nohighlight">\(\mathbf{v} \in \mathbb{R}^n\)</span> on <span class="math notranslate nohighlight">\(\{\mathbf{q}_i\}_{i=1}^m\)</span> is defined as</p>
+<div class="math notranslate nohighlight">
+\[
+\mathrm{proj}_{\{\mathbf{q}_i\}_{i=1}^m} \mathbf{v}
+= \sum_{j=1}^m \langle \mathbf{v}, \mathbf{q}_j \rangle \,\mathbf{q}_j.
+\]</div>
+<p><span class="math notranslate nohighlight">\(\natural\)</span></p>
+<p><strong>THEOREM</strong> <strong>(Orthogonal Projection)</strong> Let <span class="math notranslate nohighlight">\(U \subseteq V\)</span> be a linear subspace and let <span class="math notranslate nohighlight">\(\mathbf{v} \in \mathbb{R}^n\)</span>. Then:</p>
+<ol class="arabic simple">
+<li><p>There exists a unique solution <span class="math notranslate nohighlight">\(\mathbf{p}^*\)</span> to</p></li>
+</ol>
+<div class="math notranslate nohighlight">
+\[
+\min_{\mathbf{p} \in U} \|\mathbf{p} - \mathbf{v}\|.
+\]</div>
+<p>We denote it by <span class="math notranslate nohighlight">\(\mathbf{p}^* = \mathrm{proj}_U \mathbf{v}\)</span> and refer to it as the orthogonal projection of <span class="math notranslate nohighlight">\(\mathbf{v}\)</span> onto <span class="math notranslate nohighlight">\(U\)</span>.</p>
+<ol class="arabic simple" start="2">
+<li><p>The solution <span class="math notranslate nohighlight">\(\mathbf{p}^*\)</span> is characterized geometrically by</p></li>
+</ol>
+<div class="math notranslate nohighlight">
+\[
+(*) \qquad \left\langle \mathbf{v} - \mathbf{p}^*,  \mathbf{u}\right\rangle =0,
+\quad \forall \mathbf{u} \in U.
+\]</div>
+<ol class="arabic simple" start="3">
+<li><p>For any orthonormal basis <span class="math notranslate nohighlight">\(\mathbf{q}_1,\ldots,\mathbf{q}_m\)</span>  of <span class="math notranslate nohighlight">\(U\)</span>,</p></li>
+</ol>
+<div class="math notranslate nohighlight">
+\[
+\mathrm{proj}_U \mathbf{v} = \mathrm{proj}_{\{\mathbf{q}_i\}_{i=1}^m} \mathbf{v}.
+\]</div>
+<p><span class="math notranslate nohighlight">\(\sharp\)</span></p>
+<p><em>Proof:</em> Let <span class="math notranslate nohighlight">\(\mathbf{p}^*\)</span> be any vector in <span class="math notranslate nohighlight">\(U\)</span> satisfying <span class="math notranslate nohighlight">\((*)\)</span>. We show first that it necessarily satisfies</p>
+<div class="math notranslate nohighlight">
+\[
+(**) \qquad \|\mathbf{p}^* - \mathbf{v}\| \leq \|\mathbf{p} - \mathbf{v}\|,
+\quad \forall \mathbf{p} \in U.
+\]</div>
+<p>Note that for any <span class="math notranslate nohighlight">\(\mathbf{p} \in U\)</span> the vector <span class="math notranslate nohighlight">\(\mathbf{u} = \mathbf{p} - \mathbf{p}^*\)</span> is also in <span class="math notranslate nohighlight">\(U\)</span>. Hence by <span class="math notranslate nohighlight">\((*)\)</span> and <em>Pythagoras</em>,</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{align*}
+\|\mathbf{p} - \mathbf{v}\|^2
+&amp;= \|\mathbf{p} - \mathbf{p}^* + \mathbf{p}^* - \mathbf{v}\|^2\\
+&amp;= \|\mathbf{p} - \mathbf{p}^*\|^2 + \|\mathbf{p}^* - \mathbf{v}\|^2\\
+&amp;\geq \|\mathbf{p}^* - \mathbf{v}\|^2.
+\end{align*}
+\end{split}\]</div>
+<p>Furthermore, equality holds only if <span class="math notranslate nohighlight">\(\|\mathbf{p} - \mathbf{p}^*\|^2 = 0\)</span> which holds only if <span class="math notranslate nohighlight">\(\mathbf{p} = \mathbf{p}^*\)</span> by the point-separating property of the <span class="math notranslate nohighlight">\(2\)</span>-norm. Hence, if such a vector <span class="math notranslate nohighlight">\(\mathbf{p}^*\)</span> exists, it is unique.</p>
+<p>It remains to show that there is at least one vector in <span class="math notranslate nohighlight">\(U\)</span> satisfying <span class="math notranslate nohighlight">\((*)\)</span>. By <em>Gram-Schmidt</em>, the linear subspace <span class="math notranslate nohighlight">\(U\)</span> has an orthonormal basis <span class="math notranslate nohighlight">\(\mathbf{q}_1,\ldots,\mathbf{q}_m\)</span>. By definition, <span class="math notranslate nohighlight">\(\mathrm{proj}_{\{\mathbf{q}_i\}_{i=1}^m} \mathbf{v} \in \mathrm{span}(\{\mathbf{q}_i\}_{i=1}^m) = U\)</span>. We show that <span class="math notranslate nohighlight">\(\mathrm{proj}_{\{\mathbf{q}_i\}_{i=1}^m} \mathbf{v}\)</span> satisfies <span class="math notranslate nohighlight">\((*)\)</span>. We can write any <span class="math notranslate nohighlight">\(\mathbf{u} \in U\)</span> as
+<span class="math notranslate nohighlight">\(\sum_{i=1}^m \alpha_i \mathbf{q}_i\)</span> with <span class="math notranslate nohighlight">\(\alpha_i = \langle \mathbf{u}, \mathbf{q}_i \rangle\)</span>. So, using this representation, we get</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+\left\langle \mathbf{v} - \sum_{j=1}^m \langle \mathbf{v}, \mathbf{q}_j \rangle \,\mathbf{q}_j, \sum_{i=1}^m \alpha_i \mathbf{q}_i \right\rangle
+&amp;= \sum_{j=1}^m \langle \mathbf{v}, \mathbf{q}_j \rangle \,\alpha_j 
+- \sum_{j=1}^m \sum_{i=1}^m \alpha_i \langle \mathbf{v}, \mathbf{q}_j \rangle
+ \langle \mathbf{q}_j, \mathbf{q}_i \rangle\\
+&amp;= \sum_{j=1}^m \langle \mathbf{v}, \mathbf{q}_j \rangle \,\alpha_j 
+- \sum_{j=1}^m \alpha_j \langle \mathbf{v}, \mathbf{q}_j \rangle\\ 
+&amp;= 0,
+\end{align*}\]</div>
+<p>where we used the orthonormality of the <span class="math notranslate nohighlight">\(\mathbf{q}_j\)</span>’s on the second line.  <span class="math notranslate nohighlight">\(\square\)</span></p>
+<p><strong>EXAMPLE:</strong> <strong>(continued)</strong> Consider again the linear subspace <span class="math notranslate nohighlight">\(W = \mathrm{span}(\mathbf{w}_1,\mathbf{w}_2,\mathbf{w}_3)\)</span>, where <span class="math notranslate nohighlight">\(\mathbf{w}_1 = (1,0,1)^T\)</span>, <span class="math notranslate nohighlight">\(\mathbf{w}_2 = (0,1,1)^T\)</span>, and <span class="math notranslate nohighlight">\(\mathbf{w}_3 = (1,-1,0)^T\)</span>. We have shown that</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\mathbf{q}_1
+= \frac{1}{\sqrt{2}} \begin{pmatrix}
+1\\
+0\\
+1
+\end{pmatrix},
+\quad
+\mathbf{q}_2
+= \frac{1}{\sqrt{6}} \begin{pmatrix}
+-1\\
+2\\
+1
+\end{pmatrix},
+\end{split}\]</div>
+<p>is an orthonormal basis. Let <span class="math notranslate nohighlight">\(\mathbf{w}_4 = (0,0,2)^T\)</span>. It is immediate that <span class="math notranslate nohighlight">\(\mathbf{w}_4 \notin \mathrm{span}(\mathbf{w}_1,\mathbf{w}_2)\)</span> since vectors in that span are of the form <span class="math notranslate nohighlight">\((x,y,x+y)^T\)</span> for some <span class="math notranslate nohighlight">\(x,y \in \mathbb{R}\)</span>.</p>
+<p>We can however compute the orthogonal projection <span class="math notranslate nohighlight">\(\mathbf{w}_4\)</span> onto <span class="math notranslate nohighlight">\(W\)</span>. The inner products are</p>
+<div class="math notranslate nohighlight">
+\[
+\langle
+\mathbf{w}_4, \mathbf{q}_1
+\rangle
+= 0 \left(\frac{1}{\sqrt{2}}\right)
++ 0 \left(\frac{0}{\sqrt{2}}\right)
++ 2 \left(\frac{1}{\sqrt{2}}\right)
+= \frac{2}{\sqrt{2}},
+\]</div>
+<div class="math notranslate nohighlight">
+\[
+\langle
+\mathbf{w}_4, \mathbf{q}_2
+\rangle
+= 0 \left(-\frac{1}{\sqrt{6}}\right)
++ 0 \left(\frac{2}{\sqrt{6}}\right)
++ 2 \left(\frac{1}{\sqrt{6}}\right)
+= \frac{2}{\sqrt{6}}.
+\]</div>
+<p>So</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\mathrm{proj}_W \mathbf{w}_4
+= \frac{2}{\sqrt{2}} \mathbf{q}_1 + \frac{2}{\sqrt{6}} \mathbf{q}_2
+= \begin{pmatrix}
+2/3\\
+2/3\\
+4/3
+\end{pmatrix}.
+\end{split}\]</div>
+<p>As a sanity check, note that <span class="math notranslate nohighlight">\(\mathbf{w}_4 \in W\)</span> since its third entry is equal to the sum of its first two entries. <span class="math notranslate nohighlight">\(\lhd\)</span></p>
+<p>The map <span class="math notranslate nohighlight">\(\mathrm{proj}_U\)</span> is linear, that is, <span class="math notranslate nohighlight">\(\mathrm{proj}_U (\alpha \,\mathbf{x} + \mathbf{y}) = \alpha \,\mathrm{proj}_U \mathbf{x} + \mathrm{proj}_U\mathbf{y}\)</span> for all <span class="math notranslate nohighlight">\(\alpha \in \mathbb{R}\)</span> and <span class="math notranslate nohighlight">\(\mathbf{x}, \mathbf{y} \in \mathbb{R}^n\)</span>. Indeed,</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+\mathrm{proj}_U(\alpha \,\mathbf{x} + \mathbf{y})
+&amp;= \sum_{j=1}^m \langle \alpha \,\mathbf{x} + \mathbf{y}, \mathbf{q}_j \rangle \,\mathbf{q}_j\\
+&amp;= \sum_{j=1}^m \left\{\alpha \, \langle \mathbf{x}, \mathbf{q}_j \rangle 
++ \langle \mathbf{y}, \mathbf{q}_j \rangle\right\} 
+\mathbf{q}_j\\
+&amp;= \alpha \,\mathrm{proj}_U \mathbf{x} + \mathrm{proj}_U \mathbf{y}.
+\end{align*}\]</div>
+<p>Any linear map from <span class="math notranslate nohighlight">\(\mathbb{R}^n\)</span> to <span class="math notranslate nohighlight">\(\mathbb{R}^n\)</span> can be encoded as an <span class="math notranslate nohighlight">\(n \times n\)</span> matrix <span class="math notranslate nohighlight">\(P\)</span>.</p>
+<p>Let</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+Q =
+\begin{pmatrix}
+| &amp;  &amp; | \\
+\mathbf{q}_1 &amp; \ldots &amp; \mathbf{q}_m \\
+| &amp;  &amp; | 
+\end{pmatrix}
+\end{split}\]</div>
+<p>and note that computing</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+Q^T \mathbf{v}
+= 
+\begin{pmatrix}
+\langle \mathbf{v}, \mathbf{q}_1 \rangle \\
+\cdots \\
+\langle \mathbf{v}, \mathbf{q}_m \rangle
+\end{pmatrix}
+\end{split}\]</div>
+<p>lists the coefficients in the expansion of <span class="math notranslate nohighlight">\(\mathrm{proj}_U \mathbf{v}\)</span> over the basis <span class="math notranslate nohighlight">\(\mathbf{q}_1,\ldots,\mathbf{q}_m\)</span>.</p>
+<p>Hence we see that</p>
+<div class="math notranslate nohighlight">
+\[
+P
+= 
+Q Q^T.
+\]</div>
+<p>Indeed, for any vector <span class="math notranslate nohighlight">\(\mathbf{v}\)</span>,</p>
+<div class="math notranslate nohighlight">
+\[
+P \mathbf{v} 
+= Q Q^T \mathbf{v} 
+= Q [Q^T \mathbf{v}].
+\]</div>
+<p>So the output is a linear combination of the columns of <span class="math notranslate nohighlight">\(Q\)</span> (i.e., the <span class="math notranslate nohighlight">\(\mathbf{q}_i\)</span>’s) where the coefficients are the entries of the vector in square brackets <span class="math notranslate nohighlight">\(Q^T \mathbf{v}\)</span>.</p>
+<p>The matrix <span class="math notranslate nohighlight">\(P= Q Q^T\)</span> is not to be confused with</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+Q^T Q
+=
+\begin{pmatrix}
+\langle \mathbf{q}_1, \mathbf{q}_1 \rangle &amp; \cdots &amp; \langle \mathbf{q}_1, \mathbf{q}_m \rangle \\
+\langle \mathbf{q}_2, \mathbf{q}_1 \rangle &amp; \cdots &amp; \langle \mathbf{q}_2, \mathbf{q}_m \rangle \\
+\vdots &amp; \ddots &amp; \vdots \\
+\langle \mathbf{q}_m, \mathbf{q}_1 \rangle &amp; \cdots &amp; \langle \mathbf{q}_m, \mathbf{q}_m \rangle
+\end{pmatrix}
+= I_{m \times m}
+\end{split}\]</div>
+<p>where <span class="math notranslate nohighlight">\(I_{m \times m}\)</span> denotes the <span class="math notranslate nohighlight">\(m \times m\)</span> identity matrix.</p>
+<p><strong>EXAMPLE:</strong> <strong>(continued)</strong> Consider again the linear subspace <span class="math notranslate nohighlight">\(W = \mathrm{span}(\mathbf{w}_1,\mathbf{w}_2,\mathbf{w}_3)\)</span>, where <span class="math notranslate nohighlight">\(\mathbf{w}_1 = (1,0,1)^T\)</span>, <span class="math notranslate nohighlight">\(\mathbf{w}_2 = (0,1,1)^T\)</span>, and <span class="math notranslate nohighlight">\(\mathbf{w}_3 = (1,-1,0)^T\)</span>, with orthonormal basis</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\mathbf{q}_1
+= \frac{1}{\sqrt{2}} \begin{pmatrix}
+1\\
+0\\
+1
+\end{pmatrix},
+\quad
+\mathbf{q}_2
+= \frac{1}{\sqrt{6}} \begin{pmatrix}
+-1\\
+2\\
+1
+\end{pmatrix}.
+\end{split}\]</div>
+<p>Then orthogonal projection onto <span class="math notranslate nohighlight">\(W\)</span> can be written in matrix form as follows. The matrix <span class="math notranslate nohighlight">\(Q\)</span> is</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+Q
+= \begin{pmatrix}
+1/\sqrt{2} &amp; -1/\sqrt{6}\\
+0 &amp; 2/\sqrt{6}\\
+1/\sqrt{2} &amp; 1/\sqrt{6}
+\end{pmatrix}.
+\end{split}\]</div>
+<p>Then</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+Q Q^T
+&amp;= \begin{pmatrix}
+1/\sqrt{2} &amp; -1/\sqrt{6}\\
+0 &amp; 2/\sqrt{6}\\
+1/\sqrt{2} &amp; 1/\sqrt{6}
+\end{pmatrix}
+\begin{pmatrix}
+1/\sqrt{2} &amp; 0 &amp; 1/\sqrt{2}\\
+-1/\sqrt{6} &amp; 2/\sqrt{6} &amp; 1/\sqrt{6}
+\end{pmatrix}\\
+&amp;= \begin{pmatrix}
+2/3 &amp; -1/3 &amp; 1/3\\
+-1/3 &amp; 2/3 &amp; 1/3\\
+1/3 &amp; 1/3 &amp; 2/3
+\end{pmatrix}.
+\end{align*}\]</div>
+<p>So the projection of <span class="math notranslate nohighlight">\(\mathbf{w}_4 = (0,0,2)^T\)</span> is</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{pmatrix}
+2/3 &amp; -1/3 &amp; 1/3\\
+-1/3 &amp; 2/3 &amp; 1/3\\
+1/3 &amp; 1/3 &amp; 2/3
+\end{pmatrix}
+\begin{pmatrix}
+0\\
+0\\
+2
+\end{pmatrix}
+=
+\begin{pmatrix}
+2/3\\
+2/3\\
+4/3
+\end{pmatrix},
+\end{split}\]</div>
+<p>as previously computed. <span class="math notranslate nohighlight">\(\lhd\)</span></p>
+</section>
+<section id="orthogonal-decomposition">
+<h2><span class="section-number">2.3.3. </span>Orthogonal decomposition<a class="headerlink" href="#orthogonal-decomposition" title="Permalink to this headline">#</a></h2>
+<p>The <em>Orthogonal Projection Theorem</em> implies that any <span class="math notranslate nohighlight">\(\mathbf{v} \in \mathbb{R}^n\)</span> can be decomposed into its orthogonal projection onto <span class="math notranslate nohighlight">\(U\)</span> and a vector orthogonal to it.</p>
+<p><strong>DEFINITION</strong> <strong>(Orthogonal Complement)</strong> Let <span class="math notranslate nohighlight">\(U \subseteq \mathbb{R}^n\)</span> be a linear subspace. The orthogonal complement of <span class="math notranslate nohighlight">\(U\)</span>, denoted <span class="math notranslate nohighlight">\(U^\perp\)</span>, is defined as</p>
+<div class="math notranslate nohighlight">
+\[
+U^\perp
+=
+\{\mathbf{w} \in \mathbb{R}^n\,:\, \langle \mathbf{w}, \mathbf{u}\rangle = 0, 
+\forall \mathbf{u} \in U\}.
+\]</div>
+<p><span class="math notranslate nohighlight">\(\natural\)</span></p>
+<p><strong>EXAMPLE:</strong> <strong>(continued)</strong> Continuing the previous example, we compute the orthogonal complement of the linear subspace <span class="math notranslate nohighlight">\(W = \mathrm{span}(\mathbf{w}_1,\mathbf{w}_2,\mathbf{w}_3)\)</span>, where <span class="math notranslate nohighlight">\(\mathbf{w}_1 = (1,0,1)^T\)</span>, <span class="math notranslate nohighlight">\(\mathbf{w}_2 = (0,1,1)^T\)</span>, and <span class="math notranslate nohighlight">\(\mathbf{w}_3 = (1,-1,0)^T\)</span>. One way to proceed is to find all vectors that are orthogonal to the orthonormal basis</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\mathbf{q}_1
+= \frac{1}{\sqrt{2}} \begin{pmatrix}
+1\\
+0\\
+1
+\end{pmatrix},
+\quad
+\mathbf{q}_2
+= \frac{1}{\sqrt{6}} \begin{pmatrix}
+-1\\
+2\\
+1
+\end{pmatrix}.
+\end{split}\]</div>
+<p>We require</p>
+<div class="math notranslate nohighlight">
+\[
+0 = \langle
+\mathbf{u}, \mathbf{q}_1
+\rangle
+= u_1 \left(\frac{1}{\sqrt{2}}\right)
++ u_2 \left(\frac{0}{\sqrt{2}}\right)
++ u_3 \left(\frac{1}{\sqrt{2}}\right)
+= \frac{u_1 + u_3}{\sqrt{2}},
+\]</div>
+<div class="math notranslate nohighlight">
+\[
+0= \langle
+\mathbf{u}, \mathbf{q}_2
+\rangle
+= u_1 \left(-\frac{1}{\sqrt{6}}\right)
++ u_2 \left(\frac{2}{\sqrt{6}}\right)
++ u_3 \left(\frac{1}{\sqrt{6}}\right)
+= \frac{-u_1 + 2 u_2 + u_3}{\sqrt{6}}.
+\]</div>
+<p>The first equation implies <span class="math notranslate nohighlight">\(u_3 = -u_1\)</span>, which after replacing into the second equation and rearranging gives <span class="math notranslate nohighlight">\(u_2 = u_1\)</span>.</p>
+<p>So all vectors of the form <span class="math notranslate nohighlight">\((u_1,u_1,-u_1)^T\)</span> for some <span class="math notranslate nohighlight">\(u_1 \in \mathbb{R}\)</span> are orthogonal to all of <span class="math notranslate nohighlight">\(W\)</span>. This is a one-dimensional linear subspace. We can choose an orthonormal basis by finding a solution to</p>
+<div class="math notranslate nohighlight">
+\[
+1 = (u_1)^2 + (u_1)^2 + (-u_1)^2 = 3 u_1^2, 
+\]</div>
+<p>Take <span class="math notranslate nohighlight">\(u_1 = 1/\sqrt{3}\)</span>, that is, let</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\mathbf{q}_3
+= \frac{1}{\sqrt{3}} \begin{pmatrix}
+1\\
+1\\
+-1
+\end{pmatrix}.
+\end{split}\]</div>
+<p>Then we have</p>
+<div class="math notranslate nohighlight">
+\[
+W^\perp
+= \mathrm{span}(\mathbf{q}_3).
+\]</div>
+<p><span class="math notranslate nohighlight">\(\lhd\)</span></p>
+<p><strong>LEMMA</strong> <strong>(Orthogonal Decomposition)</strong>
+Let <span class="math notranslate nohighlight">\(U \subseteq \mathbb{R}^n\)</span> be a linear subspace and let <span class="math notranslate nohighlight">\(\mathbf{v} \in \mathbb{R}^n\)</span>. Then <span class="math notranslate nohighlight">\(\mathbf{v}\)</span> can be decomposed as <span class="math notranslate nohighlight">\(\mathrm{proj}_U \mathbf{v} + (\mathbf{v} - \mathrm{proj}_U\mathbf{v})\)</span> where <span class="math notranslate nohighlight">\(\mathrm{proj}_U \mathbf{v} \in U\)</span> and <span class="math notranslate nohighlight">\((\mathbf{v} - \mathrm{proj}_U \mathbf{v}) \in U^\perp\)</span>. Moreover, this decomposition is unique in the following sense: if <span class="math notranslate nohighlight">\(\mathbf{v} = \mathbf{u}_1 + \mathbf{u}_2\)</span> with <span class="math notranslate nohighlight">\(\mathbf{u}_1 \in U\)</span> and <span class="math notranslate nohighlight">\(\mathbf{u}_2 \in U^\perp\)</span>, then <span class="math notranslate nohighlight">\(\mathbf{u}_1 = \mathrm{proj}_U \mathbf{v}\)</span> and <span class="math notranslate nohighlight">\(\mathbf{u}_2 = \mathbf{v} - \mathrm{proj}_U \mathbf{v}\)</span>. <span class="math notranslate nohighlight">\(\flat\)</span></p>
+<p><em>Proof:</em> The first part is an immediate consequence of the <em>Orthogonal Projection Theorem</em>. For the second part, assume <span class="math notranslate nohighlight">\(\mathbf{v} = \mathbf{u}_1 + \mathbf{u}_2\)</span> with <span class="math notranslate nohighlight">\(\mathbf{u}_1 \in U\)</span> and <span class="math notranslate nohighlight">\(\mathbf{u}_2 \in U^\perp\)</span>. Subtracting <span class="math notranslate nohighlight">\(\mathbf{v} = \mathrm{proj}_U \mathbf{v} + (\mathbf{v} - \mathrm{proj}_U\mathbf{v})\)</span>, we see that</p>
+<div class="math notranslate nohighlight">
+\[
+(*) \qquad \mathbf{0} = \mathbf{w}_1 + \mathbf{w}_2
+\]</div>
+<p>with</p>
+<div class="math notranslate nohighlight">
+\[
+\mathbf{w}_1 = \mathbf{u}_1 - \mathrm{proj}_U \mathbf{v} \in U,
+\qquad 
+\mathbf{w}_2 = \mathbf{u}_2 - (\mathbf{v} - \mathrm{proj}_U\mathbf{v}) \in U^\perp.
+\]</div>
+<p>If <span class="math notranslate nohighlight">\(\mathbf{w}_1 = \mathbf{w}_2 = \mathbf{0}\)</span>, we are done. Otherwise, they must both be nonzero by <span class="math notranslate nohighlight">\((*)\)</span>. Further, by the <em>Properties of Orthonormal Lists</em>, <span class="math notranslate nohighlight">\(\mathbf{w}_1\)</span> and <span class="math notranslate nohighlight">\(\mathbf{w}_2\)</span> must be linearly independent. But this is contradicted by the fact that <span class="math notranslate nohighlight">\(\mathbf{w}_2 = - \mathbf{w}_1\)</span> by <span class="math notranslate nohighlight">\((*)\)</span>. <span class="math notranslate nohighlight">\(\square\)</span></p>
+<p><img alt="Orthogonal decomposition" src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/12/Orthogonal_Decomposition_qtl1.svg/640px-Orthogonal_Decomposition_qtl1.svg.png" /></p>
+<p><strong>Figure:</strong> Orthogonal decomposition (<a class="reference external" href="https://commons.wikimedia.org/wiki/File:Orthogonal_Decomposition_qtl1.svg">Source</a>)</p>
+<p>Formally, the <em>Orthogonal Decomposition Lemma</em> states that <span class="math notranslate nohighlight">\(\mathbb{R}^n\)</span> is a direct sum of any linear subspace <span class="math notranslate nohighlight">\(U\)</span> and of its orthogonal complement <span class="math notranslate nohighlight">\(U^\perp\)</span>: that is, any vector <span class="math notranslate nohighlight">\(\mathbf{v} \in \mathbb{R}^n\)</span> can be written uniquely as <span class="math notranslate nohighlight">\(\mathbf{v} = \mathbf{u}_1 + \mathbf{u}_2\)</span> with <span class="math notranslate nohighlight">\(\mathbf{u}_1 \in U\)</span> and <span class="math notranslate nohighlight">\(\mathbf{u}_2 \in U^\perp\)</span>. This is denoted <span class="math notranslate nohighlight">\(\mathbb{R}^n = U \oplus U^\perp\)</span>.</p>
+<p>Let <span class="math notranslate nohighlight">\(\mathbf{a}_1,\ldots,\mathbf{a}_\ell\)</span> be an orthonormal basis of <span class="math notranslate nohighlight">\(U\)</span> and <span class="math notranslate nohighlight">\(\mathbf{b}_1,\ldots,\mathbf{b}_k\)</span> be an orthonormal basis of <span class="math notranslate nohighlight">\(U^\perp\)</span>. By definition of the orthogonal complement, the list</p>
+<div class="math notranslate nohighlight">
+\[
+\mathcal{L} = \{\mathbf{a}_1,\ldots,\mathbf{a}_\ell, \mathbf{b}_1,\ldots,\mathbf{b}_k\}
+\]</div>
+<p>is orthonormal, so it forms a basis of its span. Because any vector in <span class="math notranslate nohighlight">\(\mathbb{R}^n\)</span> can be written as a sum of a vector from <span class="math notranslate nohighlight">\(U\)</span> and a vector from <span class="math notranslate nohighlight">\(U^\perp\)</span>, all of <span class="math notranslate nohighlight">\(\mathbb{R}^n\)</span> is in the span of <span class="math notranslate nohighlight">\(\mathcal{L}\)</span>. It follows from the <em>Dimension Theorem</em> that <span class="math notranslate nohighlight">\(n = \ell + k\)</span>, that is,</p>
+<div class="math notranslate nohighlight">
+\[
+\mathrm{dim}(U) + \mathrm{dim}(U^\perp) = n.
+\]</div>
+<p><strong>EXAMPLE:</strong> <strong>(A Proof of the Rank-Nullity Theorem)</strong> Let <span class="math notranslate nohighlight">\(A \in \mathbb{R}^{n \times m}\)</span>. Recall that the column space of <span class="math notranslate nohighlight">\(A\)</span>, <span class="math notranslate nohighlight">\(\mathrm{col}(A) \subseteq \mathbb{R}^n\)</span>, is the span of all its columns. We compute its othogonal complement. By definition, the columns of <span class="math notranslate nohighlight">\(A\)</span>, which we denote by <span class="math notranslate nohighlight">\(\mathbf{a}_1,\ldots,\mathbf{a}_m\)</span>, form a spanning list of <span class="math notranslate nohighlight">\(\mathrm{col}(A)\)</span>. So <span class="math notranslate nohighlight">\(\mathbf{u} \in \mathrm{col}(A)^\perp \subseteq \mathbb{R}^n\)</span> if and only if</p>
+<div class="math notranslate nohighlight">
+\[
+\mathbf{a}_i^T\mathbf{u} = \langle \mathbf{u}, \mathbf{a}_i \rangle = 0, \quad \forall i=1,\ldots,m.
+\]</div>
+<p>Indeed that then implies that for any <span class="math notranslate nohighlight">\(\mathbf{v} \in \mathrm{col}(A)\)</span>, say <span class="math notranslate nohighlight">\(\mathbf{v} = \beta_1 \mathbf{a}_1 + \cdots \beta_m \mathbf{a}_m\)</span> we have</p>
+<div class="math notranslate nohighlight">
+\[
+\left\langle \mathbf{u}, \sum_{i=1}^m \beta_i \mathbf{a}_i \right\rangle 
+= \sum_{i=1}^m \beta_i \langle \mathbf{u}, \mathbf{a}_i \rangle
+= 0.
+\]</div>
+<p>The <span class="math notranslate nohighlight">\(m\)</span> conditions above can be written in matrix form as</p>
+<div class="math notranslate nohighlight">
+\[
+A^T \mathbf{u} = \mathbf{0}.
+\]</div>
+<p>That is, the orthogonal complement of the column space of <span class="math notranslate nohighlight">\(A\)</span> is the null space of <span class="math notranslate nohighlight">\(A^T\)</span></p>
+<div class="math notranslate nohighlight">
+\[
+\mathrm{col}(A)^\perp = \mathrm{null}(A^T).
+\]</div>
+<p>Applying the same argument to the row space of <span class="math notranslate nohighlight">\(A\)</span> which is also the column space of <span class="math notranslate nohighlight">\(A^T\)</span>, i.e. <span class="math notranslate nohighlight">\(\mathrm{row}(A) = \mathrm{col}(A^T) \subseteq \mathbb{R}^m\)</span>, it follows that</p>
+<div class="math notranslate nohighlight">
+\[
+\mathrm{col}(A^T)^\perp = \mathrm{null}(A),
+\]</div>
+<p>where note that <span class="math notranslate nohighlight">\(\mathrm{null}(A) \subseteq \mathbb{R}^m\)</span>. The four linear subspaces <span class="math notranslate nohighlight">\(\mathrm{col}(A)\)</span>, <span class="math notranslate nohighlight">\(\mathrm{col}(A^T)\)</span>, <span class="math notranslate nohighlight">\(\mathrm{null}(A)\)</span> and <span class="math notranslate nohighlight">\(\mathrm{null}(A^T)\)</span> are sometimes referred to as the fundamental subspaces of <span class="math notranslate nohighlight">\(A\)</span>. We have shown</p>
+<div class="math notranslate nohighlight">
+\[
+\mathrm{col}(A) \oplus  \mathrm{null}(A^T) = \mathbb{R}^n
+\quad 
+\text{and}
+\quad
+\mathrm{col}(A^T) \oplus  \mathrm{null}(A) = \mathbb{R}^m
+\]</div>
+<p>By the <em>Row Rank Equals Column Rank Theorem</em>, <span class="math notranslate nohighlight">\(\mathrm{dim}(\mathrm{col}(A)) = \mathrm{dim}(\mathrm{col}(A^T))\)</span>. Moreover, by our previous observation about the dimensions of direct sums, we have</p>
+<div class="math notranslate nohighlight">
+\[
+n = \mathrm{dim}(\mathrm{col}(A)) + \mathrm{dim}(\mathrm{null}(A^T))
+= \mathrm{dim}(\mathrm{col}(A^T)) + \mathrm{dim}(\mathrm{null}(A^T))
+\]</div>
+<p>and</p>
+<div class="math notranslate nohighlight">
+\[
+m = \mathrm{dim}(\mathrm{col}(A^T)) + \mathrm{dim}(\mathrm{null}(A))
+= \mathrm{dim}(\mathrm{col}(A)) + \mathrm{dim}(\mathrm{null}(A)).
+\]</div>
+<p>So we deduce that</p>
+<div class="math notranslate nohighlight">
+\[
+\mathrm{dim}(\mathrm{null}(A))
+= m - \mathrm{rk}(A)
+\]</div>
+<p>and</p>
+<div class="math notranslate nohighlight">
+\[
+\mathrm{dim}(\mathrm{null}(A^T))
+= n - \mathrm{rk}(A).
+\]</div>
+<p>These formulas are referred to the <em>Rank-Nullity Theorem</em>. The dimension of the null space is sometimes called the nullity. <span class="math notranslate nohighlight">\(\lhd\)</span></p>
+</section>
+<section id="orthogonality-in-high-dimension">
+<h2><span class="section-number">2.3.4. </span>Orthogonality in high dimension<a class="headerlink" href="#orthogonality-in-high-dimension" title="Permalink to this headline">#</a></h2>
+<p>In high dimension, orthogonality – or more accurately near-orthogonality – is more common than one might expect. We illustrate this phenomenon here.</p>
+<p>Let <span class="math notranslate nohighlight">\(\mathbf{X}\)</span> be a standard Normal <span class="math notranslate nohighlight">\(d\)</span>-vector. Its joint PDF depends only on the its norm <span class="math notranslate nohighlight">\(\|\mathbf{X}\|\)</span>. So <span class="math notranslate nohighlight">\(\mathbf{Y} = \frac{\mathbf{X}}{\|\mathbf{X}\|}\)</span> is uniformly distributed over the <span class="math notranslate nohighlight">\((d-1)\)</span>-sphere <span class="math notranslate nohighlight">\(\mathcal{S} = \{\mathbf{x}\in \mathbb{R}^d:\|\mathbf{x}\|=1\}\)</span>, that is, the surface of the unit <span class="math notranslate nohighlight">\(d\)</span>-ball centered aroungd the origin. We write <span class="math notranslate nohighlight">\(\mathbf{Y} \sim \mathrm{U}[\mathcal{S}]\)</span>. The following theorem shows that if we take two independent samples <span class="math notranslate nohighlight">\(\mathbf{Y}_1, \mathbf{Y}_2 \sim \mathrm{U}[\mathcal{S}]\)</span> they are likely to be nearly orthogonal when <span class="math notranslate nohighlight">\(d\)</span> is large, that is, <span class="math notranslate nohighlight">\(|\langle\mathbf{Y}_1, \mathbf{Y}_2\rangle|\)</span> is likely to be small. By symmetry, there is no loss of generality in taking one of the two vectors to be the north pole <span class="math notranslate nohighlight">\(\mathbf{e}_d = (0,\ldots,0,1)\)</span>. A different way to state the theorem is that most of the mass of the <span class="math notranslate nohighlight">\((d-1)\)</span>-sphere is in a small band around the equator.</p>
+<p><img alt="Band around the equator" src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/cf/World_map_with_major_latitude_circles.jpg/640px-World_map_with_major_latitude_circles.jpg" /></p>
+<p><strong>Figure:</strong> Band around the equator (<a class="reference external" href="https://commons.wikimedia.org/wiki/File:World_map_with_major_latitude_circles.jpg">Source</a>)</p>
+<p><strong>THEOREM</strong> <strong>(Orthogonality in High Dimension)</strong> Let <span class="math notranslate nohighlight">\(\mathcal{S} = \{\mathbf{x}\in \mathbb{R}^d:\|\mathbf{x}\|=1\}\)</span> and <span class="math notranslate nohighlight">\(\mathbf{Y} \sim \mathrm{U}[\mathcal{S}]\)</span>. Then for any <span class="math notranslate nohighlight">\(\varepsilon &gt; 0\)</span>, as <span class="math notranslate nohighlight">\(d \to +\infty\)</span>,</p>
+<div class="math notranslate nohighlight">
+\[
+\mathbb{P}[|\langle\mathbf{Y}, \mathbf{e}_d\rangle| \geq \varepsilon]
+\to 0.
+\]</div>
+<p><span class="math notranslate nohighlight">\(\sharp\)</span></p>
+<p><em>Proof idea:</em> We write <span class="math notranslate nohighlight">\(\mathbf{Y}\)</span> in terms of a standard Normal. Its squared norm is a sum of independent random variables. After bringing it to the numerator, we can apply <em>Chebyshev</em>.</p>
+<p><em>Proof:</em> Recall that <span class="math notranslate nohighlight">\(\mathbf{Y}\)</span> is <span class="math notranslate nohighlight">\(\frac{\mathbf{X}}{\|\mathbf{X}\|}\)</span>
+where <span class="math notranslate nohighlight">\(\mathbf{X}\)</span> is a standard Normal <span class="math notranslate nohighlight">\(d\)</span>-vector. The probability we want to bound can be re-written as</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+\mathbb{P}[|\langle\mathbf{Y}, \mathbf{e}_d\rangle| \geq \varepsilon]
+&amp;=
+\mathbb{P}\left[\left|\left\langle\frac{\mathbf{X}}{\|\mathbf{X}\|}, \mathbf{e}_d\right\rangle\right|^2 \geq \varepsilon^2\right]\\
+&amp;=
+\mathbb{P}\left[\left|\frac{\langle\mathbf{X},\mathbf{e}_d\rangle}{\|\mathbf{X}\|}\right|^2 \geq \varepsilon^2\right]\\
+&amp;=
+\mathbb{P}\left[\frac{X_d^2}{\sum_{j=1}^d X_j^2} \geq \varepsilon^2\right]\\
+&amp;=
+\mathbb{P}\left[X_d^2 \geq \varepsilon^2 \sum_{j=1}^d X_j^2\right]\\
+&amp;=
+\mathbb{P}\left[\sum_{j=1}^{d-1} (-\varepsilon^2 X_j^2) + (1-\varepsilon^2) X_d^2 \geq 0\right].
+\end{align*}\]</div>
+<p>We are now looking at a sum of independent (but not identically distributed) random variables</p>
+<div class="math notranslate nohighlight">
+\[
+Z = \sum_{j=1}^{d-1} (-\varepsilon^2 X_j^2) + (1-\varepsilon^2) X_d^2
+\]</div>
+<p>and we can appeal to our usual Chebyshev machinery. The expectation is, by linearity,</p>
+<div class="math notranslate nohighlight">
+\[
+\mathbb{E}[Z]
+= 
+- \sum_{j=1}^{d-1} \varepsilon^2 \mathbb{E}[X_j^2] + (1-\varepsilon^2) \mathbb{E}[X_d^2]
+= 
+\{- (d-1) \,\varepsilon^2  + (1-\varepsilon^2)\}
+\]</div>
+<p>where we used that <span class="math notranslate nohighlight">\(X_1,\ldots,X_d\)</span> are standard Normal variables and that, in particular, their mean is <span class="math notranslate nohighlight">\(0\)</span> and their variance is <span class="math notranslate nohighlight">\(1\)</span> so that <span class="math notranslate nohighlight">\(\mathbb{E}[X_1^2] = 1\)</span>.</p>
+<p>The variance is, by independence of the <span class="math notranslate nohighlight">\(X_j\)</span>’s,</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+\mathrm{Var}[Z]
+&amp;= 
+\sum_{j=1}^{d-1} \varepsilon^4 \mathrm{Var}[X_j^2] + (1-\varepsilon^2)^2 \mathrm{Var}[X_d^2]\\
+&amp;= 
+\{(d-1) \,\varepsilon^4  + (1-\varepsilon^2)^2\}\mathrm{Var}[X_1^2].
+\end{align*}\]</div>
+<p>So by Chebyshev</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+\mathbb{P}\left[Z \geq 0\right]
+&amp;\leq 
+\mathbb{P}\left[\left|Z 
+- \mathbb{E}[Z]\right|\geq |\mathbb{E}[Z]|\right]\\
+&amp;\leq \frac{\mathrm{Var}[Z]}{\mathbb{E}[Z]^2}\\
+&amp;= \frac{\{(d-1) \,\varepsilon^4  + (1-\varepsilon^2)^2\} \mathrm{Var}[X_1^2]}{\{- (d-1) \,\varepsilon^2  + (1-\varepsilon^2)\}^2}\\
+&amp;\to 0
+\end{align*}\]</div>
+<p>as <span class="math notranslate nohighlight">\(d \to +\infty\)</span>. To get the limit we observed that, for large <span class="math notranslate nohighlight">\(d\)</span>,
+the deminator scales like <span class="math notranslate nohighlight">\(d^2\)</span> while the numerator scales only like <span class="math notranslate nohighlight">\(d\)</span>. <span class="math notranslate nohighlight">\(\square\)</span></p>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./chap02_ls/03_orthog"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="../02_subspaces/roch-mmids-ls-2spaces.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title"><span class="section-number">2.2. </span>Background: linear spaces</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="../04_overdetermined/roch-mmids-ls-4overdetermined.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title"><span class="section-number">2.4. </span>Overdetermined linear systems and regression analysis</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#orthonormal-basis-expansion">2.3.1. Orthonormal basis expansion</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#orthogonal-projection">2.3.2. Orthogonal projection</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#orthogonal-decomposition">2.3.3. Orthogonal decomposition</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#orthogonality-in-high-dimension">2.3.4. Orthogonality in high dimension</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Sebastien Roch
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2024.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=5b4479735964841361fd"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

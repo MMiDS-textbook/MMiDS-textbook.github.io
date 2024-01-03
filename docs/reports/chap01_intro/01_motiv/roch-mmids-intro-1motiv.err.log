@@ -1,0 +1,83 @@
+Traceback (most recent call last):
+  File "/Users/roch/opt/anaconda3/lib/python3.8/site-packages/jupyter_cache/executors/utils.py", line 58, in single_nb_execution
+    executenb(
+  File "/Users/roch/opt/anaconda3/lib/python3.8/site-packages/nbclient/client.py", line 1112, in execute
+    return NotebookClient(nb=nb, resources=resources, km=km, **kwargs).execute()
+  File "/Users/roch/opt/anaconda3/lib/python3.8/site-packages/nbclient/util.py", line 74, in wrapped
+    return just_run(coro(*args, **kwargs))
+  File "/Users/roch/opt/anaconda3/lib/python3.8/site-packages/nbclient/util.py", line 53, in just_run
+    return loop.run_until_complete(coro)
+  File "/Users/roch/opt/anaconda3/lib/python3.8/asyncio/base_events.py", line 616, in run_until_complete
+    return future.result()
+  File "/Users/roch/opt/anaconda3/lib/python3.8/site-packages/nbclient/client.py", line 553, in async_execute
+    await self.async_execute_cell(
+  File "/Users/roch/opt/anaconda3/lib/python3.8/site-packages/nbclient/client.py", line 857, in async_execute_cell
+    self._check_raise_for_error(cell, exec_reply)
+  File "/Users/roch/opt/anaconda3/lib/python3.8/site-packages/nbclient/client.py", line 760, in _check_raise_for_error
+    raise CellExecutionError.from_cell_and_msg(cell, exec_reply_content)
+nbclient.exceptions.CellExecutionError: An error occurred while executing the following cell:
+------------------
+# USE PATH TO penguins-measurements.csv
+df = pd.read_csv('penguins-measurements.csv')
+df.head()
+------------------
+
+[0;31m---------------------------------------------------------------------------[0m
+[0;31mFileNotFoundError[0m                         Traceback (most recent call last)
+[0;32m<ipython-input-4-f5b3d03be3b7>[0m in [0;36m<module>[0;34m[0m
+[1;32m      1[0m [0;31m# USE PATH TO penguins-measurements.csv[0m[0;34m[0m[0;34m[0m[0;34m[0m[0m
+[0;32m----> 2[0;31m [0mdf[0m [0;34m=[0m [0mpd[0m[0;34m.[0m[0mread_csv[0m[0;34m([0m[0;34m'penguins-measurements.csv'[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[0m[1;32m      3[0m [0mdf[0m[0;34m.[0m[0mhead[0m[0;34m([0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+
+[0;32m~/opt/anaconda3/lib/python3.8/site-packages/pandas/io/parsers.py[0m in [0;36mread_csv[0;34m(filepath_or_buffer, sep, delimiter, header, names, index_col, usecols, squeeze, prefix, mangle_dupe_cols, dtype, engine, converters, true_values, false_values, skipinitialspace, skiprows, skipfooter, nrows, na_values, keep_default_na, na_filter, verbose, skip_blank_lines, parse_dates, infer_datetime_format, keep_date_col, date_parser, dayfirst, cache_dates, iterator, chunksize, compression, thousands, decimal, lineterminator, quotechar, quoting, doublequote, escapechar, comment, encoding, dialect, error_bad_lines, warn_bad_lines, delim_whitespace, low_memory, memory_map, float_precision, storage_options)[0m
+[1;32m    608[0m     [0mkwds[0m[0;34m.[0m[0mupdate[0m[0;34m([0m[0mkwds_defaults[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[1;32m    609[0m [0;34m[0m[0m
+[0;32m--> 610[0;31m     [0;32mreturn[0m [0m_read[0m[0;34m([0m[0mfilepath_or_buffer[0m[0;34m,[0m [0mkwds[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[0m[1;32m    611[0m [0;34m[0m[0m
+[1;32m    612[0m [0;34m[0m[0m
+
+[0;32m~/opt/anaconda3/lib/python3.8/site-packages/pandas/io/parsers.py[0m in [0;36m_read[0;34m(filepath_or_buffer, kwds)[0m
+[1;32m    460[0m [0;34m[0m[0m
+[1;32m    461[0m     [0;31m# Create the parser.[0m[0;34m[0m[0;34m[0m[0;34m[0m[0m
+[0;32m--> 462[0;31m     [0mparser[0m [0;34m=[0m [0mTextFileReader[0m[0;34m([0m[0mfilepath_or_buffer[0m[0;34m,[0m [0;34m**[0m[0mkwds[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[0m[1;32m    463[0m [0;34m[0m[0m
+[1;32m    464[0m     [0;32mif[0m [0mchunksize[0m [0;32mor[0m [0miterator[0m[0;34m:[0m[0;34m[0m[0;34m[0m[0m
+
+[0;32m~/opt/anaconda3/lib/python3.8/site-packages/pandas/io/parsers.py[0m in [0;36m__init__[0;34m(self, f, engine, **kwds)[0m
+[1;32m    817[0m             [0mself[0m[0;34m.[0m[0moptions[0m[0;34m[[0m[0;34m"has_index_names"[0m[0;34m][0m [0;34m=[0m [0mkwds[0m[0;34m[[0m[0;34m"has_index_names"[0m[0;34m][0m[0;34m[0m[0;34m[0m[0m
+[1;32m    818[0m [0;34m[0m[0m
+[0;32m--> 819[0;31m         [0mself[0m[0;34m.[0m[0m_engine[0m [0;34m=[0m [0mself[0m[0;34m.[0m[0m_make_engine[0m[0;34m([0m[0mself[0m[0;34m.[0m[0mengine[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[0m[1;32m    820[0m [0;34m[0m[0m
+[1;32m    821[0m     [0;32mdef[0m [0mclose[0m[0;34m([0m[0mself[0m[0;34m)[0m[0;34m:[0m[0;34m[0m[0;34m[0m[0m
+
+[0;32m~/opt/anaconda3/lib/python3.8/site-packages/pandas/io/parsers.py[0m in [0;36m_make_engine[0;34m(self, engine)[0m
+[1;32m   1048[0m             )
+[1;32m   1049[0m         [0;31m# error: Too many arguments for "ParserBase"[0m[0;34m[0m[0;34m[0m[0;34m[0m[0m
+[0;32m-> 1050[0;31m         [0;32mreturn[0m [0mmapping[0m[0;34m[[0m[0mengine[0m[0;34m][0m[0;34m([0m[0mself[0m[0;34m.[0m[0mf[0m[0;34m,[0m [0;34m**[0m[0mself[0m[0;34m.[0m[0moptions[0m[0;34m)[0m  [0;31m# type: ignore[call-arg][0m[0;34m[0m[0;34m[0m[0m
+[0m[1;32m   1051[0m [0;34m[0m[0m
+[1;32m   1052[0m     [0;32mdef[0m [0m_failover_to_python[0m[0;34m([0m[0mself[0m[0;34m)[0m[0;34m:[0m[0;34m[0m[0;34m[0m[0m
+
+[0;32m~/opt/anaconda3/lib/python3.8/site-packages/pandas/io/parsers.py[0m in [0;36m__init__[0;34m(self, src, **kwds)[0m
+[1;32m   1865[0m [0;34m[0m[0m
+[1;32m   1866[0m         [0;31m# open handles[0m[0;34m[0m[0;34m[0m[0;34m[0m[0m
+[0;32m-> 1867[0;31m         [0mself[0m[0;34m.[0m[0m_open_handles[0m[0;34m([0m[0msrc[0m[0;34m,[0m [0mkwds[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[0m[1;32m   1868[0m         [0;32massert[0m [0mself[0m[0;34m.[0m[0mhandles[0m [0;32mis[0m [0;32mnot[0m [0;32mNone[0m[0;34m[0m[0;34m[0m[0m
+[1;32m   1869[0m         [0;32mfor[0m [0mkey[0m [0;32min[0m [0;34m([0m[0;34m"storage_options"[0m[0;34m,[0m [0;34m"encoding"[0m[0;34m,[0m [0;34m"memory_map"[0m[0;34m,[0m [0;34m"compression"[0m[0;34m)[0m[0;34m:[0m[0;34m[0m[0;34m[0m[0m
+
+[0;32m~/opt/anaconda3/lib/python3.8/site-packages/pandas/io/parsers.py[0m in [0;36m_open_handles[0;34m(self, src, kwds)[0m
+[1;32m   1360[0m         [0mLet[0m [0mthe[0m [0mreaders[0m [0mopen[0m [0mIOHanldes[0m [0mafter[0m [0mthey[0m [0mare[0m [0mdone[0m [0;32mwith[0m [0mtheir[0m [0mpotential[0m [0mraises[0m[0;34m.[0m[0;34m[0m[0;34m[0m[0m
+[1;32m   1361[0m         """
+[0;32m-> 1362[0;31m         self.handles = get_handle(
+[0m[1;32m   1363[0m             [0msrc[0m[0;34m,[0m[0;34m[0m[0;34m[0m[0m
+[1;32m   1364[0m             [0;34m"r"[0m[0;34m,[0m[0;34m[0m[0;34m[0m[0m
+
+[0;32m~/opt/anaconda3/lib/python3.8/site-packages/pandas/io/common.py[0m in [0;36mget_handle[0;34m(path_or_buf, mode, encoding, compression, memory_map, is_text, errors, storage_options)[0m
+[1;32m    640[0m                 [0merrors[0m [0;34m=[0m [0;34m"replace"[0m[0;34m[0m[0;34m[0m[0m
+[1;32m    641[0m             [0;31m# Encoding[0m[0;34m[0m[0;34m[0m[0;34m[0m[0m
+[0;32m--> 642[0;31m             handle = open(
+[0m[1;32m    643[0m                 [0mhandle[0m[0;34m,[0m[0;34m[0m[0;34m[0m[0m
+[1;32m    644[0m                 [0mioargs[0m[0;34m.[0m[0mmode[0m[0;34m,[0m[0;34m[0m[0;34m[0m[0m
+
+[0;31mFileNotFoundError[0m: [Errno 2] No such file or directory: 'penguins-measurements.csv'
+FileNotFoundError: [Errno 2] No such file or directory: 'penguins-measurements.csv'
+

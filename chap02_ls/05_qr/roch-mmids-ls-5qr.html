@@ -1,0 +1,1116 @@
+
+
+<!DOCTYPE html>
+
+
+<html data-content_root="" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>2.5. QR decomposition and Householder transformations &#8212; MMiDS Online Book</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=5b4479735964841361fd" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" href="../../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=5b4479735964841361fd" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd" />
+  <script src="../../_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=5b4479735964841361fd"></script>
+
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/clipboard.min.js"></script>
+    <script src="../../_static/copybutton.js"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="../../_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'chap02_ls/05_qr/roch-mmids-ls-5qr';</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="2.6. Advanced material" href="../06_adv/roch-mmids-ls-6adv.html" />
+    <link rel="prev" title="2.4. Overdetermined linear systems and regression analysis" href="../04_overdetermined/roch-mmids-ls-4overdetermined.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="None"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+
+<a class="navbar-brand logo" href="../../intro.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/mmids-cover.png" class="logo__image only-light" alt="MMiDS Online Book - Home"/>
+    <script>document.write(`<img src="../../_static/mmids-cover.png" class="logo__image only-dark" alt="MMiDS Online Book - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">MMiDS</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../chap01_intro/00_intro/roch-mmids-intro-0intro.html">1. Introduction</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../chap01_intro/01_motiv/roch-mmids-intro-1motiv.html">1.1. Motivating example: species delimitation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap01_intro/02_review/roch-mmids-intro-2review.html">1.2. Background: review of basic linear algebra, calculus, and probability</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap01_intro/03_clustering/roch-mmids-intro-3clustering.html">1.3. Clustering: an objective, an algorithm and a guarantee</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap01_intro/04_highdim/roch-mmids-intro-4highdim.html">1.4. Some observations about high-dimensional data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap01_intro/05_adv/roch-mmids-intro-5adv.html">1.5. Advanced material</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="../00_intro/roch-mmids-ls-intro.html">2. Least squares</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../01_motiv/roch-mmids-ls-1motiv.html">2.1. Motivating example: predicting sales</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../02_subspaces/roch-mmids-ls-2spaces.html">2.2. Background: linear spaces</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../03_orthog/roch-mmids-ls-3orthog.html">2.3. A key concept: orthogonality</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../04_overdetermined/roch-mmids-ls-4overdetermined.html">2.4. Overdetermined linear systems and regression analysis</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">2.5. QR decomposition and Householder transformations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../06_adv/roch-mmids-ls-6adv.html">2.6. Advanced material</a></li>
+</ul>
+</li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>QR decomposition and Householder transformations</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#implementing-the-gram-schmidt-algorithm">2.5.1. Implementing the Gram-Schmidt algorithm</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#matrix-factorization-perspective">2.5.2. Matrix factorization perspective</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#least-squares-via-qr">2.5.3. Least squares via QR</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#householder-transformations">2.5.4. Householder transformations</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <section id="qr-decomposition-and-householder-transformations">
+<h1><span class="section-number">2.5. </span>QR decomposition and Householder transformations<a class="headerlink" href="#qr-decomposition-and-householder-transformations" title="Permalink to this headline">#</a></h1>
+<p>We have some business left over from previous sections: constructing orthonormal bases. We go over the Gram-Schimidt algorithm below. Through a matrix factorization perspective, we give an alternative way to solve the linear least squares problem.</p>
+<section id="implementing-the-gram-schmidt-algorithm">
+<h2><span class="section-number">2.5.1. </span>Implementing the Gram-Schmidt algorithm<a class="headerlink" href="#implementing-the-gram-schmidt-algorithm" title="Permalink to this headline">#</a></h2>
+<p>Let <span class="math notranslate nohighlight">\(\mathbf{a}_1,\ldots,\mathbf{a}_m\)</span> be linearly independent. We use the Gram-Schmidt algorithm to obtain an orthonormal basis of <span class="math notranslate nohighlight">\(\mathrm{span}(\mathbf{a}_1,\ldots,\mathbf{a}_m)\)</span>. The process takes advantage of the properties of the orthogonal projection derived above. In essence we add the vectors <span class="math notranslate nohighlight">\(\mathbf{a}_i\)</span> one by one, but only after taking out their orthogonal projection on the previously included vectors. The outcome spans the same subspace and the <em>Orthogonal Decomposition Lemma</em> ensures orthogonality.</p>
+<p><strong>THEOREM</strong> <strong>(Gram-Schmidt)</strong> Let <span class="math notranslate nohighlight">\(\mathbf{a}_1,\ldots,\mathbf{a}_m\)</span> be linearly independent. Then there exists an orthonormal basis <span class="math notranslate nohighlight">\(\mathbf{q}_1,\ldots,\mathbf{q}_m\)</span> of
+<span class="math notranslate nohighlight">\(\mathrm{span}(\mathbf{a}_1,\ldots,\mathbf{a}_m)\)</span>. <span class="math notranslate nohighlight">\(\sharp\)</span></p>
+<p><em>Proof idea:</em> Suppose first that <span class="math notranslate nohighlight">\(m=1\)</span>. In that case, all that needs to be done is to divide <span class="math notranslate nohighlight">\(\mathbf{a}_1\)</span> by its norm to obtain a unit vector whose span is the same as <span class="math notranslate nohighlight">\(\mathbf{a}_1\)</span>, that is, we set <span class="math notranslate nohighlight">\(\mathbf{q}_1 = \frac{\mathbf{a}_1}{\|\mathbf{a}_1\|}\)</span>.</p>
+<p>Suppose now that <span class="math notranslate nohighlight">\(m=2\)</span>. We first let <span class="math notranslate nohighlight">\(\mathbf{q}_1 = \frac{\mathbf{a}_1}{\|\mathbf{a}_1\|}\)</span> as in the previous case. Then we subtract from <span class="math notranslate nohighlight">\(\mathbf{a}_2\)</span> its projection on <span class="math notranslate nohighlight">\(\mathbf{q}_1\)</span>, that is, we set <span class="math notranslate nohighlight">\(\mathbf{v}_2 = \mathbf{a}_2 - \langle \mathbf{q}_1, \mathbf{a}_2 \rangle \,\mathbf{q}_1\)</span>. It is easily checked that <span class="math notranslate nohighlight">\(\mathbf{v}_2\)</span> is orthogonal to <span class="math notranslate nohighlight">\(\mathbf{q}_1\)</span> (see the proof of the <em>Orthogonal Projection Theorem</em> for a similar calculation). Moreover, because <span class="math notranslate nohighlight">\(\mathbf{a}_2\)</span> is a linear combination of <span class="math notranslate nohighlight">\(\mathbf{q}_1\)</span> and <span class="math notranslate nohighlight">\(\mathbf{v}_2\)</span>, we have <span class="math notranslate nohighlight">\(\mathrm{span}(\mathbf{q}_1,\mathbf{v}_2)
+= \mathrm{span}(\mathbf{a}_1,\mathbf{a}_2)\)</span>. It remains to divide by the norm of the resulting vector: <span class="math notranslate nohighlight">\(\mathbf{q}_2 = \frac{\mathbf{v}_2}{\|\mathbf{v}_2\|}\)</span>.</p>
+<p>For general <span class="math notranslate nohighlight">\(m\)</span>, we proceed similarly but project onto the subspace spanned by the previously added vectors at each step.</p>
+<p><img alt="Gram–Schmidt process" src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/97/Gram%E2%80%93Schmidt_process.svg/640px-Gram%E2%80%93Schmidt_process.svg.png" /></p>
+<p><strong>Figure:</strong> Gram–Schmidt process (<a class="reference external" href="https://commons.wikimedia.org/wiki/File:Gram%E2%80%93Schmidt_process.svg">Source</a>)</p>
+<p><em>Proof:</em> The first step of the induction is described above. Then the general inductive step is the following. Assume that we have constructed orthonormal vectors <span class="math notranslate nohighlight">\(\mathbf{q}_1,\ldots,\mathbf{q}_{j-1}\)</span> such that</p>
+<div class="math notranslate nohighlight">
+\[
+U_{j-1} := 
+\mathrm{span}(\mathbf{q}_1,\ldots,\mathbf{q}_{j-1}) = 
+\mathrm{span}(\mathbf{a}_1,\ldots,\mathbf{a}_{j-1}).
+\]</div>
+<p><strong>Constructing <span class="math notranslate nohighlight">\(\mathbf{q}_j\)</span></strong> By the <em>Properties of Orthonormal Lists</em>, <span class="math notranslate nohighlight">\(\{\mathbf{q}\}_{i=1}^{j-1}\)</span> is an independent list and therefore forms an orthonormal basis for <span class="math notranslate nohighlight">\(U_{j-1}\)</span>. So we can compute the orthogonal projection of <span class="math notranslate nohighlight">\(\mathbf{a}_j\)</span> on <span class="math notranslate nohighlight">\(U_{j-1}\)</span> as</p>
+<div class="math notranslate nohighlight">
+\[
+\mathrm{proj}_{U_{j-1}}\mathbf{a}_j
+= \sum_{i=1}^{j-1} r_{ij} \,\mathbf{q}_i.
+\]</div>
+<p>where we defined <span class="math notranslate nohighlight">\(r_{ij} = \langle \mathbf{q}_i , \mathbf{a}_j\rangle\)</span>. And we set</p>
+<div class="math notranslate nohighlight">
+\[
+\mathbf{v}_j 
+= \mathbf{a}_j - \mathrm{proj}_{U_{j-1}}\mathbf{a}_j
+= \mathbf{a}_j - \sum_{i=1}^{j-1} r_{ij} \,\mathbf{q}_i
+\quad
+\text{and}
+\quad
+\mathbf{q}_j 
+= \frac{\mathbf{v}_j}{\|\mathbf{v}_j\|}.
+\]</div>
+<p>The last step is possible because:</p>
+<p><strong>LEMMA:</strong> <span class="math notranslate nohighlight">\(\|\mathbf{v}_j\| &gt; 0\)</span>. <span class="math notranslate nohighlight">\(\flat\)</span></p>
+<p><em>Proof:</em> Indeed otherwise <span class="math notranslate nohighlight">\(\mathbf{a}_j\)</span>
+would be equal to its projection <span class="math notranslate nohighlight">\(\mathrm{proj}_{U_{j-1}}\mathbf{a}_j \in \mathrm{span}(\mathbf{a}_1,\ldots,\mathbf{a}_{j-1})\)</span> which would contradict linear independence of the <span class="math notranslate nohighlight">\(\mathbf{a}_k\)</span>’s. <span class="math notranslate nohighlight">\(\square\)</span></p>
+<p>The vector <span class="math notranslate nohighlight">\(\mathbf{q}_j\)</span> is of unity norm by construction. It is also orthogonal to <span class="math notranslate nohighlight">\(\mathrm{span}(\mathbf{q}_1,\ldots,\mathbf{q}_{j-1})\)</span> (see the proof of the <em>Orthogonal Projection Theorem</em> for a similar calculation). So <span class="math notranslate nohighlight">\(\mathbf{q}_1,\ldots,\mathbf{q}_j\)</span> form an orthonormal list.</p>
+<p><strong>Pushing the induction through</strong> It remains to prove that <span class="math notranslate nohighlight">\(\mathrm{span}(\mathbf{q}_1,\ldots,\mathbf{q}_j) = \mathrm{span}(\mathbf{a}_1,\ldots,\mathbf{a}_j)\)</span>. Because, by induction <span class="math notranslate nohighlight">\(\mathrm{span}(\mathbf{q}_1,\ldots,\mathbf{q}_{j-1}) = 
+\mathrm{span}(\mathbf{a}_1,\ldots,\mathbf{a}_{j-1})\)</span>, all we have to prove are the following two claims.</p>
+<p><strong>LEMMA:</strong> <span class="math notranslate nohighlight">\(\mathbf{q}_j \in \mathrm{span}(\mathbf{a}_1,\ldots,\mathbf{a}_j)\)</span>. <span class="math notranslate nohighlight">\(\flat\)</span></p>
+<p><em>Proof:</em> By construction,</p>
+<div class="math notranslate nohighlight">
+\[
+\mathbf{q}_j 
+= \frac{1}{\|\mathbf{v}_j\|} \left\{\mathbf{a}_j - \mathrm{proj}_{U_{j-1}}\mathbf{a}_j\right\}
+= \frac{1}{\|\mathbf{v}_j\|} \mathbf{a}_j + \frac{1}{\|\mathbf{v}_j\|} \mathrm{proj}_{U_{j-1}}\mathbf{a}_j.
+\]</div>
+<p>By definition of the orthogonal projection,
+<span class="math notranslate nohighlight">\(
+\mathrm{proj}_{U_{j-1}}\mathbf{a}_j 
+\in U_{j-1}= \mathrm{span}(\mathbf{a}_1,\ldots,\mathbf{a}_{j-1})
+\subseteq \mathrm{span}(\mathbf{a}_1,\ldots,\mathbf{a}_{j})
+\)</span>. Hence we have written <span class="math notranslate nohighlight">\(
+\mathbf{q}_j\)</span> as a linear combination of vectors in <span class="math notranslate nohighlight">\(\mathbf{q}_j\)</span> as a linear combination of vectors in
+<span class="math notranslate nohighlight">\(\mathrm{span}(\mathbf{a}_1,\ldots,\mathbf{a}_{j})\)</span>. That proves the claim. <span class="math notranslate nohighlight">\(\square\)</span></p>
+<p><strong>LEMMA:</strong> <span class="math notranslate nohighlight">\(\mathbf{a}_j \in \mathrm{span}(\mathbf{q}_1,\ldots,\mathbf{q}_j)\)</span>. <span class="math notranslate nohighlight">\(\flat\)</span></p>
+<p><em>Proof:</em> Unrolling the calculations above, <span class="math notranslate nohighlight">\(\mathbf{a}_j\)</span> can be re-written as the following linear combination of <span class="math notranslate nohighlight">\(\mathbf{q}_1,\ldots,\mathbf{q}_j\)</span></p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+\mathbf{a}_j
+&amp;= \mathrm{proj}_{U_{j-1}}\mathbf{a}_j + \mathbf{v}_j\\
+&amp;= \mathrm{proj}_{U_{j-1}}\mathbf{a}_j + \|\mathbf{v}_j\| \mathbf{q}_j\\
+&amp;= \mathrm{proj}_{U_{j-1}}\mathbf{a}_j + \|\mathbf{a}_j - \mathrm{proj}_{U_{j-1}}\mathbf{a}_j\| \mathbf{q}_j\\
+&amp;= \sum_{i=1}^{j-1} r_{ij} \,\mathbf{q}_i
++ \left\|\mathbf{a}_j - \sum_{i=1}^{j-1} r_{ij}\,\mathbf{q}_i\right\| \,\mathbf{q}_j\\
+&amp;= \sum_{i=1}^{j-1} r_{ij} \,\mathbf{q}_i
++ r_{jj} \,\mathbf{q}_j,
+\end{align*}\]</div>
+<p>where we defined <span class="math notranslate nohighlight">\(r_{jj} = \left\|\mathbf{a}_j - \sum_{i=1}^{j-1} r_{ij}\,\mathbf{q}_i\right\| = \|\mathbf{v}_j\|\)</span>. <span class="math notranslate nohighlight">\(\square\)</span></p>
+<p>Hence <span class="math notranslate nohighlight">\(\mathbf{q}_1,\ldots,\mathbf{q}_j\)</span> forms an orthonormal list with <span class="math notranslate nohighlight">\(\mathrm{span}(\mathbf{a}_1,\ldots,\mathbf{a}_{j})\)</span>. So induction goes through. That concludes the proof of the theorem. <span class="math notranslate nohighlight">\(\square\)</span></p>
+<p><strong>NUMERICAL CORNER:</strong> We implement the Gram-Schmidt algorithm in Python. For reasons that will become clear in a future section, we output both the <span class="math notranslate nohighlight">\(\mathbf{q}_j\)</span>’s and <span class="math notranslate nohighlight">\(r_{ij}\)</span>’s, each in matrix form.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">gramschmidt</span><span class="p">(</span><span class="n">A</span><span class="p">):</span>
+    <span class="p">(</span><span class="n">n</span><span class="p">,</span><span class="n">m</span><span class="p">)</span> <span class="o">=</span> <span class="n">A</span><span class="o">.</span><span class="n">shape</span>
+    <span class="n">Q</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">n</span><span class="p">,</span><span class="n">m</span><span class="p">))</span>
+    <span class="n">R</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">m</span><span class="p">,</span><span class="n">m</span><span class="p">))</span>
+    <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">m</span><span class="p">):</span>
+        <span class="n">v</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">A</span><span class="p">[:,</span><span class="n">j</span><span class="p">])</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">j</span><span class="p">):</span>
+            <span class="n">R</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">Q</span><span class="p">[:,</span><span class="n">i</span><span class="p">],</span> <span class="n">A</span><span class="p">[:,</span><span class="n">j</span><span class="p">])</span>
+            <span class="n">v</span> <span class="o">-=</span> <span class="n">R</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">]</span><span class="o">*</span><span class="n">Q</span><span class="p">[:,</span><span class="n">i</span><span class="p">]</span>
+        <span class="n">R</span><span class="p">[</span><span class="n">j</span><span class="p">,</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">LA</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
+        <span class="n">Q</span><span class="p">[:,</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">v</span><span class="o">/</span><span class="n">R</span><span class="p">[</span><span class="n">j</span><span class="p">,</span><span class="n">j</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">Q</span><span class="p">,</span> <span class="n">R</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Let’s try a simple example.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">w1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="mf">1.</span><span class="p">])</span>
+<span class="n">w2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.</span><span class="p">,</span> <span class="mf">1.</span><span class="p">,</span> <span class="mf">1.</span><span class="p">])</span>
+<span class="n">A</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">stack</span><span class="p">((</span><span class="n">w1</span><span class="p">,</span> <span class="n">w2</span><span class="p">),</span><span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[[1. 0.]
+ [0. 1.]
+ [1. 1.]]
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">Q</span><span class="p">,</span> <span class="n">R</span> <span class="o">=</span> <span class="n">gramschmidt</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">Q</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[[ 0.70710678 -0.40824829]
+ [ 0.          0.81649658]
+ [ 0.70710678  0.40824829]]
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">R</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[[1.41421356 0.70710678]
+ [0.         1.22474487]]
+</pre></div>
+</div>
+</div>
+</div>
+<p><span class="math notranslate nohighlight">\(\unlhd\)</span></p>
+</section>
+<section id="matrix-factorization-perspective">
+<h2><span class="section-number">2.5.2. </span>Matrix factorization perspective<a class="headerlink" href="#matrix-factorization-perspective" title="Permalink to this headline">#</a></h2>
+<p>Let <span class="math notranslate nohighlight">\(\mathbf{a}_1,\ldots,\mathbf{a}_m \in \mathbb{R}^n\)</span> be linearly independent. Above, we presented the Gram-Schmidt algorithm to obtain an orthonormal basis of <span class="math notranslate nohighlight">\(\mathrm{span}(\mathbf{a}_1,\ldots,\mathbf{a}_m)\)</span>. We revisit it in matrix form.</p>
+<p>Let</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+A =
+\begin{pmatrix}
+| &amp;  &amp; | \\
+\mathbf{a}_1 &amp; \ldots &amp; \mathbf{a}_m \\
+| &amp;  &amp; | 
+\end{pmatrix}
+\quad
+\text{and}
+\quad
+Q =
+\begin{pmatrix}
+| &amp;  &amp; | \\
+\mathbf{q}_1 &amp; \ldots &amp; \mathbf{q}_m \\
+| &amp;  &amp; | 
+\end{pmatrix}.
+\end{split}\]</div>
+<p>The output of the Gram-Schmidt algorithm can be written in the following compact form, known as a <a class="reference external" href="https://en.wikipedia.org/wiki/QR_decomposition">QR decomposition</a>,</p>
+<div class="math notranslate nohighlight">
+\[
+A = QR
+\]</div>
+<p>where column <span class="math notranslate nohighlight">\(i\)</span> of the <span class="math notranslate nohighlight">\(m \times m\)</span> matrix <span class="math notranslate nohighlight">\(R\)</span> contains the coefficients of the linear combination of the <span class="math notranslate nohighlight">\(\mathbf{q}_j\)</span>’s that produce <span class="math notranslate nohighlight">\(\mathbf{a}_i\)</span>.</p>
+<p>By the proof of <em>Gram-Schmidt</em>, <span class="math notranslate nohighlight">\(\mathbf{a}_i \in \mathrm{span}(\mathbf{q}_1,\ldots,\mathbf{q}_i)\)</span>. So column <span class="math notranslate nohighlight">\(i\)</span> of <span class="math notranslate nohighlight">\(R\)</span> has only zeros below the diagonal. Hence <span class="math notranslate nohighlight">\(R\)</span> has a special structure we have previously encountered: it is upper triangular.</p>
+<p>The proof also established that the diagonal elements of <span class="math notranslate nohighlight">\(R\)</span> are strictly positive.</p>
+<p><strong>Remarks:</strong></p>
+<p>(a) If the input vectors <span class="math notranslate nohighlight">\(\mathbf{a}_1,\ldots,\mathbf{a}_m\)</span> are not linearly independent (in which case we say that the matrix <span class="math notranslate nohighlight">\(A\)</span> is rank-deficient), the Gram-Schmidt algorithm will fail. Indeed, at some point we will have that <span class="math notranslate nohighlight">\(\mathbf{a}_j \in U_{j-1}\)</span> and the normalization of <span class="math notranslate nohighlight">\(\mathbf{v}_j\)</span> will not be possible. In that case, one can instead use a technique called <a class="reference external" href="https://en.wikipedia.org/wiki/QR_decomposition#Column_pivoting">column pivoting</a>, which we will not describe.</p>
+<p>(b) The QR decomposition we have derived here is technically called a reduced QR decomposition. In a full QR decomposition, the matrix <span class="math notranslate nohighlight">\(Q\)</span> is square and orthogonal. In other words, the columns of such a <span class="math notranslate nohighlight">\(Q\)</span> form an orthonormal basis of the full space <span class="math notranslate nohighlight">\(\mathbb{R}^n\)</span>. Let <span class="math notranslate nohighlight">\(A = Q_1 R_1\)</span> be a reduced QR decomposition, as obtained through the Gram-Schmidt algorithm. Then the columns of <span class="math notranslate nohighlight">\(Q_1\)</span> form an orthonormal basis of <span class="math notranslate nohighlight">\(\mathrm{col}(A)\)</span> and can be completed into an orthonormal basis of <span class="math notranslate nohighlight">\(\mathbb{R}^n\)</span> by adding further vectors <span class="math notranslate nohighlight">\(\mathbf{q}_{m+1},\ldots,\mathbf{q}_{n}\)</span>. Let <span class="math notranslate nohighlight">\(Q_2\)</span> be the matrix with columns <span class="math notranslate nohighlight">\(\mathbf{q}_{m+1},\ldots,\mathbf{q}_{n}\)</span>. Then a full QR decomposition of <span class="math notranslate nohighlight">\(A\)</span> is</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+Q
+=
+\begin{pmatrix}
+Q_1 &amp; Q_2
+\end{pmatrix}
+\qquad
+R
+=
+\begin{pmatrix}
+R_1\\ 
+\mathbf{0}_{(n-m)\times m}
+\end{pmatrix}
+\end{split}\]</div>
+<p>where <span class="math notranslate nohighlight">\(\mathbf{0}_{(n-m)\times m}\)</span> is the all-zero matrix of size <span class="math notranslate nohighlight">\((n-m)\times m\)</span>. A numerical method for computing a full QR decomposition is presented in the next (optional) section.</p>
+<p>© The Gram-Schmidt algorithm is appealing geometrically, but it is known to have numerical issues. (See the next section for an example where the produced <span class="math notranslate nohighlight">\(\mathbf{q}_j\)</span>’s are far from orthogonal.) Other methods exist for computing QR decompositions with better numerical properties. We discuss such a method in the next section.</p>
+</section>
+<section id="least-squares-via-qr">
+<h2><span class="section-number">2.5.3. </span>Least squares via QR<a class="headerlink" href="#least-squares-via-qr" title="Permalink to this headline">#</a></h2>
+<p>Let <span class="math notranslate nohighlight">\(A \in \mathbb{R}^{n\times m}\)</span> be an <span class="math notranslate nohighlight">\(n\times m\)</span> matrix with linearly independent columns and let <span class="math notranslate nohighlight">\(\mathbf{b} \in \mathbb{R}^n\)</span> be a vector. Recall that a solution <span class="math notranslate nohighlight">\(\mathbf{x}^*\)</span> to the linear least squares problem</p>
+<div class="math notranslate nohighlight">
+\[
+\min_{\mathbf{x} \in \mathbb{R}^m} \|A \mathbf{x} - \mathbf{b}\|
+\]</div>
+<p>satisfies the normal equations</p>
+<div class="math notranslate nohighlight">
+\[
+A^T A \mathbf{x}^* = A^T \mathbf{b}.
+\]</div>
+<p>As we will see later in the course, the normal equations approach via Cholesky decomposition has numerical issues. We present an alternative approach based on the QR decomposition.</p>
+<p>1- Construct an orthonormal basis of <span class="math notranslate nohighlight">\(\mathrm{col}(A)\)</span> through a QR decomposition</p>
+<div class="math notranslate nohighlight">
+\[
+A = QR.
+\]</div>
+<p>2- Form the orthogonal projection matrix</p>
+<div class="math notranslate nohighlight">
+\[
+P = Q Q^T.
+\]</div>
+<p>3- Apply the projection to <span class="math notranslate nohighlight">\(\mathbf{b}\)</span> and observe that, by the proof of the <em>Normal Equations</em>, <span class="math notranslate nohighlight">\(\mathbf{x}\)</span> satisfies</p>
+<div class="math notranslate nohighlight">
+\[
+A \mathbf{x}^* = Q Q^T \mathbf{b}. 
+\]</div>
+<p>4- Plug in the QR decomposition for <span class="math notranslate nohighlight">\(A\)</span> to get</p>
+<div class="math notranslate nohighlight">
+\[
+QR \mathbf{x}^* = Q Q^T \mathbf{b}. 
+\]</div>
+<p>5- Multiply both sides by <span class="math notranslate nohighlight">\(Q^T\)</span> and use <span class="math notranslate nohighlight">\(Q^T Q = I_{m \times m}\)</span></p>
+<div class="math notranslate nohighlight">
+\[
+R \mathbf{x}^* = Q^T \mathbf{b}. 
+\]</div>
+<p>6- Solving this system for <span class="math notranslate nohighlight">\(\mathbf{x}^*\)</span> is straightforward because <span class="math notranslate nohighlight">\(R\)</span> is upper triangular via back substitution.</p>
+<p><strong>THEOREM</strong> <strong>(Least Squares via QR)</strong> Let <span class="math notranslate nohighlight">\(A \in \mathbb{R}^{n\times m}\)</span> be an <span class="math notranslate nohighlight">\(n\times m\)</span> matrix with linearly independent columns, let <span class="math notranslate nohighlight">\(\mathbf{b} \in \mathbb{R}^n\)</span> be a vector,
+and let <span class="math notranslate nohighlight">\(A = QR\)</span> be a QR decomposition of <span class="math notranslate nohighlight">\(A\)</span>. The solution to the linear least squares problem</p>
+<div class="math notranslate nohighlight">
+\[
+\min_{\mathbf{x} \in \mathbb{R}^m} \|A \mathbf{x} - \mathbf{b}\|.
+\]</div>
+<p>satisfies</p>
+<div class="math notranslate nohighlight">
+\[
+R \mathbf{x}^* = Q^T \mathbf{b}. 
+\]</div>
+<p><span class="math notranslate nohighlight">\(\sharp\)</span></p>
+<p><strong>NUMERICAL CORNER:</strong> We implement the QR approach to least squares and return to our previous linear regression example.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">ls_by_qr</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
+    <span class="n">Q</span><span class="p">,</span> <span class="n">R</span> <span class="o">=</span> <span class="n">gramschmidt</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">mmids</span><span class="o">.</span><span class="n">backsubs</span><span class="p">(</span><span class="n">R</span><span class="p">,</span> <span class="n">Q</span><span class="o">.</span><span class="n">T</span> <span class="o">@</span> <span class="n">b</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">n</span><span class="p">,</span> <span class="n">b0</span><span class="p">,</span> <span class="n">b1</span> <span class="o">=</span> <span class="mi">100</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">10</span><span class="p">,</span><span class="n">num</span><span class="o">=</span><span class="n">n</span><span class="p">)</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">b0</span> <span class="o">+</span> <span class="n">b1</span><span class="o">*</span><span class="n">x</span> <span class="o">+</span> <span class="n">rng</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="n">n</span><span class="p">)</span>
+<span class="n">A</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">stack</span><span class="p">((</span><span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">n</span><span class="p">),</span><span class="n">x</span><span class="p">),</span><span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">coeff</span> <span class="o">=</span> <span class="n">ls_by_qr</span><span class="p">(</span><span class="n">A</span><span class="p">,</span><span class="n">y</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">coeff</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[-1.03381171  1.01808039]
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell tag_hide-input docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell source</span>
+<span class="expanded">Hide code cell source</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">,</span><span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">coeff</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="n">coeff</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">*</span><span class="n">x</span><span class="p">,</span><span class="s1">&#39;r&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</details>
+<div class="cell_output docutils container">
+<img alt="../../_images/7f213fd7e0ddf496f211da5f4cd7786a2c5a6432c3d5b578b0ccef4813666107.png" src="../../_images/7f213fd7e0ddf496f211da5f4cd7786a2c5a6432c3d5b578b0ccef4813666107.png" />
+</div>
+</div>
+<p><span class="math notranslate nohighlight">\(\unlhd\)</span></p>
+</section>
+<section id="householder-transformations">
+<h2><span class="section-number">2.5.4. </span>Householder transformations<a class="headerlink" href="#householder-transformations" title="Permalink to this headline">#</a></h2>
+<p>While Gram-Schmidt gives a natural way to compute a (reduced) QR decomposition, there are many other numerical algorithms for this purpose. Some have better numerical behavior, specifically in terms of how they handle roundoff error. Quoting <a class="reference external" href="https://en.wikipedia.org/wiki/Round-off_error">Wikipedia</a>:</p>
+<blockquote>
+<div><p>A roundoff error, also called rounding error, is the difference between the result produced by a given algorithm using exact arithmetic and the result produced by the same algorithm using finite-precision, rounded arithmetic. Rounding errors are due to inexactness in the representation of real numbers and the arithmetic operations done with them. […] When a sequence of calculations with an input involving roundoff error are made, errors may accumulate, sometimes dominating the calculation.</p>
+</div></blockquote>
+<p>We will not prove this here, but the following method based on Householder reflectors is numerically more <a class="reference external" href="https://en.wikipedia.org/wiki/Numerical_stability#Stability_in_numerical_linear_algebra">stable</a>.</p>
+<p>Recall that a square matrix <span class="math notranslate nohighlight">\(Q \in \mathbb{R}^{m\times m}\)</span> is orthogonal if <span class="math notranslate nohighlight">\(Q^T Q = Q Q^T = I_{m \times m}\)</span>. In words, the matrix inverse of <span class="math notranslate nohighlight">\(Q\)</span> is its transpose. As we have seen before, this is equivalent to the columns of <span class="math notranslate nohighlight">\(Q\)</span> forming an orthonormal basis of <span class="math notranslate nohighlight">\(\mathbb{R}^m\)</span>.</p>
+<p>It can be shown that the product of two orthogonal matrices <span class="math notranslate nohighlight">\(Q_1\)</span> and <span class="math notranslate nohighlight">\(Q_2\)</span> is also orthogonal. (Try it!)</p>
+<p>An important property of orthogonal matrices is that they preserve inner products: if <span class="math notranslate nohighlight">\(Q \in \mathbb{R}^{m\times m}\)</span> is orthogonal, then for any <span class="math notranslate nohighlight">\(\mathbf{x}, \mathbf{y} \in \mathbb{R}^m\)</span></p>
+<div class="math notranslate nohighlight">
+\[
+\langle Q \mathbf{x}, Q \mathbf{y} \rangle 
+= (Q \mathbf{x})^T  Q \mathbf{y}
+= \mathbf{x}^T Q^T Q \mathbf{y}
+= \mathbf{x}^T \mathbf{y}
+= \langle \mathbf{x}, \mathbf{y} \rangle.
+\]</div>
+<p>In particular, orthogonal matrices preserve norms and angles.</p>
+<p>Recall that the angle <span class="math notranslate nohighlight">\(\theta\)</span> between <span class="math notranslate nohighlight">\(\mathbf{x}\)</span> and <span class="math notranslate nohighlight">\(\mathbf{y}\)</span> satisfies</p>
+<div class="math notranslate nohighlight">
+\[
+\cos \theta
+= \frac{\langle \mathbf{x}, \mathbf{y} \rangle}{\|\mathbf{x}\| \|\mathbf{y}\|}.
+\]</div>
+<p><img alt="Angle between two vectors" src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/05/Inner-product-angle.png/627px-Inner-product-angle.png" /></p>
+<p><strong>Figure:</strong> Angle between two vectors (<a class="reference external" href="https://commons.wikimedia.org/wiki/File:Inner-product-angle.png">Source</a>)</p>
+<p><strong>Reflections</strong> One such family of transformations are reflections.</p>
+<p><strong>DEFINITION</strong> <strong>(Hyperplane)</strong> A hyperplane <span class="math notranslate nohighlight">\(W\)</span> is a linear subspace of <span class="math notranslate nohighlight">\(\mathbb{R}^m\)</span> of dimension <span class="math notranslate nohighlight">\(m-1\)</span>. <span class="math notranslate nohighlight">\(\natural\)</span></p>
+<p><strong>DEFINITION</strong> <strong>(Householder Reflection)</strong> Let <span class="math notranslate nohighlight">\(\mathbf{z} \in \mathbb{R}^m\)</span> be a unit vector and let <span class="math notranslate nohighlight">\(W\)</span> be the hyperplane orthogonal to it. The reflection across <span class="math notranslate nohighlight">\(W\)</span> is given by</p>
+<div class="math notranslate nohighlight">
+\[
+H = I_{m \times m} - 2 \mathbf{z} \mathbf{z}^T.
+\]</div>
+<p>This is referred to as a Householder reflection. <span class="math notranslate nohighlight">\(\natural\)</span></p>
+<p>In words, we subtract twice the projection onto <span class="math notranslate nohighlight">\(\mathbf{z}\)</span>, as depicted below.</p>
+<p><img alt="Reflection" src="https://ccjou.files.wordpress.com/2009/08/householder-matrix.jpg" /></p>
+<p>(<a class="reference external" href="https://ccjou.wordpress.com/householder-matrix/">Source</a>)</p>
+<hr class="docutils" />
+<p><strong>Lemma:</strong> Let <span class="math notranslate nohighlight">\(H = I_{m\times m} - 2\mathbf{z}\mathbf{z}^T\)</span> be a Householder reflection. Then <span class="math notranslate nohighlight">\(H\)</span> is an orthogonal matrix.</p>
+<hr class="docutils" />
+<p><em>Proof:</em> We check the definition:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{align*}
+H^T H 
+&amp;= (I_{m\times m} - 2\mathbf{z}\mathbf{z}^T)^T (I_{m\times m} - 2\mathbf{z}\mathbf{z}^T)\\
+&amp;= (I_{m\times m} - 2\mathbf{z}\mathbf{z}^T) (I_{m\times m} - 2\mathbf{z}\mathbf{z}^T)\\
+&amp;= I_{m\times m} - 2\mathbf{z}\mathbf{z}^T - 2\mathbf{z}\mathbf{z}^T + 4 \mathbf{z}\mathbf{z}^T\mathbf{z}\mathbf{z}^T\\
+&amp;= I_{m\times m} - 2\mathbf{z}\mathbf{z}^T - 2\mathbf{z}\mathbf{z}^T + 4 \mathbf{z}\mathbf{z}^T
+\end{align*}
+\end{split}\]</div>
+<p>which is equal to <span class="math notranslate nohighlight">\(I_{m\times m}\)</span>. The calculation for <span class="math notranslate nohighlight">\(H H^T\)</span> is clearly the same.<span class="math notranslate nohighlight">\(\square\)</span></p>
+<p><strong>QR decomposition by introducing zeros</strong> We return to QR decompositions. One way to construct a (full) QR decomposition of a matrix <span class="math notranslate nohighlight">\(A \in \mathbb{R}^{n \times m}\)</span> is to find a sequence of orthogonal matrices <span class="math notranslate nohighlight">\(H_1, \ldots, H_m\)</span> that triangularize <span class="math notranslate nohighlight">\(A\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[
+H_m \cdots H_2 H_1 A = R
+\]</div>
+<p>for an upper-triangular matrix <span class="math notranslate nohighlight">\(R\)</span>. Indeed, by the properties of orthogonal matrices, we then have</p>
+<div class="math notranslate nohighlight">
+\[
+A 
+= H_1^T H_2^T \cdots H_m^T H_m \cdots H_2 H_1 A
+= H_1^T H_2^T \cdots H_m^T R
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(Q = H_1^T H_2^T \cdots H_m^T\)</span> is itself orthogonal as a product of orthogonal matrices. So to proceed we need to identify orthogonal matrices that have the effect of introducing zeros below the diagonal, as illustrated below.</p>
+<p><img alt="Introducing zeros" src="https://hua-zhou.github.io/teaching/biostatm280-2017spring/slides/10-qr/householder_transform_diagram.png" /></p>
+<p>(<a class="reference external" href="https://hua-zhou.github.io/teaching/biostatm280-2017spring/slides/10-qr/householder_transform_diagram.png">Source</a>)</p>
+<p>It turns out that a well-chosen Householder reflection does the trick. Let <span class="math notranslate nohighlight">\(\mathbf{y}_1\)</span> be the first column of <span class="math notranslate nohighlight">\(A\)</span> and take</p>
+<div class="math notranslate nohighlight">
+\[
+\mathbf{z}_1 = \frac{\|\mathbf{y}_1\| \,\mathbf{e}_1^{(n)} - \mathbf{y}_1}{\|\|\mathbf{y}_1\| \,\mathbf{e}_1^{(n)} - \mathbf{y}_1\|}
+\quad
+\text{and}
+\quad
+H_1 = I_{n\times n} - 2\mathbf{z}_1\mathbf{z}_1^T
+\]</div>
+<p>where recall that <span class="math notranslate nohighlight">\(\mathbf{e}_1^{(n)}\)</span> is the first vector in the canonical basis of <span class="math notranslate nohighlight">\(\mathbb{R}^n\)</span>. As depicted below, this choice sends <span class="math notranslate nohighlight">\(\mathbf{y}_1\)</span> to</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\|\mathbf{y}_1\| \mathbf{e}_1^{(n)}  
+= 
+\begin{pmatrix}
+\|\mathbf{y}_1\|\\
+0 \\
+\vdots \\
+0
+\end{pmatrix}.
+\end{split}\]</div>
+<p>(It is clear that if <span class="math notranslate nohighlight">\(H_1 \mathbf{y}_1\)</span> is proportional to <span class="math notranslate nohighlight">\(\mathbf{e}_1^{(n)}\)</span>, than it can only be <span class="math notranslate nohighlight">\(\|\mathbf{y}_1\| \mathbf{e}_1^{(n)}\)</span> or <span class="math notranslate nohighlight">\(-\|\mathbf{y}_1\| \mathbf{e}_1^{(n)}\)</span>. Prove it!)</p>
+<p><img alt="Introducing zeros by Householder reflection" src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Householdertransformation.svg/562px-Householdertransformation.svg.png" /></p>
+<p><strong>Figure:</strong> Introducing zeros by Householder reflection (<a class="reference external" href="https://commons.wikimedia.org/wiki/File:Householdertransformation.svg">Source</a>)</p>
+<p><strong>LEMMA</strong> <strong>(Householder)</strong> Let <span class="math notranslate nohighlight">\(\mathbf{y}_1\)</span>, <span class="math notranslate nohighlight">\(\mathbf{z}_1\)</span> and <span class="math notranslate nohighlight">\(H_1\)</span> be as above. Then</p>
+<div class="math notranslate nohighlight">
+\[
+H_1 \mathbf{y}_1 = \|\mathbf{y}_1\| \mathbf{e}_1^{(n)}.
+\]</div>
+<p><span class="math notranslate nohighlight">\(\flat\)</span></p>
+<p><em>Proof idea:</em> The proof by picture is in the figure above.</p>
+<p><em>Proof:</em> Note that</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+\|\|\mathbf{y}_1\| \,\mathbf{e}_1^{(n)} - \mathbf{y}_1\|^2
+&amp;= (\|\mathbf{y}_1\| - y_{1,1})^2
++ \sum_{j=2}^n y_{1,j}^2\\
+&amp;= \|\mathbf{y}_1\|^2 -2 \|\mathbf{y}_1\| y_{1,1} + y_{1,1}^2 + \sum_{j=2}^n y_{1,j}^2\\
+&amp;= 2(\|\mathbf{y}_1\|^2 - \|\mathbf{y}_1\| y_{1,1})
+\end{align*}\]</div>
+<p>and</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+2 \mathbf{z}_1 \mathbf{z}_1^T \mathbf{y}_1
+&amp;= 2 \mathbf{z}_1 \frac{\|\mathbf{y}_1\| \,(\mathbf{e}_1^{(n)})^T \mathbf{y}_1 - \mathbf{y}_1^T \mathbf{y}_1}{\|\|\mathbf{y}_1\| \,\mathbf{e}_1^{(n)} - \mathbf{y}_1\|}\\
+&amp;= 2 \frac{\|\mathbf{y}_1\| y_{1,1} - \|\mathbf{y}_1\|^2}{\|\|\mathbf{y}_1\| \,\mathbf{e}_1^{(n)} - \mathbf{y}_1\|^2} (\|\mathbf{y}_1\| \,\mathbf{e}_1 - \mathbf{y}_1)\\
+&amp;= - (\|\mathbf{y}_1\| \,\mathbf{e}_1^{(n)} - \mathbf{y}_1)
+\end{align*}\]</div>
+<p>where we used the previous equation. Hence</p>
+<div class="math notranslate nohighlight">
+\[
+H_1 \mathbf{y}_1
+= (I_{n\times n} - 2\mathbf{z}_1\mathbf{z}_1^T) \,\mathbf{y}_1
+= \mathbf{y}_1 + (\|\mathbf{y}_1\| \,\mathbf{e}_1^{(n)} - \mathbf{y}_1) = \|\mathbf{y}_1\| \,\mathbf{e}_1^{(n)}.
+\]</div>
+<p>That establishes the claim. <span class="math notranslate nohighlight">\(\square\)</span></p>
+<p>Our definition of <span class="math notranslate nohighlight">\(\mathbf{z}_1\)</span> above is not valid if <span class="math notranslate nohighlight">\(\mathbf{y}_1 = \|\mathbf{y}_1\| \mathbf{e}_1^{(n)}\)</span>. Thankfully, there is another valid choice. We omit the details.</p>
+<p>The upshot is that multiplying <span class="math notranslate nohighlight">\(A\)</span> by <span class="math notranslate nohighlight">\(H_1\)</span> introduces zeros below the diagonal in the first column. To see this, recall that one interpretation of the matrix-matrix product is that each column of the second matrix gets multiplied by the first one. By the <em>Householder Lemma</em>, applying <span class="math notranslate nohighlight">\(H_1\)</span> to <span class="math notranslate nohighlight">\(A\)</span> gives</p>
+<div class="math notranslate nohighlight">
+\[
+H_1 A
+= \begin{pmatrix}
+H_1 \mathbf{y}_1 &amp; H_1 A_{\cdot,2} &amp; \cdots &amp; H_1 A_{\cdot,m} 
+\end{pmatrix}
+= \begin{pmatrix}
+\|\mathbf{y}_1\| \mathbf{e}_1^{(n)} &amp; H_1 A_{\cdot,2} &amp; \cdots &amp; H_1 A_{\cdot,m}
+\end{pmatrix}
+\]</div>
+<p>So the first column is now proportional to <span class="math notranslate nohighlight">\(\mathbf{e}_1\)</span>, which has zeros in all but the first element.</p>
+<p><strong>Putting everything together</strong> We have shown how to introduce zeros below the diagonal in the first column of a matrix. To introduce zeros in the second column below the diagonal we use a block matrix. Recall that
+if <span class="math notranslate nohighlight">\(A_{ij} \in \mathbb{R}^{n_i \times m_j}\)</span> and <span class="math notranslate nohighlight">\(B_{ij} \in \mathbb{R}^{m_i \times p_j}\)</span> for <span class="math notranslate nohighlight">\(i,j = 1, 2\)</span>, then we have the following formula</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{pmatrix}
+A_{11} &amp; A_{12}\\
+A_{21} &amp; A_{22}
+\end{pmatrix}
+\begin{pmatrix}
+B_{11} &amp; B_{12}\\
+B_{21} &amp; B_{22}
+\end{pmatrix}
+=
+\begin{pmatrix}
+A_{11} B_{11} + A_{12} B_{21} &amp; A_{11} B_{12} + A_{12} B_{22}\\
+A_{21} B_{11} + A_{22} B_{21} &amp; A_{21} B_{12} + A_{22} B_{22}
+\end{pmatrix}.
+\end{split}\]</div>
+<p>Now consider the following block matrix</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+H_2
+= 
+\begin{pmatrix}
+1 &amp; \mathbf{0} \\
+\mathbf{0} &amp; F_2
+\end{pmatrix}
+\end{split}\]</div>
+<p>where <span class="math notranslate nohighlight">\(F_2\)</span> is the following Householder reflection. Write the second column of <span class="math notranslate nohighlight">\(H_1 A\)</span> as <span class="math notranslate nohighlight">\((y^{(2)}, \mathbf{y}_2)^T\)</span>. That is, <span class="math notranslate nohighlight">\(\mathbf{y}_2\)</span> are the entries <span class="math notranslate nohighlight">\(2,\ldots, n\)</span> of that column. Define</p>
+<div class="math notranslate nohighlight">
+\[
+F_2 = I_{(n-1) \times (n-1)} - 2 \mathbf{z}_2 \mathbf{z}_2^T
+\quad
+\text{with}
+\quad
+\mathbf{z}_2 
+= \frac{\|\mathbf{y}_2\| \,\mathbf{e}_1^{(n-1)} - \mathbf{y}_2}{\|\|\mathbf{y}_2\| \,\mathbf{e}_1^{(n-1)} - \mathbf{y}_2\|}
+\]</div>
+<p>where now <span class="math notranslate nohighlight">\(\mathbf{e}_1^{(n-1)} \in \mathbb{R}^{n-1}\)</span>. By the <em>Householder Lemma</em>, we have <span class="math notranslate nohighlight">\(F_2 \mathbf{y}_2 = \|\mathbf{y}_2\| \mathbf{e}_1^{(n-1)}\)</span>. It can be shown that <span class="math notranslate nohighlight">\(\mathbf{y}_2 \neq \mathbf{0}\)</span> when the columns of <span class="math notranslate nohighlight">\(A\)</span> are linearly independent. (Try it!)</p>
+<p>Applying <span class="math notranslate nohighlight">\(H_2\)</span> to <span class="math notranslate nohighlight">\(H_1 A\)</span> preserves the first row and column, and introduces zeros under the diagonal on the second column. To see this, first re-write <span class="math notranslate nohighlight">\(H_1 A\)</span> in block form</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+H_1 A
+= 
+\begin{pmatrix}
+\|\mathbf{y}_1\|  &amp; \mathbf{g}_2^T \\
+\mathbf{0} &amp; G_2
+\end{pmatrix}
+\end{split}\]</div>
+<p>where we used our previous observation about the first column of <span class="math notranslate nohighlight">\(H_1 A\)</span> and where <span class="math notranslate nohighlight">\(\mathbf{g}_2 \in \mathbb{R}^{m-1}\)</span>, <span class="math notranslate nohighlight">\(G_2 \in \mathbb{R}^{(n-1)\times (m-1)}\)</span>. One important point to note: the first column of <span class="math notranslate nohighlight">\(G_2\)</span> is equal to <span class="math notranslate nohighlight">\(\mathbf{y}_2\)</span>. Now multiply by <span class="math notranslate nohighlight">\(H_2\)</span> to get</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+H_2 H_1 A
+= 
+\begin{pmatrix}
+1 &amp; \mathbf{0} \\
+\mathbf{0} &amp; F_2
+\end{pmatrix}
+\begin{pmatrix}
+\|\mathbf{y}_1\|  &amp; \mathbf{g}_2^T \\
+\mathbf{0} &amp; G_2
+\end{pmatrix}
+= 
+\begin{pmatrix}
+\|\mathbf{y}_1\| &amp; \mathbf{g}_2^T \\
+\mathbf{0} &amp; F_2 G_2
+\end{pmatrix}.
+\end{split}\]</div>
+<p>Computing the block <span class="math notranslate nohighlight">\(F_2 G_2\)</span> column by column we get</p>
+<div class="math notranslate nohighlight">
+\[
+F_2 G_2
+= \begin{pmatrix}
+F_2 \mathbf{y}_2 &amp; F_2 (G_2)_{\cdot,2} &amp; \cdots &amp; F_2 (G_2)_{\cdot,m-1} 
+\end{pmatrix}
+= \begin{pmatrix}
+\|\mathbf{y}_2\| \mathbf{e}_1^{(n-1)} &amp; F_2 (G_2)_{\cdot,2} &amp; \cdots &amp; F_2 (G_2)_{\cdot,m-1}, 
+\end{pmatrix}
+\]</div>
+<p>where <span class="math notranslate nohighlight">\((G_2)_{\cdot,j}\)</span> is the <span class="math notranslate nohighlight">\(j\)</span>-th column of <span class="math notranslate nohighlight">\(G_2\)</span>. So the second column of <span class="math notranslate nohighlight">\(H_2 H_1 A\)</span> has zeros in all but the first two elements.</p>
+<p>And so on. At Step <span class="math notranslate nohighlight">\(k\)</span>, we split the <span class="math notranslate nohighlight">\(k\)</span>-th column of <span class="math notranslate nohighlight">\(H_{k-1} \cdots H_1 A\)</span> into its first <span class="math notranslate nohighlight">\(k-1\)</span> and last <span class="math notranslate nohighlight">\(n-k+1\)</span> entries <span class="math notranslate nohighlight">\((\mathbf{y}^{(k)}, \mathbf{y}_k)\)</span> and form the matrix</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+H_k
+= 
+\begin{pmatrix}
+I_{(k-1)\times (k-1)} &amp; \mathbf{0} \\
+\mathbf{0} &amp; F_k
+\end{pmatrix}
+\end{split}\]</div>
+<p>where</p>
+<div class="math notranslate nohighlight">
+\[
+F_k = I_{(n-k+1) \times (n-k+1)} - 2 \mathbf{z}_k \mathbf{z}_k^T
+\quad
+\text{with}
+\quad
+\mathbf{z}_k 
+= \frac{\|\mathbf{y}_k\| \,\mathbf{e}_1^{(n-k+1)} - \mathbf{y}_k}{\|\|\mathbf{y}_k\| \,\mathbf{e}_1^{(n-k+1)} - \mathbf{y}_k\|}.
+\]</div>
+<p>This time the first <span class="math notranslate nohighlight">\(k-1\)</span> rows and columns are preserved, while zeros are introduced under the diagonal of the <span class="math notranslate nohighlight">\(k\)</span>-th column. We omit the details (try it!). See <em>Exercise 2.67</em> for a proof that <span class="math notranslate nohighlight">\(H_k\)</span> is an orthogonal matrix.</p>
+<p><strong>NUMERICAL CORNER:</strong> We implement the procedure above in Python. We will need the following function. For <span class="math notranslate nohighlight">\(\alpha \in \mathbb{R}\)</span>, let the sign of <span class="math notranslate nohighlight">\(\alpha\)</span> be</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\mathrm{sign}(\alpha)
+= 
+\begin{cases}
+1 &amp; \text{if $\alpha &gt; 0$}\\
+0 &amp; \text{if $\alpha = 0$}\\
+-1 &amp; \text{if $\alpha &lt; 0$}
+\end{cases}
+\end{split}\]</div>
+<p>For example, in Python, using the function <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.sign.html"><code class="docutils literal notranslate"><span class="pre">numpy.sign</span></code></a>:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">np</span><span class="o">.</span><span class="n">sign</span><span class="p">(</span><span class="o">-</span><span class="mi">10</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">sign</span><span class="p">(</span><span class="mi">20</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">sign</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(-1, 1, 0)
+</pre></div>
+</div>
+</div>
+</div>
+<p>The following function constructs the upper triangular matrix <span class="math notranslate nohighlight">\(R\)</span> by iteratively modifying the relevant block of <span class="math notranslate nohighlight">\(A\)</span>. On the other hand, computing the matrix <span class="math notranslate nohighlight">\(Q\)</span> actually requires extra computational work that is often not needed. We saw that, in the context of the least-squares problem, we really only need to compute <span class="math notranslate nohighlight">\(Q^T \mathbf{b}\)</span> for some input vector <span class="math notranslate nohighlight">\(\mathbf{b}\)</span>. This can be done at the same time that <span class="math notranslate nohighlight">\(R\)</span> is constructed, as follows. The key point to note is that <span class="math notranslate nohighlight">\(Q^T \mathbf{b} = H_m \cdots H_1 \mathbf{b}\)</span>.</p>
+<p>See <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.copy.html">here</a> for an explanation of <code class="docutils literal notranslate"><span class="pre">numpy.copy</span></code>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">householder</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
+    <span class="n">n</span><span class="p">,</span> <span class="n">m</span> <span class="o">=</span> <span class="n">A</span><span class="o">.</span><span class="n">shape</span>
+    <span class="n">R</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
+    <span class="n">Qtb</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">m</span><span class="p">):</span>
+    
+        <span class="c1"># computing z</span>
+        <span class="n">y</span> <span class="o">=</span> <span class="n">R</span><span class="p">[</span><span class="n">k</span><span class="p">:</span><span class="n">n</span><span class="p">,</span><span class="n">k</span><span class="p">]</span>
+        <span class="n">e1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">n</span><span class="o">-</span><span class="n">k</span><span class="p">)</span>
+        <span class="n">e1</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="n">z</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sign</span><span class="p">(</span><span class="n">y</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">*</span> <span class="n">LA</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">y</span><span class="p">)</span> <span class="o">*</span> <span class="n">e1</span> <span class="o">+</span> <span class="n">y</span>
+        <span class="n">z</span> <span class="o">=</span> <span class="n">z</span> <span class="o">/</span> <span class="n">LA</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">z</span><span class="p">)</span>
+        
+        <span class="c1"># updating R</span>
+        <span class="n">R</span><span class="p">[</span><span class="n">k</span><span class="p">:</span><span class="n">n</span><span class="p">,</span><span class="n">k</span><span class="p">:</span><span class="n">m</span><span class="p">]</span> <span class="o">=</span> <span class="n">R</span><span class="p">[</span><span class="n">k</span><span class="p">:</span><span class="n">n</span><span class="p">,</span><span class="n">k</span><span class="p">:</span><span class="n">m</span><span class="p">]</span> <span class="o">-</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">outer</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="n">z</span><span class="p">)</span> <span class="o">@</span> <span class="n">R</span><span class="p">[</span><span class="n">k</span><span class="p">:</span><span class="n">n</span><span class="p">,</span><span class="n">k</span><span class="p">:</span><span class="n">m</span><span class="p">]</span>
+        
+        <span class="c1"># updating Qtb</span>
+        <span class="n">Qtb</span><span class="p">[</span><span class="n">k</span><span class="p">:</span><span class="n">n</span><span class="p">]</span> <span class="o">=</span> <span class="n">Qtb</span><span class="p">[</span><span class="n">k</span><span class="p">:</span><span class="n">n</span><span class="p">]</span> <span class="o">-</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">outer</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="n">z</span><span class="p">)</span> <span class="o">@</span> <span class="n">Qtb</span><span class="p">[</span><span class="n">k</span><span class="p">:</span><span class="n">n</span><span class="p">]</span>
+    
+    <span class="k">return</span> <span class="n">R</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="n">m</span><span class="p">,</span><span class="mi">0</span><span class="p">:</span><span class="n">m</span><span class="p">],</span> <span class="n">Qtb</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="n">m</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>In <code class="docutils literal notranslate"><span class="pre">householder</span></code>, we use both reflections defined above. We will not prove this here, but the particular choice made has good numerical properties. Quoting [TB, Lecture 10]:</p>
+<blockquote>
+<div><p>Mathematically, either choice of sign is satisfactory. However, this is a case where numerical stability – insensitivity to rounding errors – dictates that one choice should be taken rather than the other. For numerical stability, it is desirable to reflect <span class="math notranslate nohighlight">\(\mathbf{x}\)</span> to the vector <span class="math notranslate nohighlight">\(z \|\mathbf{x}\| \mathbf{e}_1\)</span> that is not too close to <span class="math notranslate nohighlight">\(\mathbf{x}\)</span> itself. […] Suppose that [in the figure above] the angle between <span class="math notranslate nohighlight">\(H^+\)</span> and the <span class="math notranslate nohighlight">\(\mathbf{e}_1\)</span> axis is very small. Then the vector <span class="math notranslate nohighlight">\(\mathbf{v} = \|\mathbf{x}\| \mathbf{e}_1 - \mathbf{x}\)</span> is much smaller than <span class="math notranslate nohighlight">\(\mathbf{x}\)</span> or <span class="math notranslate nohighlight">\(\|\mathbf{x}\| \mathbf{e}_1\)</span>. Thus the calculation of <span class="math notranslate nohighlight">\(\mathbf{v}\)</span> represents a subtraction of nearby quantities and will tend to suffer from cancellation errors.</p>
+</div></blockquote>
+<p>We return to our regression example.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">n</span><span class="p">,</span> <span class="n">b0</span><span class="p">,</span> <span class="n">b1</span><span class="p">,</span> <span class="n">b2</span> <span class="o">=</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">10</span><span class="p">,</span><span class="n">num</span><span class="o">=</span><span class="n">n</span><span class="p">)</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">b0</span> <span class="o">+</span> <span class="n">b1</span><span class="o">*</span><span class="n">x</span> <span class="o">+</span> <span class="n">b2</span> <span class="o">*</span> <span class="n">x</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="mi">10</span><span class="o">*</span><span class="n">rng</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="n">n</span><span class="p">)</span>
+<span class="n">A</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">stack</span><span class="p">((</span><span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">n</span><span class="p">),</span> <span class="n">x</span><span class="p">,</span> <span class="n">x</span><span class="o">**</span><span class="mi">2</span><span class="p">),</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">R</span><span class="p">,</span> <span class="n">Qtb</span> <span class="o">=</span> <span class="n">householder</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+<span class="n">coeff</span> <span class="o">=</span> <span class="n">mmids</span><span class="o">.</span><span class="n">backsubs</span><span class="p">(</span><span class="n">R</span><span class="p">,</span> <span class="n">Qtb</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">coeff</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[-2.76266982  1.01627798  0.93554204]
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell tag_hide-input docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell source</span>
+<span class="expanded">Hide code cell source</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">,</span><span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">coeff</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">coeff</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">*</span><span class="n">x</span> <span class="o">+</span> <span class="n">coeff</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">*</span> <span class="n">x</span><span class="o">**</span><span class="mi">2</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</details>
+<div class="cell_output docutils container">
+<img alt="../../_images/705251050504bfe27dddfb7388c3a8d1bcf1cb6179e83d96d03babc4064cefb3.png" src="../../_images/705251050504bfe27dddfb7388c3a8d1bcf1cb6179e83d96d03babc4064cefb3.png" />
+</div>
+</div>
+<p>One advantage of the Householder approach is that it produces a matrix <span class="math notranslate nohighlight">\(Q\)</span> with very good orthogonality, i.e., <span class="math notranslate nohighlight">\(Q^T Q \approx I\)</span>. We give a quick example below comparing Gram-Schmidt and Householder. (The choice of matrix <span class="math notranslate nohighlight">\(A\)</span> will become clearer when we discuss the singular value decomposition later in the chapter.)</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">n</span> <span class="o">=</span> <span class="mi">50</span>
+<span class="n">U</span><span class="p">,</span> <span class="n">W</span> <span class="o">=</span> <span class="n">LA</span><span class="o">.</span><span class="n">qr</span><span class="p">(</span><span class="n">rng</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,(</span><span class="n">n</span><span class="p">,</span><span class="n">n</span><span class="p">)))</span>
+<span class="n">V</span><span class="p">,</span> <span class="n">W</span> <span class="o">=</span> <span class="n">LA</span><span class="o">.</span><span class="n">qr</span><span class="p">(</span><span class="n">rng</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,(</span><span class="n">n</span><span class="p">,</span><span class="n">n</span><span class="p">)))</span>
+<span class="n">S</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">diag</span><span class="p">((</span><span class="mi">1</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span> <span class="o">**</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="p">))</span>
+<span class="n">A</span> <span class="o">=</span> <span class="n">U</span> <span class="o">@</span> <span class="n">S</span> <span class="o">@</span> <span class="n">V</span><span class="o">.</span><span class="n">T</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">Qgs</span><span class="p">,</span> <span class="n">Rgs</span> <span class="o">=</span> <span class="n">gramschmidt</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">LA</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">A</span> <span class="o">-</span> <span class="n">Qgs</span> <span class="o">@</span> <span class="n">Rgs</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1.2959101704482747e-16
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">LA</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">Qgs</span><span class="o">.</span><span class="n">T</span> <span class="o">@</span> <span class="n">Qgs</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">identity</span><span class="p">(</span><span class="n">n</span><span class="p">)))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>23.902062528929683
+</pre></div>
+</div>
+</div>
+</div>
+<p>As you can see above, the <span class="math notranslate nohighlight">\(Q\)</span> and <span class="math notranslate nohighlight">\(R\)</span> factors produced by Gram-Schmidt do have the property that <span class="math notranslate nohighlight">\(QR \approx A\)</span>. However, <span class="math notranslate nohighlight">\(Q\)</span> is far from orthogonal. (Recall that <code class="docutils literal notranslate"><span class="pre">LA.norm</span></code> computes the Frobenius norm introduced previously.)</p>
+<p>On the other hand, Householder reflections perform much better in that respect as we show next. Here we use the implementation of Householder transformations in <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.linalg.qr.html"><code class="docutils literal notranslate"><span class="pre">numpy.linalg.qr</span></code></a>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">Qhh</span><span class="p">,</span> <span class="n">Rhh</span> <span class="o">=</span> <span class="n">LA</span><span class="o">.</span><span class="n">qr</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">LA</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">A</span> <span class="o">-</span> <span class="n">Qhh</span> <span class="o">@</span> <span class="n">Rhh</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2.9017844488725664e-16
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">LA</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">Qhh</span><span class="o">.</span><span class="n">T</span> <span class="o">@</span> <span class="n">Qhh</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">identity</span><span class="p">(</span><span class="n">n</span><span class="p">)))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4.934757529567654e-15
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./chap02_ls/05_qr"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="../04_overdetermined/roch-mmids-ls-4overdetermined.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title"><span class="section-number">2.4. </span>Overdetermined linear systems and regression analysis</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="../06_adv/roch-mmids-ls-6adv.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title"><span class="section-number">2.6. </span>Advanced material</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#implementing-the-gram-schmidt-algorithm">2.5.1. Implementing the Gram-Schmidt algorithm</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#matrix-factorization-perspective">2.5.2. Matrix factorization perspective</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#least-squares-via-qr">2.5.3. Least squares via QR</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#householder-transformations">2.5.4. Householder transformations</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Sebastien Roch
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2024.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=5b4479735964841361fd"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

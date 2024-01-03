@@ -1,0 +1,1427 @@
+
+
+<!DOCTYPE html>
+
+
+<html data-content_root="" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>1.2. Background: review of basic linear algebra, calculus, and probability &#8212; MMiDS Online Book</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=5b4479735964841361fd" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" href="../../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=5b4479735964841361fd" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd" />
+  <script src="../../_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=5b4479735964841361fd"></script>
+
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/clipboard.min.js"></script>
+    <script src="../../_static/copybutton.js"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="../../_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'chap01_intro/02_review/roch-mmids-intro-2review';</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="1.3. Clustering: an objective, an algorithm and a guarantee" href="../03_clustering/roch-mmids-intro-3clustering.html" />
+    <link rel="prev" title="1.1. Motivating example: species delimitation" href="../01_motiv/roch-mmids-intro-1motiv.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="None"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+
+<a class="navbar-brand logo" href="../../intro.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/mmids-cover.png" class="logo__image only-light" alt="MMiDS Online Book - Home"/>
+    <script>document.write(`<img src="../../_static/mmids-cover.png" class="logo__image only-dark" alt="MMiDS Online Book - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">MMiDS</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="../00_intro/roch-mmids-intro-0intro.html">1. Introduction</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../01_motiv/roch-mmids-intro-1motiv.html">1.1. Motivating example: species delimitation</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">1.2. Background: review of basic linear algebra, calculus, and probability</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../03_clustering/roch-mmids-intro-3clustering.html">1.3. Clustering: an objective, an algorithm and a guarantee</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../04_highdim/roch-mmids-intro-4highdim.html">1.4. Some observations about high-dimensional data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../05_adv/roch-mmids-intro-5adv.html">1.5. Advanced material</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../chap02_ls/00_intro/roch-mmids-ls-intro.html">2. Least squares</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../chap02_ls/01_motiv/roch-mmids-ls-1motiv.html">2.1. Motivating example: predicting sales</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap02_ls/02_subspaces/roch-mmids-ls-2spaces.html">2.2. Background: linear spaces</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap02_ls/03_orthog/roch-mmids-ls-3orthog.html">2.3. A key concept: orthogonality</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap02_ls/04_overdetermined/roch-mmids-ls-4overdetermined.html">2.4. Overdetermined linear systems and regression analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap02_ls/05_qr/roch-mmids-ls-5qr.html">2.5. QR decomposition and Householder transformations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap02_ls/06_adv/roch-mmids-ls-6adv.html">2.6. Advanced material</a></li>
+</ul>
+</li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Background: review of basic linear algebra, calculus, and probability</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#vectors-and-matrices">1.2.1. Vectors and matrices</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#differential-calculus">1.2.2. Differential calculus</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#probability">1.2.3. Probability</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <section id="background-review-of-basic-linear-algebra-calculus-and-probability">
+<h1><span class="section-number">1.2. </span>Background: review of basic linear algebra, calculus, and probability<a class="headerlink" href="#background-review-of-basic-linear-algebra-calculus-and-probability" title="Permalink to this headline">#</a></h1>
+<p>We first review a few basic mathematical concepts. In this chapter, we focus on vector and matrix algebra, some basic calculus and optimization, as well as elementary probability concepts. Further mathematical concepts will be reviewed in the next chapters. Along the way, we also introduce Python, especially Numpy.</p>
+<section id="vectors-and-matrices">
+<h2><span class="section-number">1.2.1. </span>Vectors and matrices<a class="headerlink" href="#vectors-and-matrices" title="Permalink to this headline">#</a></h2>
+<p><strong>Vectors and norms</strong> For a vector</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\mathbf{x} 
+= 
+\begin{bmatrix}
+x_1 \\
+x_2 \\
+\vdots \\
+x_d
+\end{bmatrix}
+\in \mathbb{R}^d
+\end{split}\]</div>
+<p>the Euclidean norm of <span class="math notranslate nohighlight">\(\mathbf{x}\)</span> is defined as</p>
+<div class="math notranslate nohighlight">
+\[
+\|\mathbf{x}\|_2 
+= 
+\sqrt{
+\sum_{i=1}^d x_i^2
+} 
+= 
+\sqrt{\langle \mathbf{x}, \mathbf{x}\rangle}
+\]</div>
+<p>where</p>
+<div class="math notranslate nohighlight">
+\[
+\langle \mathbf{u}, \mathbf{v} \rangle = \sum_{i=1}^d u_i v_i
+\]</div>
+<p>is the <a class="reference external" href="https://en.wikipedia.org/wiki/Inner_product_space">inner product</a> of <span class="math notranslate nohighlight">\(\mathbf{u}\)</span> and <span class="math notranslate nohighlight">\(\mathbf{v}\)</span>.
+This is also known as the <span class="math notranslate nohighlight">\(\ell^2\)</span>-norm.</p>
+<p>The triangle inequality for the <span class="math notranslate nohighlight">\(\ell^2\)</span>-norm <a class="reference external" href="https://en.wikipedia.org/wiki/Cauchy%E2%80%93Schwarz_inequality#Analysis">follows</a> from the <a class="reference external" href="https://en.wikipedia.org/wiki/Cauchy%E2%80%93Schwarz_inequality">Cauchy–Schwarz inequality</a>, which is useful in proving many facts.</p>
+<p><strong>THEOREM</strong> <strong>(Cauchy–Schwarz)</strong> For all <span class="math notranslate nohighlight">\(\mathbf{u}, \mathbf{v} \in \mathbb{R}^d\)</span></p>
+<div class="math notranslate nohighlight">
+\[
+|\langle \mathbf{u}, \mathbf{v} \rangle| 
+\leq \|\mathbf{u}\|_2 \|\mathbf{v}\|_2.
+\]</div>
+<p><span class="math notranslate nohighlight">\(\sharp\)</span></p>
+<p>Given a collection of vectors <span class="math notranslate nohighlight">\(\mathbf{u}_1,\ldots,\mathbf{u}_k \in \mathbb{R}^d\)</span> and real numbers <span class="math notranslate nohighlight">\(\alpha_1,\ldots,\alpha_k \in \mathbb{R}\)</span>, the linear combination of <span class="math notranslate nohighlight">\(\mathbf{u}_\ell\)</span>’s with coefficients <span class="math notranslate nohighlight">\(\alpha_\ell\)</span>’s is the vector</p>
+<div class="math notranslate nohighlight">
+\[
+\mathbf{z} 
+= \sum_{\ell=1}^k \alpha_\ell \mathbf{u}_\ell,
+\]</div>
+<p>whose entries are</p>
+<div class="math notranslate nohighlight">
+\[
+z_i
+= \sum_{\ell=1}^k \alpha_\ell (\mathbf{u}_\ell)_i, \quad i=1,\ldots,d.
+\]</div>
+<p>The <a class="reference external" href="https://en.wikipedia.org/wiki/Euclidean_distance">Euclidean distance</a> between two vectors <span class="math notranslate nohighlight">\(\mathbf{u}\)</span> and <span class="math notranslate nohighlight">\(\mathbf{v}\)</span> in <span class="math notranslate nohighlight">\(\mathbb{R}^d\)</span> is the <span class="math notranslate nohighlight">\(2\)</span>-norm of their difference</p>
+<div class="math notranslate nohighlight">
+\[
+d(\mathbf{u},\mathbf{v})
+= \|\mathbf{u} - \mathbf{v}\|_2.
+\]</div>
+<p>Throughout we use the notation <span class="math notranslate nohighlight">\(\|\mathbf{x}\| = \|\mathbf{x}\|_2\)</span> to indicate the <span class="math notranslate nohighlight">\(2\)</span>-norm of <span class="math notranslate nohighlight">\(\mathbf{x}\)</span> unless specified otherwise.</p>
+<p>More generally, for <span class="math notranslate nohighlight">\(p \geq 1\)</span>, the <a class="reference external" href="https://en.wikipedia.org/wiki/Lp_space#The_p-norm_in_finite_dimensions"><span class="math notranslate nohighlight">\(\ell^p\)</span>-norm</a> of <span class="math notranslate nohighlight">\(\mathbf{x}\)</span> is given by</p>
+<div class="math notranslate nohighlight">
+\[
+\|\mathbf{x}\|_p 
+= 
+\left(
+\sum_{i=1}^d |x_i|^p
+\right)^{1/p}.
+\]</div>
+<p><a class="reference external" href="https://commons.wikimedia.org/wiki/File:Lp_space_animation.gif#/media/File:Lp_space_animation.gif">Here</a> is a nice visualization of the unit ball, that is, the set <span class="math notranslate nohighlight">\(\{\mathbf{x}:\|x\|_p \leq 1\}\)</span>, under varying <span class="math notranslate nohighlight">\(p\)</span>.</p>
+<p>Finally the <span class="math notranslate nohighlight">\(\ell^\infty\)</span>-norm, is defined as</p>
+<div class="math notranslate nohighlight">
+\[
+\|\mathbf{x}\|_\infty = \max_{i=1,\ldots,d}|x_i|.
+\]</div>
+<p>There exist other norms. Formally:</p>
+<p><strong>DEFINITION</strong> <strong>(Norm):</strong> A norm is a function <span class="math notranslate nohighlight">\(\ell\)</span> from <span class="math notranslate nohighlight">\(\mathbb{R}^d\)</span> to <span class="math notranslate nohighlight">\(\mathbb{R}_+\)</span> that satisfies for all <span class="math notranslate nohighlight">\(a \in \mathbb{R}\)</span>,
+<span class="math notranslate nohighlight">\(\mathbf{u}, \mathbf{v} \in \mathbb{R}^d\)</span></p>
+<ul class="simple">
+<li><p><em>(Homogeneity):</em> <span class="math notranslate nohighlight">\(\ell(a \mathbf{u}) = |a| \ell(\mathbf{u})\)</span></p></li>
+<li><p><em>(Triangle inequality):</em> <span class="math notranslate nohighlight">\(\ell(\mathbf{u}+\mathbf{v}) \leq \ell(\mathbf{u}) + \ell(\mathbf{v})\)</span></p></li>
+<li><p><em>(Point-separating):</em> <span class="math notranslate nohighlight">\(\ell(\mathbf{u}) = 0\)</span> implies <span class="math notranslate nohighlight">\(\mathbf{u} =0\)</span>.</p></li>
+</ul>
+<p><span class="math notranslate nohighlight">\(\natural\)</span></p>
+<p><strong>NUMERICAL CORNER:</strong> In Numpy, a vector is defined as a 1d array. We first must import the <a class="reference external" href="https://numpy.org">Numpy</a> package, which is often abbreviated by <code class="docutils literal notranslate"><span class="pre">np</span></code>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="n">u</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">3.</span><span class="p">,</span> <span class="mf">5.</span> <span class="p">,</span><span class="mf">7.</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">u</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[1. 3. 5. 7.]
+</pre></div>
+</div>
+</div>
+</div>
+<p>To obtain the norm of a vector, we can use the function <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.linalg.norm.html"><code class="docutils literal notranslate"><span class="pre">linalg.norm</span></code></a> (which requires the <code class="docutils literal notranslate"><span class="pre">numpy.linalg</span></code> package):</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">numpy</span> <span class="kn">import</span> <span class="n">linalg</span> <span class="k">as</span> <span class="n">LA</span>
+<span class="n">LA</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">u</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>9.16515138991168
+</pre></div>
+</div>
+</div>
+</div>
+<p>which we check next “by hand”</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">u</span> <span class="o">**</span> <span class="mi">2</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>9.16515138991168
+</pre></div>
+</div>
+</div>
+</div>
+<p>In Numpy, <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.power.html"><code class="docutils literal notranslate"><span class="pre">**</span></code></a> indicates element-wise exponentiation.</p>
+<p><span class="math notranslate nohighlight">\(\unlhd\)</span></p>
+<p><strong>Matrices</strong> For an <span class="math notranslate nohighlight">\(n \times m\)</span> matrix <span class="math notranslate nohighlight">\(A \in \mathbb{R}^{n \times m}\)</span> with real entries, we denote by <span class="math notranslate nohighlight">\(A_{ij}\)</span> its entry in row <span class="math notranslate nohighlight">\(i\)</span> and column <span class="math notranslate nohighlight">\(j\)</span>. We also refer to a matrix as the collection of all of its entries as follows</p>
+<div class="math notranslate nohighlight">
+\[
+A = (A_{ij})_{i\in [n],j \in [m]}.
+\]</div>
+<p>We occasionally simplify the notation to <span class="math notranslate nohighlight">\((A_{ij})_{i,j}\)</span> when the range of the indices is clear from context. We use the notation</p>
+<div class="math notranslate nohighlight">
+\[
+A_{i,\cdot} = (A_{i1} \cdots A_{im}),
+\]</div>
+<p>to indicate the <span class="math notranslate nohighlight">\(i\)</span>-th row of <span class="math notranslate nohighlight">\(A\)</span> - as a row vector, i.e., a matrix with a single row - and similarly</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+A_{\cdot,j} = \begin{pmatrix}
+A_{1j}\\
+\vdots\\
+A_{nj}
+\end{pmatrix},
+\end{split}\]</div>
+<p>the <span class="math notranslate nohighlight">\(j\)</span>-th column of <span class="math notranslate nohighlight">\(A\)</span> - as a column vector, i.e., a matrix with a single column.</p>
+<p><strong>EXAMPLE:</strong> Suppose</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+A 
+= \begin{bmatrix}
+2 &amp; 5\\
+3 &amp; 6\\
+1 &amp; 1
+\end{bmatrix}.
+\end{split}\]</div>
+<p>Then the second row is</p>
+<div class="math notranslate nohighlight">
+\[
+A_{2,\cdot} = \begin{bmatrix}
+3 &amp; 6
+\end{bmatrix},
+\]</div>
+<p>and the second column is</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+A_{\cdot,2} 
+= \begin{bmatrix}
+5\\
+6\\
+1
+\end{bmatrix}.
+\end{split}\]</div>
+<p><span class="math notranslate nohighlight">\(\lhd\)</span></p>
+<p>Recall that the <a class="reference external" href="https://en.wikipedia.org/wiki/Transpose">transpose</a> <span class="math notranslate nohighlight">\(A^T\)</span> of a matrix <span class="math notranslate nohighlight">\(A \in \mathbb{R}^{n\times m}\)</span> is defined as the matrix in <span class="math notranslate nohighlight">\(\mathbb{R}^{m\times n}\)</span> that switches the row and column indices of <span class="math notranslate nohighlight">\(A\)</span>, that is, its entries are</p>
+<div class="math notranslate nohighlight">
+\[
+[A^T]_{ij} = A_{ji},\quad i=1,\ldots,m, j=1,\ldots,n.
+\]</div>
+<p><img alt="transpose" src="https://upload.wikimedia.org/wikipedia/commons/e/e4/Matrix_transpose.gif" /></p>
+<p>(<a class="reference external" href="https://commons.wikimedia.org/wiki/File:Matrix_transpose.gif">Source</a>)</p>
+<p><strong>EXAMPLE:</strong> Suppose again</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+A 
+= \begin{bmatrix}
+2 &amp; 5\\
+3 &amp; 6\\
+1 &amp; 1
+\end{bmatrix}.
+\end{split}\]</div>
+<p>Then its transpose is</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+A^T
+= \begin{bmatrix}
+5 &amp; 6 &amp; 1\\
+2 &amp; 3 &amp; 1
+\end{bmatrix}.
+\end{split}\]</div>
+<p><span class="math notranslate nohighlight">\(\lhd\)</span></p>
+<p>The transpose in particular can be used to turn a column vector into a row vector and vice versa. That is, if <span class="math notranslate nohighlight">\(\mathbf{x} \in \mathbb{R}^n\)</span> is a column vector</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\mathbf{b} 
+= \begin{bmatrix}
+b_1\\
+b_2\\
+\vdots\\
+b_n
+\end{bmatrix},
+\end{split}\]</div>
+<p>then <span class="math notranslate nohighlight">\(\mathbf{b}^T\)</span> is the corresponding row vector</p>
+<div class="math notranslate nohighlight">
+\[
+\mathbf{b}^T 
+= \begin{bmatrix}
+b_1 &amp;
+b_2 &amp;
+\cdots &amp;
+b_n
+\end{bmatrix}.
+\]</div>
+<p>For instance, <span class="math notranslate nohighlight">\(\sqrt{\mathbf{b}^T \mathbf{b}}\)</span> is the Euclidean norm of <span class="math notranslate nohighlight">\(\mathbf{b}\)</span>.</p>
+<p><strong>NUMERICAL CORNER:</strong> We will often work with collections of <span class="math notranslate nohighlight">\(n\)</span> vectors <span class="math notranslate nohighlight">\(\mathbf{x}_1, \ldots, \mathbf{x}_n\)</span> in <span class="math notranslate nohighlight">\(\mathbb{R}^d\)</span> and it will be convenient to stack them up into a matrix</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+X =
+\begin{bmatrix}
+\mathbf{x}_1^T \\
+\mathbf{x}_2^T \\
+\vdots \\
+\mathbf{x}_n^T \\
+\end{bmatrix}
+=
+\begin{bmatrix}
+x_{11} &amp; x_{12} &amp; \cdots &amp; x_{1d} \\
+x_{21} &amp; x_{22} &amp; \cdots &amp; x_{2d} \\
+\vdots &amp; \vdots &amp; \ddots &amp; \vdots \\
+x_{n1} &amp; x_{n2} &amp; \cdots &amp; x_{nd} \\
+\end{bmatrix}.
+\end{split}\]</div>
+<p>To create a matrix out of two vectors, we use the function <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.stack.html"><code class="docutils literal notranslate"><span class="pre">numpy.stack</span></code></a>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">u</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">3.</span><span class="p">,</span> <span class="mf">5.</span><span class="p">,</span> <span class="mf">7.</span><span class="p">])</span>
+<span class="n">v</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">2.</span><span class="p">,</span> <span class="mf">4.</span><span class="p">,</span> <span class="mf">6.</span><span class="p">,</span> <span class="mf">8.</span><span class="p">])</span>
+<span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">stack</span><span class="p">((</span><span class="n">u</span><span class="p">,</span><span class="n">v</span><span class="p">),</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[[1. 3. 5. 7.]
+ [2. 4. 6. 8.]]
+</pre></div>
+</div>
+</div>
+</div>
+<p>Quoting the documentation:</p>
+<blockquote>
+<div><p>The axis parameter specifies the index of the new axis in the dimensions of the result. For example, if axis=0 it will be the first dimension and if axis=-1 it will be the last dimension.</p>
+</div></blockquote>
+<p>The same scheme still works with more than two vectors.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">u</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">3.</span><span class="p">,</span> <span class="mf">5.</span><span class="p">,</span> <span class="mf">7.</span><span class="p">])</span>
+<span class="n">v</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">2.</span><span class="p">,</span> <span class="mf">4.</span><span class="p">,</span> <span class="mf">6.</span><span class="p">,</span> <span class="mf">8.</span><span class="p">])</span>
+<span class="n">w</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">9.</span><span class="p">,</span> <span class="mf">8.</span><span class="p">,</span> <span class="mf">7.</span><span class="p">,</span> <span class="mf">6.</span><span class="p">])</span>
+<span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">stack</span><span class="p">((</span><span class="n">u</span><span class="p">,</span><span class="n">v</span><span class="p">,</span><span class="n">w</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[[1. 3. 5. 7.]
+ [2. 4. 6. 8.]
+ [9. 8. 7. 6.]]
+</pre></div>
+</div>
+</div>
+</div>
+<p><span class="math notranslate nohighlight">\(\unlhd\)</span></p>
+<p><strong>Matrix-vector product</strong> Recall that, for a matrix <span class="math notranslate nohighlight">\(A = (A_{ij})_{i\in [n],j \in [m]} \in \mathbb{R}^{n \times m}\)</span> and a column vector <span class="math notranslate nohighlight">\(\mathbf{b} = (b_{i})_{i\in [m]} \in \mathbb{R}^{m}\)</span>, the matrix-vector product <span class="math notranslate nohighlight">\(\mathbf{c} = A \mathbf{b}\)</span> is the vector with entries</p>
+<div class="math notranslate nohighlight">
+\[
+c_i = (A\mathbf{b})_i = \sum_{j=1}^m A_{ij} b_j.
+\]</div>
+<p>In vector form,</p>
+<div class="math notranslate nohighlight">
+\[
+A \mathbf{b} = \sum_{j=1}^m A_{\cdot,j} b_j,
+\]</div>
+<p>that is, <span class="math notranslate nohighlight">\(A \mathbf{b}\)</span> is a linear combination of the columns of <span class="math notranslate nohighlight">\(A\)</span> where the coefficients are the entries of <span class="math notranslate nohighlight">\(\mathbf{b}\)</span>.</p>
+<p><strong>EXAMPLE:</strong> <strong>(continued)</strong> Consider the column vector <span class="math notranslate nohighlight">\(\mathbf{b} = (1, 0)^T\)</span>. Then</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+A \mathbf{b} 
+= \begin{bmatrix}
+2(1) + 5(0)\\
+3(1) + 6(0)\\
+1(1) + 1(0)
+\end{bmatrix}
+= \begin{bmatrix}
+2\\
+3\\
+1
+\end{bmatrix},
+\end{split}\]</div>
+<p>which can also be written in vector form as</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+(1) \begin{bmatrix}
+2\\
+3\\
+1
+\end{bmatrix}
++
+(0) \begin{bmatrix}
+5\\
+6\\
+1
+\end{bmatrix}
+= \begin{bmatrix}
+2\\
+3\\
+1
+\end{bmatrix}.
+\end{split}\]</div>
+<p><span class="math notranslate nohighlight">\(\lhd\)</span></p>
+<p><strong>Matrix-matrix product</strong> Recall that, for matrices <span class="math notranslate nohighlight">\(A \in \mathbb{R}^{n \times k}\)</span> and <span class="math notranslate nohighlight">\(B \in \mathbb{R}^{k \times m}\)</span>, their matrix product is defined as the matrix <span class="math notranslate nohighlight">\(C = AB \in \mathbb{R}^{n \times m}\)</span> whose entries are</p>
+<div class="math notranslate nohighlight">
+\[
+C_{i\ell} = (AB)_{i\ell} = \sum_{j=1}^k A_{ij} B_{j\ell}, \qquad \ell=1,\ldots,m.
+\]</div>
+<p>Note that the number of columns of <span class="math notranslate nohighlight">\(A\)</span> and the number of rows of <span class="math notranslate nohighlight">\(B\)</span> must match. There are many different ways to view this formula that are helpful in interpreting matrix-matrix products in different contexts.</p>
+<p>First, we observe that the entry <span class="math notranslate nohighlight">\(C_{i\ell}\)</span> is an inner product of the <span class="math notranslate nohighlight">\(i\)</span>-th row of <span class="math notranslate nohighlight">\(A\)</span> and of the <span class="math notranslate nohighlight">\(\ell\)</span>-th column of <span class="math notranslate nohighlight">\(B\)</span>. That is,</p>
+<div class="math notranslate nohighlight">
+\[
+C_{i\ell} = A_{i,\cdot} B_{\cdot,\ell}.
+\]</div>
+<p>In matrix form,</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+AB = \begin{bmatrix}
+A_{1,\cdot} B_{\cdot,1} &amp; A_{1,\cdot} B_{\cdot,2} &amp; \cdots &amp; A_{1,\cdot} B_{\cdot,m} \\
+A_{2,\cdot} B_{\cdot,1} &amp; A_{2,\cdot} B_{\cdot,2} &amp; \cdots &amp; A_{2,\cdot} B_{\cdot,m} \\
+\vdots &amp; \vdots &amp; \ddots &amp; \vdots\\
+A_{n,\cdot} B_{\cdot,1} &amp; A_{n,\cdot} B_{\cdot,2} &amp; \cdots &amp; A_{n,\cdot} B_{\cdot,m}
+\end{bmatrix}.
+\end{split}\]</div>
+<p>Alternatively, the previous display can be re-written as</p>
+<div class="math notranslate nohighlight">
+\[
+AB
+= 
+\begin{bmatrix}
+A (B_{\cdot,1}) &amp; A (B_{\cdot,2}) &amp; \cdots &amp; A (B_{\cdot,m})
+\end{bmatrix},
+\]</div>
+<p>where we specify a matrix by the collection of its columns.</p>
+<p>Put differently, by the matrix-vector product formula above, the <span class="math notranslate nohighlight">\(j\)</span>-th column of the product <span class="math notranslate nohighlight">\(AB\)</span> is a linear combination of the columns of <span class="math notranslate nohighlight">\(A\)</span> where the coefficients are the entries in column <span class="math notranslate nohighlight">\(j\)</span> of <span class="math notranslate nohighlight">\(B\)</span></p>
+<div class="math notranslate nohighlight">
+\[
+(AB)_{\cdot,j} 
+= A B_{\cdot,j}
+= \sum_{\ell=1}^k A_{\cdot,\ell} B_{\ell j}.
+\]</div>
+<p>Similarly, the <span class="math notranslate nohighlight">\(i\)</span>-th row of the product <span class="math notranslate nohighlight">\(AB\)</span> is a linear combination of the rows of <span class="math notranslate nohighlight">\(B\)</span> where the coefficients are the entries in row <span class="math notranslate nohighlight">\(i\)</span> of <span class="math notranslate nohighlight">\(A\)</span></p>
+<div class="math notranslate nohighlight">
+\[
+(AB)_{i,\cdot} = \sum_{\ell=1}^k A_{i\ell} B_{\ell,\cdot}.
+\]</div>
+<p>Writing <span class="math notranslate nohighlight">\(AB\)</span> as the collection of its rows, this is</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+AB
+= \begin{bmatrix}
+A_{1,\cdot} B\\
+A_{2,\cdot} B\\
+\vdots\\
+A_{n,\cdot} B
+\end{bmatrix},
+\end{split}\]</div>
+<p>where recall that <span class="math notranslate nohighlight">\(A_{i,\cdot}\)</span> is a row vector.</p>
+<p><strong>Matrix norms</strong> We will also need a notion of matrix norm. A natural way to define a norm for matrices is to notice that an <span class="math notranslate nohighlight">\(n \times m\)</span> matrix <span class="math notranslate nohighlight">\(A\)</span> can be thought of as an <span class="math notranslate nohighlight">\(nm\)</span> vector, with one element for each entry of <span class="math notranslate nohighlight">\(A\)</span>. Indeed, addition and scalar multiplication work exactly in the same way. Hence, we can define the <span class="math notranslate nohighlight">\(2\)</span>-norm of a matrix in terms of the sum of its squared entries. (We will encounter other matrix norms later in the course.)</p>
+<p><strong>DEFINITION</strong> <strong>(Frobenius Norm)</strong> The Frobenius norm of an <span class="math notranslate nohighlight">\(n \times m\)</span> matrix <span class="math notranslate nohighlight">\(A \in \mathbb{R}^{n \times m}\)</span> is defined as</p>
+<div class="math notranslate nohighlight">
+\[
+\|A\|_F
+= \sqrt{\sum_{i=1}^n \sum_{j=1}^m A_{ij}^2}.
+\]</div>
+<p><span class="math notranslate nohighlight">\(\natural\)</span></p>
+<p>Using the row notation, we see that the square of the Frobenius norm can be written as the sum of the squared Euclidean norms of the rows</p>
+<div class="math notranslate nohighlight">
+\[
+\|A\|_F^2 = \sum_{i=1}^n \|A_{i,\cdot}\|_2^2.
+\]</div>
+<p>Similarly in terms of the columns <span class="math notranslate nohighlight">\(A_{\cdot,j}\)</span>, <span class="math notranslate nohighlight">\(j=1,\ldots,m\)</span>, of <span class="math notranslate nohighlight">\(A\)</span> we have
+<span class="math notranslate nohighlight">\(\|A\|_F^2 = \sum_{j=1}^m \|A_{\cdot,j}\|_2^2\)</span>.</p>
+<p>For two matrices <span class="math notranslate nohighlight">\(A, B \in \mathbb{R}^{n \times m}\)</span>, the Frobenius norm of their difference <span class="math notranslate nohighlight">\(\|A - B\|_F\)</span> can be interpreted as a distance between <span class="math notranslate nohighlight">\(A\)</span> and <span class="math notranslate nohighlight">\(B\)</span>, that is, a measure of how dissimilar they are.</p>
+<p><strong>NUMERICAL CORNER:</strong> In Numpy, the Frobenius norm of a matrix can be computed using the function <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.linalg.norm.html"><code class="docutils literal notranslate"><span class="pre">numpy.linalg.norm</span></code></a>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">A</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">],[</span><span class="mf">0.</span><span class="p">,</span> <span class="mf">1.</span><span class="p">],[</span><span class="mf">0.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">]])</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[[1. 0.]
+ [0. 1.]
+ [0. 0.]]
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">LA</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1.4142135623730951
+</pre></div>
+</div>
+</div>
+</div>
+<p><span class="math notranslate nohighlight">\(\unlhd\)</span></p>
+</section>
+<section id="differential-calculus">
+<h2><span class="section-number">1.2.2. </span>Differential calculus<a class="headerlink" href="#differential-calculus" title="Permalink to this headline">#</a></h2>
+<p>Next, we review some basic concepts from differential calculus. We focus here on definitions and results relevant to optimization theory, which plays a central role in data science.</p>
+<p><strong>Limits and continuity</strong> Throughout this section, we use the Euclidean norm <span class="math notranslate nohighlight">\(\|\mathbf{x}\| = \sqrt{\sum_{i=1}^d x_i^2}\)</span> for <span class="math notranslate nohighlight">\(\mathbf{x} = (x_1,\ldots, x_d)^T \in \mathbb{R}^d\)</span>.</p>
+<p>The open <span class="math notranslate nohighlight">\(r\)</span>-ball around <span class="math notranslate nohighlight">\(\mathbf{x} \in \mathbb{R}^d\)</span> is the set of points within Euclidean distance <span class="math notranslate nohighlight">\(r\)</span> of <span class="math notranslate nohighlight">\(\mathbf{x}\)</span>, that is,</p>
+<div class="math notranslate nohighlight">
+\[
+B_r(\mathbf{x}) = \{\mathbf{y}  \in \mathbb{R}^d \,:\, \|\mathbf{y} - \mathbf{x}\| &lt; r\}.
+\]</div>
+<p>A point <span class="math notranslate nohighlight">\(\mathbf{x} \in \mathbb{R}^d\)</span> is an interior point of a set <span class="math notranslate nohighlight">\(A \subseteq \mathbb{R}^d\)</span> if there exists an <span class="math notranslate nohighlight">\(r &gt; 0\)</span> such that <span class="math notranslate nohighlight">\(B_r(\mathbf{x}) \subseteq A\)</span>.
+A set <span class="math notranslate nohighlight">\(A\)</span> is <a class="reference external" href="https://en.wikipedia.org/wiki/Open_set">open</a> if it consists entirely of interior points.</p>
+<p><img alt="open ball" src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/de/Open_set_-_example.png/640px-Open_set_-_example.png" /></p>
+<p><strong>Figure:</strong> Illustration of an open ball of radius <span class="math notranslate nohighlight">\(\varepsilon\)</span> around point <span class="math notranslate nohighlight">\(x\)</span>. (<a class="reference external" href="https://commons.wikimedia.org/wiki/File:Open_set_-_example.png">Source</a>)</p>
+<p>A set is <a class="reference external" href="https://en.wikipedia.org/wiki/Closed_set">closed</a> if its complement is open.</p>
+<p>A set <span class="math notranslate nohighlight">\(A \subseteq \mathbb{R}^d\)</span> is bounded if there exists an <span class="math notranslate nohighlight">\(r &gt; 0\)</span> such that <span class="math notranslate nohighlight">\(A \subseteq B_r(\mathbf{0})\)</span>, where <span class="math notranslate nohighlight">\(\mathbf{0} = (0,\ldots,0)^T\)</span>.</p>
+<p><strong>DEFINITION</strong> <strong>(Limits of a Function)</strong> Let <span class="math notranslate nohighlight">\(f: D \to \mathbb{R}\)</span> be a real-valued function on <span class="math notranslate nohighlight">\(D \subseteq \mathbb{R}^d\)</span>. Then <span class="math notranslate nohighlight">\(f\)</span> is said to have a limit <span class="math notranslate nohighlight">\(L \in \mathbb{R}\)</span> as <span class="math notranslate nohighlight">\(\mathbf{x}\)</span> approaches <span class="math notranslate nohighlight">\(\mathbf{a}\)</span> if: for any <span class="math notranslate nohighlight">\(\varepsilon &gt; 0\)</span>, there exists a <span class="math notranslate nohighlight">\(\delta &gt; 0\)</span> such that <span class="math notranslate nohighlight">\(|f(\mathbf{x}) - L| &lt; \varepsilon\)</span> for all <span class="math notranslate nohighlight">\(\mathbf{x} \in D \cap B_\delta(\mathbf{a})\setminus \{\mathbf{a}\}\)</span>. This is written as</p>
+<div class="math notranslate nohighlight">
+\[
+\lim_{\mathbf{x} \to \mathbf{a}} f(\mathbf{x}) = L.
+\]</div>
+<p><span class="math notranslate nohighlight">\(\natural\)</span></p>
+<p>Note that we explicitly exclude <span class="math notranslate nohighlight">\(\mathbf{a}\)</span> itself from having to satisfy the condition <span class="math notranslate nohighlight">\(|f(\mathbf{x}) - L| &lt; \varepsilon\)</span>. In particular, we may have <span class="math notranslate nohighlight">\(f(\mathbf{a}) \neq L\)</span>. We also do not restrict <span class="math notranslate nohighlight">\(\mathbf{a}\)</span> to be in <span class="math notranslate nohighlight">\(D\)</span>.</p>
+<p><strong>DEFINITION</strong> <strong>(Continuous Function)</strong> Let <span class="math notranslate nohighlight">\(f: D \to \mathbb{R}\)</span> be a real-valued function on <span class="math notranslate nohighlight">\(D \subseteq \mathbb{R}^d\)</span>. Then <span class="math notranslate nohighlight">\(f\)</span> is said to be continuous at <span class="math notranslate nohighlight">\(\mathbf{a} \in D\)</span> if</p>
+<div class="math notranslate nohighlight">
+\[
+\lim_{\mathbf{x} \to \mathbf{a}} f(\mathbf{x}) = f(\mathbf{a}).
+\]</div>
+<p><span class="math notranslate nohighlight">\(\natural\)</span></p>
+<p><img alt="A continuous function" src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/7f/Example_of_continuous_function.svg/463px-Example_of_continuous_function.svg.png" /></p>
+<p><strong>Figure:</strong> A continuous function. E.g., in a small neighborhood around <span class="math notranslate nohighlight">\(2\)</span>, the function varies only slightly. (<a class="reference external" href="https://commons.wikimedia.org/wiki/File:Example_of_continuous_function.svg">Source</a>)</p>
+<p>We will not prove the following fundamental analysis result, which will be used repeatedly in this course. (See e.g. <a class="reference external" href="https://en.wikipedia.org/wiki/Extreme_value_theorem">Wikipedia</a> for a sketch of the proof.) Suppose <span class="math notranslate nohighlight">\(f : D \to \mathbb{R}\)</span> is defined on a set <span class="math notranslate nohighlight">\(D \subseteq \mathbb{R}^d\)</span>. We say that <span class="math notranslate nohighlight">\(f\)</span> attains a maximum value <span class="math notranslate nohighlight">\(M\)</span> at <span class="math notranslate nohighlight">\(\mathbf{z}^*\)</span> if <span class="math notranslate nohighlight">\(f(\mathbf{z}^*) = M\)</span> and <span class="math notranslate nohighlight">\(M \geq f(\mathbf{x})\)</span> for all <span class="math notranslate nohighlight">\(\mathbf{x} \in D\)</span>. Similarly, we say <span class="math notranslate nohighlight">\(f\)</span> attains a minimum value <span class="math notranslate nohighlight">\(m\)</span> at <span class="math notranslate nohighlight">\(\mathbf{z}_*\)</span> if <span class="math notranslate nohighlight">\(f(\mathbf{z}_*) = m\)</span> and <span class="math notranslate nohighlight">\(m \geq f(\mathbf{x})\)</span> for all <span class="math notranslate nohighlight">\(\mathbf{x} \in D\)</span>.</p>
+<p><strong>THEOREM</strong> <strong>(Extreme Value)</strong> Let <span class="math notranslate nohighlight">\(f : D \to \mathbb{R}\)</span> be a real-valued, continuous function on a nonempty, closed, bounded set <span class="math notranslate nohighlight">\(D\subseteq \mathbb{R}^d\)</span>. Then <span class="math notranslate nohighlight">\(f\)</span> attains a maximum and a minimum on <span class="math notranslate nohighlight">\(D\)</span>. <span class="math notranslate nohighlight">\(\sharp\)</span></p>
+<p><strong>Derivatives</strong> We move on to derivatives. Recall that the derivative of a function of a real variable is the rate of change of the function with respect to the change in the variable. Formally:</p>
+<p><strong>DEFINITION</strong> <strong>(Derivative)</strong> Let <span class="math notranslate nohighlight">\(f : D \to \mathbb{R}\)</span> where <span class="math notranslate nohighlight">\(D \subseteq \mathbb{R}\)</span> and let <span class="math notranslate nohighlight">\(x_0 \in D\)</span> be an interior point of <span class="math notranslate nohighlight">\(D\)</span>. The derivative of <span class="math notranslate nohighlight">\(f\)</span> at <span class="math notranslate nohighlight">\(x_0\)</span> is</p>
+<div class="math notranslate nohighlight">
+\[
+f'(x_0) 
+= \frac{\mathrm{d} f (x_0)}{\mathrm{d} x}
+= \lim_{h \to 0} \frac{f(x_0 + h) - f(x_0)}{h}
+\]</div>
+<p>provided the limit exists. <span class="math notranslate nohighlight">\(\natural\)</span></p>
+<p><img alt="The derivative" src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/0f/Tangent_to_a_curve.svg/640px-Tangent_to_a_curve.svg.png" /></p>
+<p><strong>Figure:</strong> The derivative at the red point is the slope of the line tangent the curve there. (<a class="reference external" href="https://commons.wikimedia.org/wiki/File:Tangent_to_a_curve.svg">Source</a>)</p>
+<p>The following lemma encapsulates a key insight about the derivative of <span class="math notranslate nohighlight">\(f\)</span> at <span class="math notranslate nohighlight">\(x_0\)</span>: it tells us where to find smaller values.</p>
+<p><strong>LEMMA</strong> <strong>(Descent Direction)</strong> Let <span class="math notranslate nohighlight">\(f : D \to \mathbb{R}\)</span> with <span class="math notranslate nohighlight">\(D \subseteq \mathbb{R}\)</span> and let <span class="math notranslate nohighlight">\(x_0 \in D\)</span> be an interior point of <span class="math notranslate nohighlight">\(D\)</span> where <span class="math notranslate nohighlight">\(f'(x_0)\)</span> exists. If <span class="math notranslate nohighlight">\(f'(x_0) &gt; 0\)</span>, then there is an open ball <span class="math notranslate nohighlight">\(B_\delta(x_0) \subseteq D\)</span> around <span class="math notranslate nohighlight">\(x_0\)</span>
+such that for each <span class="math notranslate nohighlight">\(x\)</span> in <span class="math notranslate nohighlight">\(B_\delta(x_0)\)</span>: (a) <span class="math notranslate nohighlight">\(f(x) &gt; f(x_0)\)</span> if <span class="math notranslate nohighlight">\(x &gt; x_0\)</span>, (b) <span class="math notranslate nohighlight">\(f(x) &lt; f(x_0)\)</span> if <span class="math notranslate nohighlight">\(x &lt; x_0\)</span>. If instead <span class="math notranslate nohighlight">\(f'(x_0) &lt; 0\)</span>, the opposite holds. <span class="math notranslate nohighlight">\(\flat\)</span></p>
+<p><em>Proof idea:</em> Follows from the definition of the derivative by taking <span class="math notranslate nohighlight">\(\varepsilon\)</span> small enough that <span class="math notranslate nohighlight">\(f'(x_0) - \varepsilon &gt; 0\)</span>.</p>
+<p><em>Proof:</em> Take <span class="math notranslate nohighlight">\(\varepsilon = f'(x_0)/2\)</span>. By definition of the derivative, there is <span class="math notranslate nohighlight">\(\delta &gt; 0\)</span> such that</p>
+<div class="math notranslate nohighlight">
+\[
+f'(x_0)
+-
+\frac{f(x_0 + h) - f(x_0)}{h}
+&lt; \varepsilon
+\]</div>
+<p>for all <span class="math notranslate nohighlight">\(0 &lt; h &lt; \delta\)</span>. Rearranging gives</p>
+<div class="math notranslate nohighlight">
+\[
+f(x_0 + h) 
+&gt; f(x_0) + [f'(x_0) - \varepsilon] h
+&gt; f(x_0)
+\]</div>
+<p>by our choice of <span class="math notranslate nohighlight">\(\varepsilon\)</span>. The other direction is similar. <span class="math notranslate nohighlight">\(\square\)</span></p>
+<p>One implication of the <em>Descent Direction Lemma</em> is the <em>Mean Value Theorem</em>, which will lead us later to <em>Taylor’s Theorem</em>. First, an important special case:</p>
+<p><strong>THEOREM</strong> <strong>(Rolle)</strong> Let <span class="math notranslate nohighlight">\(f : [a,b] \to \mathbb{R}\)</span> be a continuous function and assume that its derivative exists on <span class="math notranslate nohighlight">\((a,b)\)</span>. If <span class="math notranslate nohighlight">\(f(a) = f(b)\)</span> then there is <span class="math notranslate nohighlight">\(a &lt; c &lt; b\)</span> such that <span class="math notranslate nohighlight">\(f'(c) = 0\)</span>. <span class="math notranslate nohighlight">\(\sharp\)</span></p>
+<p><em>Proof idea:</em> Look at an extremum and use the <em>Descent Direction Lemma</em> to get a contradiction.</p>
+<p><img alt="Illustration of Rolle's theorem" src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a9/RTCalc.svg/640px-RTCalc.svg.png" /></p>
+<p><strong>Figure:</strong> Illustration of Rolle’s theorem. (<a class="reference external" href="https://commons.wikimedia.org/wiki/File:RTCalc.svg">Source</a>)</p>
+<p><em>Proof:</em> If <span class="math notranslate nohighlight">\(f(x) = f(a)\)</span> for all <span class="math notranslate nohighlight">\(x \in (a, b)\)</span>, then <span class="math notranslate nohighlight">\(f'(x) = 0\)</span> on <span class="math notranslate nohighlight">\((a, b)\)</span> and we are done. So assume there is <span class="math notranslate nohighlight">\(y \in (a, b)\)</span> such that <span class="math notranslate nohighlight">\(f(y) \neq f(a)\)</span>. Assume without loss of generality that <span class="math notranslate nohighlight">\(f(y) &gt; f(a)\)</span> (otherwise consider the function <span class="math notranslate nohighlight">\(-f\)</span>). By the <em>Extreme Value Theorem</em>, <span class="math notranslate nohighlight">\(f\)</span> attains a maximum value at some <span class="math notranslate nohighlight">\(c \in [a,b]\)</span>. By our assumption, <span class="math notranslate nohighlight">\(a\)</span> and <span class="math notranslate nohighlight">\(b\)</span> cannot be the location of the maximum and it must be that <span class="math notranslate nohighlight">\(c \in (a, b)\)</span>.</p>
+<p>We claim that <span class="math notranslate nohighlight">\(f'(c) = 0\)</span>. We argue by contradiction. Suppose <span class="math notranslate nohighlight">\(f'(c) &gt; 0\)</span>. By the <em>Descent Direction Lemma</em>, there is a <span class="math notranslate nohighlight">\(\delta &gt; 0\)</span> such that <span class="math notranslate nohighlight">\(f(x) &gt; f(c)\)</span> for all <span class="math notranslate nohighlight">\(x \in B_\delta(c)\)</span>, a contradiction. A similar argument holds if <span class="math notranslate nohighlight">\(f'(c) &lt; 0\)</span>. That concludes the proof. <span class="math notranslate nohighlight">\(\square\)</span></p>
+<p><strong>THEOREM</strong> <strong>(Mean Value)</strong> Let <span class="math notranslate nohighlight">\(f : [a,b] \to \mathbb{R}\)</span> be a continuous function and assume that its derivative exists on <span class="math notranslate nohighlight">\((a,b)\)</span>. Then there is <span class="math notranslate nohighlight">\(a &lt; c &lt; b\)</span> such that</p>
+<div class="math notranslate nohighlight">
+\[
+f(b) = f(a) + (b-a)f'(c),
+\]</div>
+<p>or put differently</p>
+<div class="math notranslate nohighlight">
+\[
+\frac{f(b) - f(a)}{b-a} = f'(c).
+\]</div>
+<p><span class="math notranslate nohighlight">\(\sharp\)</span></p>
+<p><em>Proof idea:</em> Apply <em>Rolle</em> to</p>
+<div class="math notranslate nohighlight">
+\[
+\phi(x) = f(x) - \left[f(a) + \frac{f(b) - f(a)}{b - a} (x-a)\right].
+\]</div>
+<p><img alt="Illustration of the mean value theorem. (Source)" src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/ee/Mvt2.svg/544px-Mvt2.svg.png" /></p>
+<p><strong>Figure:</strong> Illustration of the mean value theorem. (<a class="reference external" href="https://commons.wikimedia.org/wiki/File:Mvt2.svg">Source</a>)</p>
+<p><em>Proof:</em> Let <span class="math notranslate nohighlight">\(\phi(x) = f(x) - f(a) - \frac{f(b) - f(a)}{b - a} (x-a)\)</span>. Note that <span class="math notranslate nohighlight">\(\phi(a) = \phi(b) = 0\)</span> and <span class="math notranslate nohighlight">\(\phi'(x) = f'(x) - \frac{f(b) - f(a)}{b - a}\)</span> for all <span class="math notranslate nohighlight">\(x \in (a, b)\)</span>. Thus, by <em>Rolle</em>, there is <span class="math notranslate nohighlight">\(c \in (a, b)\)</span> such that <span class="math notranslate nohighlight">\(\phi'(c) = 0\)</span>. That implies <span class="math notranslate nohighlight">\(\frac{f(b) - f(a)}{b - a} = \phi'(c)\)</span> and plugging into <span class="math notranslate nohighlight">\(\phi(b)\)</span> gives the result. <span class="math notranslate nohighlight">\(\square\)</span></p>
+<p>We will also use <em>Taylor’s Theorem</em>, a generalization of the <em>Mean Value Theorem</em> that provides a polynomial approximation to a function around a point. We will restrict ourselves to the case of a linear approximation with second-order error term, which will suffice for our purposes.</p>
+<p><strong>THEOREM</strong> <strong>(Taylor)</strong> Let <span class="math notranslate nohighlight">\(f: D \to \mathbb{R}\)</span> where <span class="math notranslate nohighlight">\(D \subseteq \mathbb{R}\)</span>. Suppose <span class="math notranslate nohighlight">\(f\)</span> has a continuous derivative on <span class="math notranslate nohighlight">\([a,b]\)</span> and that its second derivative exists on <span class="math notranslate nohighlight">\((a,b)\)</span>. Then for any <span class="math notranslate nohighlight">\(x \in [a, b]\)</span></p>
+<div class="math notranslate nohighlight">
+\[
+f(x)
+= f(a) + (x-a) f'(a) + \frac{1}{2} (x-a)^2 f''(\xi)
+\]</div>
+<p>for some <span class="math notranslate nohighlight">\(a &lt; \xi &lt; x\)</span>. <span class="math notranslate nohighlight">\(\sharp\)</span></p>
+<p><em>Proof idea:</em> The <em>Mean Value Theorem</em> implies that there is <span class="math notranslate nohighlight">\(a &lt; \xi&lt; x\)</span> such that</p>
+<div class="math notranslate nohighlight">
+\[
+f(x) = f(a) + (x - a)f'(\xi).
+\]</div>
+<p>One way to think of the proof of that result is the following: we constructed an affine function that agrees with <span class="math notranslate nohighlight">\(f\)</span> at <span class="math notranslate nohighlight">\(a\)</span> and <span class="math notranslate nohighlight">\(x\)</span>, then used <em>Rolle</em> to express the coefficient of the linear term using <span class="math notranslate nohighlight">\(f'\)</span>. Here we do the same with a polynomial of degree <span class="math notranslate nohighlight">\(2\)</span>. But we now have an extra degree of freedom in choosing this polynomial. Because we are looking for a good approximation close to <span class="math notranslate nohighlight">\(a\)</span>, we choose to make the first derivative at <span class="math notranslate nohighlight">\(a\)</span> also agree. Applying <em>Rolle</em> twice gives the claim.</p>
+<p><em>Proof:</em> Let</p>
+<div class="math notranslate nohighlight">
+\[
+P(t) = \alpha_0 + \alpha_1 (t-a) + \alpha_2 (t-a)^2.
+\]</div>
+<p>We choose the <span class="math notranslate nohighlight">\(\alpha_i\)</span>’s so that <span class="math notranslate nohighlight">\(P(a) = f(a)\)</span>, <span class="math notranslate nohighlight">\(P'(a) = f'(a)\)</span>, and <span class="math notranslate nohighlight">\(P(x) = f(x)\)</span>. The first two lead to the conditions</p>
+<div class="math notranslate nohighlight">
+\[
+\alpha_0 = f(a), \quad \alpha_1 = f'(a). 
+\]</div>
+<p>Let <span class="math notranslate nohighlight">\(\phi(t) = f(t) - P(t)\)</span>. By construction <span class="math notranslate nohighlight">\(\phi(a) = \phi(x) = 0\)</span>. By <em>Rolle</em>, there is  a <span class="math notranslate nohighlight">\(\xi' \in (a, x)\)</span> such that <span class="math notranslate nohighlight">\(\phi'(\xi') = 0\)</span>. Moreover, <span class="math notranslate nohighlight">\(\phi'(a) = 0\)</span>. Hence we can apply <em>Rolle</em> again - this time to <span class="math notranslate nohighlight">\(\phi'\)</span> on <span class="math notranslate nohighlight">\([a, \xi']\)</span>. It implies that there is <span class="math notranslate nohighlight">\(\xi \in (a, \xi')\)</span> such that <span class="math notranslate nohighlight">\(\phi''(\xi) = 0\)</span>.</p>
+<p>The second derivative of <span class="math notranslate nohighlight">\(\phi\)</span> at <span class="math notranslate nohighlight">\(\xi\)</span> is</p>
+<div class="math notranslate nohighlight">
+\[
+0 = \phi''(\xi) 
+= f''(\xi) - P''(\xi) 
+= f''(\xi) - 2 \alpha_2
+\]</div>
+<p>so <span class="math notranslate nohighlight">\(\alpha_2 = f''(\xi)/2\)</span>. Plugging into <span class="math notranslate nohighlight">\(P\)</span> and using <span class="math notranslate nohighlight">\(\phi(x) = 0\)</span> gives the claim. <span class="math notranslate nohighlight">\(\square\)</span></p>
+<p><strong>Optimization</strong> As we mentioned before, optimization problems play a central role in data science. Here we look at unconstrained optimization problems, that is, problems of the form:</p>
+<div class="math notranslate nohighlight">
+\[
+\min_{\mathbf{x} \in \mathbb{R}^d} f(\mathbf{x})
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(f : \mathbb{R}^d \to \mathbb{R}\)</span>.</p>
+<p>Ideally, we would like to find a global minimizer to the optimization problem above.</p>
+<p><strong>DEFINITION</strong> <strong>(Global Minimizer)</strong> Let <span class="math notranslate nohighlight">\(f : \mathbb{R}^d \to \mathbb{R}\)</span>. The point <span class="math notranslate nohighlight">\(\mathbf{x}^* \in \mathbb{R}^d\)</span> is a global minimizer of <span class="math notranslate nohighlight">\(f\)</span> over <span class="math notranslate nohighlight">\(\mathbb{R}^d\)</span> if</p>
+<div class="math notranslate nohighlight">
+\[
+f(\mathbf{x}) 
+\geq f(\mathbf{x}^*), \quad \forall \mathbf{x} \in \mathbb{R}^d. 
+\]</div>
+<p><span class="math notranslate nohighlight">\(\natural\)</span></p>
+<p><strong>NUMERICAL CORNER:</strong> The function <span class="math notranslate nohighlight">\(f(x) = x^2\)</span> over <span class="math notranslate nohighlight">\(\mathbb{R}\)</span> has a global minimizer at <span class="math notranslate nohighlight">\(x^* = 0\)</span>. Indeed, we clearly have <span class="math notranslate nohighlight">\(f(x) \geq 0\)</span> for all <span class="math notranslate nohighlight">\(x\)</span> while <span class="math notranslate nohighlight">\(f(0) = 0\)</span>. To plot the function, we use the <a class="reference external" href="https://matplotlib.org">matplotlib</a> package, and specifically its function <a class="reference external" href="https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.plot.html"><code class="docutils literal notranslate"><span class="pre">matplotlib.pyplot.plot</span></code></a>. We also use the function <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.linspace.html"><code class="docutils literal notranslate"><span class="pre">numpy.linspace</span></code></a> to create an array of evenly spaced numbers where we evaluate <span class="math notranslate nohighlight">\(f\)</span>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="c1">#plt.rcParams[&#39;figure.figsize&#39;] = [4.00, 2.25]</span>
+<span class="c1">#plt.rcParams[&#39;figure.dpi&#39;] = 200</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">100</span><span class="p">)</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">x</span> <span class="o">**</span> <span class="mi">2</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/6f00eb31d5b7d85a6bd8140efe69be090b0c897ef30fd62ee6804e135bf1cc0c.png" src="../../_images/6f00eb31d5b7d85a6bd8140efe69be090b0c897ef30fd62ee6804e135bf1cc0c.png" />
+</div>
+</div>
+<p>The function <span class="math notranslate nohighlight">\(f(x) = e^x\)</span> over <span class="math notranslate nohighlight">\(\mathbb{R}\)</span> does not have a global minimizer. Indeed, <span class="math notranslate nohighlight">\(f(x) &gt; 0\)</span> but no <span class="math notranslate nohighlight">\(x\)</span> achieves <span class="math notranslate nohighlight">\(0\)</span>. And, for any <span class="math notranslate nohighlight">\(m &gt; 0\)</span>, there is <span class="math notranslate nohighlight">\(x\)</span> small enough such that <span class="math notranslate nohighlight">\(f(x) &lt; m\)</span>. Note that <span class="math notranslate nohighlight">\(\mathbb{R}\)</span> is <em>not</em> bounded, therefore the <em>Extreme Value Theorem</em> does not apply here.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">100</span><span class="p">)</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">5</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/cfa75f9095827248852b968a8f4026b4e23ead9c0dc9a07403206f24362d9f80.png" src="../../_images/cfa75f9095827248852b968a8f4026b4e23ead9c0dc9a07403206f24362d9f80.png" />
+</div>
+</div>
+<p>The function <span class="math notranslate nohighlight">\(f(x) = (x+1)^2 (x-1)^2\)</span> over <span class="math notranslate nohighlight">\(\mathbb{R}\)</span> has two global minimizers at <span class="math notranslate nohighlight">\(x^* = -1\)</span> and <span class="math notranslate nohighlight">\(x^{**} = 1\)</span>. Indeed, <span class="math notranslate nohighlight">\(f(x) \geq 0\)</span> and <span class="math notranslate nohighlight">\(f(x) = 0\)</span> if and only <span class="math notranslate nohighlight">\(x = x^*\)</span> or <span class="math notranslate nohighlight">\(x = x^{**}\)</span>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">100</span><span class="p">)</span>
+<span class="n">y</span> <span class="o">=</span> <span class="p">((</span><span class="n">x</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="p">((</span><span class="n">x</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">5</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/dbdd8bcc87195621f18739105e39680e3a309e88aca11bcf09c929a38fd9f8fc.png" src="../../_images/dbdd8bcc87195621f18739105e39680e3a309e88aca11bcf09c929a38fd9f8fc.png" />
+</div>
+</div>
+<p><span class="math notranslate nohighlight">\(\unlhd\)</span></p>
+<p>In general, finding a global minimizer and certifying that one has been found can be difficult unless some special structure is present. Therefore weaker notions of solution have been introduced.</p>
+<p><strong>DEFINITION</strong> <strong>(Local Minimizer)</strong> Let <span class="math notranslate nohighlight">\(f : \mathbb{R}^d \to \mathbb{R}\)</span>. The point <span class="math notranslate nohighlight">\(\mathbf{x}^* \in \mathbb{R}^d\)</span> is a local minimizer of <span class="math notranslate nohighlight">\(f\)</span> over <span class="math notranslate nohighlight">\(\mathbb{R}^d\)</span> if there is <span class="math notranslate nohighlight">\(\delta &gt; 0\)</span> such that</p>
+<div class="math notranslate nohighlight">
+\[
+f(\mathbf{x}) 
+\geq f(\mathbf{x}^*), \quad \forall \mathbf{x} \in B_{\delta}(\mathbf{x}^*) \setminus \{\mathbf{x}^*\}. 
+\]</div>
+<p>If the inequality is strict, we say that <span class="math notranslate nohighlight">\(\mathbf{x}^*\)</span> is a strict local minimizer. <span class="math notranslate nohighlight">\(\natural\)</span></p>
+<p>In words, <span class="math notranslate nohighlight">\(\mathbf{x}^*\)</span> is a local minimizer if there is open ball around <span class="math notranslate nohighlight">\(\mathbf{x}^*\)</span> where it attains the minimum value. The difference between global and local minimizers is illustrated in the next figure.</p>
+<p><img alt="Local and global optima" src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/68/Extrema_example_original.svg/600px-Extrema_example_original.svg.png" /></p>
+<p><strong>Figure:</strong> Local and global optima. (<a class="reference external" href="https://commons.wikimedia.org/wiki/File:Extrema_example_original.svg">Source</a>)</p>
+<p>Local minimizers can be characterized in terms of derivatives (or more generally, gradients, their generalization to functions of several variables; we come back to them later in the course). More precisely, they provide a necessary condition.</p>
+<p><strong>THEOREM</strong> <strong>(First-Order Necessary Condition)</strong> Let <span class="math notranslate nohighlight">\(f : \mathbb{R} \to \mathbb{R}\)</span> be continuously differentiable on <span class="math notranslate nohighlight">\(\mathbb{R}\)</span>. If <span class="math notranslate nohighlight">\(x_0\)</span> is a local minimizer, then <span class="math notranslate nohighlight">\(f'(x_0) = 0\)</span>. <span class="math notranslate nohighlight">\(\sharp\)</span></p>
+<p><em>Proof:</em> We argue by contradiction. Suppose that <span class="math notranslate nohighlight">\(f'(x_0) \neq 0\)</span>. Say <span class="math notranslate nohighlight">\(f'(x_0) &gt; 0\)</span> (the other case being similar). By the <em>Descent Direction Lemma</em>, there is a <span class="math notranslate nohighlight">\(\delta &gt; 0\)</span> such that, for each <span class="math notranslate nohighlight">\(x\)</span> in <span class="math notranslate nohighlight">\(B_\delta(x_0)\)</span>, <span class="math notranslate nohighlight">\(f(x) &lt; f(x_0)\)</span> if <span class="math notranslate nohighlight">\(x &lt; x_0\)</span>. So every open ball around <span class="math notranslate nohighlight">\(x_0\)</span> has a point achieving a smaller value than <span class="math notranslate nohighlight">\(f(x_0)\)</span>. Thus <span class="math notranslate nohighlight">\(x_0\)</span> is not a local minimizer, a contradiction. So it must be that <span class="math notranslate nohighlight">\(f'(x_0) = 0\)</span>. <span class="math notranslate nohighlight">\(\square\)</span></p>
+</section>
+<section id="probability">
+<h2><span class="section-number">1.2.3. </span>Probability<a class="headerlink" href="#probability" title="Permalink to this headline">#</a></h2>
+<p>Finally, we review a few key definitions and results from probability theory. Further concepts will be reviewed later in the course.</p>
+<p><strong>Expectation, variance and Chebyshev’s inequality</strong> Recall that the <a class="reference external" href="https://en.wikipedia.org/wiki/Expected_value">expectation</a> (or mean) of a function <span class="math notranslate nohighlight">\(h\)</span> of a discrete random variable <span class="math notranslate nohighlight">\(X\)</span> taking values in <span class="math notranslate nohighlight">\(\mathcal{X}\)</span> is given by</p>
+<div class="math notranslate nohighlight">
+\[
+\mathbb{E}[h(X)]
+= \sum_{x \in \mathcal{X}} h(x)\,p_X(x)
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(p_X(x) = \mathbb{P}[X = x]\)</span> is the <a class="reference external" href="https://en.wikipedia.org/wiki/Probability_mass_function">probability mass function</a> (PMF) of <span class="math notranslate nohighlight">\(X\)</span>.
+In the continuous case, we have</p>
+<div class="math notranslate nohighlight">
+\[
+\mathbb{E}[h(X)]
+= \int h(x) f_X(x)\,\mathrm{d}x
+\]</div>
+<p>if <span class="math notranslate nohighlight">\(f_X\)</span> is the <a class="reference external" href="https://en.wikipedia.org/wiki/Probability_density_function">probability density function</a> (PDF) of <span class="math notranslate nohighlight">\(X\)</span>.</p>
+<p>These definitions extend to functions of multiple variables by using instead the joint PMF or PDF.</p>
+<p>We sometimes denote the expectation of <span class="math notranslate nohighlight">\(X\)</span> by <span class="math notranslate nohighlight">\(\mu_X\)</span>.</p>
+<p>Two key properties of the expectation are:</p>
+<ul class="simple">
+<li><p><em>linearity</em>, that is,</p></li>
+</ul>
+<div class="math notranslate nohighlight">
+\[
+\mathbb{E}[\alpha_1 h_1(X) + \alpha_2 h_2(Y) + \beta] = \alpha_1 \,\mathbb{E}[h_1(X)] + \alpha_2 \,\mathbb{E}[h_2(Y)] + \beta
+\]</div>
+<ul class="simple">
+<li><p><em>monotonicity</em>, that is, if <span class="math notranslate nohighlight">\(h_1(x) \leq h_2(x)\)</span> for all <span class="math notranslate nohighlight">\(x\)</span> then</p></li>
+</ul>
+<div class="math notranslate nohighlight">
+\[
+\mathbb{E}[h_1(X)] \leq \mathbb{E}[h_2(X)].
+\]</div>
+<p>The <a class="reference external" href="https://en.wikipedia.org/wiki/Variance">variance</a> of a real-valued random variable <span class="math notranslate nohighlight">\(X\)</span> is</p>
+<div class="math notranslate nohighlight">
+\[
+\mathrm{Var}[X] = \mathbb{E}[(X - \mathbb{E}[X])^2]
+\]</div>
+<p>and its standard deviation is <span class="math notranslate nohighlight">\(\sigma_X = \sqrt{\mathrm{Var}[X]}\)</span>. The variance does not satisfy linearity, but we have the following property</p>
+<div class="math notranslate nohighlight">
+\[
+\mathrm{Var}[\alpha X + \beta] = \alpha^2 \,\mathrm{Var}[X].
+\]</div>
+<p>The standard deviation is a measure of the typical deviation of <span class="math notranslate nohighlight">\(X\)</span> around its mean, that is, of the spread of the distribution.</p>
+<p>A quantitative version of this statement is given by <em>Chebyshev’s inequality</em>.</p>
+<p><strong>THEOREM</strong> <strong>(Chebyshev)</strong> For a random variable <span class="math notranslate nohighlight">\(X\)</span> with finite variance, we have for any <span class="math notranslate nohighlight">\(\alpha &gt; 0\)</span></p>
+<div class="math notranslate nohighlight">
+\[
+\mathbb{P}[|X - \mathbb{E}[X]| \geq \alpha] 
+\leq \frac{\mathrm{Var}[X]}{\alpha^2}
+= \left(\frac{\sigma_X}{\alpha}\right)^2.
+\]</div>
+<p><span class="math notranslate nohighlight">\(\sharp\)</span></p>
+<p>The intuition is the following: if the expected squared deviation from the mean is small, then the absolute deviation from the mean is unlikely to be large.</p>
+<p>To formalize this we prove a more general inequality, <em>Makov’s inequality</em>. In words, if a non-negative random variable has a small expectation then it is unlikely to be large.</p>
+<p><strong>LEMMA</strong> <strong>(Markov)</strong> Let <span class="math notranslate nohighlight">\(Z\)</span> be a non-negative random variable with finite expectation. Then, for any <span class="math notranslate nohighlight">\(\beta &gt; 0\)</span>,</p>
+<div class="math notranslate nohighlight">
+\[
+\mathbb{P}[Z \geq \beta] \leq \frac{\mathbb{E}[Z]}{\beta}.
+\]</div>
+<p><span class="math notranslate nohighlight">\(\flat\)</span></p>
+<p><em>Proof idea:</em> The quantity <span class="math notranslate nohighlight">\(\beta \,\mathbb{P}[Z \geq \beta]\)</span> is a lower bound on the expectation of <span class="math notranslate nohighlight">\(Z\)</span> restricted to the range <span class="math notranslate nohighlight">\(\{Z\geq \beta\}\)</span>, which by non-negativity is itself lower bounded by <span class="math notranslate nohighlight">\(\mathbb{E}[Z]\)</span>.</p>
+<p><em>Proof:</em> Formally, let <span class="math notranslate nohighlight">\(\mathbf{1}_A\)</span> be the indicator of the event <span class="math notranslate nohighlight">\(A\)</span>, that is, it is the random variable that is <span class="math notranslate nohighlight">\(1\)</span> when <span class="math notranslate nohighlight">\(A\)</span> occurs and <span class="math notranslate nohighlight">\(0\)</span> otherwise. By definition, the expectation of <span class="math notranslate nohighlight">\(\mathbf{1}_A\)</span> is</p>
+<div class="math notranslate nohighlight">
+\[
+\mathbb{E}[A] = 0\,\mathbb{P}[\mathbf{1}_A = 0] + 1\,\mathbb{P}[\mathbf{1}_A = 1] = \mathbb{P}[A]
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(A^c\)</span> is the complement of <span class="math notranslate nohighlight">\(A\)</span>. Hence, by linearity and monotonicity,</p>
+<div class="math notranslate nohighlight">
+\[
+\beta \,\mathbb{P}[Z \geq \beta] 
+= \beta \,\mathbb{E}[\mathbf{1}_{Z \geq \beta}]
+= \mathbb{E}[\beta \mathbf{1}_{Z \geq \beta}]
+\leq \mathbb{E}[Z].
+\]</div>
+<p>Rearranging gives the claim. <span class="math notranslate nohighlight">\(\square\)</span></p>
+<p>Finally we return to the proof of <em>Chebyshev</em>.</p>
+<p><em>Proof idea (Chebyshev):</em> Simply apply <em>Markov</em> to the squared deviation of <span class="math notranslate nohighlight">\(X\)</span> from its mean.</p>
+<p><em>Proof (Chebyshev):</em> Let <span class="math notranslate nohighlight">\(Z = (X - \mathbb{E}[X])^2\)</span>, which is non-negative by definition. Hence, by <em>Markov</em>, for any <span class="math notranslate nohighlight">\(\beta = \alpha^2 &gt; 0\)</span></p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+\mathbb{P}[|X - \mathbb{E}[X]| \geq \alpha]
+&amp;= \mathbb{P}[(X - \mathbb{E}[X])^2 \geq \alpha^2]\\
+&amp;= \mathbb{P}[Z \geq \beta]\\
+&amp;\leq \frac{\mathbb{E}[Z]}{\beta}\\
+&amp;= \frac{\mathrm{Var}[X]}{\alpha^2}
+\end{align*}\]</div>
+<p>where we used the definition of the variance in the last equality. <span class="math notranslate nohighlight">\(\square\)</span></p>
+<p>A few important remarks about <em>Chebyshev’s inequality</em>:</p>
+<p>(1) We sometimes need a one-sided bound of the form</p>
+<div class="math notranslate nohighlight">
+\[
+\mathbb{P}[X - \mathbb{E}[X] \geq \alpha].
+\]</div>
+<p>Note the absence of absolute values compared to the two-sided form appearing in <em>Chebyshev’s inequality</em>. In this case, we can use the fact that the event <span class="math notranslate nohighlight">\(\{X - \mathbb{E}[X] \geq \alpha\}\)</span> implies a fortiori that
+<span class="math notranslate nohighlight">\(\{|X - \mathbb{E}[X]| \geq \alpha\}\)</span>, so that the probability of the former is smaller than that of the latter by monotonicity, namely,</p>
+<div class="math notranslate nohighlight">
+\[
+\mathbb{P}[X - \mathbb{E}[X] \geq \alpha]
+\leq \mathbb{P}[|X - \mathbb{E}[X]| \geq \alpha].
+\]</div>
+<p>We can then use <em>Chebyshev’s inequality</em> on the right-hand side to obtain</p>
+<div class="math notranslate nohighlight">
+\[
+\mathbb{P}[X - \mathbb{E}[X] \geq \alpha]
+\leq \frac{\mathrm{Var}[X]}{\alpha^2}.
+\]</div>
+<p>Similarly, for the same reasons, we also have</p>
+<div class="math notranslate nohighlight">
+\[
+\mathbb{P}[X - \mathbb{E}[X] \leq - \alpha]
+\leq \frac{\mathrm{Var}[X]}{\alpha^2}.
+\]</div>
+<p>(2) In terms of the standard deviation <span class="math notranslate nohighlight">\(\sigma_X = \sqrt{\mathrm{Var}[X]}\)</span> of <span class="math notranslate nohighlight">\(X\)</span>, the inequality can be re-written as</p>
+<div class="math notranslate nohighlight">
+\[
+\mathbb{P}[|X - \mathbb{E}[X]| \geq \alpha] 
+\leq \frac{\mathrm{Var}[X]}{\alpha^2}
+= \left(\frac{\sigma_X}{\alpha}\right)^2.
+\]</div>
+<p>So to get a small bound on the right-hand side, one needs the deviation from the mean <span class="math notranslate nohighlight">\(\alpha\)</span> to be significantly larger than the standard deviation. In words, a random variable is unlikely to be away from its mean by much more than its standard deviation. This observation is consistent with the interpretation of the standard deviation as the typical spread of a random variable.</p>
+<p><em>Chebyshev’s inequality</em> is particularly useful when combined with independence, as we recall next.</p>
+<p><strong>Independence and limit theorems</strong> Recall that discrete random variables <span class="math notranslate nohighlight">\(X\)</span> and <span class="math notranslate nohighlight">\(Y\)</span> are independent if their joint PMF factorizes, that is</p>
+<div class="math notranslate nohighlight">
+\[
+p_{X,Y}(x,y) = p_X(x) \,p_Y(y), \qquad \forall x, y
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(p_{X,Y}(x,y) = \mathbb{P}[X=x, Y=y]\)</span>. Similarly, continuous random variables <span class="math notranslate nohighlight">\(X\)</span> and <span class="math notranslate nohighlight">\(Y\)</span> are independent if their joint PDF factorizes. One consequence is that expectations of products of single-variable functions factorize as well, that is, for functions <span class="math notranslate nohighlight">\(g\)</span> and <span class="math notranslate nohighlight">\(h\)</span> we have</p>
+<div class="math notranslate nohighlight">
+\[
+\mathbb{E}[g(X) h(Y)]
+= \mathbb{E}[g(X)] \,\mathbb{E}[h(Y)],
+\]</div>
+<p>provided the expectations exist.</p>
+<p>An important way to quantify the lack of independence of two random variables is the covariance.</p>
+<p><strong>DEFINITION</strong> <strong>(Covariance)</strong> The covariance of random variables <span class="math notranslate nohighlight">\(X\)</span> and <span class="math notranslate nohighlight">\(Y\)</span> with finite means and variances is defined as</p>
+<div class="math notranslate nohighlight">
+\[
+\mathrm{Cov}[X,Y]
+= \mathbb{E}\left[(X - \mathbb{E}[X])(Y - \mathbb{E}[Y])\right].
+\]</div>
+<p><span class="math notranslate nohighlight">\(\natural\)</span></p>
+<p>Note that, by definition, the covariance is symmetric: <span class="math notranslate nohighlight">\(\mathrm{Cov}[X,Y] = \mathrm{Cov}[Y,X]\)</span>.</p>
+<p>When <span class="math notranslate nohighlight">\(X\)</span> and <span class="math notranslate nohighlight">\(Y\)</span> are independent, their covariance is <span class="math notranslate nohighlight">\(0\)</span>:</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+\mathrm{Cov}[X,Y]
+&amp;= \mathbb{E}\left[(X - \mathbb{E}[X])(Y - \mathbb{E}[Y])\right]\\
+&amp;= \mathbb{E}\left[X - \mathbb{E}[X]\right]\mathbb{E}\left[Y - \mathbb{E}[Y]\right]\\
+&amp;= \left(\mathbb{E}[X] - \mathbb{E}[X]\right)\left(\mathbb{E}[Y] - \mathbb{E}[Y]\right)\\
+&amp;= 0,
+\end{align*}\]</div>
+<p>where we used independence on the second line and the linearity of expectations on the third one.</p>
+<p>The covariance leads to a useful identity for the variance of a sum of random variables.</p>
+<p><strong>LEMMA</strong> <strong>(Variance of a Sum)</strong> Let <span class="math notranslate nohighlight">\(X_1,\ldots,X_n\)</span> be random variables with finite means and variances. Then we have</p>
+<div class="math notranslate nohighlight">
+\[
+\mathrm{Var}[X_1 + \cdots + X_n]
+= \sum_{i=1} \mathrm{Var}[X_i] + 2 \sum_{i &lt; j} \mathrm{Cov}[X_i, X_j].
+\]</div>
+<p><span class="math notranslate nohighlight">\(\flat\)</span></p>
+<p><em>Proof:</em> By definition of the variance and linearity of expectations,</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+&amp;\mathrm{Var}[X_1 + \cdots + X_n]\\
+&amp;= \mathbb{E}\left[(X_1 + \cdots + X_n - \mathbb{E}[X_1 + \cdots + X_n])^2\right]\\
+&amp;= \mathbb{E}\left[(X_1 + \cdots + X_n - \mathbb{E}[X_1] - \cdots - \mathbb{E}[X_n])^2\right]\\
+&amp;= \mathbb{E}\left[(X_1 - \mathbb{E}[X_1]) + \cdots + (X_n  - \mathbb{E}[X_n]))^2\right]\\
+&amp;= \sum_{i=1}^n \mathbb{E}\left[(X_i - \mathbb{E}[X_i])^2\right] 
++ \sum_{i \neq j} \mathbb{E}\left[(X_i - \mathbb{E}[X_i]) (X_j - \mathbb{E}[X_j])\right].
+\end{align*}\]</div>
+<p>The claim follows from the definition of the variance and covariance, and the symmetry of the covariance. <span class="math notranslate nohighlight">\(\square\)</span></p>
+<p>The previous lemma has the following important implication. If <span class="math notranslate nohighlight">\(X_1, \ldots, X_n\)</span> are pairwise independent, real-valued random variables, then</p>
+<div class="math notranslate nohighlight">
+\[
+\mathrm{Var}[X_1 + \cdots + X_n]
+= \mathrm{Var}[X_1] + \cdots + \mathrm{Var}[X_n].
+\]</div>
+<p>Notice that, unlike the case of the expectation, this linearity property for the variance requires independence.</p>
+<p>Applied to the sample mean of <span class="math notranslate nohighlight">\(n\)</span> independent, identically distributed (i.i.d.) random variables <span class="math notranslate nohighlight">\(X_1,\ldots,X_n\)</span>, we obtain</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+\mathrm{Var}
+\left[\frac{1}{n} \sum_{i=1}^n X_i\right]
+&amp;= \frac{1}{n^2} \sum_{i=1}^n \mathrm{Var}[X_i]\\
+&amp;= \frac{1}{n^2} n \,\mathrm{Var}[X_1]\\
+&amp;= \frac{\mathrm{Var}[X_1]}{n}.
+\end{align*}\]</div>
+<p>So the variance of the sample mean decreases as <span class="math notranslate nohighlight">\(n\)</span> gets large, while its expectation remains the same by linearity</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+\mathbb{E}
+\left[\frac{1}{n} \sum_{i=1}^n X_i\right]
+&amp;= \frac{1}{n} \sum_{i=1}^n \mathbb{E}[X_i]\\
+&amp;= \frac{1}{n} n \,\mathbb{E}[X_1]\\
+&amp;= \mathbb{E}[X_1].
+\end{align*}\]</div>
+<p>Together with <em>Chebyshev’s inequality</em>, we immediately get that the sample mean approaches its expectation in the following probabilistic sense.</p>
+<p><strong>THEOREM</strong> <strong>(Weak Law of Large Numbers)</strong> Let <span class="math notranslate nohighlight">\(X_1, \ldots, X_n\)</span> be i.i.d. For any <span class="math notranslate nohighlight">\(\varepsilon &gt; 0\)</span>, as <span class="math notranslate nohighlight">\(n \to +\infty\)</span>,</p>
+<div class="math notranslate nohighlight">
+\[
+\mathbb{P}\left[\left|\frac{1}{n} \sum_{i=1}^n X_i 
+- \mathbb{E}[X_1]\right| \geq \varepsilon\right]
+\to 0.
+\]</div>
+<p><span class="math notranslate nohighlight">\(\sharp\)</span></p>
+<p><em>Proof:</em> By <em>Chebyshev</em> and the formulas above,</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+\mathbb{P}\left[\left|\frac{1}{n} \sum_{i=1}^n X_i 
+- \mathbb{E}[X_1]\right| \geq \varepsilon\right]
+&amp;= \mathbb{P}\left[\left|\frac{1}{n} \sum_{i=1}^n X_i 
+- \mathbb{E} \left[\frac{1}{n} \sum_{i=1}^n X_i\right]\right| \geq \varepsilon\right]\\
+&amp;\leq \frac{\mathrm{Var}\left[\frac{1}{n} \sum_{i=1}^n X_i\right]}{\varepsilon^2}\\
+&amp;= \frac{\mathrm{Var}[X_1]}{n \varepsilon^2}\\
+&amp;\to 0
+\end{align*}\]</div>
+<p>as <span class="math notranslate nohighlight">\(n \to +\infty\)</span>. <span class="math notranslate nohighlight">\(\square\)</span></p>
+<p><strong>NUMERICAL CORNER:</strong> We can use simulations to confirm the <em>Weak Law of Large Numbers</em>. Recall that a uniform random variable over the interval <span class="math notranslate nohighlight">\([a,b]\)</span> has density</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+f_{X}(x)
+= \begin{cases}
+\frac{1}{b-a} &amp; x \in [a,b] \\
+0 &amp; \text{o.w.}
+\end{cases}
+\end{split}\]</div>
+<p>We write <span class="math notranslate nohighlight">\(X \sim \mathrm{U}[a,b]\)</span>. We can obtain a sample from <span class="math notranslate nohighlight">\(\mathrm{U}[0,1]\)</span> by using the function <a class="reference external" href="https://numpy.org/doc/stable/reference/random/generator.html"><code class="docutils literal notranslate"><span class="pre">numpy.random</span></code></a> in Numpy.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">numpy.random</span> <span class="kn">import</span> <span class="n">default_rng</span>
+<span class="n">rng</span> <span class="o">=</span> <span class="n">default_rng</span><span class="p">(</span><span class="mi">535</span><span class="p">)</span>
+<span class="n">rng</span><span class="o">.</span><span class="n">random</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.9836159914889122
+</pre></div>
+</div>
+</div>
+</div>
+<p>Now we take <span class="math notranslate nohighlight">\(n\)</span> samples from <span class="math notranslate nohighlight">\(\mathrm{U}[0,1]\)</span> and compute their sample mean. We repeat <span class="math notranslate nohighlight">\(k\)</span> times and display the empirical distribution of the sample means using an <a class="reference external" href="https://en.wikipedia.org/wiki/Histogram">histogram</a>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">lln_unif</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">k</span><span class="p">):</span>
+    <span class="n">sample_mean</span> <span class="o">=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">rng</span><span class="o">.</span><span class="n">random</span><span class="p">(</span><span class="n">n</span><span class="p">))</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">k</span><span class="p">)]</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">sample_mean</span><span class="p">,</span><span class="n">bins</span><span class="o">=</span><span class="mi">15</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">xlim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;n=</span><span class="si">{</span><span class="n">n</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>We start with <span class="math notranslate nohighlight">\(n=10\)</span>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">lln_unif</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">1000</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/5c0a93c176694368f9a03f2a57e97a65f8b70d91f804814335c0d22ec86e8aed.png" src="../../_images/5c0a93c176694368f9a03f2a57e97a65f8b70d91f804814335c0d22ec86e8aed.png" />
+</div>
+</div>
+<p>Taking <span class="math notranslate nohighlight">\(n\)</span> much larger leads to more concentration around the mean.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">lln_unif</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">1000</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/9c3c0d938aacf7c56813f78ae7256563a030d57fb10271b54c89e4fe746b60b3.png" src="../../_images/9c3c0d938aacf7c56813f78ae7256563a030d57fb10271b54c89e4fe746b60b3.png" />
+</div>
+</div>
+<p><span class="math notranslate nohighlight">\(\unlhd\)</span></p>
+<p><strong>Normal distribution</strong> Recall that a standard Normal variable <span class="math notranslate nohighlight">\(X\)</span> has PDF</p>
+<div class="math notranslate nohighlight">
+\[
+f_X(x) 
+= \frac{1}{\sqrt{2 \pi}}
+\exp\left(
+- x^2/2
+\right).
+\]</div>
+<p>Its mean is <span class="math notranslate nohighlight">\(0\)</span> and its variance is <span class="math notranslate nohighlight">\(1\)</span>.</p>
+<p><strong>NUMERICAL CORNER:</strong> We plot the PDF of a standard normal distribution. We use the function <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.norm.html">scipy.stats.norm</a> from the <a class="reference external" href="https://scipy.org">SciPy library</a>, which outputs the PDF. The following code was adapted from <a class="reference external" href="https://commons.wikimedia.org/wiki/File:Standard_Normal_Distribution.svg">here</a> with the help of ChatGPT.</p>
+<div class="cell tag_hide-input docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell source</span>
+<span class="expanded">Hide code cell source</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">scipy.stats</span> <span class="kn">import</span> <span class="n">norm</span>
+
+<span class="c1"># Plot the normal distribution curve</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">norm</span><span class="o">.</span><span class="n">pdf</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">)</span>
+
+<span class="c1"># Fill areas under the curve for different standard deviations</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">fill_between</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">where</span><span class="o">=</span><span class="p">(</span><span class="n">x</span> <span class="o">&gt;</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">x</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">),</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.25</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">fill_between</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">where</span><span class="o">=</span><span class="p">(</span><span class="n">x</span> <span class="o">&gt;</span> <span class="o">-</span><span class="mi">2</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">x</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="p">),</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.25</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">hlines</span><span class="p">(</span><span class="n">norm</span><span class="o">.</span><span class="n">pdf</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;dashed&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">hlines</span><span class="p">(</span><span class="n">norm</span><span class="o">.</span><span class="n">pdf</span><span class="p">(</span><span class="mi">2</span><span class="p">),</span> <span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;dashed&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">norm</span><span class="o">.</span><span class="n">pdf</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="mf">0.01</span><span class="p">,</span> <span class="s2">&quot;68.3%&quot;</span><span class="p">,</span> <span class="n">ha</span><span class="o">=</span><span class="s1">&#39;center&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">norm</span><span class="o">.</span><span class="n">pdf</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="o">+</span> <span class="mf">0.01</span><span class="p">,</span> <span class="s2">&quot;95.4%&quot;</span><span class="p">,</span> <span class="n">ha</span><span class="o">=</span><span class="s1">&#39;center&#39;</span><span class="p">)</span>
+
+<span class="c1"># Set labels, title, and xticks</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Standard Deviations from Mean&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;PDF&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xticks</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="o">-</span><span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="p">[</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s1">&#39;</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="o">-</span><span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">2</span><span class="p">)])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</details>
+<div class="cell_output docutils container">
+<img alt="../../_images/9355d1eb321e4c386582d5683e5f6886644d23708aac7ecacf5d01d4feed8057.png" src="../../_images/9355d1eb321e4c386582d5683e5f6886644d23708aac7ecacf5d01d4feed8057.png" />
+</div>
+</div>
+<p><span class="math notranslate nohighlight">\(\unlhd\)</span></p>
+<p>To construct a <span class="math notranslate nohighlight">\(d\)</span>-dimensional version, we take <span class="math notranslate nohighlight">\(d\)</span> independent standard Normal variables <span class="math notranslate nohighlight">\(X_1, X_2, \ldots, X_d\)</span> and form the vector <span class="math notranslate nohighlight">\(\mathbf{X} = (X_1,\ldots,X_d)\)</span>. We will say that <span class="math notranslate nohighlight">\(\mathbf{X}\)</span> is a standard Normal <span class="math notranslate nohighlight">\(d\)</span>-vector. By independence, its joint PDF is given by the product of the PDFs of the <span class="math notranslate nohighlight">\(X_i\)</span>’s, that is,</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+f_{\mathbf{X}}(\mathbf{x})
+&amp;= \prod_{i=1}^d \frac{1}{\sqrt{2 \pi}}
+\exp\left(
+- x_i^2/2
+\right)\\
+&amp;= \frac{1}{\prod_{i=1}^d \sqrt{2 \pi}}
+\exp\left(
+- \sum_{i=1}^d x_i^2/2
+\right)\\
+&amp;= \frac{1}{(2 \pi)^{d/2}} 
+\exp(-\|\mathbf{x}\|^2/2).
+\end{align*}\]</div>
+<p>We can also shift and scale it.</p>
+<p><strong>DEFINITION</strong> <strong>(Spherical Gaussian)</strong> Let <span class="math notranslate nohighlight">\(\mathbf{Z}\)</span> be a standard Normal <span class="math notranslate nohighlight">\(d\)</span>-vector,
+let <span class="math notranslate nohighlight">\(\boldsymbol{\mu} \in \mathbb{R}^d\)</span> and let <span class="math notranslate nohighlight">\(\sigma \in \mathbb{R}_+\)</span>. Then we will refer to the transformed random variable <span class="math notranslate nohighlight">\(\mathbf{X} = \boldsymbol{\mu} + \sigma \mathbf{Z}\)</span> as a spherical Gaussian with mean <span class="math notranslate nohighlight">\(\boldsymbol{\mu}\)</span> and variance <span class="math notranslate nohighlight">\(\sigma^2\)</span>. We use the notation <span class="math notranslate nohighlight">\(\mathbf{Z} \sim N_d(\boldsymbol{\mu}, \sigma^2 I)\)</span>. <span class="math notranslate nohighlight">\(\natural\)</span></p>
+<p><strong>NUMERICAL CORNER:</strong> The following function generates <span class="math notranslate nohighlight">\(n\)</span> data points from a spherical <span class="math notranslate nohighlight">\(d\)</span>-dimensional Gaussians with variance <span class="math notranslate nohighlight">\(1\)</span> and mean <span class="math notranslate nohighlight">\(w \mathbf{e}_1\)</span>. We will use it later in the chapter to simulate interesting datasets.</p>
+<p>Below, <code class="docutils literal notranslate"><span class="pre">rng.normal(0,1,d)</span></code> generates a <code class="docutils literal notranslate"><span class="pre">d</span></code>-dimensional spherical Gaussian with mean <span class="math notranslate nohighlight">\(\mathbf{0}\)</span>. Below we use the function <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.concatenate.html"><code class="docutils literal notranslate"><span class="pre">numpy.concatenate</span></code></a> to create a vector by concatenating two given vectors. We use <code class="docutils literal notranslate"><span class="pre">[w]</span></code> to create a vector with a single entry <code class="docutils literal notranslate"><span class="pre">w</span></code>. We also use the function <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.zeros.html"><code class="docutils literal notranslate"><span class="pre">numpy.zeros</span></code></a> to create an all-zero vector.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">one_cluster</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">w</span><span class="p">):</span>
+    <span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">stack</span><span class="p">(</span>
+        <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(([</span><span class="n">w</span><span class="p">],</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">d</span><span class="o">-</span><span class="mi">1</span><span class="p">)))</span> <span class="o">+</span> <span class="n">rng</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="n">d</span><span class="p">)</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">)]</span>
+    <span class="p">)</span>
+    <span class="k">return</span> <span class="n">X</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>We generate <span class="math notranslate nohighlight">\(100\)</span> data points in dimension <span class="math notranslate nohighlight">\(d=2\)</span>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">d</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">w</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mf">3.</span>
+<span class="n">X</span> <span class="o">=</span> <span class="n">one_cluster</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">w</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">X</span><span class="p">[:,</span><span class="mi">0</span><span class="p">],</span> <span class="n">X</span><span class="p">[:,</span><span class="mi">1</span><span class="p">])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/fc04be2833903449946dc6f5cc21e5db3ad0d61835efed75824039646576f628.png" src="../../_images/fc04be2833903449946dc6f5cc21e5db3ad0d61835efed75824039646576f628.png" />
+</div>
+</div>
+<p><span class="math notranslate nohighlight">\(\unlhd\)</span></p>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./chap01_intro/02_review"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="../01_motiv/roch-mmids-intro-1motiv.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title"><span class="section-number">1.1. </span>Motivating example: species delimitation</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="../03_clustering/roch-mmids-intro-3clustering.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title"><span class="section-number">1.3. </span>Clustering: an objective, an algorithm and a guarantee</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#vectors-and-matrices">1.2.1. Vectors and matrices</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#differential-calculus">1.2.2. Differential calculus</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#probability">1.2.3. Probability</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Sebastien Roch
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2024.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=5b4479735964841361fd"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

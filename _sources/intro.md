@@ -1,4 +1,4 @@
-# Mathematical Methods in Data Science
+# Mathematical Methods in Data Science (MMiDS)
 
 **Author:** [Sebastien Roch](https://people.math.wisc.edu/~roch/), Department of Mathematics, University of Wisconsin-Madison
 

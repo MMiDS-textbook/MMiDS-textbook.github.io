@@ -10,4 +10,4 @@ An online verion of the textbook is available [here](https://mmids-textbook.gith
 
 Jupyter notebooks with the code can be accessed here:
 
-1. [Introduction]()
+1. [Introduction](https://githubtocolab.com/MMiDS-textbook/MMiDS-textbook.github.io/blob/main/just_the_code/01_notebook.ipynb)

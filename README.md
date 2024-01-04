@@ -4,7 +4,7 @@ Online resources for the textbook *Mathematical Methods in Data Science*  by [Se
 
 **Textbook**
 
-An online verion of the textbook is available [here](https://mmids-textbook.github.io/).
+An online version of the textbook is available [here](https://mmids-textbook.github.io/).
 
 **Just the Code**
 

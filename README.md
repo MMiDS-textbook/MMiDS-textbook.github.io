@@ -8,7 +8,7 @@ An online verion of the textbook is available [here](https://mmids-textbook.gith
 
 **Just the Code**
 
-Jupyter notebooks with the code can be accessed here (the links open directly in Google Colab, the recommended way to run the notebooks, thanks to this [clever service](https://www.endtoend.ai/blog/githubtocolab/)):
+Jupyter notebooks with the code can be accessed here:
 
-1. [Introduction](https://githubtocolab.com/MMiDS-textbook/MMiDS-textbook.github.io/blob/main/just_the_code/01_notebook.ipynb)
+1. [Introduction](https://github.com/MMiDS-textbook/MMiDS-textbook.github.io/blob/main/just_the_code/01_notebook.ipynb)
 [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/MMiDS-textbook/MMiDS-textbook.github.io/blob/main/just_the_code/01_notebook.ipynb)

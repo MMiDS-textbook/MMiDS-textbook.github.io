@@ -197,7 +197,7 @@ const thebe_selector_output = ".output, .cell_output"
 </ul>
 </li>
 <li class="toctree-l1 current active has-children"><a class="reference internal" href="../00_intro/roch-mmids-svd-intro.html">3. Singular value decomposition</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-3"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="../01_motiv/roch-mmids-svd-motiv.html">3.1. Motivating example: exploratory data analysis of viral evolution</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../01_motiv/roch-mmids-svd-motiv.html">3.1. Motivating example: vizualizing genetic data</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../02_spectral/roch-mmids-svd-spectral.html">3.2. Background: review of spectral decomposition</a></li>
 <li class="toctree-l2 current active"><a class="current reference internal" href="#">3.3. Dimension reduction and approximating subspaces</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../04_power/roch-mmids-svd-power.html">3.4. Power iteration</a></li>
@@ -1144,7 +1144,7 @@ Z = A V_{(k)} V_{(k)}^T = U_{(k)} \Sigma_{(k)} V_{(k)}^T
 \]</div>
 <p>for any matrix <span class="math notranslate nohighlight">\(B\)</span> of rank at most <span class="math notranslate nohighlight">\(k\)</span>.</p>
 <p><strong>Principal components analysis</strong> Principal components analysis (PCA) is a commonly used dimensionality reduction approach that is mathematically equivalent to what we described above. In this section, we formalize the connection.</p>
-<p><em>The data matrix</em> In PCA we are given <span class="math notranslate nohighlight">\(n\)</span> data points <span class="math notranslate nohighlight">\(\mathbf{x}_1,\ldots,\mathbf{x}_n \in \mathbb{R}^p\)</span> with <span class="math notranslate nohighlight">\(p\)</span> features. We denote the components of <span class="math notranslate nohighlight">\(\mathbf{x}_i\)</span> as <span class="math notranslate nohighlight">\((x_{i1},\ldots,x_{ip})^T\)</span>. As usual, we stack them up into a matrix <span class="math notranslate nohighlight">\(X\)</span> whose <span class="math notranslate nohighlight">\(i\)</span>-th row is <span class="math notranslate nohighlight">\(\mathbf{x}_i^T\)</span>. It is customary to assume that the features have been standardized, that is, they are centered</p>
+<p><em>The data matrix:</em> In PCA we are given <span class="math notranslate nohighlight">\(n\)</span> data points <span class="math notranslate nohighlight">\(\mathbf{x}_1,\ldots,\mathbf{x}_n \in \mathbb{R}^p\)</span> with <span class="math notranslate nohighlight">\(p\)</span> features. We denote the components of <span class="math notranslate nohighlight">\(\mathbf{x}_i\)</span> as <span class="math notranslate nohighlight">\((x_{i1},\ldots,x_{ip})^T\)</span>. As usual, we stack them up into a matrix <span class="math notranslate nohighlight">\(X\)</span> whose <span class="math notranslate nohighlight">\(i\)</span>-th row is <span class="math notranslate nohighlight">\(\mathbf{x}_i^T\)</span>. It is customary to assume that the features have been standardized, that is, they are centered</p>
 <div class="math notranslate nohighlight">
 \[
 \frac{1}{n} \sum_{i=1}^n x_{ij} = 0, \qquad \forall j=1,\ldots,p
@@ -1155,7 +1155,7 @@ Z = A V_{(k)} V_{(k)}^T = U_{(k)} \Sigma_{(k)} V_{(k)}^T
 \frac{1}{n-1} \sum_{i=1}^n x_{ij}^2 = 1, \qquad \forall j=1,\ldots,p.
 \]</div>
 <p>This is particularly important when the features are measured in different units to ensure that their variability can be meaningfully compared.</p>
-<p><em>The first principal component</em> The first principal component is the linear combination of the features</p>
+<p><em>The first principal component:</em> The first principal component is the linear combination of the features</p>
 <div class="math notranslate nohighlight">
 \[
 z_{i1}
@@ -1209,7 +1209,7 @@ z_{i1} = \mathbf{x}_i^T \boldsymbol{\phi}_1,
 \max\left\{\frac{1}{n-1} \|X \boldsymbol{\phi}_1\|^2 : \|\boldsymbol{\phi}_1\|^2 = 1\right\},
 \]</div>
 <p>we see that we have already encountered this problem (up to the factor of <span class="math notranslate nohighlight">\(1/n\)</span> which does not affect the solution). The solution is to take <span class="math notranslate nohighlight">\(\boldsymbol{\phi}_1\)</span> to be the top right singular vector of <span class="math notranslate nohighlight">\(X\)</span>.</p>
-<p><em>The second principal component</em> The second principal component is the linear combination of the features</p>
+<p><em>The second principal component:</em> The second principal component is the linear combination of the features</p>
 <div class="math notranslate nohighlight">
 \[
 z_{i2}
@@ -1271,7 +1271,7 @@ z_{i2}
 \max\left\{\frac{1}{n-1} \|X \boldsymbol{\phi}_2\|^2 : \|\boldsymbol{\phi}_2\|^2 = 1, \langle \boldsymbol{\phi}_1, \boldsymbol{\phi}_2 \rangle = 0\right\}.
 \]</div>
 <p>Again, we see that we have encountered this problem before. The solution is to take <span class="math notranslate nohighlight">\(\boldsymbol{\phi}_2\)</span> to be a second right singular vector in an SVD of <span class="math notranslate nohighlight">\(X\)</span>.</p>
-<p><em>Further principal components</em> We can proceed in a similar fashion and define further principal components. We omit the details.</p>
+<p><em>Further principal components:</em> We can proceed in a similar fashion and define further principal components. We omit the details.</p>
 </section>
 </section>
 

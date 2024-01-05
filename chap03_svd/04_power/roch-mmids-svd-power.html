@@ -197,7 +197,7 @@ const thebe_selector_output = ".output, .cell_output"
 </ul>
 </li>
 <li class="toctree-l1 current active has-children"><a class="reference internal" href="../00_intro/roch-mmids-svd-intro.html">3. Singular value decomposition</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-3"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="../01_motiv/roch-mmids-svd-motiv.html">3.1. Motivating example: exploratory data analysis of viral evolution</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../01_motiv/roch-mmids-svd-motiv.html">3.1. Motivating example: vizualizing genetic data</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../02_spectral/roch-mmids-svd-spectral.html">3.2. Background: review of spectral decomposition</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../03_svd/roch-mmids-svd-svd.html">3.3. Dimension reduction and approximating subspaces</a></li>
 <li class="toctree-l2 current active"><a class="current reference internal" href="#">3.4. Power iteration</a></li>
@@ -403,7 +403,9 @@ document.write(`
                 <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#power-iteration-lemma">3.4.1. Power iteration lemma</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#computing-the-top-singular-vector">3.4.2. Computing the top singular vector</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#connection-between-the-spectral-decomposition-and-the-singular-value-decomposition">3.4.3. Connection between the spectral decomposition and the singular value decomposition</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#computing-more-singular-vectors">3.4.3. Computing more singular vectors</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#back-to-dimensionality-reduction">3.4.4. Back to dimensionality reduction</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#connection-between-the-spectral-decomposition-and-the-singular-value-decomposition">3.4.5. Connection between the spectral decomposition and the singular value decomposition</a></li>
 </ul>
             </nav>
         </div>
@@ -848,8 +850,455 @@ B^k \mathbf{x}
 </div>
 <p><span class="math notranslate nohighlight">\(\unlhd\)</span></p>
 </section>
+<section id="computing-more-singular-vectors">
+<h2><span class="section-number">3.4.3. </span>Computing more singular vectors<a class="headerlink" href="#computing-more-singular-vectors" title="Permalink to this headline">#</a></h2>
+<p>We have shown how to compute the first singular vector. How do we compute more singular vectors? One approach is to first compute <span class="math notranslate nohighlight">\(\mathbf{v}_1\)</span> (or <span class="math notranslate nohighlight">\(-\mathbf{v}_1\)</span>), then find a vector <span class="math notranslate nohighlight">\(\mathbf{y}\)</span> orthogonal to it, and proceed as above. And then we repeat until we have all <span class="math notranslate nohighlight">\(m\)</span> right singular vectors.</p>
+<p>We are often interested only in the top, say <span class="math notranslate nohighlight">\(\ell &lt; m\)</span>, singular vectors. An alternative approach in that case is to start with <span class="math notranslate nohighlight">\(\ell\)</span> random vectors and, first, find an orthonormal basis for the space they span. Then to quote [BHK, Section 3.7.1]:</p>
+<blockquote>
+<div><p>Then compute <span class="math notranslate nohighlight">\(B\)</span> times each of the basis vectors, and find an orthonormal basis for the space spanned by the resulting vectors. Intuitively, one has applied <span class="math notranslate nohighlight">\(B\)</span> to a subspace rather than a single vector. One repeatedly applies <span class="math notranslate nohighlight">\(B\)</span> to the subspace, calculating an orthonormal basis after each application to prevent the subspace collapsing to the one dimensional subspace spanned by the first singular vector.</p>
+</div></blockquote>
+<p>We will not prove here that this approach, known as orthogonal iteration, works. The proof is similar to that of the <em>Power Iteration Lemma</em>.</p>
+<p><strong>NUMERICAL CORNER:</strong> We implement this last algorithm. We will need our previous implementation of <em>Gram-Schimdt</em>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">svd</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">l</span><span class="p">,</span> <span class="n">maxiter</span><span class="o">=</span><span class="mi">100</span><span class="p">):</span>
+    <span class="n">V</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,(</span><span class="n">np</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="n">A</span><span class="p">,</span><span class="mi">1</span><span class="p">),</span><span class="n">l</span><span class="p">))</span>
+    <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">maxiter</span><span class="p">):</span>
+        <span class="n">W</span> <span class="o">=</span> <span class="n">A</span> <span class="o">@</span> <span class="n">V</span>
+        <span class="n">Z</span> <span class="o">=</span> <span class="n">A</span><span class="o">.</span><span class="n">T</span> <span class="o">@</span> <span class="n">W</span>
+        <span class="n">V</span><span class="p">,</span> <span class="n">R</span> <span class="o">=</span> <span class="n">mmids</span><span class="o">.</span><span class="n">gramschmidt</span><span class="p">(</span><span class="n">Z</span><span class="p">)</span>
+    <span class="n">W</span> <span class="o">=</span> <span class="n">A</span> <span class="o">@</span> <span class="n">V</span>
+    <span class="n">S</span> <span class="o">=</span> <span class="p">[</span><span class="n">LA</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">W</span><span class="p">[:,</span> <span class="n">i</span><span class="p">])</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="n">W</span><span class="p">,</span><span class="mi">1</span><span class="p">))]</span>
+    <span class="n">U</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">stack</span><span class="p">([</span><span class="n">W</span><span class="p">[:,</span><span class="n">i</span><span class="p">]</span><span class="o">/</span><span class="n">S</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="n">W</span><span class="p">,</span><span class="mi">1</span><span class="p">))],</span><span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">U</span><span class="p">,</span> <span class="n">S</span><span class="p">,</span> <span class="n">V</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Note that above we avoided forming the matrix <span class="math notranslate nohighlight">\(A^T A\)</span>. With a small number of iterations, that approach potentially requires fewer arithmetic operations overall and it allows to take advantage of the possible sparsity of <span class="math notranslate nohighlight">\(A\)</span> (i.e. the fact that it may have many zeros).</p>
+<p>We apply it again to our two-cluster example.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">d</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">w</span> <span class="o">=</span> <span class="mi">1000</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mf">3.</span>
+<span class="n">X1</span><span class="p">,</span> <span class="n">X2</span> <span class="o">=</span> <span class="n">mmids</span><span class="o">.</span><span class="n">two_clusters</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">w</span><span class="p">)</span>
+<span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">X1</span><span class="p">,</span> <span class="n">X2</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Let’s try again, but after projecting on the top two singular vectors. Recall that this corresponds to finding the best two-dimensional approximating subspace. The projection can be computed using the truncated SVD <span class="math notranslate nohighlight">\(Z= U_{(2)} \Sigma_{(2)} V_{(2)}^T\)</span>. We can interpret the rows of <span class="math notranslate nohighlight">\(U_{(2)} \Sigma_{(2)}\)</span> as the coefficients of each data point in the basis <span class="math notranslate nohighlight">\(\mathbf{v}_1,\mathbf{v}_2\)</span>. We will work in that basis.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">U</span><span class="p">,</span> <span class="n">S</span><span class="p">,</span> <span class="n">V</span> <span class="o">=</span> <span class="n">svd</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+<span class="n">Xproj</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">stack</span><span class="p">((</span><span class="n">U</span><span class="p">[:,</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="n">S</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">U</span><span class="p">[:,</span><span class="mi">1</span><span class="p">]</span><span class="o">*</span><span class="n">S</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">assign</span> <span class="o">=</span> <span class="n">mmids</span><span class="o">.</span><span class="n">kmeans</span><span class="p">(</span><span class="n">Xproj</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4839.151922662225
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>3893.043231849657
+3887.181432640043
+3871.465672809303
+3866.3657016218503
+3832.797758573426
+3614.612105279853
+3137.4511765696116
+2527.577531668082
+2434.4101807079765
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell tag_hide-input docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell source</span>
+<span class="expanded">Hide code cell source</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">111</span><span class="p">,</span><span class="n">aspect</span><span class="o">=</span><span class="s1">&#39;equal&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">X</span><span class="p">[:,</span><span class="mi">0</span><span class="p">],</span> <span class="n">X</span><span class="p">[:,</span><span class="mi">1</span><span class="p">],</span> <span class="n">c</span><span class="o">=</span><span class="n">assign</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</details>
+<div class="cell_output docutils container">
+<img alt="../../_images/4a714f22a10cd919690c9c7b424dcfd5159664d22943abee2b1c043f1e2bbea1.png" src="../../_images/4a714f22a10cd919690c9c7b424dcfd5159664d22943abee2b1c043f1e2bbea1.png" />
+</div>
+</div>
+<p>Finally, looking at the first two right singular vectors, we see that the first one does align quite well with the first dimension.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">stack</span><span class="p">((</span><span class="n">V</span><span class="p">[:,</span><span class="mi">0</span><span class="p">],</span> <span class="n">V</span><span class="p">[:,</span><span class="mi">1</span><span class="p">]),</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[[ 0.7951525  -0.04955857]
+ [-0.0071491  -0.0146887 ]
+ [-0.00925286 -0.02036707]
+ ...
+ [-0.00749113  0.02588917]
+ [ 0.01061442 -0.01162646]
+ [ 0.00415543  0.01529427]]
+</pre></div>
+</div>
+</div>
+</div>
+<p><span class="math notranslate nohighlight">\(\unlhd\)</span></p>
+</section>
+<section id="back-to-dimensionality-reduction">
+<h2><span class="section-number">3.4.4. </span>Back to dimensionality reduction<a class="headerlink" href="#back-to-dimensionality-reduction" title="Permalink to this headline">#</a></h2>
+<p>We return to our application of the SVD to dimensionality reduction in genetic data.</p>
+<p>We load the dataset again and examine its first rows.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;h3n2-snp.csv&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>strain</th>
+      <th>s6a</th>
+      <th>s6c</th>
+      <th>s6g</th>
+      <th>s17a</th>
+      <th>s17g</th>
+      <th>s17t</th>
+      <th>s39a</th>
+      <th>s39c</th>
+      <th>s39g</th>
+      <th>...</th>
+      <th>s977g</th>
+      <th>s978a</th>
+      <th>s978c</th>
+      <th>s978g</th>
+      <th>s978t</th>
+      <th>s979a</th>
+      <th>s979c</th>
+      <th>s979t</th>
+      <th>s980a</th>
+      <th>s980c</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>AB434107</td>
+      <td>1.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>1.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>1.0</td>
+      <td>...</td>
+      <td>0.0</td>
+      <td>1.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>1.0</td>
+      <td>0.0</td>
+      <td>1.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>AB434108</td>
+      <td>1.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>1.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>1.0</td>
+      <td>...</td>
+      <td>0.0</td>
+      <td>1.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>1.0</td>
+      <td>0.0</td>
+      <td>1.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>CY000113</td>
+      <td>1.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>1.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>1.0</td>
+      <td>...</td>
+      <td>0.0</td>
+      <td>1.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>1.0</td>
+      <td>0.0</td>
+      <td>1.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>CY000209</td>
+      <td>1.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>1.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>1.0</td>
+      <td>...</td>
+      <td>0.0</td>
+      <td>1.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>1.0</td>
+      <td>0.0</td>
+      <td>1.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>CY000217</td>
+      <td>1.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>1.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>1.0</td>
+      <td>...</td>
+      <td>0.0</td>
+      <td>1.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>1.0</td>
+      <td>0.0</td>
+      <td>1.0</td>
+      <td>0.0</td>
+    </tr>
+  </tbody>
+</table>
+<p>5 rows × 318 columns</p>
+</div></div></div>
+</div>
+<p>Recall that it contains <span class="math notranslate nohighlight">\(1642\)</span> strains and lives in a <span class="math notranslate nohighlight">\(318\)</span>-dimensional space.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">shape</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(1642, 318)
+</pre></div>
+</div>
+</div>
+</div>
+<p>Our goal is to find a “good” low-dimensional representation of the data. Two dimensions will do here. We use the SVD.</p>
+<p>Specifically, we extract a data matrix, run our SVD algorithm with <span class="math notranslate nohighlight">\(k=2\)</span>, and plot the data in the projected subspace of the first two singular vectors.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">A</span> <span class="o">=</span> <span class="n">df</span><span class="p">[[</span><span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">))]]</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">U</span><span class="p">,</span> <span class="n">S</span><span class="p">,</span> <span class="n">V</span> <span class="o">=</span> <span class="n">svd</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell tag_hid-input docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">U</span><span class="p">[:,</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="n">S</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">U</span><span class="p">[:,</span><span class="mi">1</span><span class="p">]</span><span class="o">*</span><span class="n">S</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/f862202d0352fc191295a4b29379fd1b3bbec7f78cad2f0c8afddbe564ad4da4.png" src="../../_images/f862202d0352fc191295a4b29379fd1b3bbec7f78cad2f0c8afddbe564ad4da4.png" />
+</div>
+</div>
+<p>There seems to be some reasonably well-defined clusters in this projection. To further reveal the structure, we color the data points by year. That information is in a separate file.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">dfoth</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;h3n2-other.csv&#39;</span><span class="p">)</span>
+<span class="n">dfoth</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>strain</th>
+      <th>length</th>
+      <th>country</th>
+      <th>year</th>
+      <th>lon</th>
+      <th>lat</th>
+      <th>date</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>AB434107</td>
+      <td>1701</td>
+      <td>Japan</td>
+      <td>2002</td>
+      <td>137.215474</td>
+      <td>35.584176</td>
+      <td>2002/02/25</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>AB434108</td>
+      <td>1701</td>
+      <td>Japan</td>
+      <td>2002</td>
+      <td>137.215474</td>
+      <td>35.584176</td>
+      <td>2002/03/01</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>CY000113</td>
+      <td>1762</td>
+      <td>USA</td>
+      <td>2002</td>
+      <td>-73.940000</td>
+      <td>40.670000</td>
+      <td>2002/01/29</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>CY000209</td>
+      <td>1760</td>
+      <td>USA</td>
+      <td>2002</td>
+      <td>-73.940000</td>
+      <td>40.670000</td>
+      <td>2002/01/17</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>CY000217</td>
+      <td>1760</td>
+      <td>USA</td>
+      <td>2002</td>
+      <td>-73.940000</td>
+      <td>40.670000</td>
+      <td>2002/02/26</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">year</span> <span class="o">=</span> <span class="n">dfoth</span><span class="p">[</span><span class="s1">&#39;year&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>We color the points on the scatterplot by year. (We use <a class="reference external" href="https://matplotlib.org/stable/api/collections_api.html#matplotlib.collections.PathCollection.legend_elements"><code class="docutils literal notranslate"><span class="pre">legend_elements()</span></code></a> for automatic legend creation.)</p>
+<div class="cell tag_hide-input docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell source</span>
+<span class="expanded">Hide code cell source</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">scatter</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">U</span><span class="p">[:,</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="n">S</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">U</span><span class="p">[:,</span><span class="mi">1</span><span class="p">]</span><span class="o">*</span><span class="n">S</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">c</span><span class="o">=</span><span class="n">year</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">year</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="o">*</span><span class="n">scatter</span><span class="o">.</span><span class="n">legend_elements</span><span class="p">())</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</details>
+<div class="cell_output docutils container">
+<img alt="../../_images/dafad7fb5f6078b762303ee006a3276bccedc9b4f518de4727d45d7725ba86cd.png" src="../../_images/dafad7fb5f6078b762303ee006a3276bccedc9b4f518de4727d45d7725ba86cd.png" />
+</div>
+</div>
+<p>To some extent, one can “see” the virus evolving from year to year. The <span class="math notranslate nohighlight">\(y\)</span>-axis in particular seems to correlate strongly with the year.</p>
+<p>One last note: in this case <a class="reference external" href="https://bmcgenet.biomedcentral.com/articles/10.1186/1471-2156-11-94/figures/8">better results</a> can be obtained using other related dimension reduction methods.</p>
+</section>
 <section id="connection-between-the-spectral-decomposition-and-the-singular-value-decomposition">
-<h2><span class="section-number">3.4.3. </span>Connection between the spectral decomposition and the singular value decomposition<a class="headerlink" href="#connection-between-the-spectral-decomposition-and-the-singular-value-decomposition" title="Permalink to this headline">#</a></h2>
+<h2><span class="section-number">3.4.5. </span>Connection between the spectral decomposition and the singular value decomposition<a class="headerlink" href="#connection-between-the-spectral-decomposition-and-the-singular-value-decomposition" title="Permalink to this headline">#</a></h2>
 <p>In the previous section, we saw that the proof of the spectral theorem tracks closely that of the existence of the SVD. Here we make the connection between the two explicit by showing how to compute the SVD using an appropriate spectral decomposition.</p>
 <p><em>The construction:</em> Specifically, let <span class="math notranslate nohighlight">\(A \in \mathbb{R}^{m \times n}\)</span> and note that <span class="math notranslate nohighlight">\(A^T A\)</span> is symmetric. Hence the latter has a spectral decomposition</p>
 <div class="math notranslate nohighlight">
@@ -1022,7 +1471,9 @@ where the eigenvalues satisfy <span class="math notranslate nohighlight">\(0 \le
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#power-iteration-lemma">3.4.1. Power iteration lemma</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#computing-the-top-singular-vector">3.4.2. Computing the top singular vector</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#connection-between-the-spectral-decomposition-and-the-singular-value-decomposition">3.4.3. Connection between the spectral decomposition and the singular value decomposition</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#computing-more-singular-vectors">3.4.3. Computing more singular vectors</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#back-to-dimensionality-reduction">3.4.4. Back to dimensionality reduction</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#connection-between-the-spectral-decomposition-and-the-singular-value-decomposition">3.4.5. Connection between the spectral decomposition and the singular value decomposition</a></li>
 </ul>
   </nav></div>
 

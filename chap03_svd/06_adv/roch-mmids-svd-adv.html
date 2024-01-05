@@ -197,7 +197,7 @@ const thebe_selector_output = ".output, .cell_output"
 </ul>
 </li>
 <li class="toctree-l1 current active has-children"><a class="reference internal" href="../00_intro/roch-mmids-svd-intro.html">3. Singular value decomposition</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-3"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="../01_motiv/roch-mmids-svd-motiv.html">3.1. Motivating example: exploratory data analysis of viral evolution</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../01_motiv/roch-mmids-svd-motiv.html">3.1. Motivating example: vizualizing genetic data</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../02_spectral/roch-mmids-svd-spectral.html">3.2. Background: review of spectral decomposition</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../03_svd/roch-mmids-svd-svd.html">3.3. Dimension reduction and approximating subspaces</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../04_power/roch-mmids-svd-power.html">3.4. Power iteration</a></li>
@@ -401,10 +401,9 @@ document.write(`
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#computing-more-singular-vectors">3.6.1. Computing more singular vectors</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#low-rank-approximation">3.6.2. Low-rank approximation</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#why-project">3.6.3. Why project?</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#additional-proofs">3.6.4. Additional proofs</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#low-rank-approximation">3.6.1. Low-rank approximation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#why-project">3.6.2. Why project?</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#additional-proofs">3.6.3. Additional proofs</a></li>
 </ul>
             </nav>
         </div>
@@ -420,102 +419,8 @@ document.write(`
 <section id="advanced-material">
 <h1><span class="section-number">3.6. </span>Advanced material<a class="headerlink" href="#advanced-material" title="Permalink to this headline">#</a></h1>
 <p>We cover various advanced topics.</p>
-<section id="computing-more-singular-vectors">
-<h2><span class="section-number">3.6.1. </span>Computing more singular vectors<a class="headerlink" href="#computing-more-singular-vectors" title="Permalink to this headline">#</a></h2>
-<p>We have shown how to compute the first singular vector. How do we compute more singular vectors? One approach is to first compute <span class="math notranslate nohighlight">\(\mathbf{v}_1\)</span> (or <span class="math notranslate nohighlight">\(-\mathbf{v}_1\)</span>), then find a vector <span class="math notranslate nohighlight">\(\mathbf{y}\)</span> orthogonal to it, and proceed as above. And then we repeat until we have all <span class="math notranslate nohighlight">\(m\)</span> right singular vectors.</p>
-<p>We are often interested only in the top, say <span class="math notranslate nohighlight">\(\ell &lt; m\)</span>, singular vectors. An alternative approach in that case is to start with <span class="math notranslate nohighlight">\(\ell\)</span> random vectors and, first, find an orthonormal basis for the space they span. Then to quote [BHK, Section 3.7.1]:</p>
-<blockquote>
-<div><p>Then compute <span class="math notranslate nohighlight">\(B\)</span> times each of the basis vectors, and find an orthonormal basis for the space spanned by the resulting vectors. Intuitively, one has applied <span class="math notranslate nohighlight">\(B\)</span> to a subspace rather than a single vector. One repeatedly applies <span class="math notranslate nohighlight">\(B\)</span> to the subspace, calculating an orthonormal basis after each application to prevent the subspace collapsing to the one dimensional subspace spanned by the first singular vector.</p>
-</div></blockquote>
-<p>We will not prove here that this approach, known as orthogonal iteration, works. The proof is similar to that of the <em>Power Iteration Lemma</em>.</p>
-<p><strong>NUMERICAL CORNER:</strong> We implement this last algorithm. We will need our previous implementation of <em>Gram-Schimdt</em>.</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">svd</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">l</span><span class="p">,</span> <span class="n">maxiter</span><span class="o">=</span><span class="mi">100</span><span class="p">):</span>
-    <span class="n">V</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,(</span><span class="n">np</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="n">A</span><span class="p">,</span><span class="mi">1</span><span class="p">),</span><span class="n">l</span><span class="p">))</span>
-    <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">maxiter</span><span class="p">):</span>
-        <span class="n">W</span> <span class="o">=</span> <span class="n">A</span> <span class="o">@</span> <span class="n">V</span>
-        <span class="n">Z</span> <span class="o">=</span> <span class="n">A</span><span class="o">.</span><span class="n">T</span> <span class="o">@</span> <span class="n">W</span>
-        <span class="n">V</span><span class="p">,</span> <span class="n">R</span> <span class="o">=</span> <span class="n">mmids</span><span class="o">.</span><span class="n">gramschmidt</span><span class="p">(</span><span class="n">Z</span><span class="p">)</span>
-    <span class="n">W</span> <span class="o">=</span> <span class="n">A</span> <span class="o">@</span> <span class="n">V</span>
-    <span class="n">S</span> <span class="o">=</span> <span class="p">[</span><span class="n">LA</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">W</span><span class="p">[:,</span> <span class="n">i</span><span class="p">])</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="n">W</span><span class="p">,</span><span class="mi">1</span><span class="p">))]</span>
-    <span class="n">U</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">stack</span><span class="p">([</span><span class="n">W</span><span class="p">[:,</span><span class="n">i</span><span class="p">]</span><span class="o">/</span><span class="n">S</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="n">W</span><span class="p">,</span><span class="mi">1</span><span class="p">))],</span><span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">U</span><span class="p">,</span> <span class="n">S</span><span class="p">,</span> <span class="n">V</span>
-</pre></div>
-</div>
-</div>
-</div>
-<p>Note that above we avoided forming the matrix <span class="math notranslate nohighlight">\(A^T A\)</span>. With a small number of iterations, that approach potentially requires fewer arithmetic operations overall and it allows to take advantage of the possible sparsity of <span class="math notranslate nohighlight">\(A\)</span> (i.e. the fact that it may have many zeros).</p>
-<p>We apply it again to our two-cluster example.</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">d</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">w</span> <span class="o">=</span> <span class="mi">1000</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mf">3.</span>
-<span class="n">X1</span><span class="p">,</span> <span class="n">X2</span> <span class="o">=</span> <span class="n">mmids</span><span class="o">.</span><span class="n">two_clusters</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">w</span><span class="p">)</span>
-<span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">X1</span><span class="p">,</span> <span class="n">X2</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-<p>Let’s try again, but after projecting on the top two singular vectors. Recall that this corresponds to finding the best two-dimensional approximating subspace. The projection can be computed using the truncated SVD <span class="math notranslate nohighlight">\(Z= U_{(2)} \Sigma_{(2)} V_{(2)}^T\)</span>. We can interpret the rows of <span class="math notranslate nohighlight">\(U_{(2)} \Sigma_{(2)}\)</span> as the coefficients of each data point in the basis <span class="math notranslate nohighlight">\(\mathbf{v}_1,\mathbf{v}_2\)</span>. We will work in that basis.</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">U</span><span class="p">,</span> <span class="n">S</span><span class="p">,</span> <span class="n">V</span> <span class="o">=</span> <span class="n">svd</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
-<span class="n">Xproj</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">stack</span><span class="p">((</span><span class="n">U</span><span class="p">[:,</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="n">S</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">U</span><span class="p">[:,</span><span class="mi">1</span><span class="p">]</span><span class="o">*</span><span class="n">S</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
-<span class="n">assign</span> <span class="o">=</span> <span class="n">mmids</span><span class="o">.</span><span class="n">kmeans</span><span class="p">(</span><span class="n">Xproj</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4852.714299912972
-2455.3342669438193
-2453.3018578718893
-2453.3018578718893
-2453.3018578718893
-2453.3018578718893
-2453.3018578718893
-2453.3018578718893
-2453.3018578718893
-2453.3018578718893
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
-<span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">111</span><span class="p">,</span><span class="n">aspect</span><span class="o">=</span><span class="s1">&#39;equal&#39;</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">X</span><span class="p">[:,</span><span class="mi">0</span><span class="p">],</span> <span class="n">X</span><span class="p">[:,</span><span class="mi">1</span><span class="p">],</span> <span class="n">c</span><span class="o">=</span><span class="n">assign</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<img alt="../../_images/73c30ddcd8090cc09acefd3f48368de016b6c78c199f705783a4c78468bbc07b.png" src="../../_images/73c30ddcd8090cc09acefd3f48368de016b6c78c199f705783a4c78468bbc07b.png" />
-</div>
-</div>
-<p>Finally, looking at the first two right singular vectors, we see that the first one does align quite well with the first dimension.</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">stack</span><span class="p">((</span><span class="n">V</span><span class="p">[:,</span><span class="mi">0</span><span class="p">],</span> <span class="n">V</span><span class="p">[:,</span><span class="mi">1</span><span class="p">]),</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">))</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[[-0.78532229  0.01276602]
- [ 0.02628204 -0.00697769]
- [-0.04267928  0.02063803]
- ...
- [ 0.00846189 -0.01257502]
- [ 0.01411465  0.06385812]
- [ 0.00299769  0.06254379]]
-</pre></div>
-</div>
-</div>
-</div>
-<p><span class="math notranslate nohighlight">\(\unlhd\)</span></p>
-</section>
 <section id="low-rank-approximation">
-<h2><span class="section-number">3.6.2. </span>Low-rank approximation<a class="headerlink" href="#low-rank-approximation" title="Permalink to this headline">#</a></h2>
+<h2><span class="section-number">3.6.1. </span>Low-rank approximation<a class="headerlink" href="#low-rank-approximation" title="Permalink to this headline">#</a></h2>
 <p>Now that we have defined a notion of distance between matrices, we will consider the problem of finding a good approximation to a matrix <span class="math notranslate nohighlight">\(A\)</span> among all matrices of rank at most <span class="math notranslate nohighlight">\(k\)</span>. We will start with the Frobenius norm, which is easier to work with, and we will show later on that the solution is the same under the induced norm.</p>
 <p>The solution to this problem will be familiar. In essence, we will re-interpret our solution to the best approximating subspace as a low-rank approximation.</p>
 <p><strong>Low-rank approximation in the Frobenius norm</strong> From the proof of the <em>Row Rank Equals Column Rank Lemma</em>, it follows that a rank-<span class="math notranslate nohighlight">\(r\)</span> matrix <span class="math notranslate nohighlight">\(A\)</span> can be written as a sum of <span class="math notranslate nohighlight">\(r\)</span> rank-<span class="math notranslate nohighlight">\(1\)</span> matrices</p>
@@ -682,14 +587,14 @@ A = \sum_{j=1}^r \sigma_j \mathbf{u}_j \mathbf{v}_j^T
 <p>By the <em>Matrix Norms and Singular Values Lemma</em>, <span class="math notranslate nohighlight">\(\sigma_{k+1}^2 = \|A - A_k\|_2\)</span> and we are done. <span class="math notranslate nohighlight">\(\square\)</span></p>
 </section>
 <section id="why-project">
-<h2><span class="section-number">3.6.3. </span>Why project?<a class="headerlink" href="#why-project" title="Permalink to this headline">#</a></h2>
+<h2><span class="section-number">3.6.2. </span>Why project?<a class="headerlink" href="#why-project" title="Permalink to this headline">#</a></h2>
 <p>We return to <span class="math notranslate nohighlight">\(k\)</span>-means clustering and why projecting to a lower-dimensional subspace can produce better results. We prove a simple inequality that provides some insight. Quoting [BHK, Section 7.5.1]:</p>
 <blockquote>
 <div><p>[…] let’s understand the central advantage of doing the projection to [the top <span class="math notranslate nohighlight">\(k\)</span> right singular vectors]. It is simply that for any reasonable (unknown) clustering of data points, the projection brings data points closer to their cluster centers.</p>
 </div></blockquote>
 <p>To elaborate, suppose we have <span class="math notranslate nohighlight">\(n\)</span> data points in <span class="math notranslate nohighlight">\(d\)</span> dimensions in the form of the rows <span class="math notranslate nohighlight">\(\mathbf{a}_i^T\)</span>, <span class="math notranslate nohighlight">\(i=1\ldots, n\)</span>, of matrix <span class="math notranslate nohighlight">\(A \in \mathbb{A}^{n \times d}\)</span>, where we assume that <span class="math notranslate nohighlight">\(n &gt; d\)</span> and that <span class="math notranslate nohighlight">\(A\)</span> has full column rank. Imagine these data points come from an unknown ground-truth <span class="math notranslate nohighlight">\(k\)</span>-clustering assignment <span class="math notranslate nohighlight">\(g(i) \in [k]\)</span>, <span class="math notranslate nohighlight">\(i = 1,\ldots, n\)</span>, with corresponding unknown centers <span class="math notranslate nohighlight">\(\mathbf{c}_j\)</span>, <span class="math notranslate nohighlight">\(j = 1,\ldots, k\)</span>, for <span class="math notranslate nohighlight">\(g(i) = j\)</span>. Let <span class="math notranslate nohighlight">\(C \in \mathbb{R}^{n \times d}\)</span> be the corresponding matrix, that is, row <span class="math notranslate nohighlight">\(i\)</span> of <span class="math notranslate nohighlight">\(C\)</span> is <span class="math notranslate nohighlight">\(\mathbf{c}_j^T\)</span> if <span class="math notranslate nohighlight">\(g(i) = j\)</span>. The <span class="math notranslate nohighlight">\(k\)</span>-means objective of the true clustering is then</p>
-<div class="amsmath math notranslate nohighlight" id="equation-8d78156d-9e68-45ff-b52d-5593825943e0">
-<span class="eqno">(3.1)<a class="headerlink" href="#equation-8d78156d-9e68-45ff-b52d-5593825943e0" title="Permalink to this equation">#</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-9f23f6cc-8776-4a26-a81c-59120f0442a9">
+<span class="eqno">(3.1)<a class="headerlink" href="#equation-9f23f6cc-8776-4a26-a81c-59120f0442a9" title="Permalink to this equation">#</a></span>\[\begin{align}
 \sum_{j\in [k]} \sum_{i:g(i)=j} \|\mathbf{a}_i - \mathbf{c}_{j}\|^2
 &amp;= \sum_{j\in [k]} \sum_{i:g(i)=j} \sum_{\ell=1}^d (a_{i,\ell} - c_{j,\ell})^2\\
 &amp;= \sum_{i=1}^n \sum_{\ell=1}^d (a_{i,\ell} - c_{g(i),\ell})^2\\
@@ -798,7 +703,7 @@ and let <span class="math notranslate nohighlight">\(A_k\)</span> be the truncat
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/ea0ca561bad358123d1e5eb5c74e94f7f69624e60f7bfe1c3873c44facb871e1.png" src="../../_images/ea0ca561bad358123d1e5eb5c74e94f7f69624e60f7bfe1c3873c44facb871e1.png" />
+<img alt="../../_images/1dc71dbadd1355e5dc583207856a80f13b87efd177d684c68eca3fd584795ca7.png" src="../../_images/1dc71dbadd1355e5dc583207856a80f13b87efd177d684c68eca3fd584795ca7.png" />
 </div>
 </div>
 <p>The <span class="math notranslate nohighlight">\(k\)</span>-means objective with respect to the true centers under the full-dimensional data is:</p>
@@ -810,7 +715,7 @@ and let <span class="math notranslate nohighlight">\(A_k\)</span> be the truncat
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>199662.9971317842
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>200925.6690681811
 </pre></div>
 </div>
 </div>
@@ -824,7 +729,7 @@ and let <span class="math notranslate nohighlight">\(A_k\)</span> be the truncat
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2082.266426839443
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2095.357155856165
 </pre></div>
 </div>
 </div>
@@ -839,7 +744,7 @@ and let <span class="math notranslate nohighlight">\(A_k\)</span> be the truncat
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1465.7259592702069
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1525.437425631981
 </pre></div>
 </div>
 </div>
@@ -847,7 +752,7 @@ and let <span class="math notranslate nohighlight">\(A_k\)</span> be the truncat
 <p><span class="math notranslate nohighlight">\(\unlhd\)</span></p>
 </section>
 <section id="additional-proofs">
-<h2><span class="section-number">3.6.4. </span>Additional proofs<a class="headerlink" href="#additional-proofs" title="Permalink to this headline">#</a></h2>
+<h2><span class="section-number">3.6.3. </span>Additional proofs<a class="headerlink" href="#additional-proofs" title="Permalink to this headline">#</a></h2>
 <p>In this section, we give several proofs that were left out in this chapter.</p>
 <p><strong>Proof of Spectral Theorem</strong> We start with a proof that distinct eigenvalues correspond to linearly independent eigenvectors.</p>
 <p><em>Proof:</em> <em>(Number of Eigenvalues)</em> Assume by contradiction that <span class="math notranslate nohighlight">\(\mathbf{x}_1, \ldots, \mathbf{x}_m\)</span> are linearly dependent. By the <em>Linear Dependence Lemma</em>, there is <span class="math notranslate nohighlight">\(k \leq m\)</span> such that</p>
@@ -1269,10 +1174,9 @@ from a <a class="reference external" href="https://en.wikipedia.org/wiki/Taylor_
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#computing-more-singular-vectors">3.6.1. Computing more singular vectors</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#low-rank-approximation">3.6.2. Low-rank approximation</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#why-project">3.6.3. Why project?</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#additional-proofs">3.6.4. Additional proofs</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#low-rank-approximation">3.6.1. Low-rank approximation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#why-project">3.6.2. Why project?</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#additional-proofs">3.6.3. Additional proofs</a></li>
 </ul>
   </nav></div>
 

@@ -1,0 +1,910 @@
+
+
+<!DOCTYPE html>
+
+
+<html data-content_root="" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>3.4. Advanced material &#8212; MMiDS Online Book</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=5b4479735964841361fd" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" href="../../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=5b4479735964841361fd" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd" />
+  <script src="../../_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=5b4479735964841361fd"></script>
+
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/clipboard.min.js"></script>
+    <script src="../../_static/copybutton.js"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../_static/design-tabs.js"></script>
+    <script loading_method="async" src="https://www.googletagmanager.com/gtag/js?id=G-P5E8DW088F"></script>
+    <script>
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){ dataLayer.push(arguments); }
+                gtag('js', new Date());
+                gtag('config', 'G-P5E8DW088F');
+            </script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="../../_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'chap03_svd/06_adv/roch-mmids-svd-adv';</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="3.5. Other resources" href="../summary_chap03.html" />
+    <link rel="prev" title="3.3. Dimension reduction and approximating subspaces" href="../03_svd/roch-mmids-svd-svd.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="None"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+
+<a class="navbar-brand logo" href="../../intro.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/mmids-cover-small.jpg" class="logo__image only-light" alt="MMiDS Online Book - Home"/>
+    <script>document.write(`<img src="../../_static/mmids-cover-small.jpg" class="logo__image only-dark" alt="MMiDS Online Book - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../intro.html">
+                    <b>MATHEMATICAL METHODS in DATA SCIENCE (with Python)</b>
+                </a>
+            </li>
+        </ul>
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../chap01_intro/00_intro/roch-mmids-intro-intro.html">1. Introduction</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../chap01_intro/01_motiv/roch-mmids-intro-motiv.html">1.1. Motivating example: species identification</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap01_intro/02_review/roch-mmids-intro-review.html">1.2. Background: review of basic linear algebra, calculus, and probability</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap01_intro/03_clustering/roch-mmids-intro-clustering.html">1.3. Clustering: an objective, an algorithm and a guarantee</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap01_intro/04_highdim/roch-mmids-intro-highdim.html">1.4. Some observations about high-dimensional data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap01_intro/05_adv/roch-mmids-intro-adv.html">1.5. Advanced material</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap01_intro/summary_chap01.html">1.6. Other resources</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../chap02_ls/00_intro/roch-mmids-ls-intro.html">2. Least squares</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../chap02_ls/01_motiv/roch-mmids-ls-motiv.html">2.1. Motivating example: predicting sales</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap02_ls/02_subspaces/roch-mmids-ls-spaces.html">2.2. Background: linear spaces</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap02_ls/03_orthog/roch-mmids-ls-orthog.html">2.3. A key concept: orthogonality</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap02_ls/04_overdetermined/roch-mmids-ls-overdetermined.html">2.4. Overdetermined linear systems and regression analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap02_ls/05_qr/roch-mmids-ls-qr.html">2.5. QR decomposition and Householder transformations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap02_ls/06_adv/roch-mmids-ls-adv.html">2.6. Advanced material</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap02_ls/summary_chap02.html">2.7. Other resources</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="../00_intro/roch-mmids-svd-intro.html">3. Singular value decomposition</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-3"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../01_motiv/roch-mmids-svd-motiv.html">3.1. Motivating example: exploratory data analysis of viral evolution</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../02_spectral/roch-mmids-svd-spectral.html">3.2. Background: review of spectral decomposition</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../03_svd/roch-mmids-svd-svd.html">3.3. Dimension reduction and approximating subspaces</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">3.4. Advanced material</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../summary_chap03.html">3.5. Other resources</a></li>
+</ul>
+</li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/MMiDS-textbook/MMiDS-textbook.github.io" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/MMiDS-textbook/MMiDS-textbook.github.io/issues/new?title=Issue%20on%20page%20%2Fchap03_svd/06_adv/roch-mmids-svd-adv.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/chap03_svd/06_adv/roch-mmids-svd-adv.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Advanced material</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#some-proofs-from-spectral-theory">3.4.1. Some proofs from spectral theory</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#proof-of-greedy-finds-best-subspace">3.4.2. Proof of Greedy Finds Best Subspace</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#proof-of-existence-of-the-svd">3.4.3. Proof of existence of the SVD</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <p><span class="math notranslate nohighlight">\(\newcommand{\horz}{\rule[.5ex]{2.5ex}{0.5pt}}\)</span></p>
+<section id="advanced-material">
+<h1><span class="section-number">3.4. </span>Advanced material<a class="headerlink" href="#advanced-material" title="Permalink to this headline">#</a></h1>
+<p>We cover various advances topics.</p>
+<section id="some-proofs-from-spectral-theory">
+<h2><span class="section-number">3.4.1. </span>Some proofs from spectral theory<a class="headerlink" href="#some-proofs-from-spectral-theory" title="Permalink to this headline">#</a></h2>
+<p>In this section, we give a proof of the spectral theorem, as well as proofs of a few other related results.</p>
+<p>We start with a proof that distinct eigenvalues correspond to linearly independent eigenvectors.</p>
+<p><em>Proof:</em> <em>(Number of Eigenvalues)</em> Assume by contradiction that <span class="math notranslate nohighlight">\(\mathbf{x}_1, \ldots, \mathbf{x}_m\)</span> are linearly dependent. By the <em>Linear Dependence Lemma</em>, there is <span class="math notranslate nohighlight">\(k \leq m\)</span> such that</p>
+<div class="math notranslate nohighlight">
+\[
+\mathbf{x}_k \in \mathrm{span}(\mathbf{x}_1, \ldots, \mathbf{x}_{k-1})
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(\mathbf{x}_1, \ldots, \mathbf{x}_{k-1}\)</span> are linearly independent. In particular, there are <span class="math notranslate nohighlight">\(a_1, \ldots, a_{k-1}\)</span> such that</p>
+<div class="math notranslate nohighlight">
+\[
+\mathbf{x}_k = a_1 \mathbf{x}_1 + \cdots + a_{k-1} \mathbf{x}_{k-1}.
+\]</div>
+<p>Transform the equation above in two ways: (1) multiply both sides by <span class="math notranslate nohighlight">\(\lambda_k\)</span> and (2) apply <span class="math notranslate nohighlight">\(A\)</span>. Then subtract the resulting equations. That leads to</p>
+<div class="math notranslate nohighlight">
+\[
+\mathbf{0}
+= a_1 (\lambda_k - \lambda_1) \mathbf{x}_1 + \cdots
++ a_{k-1} (\lambda_k - \lambda_{k-1}) \mathbf{x}_{k-1}. 
+\]</div>
+<p>Because the <span class="math notranslate nohighlight">\(\lambda_i\)</span>’s are distinct and <span class="math notranslate nohighlight">\(\mathbf{x}_1, \ldots, \mathbf{x}_{k-1}\)</span> are linearly independent, we must have <span class="math notranslate nohighlight">\(a_1 = \cdots = a_{k-1} = 0\)</span>. But that implies that <span class="math notranslate nohighlight">\(\mathbf{x}_k = \mathbf{0}\)</span>, a contradiction.</p>
+<p>For the second claim, if there were more than <span class="math notranslate nohighlight">\(d\)</span> distinct eigenvalues, then there would be more than <span class="math notranslate nohighlight">\(d\)</span> corresponding linearly independent eigenvectors by the first claim, a contradiction. <span class="math notranslate nohighlight">\(\square\)</span></p>
+<p>One might hope that the SVD of a symmetric matrix generates identical left and right singular vectors, thereby producing candidates for the sought eigenvectors. However that is not the case.</p>
+<p><strong>EXAMPLE:</strong> It can be shown that an SVD of <span class="math notranslate nohighlight">\(A = (-1)\)</span> is <span class="math notranslate nohighlight">\(A = (1)\,(1)\,(-1)\)</span>. That is, <span class="math notranslate nohighlight">\(\mathbf{u}_1 = (1)\)</span> and <span class="math notranslate nohighlight">\(\mathbf{v} = (-1)\)</span>. <span class="math notranslate nohighlight">\(\lhd\)</span></p>
+<p>However, the same roadmap that led to the SVD can be made to produce a spectral decomposition.</p>
+<p>We will need the following block matrix formula. Suppose</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+A
+=
+\begin{pmatrix}
+A_{11} \\ A_{21}
+\end{pmatrix}
+\quad
+\text{and}
+\quad
+B
+=
+\begin{pmatrix}
+B_{11} &amp; B_{12}
+\end{pmatrix}
+\end{split}\]</div>
+<p>where <span class="math notranslate nohighlight">\(A_{11} \in \mathbb{R}^{n_1\times p}\)</span>, <span class="math notranslate nohighlight">\(A_{21} \in \mathbb{R}^{n_2\times p}\)</span>, <span class="math notranslate nohighlight">\(B_{11} \in \mathbb{R}^{p\times n_1}\)</span>, <span class="math notranslate nohighlight">\(B_{12} \in \mathbb{R}^{p\times n_2}\)</span>, then</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+A B
+=
+\begin{pmatrix}
+A_{11} B_{11} &amp; A_{11} B_{12} \\ 
+A_{21} B_{11} &amp; A_{21} B_{12}
+\end{pmatrix}.
+\end{split}\]</div>
+<p>Indeed this is just a special case of the <span class="math notranslate nohighlight">\(2 \times 2\)</span> block matrix product formula we have encountered previously, with empty blocks <span class="math notranslate nohighlight">\(A_{12}, A_{22}, B_{21}, B_{22}\)</span>.</p>
+<p><em>Proof idea (Spectral Theorem):</em> Similarly to how we used Householder transformations to “add zeros under the diagonal”, here we will use a sequence of orthogonal transformations to add zeros both below and above the diagonal. Specifically, we construct a sequence of orthogonal matrices <span class="math notranslate nohighlight">\(\hat{W}_1,\ldots, \hat{W}_d\)</span> such that</p>
+<div class="math notranslate nohighlight">
+\[
+\Lambda = W_d^T \cdots W_2^T W_1^T A W_1 W_2 \cdots W_d
+\]</div>
+<p>is diagonal. Then the matrix <span class="math notranslate nohighlight">\(Q\)</span> is simply <span class="math notranslate nohighlight">\(W_1 W_2 \cdots W_d\)</span> (check it!).</p>
+<p>To define these matrices, we use a greedy sequence maximizing the <a class="reference external" href="https://en.wikipedia.org/wiki/Quadratic_form#Real_quadratic_forms">quadratic form</a> <span class="math notranslate nohighlight">\(\langle \mathbf{v}, A \mathbf{v}\rangle\)</span>. How is this quadratic form related to eigenvalues? Note that, for a unit eigenvector <span class="math notranslate nohighlight">\(\mathbf{v}\)</span> with eigenvalue <span class="math notranslate nohighlight">\(\lambda\)</span>, we have <span class="math notranslate nohighlight">\(\langle \mathbf{v}, A \mathbf{v}\rangle = \langle \mathbf{v}, \lambda \mathbf{v}\rangle = \lambda\)</span>.</p>
+<p><em>Proof:</em> <em>(Spectral Theorem)</em> We proceed by induction.</p>
+<p><strong>A first eigenvector</strong> Let <span class="math notranslate nohighlight">\(A_1 = A\)</span>. Define</p>
+<div class="math notranslate nohighlight">
+\[
+\mathbf{v}_1 \in \arg\max\{\langle \mathbf{v}, A_1 \mathbf{v}\rangle:\|\mathbf{v}\| = 1\}
+\]</div>
+<p>which exists by the <em>Extreme Value Theorem</em>, and further define</p>
+<div class="math notranslate nohighlight">
+\[
+\lambda_1 = \max\{\langle \mathbf{v}, A_1 \mathbf{v}\rangle:\|\mathbf{v}\| = 1\}.
+\]</div>
+<p>Complete <span class="math notranslate nohighlight">\(\mathbf{v}_1\)</span> into an orthonormal basis of <span class="math notranslate nohighlight">\(\mathbb{R}^d\)</span>, <span class="math notranslate nohighlight">\(\mathbf{v}_1\)</span>, <span class="math notranslate nohighlight">\(\hat{\mathbf{v}}_2, \ldots, \hat{\mathbf{v}}_d\)</span> (see <em>Exercise 2.20</em>), and form the block matrix</p>
+<div class="math notranslate nohighlight">
+\[
+\hat{W}_1 
+=
+\begin{pmatrix}
+\mathbf{v}_1 &amp; \hat{V}_1
+\end{pmatrix}
+\]</div>
+<p>where the columns of <span class="math notranslate nohighlight">\(\hat{V}_1\)</span> are <span class="math notranslate nohighlight">\(\hat{\mathbf{v}}_2, \ldots, \hat{\mathbf{v}}_d\)</span>. Note that <span class="math notranslate nohighlight">\(\hat{W}_1\)</span> is orthogonal by construction.</p>
+<p><strong>Getting one step closer to diagonalization</strong> We show next that <span class="math notranslate nohighlight">\(W_1\)</span> gets us one step closer to a diagonal matrix by similarity transformation. Note first that</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{align*}
+\hat{W}_1^T A_1 \hat{W}_1
+&amp;=
+\begin{pmatrix}
+\mathbf{v}_1^T \\ \hat{V}_1^T
+\end{pmatrix}
+A_1
+\begin{pmatrix}
+\mathbf{v}_1 &amp; \hat{V}_1
+\end{pmatrix}\\
+&amp;=
+\begin{pmatrix}
+\mathbf{v}_1^T \\ \hat{V}_1^T
+\end{pmatrix}
+\begin{pmatrix}
+A_1 \mathbf{v}_1 &amp; A_1 \hat{V}_1
+\end{pmatrix}\\
+&amp;=
+\begin{pmatrix}
+\mathbf{v}_1^T A_1 \mathbf{v}_1 &amp; \mathbf{v}_1^T A_1 \hat{V}_1\\
+\hat{V}_1^T A_1 \mathbf{v}_1 &amp; \hat{V}_1^T A_1 \hat{V}_1
+\end{pmatrix}\\
+&amp;= 
+\begin{pmatrix}
+\lambda_1 &amp; \mathbf{w}_1^T \\
+\mathbf{w}_1 &amp; A_2
+\end{pmatrix}
+\end{align*}
+\end{split}\]</div>
+<p>where <span class="math notranslate nohighlight">\(\mathbf{w}_1 = \hat{V}_1^T A_1 \mathbf{v}_1\)</span> and <span class="math notranslate nohighlight">\(A_2 = \hat{V}_1^T A_1 \hat{V}_1\)</span>.</p>
+<p>The key claim is that <span class="math notranslate nohighlight">\(\mathbf{w}_1 = \mathbf{0}\)</span>. This follows from a contradiction argument. Indeed, suppose <span class="math notranslate nohighlight">\(\mathbf{w}_1 \neq \mathbf{0}\)</span> and consider the unit vector (<em>Exercise 3.65</em> asks for a proof that <span class="math notranslate nohighlight">\(\|\mathbf{z}\| = 1\)</span>)</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\mathbf{z}
+=
+\hat{W}_1 
+\frac{1}{\sqrt{1 + \delta^2 \|\mathbf{w}_1\|^2}} \begin{pmatrix}
+1 \\
+\delta \mathbf{w}_1
+\end{pmatrix}
+\end{split}\]</div>
+<p>which, by the formula in <em>Exercise 2.52</em>, achieves the objective value</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+\mathbf{z}^T A_1 \mathbf{z}
+&amp;=
+\frac{1}{1 + \delta^2 \|\mathbf{w}_1\|^2}
+\begin{pmatrix}
+1 \\
+\delta \mathbf{w}_1
+\end{pmatrix}^T
+\begin{pmatrix}
+\lambda_1 &amp; \mathbf{w}_1^T \\
+\mathbf{w}_1 &amp; A_2
+\end{pmatrix}
+\begin{pmatrix}
+1 \\
+\delta \mathbf{w}_1
+\end{pmatrix}\\
+&amp;= 
+\frac{1}{1 + \delta^2 \|\mathbf{w}_1\|^2}
+\left(
+\lambda_1
++ 2 \delta \|\mathbf{w}_1\|^2
++ \delta^2 \mathbf{w}_1^T A_2 \mathbf{w}_1
+\right).
+\end{align*}\]</div>
+<p>By the <a class="reference external" href="https://en.wikipedia.org/wiki/Geometric_series">sum of a geometric series</a>, for <span class="math notranslate nohighlight">\(\varepsilon \in (0,1)\)</span>,</p>
+<div class="math notranslate nohighlight">
+\[
+\frac{1}{1 + \varepsilon^2}
+= 1 - \varepsilon^2 + \varepsilon^4 + \cdots.
+\]</div>
+<p>So, for <span class="math notranslate nohighlight">\(\delta &gt; 0\)</span> small enough,</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+\mathbf{z}^T A_1 \mathbf{z}
+&amp;\approx
+(\lambda_1
++ 2 \delta \|\mathbf{w}_1\|^2
++ \delta^2 \mathbf{w}_1^T A_2 \mathbf{w}_1)
+(1 - \delta^2 \|\mathbf{w}_1\|^2)\\
+&amp;\approx \lambda_1 
++ 2 \delta \|\mathbf{w}_1\|^2
++ C \delta^2\\ 
+&amp;&gt; \lambda_1
+\end{align*}\]</div>
+<p>where <span class="math notranslate nohighlight">\(C \in \mathbb{R}\)</span> depends on <span class="math notranslate nohighlight">\(\mathbf{w}_1\)</span> and <span class="math notranslate nohighlight">\(A_2\)</span>, and where we ignored the “higher-order” terms involving <span class="math notranslate nohighlight">\(\delta^3, \delta^4, \delta^5, \ldots\)</span> which are negligible. That gives the desired contradiction - that is, it would imply the existence of a vector achieving a stricter better objective value than the optimal <span class="math notranslate nohighlight">\(\mathbf{v}_1\)</span>. (See <em>Exercise 3.65</em> for a more formal derivation.)</p>
+<p>So, letting <span class="math notranslate nohighlight">\(W_1 = \hat{W}_1\)</span>,</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+W_1^T A_1 W_1
+= 
+\begin{pmatrix}
+\lambda_1 &amp; \mathbf{0} \\
+\mathbf{0} &amp; A_2
+\end{pmatrix}.
+\end{split}\]</div>
+<p>Finally note that <span class="math notranslate nohighlight">\(A_2 = \hat{V}_1^T A_1 \hat{V}_1\)</span> is symmetric</p>
+<div class="math notranslate nohighlight">
+\[
+A_2^T = (\hat{V}_1^T A_1 \hat{V}_1)^T = \hat{V}_1^T A_1^T \hat{V}_1 = \hat{V}_1^T A_1 \hat{V}_1 = A_2
+\]</div>
+<p>by the symmetry of <span class="math notranslate nohighlight">\(A_1\)</span> itself.</p>
+<p><strong>Next step of the induction</strong> Apply the same argument to the symmetric matrix <span class="math notranslate nohighlight">\(A_2 \in \mathbb{R}^{(d-1)\times (d-1)}\)</span>, let <span class="math notranslate nohighlight">\(\hat{W}_2 = (\mathbf{v}_2\ \hat{V}_2) \in \mathbb{R}^{(d-1)\times (d-1)}\)</span> be the corresponding orthogonal matrix, and define <span class="math notranslate nohighlight">\(\lambda_2\)</span> and <span class="math notranslate nohighlight">\(A_3\)</span> through the equation</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\hat{W}_2^T A_2 \hat{W}_2
+= 
+\begin{pmatrix}
+\lambda_2 &amp; \mathbf{0} \\
+\mathbf{0} &amp; A_3
+\end{pmatrix}.
+\end{split}\]</div>
+<p>Now define the block matrix</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+W_2
+=
+\begin{pmatrix}
+1 &amp; \mathbf{0}\\
+\mathbf{0} &amp; \hat{W}_2
+\end{pmatrix}.
+\end{split}\]</div>
+<p>Observe that (check it!)</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+W_2^T W_1^T A_1 W_1 W_2
+= W_2^T \begin{pmatrix}
+\lambda_1 &amp; \mathbf{0} \\
+\mathbf{0} &amp; A_2
+\end{pmatrix}
+W_2
+=
+\begin{pmatrix}
+\lambda_1 &amp; \mathbf{0}\\
+\mathbf{0} &amp; \hat{W}_2^T A_2 \hat{W}_2
+\end{pmatrix}
+=\begin{pmatrix}
+\lambda_1 &amp; 0 &amp; \mathbf{0} \\
+0 &amp; \lambda_2 &amp; \mathbf{0} \\
+\mathbf{0} &amp; \mathbf{0} &amp; A_3
+\end{pmatrix}.
+\end{split}\]</div>
+<p>Proceeding similarly by induction gives the claim. <span class="math notranslate nohighlight">\(\square\)</span></p>
+<p><strong>Remarks:</strong> A couple remarks about the proof:</p>
+<p>(1) The fact that <span class="math notranslate nohighlight">\(\mathbf{w}_1 \neq \mathbf{0}\)</span> is perhaps more intuitively understood through vector calculus by using the <a class="reference external" href="https://en.wikipedia.org/wiki/Lagrange_multiplier">method of Lagrangian multipliers</a> on <span class="math notranslate nohighlight">\(\max\{\langle \mathbf{v}, A_1 \mathbf{v}\rangle:\|\mathbf{v}\| = 1\}\)</span> to see that <span class="math notranslate nohighlight">\(A_1 \mathbf{v}_1\)</span> must be proportional to <span class="math notranslate nohighlight">\(\mathbf{v}_1\)</span>. Hence <span class="math notranslate nohighlight">\(\mathbf{w}_1 = \hat{V}_1^T A_1 \mathbf{v}_1 = \mathbf{0}\)</span> by construction of <span class="math notranslate nohighlight">\(\hat{V}_1^T\)</span>. Making this argument rigorous is beyond this course.</p>
+<p>(2) By construction, the vector <span class="math notranslate nohighlight">\(\mathbf{v}_2\)</span> (i.e., the first column of <span class="math notranslate nohighlight">\(\hat{W}_2\)</span>) is the solution to</p>
+<div class="math notranslate nohighlight">
+\[
+\mathbf{v}_2 \in \arg\max\{\langle \mathbf{v}, A_2 \mathbf{v}\rangle:\|\mathbf{v}\| = 1\}.
+\]</div>
+<p>Note that, by definition of <span class="math notranslate nohighlight">\(A_2\)</span> (and the fact that <span class="math notranslate nohighlight">\(A_1 = A\)</span>),</p>
+<div class="math notranslate nohighlight">
+\[
+\mathbf{v}^T A_2 \mathbf{v}
+= \mathbf{v}^T \hat{V}_1^T A_1 \hat{V}_1 \mathbf{v}
+= (\hat{V}_1 \mathbf{v})^T \,A \,(\hat{V}_1 \mathbf{v}).
+\]</div>
+<p>So we can think of the solution <span class="math notranslate nohighlight">\(\mathbf{v}_2\)</span> as specifying an optimal linear combination of the columns of <span class="math notranslate nohighlight">\(\hat{V}_1\)</span> - which form a basis of the space <span class="math notranslate nohighlight">\(\mathrm{span}(\mathbf{v}_1)^\perp\)</span> of vectors orthogonal to <span class="math notranslate nohighlight">\(\mathbf{v}_1\)</span>. In essence <span class="math notranslate nohighlight">\(\mathbf{v}_2\)</span> solves the same problem as <span class="math notranslate nohighlight">\(\mathbf{v}_1\)</span>, <em>but restricted to <span class="math notranslate nohighlight">\(\mathrm{span}(\mathbf{v}_1)^\perp\)</span></em>. We will come back to this below.</p>
+</section>
+<section id="proof-of-greedy-finds-best-subspace">
+<h2><span class="section-number">3.4.2. </span>Proof of Greedy Finds Best Subspace<a class="headerlink" href="#proof-of-greedy-finds-best-subspace" title="Permalink to this headline">#</a></h2>
+<p>In this section, we prove the <em>Greedy Finds Best Subspace Theorem</em>.</p>
+<p><em>Proof idea:</em> We proceed by induction. For an arbitrary orthonormal list <span class="math notranslate nohighlight">\(\mathbf{w}_1,\ldots,\mathbf{w}_k\)</span>, we find an orthonormal basis of their span containing an element orthogonal to <span class="math notranslate nohighlight">\(\mathbf{v}_1,\ldots,\mathbf{v}_{k-1}\)</span>. Then we use the defintion of <span class="math notranslate nohighlight">\(\mathbf{v}_k\)</span> to conclude.</p>
+<p><em>Proof:</em> As we explained in the previous subsection, we reformulate the problem as a maximization</p>
+<div class="math notranslate nohighlight">
+\[
+\max \left\{
+\sum_{j=1}^k \|A \mathbf{w}_j\|^2\ :\ \text{$\{\mathbf{w}_1,\ldots,\mathbf{w}_k\}$ is an orthonormal list} 
+\right\},
+\]</div>
+<p>where we also replace the <span class="math notranslate nohighlight">\(k\)</span>-dimensional linear subspace <span class="math notranslate nohighlight">\(\mathcal{Z}\)</span> with an arbitrary orthonormal basis <span class="math notranslate nohighlight">\(\{\mathbf{w}_1,\ldots,\mathbf{w}_k\}\)</span>.</p>
+<p>We then proceed by induction. For <span class="math notranslate nohighlight">\(k=1\)</span>, we define <span class="math notranslate nohighlight">\(\mathbf{v}_1\)</span> as a solution of the above maximization problem. Assume that, for any orthonormal list <span class="math notranslate nohighlight">\(\{\mathbf{w}_1,\ldots,\mathbf{w}_\ell\}\)</span> with <span class="math notranslate nohighlight">\(\ell &lt; k\)</span>, we have</p>
+<div class="math notranslate nohighlight">
+\[
+\sum_{j=1}^\ell \|A \mathbf{w}_j\|^2 \leq \sum_{j=1}^\ell \|A \mathbf{v}_j\|^2.
+\]</div>
+<p>Now consider any orthonormal list <span class="math notranslate nohighlight">\(\{\mathbf{w}_1,\ldots,\mathbf{w}_k\}\)</span> and let its span be <span class="math notranslate nohighlight">\(\mathcal{W} = \mathrm{span}(\mathbf{w}_1,\ldots,\mathbf{w}_k)\)</span>.</p>
+<p><em><strong>Step 1.</strong></em> For <span class="math notranslate nohighlight">\(j=1,\ldots,k-1\)</span>, let <span class="math notranslate nohighlight">\(\mathbf{v}_j'\)</span> be the orthogonal projection of
+<span class="math notranslate nohighlight">\(\mathbf{v}_j\)</span> onto <span class="math notranslate nohighlight">\(\mathcal{W}\)</span> and let <span class="math notranslate nohighlight">\(\mathcal{V}' = \mathrm{span}(\mathbf{v}'_1,\ldots,\mathbf{v}'_{k-1})\)</span>. Because <span class="math notranslate nohighlight">\(\mathcal{V}' \subseteq \mathcal{W}\)</span> has dimension at most <span class="math notranslate nohighlight">\(k-1\)</span> while <span class="math notranslate nohighlight">\(\mathcal{W}\)</span> itself has dimension <span class="math notranslate nohighlight">\(k\)</span>, by <em>Exercises 2.33</em> and <em>2.34</em> we can find an orthonormal basis <span class="math notranslate nohighlight">\(\mathbf{w}'_1,\ldots,\mathbf{w}'_{k}\)</span> of <span class="math notranslate nohighlight">\(\mathcal{W}\)</span> such that <span class="math notranslate nohighlight">\(\mathbf{w}'_k\)</span> is orthogonal to <span class="math notranslate nohighlight">\(\mathcal{V}'\)</span>. Then, for any <span class="math notranslate nohighlight">\(j=1,\ldots,k-1\)</span>, we have the decomposition <span class="math notranslate nohighlight">\(\mathbf{v}_j = \mathbf{v}'_j + (\mathbf{v}_j - \mathbf{v}'_j)\)</span> where <span class="math notranslate nohighlight">\(\mathbf{v}'_j \in \mathcal{V}'\)</span> is orthogonal to <span class="math notranslate nohighlight">\(\mathbf{w}'_k\)</span> and <span class="math notranslate nohighlight">\(\mathbf{v}_j - \mathbf{v}'_j\)</span> is also orthogonal to <span class="math notranslate nohighlight">\(\mathbf{w}'_k \in \mathcal{W}\)</span> by the properties of the orthogonal projection onto <span class="math notranslate nohighlight">\(\mathcal{W}\)</span>. Hence</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{align*}
+\left\langle \sum_{j=1}^{k-1}\beta_j \mathbf{v}_j, \mathbf{w}'_k \right\rangle
+&amp;= \left\langle \sum_{j=1}^{k-1}\beta_j [\mathbf{v}'_j + (\mathbf{v}_j - \mathbf{v}'_j)], \mathbf{w}'_k \right\rangle\\
+&amp;= \left\langle \sum_{j=1}^{k-1}\beta_j \mathbf{v}'_j, \mathbf{w}'_k \right\rangle
++ \left\langle \sum_{j=1}^{k-1}\beta_j (\mathbf{v}_j - \mathbf{v}'_j), \mathbf{w}'_k \right\rangle\\
+&amp;= \sum_{j=1}^{k-1}\beta_j \left\langle \mathbf{v}'_j, \mathbf{w}'_k \right\rangle
++ \sum_{j=1}^{k-1}\beta_j \left\langle \mathbf{v}_j - \mathbf{v}'_j, \mathbf{w}'_k \right\rangle\\
+&amp;= 0
+\end{align*}
+\end{split}\]</div>
+<p>for any <span class="math notranslate nohighlight">\(\beta_j\)</span>’s. That is, <span class="math notranslate nohighlight">\(\mathbf{w}'_k\)</span> is orthogonal to <span class="math notranslate nohighlight">\(\mathrm{span}(\mathbf{v}_1,\ldots,\mathbf{v}_{k-1})\)</span>.</p>
+<p><em><strong>Step 2.</strong></em> By the induction hypothesis, we have</p>
+<div class="math notranslate nohighlight">
+\[
+(*) \qquad \sum_{j=1}^{k-1} \|A \mathbf{w}'_j\|^2 \leq \sum_{j=1}^{k-1} \|A \mathbf{v}_j\|^2. 
+\]</div>
+<p>Moreover, recalling that the <span class="math notranslate nohighlight">\(\boldsymbol{\alpha}_i^T\)</span>’s are the rows of <span class="math notranslate nohighlight">\(A\)</span>,</p>
+<div class="math notranslate nohighlight">
+\[
+(**) \qquad \sum_{j=1}^k \|A \mathbf{w}_j\|^2
+= \sum_{i=1}^n \|\mathrm{proj}_{\mathcal{W}}(\boldsymbol{\alpha}_i)\|^2
+= \sum_{j=1}^k \|A \mathbf{w}_j'\|^2
+\]</div>
+<p>since the <span class="math notranslate nohighlight">\(\mathbf{w}_j\)</span>’s and <span class="math notranslate nohighlight">\(\mathbf{w}'_j\)</span>’s form an orthonormal basis of the same subspace <span class="math notranslate nohighlight">\(\mathcal{W}\)</span>. Since <span class="math notranslate nohighlight">\(\mathbf{w}'_k\)</span> is orthogonal to <span class="math notranslate nohighlight">\(\mathrm{span}(\mathbf{v}_1,\ldots,\mathbf{v}_{k-1})\)</span> by the conclusion of Step 1, by the definition of <span class="math notranslate nohighlight">\(\mathbf{v}_k\)</span> as a solution to</p>
+<div class="math notranslate nohighlight">
+\[
+\mathbf{v}_k\in \arg\max
+\{\|A \mathbf{v}\|:\|\mathbf{v}\| = 1, \ \langle \mathbf{v}, \mathbf{v}_j \rangle = 0, \forall j \leq k-1\}.
+\]</div>
+<p>we have</p>
+<div class="math notranslate nohighlight">
+\[
+(*\!*\!*) \qquad \|A \mathbf{w}'_k\|^2 \leq \|A \mathbf{v}_k\|^2.
+\]</div>
+<p><em><strong>Step 3.</strong></em> Putting everything together</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{align*}
+\sum_{j=1}^k \|A \mathbf{w}_j\|^2
+&amp;= \sum_{j=1}^k \|A \mathbf{w}_j'\|^2 &amp;\text{by $(**)$}\\
+&amp;= \sum_{j=1}^{k-1} \|A \mathbf{w}'_j\|^2 
++ \|A \mathbf{w}'_k\|^2\\ 
+&amp;\leq  \sum_{j=1}^{k-1} \|A \mathbf{v}_j\|^2 + \|A \mathbf{v}_k\|^2 &amp;\text{by $(*)$ and $(*\!*\!*)$}\\
+&amp;= \sum_{j=1}^{k} \|A \mathbf{v}_j\|^2\\
+\end{align*}
+\end{split}\]</div>
+<p>which proves the claim. <span class="math notranslate nohighlight">\(\square\)</span></p>
+</section>
+<section id="proof-of-existence-of-the-svd">
+<h2><span class="section-number">3.4.3. </span>Proof of existence of the SVD<a class="headerlink" href="#proof-of-existence-of-the-svd" title="Permalink to this headline">#</a></h2>
+<p>We return to the proof of the <em>Existence of SVD Theorem</em>. Recall the construction of left and right singular vectors detailed above. All that is left to prove is the orthogonality of the <span class="math notranslate nohighlight">\(\mathbf{u}_j\)</span>’s.</p>
+<p><strong>LEMMA</strong> <strong>(Left Singular Vectors are Orthogonal)</strong> For all <span class="math notranslate nohighlight">\(1 \leq i \neq j \leq r\)</span>, <span class="math notranslate nohighlight">\(\langle \mathbf{u}_i, \mathbf{u}_j \rangle = 0\)</span>. <span class="math notranslate nohighlight">\(\flat\)</span></p>
+<p><em>Proof idea:</em> Quoting [BHK, Section 3.6]:</p>
+<blockquote>
+<div><p>Intuitively if <span class="math notranslate nohighlight">\(\mathbf{u}_i\)</span> and <span class="math notranslate nohighlight">\(\mathbf{u}_j\)</span>, <span class="math notranslate nohighlight">\(i &lt; j\)</span>, were not orthogonal, one would suspect that the right singular vector <span class="math notranslate nohighlight">\(\mathbf{v}_j\)</span> had a component of <span class="math notranslate nohighlight">\(\mathbf{v}_i\)</span> which would contradict that <span class="math notranslate nohighlight">\(\mathbf{v}_i\)</span> and <span class="math notranslate nohighlight">\(\mathbf{v}_j\)</span> were orthogonal. Let <span class="math notranslate nohighlight">\(i\)</span> be the smallest integer such that <span class="math notranslate nohighlight">\(\mathbf{u}_i\)</span> is not orthogonal to all other <span class="math notranslate nohighlight">\(\mathbf{u}_j\)</span>. Then to prove that <span class="math notranslate nohighlight">\(\mathbf{u}_i\)</span> and <span class="math notranslate nohighlight">\(\mathbf{u}_j\)</span> are orthogonal, we add a small component of <span class="math notranslate nohighlight">\(\mathbf{v}_j\)</span> to <span class="math notranslate nohighlight">\(\mathbf{v}_i\)</span>, normalize the result to be a unit vector <span class="math notranslate nohighlight">\(\mathbf{v}'_i \propto \mathbf{v}_i + \varepsilon \mathbf{v}_j\)</span>
+and show that <span class="math notranslate nohighlight">\(\|A \mathbf{v}'_i\| &gt; \|A \mathbf{v}_i\|\)</span>, a contradiction.</p>
+</div></blockquote>
+<p><em>Proof:</em> We argue by contradiction. Let <span class="math notranslate nohighlight">\(i\)</span> be the smallest index such that there is a <span class="math notranslate nohighlight">\(j &gt; i\)</span> with <span class="math notranslate nohighlight">\(\langle \mathbf{u}_i, \mathbf{u}_j \rangle = \delta \neq 0\)</span>. Assume <span class="math notranslate nohighlight">\(\delta &gt; 0\)</span> (otherwise use <span class="math notranslate nohighlight">\(-\mathbf{u}_i\)</span>). For <span class="math notranslate nohighlight">\(\varepsilon \in (0,1)\)</span>, because the <span class="math notranslate nohighlight">\(\mathbf{v}_k\)</span>’s are orthonormal, <span class="math notranslate nohighlight">\(\|\mathbf{v}_i + \varepsilon \mathbf{v}_j\|^2 = 1+\varepsilon^2\)</span>. Consider the vectors</p>
+<div class="math notranslate nohighlight">
+\[
+\mathbf{v}'_i = \frac{\mathbf{v}_i + \varepsilon \mathbf{v}_j}{\sqrt{1+\varepsilon^2}}
+\quad\text{and}\quad
+A \mathbf{v}'_i = \frac{\sigma_i \mathbf{u}_i + \varepsilon \sigma_j \mathbf{u}_j}{\sqrt{1+\varepsilon^2}}.
+\]</div>
+<p>Observe that <span class="math notranslate nohighlight">\(\mathbf{v}'_i\)</span> is orthogonal to <span class="math notranslate nohighlight">\(\mathbf{v}_1,\ldots,\mathbf{v}_{i-1}\)</span>,
+so that</p>
+<div class="math notranslate nohighlight">
+\[
+\|A \mathbf{v}'_i\| \leq \|A \mathbf{v}_i\| =\sigma_i.
+\]</div>
+<p>On the other hand, by the <em>Orthogonal Decomposition Lemma</em>, we can write <span class="math notranslate nohighlight">\(A \mathbf{v}_i'\)</span> as a sum of its orthogonal projection on the unit vector <span class="math notranslate nohighlight">\(\mathbf{u}_i\)</span> and <span class="math notranslate nohighlight">\(A \mathbf{v}_i' - \mathrm{proj}_{\mathbf{u}_i}(A \mathbf{v}_i')\)</span>, which is orthogonal to <span class="math notranslate nohighlight">\(\mathbf{u}_i\)</span>. In particular, by <em>Pythagoras</em>, <span class="math notranslate nohighlight">\(\|A \mathbf{v}_i'\| \geq \|\mathrm{proj}_{\mathbf{u}_i}(A \mathbf{v}_i')\|\)</span>. But that implies, for <span class="math notranslate nohighlight">\(\varepsilon \in (0,1)\)</span>,</p>
+<div class="math notranslate nohighlight">
+\[
+\|A \mathbf{v}_i'\| 
+\geq \|\mathrm{proj}_{\mathbf{u}_i}(A \mathbf{v}_i')\|
+= \left\langle \mathbf{u}_i, A \mathbf{v}_i'\right\rangle
+= \frac{\sigma_i + \varepsilon \sigma_j \delta}{\sqrt{1+\varepsilon^2}}
+\geq (\sigma_i + \varepsilon \sigma_j \delta) \,(1-\varepsilon^2/2)
+\]</div>
+<p>where the second inequality follows
+from a <a class="reference external" href="https://en.wikipedia.org/wiki/Taylor_series">Taylor expansion</a> or the observation</p>
+<div class="math notranslate nohighlight">
+\[
+(1+\varepsilon^2)\,(1-\varepsilon^2/2)^2 
+= (1+\varepsilon^2)\,(1-\varepsilon^2 + \varepsilon^4/4)
+= 1 - 3/4 \varepsilon^4 + \varepsilon^6/4 \leq 1.
+\]</div>
+<p>Now note that</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+\|A \mathbf{v}_i'\| 
+&amp;\geq (\sigma_i + \varepsilon \sigma_j \delta) \,(1-\varepsilon^2/2)\\
+&amp;= \sigma_i + \varepsilon \sigma_j \delta 
+- \varepsilon^2\sigma_i/2 - \varepsilon^3 \sigma_i \sigma_j \delta/2\\
+&amp;= \sigma_i + \varepsilon \left( \sigma_j \delta 
+- \varepsilon\sigma_i/2 - \varepsilon^2 \sigma_i \sigma_j \delta/2\right)\\
+&amp;&gt; \sigma_i
+\end{align*}\]</div>
+<p>for <span class="math notranslate nohighlight">\(\varepsilon\)</span>  small enough, contradicting the inequality above. <span class="math notranslate nohighlight">\(\square\)</span></p>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./chap03_svd/06_adv"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="../03_svd/roch-mmids-svd-svd.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title"><span class="section-number">3.3. </span>Dimension reduction and approximating subspaces</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="../summary_chap03.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title"><span class="section-number">3.5. </span>Other resources</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#some-proofs-from-spectral-theory">3.4.1. Some proofs from spectral theory</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#proof-of-greedy-finds-best-subspace">3.4.2. Proof of Greedy Finds Best Subspace</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#proof-of-existence-of-the-svd">3.4.3. Proof of existence of the SVD</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Sebastien Roch
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2024.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=5b4479735964841361fd"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

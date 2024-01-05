@@ -88,42 +88,108 @@ def kmeans(X, k, maxiter=10):
 
 # k-NN regression
 
-def knnregression(x,y,k,xnew):
+def knnregression(x, y, k, xnew):
+    """
+    Perform k-nearest neighbors regression.
+
+    Parameters:
+    - x (array-like): The input feature values.
+    - y (array-like): The target values.
+    - k (int): The number of nearest neighbors to consider.
+    - xnew (float): The new input feature value for prediction.
+
+    Returns:
+    - float: The predicted target value based on k-nearest neighbors regression.
+    """
     n = len(x)
-    closest = np.argsort([np.absolute(x[i]-xnew) for i in range(n)])
+    closest = np.argsort([np.absolute(x[i] - xnew) for i in range(n)])
     return np.mean(y[closest[0:k]])
 
 
 # Algorithms for linear systems
 
-def backsubs(R,b):
+def backsubs(R, b):
+    """
+    Perform back substitution to solve the system of linear equations Rx = b.
+
+    Parameters:
+    - R (numpy.ndarray): Upper triangular matrix representing the coefficients of the linear equations.
+    - b (numpy.ndarray): Column vector representing the constants of the linear equations.
+
+    Returns:
+    - x (numpy.ndarray): Column vector representing the solution to the system of linear equations.
+    """
     m = b.shape[0]
     x = np.zeros(m)
     for i in reversed(range(m)):
-        x[i] = (b[i] - np.dot(R[i,i+1:m],x[i+1:m]))/R[i,i]
+        x[i] = (b[i] - np.dot(R[i, i + 1:m], x[i + 1:m])) / R[i, i]
     return x
 
-def forwardsubs(L,b):
+
+def forwardsubs(L, b):
+    """
+    Solve a lower triangular linear system using forward substitution.
+
+    Parameters:
+    L (numpy.ndarray): The lower triangular matrix of shape (m, m).
+    b (numpy.ndarray): The right-hand side vector of shape (m,).
+
+    Returns:
+    x (numpy.ndarray): The solution vector of shape (m,).
+    """
     m = b.shape[0]
     x = np.zeros(m)
     for i in range(m):
-        x[i] = (b[i] - np.dot(L[i,0:i],x[0:i]))/L[i,i]
+        x[i] = (b[i] - np.dot(L[i, 0:i], x[0:i])) / L[i, i]
     return x
 
+
 def cholesky(B):
+    """
+    Perform Cholesky decomposition on a given matrix.
+
+    Parameters:
+    B (numpy.ndarray): The input matrix.
+
+    Returns:
+    numpy.ndarray: The lower triangular matrix L such that B = LL^T.
+    """
     n = B.shape[0] 
     L = np.zeros((n, n))
     for j in range(n):
         L[j,0:j] = forwardsubs(L[0:j,0:j],B[j,0:j])
         L[j,j] = np.sqrt(B[j,j] - LA.norm(L[j,0:j])**2)
-    return L 
+    return L
+
 
 def ls_by_chol(A, b):
+    """
+    Solves the linear least squares problem using Cholesky decomposition.
+
+    Parameters:
+    A (numpy.ndarray): The coefficient matrix.
+    b (numpy.ndarray): The dependent variable vector.
+
+    Returns:
+    numpy.ndarray: The solution vector x that minimizes the squared Euclidean norm ||Ax - b||^2.
+    """
     L = cholesky(A.T @ A)
     z = forwardsubs(L, A.T @ b)
     return backsubs(L.T, z)
 
+
 def gramschmidt(A):
+    """
+    Performs the Gram-Schmidt process on the given matrix A.
+
+    Parameters:
+    A (numpy.ndarray): The input matrix of shape (n, m).
+
+    Returns:
+    Q (numpy.ndarray): The orthogonal matrix Q of shape (n, m).
+    R (numpy.ndarray): The upper triangular matrix R of shape (m, m).
+    """
+
     (n,m) = A.shape
     Q = np.zeros((n,m))
     R = np.zeros((m,m))
@@ -136,7 +202,19 @@ def gramschmidt(A):
         Q[:,j] = v/R[j,j]
     return Q, R
 
+
 def householder(A, b):
+    """
+    Performs the Householder transformation on a matrix A and a vector b.
+
+    Parameters:
+    A (numpy.ndarray): The input matrix of shape (n, m).
+    b (numpy.ndarray): The input vector of shape (n,).
+
+    Returns:
+    R (numpy.ndarray): The transformed matrix R of shape (m, m).
+    Qtb (numpy.ndarray): The transformed vector Qtb of shape (m,).
+    """
     n, m = A.shape
     R = np.copy(A)
     Qtb = np.copy(b)
@@ -156,4 +234,94 @@ def householder(A, b):
         Qtb[k:n] = Qtb[k:n] - 2 * np.outer(z, z) @ Qtb[k:n]
     
     return R[0:m,0:m], Qtb[0:m]
+
+
+# Spectral and SVD methods
+
+def topsing(A, maxiter=10):
+    """
+    Compute the top singular triplets of a matrix A.
+
+    Parameters:
+    A (ndarray): Input matrix.
+    maxiter (int): Maximum number of iterations for power iteration method. Default is 10.
+
+    Returns:
+    u (ndarray): Left singular vector corresponding to the largest singular value.
+    s (float): Largest singular value.
+    v (ndarray): Right singular vector corresponding to the largest singular value.
+    """
+    x = np.random.normal(0, 1, np.shape(A)[1])
+    B = A.T @ A
+    for _ in range(maxiter):
+        x = B @ x
+    v = x / LA.norm(x)
+    s = LA.norm(A @ v)
+    u = A @ v / s
+    return u, s, v
+
+
+def svd(A, l, maxiter=100):
+    """
+    Perform Singular Value Decomposition (SVD) on a matrix A.
+
+    Parameters:
+    A (ndarray): Input matrix of shape (m, n).
+    l (int): Number of singular values to compute.
+    maxiter (int, optional): Maximum number of iterations for the algorithm. Default is 100.
+
+    Returns:
+    U (ndarray): Left singular vectors of shape (m, l).
+    S (list): Singular values.
+    V (ndarray): Right singular vectors of shape (n, l).
+    """
+    V = rng.normal(0,1,(np.size(A,1),l))
+    for _ in range(maxiter):
+        W = A @ V
+        Z = A.T @ W
+        V, R = gramschmidt(Z)
+    W = A @ V
+    S = [LA.norm(W[:, i]) for i in range(np.size(W,1))]
+    U = np.stack([W[:,i]/S[i] for i in range(np.size(W,1))],axis=-1)
+    return U, S, V
+
+
+
+# Data simulation
+
+def one_cluster(d, n, w):
+    """
+    Generate a single cluster of data points.
+
+    Parameters:
+    - d (int): The dimensionality of the data points.
+    - n (int): The number of data points to generate.
+    - w (float): The weight of the first dimension in each data point.
+
+    Returns:
+    - X (ndarray): An array of shape (n, d) containing the generated data points.
+    """
+    X = np.stack(
+        [np.concatenate(([w], np.zeros(d-1))) + rng.normal(0,1,d) for _ in range(n)]
+    )
+    return X
+
+
+def two_clusters(d, n, w):
+    """
+    Generate two clusters of data points.
+
+    Parameters:
+    - d (int): The dimensionality of the data points.
+    - n (int): The number of data points in each cluster.
+    - w (float): The distance between the two clusters.
+
+    Returns:
+    - X1 (list): The data points in the first cluster.
+    - X2 (list): The data points in the second cluster.
+    """
+    X1 = one_cluster(d, n, -w)
+    X2 = one_cluster(d, n, w)
+    return X1, X2
+
 

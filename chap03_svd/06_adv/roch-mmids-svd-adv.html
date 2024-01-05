@@ -9,7 +9,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>3.4. Advanced material &#8212; MMiDS Online Book</title>
+    <title>3.5. Advanced material &#8212; MMiDS Online Book</title>
   
   
   
@@ -73,8 +73,8 @@ const thebe_selector_output = ".output, .cell_output"
     <script>DOCUMENTATION_OPTIONS.pagename = 'chap03_svd/06_adv/roch-mmids-svd-adv';</script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="3.5. Other resources" href="../summary_chap03.html" />
-    <link rel="prev" title="3.3. Dimension reduction and approximating subspaces" href="../03_svd/roch-mmids-svd-svd.html" />
+    <link rel="next" title="3.6. Other resources" href="../summary_chap03.html" />
+    <link rel="prev" title="3.4. Power iteration" href="../04_power/roch-mmids-svd-power.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   </head>
@@ -200,8 +200,9 @@ const thebe_selector_output = ".output, .cell_output"
 <li class="toctree-l2"><a class="reference internal" href="../01_motiv/roch-mmids-svd-motiv.html">3.1. Motivating example: exploratory data analysis of viral evolution</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../02_spectral/roch-mmids-svd-spectral.html">3.2. Background: review of spectral decomposition</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../03_svd/roch-mmids-svd-svd.html">3.3. Dimension reduction and approximating subspaces</a></li>
-<li class="toctree-l2 current active"><a class="current reference internal" href="#">3.4. Advanced material</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../summary_chap03.html">3.5. Other resources</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../04_power/roch-mmids-svd-power.html">3.4. Power iteration</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">3.5. Advanced material</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../summary_chap03.html">3.6. Other resources</a></li>
 </ul>
 </li>
 </ul>
@@ -399,9 +400,10 @@ document.write(`
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#some-proofs-from-spectral-theory">3.4.1. Some proofs from spectral theory</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#proof-of-greedy-finds-best-subspace">3.4.2. Proof of Greedy Finds Best Subspace</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#proof-of-existence-of-the-svd">3.4.3. Proof of existence of the SVD</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#some-proofs-from-spectral-theory">3.5.1. Some proofs from spectral theory</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#proof-of-greedy-finds-best-subspace">3.5.2. Proof of Greedy Finds Best Subspace</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#proof-of-existence-of-the-svd">3.5.3. Proof of existence of the SVD</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#computing-more-singular-vectors">3.5.4. Computing more singular vectors</a></li>
 </ul>
             </nav>
         </div>
@@ -415,10 +417,10 @@ document.write(`
                   
   <p><span class="math notranslate nohighlight">\(\newcommand{\horz}{\rule[.5ex]{2.5ex}{0.5pt}}\)</span></p>
 <section id="advanced-material">
-<h1><span class="section-number">3.4. </span>Advanced material<a class="headerlink" href="#advanced-material" title="Permalink to this headline">#</a></h1>
+<h1><span class="section-number">3.5. </span>Advanced material<a class="headerlink" href="#advanced-material" title="Permalink to this headline">#</a></h1>
 <p>We cover various advances topics.</p>
 <section id="some-proofs-from-spectral-theory">
-<h2><span class="section-number">3.4.1. </span>Some proofs from spectral theory<a class="headerlink" href="#some-proofs-from-spectral-theory" title="Permalink to this headline">#</a></h2>
+<h2><span class="section-number">3.5.1. </span>Some proofs from spectral theory<a class="headerlink" href="#some-proofs-from-spectral-theory" title="Permalink to this headline">#</a></h2>
 <p>In this section, we give a proof of the spectral theorem, as well as proofs of a few other related results.</p>
 <p>We start with a proof that distinct eigenvalues correspond to linearly independent eigenvectors.</p>
 <p><em>Proof:</em> <em>(Number of Eigenvalues)</em> Assume by contradiction that <span class="math notranslate nohighlight">\(\mathbf{x}_1, \ldots, \mathbf{x}_m\)</span> are linearly dependent. By the <em>Linear Dependence Lemma</em>, there is <span class="math notranslate nohighlight">\(k \leq m\)</span> such that</p>
@@ -664,7 +666,7 @@ W_2
 <p>So we can think of the solution <span class="math notranslate nohighlight">\(\mathbf{v}_2\)</span> as specifying an optimal linear combination of the columns of <span class="math notranslate nohighlight">\(\hat{V}_1\)</span> - which form a basis of the space <span class="math notranslate nohighlight">\(\mathrm{span}(\mathbf{v}_1)^\perp\)</span> of vectors orthogonal to <span class="math notranslate nohighlight">\(\mathbf{v}_1\)</span>. In essence <span class="math notranslate nohighlight">\(\mathbf{v}_2\)</span> solves the same problem as <span class="math notranslate nohighlight">\(\mathbf{v}_1\)</span>, <em>but restricted to <span class="math notranslate nohighlight">\(\mathrm{span}(\mathbf{v}_1)^\perp\)</span></em>. We will come back to this below.</p>
 </section>
 <section id="proof-of-greedy-finds-best-subspace">
-<h2><span class="section-number">3.4.2. </span>Proof of Greedy Finds Best Subspace<a class="headerlink" href="#proof-of-greedy-finds-best-subspace" title="Permalink to this headline">#</a></h2>
+<h2><span class="section-number">3.5.2. </span>Proof of Greedy Finds Best Subspace<a class="headerlink" href="#proof-of-greedy-finds-best-subspace" title="Permalink to this headline">#</a></h2>
 <p>In this section, we prove the <em>Greedy Finds Best Subspace Theorem</em>.</p>
 <p><em>Proof idea:</em> We proceed by induction. For an arbitrary orthonormal list <span class="math notranslate nohighlight">\(\mathbf{w}_1,\ldots,\mathbf{w}_k\)</span>, we find an orthonormal basis of their span containing an element orthogonal to <span class="math notranslate nohighlight">\(\mathbf{v}_1,\ldots,\mathbf{v}_{k-1}\)</span>. Then we use the defintion of <span class="math notranslate nohighlight">\(\mathbf{v}_k\)</span> to conclude.</p>
 <p><em>Proof:</em> As we explained in the previous subsection, we reformulate the problem as a maximization</p>
@@ -734,7 +736,7 @@ W_2
 <p>which proves the claim. <span class="math notranslate nohighlight">\(\square\)</span></p>
 </section>
 <section id="proof-of-existence-of-the-svd">
-<h2><span class="section-number">3.4.3. </span>Proof of existence of the SVD<a class="headerlink" href="#proof-of-existence-of-the-svd" title="Permalink to this headline">#</a></h2>
+<h2><span class="section-number">3.5.3. </span>Proof of existence of the SVD<a class="headerlink" href="#proof-of-existence-of-the-svd" title="Permalink to this headline">#</a></h2>
 <p>We return to the proof of the <em>Existence of SVD Theorem</em>. Recall the construction of left and right singular vectors detailed above. All that is left to prove is the orthogonality of the <span class="math notranslate nohighlight">\(\mathbf{u}_j\)</span>’s.</p>
 <p><strong>LEMMA</strong> <strong>(Left Singular Vectors are Orthogonal)</strong> For all <span class="math notranslate nohighlight">\(1 \leq i \neq j \leq r\)</span>, <span class="math notranslate nohighlight">\(\langle \mathbf{u}_i, \mathbf{u}_j \rangle = 0\)</span>. <span class="math notranslate nohighlight">\(\flat\)</span></p>
 <p><em>Proof idea:</em> Quoting [BHK, Section 3.6]:</p>
@@ -785,6 +787,100 @@ from a <a class="reference external" href="https://en.wikipedia.org/wiki/Taylor_
 \end{align*}\]</div>
 <p>for <span class="math notranslate nohighlight">\(\varepsilon\)</span>  small enough, contradicting the inequality above. <span class="math notranslate nohighlight">\(\square\)</span></p>
 </section>
+<section id="computing-more-singular-vectors">
+<h2><span class="section-number">3.5.4. </span>Computing more singular vectors<a class="headerlink" href="#computing-more-singular-vectors" title="Permalink to this headline">#</a></h2>
+<p>We have shown how to compute the first singular vector. How do we compute more singular vectors? One approach is to first compute <span class="math notranslate nohighlight">\(\mathbf{v}_1\)</span> (or <span class="math notranslate nohighlight">\(-\mathbf{v}_1\)</span>), then find a vector <span class="math notranslate nohighlight">\(\mathbf{y}\)</span> orthogonal to it, and proceed as above. And then we repeat until we have all <span class="math notranslate nohighlight">\(m\)</span> right singular vectors.</p>
+<p>We are often interested only in the top, say <span class="math notranslate nohighlight">\(\ell &lt; m\)</span>, singular vectors. An alternative approach in that case is to start with <span class="math notranslate nohighlight">\(\ell\)</span> random vectors and, first, find an orthonormal basis for the space they span. Then to quote [BHK, Section 3.7.1]:</p>
+<blockquote>
+<div><p>Then compute <span class="math notranslate nohighlight">\(B\)</span> times each of the basis vectors, and find an orthonormal basis for the space spanned by the resulting vectors. Intuitively, one has applied <span class="math notranslate nohighlight">\(B\)</span> to a subspace rather than a single vector. One repeatedly applies <span class="math notranslate nohighlight">\(B\)</span> to the subspace, calculating an orthonormal basis after each application to prevent the subspace collapsing to the one dimensional subspace spanned by the first singular vector.</p>
+</div></blockquote>
+<p>We will not prove here that this approach, known as orthogonal iteration, works. The proof is similar to that of the <em>Power Iteration Lemma</em>.</p>
+<p><strong>NUMERICAL CORNER:</strong> We implement this last algorithm. We will need our previous implementation of <em>Gram-Schimdt</em>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">svd</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">l</span><span class="p">,</span> <span class="n">maxiter</span><span class="o">=</span><span class="mi">100</span><span class="p">):</span>
+    <span class="n">V</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,(</span><span class="n">np</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="n">A</span><span class="p">,</span><span class="mi">1</span><span class="p">),</span><span class="n">l</span><span class="p">))</span>
+    <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">maxiter</span><span class="p">):</span>
+        <span class="n">W</span> <span class="o">=</span> <span class="n">A</span> <span class="o">@</span> <span class="n">V</span>
+        <span class="n">Z</span> <span class="o">=</span> <span class="n">A</span><span class="o">.</span><span class="n">T</span> <span class="o">@</span> <span class="n">W</span>
+        <span class="n">V</span><span class="p">,</span> <span class="n">R</span> <span class="o">=</span> <span class="n">mmids</span><span class="o">.</span><span class="n">gramschmidt</span><span class="p">(</span><span class="n">Z</span><span class="p">)</span>
+    <span class="n">W</span> <span class="o">=</span> <span class="n">A</span> <span class="o">@</span> <span class="n">V</span>
+    <span class="n">S</span> <span class="o">=</span> <span class="p">[</span><span class="n">LA</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">W</span><span class="p">[:,</span> <span class="n">i</span><span class="p">])</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="n">W</span><span class="p">,</span><span class="mi">1</span><span class="p">))]</span>
+    <span class="n">U</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">stack</span><span class="p">([</span><span class="n">W</span><span class="p">[:,</span><span class="n">i</span><span class="p">]</span><span class="o">/</span><span class="n">S</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="n">W</span><span class="p">,</span><span class="mi">1</span><span class="p">))],</span><span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">U</span><span class="p">,</span> <span class="n">S</span><span class="p">,</span> <span class="n">V</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Note that above we avoided forming the matrix <span class="math notranslate nohighlight">\(A^T A\)</span>. With a small number of iterations, that approach potentially requires fewer arithmetic operations overall and it allows to take advantage of the possible sparsity of <span class="math notranslate nohighlight">\(A\)</span> (i.e. the fact that it may have many zeros).</p>
+<p>We apply it again to our two-cluster example.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">d</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">w</span> <span class="o">=</span> <span class="mi">1000</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mf">3.</span>
+<span class="n">X1</span><span class="p">,</span> <span class="n">X2</span> <span class="o">=</span> <span class="n">mmids</span><span class="o">.</span><span class="n">two_clusters</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">w</span><span class="p">)</span>
+<span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">X1</span><span class="p">,</span> <span class="n">X2</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Let’s try again, but after projecting on the top two singular vectors. Recall that this corresponds to finding the best two-dimensional approximating subspace. The projection can be computed using the truncated SVD <span class="math notranslate nohighlight">\(Z= U_{(2)} \Sigma_{(2)} V_{(2)}^T\)</span>. We can interpret the rows of <span class="math notranslate nohighlight">\(U_{(2)} \Sigma_{(2)}\)</span> as the coefficients of each data point in the basis <span class="math notranslate nohighlight">\(\mathbf{v}_1,\mathbf{v}_2\)</span>. We will work in that basis.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">U</span><span class="p">,</span> <span class="n">S</span><span class="p">,</span> <span class="n">V</span> <span class="o">=</span> <span class="n">svd</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+<span class="n">Xproj</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">stack</span><span class="p">((</span><span class="n">U</span><span class="p">[:,</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="n">S</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">U</span><span class="p">[:,</span><span class="mi">1</span><span class="p">]</span><span class="o">*</span><span class="n">S</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">assign</span> <span class="o">=</span> <span class="n">mmids</span><span class="o">.</span><span class="n">kmeans</span><span class="p">(</span><span class="n">Xproj</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4852.714299912972
+2455.3342669438193
+2453.3018578718893
+2453.3018578718893
+2453.3018578718893
+2453.3018578718893
+2453.3018578718893
+2453.3018578718893
+2453.3018578718893
+2453.3018578718893
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">111</span><span class="p">,</span><span class="n">aspect</span><span class="o">=</span><span class="s1">&#39;equal&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">X</span><span class="p">[:,</span><span class="mi">0</span><span class="p">],</span> <span class="n">X</span><span class="p">[:,</span><span class="mi">1</span><span class="p">],</span> <span class="n">c</span><span class="o">=</span><span class="n">assign</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/73c30ddcd8090cc09acefd3f48368de016b6c78c199f705783a4c78468bbc07b.png" src="../../_images/73c30ddcd8090cc09acefd3f48368de016b6c78c199f705783a4c78468bbc07b.png" />
+</div>
+</div>
+<p>Finally, looking at the first two right singular vectors, we see that the first one does align quite well with the first dimension.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">stack</span><span class="p">((</span><span class="n">V</span><span class="p">[:,</span><span class="mi">0</span><span class="p">],</span> <span class="n">V</span><span class="p">[:,</span><span class="mi">1</span><span class="p">]),</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[[-0.78532229  0.01276602]
+ [ 0.02628204 -0.00697769]
+ [-0.04267928  0.02063803]
+ ...
+ [ 0.00846189 -0.01257502]
+ [ 0.01411465  0.06385812]
+ [ 0.00299769  0.06254379]]
+</pre></div>
+</div>
+</div>
+</div>
+<p><span class="math notranslate nohighlight">\(\unlhd\)</span></p>
+</section>
 </section>
 
     <script type="text/x-thebe-config">
@@ -818,12 +914,12 @@ from a <a class="reference external" href="https://en.wikipedia.org/wiki/Taylor_
                   
 <div class="prev-next-area">
     <a class="left-prev"
-       href="../03_svd/roch-mmids-svd-svd.html"
+       href="../04_power/roch-mmids-svd-power.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title"><span class="section-number">3.3. </span>Dimension reduction and approximating subspaces</p>
+        <p class="prev-next-title"><span class="section-number">3.4. </span>Power iteration</p>
       </div>
     </a>
     <a class="right-next"
@@ -831,7 +927,7 @@ from a <a class="reference external" href="https://en.wikipedia.org/wiki/Taylor_
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title"><span class="section-number">3.5. </span>Other resources</p>
+        <p class="prev-next-title"><span class="section-number">3.6. </span>Other resources</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -850,9 +946,10 @@ from a <a class="reference external" href="https://en.wikipedia.org/wiki/Taylor_
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#some-proofs-from-spectral-theory">3.4.1. Some proofs from spectral theory</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#proof-of-greedy-finds-best-subspace">3.4.2. Proof of Greedy Finds Best Subspace</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#proof-of-existence-of-the-svd">3.4.3. Proof of existence of the SVD</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#some-proofs-from-spectral-theory">3.5.1. Some proofs from spectral theory</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#proof-of-greedy-finds-best-subspace">3.5.2. Proof of Greedy Finds Best Subspace</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#proof-of-existence-of-the-svd">3.5.3. Proof of existence of the SVD</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#computing-more-singular-vectors">3.5.4. Computing more singular vectors</a></li>
 </ul>
   </nav></div>
 

@@ -325,3 +325,79 @@ def two_clusters(d, n, w):
     return X1, X2
 
 
+# Spectral graph theory algorithms
+
+def cut_ratio(A, order, k):
+    """
+    Calculates the cut ratio of a graph given its adjacency matrix and a vertex order.
+
+    Parameters:
+    A (numpy.ndarray): The adjacency matrix of the graph.
+    order (list): The order of vertices in the cut.
+    k (int): The index of the last vertex in the cut.
+
+    Returns:
+    float: The cut ratio of the graph.
+    """
+    n = A.shape[0] # number of vertices
+    edge_boundary = 0 # initialize size of edge boundary 
+    for i in range(k+1): # for all vertices before cut
+        for j in range(k+1,n): # for all vertices after cut
+            edge_boundary += A[order[i],order[j]] # add one if {i,j} in E
+    denominator = np.minimum(k+1, n-k-1)
+    return edge_boundary/denominator
+
+
+def spectral_cut2(A):
+    """
+    Perform spectral cut on a graph represented by its adjacency matrix.
+
+    Parameters:
+    A (numpy.ndarray): The adjacency matrix of the graph.
+
+    Returns:
+    tuple: A tuple containing two numpy arrays representing the two partitions of the graph.
+
+    """
+    n = A.shape[0] # number of vertices
+    
+    # laplacian
+    degrees = A.sum(axis=1)
+    D = np.diag(degrees)
+    L = D - A
+
+    # spectral decomposition
+    w, v = LA.eigh(L) 
+    order = np.argsort(v[:,np.argsort(w)[1]]) # index of entries in increasing order
+    
+    # cut ratios
+    phi = np.zeros(n-1) # initialize cut ratios
+    for k in range(n-1):
+        phi[k] = cut_ratio(A, order, k)
+    imin = np.argmin(phi) # find best cut ratio
+    return order[0:imin+1], order[imin+1:n]
+
+
+def viz_cut(G, s, layout):
+    """
+    Visualizes a graph with a highlighted cut.
+
+    Parameters:
+    - G: NetworkX graph object
+        The graph to be visualized.
+    - s: int
+        The index of the node to be highlighted.
+    - layout: function
+        A function that computes the layout of the graph.
+
+    Returns:
+    None
+    """
+    n = G.number_of_nodes()
+    assign = np.ones(n)
+    assign[s] = 2
+    nx.draw_networkx(G, node_color=assign, pos=layout(G), with_labels=False)
+
+
+
+

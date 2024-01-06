@@ -236,6 +236,22 @@ def householder(A, b):
     return R[0:m,0:m], Qtb[0:m]
 
 
+def ls_by_qr(A, b):
+    """
+    Solves a linear system of equations using QR decomposition.
+
+    Parameters:
+    A (numpy.ndarray): The coefficient matrix of the linear system.
+    b (numpy.ndarray): The right-hand side vector of the linear system.
+
+    Returns:
+    numpy.ndarray: The solution vector x that satisfies Ax = b.
+    """
+    Q, R = gramschmidt(A)
+    return backsubs(R, Q.T @ b)
+
+
+
 # Spectral and SVD methods
 
 def topsing(A, maxiter=10):

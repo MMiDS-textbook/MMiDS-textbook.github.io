@@ -1,0 +1,2624 @@
+
+
+<!DOCTYPE html>
+
+
+<html data-content_root="" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>5.5. Backpropagation and application to neural networks &#8212; MMiDS Online Book</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=5b4479735964841361fd" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" href="../../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=5b4479735964841361fd" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd" />
+  <script src="../../_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=5b4479735964841361fd"></script>
+
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/clipboard.min.js"></script>
+    <script src="../../_static/copybutton.js"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../_static/design-tabs.js"></script>
+    <script loading_method="async" src="https://www.googletagmanager.com/gtag/js?id=G-P5E8DW088F"></script>
+    <script>
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){ dataLayer.push(arguments); }
+                gtag('js', new Date());
+                gtag('config', 'G-P5E8DW088F');
+            </script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="../../_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'chap06_opt/05_backprop/roch-mmids-opt-backprop';</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="5.6. Advanced material" href="../06_adv/roch-mmids-opt-adv.html" />
+    <link rel="prev" title="5.4. Gradient descent and its convergence analysis" href="../04_gd/roch-mmids-opt-gd.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="None"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+
+<a class="navbar-brand logo" href="../../intro.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/mmids-cover-small.jpg" class="logo__image only-light" alt="MMiDS Online Book - Home"/>
+    <script>document.write(`<img src="../../_static/mmids-cover-small.jpg" class="logo__image only-dark" alt="MMiDS Online Book - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../intro.html">
+                    <b>MATHEMATICAL METHODS in DATA SCIENCE (with Python)</b>
+                </a>
+            </li>
+        </ul>
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../chap01_intro/00_intro/roch-mmids-intro-intro.html">1. Introduction</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../chap01_intro/01_motiv/roch-mmids-intro-motiv.html">1.1. Motivating example: discovering new species</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap01_intro/02_review/roch-mmids-intro-review.html">1.2. Background: review of basic linear algebra, calculus, and probability</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap01_intro/03_clustering/roch-mmids-intro-clustering.html">1.3. Clustering: an objective, an algorithm and a guarantee</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap01_intro/04_highdim/roch-mmids-intro-highdim.html">1.4. Some observations about high-dimensional data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap01_intro/05_adv/roch-mmids-intro-adv.html">1.5. Advanced material</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap01_intro/summary_chap01.html">1.6. Other resources</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../chap02_ls/00_intro/roch-mmids-ls-intro.html">2. Least squares</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../chap02_ls/01_motiv/roch-mmids-ls-motiv.html">2.1. Motivating example: predicting sales</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap02_ls/02_subspaces/roch-mmids-ls-spaces.html">2.2. Background: linear spaces</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap02_ls/03_orthog/roch-mmids-ls-orthog.html">2.3. A key concept: orthogonality</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap02_ls/04_overdetermined/roch-mmids-ls-overdetermined.html">2.4. Overdetermined linear systems and regression analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap02_ls/05_qr/roch-mmids-ls-qr.html">2.5. QR decomposition and Householder transformations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap02_ls/06_adv/roch-mmids-ls-adv.html">2.6. Advanced material</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap02_ls/summary_chap02.html">2.7. Other resources</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../chap03_svd/00_intro/roch-mmids-svd-intro.html">3. Singular value decomposition</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-3"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../chap03_svd/01_motiv/roch-mmids-svd-motiv.html">3.1. Motivating example: vizualizing genetic data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap03_svd/02_spectral/roch-mmids-svd-spectral.html">3.2. Background: review of spectral decomposition</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap03_svd/03_svd/roch-mmids-svd-svd.html">3.3. Dimension reduction and approximating subspaces</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap03_svd/04_power/roch-mmids-svd-power.html">3.4. Power iteration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap03_svd/05_further/roch-mmids-svd-further.html">3.5. Further applications of the SVD</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap03_svd/06_adv/roch-mmids-svd-adv.html">3.6. Advanced material</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap03_svd/summary_chap03.html">3.7. Other resources</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../chap04_specgraph/00_intro/roch-mmids-specgraph-intro.html">4. Spectral graph theory</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-4"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../chap04_specgraph/01_motiv/roch-mmids-specgraph-motiv.html">4.1. Motivating example: finding communities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap04_specgraph/02_graph/roch-mmids-specgraph-graph.html">4.2. Background: review of graphs and associated matrices</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap04_specgraph/03_extremal/roch-mmids-specgraph-extremal.html">4.3. Eigenvalues and their variational characterization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap04_specgraph/04_laplacian/roch-mmids-specgraph-laplacian.html">4.4. Spectral properties of the Laplacian matrix</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap04_specgraph/05_partitioning/roch-mmids-specgraph-partitioning.html">4.5. Application to graph partitioning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap04_specgraph/summary_chap04.html">4.6. Other resources</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="../00_intro/roch-mmids-opt-intro.html">5. Optimization theory and algorithms</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-5"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../01_motiv/roch-mmids-opt-motiv.html">5.1. Motivating example:  deciphering handwritten digits</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../02_several/roch-mmids-opt-several.html">5.2. Background: review of differentiable functions of several variables and introduction to automatic differentiation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../03_optimality/roch-mmids-opt-optimality.html">5.3. Optimality conditions and convexity</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../04_gd/roch-mmids-opt-gd.html">5.4. Gradient descent and its convergence analysis</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">5.5. Backpropagation and application to neural networks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../06_adv/roch-mmids-opt-adv.html">5.6. Advanced material</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../summary_chap06.html">5.7. Other resources</a></li>
+</ul>
+</li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/MMiDS-textbook/MMiDS-textbook.github.io" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/MMiDS-textbook/MMiDS-textbook.github.io/issues/new?title=Issue%20on%20page%20%2Fchap06_opt/05_backprop/roch-mmids-opt-backprop.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/chap06_opt/05_backprop/roch-mmids-opt-backprop.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Backpropagation and application to neural networks</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#progressive-functions">5.5.1. Progressive functions</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#applying-the-chain-rule">5.5.2. Applying the chain rule</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#forward-and-backward-propagation">5.5.3. Forward and backward propagation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#a-simple-example-linear-regression">5.5.4. A simple example: linear regression</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#a-detailed-example-multinomial-logistic-regression">5.5.5. A detailed example: multinomial logistic regression</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#neural-networks">5.5.6. Neural networks</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <p><span class="math notranslate nohighlight">\(\newcommand{\bfg}{\mathbf{g}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bfh}{\mathbf{h}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bgamma}{\boldsymbol{\gamma}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bsigma}{\boldsymbol{\sigma}}\)</span></p>
+<section id="backpropagation-and-application-to-neural-networks">
+<h1><span class="section-number">5.5. </span>Backpropagation and application to neural networks<a class="headerlink" href="#backpropagation-and-application-to-neural-networks" title="Permalink to this headline">#</a></h1>
+<p>We develop the basic mathematical foundations of automatic differentiation. We restrict ourselves to a special setting: multi-layer progressive functions. Many important classifiers take the form of a sequence of compositions where parameters are specific to each layer of composition. We show how to systematically apply the <em>Chain Rule</em> to such functions. We give examples in the next section.</p>
+<section id="progressive-functions">
+<h2><span class="section-number">5.5.1. </span>Progressive functions<a class="headerlink" href="#progressive-functions" title="Permalink to this headline">#</a></h2>
+<p>We start with two important remarks:</p>
+<ol class="arabic simple">
+<li><p>A classifier <span class="math notranslate nohighlight">\(h\)</span> takes an input in <span class="math notranslate nohighlight">\(\mathbb{R}^d\)</span> and predicts one of <span class="math notranslate nohighlight">\(K\)</span> possible labels. It will be convenient for reasons that will become clear below to use <a class="reference external" href="https://en.wikipedia.org/wiki/One-hot">one-hot encoding</a> of the labels. That is, we encode label <span class="math notranslate nohighlight">\(i\)</span> as the <span class="math notranslate nohighlight">\(K\)</span>-dimensional vector <span class="math notranslate nohighlight">\(\mathbf{e}_i\)</span>. Here, as usual, <span class="math notranslate nohighlight">\(\mathbf{e}_i\)</span> the canonical basis of <span class="math notranslate nohighlight">\(\mathbb{R}^K\)</span>, i.e., the vector with a <span class="math notranslate nohighlight">\(1\)</span> in entry <span class="math notranslate nohighlight">\(i\)</span> and a <span class="math notranslate nohighlight">\(0\)</span> elsewhere. Furthermore, we allow the output of the classifier to be a probability distribution over the labels <span class="math notranslate nohighlight">\(\{1,\ldots,K\}\)</span>, that is, a vector in</p></li>
+</ol>
+<div class="math notranslate nohighlight">
+\[
+\Delta_K 
+= \left\{
+(p_1,\ldots,p_K) \in [0,1]^K \,:\, \sum_{k=1}^K p_k = 1 
+\right\}.
+\]</div>
+<ol class="arabic simple" start="2">
+<li><p>One source of confusion here is that, while it is natural to define a classifier <span class="math notranslate nohighlight">\(h\)</span> as a function of the input data <span class="math notranslate nohighlight">\(\mathbf{x}\in \mathbb{R}^{d}\)</span>, when fitting the data we are ultimately interested in thinking of <span class="math notranslate nohighlight">\(h\)</span> as a function of the parameters <span class="math notranslate nohighlight">\(\mathbf{w} \in \mathbb{R}^r\)</span> that need to be adjusted - over a fixed dataset. Hence in this section, we emphasize thoughout in the notation that <span class="math notranslate nohighlight">\(\mathbf{x}\)</span> is fixed while <span class="math notranslate nohighlight">\(\mathbf{w}\)</span> is variable.</p></li>
+</ol>
+<p>The general model is defined as follows. Throughout this section, we use the following notation: for two vectors <span class="math notranslate nohighlight">\(\mathbf{v}_1 \in \mathbb{R}^{a_1}\)</span> and <span class="math notranslate nohighlight">\(\mathbf{v}_2 \in \mathbb{R}^{a_2}\)</span>, the concatenation of <span class="math notranslate nohighlight">\(\mathbf{v}_1\)</span> and <span class="math notranslate nohighlight">\(\mathbf{v}_2\)</span> as a vector in <span class="math notranslate nohighlight">\(\mathbb{R}^{a_1 + a_2}\)</span> is denoted by</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+(\mathbf{v}_1,\mathbf{v}_2) := \begin{pmatrix} \mathbf{v}_1\\ \mathbf{v}_2\end{pmatrix}.
+\end{split}\]</div>
+<p>For example, if <span class="math notranslate nohighlight">\(\mathbf{v}_1 = (1, 2)\)</span> and <span class="math notranslate nohighlight">\(\mathbf{v}_2 = (-1, -3, -5)\)</span>, then <span class="math notranslate nohighlight">\((\mathbf{v}_1,\mathbf{v}_2) = (1, 2, -1, -3, -5)\)</span>. More generally, <span class="math notranslate nohighlight">\((\mathbf{v}_1,\ldots,\mathbf{v}_i)\)</span> is the concatenation of vectors <span class="math notranslate nohighlight">\(\mathbf{v}_1,\ldots,\mathbf{v}_i\)</span>.</p>
+<p>We have <span class="math notranslate nohighlight">\(L\)</span> layers. Layer <span class="math notranslate nohighlight">\(i\)</span> is defined by a continuously differentiable function <span class="math notranslate nohighlight">\(g_i\)</span> which takes two vector-valued inputs: a vector of inputs <span class="math notranslate nohighlight">\(\mathbf{z}_i \in \mathbb{R}^{n_i}\)</span> which is fed from the <span class="math notranslate nohighlight">\((i-1)\)</span>-st layer and a vector of parameters <span class="math notranslate nohighlight">\(\mathbf{w}_i \in \mathbb{R}^{r_i}\)</span> specific to the <span class="math notranslate nohighlight">\(i\)</span>-th layer</p>
+<div class="math notranslate nohighlight">
+\[
+\bfg_i = (g_{i,1},\ldots,g_{i,n_{i+1}}) : \mathbb{R}^{n_i + r_i} \to \mathbb{R}^{n_{i+1}}.
+\]</div>
+<p>The output of <span class="math notranslate nohighlight">\(\bfg_i\)</span> is a vector in <span class="math notranslate nohighlight">\(\mathbb{R}^{n_{i+1}}\)</span> which is passed to the <span class="math notranslate nohighlight">\((i+1)\)</span>-st layer as input.</p>
+<p>We denote by <span class="math notranslate nohighlight">\(\mathbf{z}_1 = \mathbf{x} \in \mathbb{R}^{d}\)</span> the input to the first layer. For <span class="math notranslate nohighlight">\(i =1,\ldots,L\)</span>, let</p>
+<div class="math notranslate nohighlight">
+\[
+\overline{\mathbf{w}}^{i} = (\mathbf{w}_1,\ldots,\mathbf{w}_i) \in \mathbb{R}^{r_1+\cdots+r_i}
+\]</div>
+<p>be the concatenation of the parameters from the first <span class="math notranslate nohighlight">\(i\)</span> layers as a vector in <span class="math notranslate nohighlight">\(\mathbb{R}^{r_1+\cdots+r_i}\)</span>. Then the output of layer <span class="math notranslate nohighlight">\(i\)</span>, as a function of the parameters, is the composition</p>
+<div class="math notranslate nohighlight">
+\[
+\mathcal{O}_{i,\mathbf{x}}(\overline{\mathbf{w}}^{i})
+= \bfg_i(\mathcal{I}_{i,\mathbf{x}}(\overline{\mathbf{w}}^{i})) \in \mathbb{R}^{n_{i+1}},
+\]</div>
+<p>where the input to layer <span class="math notranslate nohighlight">\(i\)</span> (both layer-specific parameters and the output of the previous layer), again as a function of the parameters, is</p>
+<div class="math notranslate nohighlight">
+\[
+\mathcal{I}_{i,\mathbf{x}}(\overline{\mathbf{w}}^{i})
+= \left( 
+\mathcal{O}_{i-1,\mathbf{x}}(\overline{\mathbf{w}}^{i-1}),
+\mathbf{w}_i
+\right) \in \mathbb{R}^{n_i + r_i},
+\]</div>
+<p>for <span class="math notranslate nohighlight">\(i \geq 2\)</span>. When <span class="math notranslate nohighlight">\(i=1\)</span>, we have simply
+<span class="math notranslate nohighlight">\(
+\mathcal{I}_{1,\mathbf{x}}(\overline{\mathbf{w}}^{1})
+= \left( 
+\mathbf{z}_1,
+\mathbf{w}_1
+\right)
+= \left( 
+\mathbf{x},
+\mathbf{w}_1
+\right).
+\)</span></p>
+<p>Letting <span class="math notranslate nohighlight">\(\mathbf{w} := \overline{\mathbf{w}}^{L}\)</span>, the final output is</p>
+<div class="math notranslate nohighlight">
+\[
+\bfh_{\mathbf{x}}(\mathbf{w}) 
+= \mathcal{O}_{L,\mathbf{x}}(\overline{\mathbf{w}}^{L}).
+\]</div>
+<p>Expanding out the composition, this can be written alternatively as</p>
+<div class="math notranslate nohighlight">
+\[
+\bfh_{\mathbf{x}}(\mathbf{w})
+= \bfg_{L}(\bfg_{L-1}(\cdots \bfg_2(\bfg_1(\mathbf{x},\mathbf{w}_1),\mathbf{w}_2), \cdots, \mathbf{w}_{L-1}), \mathbf{w}_{L}).
+\]</div>
+<p>As a final step, we have a loss function <span class="math notranslate nohighlight">\(\ell_{\mathbf{y}} : \mathbb{R}^{n_{L+1}} \to \mathbb{R}\)</span> which takes as input the output of the last layer and measures the fit to the given label <span class="math notranslate nohighlight">\(\mathbf{y} \in \Delta_K\)</span>. We will see some example below. The final function is then</p>
+<div class="math notranslate nohighlight">
+\[
+f_{\mathbf{x},\mathbf{y}}(\mathbf{w})
+= \ell_{\mathbf{y}}(\bfh_\mathbf{x}(\mathbf{w})) \in \mathbb{R}.
+\]</div>
+<p>We seek to compute the gradient of <span class="math notranslate nohighlight">\(f_{\mathbf{x},\mathbf{y}}(\mathbf{w})\)</span> with respect to the parameters <span class="math notranslate nohighlight">\(\mathbf{w}\)</span> in order to apply a gradient descent method.</p>
+</section>
+<section id="applying-the-chain-rule">
+<h2><span class="section-number">5.5.2. </span>Applying the chain rule<a class="headerlink" href="#applying-the-chain-rule" title="Permalink to this headline">#</a></h2>
+<p>Recall that the key insight from the <em>Chain Rule</em> is that to compute the gradient of a composition such as <span class="math notranslate nohighlight">\(h_{\mathbf{x}}(\mathbf{w})\)</span> - no matter how complex - it suffices to <em>separately</em> compute the Jacobians of the intervening functions and then take <em>matrix products</em>. In this section, we compute the necessary Jacobians in the progressive case. To simplify the notation, we drop the <span class="math notranslate nohighlight">\(\mathbf{x}\)</span> from <span class="math notranslate nohighlight">\(\mathcal{O}_{i,\mathbf{x}}\)</span> and <span class="math notranslate nohighlight">\(\mathcal{I}_{i,\mathbf{x}}\)</span>.</p>
+<p>The basic composition step is</p>
+<div class="math notranslate nohighlight">
+\[
+\mathcal{O}_{i}(\overline{\mathbf{w}}^{i})
+= \bfg_i(\mathcal{I}_{i}(\overline{\mathbf{w}}^{i})).
+\]</div>
+<p>Applying the <em>Chain Rule</em> we get</p>
+<div class="math notranslate nohighlight">
+\[
+J_{\mathcal{O}_{i}}(\overline{\mathbf{w}}^{i})
+= J_{\bfg_i}(\mathcal{I}_{i}(\overline{\mathbf{w}}^{i}))
+\,J_{\mathcal{I}_{i}}(\overline{\mathbf{w}}^{i}).
+\]</div>
+<p>First, the Jacobian of</p>
+<div class="math notranslate nohighlight">
+\[
+\mathcal{I}_{i}(\overline{\mathbf{w}}^{i})
+= \left(
+\mathcal{O}_{i-1}(\overline{\mathbf{w}}^{i-1}), \mathbf{w}_i
+\right)
+\]</div>
+<p>has a simple block structure</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+J_{\mathcal{I}_{i}}(\overline{\mathbf{w}}^{i})
+= 
+\begin{pmatrix}
+J_{\mathcal{O}_{i-1}}(\overline{\mathbf{w}}^{i-1}) &amp; 0 \\
+0 &amp; I_{r_i \times r_i}
+\end{pmatrix}
+\end{split}\]</div>
+<p>since its first component, <span class="math notranslate nohighlight">\(\mathcal{O}_{i-1}(\overline{\mathbf{w}}^{i-1})\)</span>, does not depend on <span class="math notranslate nohighlight">\(\mathbf{w}_i\)</span>. That last formula is for <span class="math notranslate nohighlight">\(i \geq 2\)</span>. When <span class="math notranslate nohighlight">\(i=1\)</span> we have
+<span class="math notranslate nohighlight">\(
+\mathcal{I}_{1}(\overline{\mathbf{w}}^{1})
+= \left( 
+\mathbf{x},
+\mathbf{w}_1
+\right),
+\)</span>
+so that</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+J_{\mathcal{I}_{1}}(\overline{\mathbf{w}}^{1})
+= 
+\begin{pmatrix}
+\mathbf{0}_{d \times r_1} \\
+I_{r_1 \times r_1}
+\end{pmatrix}.
+\end{split}\]</div>
+<p>We partition the Jacobian of <span class="math notranslate nohighlight">\(\bfg_i(\mathbf{z}_i, \mathbf{w}_i)\)</span> likewise, that is, we divide it into those columns corresponding to partial derivatives with respect to <span class="math notranslate nohighlight">\(\mathbf{z}_{i}\)</span> (denoted <span class="math notranslate nohighlight">\(A_i\)</span>) and with respect to <span class="math notranslate nohighlight">\(\mathbf{w}_i\)</span> (denoted <span class="math notranslate nohighlight">\(B_i\)</span>)</p>
+<div class="math notranslate nohighlight">
+\[
+J_{\bfg_i}(\mathbf{z}_i, \mathbf{w}_i)
+= 
+\begin{pmatrix}
+A_i &amp; B_i
+\end{pmatrix},
+\]</div>
+<p>evaluated at <span class="math notranslate nohighlight">\((\mathbf{z}_i, \mathbf{w}_i) = \mathcal{I}_{i}(\overline{\mathbf{w}}^{i}) 
+= (\mathcal{O}_{i-1}(\overline{\mathbf{w}}^{i-1}), \mathbf{w}_i)\)</span>.</p>
+<p>Plugging back above we get</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+J_{\mathcal{O}_{i}}(\overline{\mathbf{w}}^{i})
+= \begin{pmatrix}
+A_i &amp; B_i
+\end{pmatrix}
+\,\begin{pmatrix}
+J_{\mathcal{O}_{i-1}}(\overline{\mathbf{w}}^{i-1}) &amp; 0 \\
+0 &amp; I_{r_i \times r_i}
+\end{pmatrix}.
+\end{split}\]</div>
+<p>This leads to the fundamental recursion</p>
+<div class="math notranslate nohighlight">
+\[
+J_{\mathcal{O}_{i}}(\overline{\mathbf{w}}^{i})
+=
+\begin{pmatrix}
+A_i \, J_{\mathcal{O}_{i-1}}(\overline{\mathbf{w}}^{i-1}) &amp; B_i
+\end{pmatrix}
+\]</div>
+<p>from which the Jacobian of <span class="math notranslate nohighlight">\(h_{\mathbf{x}}(\mathbf{w})\)</span> can be computed.</p>
+<p>The base case <span class="math notranslate nohighlight">\(i=1\)</span> is</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+J_{\mathcal{O}_{1}}(\overline{\mathbf{w}}^{1})
+= \begin{pmatrix}
+A_1 &amp; B_1
+\end{pmatrix}\begin{pmatrix}
+\mathbf{0}_{d \times r_1} \\
+I_{r_1 \times r_1}
+\end{pmatrix}
+= B_1.
+\end{split}\]</div>
+<p>Finally, using the <em>Chain Rule</em> again</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+\nabla {f_{\mathbf{x},\mathbf{y}}}(\mathbf{w})
+&amp;= J_{f_{\mathbf{x},\mathbf{y}}}(\mathbf{w})^T\\
+&amp;= [J_{\ell_{\mathbf{y}}}(\bfh_\mathbf{x}(\mathbf{w})) 
+\,J_{\bfh_\mathbf{x}}(\mathbf{w})]^T\\
+&amp;= J_{\bfh_\mathbf{x}}(\mathbf{w})^T
+\,\nabla {\ell_{\mathbf{y}}}(\bfh_\mathbf{x}(\mathbf{w}))\\
+&amp;= J_{\mathcal{O}_{L}}(\overline{\mathbf{w}}^{L})^T
+\,\nabla {\ell_{\mathbf{y}}}(\mathcal{O}_{L}(\overline{\mathbf{w}}^{L})).
+\end{align*}\]</div>
+</section>
+<section id="forward-and-backward-propagation">
+<h2><span class="section-number">5.5.3. </span>Forward and backward propagation<a class="headerlink" href="#forward-and-backward-propagation" title="Permalink to this headline">#</a></h2>
+<p>We take advantage of the recursion above to compute the gradient of <span class="math notranslate nohighlight">\(h_{\mathbf{x}}\)</span>. There are two ways of doing this. Applying the recursion directly is one of them, but it requires many matrix-matrix products. The first few steps are</p>
+<div class="math notranslate nohighlight">
+\[
+J_{\mathcal{O}_{1}}(\overline{\mathbf{w}}^{1})
+= B_1,
+\]</div>
+<div class="math notranslate nohighlight">
+\[
+J_{\mathcal{O}_{2}}(\overline{\mathbf{w}}^{2})
+=
+\begin{pmatrix}
+A_2 J_{\mathcal{O}_{1}}(\overline{\mathbf{w}}^{1}) &amp; B_2
+\end{pmatrix}
+\]</div>
+<div class="math notranslate nohighlight">
+\[
+J_{\mathcal{O}_{3}}(\overline{\mathbf{w}}^{3})
+=
+\begin{pmatrix}
+A_3 \, J_{\mathcal{O}_{2}}(\overline{\mathbf{w}}^{2}) &amp; B_3
+\end{pmatrix},
+\]</div>
+<p>and so on.</p>
+<p>Instead, one can also run the recursion backwards. The latter approach can be much faster because, as we detail next, it involves only matrix-vector products. Start from the end, that is, with the equation</p>
+<div class="math notranslate nohighlight">
+\[
+\nabla {f_{\mathbf{x},\mathbf{y}}}(\mathbf{w})
+= 
+J_{\bfh_\mathbf{x}}(\mathbf{w})^T
+\,\nabla {\ell_{\mathbf{y}}}(\bfh_\mathbf{x}(\mathbf{w})).
+\]</div>
+<p>Note that <span class="math notranslate nohighlight">\(\nabla {\ell_{\mathbf{y}}}(\bfh_\mathbf{x}(\mathbf{w}))\)</span> is a vector - not a matrix. Then expand the matrix <span class="math notranslate nohighlight">\(J_{\bfh_\mathbf{x}}(\mathbf{w})\)</span> using the recursion above</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+\nabla {f_{\mathbf{x},\mathbf{y}}}(\mathbf{w})
+&amp;= 
+J_{\bfh_\mathbf{x}}(\mathbf{w})^T
+\,\nabla {\ell_{\mathbf{y}}}(\bfh_\mathbf{x}(\mathbf{w}))\\
+&amp;= 
+J_{\mathcal{O}_{L}}(\overline{\mathbf{w}}^{L})^T
+\,\nabla {\ell_{\mathbf{y}}}(\bfh_\mathbf{x}(\mathbf{w}))\\
+&amp;= 
+\begin{pmatrix}
+A_L \, J_{\mathcal{O}_{L-1}}(\overline{\mathbf{w}}^{L-1}) &amp; B_L 
+\end{pmatrix}^T
+\,\nabla {\ell_{\mathbf{y}}}(\bfh_\mathbf{x}(\mathbf{w}))\\
+&amp;= 
+\begin{pmatrix}
+J_{\mathcal{O}_{L-1}}(\overline{\mathbf{w}}^{L-1})^T A_L^T \\  
+B_L^T 
+\end{pmatrix}
+\,\nabla {\ell_{\mathbf{y}}}(\bfh_\mathbf{x}(\mathbf{w}))\\
+&amp;= 
+\begin{pmatrix}
+J_{\mathcal{O}_{L-1}}(\overline{\mathbf{w}}^{L-1})^T 
+\left\{ A_L^T \,\nabla {\ell_{\mathbf{y}}}(\bfh_\mathbf{x}(\mathbf{w}))\right\}
+\\
+B_L^T \,\nabla {\ell_{\mathbf{y}}}(\bfh_\mathbf{x}(\mathbf{w}))
+\end{pmatrix}.
+\end{align*}\]</div>
+<p>The key is that both expressions
+<span class="math notranslate nohighlight">\(A_L^T \,\nabla {\ell_{\mathbf{y}}}(\bfh_\mathbf{x}(\mathbf{w}))\)</span>
+and
+<span class="math notranslate nohighlight">\(B_L^T \,\nabla {\ell_{\mathbf{y}}}(\bfh_\mathbf{x}(\mathbf{w}))\)</span> are <em>matrix-vector products</em>. That pattern persists at the next levels of recursion.</p>
+<p>At the next level, we expand the matrix <span class="math notranslate nohighlight">\(J_{\mathcal{O}_{L-1}}(\overline{\mathbf{w}}^{L-1})^T\)</span> using the recursion above</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{align*}
+\nabla {f_{\mathbf{x},\mathbf{y}}}(\mathbf{w})
+&amp;= 
+\begin{pmatrix}
+J_{\mathcal{O}_{L-1}}(\overline{\mathbf{w}}^{L-1})^T 
+\left\{ A_L^T \,\nabla {\ell_{\mathbf{y}}}(\bfh_\mathbf{x}(\mathbf{w}))\right\}
+\\
+B_L^T \,\nabla {\ell_{\mathbf{y}}}(\bfh_\mathbf{x}(\mathbf{w}))
+\end{pmatrix}\\
+&amp;= 
+\begin{pmatrix}
+\begin{pmatrix}
+A_{L-1} \, J_{\mathcal{O}_{L-2}}(\overline{\mathbf{w}}^{L-2}) &amp; B_{L-1}
+\end{pmatrix}^T 
+\left\{ A_L^T \,\nabla {\ell_{\mathbf{y}}}(\bfh_\mathbf{x}(\mathbf{w}))\right\}
+\\
+B_L^T \,\nabla {\ell_{\mathbf{y}}}(\bfh_\mathbf{x}(\mathbf{w}))
+\end{pmatrix}\\
+&amp;= 
+\begin{pmatrix}
+\begin{pmatrix}
+J_{\mathcal{O}_{L-2}}(\overline{\mathbf{w}}^{L-2})\,A_{L-1}^T \\ B_{L-1}^T
+\end{pmatrix}
+\left\{ A_L^T \,\nabla {\ell_{\mathbf{y}}}(\bfh_\mathbf{x}(\mathbf{w}))\right\}
+\\
+B_L^T \,\nabla {\ell_{\mathbf{y}}}(\bfh_\mathbf{x}(\mathbf{w}))
+\end{pmatrix}\\
+&amp;= 
+\begin{pmatrix}
+J_{\mathcal{O}_{L-2}}(\overline{\mathbf{w}}^{L-2})\left\{A_{L-1}^T
+\left\{ A_L^T \,\nabla {\ell_{\mathbf{y}}}(\bfh_\mathbf{x}(\mathbf{w}))\right\}\right\}
+\\
+B_{L-1}^T \left\{ A_L^T \,\nabla {\ell_{\mathbf{y}}}(\bfh_\mathbf{x}(\mathbf{w}))\right\}\\
+B_L^T \,\nabla {\ell_{\mathbf{y}}}(\bfh_\mathbf{x}(\mathbf{w}))
+\end{pmatrix}.
+\end{align*}
+\end{split}\]</div>
+<p>Continuing by induction gives an alternative formula for the gradient of <span class="math notranslate nohighlight">\(f_{\mathbf{x},\mathbf{y}}\)</span>.</p>
+<p>Indeed, the next level gives</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+\nabla {f_{\mathbf{x},\mathbf{y}}}(\mathbf{w})
+&amp;= 
+\begin{pmatrix}
+J_{\mathcal{O}_{L-3}}(\overline{\mathbf{w}}^{L-3})\left\{A_{L-2}^T
+\left\{A_{L-1}^T
+\left\{ A_L^T \,\nabla {\ell_{\mathbf{y}}}(\bfh_\mathbf{x}(\mathbf{w}))\right\}\right\}\right\}
+\\
+B_{L-2}^T \left\{A_{L-1}^T
+\left\{ A_L^T \,\nabla {\ell_{\mathbf{y}}}(\bfh_\mathbf{x}(\mathbf{w}))\right\}\right\}
+\\
+B_{L-1}^T \left\{ A_L^T \,\nabla {\ell_{\mathbf{y}}}(\bfh_\mathbf{x}(\mathbf{w}))\right\}\\
+B_L^T \,\nabla {\ell_{\mathbf{y}}}(\bfh_\mathbf{x}(\mathbf{w}))
+\end{pmatrix}.
+\end{align*}\]</div>
+<p>and so on.</p>
+<p>There is one more detail to note. The matrices <span class="math notranslate nohighlight">\(A_i, B_i\)</span> depend on the output of layer <span class="math notranslate nohighlight">\(i-1\)</span>. To compute them, we proceeed forward, that is, we let <span class="math notranslate nohighlight">\(\mathbf{z}_1 = \mathbf{x}\)</span> then</p>
+<div class="math notranslate nohighlight">
+\[
+\mathbf{z}_2 = \mathcal{O}_{1}(\overline{\mathbf{w}}^{1})
+= \bfg_1(\mathbf{z}_1,
+\mathbf{w}_1),
+\]</div>
+<div class="math notranslate nohighlight">
+\[
+\mathbf{z}_3 = \mathcal{O}_{2}(\overline{\mathbf{w}}^{2})
+= \bfg_2(\mathcal{O}_{1}(\overline{\mathbf{w}}^{1}),
+\mathbf{w}_2)
+= \bfg_2(\mathbf{z}_2,
+\mathbf{w}_2),
+\]</div>
+<p>and so on.</p>
+<p>We give the full algorithm now - in two passes. In the forward pass, or forward propagation step, we compute the following:</p>
+<p><em>Initialization:</em></p>
+<div class="math notranslate nohighlight">
+\[\mathbf{z}_1 := \mathbf{x}\]</div>
+<p><em>Forward layer loop:</em> For <span class="math notranslate nohighlight">\(i = 1,\ldots,L\)</span>:</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+\mathbf{z}_{i+1} &amp;:= \bfg_i(\mathbf{z}_i, \mathbf{w}_i)\\
+\begin{pmatrix}
+A_i &amp; B_i
+\end{pmatrix}
+&amp;:= J_{\bfg_i}(\mathbf{z}_i, \mathbf{w}_i)
+\end{align*}\]</div>
+<p><em>Loss:</em></p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+\mathbf{z}_{L+2}
+&amp;:= \ell_{\mathbf{y}}(\mathbf{z}_{L+1})\\
+\mathbf{p}_{L+1}
+&amp;:= \nabla {\ell_{\mathbf{y}}}(\mathbf{z}_{L+1}).
+\end{align*}\]</div>
+<p>In the backward pass, or backpropagation step, we compute the following:</p>
+<p><em>Backward layer loop:</em> For <span class="math notranslate nohighlight">\(i = L,\ldots,1\)</span>:</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+\mathbf{p}_{i} &amp;:= A_i^T \mathbf{p}_{i+1}\\
+\mathbf{q}_{i} &amp;:= B_i^T \mathbf{p}_{i+1}
+\end{align*}\]</div>
+<p><em>Output:</em></p>
+<div class="math notranslate nohighlight">
+\[
+\nabla f_{\mathbf{x},\mathbf{y}}(\mathbf{w})
+= (\mathbf{q}_1,\ldots,\mathbf{q}_L).
+\]</div>
+<p>Note that we do not in fact need to compute <span class="math notranslate nohighlight">\(A_1\)</span> and <span class="math notranslate nohighlight">\(\mathbf{p}_1\)</span>.</p>
+</section>
+<section id="a-simple-example-linear-regression">
+<h2><span class="section-number">5.5.4. </span>A simple example: linear regression<a class="headerlink" href="#a-simple-example-linear-regression" title="Permalink to this headline">#</a></h2>
+<p>We will give several concrete examples of progressive functions and of the application of the algorithmic differentiation method in this section and the next ones. We begin with a straighforward example: linear regression.</p>
+<p><strong>Computing the gradient</strong> While we have motivated the framework introduced in the previous section from the point of view of classification, it also immediately applies to the regression setting. Both classification and regression are instances of supervised learning.</p>
+<p>We first compute the gradient of a single sample. Here <span class="math notranslate nohighlight">\(\mathbf{x} \in \mathbb{R}^d\)</span> again, but <span class="math notranslate nohighlight">\(y\)</span> is a real-valued outcome variable. We revisit the case of linear regression where the loss function is</p>
+<div class="math notranslate nohighlight">
+\[
+\ell_y(z) = (z - y)^2 
+\]</div>
+<p>and the regression function has a single layer (that is, <span class="math notranslate nohighlight">\(L=1\)</span>) with</p>
+<div class="math notranslate nohighlight">
+\[
+h_{\mathbf{x}}(\mathbf{w})
+= \sum_{j=1}^d w_{j} x_{j} 
+= \mathbf{x}^T\mathbf{w},
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(\mathbf{w} \in \mathbb{R}^{d}\)</span> are the parameters. Recall that we can include a constant term (one that does not depend on the input) by adding a <span class="math notranslate nohighlight">\(1\)</span> to the input. To keep the notation simple, we assume that this pre-processing has already been performed if desired. Finally, the objective function for a single sample is</p>
+<div class="math notranslate nohighlight">
+\[
+f_{\mathbf{x},y}(\mathbf{w})
+= \ell_y(h_{\mathbf{x}}(\mathbf{w}))
+= \left(\sum_{j=1}^d w_{j} x_{j}  - y\right)^2 
+= \left(\mathbf{x}^T\mathbf{w}  - y\right)^2. 
+\]</div>
+<p>Using the notation from the previous subsection, the forward pass in this case is:</p>
+<p><em>Initialization:</em></p>
+<div class="math notranslate nohighlight">
+\[\mathbf{z}_1 := \mathbf{x}.\]</div>
+<p><em>Forward layer loop:</em></p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+z_2 := g_1(\mathbf{z}_1,\mathbf{w}_1)
+&amp;= \sum_{j=1}^d w_{1,j} z_{1,j}
+= \mathbf{z}_1^T \mathbf{w}_1
+\end{align*}\]</div>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+\begin{pmatrix}
+A_1 &amp; B_1
+\end{pmatrix}
+:= J_{g_1}(\mathbf{z}_1,\mathbf{w}_1)
+&amp;= ( w_{1,1},\ldots, w_{1,d},z_{1,1},\ldots,z_{1,d} )^T
+= \begin{pmatrix}\mathbf{w}_1^T &amp; \mathbf{z}_1^T\end{pmatrix},
+\end{align*}\]</div>
+<p>where <span class="math notranslate nohighlight">\(\mathbf{w}_1 := \mathbf{w}\)</span>.</p>
+<p><em>Loss:</em></p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+z_3
+&amp;:= \ell_{y}(z_2) = (z_2 - y)^2\\
+p_2
+&amp;:= \frac{\mathrm{d}}{\mathrm{d} z_2} {\ell_{y}}(z_2)
+= 2 (z_2 - y).
+\end{align*}\]</div>
+<p>The backward pass is:</p>
+<p><em>Backward layer loop:</em></p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+\mathbf{q}_1 := B_1^T p_2 
+&amp;= 2 (z_2 - y) \, \mathbf{z}_1.
+\end{align*}\]</div>
+<p><em>Output:</em></p>
+<div class="math notranslate nohighlight">
+\[
+\nabla f_{\mathbf{x}, y}(\mathbf{w})
+= \mathbf{q}_1.
+\]</div>
+<p>Note that there is in fact no need to compute <span class="math notranslate nohighlight">\(A_1\)</span> and <span class="math notranslate nohighlight">\(\mathbf{p}_1\)</span>.</p>
+<p>To get the full gradient, we now consider <span class="math notranslate nohighlight">\(n\)</span> samples <span class="math notranslate nohighlight">\((\mathbf{x}_i,y_i)\)</span>, <span class="math notranslate nohighlight">\(i=1,\ldots,n\)</span>. The loss function can be taken as the average of the individual sample contributions, so the gradient is obtained by linearity</p>
+<div class="math notranslate nohighlight">
+\[
+\nabla \left(\frac{1}{n} \sum_{i=1}^n f_{\mathbf{x}_i,y_i}(\mathbf{w})\right)
+=  \frac{1}{n} \sum_{i=1}^n \nabla f_{\mathbf{x}_i,y_i}(\mathbf{w}),
+\]</div>
+<p>where each term can be computed separately by the procedure above.</p>
+<p>We can then apply gradient decent. We start from an arbitrary <span class="math notranslate nohighlight">\(\mathbf{w}^{0}\)</span> and update as follows</p>
+<div class="math notranslate nohighlight">
+\[
+\mathbf{w}^{t+1} = 
+\mathbf{w}^{t} - \alpha_t \left(\frac{1}{n} \sum_{i=1}^n \nabla f_{\mathbf{x}_i,y_i}(\mathbf{w}^{t})\right).
+\]</div>
+<p>In <a class="reference external" href="https://en.wikipedia.org/wiki/Stochastic_gradient_descent">stochastic gradient descent</a> (SGD), a variant of gradient descent, we pick a sample <span class="math notranslate nohighlight">\(I_t\)</span> uniformly at random in <span class="math notranslate nohighlight">\(\{1,\ldots,n\}\)</span> and update as follows</p>
+<div class="math notranslate nohighlight">
+\[
+\mathbf{w}^{t+1}
+= \mathbf{w}^{t} - \alpha_t \nabla f_{\mathbf{x}_{I_t},y_{I_t}}(\mathbf{w}^{t}).
+\]</div>
+<p>More generally, in the so-called mini-batch version of SGD, we pick instead a random sub-sample <span class="math notranslate nohighlight">\(\mathcal{B}_t \subseteq \{1,\ldots,n\}\)</span> of size <span class="math notranslate nohighlight">\(B\)</span></p>
+<div class="math notranslate nohighlight">
+\[
+\mathbf{w}^{t+1}
+= \mathbf{w}^{t} - \alpha_t \frac{1}{B} \sum_{i\in \mathcal{B}_t} \nabla f_{\mathbf{x}_i,y_i}(\mathbf{w}^{t}).
+\]</div>
+<p>The key observation about the two stochastic updates above is that, in expectation, they perform a step of gradient descent. That turns out to be enough and it has computational advantages.</p>
+<p><strong>The <code class="docutils literal notranslate"><span class="pre">Advertising</span></code> dataset and the least-squares solution</strong> We return to the <code class="docutils literal notranslate"><span class="pre">Advertising</span></code> dataset.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;advertising.csv&#39;</span><span class="p">)</span>
+<span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Unnamed: 0</th>
+      <th>TV</th>
+      <th>radio</th>
+      <th>newspaper</th>
+      <th>sales</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>1</td>
+      <td>230.1</td>
+      <td>37.8</td>
+      <td>69.2</td>
+      <td>22.1</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>2</td>
+      <td>44.5</td>
+      <td>39.3</td>
+      <td>45.1</td>
+      <td>10.4</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>3</td>
+      <td>17.2</td>
+      <td>45.9</td>
+      <td>69.3</td>
+      <td>9.3</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>4</td>
+      <td>151.5</td>
+      <td>41.3</td>
+      <td>58.5</td>
+      <td>18.5</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>5</td>
+      <td>180.8</td>
+      <td>10.8</td>
+      <td>58.4</td>
+      <td>12.9</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">index</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>200
+</pre></div>
+</div>
+</div>
+</div>
+<p>We first compute the solution using the least-squares approach we detailed previously.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">TV</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;TV&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">()</span>
+<span class="n">radio</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;radio&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">()</span>
+<span class="n">newspaper</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;newspaper&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">()</span>
+<span class="n">sales</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;sales&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">()</span>
+<span class="n">features</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">stack</span><span class="p">((</span><span class="n">TV</span><span class="p">,</span> <span class="n">radio</span><span class="p">,</span> <span class="n">newspaper</span><span class="p">),</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">A</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">c_</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">n</span><span class="p">),</span> <span class="n">features</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">coeff</span> <span class="o">=</span> <span class="n">mmids</span><span class="o">.</span><span class="n">ls_by_qr</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">sales</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">coeff</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[ 2.93888937e+00  4.57646455e-02  1.88530017e-01 -1.03749304e-03]
+</pre></div>
+</div>
+</div>
+</div>
+<p>The MSE is:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">((</span><span class="n">A</span> <span class="o">@</span> <span class="n">coeff</span> <span class="o">-</span> <span class="n">sales</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2.784126314510936
+</pre></div>
+</div>
+</div>
+</div>
+<p><strong>Solving the problem using TensorFlow</strong> We will be using <a class="reference external" href="https://www.tensorflow.org/overview">TensorFlow</a> to implement the previous method. A quick tutorial can be found <a class="reference external" href="https://www.tensorflow.org/tutorials/quickstart/beginner">here</a>.</p>
+<p>We use <a class="reference external" href="https://www.tensorflow.org/api_docs/python/tf/data/Dataset#from_tensor_slices"><code class="docutils literal notranslate"><span class="pre">tensorflow.data.Dataset.from_tensor_slices()</span></code></a> to set up the data. It takes as input the columns of the data matrix. Here we take mini-batches of size <code class="docutils literal notranslate"><span class="pre">BATCH_SIZE</span> <span class="pre">=</span> <span class="pre">64</span></code> (using <a class="reference external" href="https://www.tensorflow.org/api_docs/python/tf/data/Dataset#batch"><code class="docutils literal notranslate"><span class="pre">batch()</span></code></a>) and we apply a random permutation of the samples on every pass through the data with <code class="docutils literal notranslate"><span class="pre">SHUFFLE_BUFFER_SIZE</span> <span class="pre">=</span> <span class="pre">100</span></code> (using <a class="reference external" href="https://www.tensorflow.org/api_docs/python/tf/data/Dataset#shuffle"><code class="docutils literal notranslate"><span class="pre">shuffle</span></code></a>).</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">tensorflow</span> <span class="k">as</span> <span class="nn">tf</span>
+<span class="kn">from</span> <span class="nn">tensorflow</span> <span class="kn">import</span> <span class="n">keras</span>
+<span class="kn">from</span> <span class="nn">tensorflow.keras</span> <span class="kn">import</span> <span class="n">layers</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">train_dataset</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">Dataset</span><span class="o">.</span><span class="n">from_tensor_slices</span><span class="p">((</span><span class="n">features</span><span class="p">,</span> <span class="n">sales</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">BATCH_SIZE</span> <span class="o">=</span> <span class="mi">64</span>
+<span class="n">SHUFFLE_BUFFER_SIZE</span> <span class="o">=</span> <span class="mi">100</span>
+
+<span class="n">train_dataset</span> <span class="o">=</span> <span class="n">train_dataset</span><span class="o">.</span><span class="n">shuffle</span><span class="p">(</span><span class="n">SHUFFLE_BUFFER_SIZE</span><span class="p">)</span><span class="o">.</span><span class="n">batch</span><span class="p">(</span><span class="n">BATCH_SIZE</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Now we construct our model. It is simply an affine map from <span class="math notranslate nohighlight">\(\mathbb{R}^3\)</span> to <span class="math notranslate nohighlight">\(\mathbb{R}\)</span>. Note that there is no need to pre-process the inputs by adding <span class="math notranslate nohighlight">\(1\)</span>s. A constant term (or “bias variable”) is automatically added by Tensorflow (unless one chooses the option <a class="reference external" href="https://www.tensorflow.org/api_docs/python/tf/keras/layers/Dense"><code class="docutils literal notranslate"><span class="pre">use_bias=False</span></code></a>).</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">model</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">Sequential</span><span class="p">([</span>
+    <span class="n">layers</span><span class="o">.</span><span class="n">Dense</span><span class="p">(</span><span class="n">input_dim</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">units</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="p">])</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Finally, the function <a class="reference external" href="https://www.tensorflow.org/api_docs/python/tf/keras/Model#fit"><code class="docutils literal notranslate"><span class="pre">fit</span></code></a> runs an optimization method of our choice on the loss function, which are specified by <a class="reference external" href="https://www.tensorflow.org/api_docs/python/tf/keras/Model#compile"><code class="docutils literal notranslate"><span class="pre">compile()</span></code></a>. There are many <a class="reference external" href="https://www.tensorflow.org/api_docs/python/tf/keras/optimizers">optimizers</a> available. See this <a class="reference external" href="https://hackernoon.com/demystifying-different-variants-of-gradient-descent-optimization-algorithm-19ae9ba2e9bc">post</a> for a brief explanation of many common optimizers.) Here we use SGD as the optimizer. And the loss function is the MSE.</p>
+<p>Choosing the right number of passes (i.e. epochs) through the data requires some experimenting. Here <span class="math notranslate nohighlight">\(10^4\)</span> suffices. But in the interest of time, we will run it only for <span class="math notranslate nohighlight">\(10\)</span> epochs. As you will see from the results, this is far from enough.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">model</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span>
+    <span class="n">optimizer</span><span class="o">=</span><span class="n">tf</span><span class="o">.</span><span class="n">optimizers</span><span class="o">.</span><span class="n">SGD</span><span class="p">(</span><span class="n">learning_rate</span><span class="o">=</span><span class="mf">1e-5</span><span class="p">),</span>
+    <span class="n">loss</span><span class="o">=</span><span class="s1">&#39;mean_squared_error&#39;</span>
+    <span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell tag_hide-output docutils container">
+<div class="cell_input above-output-prompt docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">train_dataset</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">64</span><span class="p">,</span> <span class="n">epochs</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<details class="hide below-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell output</span>
+<span class="expanded">Hide code cell output</span>
+</summary>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch 1/10
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4/4 - 0s - loss: 7044.7026 - 185ms/epoch - 46ms/step
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch 2/10
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4/4 - 0s - loss: 261.7344 - 5ms/epoch - 1ms/step
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch 3/10
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4/4 - 0s - loss: 247.8246 - 4ms/epoch - 1ms/step
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch 4/10
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4/4 - 0s - loss: 237.3925 - 4ms/epoch - 984us/step
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch 5/10
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4/4 - 0s - loss: 223.6877 - 4ms/epoch - 991us/step
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch 6/10
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4/4 - 0s - loss: 214.5025 - 5ms/epoch - 1ms/step
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch 7/10
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4/4 - 0s - loss: 203.0824 - 4ms/epoch - 1ms/step
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch 8/10
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4/4 - 0s - loss: 202.5848 - 4ms/epoch - 1ms/step
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch 9/10
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4/4 - 0s - loss: 185.7161 - 4ms/epoch - 1ms/step
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch 10/10
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4/4 - 0s - loss: 173.6690 - 4ms/epoch - 978us/step
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;keras.callbacks.History at 0x7f7dd5159f10&gt;
+</pre></div>
+</div>
+</div>
+</details>
+</div>
+<p>The final parameters and loss are:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">layers</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">get_weights</span><span class="p">())</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[array([[ 0.06514122],
+       [ 0.88385683],
+       [-0.55336696]], dtype=float32), array([-0.00302626], dtype=float32)]
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">model</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span><span class="n">train_dataset</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4/4 - 0s - loss: 168.2900 - 138ms/epoch - 35ms/step
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>168.2899627685547
+</pre></div>
+</div>
+</div>
+</div>
+<p>An alternative way to compute the loss is:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sales_pred</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="n">features</span><span class="p">)</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="n">n</span><span class="p">,))</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">mse</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">losses</span><span class="o">.</span><span class="n">MeanSquaredError</span><span class="p">()</span>
+<span class="n">mse</span><span class="p">(</span><span class="n">sales</span><span class="p">,</span> <span class="n">sales_pred</span><span class="p">)</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>168.28996
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="a-detailed-example-multinomial-logistic-regression">
+<h2><span class="section-number">5.5.5. </span>A detailed example: multinomial logistic regression<a class="headerlink" href="#a-detailed-example-multinomial-logistic-regression" title="Permalink to this headline">#</a></h2>
+<p>We give a second concrete example of progressive functions and of the application of the algorithmic differentiation method.</p>
+<p><strong>Kronecker product</strong> It will be convenient to introduce one more piece of matrix notation, the Kronecker product.</p>
+<p>Let <span class="math notranslate nohighlight">\(A = (a_{i,j})_{i \in [n], j \in [m]} \in \mathbb{R}^{n \times m}\)</span> and <span class="math notranslate nohighlight">\(B = (b_{i,j})_{i \in [p], j \in [q]} \in \mathbb{R}^{p \times q}\)</span> be arbitrary matrices. Their Kronecker product, denoted <span class="math notranslate nohighlight">\(A \otimes B\)</span>, is the following matrix in block form</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+A \otimes B = 
+\begin{pmatrix}
+  a_{1,1} B &amp; \cdots &amp; a_{1,m} B \\
+             \vdots &amp; \ddots &amp;           \vdots \\
+  a_{n,1} B &amp; \cdots &amp; a_{n,m} B
+\end{pmatrix}.
+\end{split}\]</div>
+<p><strong>EXAMPLE:</strong> <strong>(Illustration)</strong> Here is a simple illustrative example from <a class="reference external" href="https://en.wikipedia.org/wiki/Kronecker_product#Examples">Wikipedia</a>:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+  \begin{bmatrix}
+    1 &amp; 2 \\
+    3 &amp; 4 \\
+  \end{bmatrix} \otimes
+  \begin{bmatrix}
+    0 &amp; 5 \\
+    6 &amp; 7 \\
+  \end{bmatrix} =
+  \begin{bmatrix}
+    1 \begin{bmatrix}
+      0 &amp; 5 \\
+      6 &amp; 7 \\
+    \end{bmatrix} &amp; 
+    2 \begin{bmatrix}
+      0 &amp; 5 \\
+      6 &amp; 7 \\
+    \end{bmatrix} \\
+    3 \begin{bmatrix}
+      0 &amp; 5 \\
+      6 &amp; 7 \\
+    \end{bmatrix} &amp; 
+    4 \begin{bmatrix}
+      0 &amp; 5 \\
+      6 &amp; 7 \\
+    \end{bmatrix} \\
+  \end{bmatrix} =
+  \begin{bmatrix}
+     0 &amp;  5 &amp;  0 &amp; 10 \\
+     6 &amp;  7 &amp; 12 &amp; 14 \\
+     0 &amp; 15 &amp;  0 &amp; 20 \\
+    18 &amp; 21 &amp; 24 &amp; 28
+  \end{bmatrix}.
+\end{split}\]</div>
+<p><span class="math notranslate nohighlight">\(\lhd\)</span></p>
+<p><strong>EXAMPLE:</strong> <strong>(Outer product)</strong> Here is another example we have encoutered previously, the outer product of two vectors <span class="math notranslate nohighlight">\(\mathbf{u} = (u_1,\ldots,u_n) \in \mathbb{R}^n\)</span> and <span class="math notranslate nohighlight">\(\mathbf{v} = (v_1,\ldots, v_m) \in \mathbb{R}^m\)</span>. Recall that the outer product is defined in block form as the <span class="math notranslate nohighlight">\(n \times m\)</span> matrix</p>
+<div class="math notranslate nohighlight">
+\[
+\mathbf{u} \mathbf{v}^T 
+= \begin{pmatrix}
+v_1 \mathbf{u} &amp; \cdots &amp; v_m \mathbf{u}
+\end{pmatrix}
+= \mathbf{v}^T \otimes \mathbf{u}.
+\]</div>
+<p>Equivalently,</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\mathbf{u} \mathbf{v}^T 
+= \begin{pmatrix}
+u_1 \mathbf{v}^T\\ \vdots\\ u_n \mathbf{v}^T
+\end{pmatrix}
+= \mathbf{u} \otimes \mathbf{v}^T.
+\end{split}\]</div>
+<p><span class="math notranslate nohighlight">\(\lhd\)</span></p>
+<p><strong>EXAMPLE:</strong> <strong>(Illustration, continued)</strong> In the previous example the Kronecker product turned out to be commutative (i.e., we had <span class="math notranslate nohighlight">\(\mathbf{v}^T \otimes \mathbf{u} = \mathbf{u} \otimes \mathbf{v}^T\)</span>). This is not the case in general. Going back to the illustrative example above, note that</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+   \begin{bmatrix}
+    0 &amp; 5 \\
+    6 &amp; 7 \\
+  \end{bmatrix}
+  \otimes
+   \begin{bmatrix}
+    1 &amp; 2 \\
+    3 &amp; 4 \\
+  \end{bmatrix}
+ =
+  \begin{bmatrix}
+    0 \begin{bmatrix}
+    1 &amp; 2 \\
+    3 &amp; 4 \\
+  \end{bmatrix} &amp; 
+    5 \begin{bmatrix}
+    1 &amp; 2 \\
+    3 &amp; 4 \\
+  \end{bmatrix} \\
+    6 \begin{bmatrix}
+    1 &amp; 2 \\
+    3 &amp; 4 \\
+  \end{bmatrix} &amp; 
+    7 \begin{bmatrix}
+    1 &amp; 2 \\
+    3 &amp; 4 \\
+  \end{bmatrix} \\
+  \end{bmatrix} =
+  \begin{bmatrix}
+     0 &amp;  0 &amp;  5 &amp; 10 \\
+     0 &amp;  0 &amp; 15 &amp; 20 \\
+     6 &amp; 12 &amp;  7 &amp; 14 \\
+    18 &amp; 24 &amp; 21 &amp; 28
+  \end{bmatrix}.
+\end{split}\]</div>
+<p>You can check that this is different from what we obtained in the opposite order. <span class="math notranslate nohighlight">\(\lhd\)</span></p>
+<p>The Kronecker product has many useful properties. First, we introduce another piece of matrix notation, the Hadamard product. The Hadamard product of two matrices (or vectors) of the same dimension, <span class="math notranslate nohighlight">\(A = (a_{i,j})_{i \in [n], j \in [m]}, B = (b_{i,j})_{i\in [n], j \in [m]} \in \mathbb{R}^{n \times m}\)</span>, is defined as the element-wise product</p>
+<div class="math notranslate nohighlight">
+\[
+A \odot B
+= (a_{i,j} b_{i,j})_{i\in [n], j \in [m]}.
+\]</div>
+<p><strong>EXAMPLE:</strong> <strong>(Illustration, continued)</strong> Continuing our previous illustrative example</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+  \begin{bmatrix}
+    1 &amp; 2 \\
+    3 &amp; 4 \\
+  \end{bmatrix} \odot
+  \begin{bmatrix}
+    0 &amp; 5 \\
+    6 &amp; 7 \\
+  \end{bmatrix}
+  =
+   \begin{bmatrix}
+    1 \times 0 &amp; 2 \times 5\\
+    3 \times 6 &amp; 4 \times 7\\
+  \end{bmatrix}
+  =
+   \begin{bmatrix}
+    0 &amp; 10\\
+    18 &amp; 28\\
+  \end{bmatrix}.
+\end{split}\]</div>
+<p><span class="math notranslate nohighlight">\(\lhd\)</span></p>
+<p><strong>LEMMA</strong> <strong>(Kronecker Product Properties)</strong> The Kronecker product has the following properties:</p>
+<p>(a) If <span class="math notranslate nohighlight">\(B, C\)</span> are matrices of the same dimension</p>
+<div class="math notranslate nohighlight">
+\[
+A \otimes (B + C) = A \otimes B + A \otimes C
+\quad \text{and}\quad
+(B + C) \otimes A  = B \otimes A + C \otimes A.
+\]</div>
+<p>(b) If <span class="math notranslate nohighlight">\(A, B, C, D\)</span> are matrices of such size that one can form the matrix products <span class="math notranslate nohighlight">\(AC\)</span> and <span class="math notranslate nohighlight">\(BD\)</span>, then</p>
+<div class="math notranslate nohighlight">
+\[
+(A \otimes B)\,(C \otimes D)
+= (AC) \otimes (BD).
+\]</div>
+<p>© If <span class="math notranslate nohighlight">\(A, C\)</span> are matrices of the same dimension and <span class="math notranslate nohighlight">\(B, D\)</span> are matrices of the same dimension, then</p>
+<div class="math notranslate nohighlight">
+\[
+(A \otimes B)\odot(C \otimes D)
+= (A\odot C) \otimes (B\odot D).
+\]</div>
+<p>(d) If <span class="math notranslate nohighlight">\(A,B\)</span> are invertible, then</p>
+<div class="math notranslate nohighlight">
+\[
+(A \otimes B)^{-1} 
+= A^{-1} \otimes B^{-1}.
+\]</div>
+<p>(e) The transpose of <span class="math notranslate nohighlight">\(A \otimes B\)</span> is</p>
+<div class="math notranslate nohighlight">
+\[
+(A \otimes B)^T 
+= A^T \otimes B^T.
+\]</div>
+<p>(f) If <span class="math notranslate nohighlight">\(\mathbf{u}\)</span> is a column vector and <span class="math notranslate nohighlight">\(A, B\)</span> are matrices of such size that one can form the matrix product <span class="math notranslate nohighlight">\(AB\)</span>, then</p>
+<div class="math notranslate nohighlight">
+\[
+(\mathbf{u} \otimes A) B
+= \mathbf{u} \otimes (AB)
+\quad\text{and}\quad
+(A \otimes \mathbf{u}) B
+= (AB) \otimes \mathbf{u}.
+\]</div>
+<p>Similarly,</p>
+<div class="math notranslate nohighlight">
+\[
+A \,(\mathbf{u}^T \otimes B)
+= \mathbf{u}^T \otimes (AB)
+\quad\text{and}\quad
+A \,(B \otimes \mathbf{u}^T)
+= (AB) \otimes \mathbf{u}^T.
+\]</div>
+<p><span class="math notranslate nohighlight">\(\flat\)</span></p>
+<p><strong>Background on multinomial logistic regression</strong> We return to classification. We first turn to <a class="reference external" href="https://en.wikipedia.org/wiki/Multinomial_logistic_regression">multinomial logistic regression</a> to learn a classifier over <span class="math notranslate nohighlight">\(K\)</span> labels. Recall that we encode label <span class="math notranslate nohighlight">\(i\)</span> as the <span class="math notranslate nohighlight">\(K\)</span>-dimensional vector <span class="math notranslate nohighlight">\(\mathbf{e}_i\)</span> and that we allow the output of the classifier to be a probability distribution over the labels <span class="math notranslate nohighlight">\(\{1,\ldots,K\}\)</span>. Observe that <span class="math notranslate nohighlight">\(\mathbf{e}_i\)</span> can itself be thought of as a probability distribution, one that assigns probability one to <span class="math notranslate nohighlight">\(i\)</span>.</p>
+<p>In multinomial logistic regression, we once again use an affine function of the input data.</p>
+<p>This time, we have <span class="math notranslate nohighlight">\(K\)</span> functions that output a score associated to each label. We then transform these scores into a probability distribution over the <span class="math notranslate nohighlight">\(K\)</span> labels. There are many ways of doing this. A standard approach is the <a class="reference external" href="https://en.wikipedia.org/wiki/Softmax_function">softmax function</a> <span class="math notranslate nohighlight">\(\bgamma = (\gamma_1,\ldots,\gamma_K)\)</span>: for <span class="math notranslate nohighlight">\(\mathbf{z} \in \mathbb{R}^K\)</span></p>
+<div class="math notranslate nohighlight">
+\[
+\gamma_i(\mathbf{z})
+= \frac{e^{z_i}}{\sum_{j=1}^K e^{z_j}},
+\quad i=1,\ldots,K.
+\]</div>
+<p>To explain the name, observe that the larger inputs are mapped to larger probabilities.</p>
+<p>In fact, since a probability distribution must sum to <span class="math notranslate nohighlight">\(1\)</span>, it is determined by the probabilities assigned to the first <span class="math notranslate nohighlight">\(K-1\)</span> labels. In other words, we could drop the score associated to the last label. But the keep the notation simple, we will not do this here.</p>
+<p>For each <span class="math notranslate nohighlight">\(k\)</span>, we have a regression function</p>
+<div class="math notranslate nohighlight">
+\[
+\sum_{j=1}^d w^{(k)}_{1,j} x_{j}
+= \mathbf{x}_1^T \mathbf{w}^{(k)},
+\quad k=1,\ldots,K
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(\mathbf{w} = (\mathbf{w}^{(1)},\ldots,\mathbf{w}^{(K)})\)</span> are the parameters with <span class="math notranslate nohighlight">\(\mathbf{w}^{(k)} \in \mathbb{R}^{d}\)</span> and <span class="math notranslate nohighlight">\(\mathbf{x} \in \mathbb{R}^d\)</span> is the input. A constant term can be included by adding a <span class="math notranslate nohighlight">\(1\)</span> to <span class="math notranslate nohighlight">\(\mathbf{x}\)</span>. As we did in the linear regression case, we assume that this pre-processing has been performed previously. To simplify the notation, we let <span class="math notranslate nohighlight">\(\mathcal{W} \in \mathbb{R}^{K \times d}\)</span> as the matrix with rows <span class="math notranslate nohighlight">\((\mathbf{w}^{(1)})^T,\ldots,(\mathbf{w}^{(K)})^T\)</span>.</p>
+<p>The output of the classifier is</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+\bfh_{\mathbf{x}}(\mathbf{w})
+&amp;= \bgamma\left(\mathcal{W} \mathbf{x}\right),
+\end{align*}\]</div>
+<p>for <span class="math notranslate nohighlight">\(i=1,\ldots,K\)</span>, where <span class="math notranslate nohighlight">\(\bgamma\)</span> is the softmax function. Note that the latter has no associated parameter.</p>
+<p>It remains to define a loss function. To quantify the fit, it is natural to use a notion of distance between probability measures, here between the output <span class="math notranslate nohighlight">\(h_{\mathbf{x}}(\mathbf{w}) \in \Delta_K\)</span> and the correct label <span class="math notranslate nohighlight">\(\mathbf{y} \in \{\mathbf{e}_1,\ldots,\mathbf{e}_{K}\} \subseteq \Delta_K\)</span>. There are many such measures. In multinomial logistic regression, we use the <a class="reference external" href="https://en.wikipedia.org/wiki/Kullback%E2%80%93Leibler_divergence">Kullback-Leibler divergence</a>. For two probability distributions <span class="math notranslate nohighlight">\(\mathbf{p}, \mathbf{q} \in \Delta_K\)</span>, it is defined as</p>
+<div class="math notranslate nohighlight">
+\[
+\mathrm{KL}(\mathbf{p} \| \mathbf{q})
+= \sum_{i=1}^K p_i \log \frac{p_i}{q_i}
+\]</div>
+<p>where it will suffice to restrict ourselves to the case <span class="math notranslate nohighlight">\(\mathbf{q} &gt; \mathbf{0}\)</span> and where we use the convention <span class="math notranslate nohighlight">\(0 \log 0 = 0\)</span> (so that terms with <span class="math notranslate nohighlight">\(p_i = 0\)</span> contribute <span class="math notranslate nohighlight">\(0\)</span> to the sum).</p>
+<p>Notice that <span class="math notranslate nohighlight">\(\mathbf{p} = \mathbf{q}\)</span> implies <span class="math notranslate nohighlight">\(\mathrm{KL}(\mathbf{p} \| \mathbf{q}) = 0\)</span>. We show that <span class="math notranslate nohighlight">\(\mathrm{KL}(\mathbf{p} \| \mathbf{q}) \geq 0\)</span>, a result known as <em>Gibbs’ inequality</em>.</p>
+<p><strong>THEOREM</strong> <strong>(Gibbs)</strong> For any <span class="math notranslate nohighlight">\(\mathbf{p}, \mathbf{q} \in \Delta_K\)</span> with <span class="math notranslate nohighlight">\(\mathbf{q} &gt; \mathbf{0}\)</span>,</p>
+<div class="math notranslate nohighlight">
+\[
+\mathrm{KL}(\mathbf{p} \| \mathbf{q}) \geq 0.
+\]</div>
+<p><span class="math notranslate nohighlight">\(\sharp\)</span></p>
+<p><em>Proof:</em> Let <span class="math notranslate nohighlight">\(I\)</span> be the set of indices <span class="math notranslate nohighlight">\(i\)</span> such that <span class="math notranslate nohighlight">\(p_i &gt; 0\)</span>. Hence</p>
+<div class="math notranslate nohighlight">
+\[
+\mathrm{KL}(\mathbf{p} \| \mathbf{q}) 
+= \sum_{i \in I} p_i \log \frac{p_i}{q_i}.
+\]</div>
+<p>It can be proved that <span class="math notranslate nohighlight">\(\log x \leq x - 1\)</span> for all <span class="math notranslate nohighlight">\(x &gt; 0\)</span> (Try it!). So</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+\mathrm{KL}(\mathbf{p} \| \mathbf{q}) 
+&amp;= - \sum_{i \in I} p_i \log \frac{q_i}{p_i}\\
+&amp;\geq - \sum_{i \in I} p_i \left(\frac{q_i}{p_i} - 1\right)\\
+&amp;= - \sum_{i \in I} q_i + \sum_{i \in I} p_i\\
+&amp;= - \sum_{i \in I} q_i + 1\\
+&amp;\geq 0
+\end{align*}\]</div>
+<p>where we used that <span class="math notranslate nohighlight">\(\log z^{-1} = - \log z\)</span> on the first line and the fact that <span class="math notranslate nohighlight">\(p_i = 0\)</span> for all <span class="math notranslate nohighlight">\(i \notin I\)</span> on the fourth line. <span class="math notranslate nohighlight">\(\square\)</span></p>
+<p>Going back to the loss function, we use the identity <span class="math notranslate nohighlight">\(\log\frac{\alpha}{\beta} = \log \alpha - \log \beta\)</span> to re-write</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+\mathrm{KL}(\mathbf{y} \| \bfh_{\mathbf{x}}(\mathbf{w}))
+&amp;= \sum_{i=1}^K y_i \log \frac{y_i}{h_{\mathbf{x}}(\mathbf{w})_i}\\
+&amp;= \sum_{i=1}^K y_i \log y_i
+- \sum_{i=1}^K y_i \log h_{\mathbf{x},i}(\mathbf{w}),
+\end{align*}\]</div>
+<p>where <span class="math notranslate nohighlight">\(\bfh_{\mathbf{x}} = (h_{\mathbf{x},1},\ldots,h_{\mathbf{x},K})\)</span>. Notice that the first term on right-hand side does not depend on <span class="math notranslate nohighlight">\(\mathbf{w}\)</span>. Hence we can ignore it when optimizing <span class="math notranslate nohighlight">\(\mathrm{KL}(\mathbf{y} \| \bfh_{\mathbf{x}}(\mathbf{w}))\)</span>. The remaining term</p>
+<div class="math notranslate nohighlight">
+\[
+H(\mathbf{y}, \bfh_{\mathbf{x}}(\mathbf{w}))
+= - \sum_{i=1}^K y_i \log h_{\mathbf{x},i}(\mathbf{w})
+\]</div>
+<p>is known as the <a class="reference external" href="https://en.wikipedia.org/wiki/Cross_entropy">cross-entropy</a>. We use it to define our loss function. That is, we set</p>
+<div class="math notranslate nohighlight">
+\[
+\ell_{\mathbf{y}}(\mathbf{z})
+= H(\mathbf{y}, \mathbf{z})
+= - \sum_{i=1}^K y_i \log z_{i}.
+\]</div>
+<p>Finally,</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+f_{\mathbf{x},\mathbf{y}}(\mathbf{w})
+&amp;= \ell_{\mathbf{y}}(\bfh_{\mathbf{x}}(\mathbf{w}))\\
+&amp;= H(\mathbf{y}, \bfh_{\mathbf{x}}(\mathbf{w}))\\
+&amp;= H\left(\mathbf{y}, \bgamma\left(\mathcal{W} \mathbf{x}\right)\right)\\
+&amp;=  - \sum_{i=1}^K y_i \log\gamma_i\left(\mathcal{W} \mathbf{x}\right).
+\end{align*}\]</div>
+<p><strong>Computing the gradient</strong> We apply the forward and backpropagation steps from the previous section. We then use the resulting recursions to derive an analytical formula for the gradient.</p>
+<p><em><strong>Forward and backward propagation:</strong></em> The forward pass starts with the initialization <span class="math notranslate nohighlight">\(\mathbf{z}_1 := \mathbf{x}\)</span>. The forward layer loop has two steps. Set <span class="math notranslate nohighlight">\(\mathbf{w}_1 = (\mathbf{w}_1^{(1)},\ldots,\mathbf{w}_1^{(K)})\)</span> equal to <span class="math notranslate nohighlight">\(\mathbf{w} = (\mathbf{w}^{(1)},\ldots,\mathbf{w}^{(K)})\)</span>. First we compute</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+\mathbf{z}_{2} 
+&amp;:= \bfg_1(\mathbf{z}_1,\mathbf{w}_1)
+= \mathcal{W}_1 \mathbf{z}_1\\
+\begin{pmatrix}
+A_1 &amp; B_1
+\end{pmatrix}
+&amp;:= J_{\bfg_1}(\mathbf{z}_1,\mathbf{w}_1)
+\end{align*}\]</div>
+<p>where we define <span class="math notranslate nohighlight">\(\mathcal{W}_1 \in \mathbb{R}^{K \times d}\)</span> as the matrix with rows <span class="math notranslate nohighlight">\((\mathbf{w}_1^{(1)})^T,\ldots,(\mathbf{w}_1^{(K-1)})^T\)</span>.</p>
+<p>To compute the Jacobian, let us look at the columns corresponding to the variables in <span class="math notranslate nohighlight">\(\mathbf{w}_1^{(k)}\)</span>, that is, columns <span class="math notranslate nohighlight">\(\alpha_k = d + (k-1) d + 1\)</span> to <span class="math notranslate nohighlight">\(\beta_k = d + k d\)</span>. Note that only component <span class="math notranslate nohighlight">\(k\)</span> of <span class="math notranslate nohighlight">\(g_1\)</span> depends on <span class="math notranslate nohighlight">\(\mathbf{w}_1^{(k)}\)</span>, so the rows <span class="math notranslate nohighlight">\(\neq k\)</span> of <span class="math notranslate nohighlight">\(J_{\bfg_1}\)</span> are <span class="math notranslate nohighlight">\(0\)</span> for those columns. Row <span class="math notranslate nohighlight">\(k\)</span> on the other hand is <span class="math notranslate nohighlight">\(\mathbf{z}_1^T\)</span>. Hence one way to write the columns <span class="math notranslate nohighlight">\(\alpha_k\)</span> to <span class="math notranslate nohighlight">\(\beta_k\)</span> of <span class="math notranslate nohighlight">\(J_{\bfg_1}\)</span> is <span class="math notranslate nohighlight">\(\mathbf{e}_k \mathbf{z}_1^T\)</span>, where here <span class="math notranslate nohighlight">\(\mathbf{e}_k \in \mathbb{R}^{K}\)</span> is the canonical basis of <span class="math notranslate nohighlight">\(\mathbb{R}^{K}\)</span> (in a slight abuse of notation). So <span class="math notranslate nohighlight">\(B_1\)</span> can be written in block form as</p>
+<div class="math notranslate nohighlight">
+\[
+B_1 
+= \begin{pmatrix}
+\mathbf{e}_1 \mathbf{z}_1^T
+&amp; \cdots &amp; \mathbf{e}_{K}\mathbf{z}_1^T
+\end{pmatrix}
+= I_{K\times K} \otimes \mathbf{z}_1^T
+=: \mathbb{B}_{d,K}[\mathbf{z}_1],
+\]</div>
+<p>where the last equality is a definition.</p>
+<p>As for the columns corresponding to the variables in <span class="math notranslate nohighlight">\(\mathbf{z}_1\)</span>, that is, columns <span class="math notranslate nohighlight">\(1\)</span> to <span class="math notranslate nohighlight">\(d\)</span>, each row takes the same form. Indeed row <span class="math notranslate nohighlight">\(k\)</span> is <span class="math notranslate nohighlight">\([\mathbf{w}^{(k)}_1]^T\)</span>. So <span class="math notranslate nohighlight">\(A_1\)</span> can be written as</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+A_1
+=
+\begin{pmatrix}
+(\mathbf{w}^{(1)}_1)^T\\
+\vdots\\
+(\mathbf{w}^{(K)}_1)^T
+\end{pmatrix}
+= \mathcal{W}_1
+=: \mathbb{A}_{d,K}[\mathbf{w}_1].
+\end{split}\]</div>
+<p>In fact, we will not need <span class="math notranslate nohighlight">\(A_1\)</span> here, but we will need this calculation in a later section.</p>
+<p>In the second step of the forward layer loop, we compute</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+\mathbf{z}_3 
+&amp;:= \bfg_2(\mathbf{z}_2)
+= \bgamma(\mathbf{z}_2)\\
+A_2
+&amp;:= J_{\bfg_2}(\mathbf{z}_2)
+= J_{\bgamma}(\mathbf{z}_2).
+\end{align*}\]</div>
+<p>So we need to compute the Jacobian of <span class="math notranslate nohighlight">\(\bgamma\)</span>. We divide this - rather tedious, but ultimately straightforward - computation into several cases.  When <span class="math notranslate nohighlight">\(1 \leq i = j \leq K\)</span>,</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+(A_2)_{ii}
+&amp;= \frac{\partial}{\partial z_{2,i}} \left[ \gamma_i(\mathbf{z}_2) \right]\\
+&amp;= \frac{\partial}{\partial z_{2,i}} \left[ \frac{e^{z_{2,i}}}{\sum_{k=1}^{K} e^{z_{2,k}}} \right]\\
+&amp;= \frac{e^{z_{2,i}}\left(\sum_{k=1}^{K} e^{z_{2,k}}\right) - e^{z_{2,i}}\left(e^{z_{2,i}}\right)}
+{\left(\sum_{k=1}^{K} e^{z_{2,k}}\right)^2}\\
+&amp;= \gamma_i(\mathbf{z}_2) - \gamma_i(\mathbf{z}_2)^2
+=:\mathbb{C}_{K}[\mathbf{z}_2]_{ii},
+\end{align*}\]</div>
+<p>by the <a class="reference external" href="https://en.wikipedia.org/wiki/Quotient_rule">quotient rule</a>.</p>
+<p>When <span class="math notranslate nohighlight">\(1 \leq i, j \leq K\)</span> with <span class="math notranslate nohighlight">\(i \neq j\)</span>,</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+(A_2)_{ij}
+&amp;= \frac{\partial}{\partial z_{2,j}} \left[ \gamma_i(\mathbf{z}_2) \right]\\
+&amp;= \frac{\partial}{\partial z_{2,j}} \left[ \frac{e^{z_{2,i}}}{\sum_{k=1}^{K} e^{z_{2,k}}} \right]\\
+&amp;= \frac{- e^{z_{2,i}}\left(e^{z_{2,j}}\right)}
+{\left(\sum_{k=1}^{K} e^{z_{2,k}}\right)^2}\\
+&amp;= - \gamma_i(\mathbf{z}_2)\gamma_j(\mathbf{z}_2)
+=:\mathbb{C}_{K}[\mathbf{z}_2]_{ij}.
+\end{align*}\]</div>
+<p>In matrix form,</p>
+<div class="math notranslate nohighlight">
+\[
+\mathbb{C}_{K}[\mathbf{z}_2]
+= \mathrm{diag}(\bgamma(\mathbf{z}_2)) - \bgamma(\mathbf{z}_2) \, \bgamma(\mathbf{z}_2)^T.
+\]</div>
+<p>The gradient of the loss function is</p>
+<div class="math notranslate nohighlight">
+\[
+\mathbf{p}_3
+= \nabla \ell_{\mathbf{y}} (\mathbf{z}_3)
+= \nabla \left[ - \sum_{i=1}^K y_i \log z_{3,i} \right]
+= -\left(\frac{y_1}{z_{3,1}}, \ldots, \frac{y_K}{z_{3,K}}\right).
+\]</div>
+<p>The backward layer loop also has two steps. Because <span class="math notranslate nohighlight">\(g_2\)</span> does not have parameters, we only need to compute <span class="math notranslate nohighlight">\(\mathbf{p}_2\)</span> and <span class="math notranslate nohighlight">\(\mathbf{q}_1\)</span>. We summarize the whole procedure next.</p>
+<p><em>Initialization:</em></p>
+<div class="math notranslate nohighlight">
+\[\mathbf{z}_1 := \mathbf{x}\]</div>
+<p><em>Forward layer loop:</em></p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+\mathbf{z}_{2} 
+&amp;:= \bfg_1(\mathbf{z}_1, \mathbf{w}_1)
+= \mathcal{W}_1 \mathbf{z}_1\\
+\begin{pmatrix}
+A_1 &amp; B_1
+\end{pmatrix}
+&amp;:= J_{\bfg_1}(\mathbf{z}_1,\mathbf{w}_1)
+= 
+\begin{pmatrix}
+\mathbb{A}_{d,K}[\mathbf{w}_1] &amp; \mathbb{B}_{d,K}[\mathbf{z}_1]
+\end{pmatrix}
+\end{align*}\]</div>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+\mathbf{z}_3 &amp;:= \bfg_2(\mathbf{z}_2) = \bgamma(\mathbf{z}_2)\\
+A_2
+&amp;:= J_{\bfg_2}(\mathbf{z}_2)
+= \mathbb{C}_{K}[\mathbf{z}_2]
+\end{align*}\]</div>
+<p><em>Loss:</em></p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+\mathbf{z}_4
+&amp;:= \ell_{\mathbf{y}}(\mathbf{z}_3) = - \sum_{i=1}^K y_i \log z_{3,i}\\
+\mathbf{p}_3
+&amp;:= \nabla {\ell_{\mathbf{y}}}(\mathbf{z}_3)
+=  -\left(\frac{y_1}{z_{3,1}}, \ldots, \frac{y_K}{z_{3,K}}\right).
+\end{align*}\]</div>
+<p><em>Backward layer loop:</em></p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+\mathbf{p}_{2} &amp;:= A_2^T \mathbf{p}_{3}
+\end{align*}\]</div>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+\mathbf{q}_{1} &amp;:= B_1^T \mathbf{p}_{2}
+\end{align*}\]</div>
+<p><em>Output:</em></p>
+<div class="math notranslate nohighlight">
+\[
+\nabla f_{\mathbf{x},\mathbf{y}}(\mathbf{w})
+= \mathbf{q}_1,
+\]</div>
+<p>where recall that <span class="math notranslate nohighlight">\(\mathbf{w} := \mathbf{w}_1\)</span>.</p>
+<p>Note that there is no <span class="math notranslate nohighlight">\(\mathbf{q}_2\)</span> because there is no <span class="math notranslate nohighlight">\(B_2\)</span> (because the second layer, <span class="math notranslate nohighlight">\(\bgamma\)</span>, does not have parameters associated with it).</p>
+<p><em><strong>Analytical results:</strong></em> Explicit formulas can be derived from the previous recursion.</p>
+<p>We first compute <span class="math notranslate nohighlight">\(\mathbf{p}_2\)</span>,then <span class="math notranslate nohighlight">\(\mathbf{q}_1\)</span>. We get for <span class="math notranslate nohighlight">\(1 \leq j \leq K\)</span></p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+[A_2^T \mathbf{p}_{3}]_j
+&amp;= \sum_{i=1}^K \mathbb{C}_{K}[\mathbf{z}_2]_{ij} \left(- \frac{y_i}{\gamma_i(\mathbf{z}_2)}\right)\\
+&amp;= (\gamma_j(\mathbf{z}_2) - \gamma_j(\mathbf{z}_2)^2) \left(- \frac{y_j}{\gamma_j(\mathbf{z}_2)}\right)
++ \sum_{i=1, i \neq j}^{K} (- \gamma_i(\mathbf{z}_2)\gamma_j(\mathbf{z}_2)) \left(- \frac{y_i}{\gamma_i(\mathbf{z}_2)}\right)\\
+&amp;= -y_j (1 - \gamma_j(\mathbf{z}_2)) + \sum_{i=1, i \neq j}^{K} y_i \gamma_j(\mathbf{z}_2)\\
+&amp;= -y_j  + \sum_{i=1}^{K} y_i \gamma_j(\mathbf{z}_2)\\
+&amp;= - y_j + \gamma_j(\mathbf{z}_2),
+\end{align*}\]</div>
+<p>where we used that <span class="math notranslate nohighlight">\(\sum_{k=1}^{K} y_k = 1\)</span>. That is, <span class="math notranslate nohighlight">\(\mathbf{p}_2 = \bgamma(\mathbf{z}_2) - \mathbf{y}\)</span>.</p>
+<p>It remains to compute <span class="math notranslate nohighlight">\(\mathbf{q}_1\)</span>. We have by parts (e) and (f) of the <em>Kronecker Product Properties Lemma</em></p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+\mathbf{q}_{1} 
+= B_1^T \mathbf{p}_{2}
+&amp;= (I_{K\times K} \otimes \mathbf{z}_1^T)^T
+(\bgamma(\mathbf{z}_2) - \mathbf{y})\\
+&amp;= ( I_{K\times K} \otimes \mathbf{z}_1)\, (\bgamma(\mathbf{z}_2) - \mathbf{y})\\
+&amp;= (\bgamma(\mathbf{z}_2) - \mathbf{y}) \otimes \mathbf{z}_1.
+\end{align*}\]</div>
+<p>Finally, replacing <span class="math notranslate nohighlight">\(\mathbf{z}_1 = \mathbf{x}\)</span> and <span class="math notranslate nohighlight">\(\mathbf{z}_2 = \mathcal{W} \mathbf{x}\)</span>, the gradient is</p>
+<div class="math notranslate nohighlight">
+\[
+\nabla f_{\mathbf{x},\mathbf{y}}(\mathbf{w})
+= \mathbf{q}_1 
+= (\bgamma\left(\mathcal{W} \mathbf{x}\right) - \mathbf{y}) \otimes \mathbf{x}.
+\]</div>
+<p>It can be shown that the objective function <span class="math notranslate nohighlight">\(f_{\mathbf{x},\mathbf{y}}(\mathbf{w})\)</span> is convex.</p>
+<p><strong>MNIST dataset</strong> We will use the <a class="reference external" href="https://en.wikipedia.org/wiki/MNIST_database">MNIST</a> dataset introduced earlier in the chapter. This section is partly inspired by this <a class="reference external" href="https://www.tensorflow.org/tutorials/keras/classification">tutorial</a>.</p>
+<p>Here is a sample of the images:</p>
+<p><img alt="MNIST sample images" src="https://upload.wikimedia.org/wikipedia/commons/2/27/MnistExamples.png" /></p>
+<p><strong>Figure:</strong> MNIST sample images (<a class="reference external" href="https://commons.wikimedia.org/wiki/File:MnistExamples.png">Source</a>)</p>
+<p>We first load the data.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">mnist</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">datasets</span><span class="o">.</span><span class="n">mnist</span>
+<span class="p">(</span><span class="n">train_images</span><span class="p">,</span> <span class="n">train_labels</span><span class="p">),</span> <span class="p">(</span><span class="n">test_images</span><span class="p">,</span> <span class="n">test_labels</span><span class="p">)</span> <span class="o">=</span> <span class="n">mnist</span><span class="o">.</span><span class="n">load_data</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>The training dataset is a <a class="reference external" href="https://en.wikipedia.org/wiki/Tensor">tensor</a> - think matrix with <span class="math notranslate nohighlight">\(3\)</span> indices. One index runs through the <span class="math notranslate nohighlight">\(60,000\)</span> training images, while the other two indices run through the horizontal and vertical pixel axes of each image. Here each image is <span class="math notranslate nohighlight">\(28 \times 28\)</span>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">train_images</span><span class="o">.</span><span class="n">shape</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(60000, 28, 28)
+</pre></div>
+</div>
+</div>
+</div>
+<p>For example, the first training image follows. Note that the pixels take values between <span class="math notranslate nohighlight">\(0\)</span> and <span class="math notranslate nohighlight">\(255\)</span>.</p>
+<div class="cell tag_hide-output docutils container">
+<div class="cell_input above-output-prompt docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">train_images</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<details class="hide below-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell output</span>
+<span class="expanded">Hide code cell output</span>
+</summary>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([[  0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,
+          0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,
+          0,   0],
+       [  0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,
+          0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,
+          0,   0],
+       [  0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,
+          0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,
+          0,   0],
+       [  0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,
+          0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,
+          0,   0],
+       [  0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,
+          0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,
+          0,   0],
+       [  0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   3,
+         18,  18,  18, 126, 136, 175,  26, 166, 255, 247, 127,   0,   0,
+          0,   0],
+       [  0,   0,   0,   0,   0,   0,   0,   0,  30,  36,  94, 154, 170,
+        253, 253, 253, 253, 253, 225, 172, 253, 242, 195,  64,   0,   0,
+          0,   0],
+       [  0,   0,   0,   0,   0,   0,   0,  49, 238, 253, 253, 253, 253,
+        253, 253, 253, 253, 251,  93,  82,  82,  56,  39,   0,   0,   0,
+          0,   0],
+       [  0,   0,   0,   0,   0,   0,   0,  18, 219, 253, 253, 253, 253,
+        253, 198, 182, 247, 241,   0,   0,   0,   0,   0,   0,   0,   0,
+          0,   0],
+       [  0,   0,   0,   0,   0,   0,   0,   0,  80, 156, 107, 253, 253,
+        205,  11,   0,  43, 154,   0,   0,   0,   0,   0,   0,   0,   0,
+          0,   0],
+       [  0,   0,   0,   0,   0,   0,   0,   0,   0,  14,   1, 154, 253,
+         90,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,
+          0,   0],
+       [  0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0, 139, 253,
+        190,   2,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,
+          0,   0],
+       [  0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,  11, 190,
+        253,  70,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,
+          0,   0],
+       [  0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,  35,
+        241, 225, 160, 108,   1,   0,   0,   0,   0,   0,   0,   0,   0,
+          0,   0],
+       [  0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,
+         81, 240, 253, 253, 119,  25,   0,   0,   0,   0,   0,   0,   0,
+          0,   0],
+       [  0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,
+          0,  45, 186, 253, 253, 150,  27,   0,   0,   0,   0,   0,   0,
+          0,   0],
+       [  0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,
+          0,   0,  16,  93, 252, 253, 187,   0,   0,   0,   0,   0,   0,
+          0,   0],
+       [  0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,
+          0,   0,   0,   0, 249, 253, 249,  64,   0,   0,   0,   0,   0,
+          0,   0],
+       [  0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,
+          0,  46, 130, 183, 253, 253, 207,   2,   0,   0,   0,   0,   0,
+          0,   0],
+       [  0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,  39,
+        148, 229, 253, 253, 253, 250, 182,   0,   0,   0,   0,   0,   0,
+          0,   0],
+       [  0,   0,   0,   0,   0,   0,   0,   0,   0,   0,  24, 114, 221,
+        253, 253, 253, 253, 201,  78,   0,   0,   0,   0,   0,   0,   0,
+          0,   0],
+       [  0,   0,   0,   0,   0,   0,   0,   0,  23,  66, 213, 253, 253,
+        253, 253, 198,  81,   2,   0,   0,   0,   0,   0,   0,   0,   0,
+          0,   0],
+       [  0,   0,   0,   0,   0,   0,  18, 171, 219, 253, 253, 253, 253,
+        195,  80,   9,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,
+          0,   0],
+       [  0,   0,   0,   0,  55, 172, 226, 253, 253, 253, 253, 244, 133,
+         11,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,
+          0,   0],
+       [  0,   0,   0,   0, 136, 253, 253, 253, 212, 135, 132,  16,   0,
+          0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,
+          0,   0],
+       [  0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,
+          0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,
+          0,   0],
+       [  0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,
+          0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,
+          0,   0],
+       [  0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,
+          0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,
+          0,   0]], dtype=uint8)
+</pre></div>
+</div>
+</div>
+</details>
+</div>
+<p>The training labels are between <span class="math notranslate nohighlight">\(0\)</span> and <span class="math notranslate nohighlight">\(9\)</span>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">train_labels</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([5, 0, 4, ..., 5, 6, 8], dtype=uint8)
+</pre></div>
+</div>
+</div>
+</div>
+<p>We will also use a test dataset provided in MNIST to assess the accuracy of our classifiers.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">test_images</span><span class="o">.</span><span class="n">shape</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(10000, 28, 28)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">len</span><span class="p">(</span><span class="n">test_labels</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>10000
+</pre></div>
+</div>
+</div>
+</div>
+<p>As is recommended by TensorFlow, before proceeding we first pre-process the images to take values between <span class="math notranslate nohighlight">\(0\)</span> and <span class="math notranslate nohighlight">\(1\)</span>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">train_images</span> <span class="o">=</span> <span class="n">train_images</span> <span class="o">/</span> <span class="mf">255.0</span>
+<span class="n">test_images</span> <span class="o">=</span> <span class="n">test_images</span> <span class="o">/</span> <span class="mf">255.0</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p><strong>Implementation</strong> We implement multinomial logistic regression to learn a classifier for the MNIST data.</p>
+<p>In Keras, composition of functions can be achieved with <a class="reference external" href="https://www.tensorflow.org/api_docs/python/tf/keras/Sequential"><code class="docutils literal notranslate"><span class="pre">Sequential()</span></code></a>. Our model is:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">model</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">Sequential</span><span class="p">([</span>
+    <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">Flatten</span><span class="p">(</span><span class="n">input_shape</span><span class="o">=</span><span class="p">(</span><span class="mi">28</span><span class="p">,</span> <span class="mi">28</span><span class="p">)),</span>
+    <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">Dense</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+<span class="p">])</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>The <a class="reference external" href="https://www.tensorflow.org/api_docs/python/tf/keras/layers/Flatten"><code class="docutils literal notranslate"><span class="pre">Flatten</span></code></a> layer turns each input image into a vector of size <span class="math notranslate nohighlight">\(784\)</span> ((where <span class="math notranslate nohighlight">\(784 = 28^2\)</span> is the number of pixels in each image). The output is <span class="math notranslate nohighlight">\(10\)</span>-dimensional.</p>
+<p>Here we use the <a class="reference external" href="https://www.tensorflow.org/api_docs/python/tf/keras/optimizers/Adam"><code class="docutils literal notranslate"><span class="pre">adam</span></code></a> optimizer (you can try SGD, but it is slow). The loss function is the cross-entropy, as implemented by <a class="reference external" href="https://www.tensorflow.org/api_docs/python/tf/keras/losses/SparseCategoricalCrossentropy"><code class="docutils literal notranslate"><span class="pre">tensorflow.keras.losses.SparseCategoricalCrossentropy()</span></code></a>. To monitor progress, we will keep track of the <code class="docutils literal notranslate"><span class="pre">accuracy</span></code> metric, which calculates how often predictions equal labels.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">model</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="n">optimizer</span><span class="o">=</span><span class="s1">&#39;adam&#39;</span><span class="p">,</span>
+              <span class="n">loss</span><span class="o">=</span><span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">losses</span><span class="o">.</span><span class="n">SparseCategoricalCrossentropy</span><span class="p">(</span><span class="n">from_logits</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span>
+              <span class="n">metrics</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;accuracy&#39;</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>We train for <span class="math notranslate nohighlight">\(10\)</span> epochs. An epoch is one training iteration where all samples are iterated once.</p>
+<div class="cell tag_hide-output docutils container">
+<div class="cell_input above-output-prompt docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">train_images</span><span class="p">,</span> <span class="n">train_labels</span><span class="p">,</span> <span class="n">epochs</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<details class="hide below-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell output</span>
+<span class="expanded">Hide code cell output</span>
+</summary>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch 1/10
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1875/1875 - 1s - loss: 0.4714 - accuracy: 0.8767 - 1s/epoch - 763us/step
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch 2/10
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1875/1875 - 1s - loss: 0.3039 - accuracy: 0.9153 - 1s/epoch - 624us/step
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch 3/10
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1875/1875 - 1s - loss: 0.2831 - accuracy: 0.9212 - 1s/epoch - 634us/step
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch 4/10
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1875/1875 - 1s - loss: 0.2730 - accuracy: 0.9244 - 1s/epoch - 651us/step
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch 5/10
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1875/1875 - 1s - loss: 0.2666 - accuracy: 0.9256 - 1s/epoch - 658us/step
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch 6/10
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1875/1875 - 1s - loss: 0.2617 - accuracy: 0.9271 - 1s/epoch - 647us/step
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch 7/10
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1875/1875 - 1s - loss: 0.2583 - accuracy: 0.9281 - 1s/epoch - 609us/step
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch 8/10
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1875/1875 - 1s - loss: 0.2555 - accuracy: 0.9294 - 1s/epoch - 637us/step
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch 9/10
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1875/1875 - 1s - loss: 0.2529 - accuracy: 0.9299 - 1s/epoch - 643us/step
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch 10/10
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1875/1875 - 1s - loss: 0.2510 - accuracy: 0.9304 - 1s/epoch - 711us/step
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;keras.callbacks.History at 0x7f7de1489eb0&gt;
+</pre></div>
+</div>
+</div>
+</details>
+</div>
+<p>The accuracy achieved (here <code class="docutils literal notranslate"><span class="pre">0.9306</span></code>) is measured on the training set, which is misleading because of <a class="reference external" href="https://en.wikipedia.org/wiki/Overfitting">overfitting</a>. We use the test images to assess the performance of the final classifier.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">test_loss</span><span class="p">,</span> <span class="n">test_acc</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span><span class="n">test_images</span><span class="p">,</span>  <span class="n">test_labels</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">Test accuracy:&#39;</span><span class="p">,</span> <span class="n">test_acc</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>313/313 - 0s - loss: 0.2669 - accuracy: 0.9260 - 226ms/epoch - 723us/step
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Test accuracy: 0.9259999990463257
+</pre></div>
+</div>
+</div>
+</div>
+<p>To make a prediction, we add a <a class="reference external" href="https://www.tensorflow.org/api_docs/python/tf/keras/layers/Softmax">softmax</a> layer to our model. It transforms the output into a probability for each label. We compute it for each test image. The result for the first one is shown below.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">probability_model</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">Sequential</span><span class="p">([</span><span class="n">model</span><span class="p">,</span> 
+                                         <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">Softmax</span><span class="p">()])</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">predictions</span> <span class="o">=</span> <span class="n">probability_model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">test_images</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>313/313 - 0s - 172ms/epoch - 551us/step
+</pre></div>
+</div>
+</div>
+</div>
+<p>The result for the first test image is shown below. To make a prediction, we choose the label with the highest probability.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">predictions</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([2.8605325e-07, 1.5672548e-12, 1.3033743e-06, 4.1188416e-03,
+       2.0142546e-07, 1.9821326e-05, 4.5725932e-12, 9.9565530e-01,
+       1.0302957e-05, 1.9394571e-04], dtype=float32)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">predictions</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>7
+</pre></div>
+</div>
+</div>
+</div>
+<p>The truth is:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">test_labels</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>7
+</pre></div>
+</div>
+</div>
+</div>
+<p>The following code from this <a class="reference external" href="https://www.tensorflow.org/tutorials/keras/classification">excellent tutorial</a> provides a neat vizualization of the results.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">class_names</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;0&#39;</span><span class="p">,</span> <span class="s1">&#39;1&#39;</span><span class="p">,</span> <span class="s1">&#39;2&#39;</span><span class="p">,</span> <span class="s1">&#39;3&#39;</span><span class="p">,</span> <span class="s1">&#39;4&#39;</span><span class="p">,</span>
+               <span class="s1">&#39;5&#39;</span><span class="p">,</span> <span class="s1">&#39;6&#39;</span><span class="p">,</span> <span class="s1">&#39;7&#39;</span><span class="p">,</span> <span class="s1">&#39;8&#39;</span><span class="p">,</span> <span class="s1">&#39;9&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell tag_hide-input docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell source</span>
+<span class="expanded">Hide code cell source</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">plot_image</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">predictions_array</span><span class="p">,</span> <span class="n">true_label</span><span class="p">,</span> <span class="n">img</span><span class="p">):</span>
+    <span class="n">true_label</span><span class="p">,</span> <span class="n">img</span> <span class="o">=</span> <span class="n">true_label</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">img</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">xticks</span><span class="p">([])</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">yticks</span><span class="p">([])</span>
+
+    <span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="n">plt</span><span class="o">.</span><span class="n">cm</span><span class="o">.</span><span class="n">binary</span><span class="p">)</span>
+
+    <span class="n">predicted_label</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">predictions_array</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">predicted_label</span> <span class="o">==</span> <span class="n">true_label</span><span class="p">:</span>
+        <span class="n">color</span> <span class="o">=</span> <span class="s1">&#39;blue&#39;</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">color</span> <span class="o">=</span> <span class="s1">&#39;red&#39;</span>
+
+    <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{}</span><span class="s2"> </span><span class="si">{:2.0f}</span><span class="s2">% (</span><span class="si">{}</span><span class="s2">)&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">class_names</span><span class="p">[</span><span class="n">predicted_label</span><span class="p">],</span>
+                                <span class="mi">100</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">predictions_array</span><span class="p">),</span>
+                                <span class="n">class_names</span><span class="p">[</span><span class="n">true_label</span><span class="p">]),</span>
+                                <span class="n">color</span><span class="o">=</span><span class="n">color</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">plot_value_array</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">predictions_array</span><span class="p">,</span> <span class="n">true_label</span><span class="p">):</span>
+    <span class="n">true_label</span> <span class="o">=</span> <span class="n">true_label</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">xticks</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">))</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">yticks</span><span class="p">([])</span>
+    <span class="n">thisplot</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">),</span> <span class="n">predictions_array</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;#777777&quot;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">ylim</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
+    <span class="n">predicted_label</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">predictions_array</span><span class="p">)</span>
+
+    <span class="n">thisplot</span><span class="p">[</span><span class="n">predicted_label</span><span class="p">]</span><span class="o">.</span><span class="n">set_color</span><span class="p">(</span><span class="s1">&#39;red&#39;</span><span class="p">)</span>
+    <span class="n">thisplot</span><span class="p">[</span><span class="n">true_label</span><span class="p">]</span><span class="o">.</span><span class="n">set_color</span><span class="p">(</span><span class="s1">&#39;blue&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</details>
+</div>
+<div class="cell tag_hide-input docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell source</span>
+<span class="expanded">Hide code cell source</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span><span class="mi">3</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">plot_image</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">predictions</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">test_labels</span><span class="p">,</span> <span class="n">test_images</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">plot_value_array</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">predictions</span><span class="p">[</span><span class="n">i</span><span class="p">],</span>  <span class="n">test_labels</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</details>
+<div class="cell_output docutils container">
+<img alt="../../_images/fcfd343cd6f8e122079bf5307f34730fb41c3b7de0c3be2c62257a68db4ab476.png" src="../../_images/fcfd343cd6f8e122079bf5307f34730fb41c3b7de0c3be2c62257a68db4ab476.png" />
+</div>
+</div>
+<div class="cell tag_hide-input docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell source</span>
+<span class="expanded">Hide code cell source</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">num_rows</span> <span class="o">=</span> <span class="mi">5</span>
+<span class="n">num_cols</span> <span class="o">=</span> <span class="mi">3</span>
+<span class="n">num_images</span> <span class="o">=</span> <span class="n">num_rows</span><span class="o">*</span><span class="n">num_cols</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="mi">2</span><span class="o">*</span><span class="n">num_cols</span><span class="p">,</span> <span class="mi">2</span><span class="o">*</span><span class="n">num_rows</span><span class="p">))</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_images</span><span class="p">):</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="n">num_rows</span><span class="p">,</span> <span class="mi">2</span><span class="o">*</span><span class="n">num_cols</span><span class="p">,</span> <span class="mi">2</span><span class="o">*</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">plot_image</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">predictions</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">test_labels</span><span class="p">,</span> <span class="n">test_images</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="n">num_rows</span><span class="p">,</span> <span class="mi">2</span><span class="o">*</span><span class="n">num_cols</span><span class="p">,</span> <span class="mi">2</span><span class="o">*</span><span class="n">i</span><span class="o">+</span><span class="mi">2</span><span class="p">)</span>
+    <span class="n">plot_value_array</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">predictions</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">test_labels</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</details>
+<div class="cell_output docutils container">
+<img alt="../../_images/18f34bdcc9cb0e92314778f3744f3a08be3b7a6f4c660f9f71f5969f0ada57ec.png" src="../../_images/18f34bdcc9cb0e92314778f3744f3a08be3b7a6f4c660f9f71f5969f0ada57ec.png" />
+</div>
+</div>
+</section>
+<section id="neural-networks">
+<h2><span class="section-number">5.5.6. </span>Neural networks<a class="headerlink" href="#neural-networks" title="Permalink to this headline">#</a></h2>
+<blockquote class="twitter-tweet"><p lang="en" dir="ltr">Today&#39;s paper shows that it is possible to implement John Von Neumann&#39;s claim: &quot;With 4 parameters I can ﬁt an elephant, and with 5 I can make him wiggle his trunk&quot;<br><br>Paper here: <a href="https://t.co/SvVrLuRFNy">https://t.co/SvVrLuRFNy</a> <a href="https://t.co/VG37439vE7">pic.twitter.com/VG37439vE7</a></p>&mdash; Fermat&#39;s Library (@fermatslibrary) <a href="https://twitter.com/fermatslibrary/status/965971333422120962?ref_src=twsrc%5Etfw">February 20, 2018</a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script><p>Feedforward neural networks generalize the previous progressive examples with the addition of an arbitrary number of layers.</p>
+<p><img alt="Feedforward neural network" src="https://miro.medium.com/max/1166/1*DW0Ccmj1hZ0OvSXi7Kz5MQ.jpeg" /></p>
+<p><a class="reference external" href="https://towardsdatascience.com/machine-learning-fundamentals-ii-neural-networks-f1e7b2cb3eef">(Source)</a></p>
+<p>Unlike the previous examples we encountered, this one is not convex. Based on the theory we developed in this chapter, finding a local minimizer is the best we can hope for in general from descent methods. Yet, in certain application settings, stochastic gradient descent (and some variants) have proven quite effective at computing a good model to fit the data. Why that is remains an open question.</p>
+<p>Here we briefly describe the basic setup and apply it to the MNIST dataset. As we will see, we will get a significant improvement over multinomial logistic regression.</p>
+<p><strong>Background</strong> Each of the main layers has two components, an affine map and a nonlinear activation function. For the latter, we restrict ourselves here to the <a class="reference external" href="https://en.wikipedia.org/wiki/Sigmoid_function">sigmoid function</a> (there are many other <a class="reference external" href="https://www.tensorflow.org/api_docs/python/tf/keras/activations">popular choices of activation functions</a>), that is, the function</p>
+<div class="math notranslate nohighlight">
+\[
+\sigma(t)
+= \frac{1}{1 + e^{-t}} \qquad t \in \mathbb{R}.
+\]</div>
+<p>The sigmoid function is plotted below.</p>
+<p>The derivative of the sigmoid is easy to compute</p>
+<div class="math notranslate nohighlight">
+\[
+\sigma'(t)
+= \frac{e^{-t}}{(1 + e^{-t})^2}
+= \frac{1}{1 + e^{-t}}\left(1 - \frac{1}{1 + e^{-t}}\right)
+= \sigma(t) (1 - \sigma(t)).
+\]</div>
+<p>The latter expression is known as the <a class="reference external" href="https://en.wikipedia.org/wiki/Logistic_function#Logistic_differential_equation">logistic differential equation</a>. It arises in a variety of applications, including the modeling of <a class="reference external" href="https://towardsdatascience.com/covid-19-infection-in-italy-mathematical-models-and-predictions-7784b4d7dd8d">population dynamics</a>. When applied to a vector, the sigmoid function is denoted <span class="math notranslate nohighlight">\(\bsigma\)</span> and is taken component-wise, i.e., <span class="math notranslate nohighlight">\(\bsigma(\mathbf{z}) = (\sigma(z_1),\ldots,\sigma(z_d))\)</span>, where <span class="math notranslate nohighlight">\(\mathbf{z} = (z_1,\ldots,z_d)\)</span>. The same goes for the component-wise derivative <span class="math notranslate nohighlight">\(\bsigma'\)</span>.</p>
+<p>We consider this time an arbitrary number of layers <span class="math notranslate nohighlight">\(L+1\)</span>. Layer <span class="math notranslate nohighlight">\(i\)</span>, for <span class="math notranslate nohighlight">\(i=1,\ldots,L\)</span>, is defined by a continuously differentiable vector-valued function <span class="math notranslate nohighlight">\(\bfg_i\)</span> which takes two vector-valued inputs: a vector of inputs <span class="math notranslate nohighlight">\(\mathbf{z}_i \in \mathbb{R}^{n_i}\)</span> which is fed from the <span class="math notranslate nohighlight">\((i-1)\)</span>-th layer and a vector of parameters <span class="math notranslate nohighlight">\(\mathbf{w}_i \in \mathbb{R}^{r_i}\)</span> specific to the <span class="math notranslate nohighlight">\(i\)</span>-th layer</p>
+<div class="math notranslate nohighlight">
+\[
+\bfg_i : \mathbb{R}^{n_i + r_i} \to \mathbb{R}^{n_{i+1}}.
+\]</div>
+<p>The output of <span class="math notranslate nohighlight">\(\bfg_i\)</span> is a vector in <span class="math notranslate nohighlight">\(\mathbb{R}^{n_{i+1}}\)</span> which is passed to the <span class="math notranslate nohighlight">\((i+1)\)</span>-th layer as input. Each component of <span class="math notranslate nohighlight">\(\bfg_i\)</span> is referred to as a neuron. Here <span class="math notranslate nohighlight">\(r_i = n_{i+1} n_i\)</span> and <span class="math notranslate nohighlight">\(\mathbf{w}_i = (\mathbf{w}^{(1)}_i,\ldots,\mathbf{w}^{(n_{i+1})}_i)\)</span> are the parameters with <span class="math notranslate nohighlight">\(\mathbf{w}^{(k)}_i \in \mathbb{R}^{n_i}\)</span> for all <span class="math notranslate nohighlight">\(k\)</span>. Specifically, <span class="math notranslate nohighlight">\(\bfg_i\)</span> is given by</p>
+<div class="math notranslate nohighlight">
+\[
+\bfg_i(\mathbf{z}_i,\mathbf{w}_i)
+= \bsigma\left(\mathcal{W}_i \mathbf{z}_i\right)
+= \left(\sigma\left(\sum_{j=1}^{n_i} w^{(1)}_{i,j} z_{i,j}\right),
+\ldots,
+\sigma\left(\sum_{j=1}^{n_i} w^{(n_{i+1})}_{i,j} z_{i,j}\right)\right)
+\]</div>
+<p>where we define <span class="math notranslate nohighlight">\(\mathcal{W}_i \in \mathbb{R}^{n_{i+1} \times n_i}\)</span> as the matrix with rows <span class="math notranslate nohighlight">\((\mathbf{w}_i^{(1)})^T,\ldots,(\mathbf{w}_i^{(n_{i+1})})^T\)</span>. As we have done previously, to keep the notation simple, we ignore the constant term (or “bias variable”) in the linear combinations of <span class="math notranslate nohighlight">\(\mathbf{z}_i\)</span>. It can be incorporated by adding a <span class="math notranslate nohighlight">\(1\)</span> input to each neuron as illustrated below. We will not detail this complication here.</p>
+<p>Each component of <span class="math notranslate nohighlight">\(g_i\)</span> is referred to as a neuron.</p>
+<p><img alt="Neuron" src="https://hackernoon.com/hn-images/1*zjzWdMucBfRbkqMzgm2xKg.png" /></p>
+<p><a class="reference external" href="https://hackernoon.com/hn-images/1*zjzWdMucBfRbkqMzgm2xKg.png">(Source)</a></p>
+<p>The first layer takes as input <span class="math notranslate nohighlight">\(\mathbf{z}_1 = \mathbf{x} \in \mathbb{R}^d\)</span> so that <span class="math notranslate nohighlight">\(n_1 = d\)</span>. As in logistic regression, layer <span class="math notranslate nohighlight">\(L\)</span> has <span class="math notranslate nohighlight">\(K\)</span> outputs so that <span class="math notranslate nohighlight">\(n_{L+1} = K\)</span>.</p>
+<p>Also as in logistic regression, layer <span class="math notranslate nohighlight">\(L+1\)</span> is the softmax function</p>
+<div class="math notranslate nohighlight">
+\[
+\bfg_{L+1}(\mathbf{z}_{L+1}) 
+= \bgamma(\mathbf{z}_{L+1}),
+\]</div>
+<p>which has no parameter.</p>
+<p>So the output of the classifier with parameters <span class="math notranslate nohighlight">\(\mathbf{w} =(\mathbf{w}_1,\ldots,\mathbf{w}_L)\)</span> on input <span class="math notranslate nohighlight">\(\mathbf{x}\)</span> is</p>
+<div class="math notranslate nohighlight">
+\[
+\bfh_{\mathbf{x}}(\mathbf{w})
+= \bfg_{L+1}(\bfg_{L}(\cdots \bfg_2(\bfg_1(\mathbf{x},\mathbf{w}_1),\mathbf{w}_2), \cdots, \mathbf{w}_{L})).
+\]</div>
+<p>We use cross-entropy as the loss function. That is, we set</p>
+<div class="math notranslate nohighlight">
+\[
+\ell_{\mathbf{y}}(\mathbf{z}_{L+1})
+= H(\mathbf{y}, \mathbf{z}_{L+1})
+= - \sum_{i=1}^K y_i \log z_{L+1,i}.
+\]</div>
+<p>Finally,</p>
+<div class="math notranslate nohighlight">
+\[
+f_{\mathbf{x},\mathbf{y}}(\mathbf{w})
+= \ell_{\mathbf{y}}(h_{\mathbf{x}}(\mathbf{w})).
+\]</div>
+<p><strong>Computing the gradient</strong> We now detail how to compute the gradient of <span class="math notranslate nohighlight">\(f_{\mathbf{x},\mathbf{y}}(\mathbf{w})\)</span>. In the forward loop, we first set <span class="math notranslate nohighlight">\(\mathbf{z}_1 := \mathbf{x}\)</span> and then we compute for <span class="math notranslate nohighlight">\(i =1,\ldots,L\)</span></p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+\mathbf{z}_{i+1} 
+&amp;:= \bfg_i(\mathbf{z}_i,\mathbf{w}_i)
+= \bsigma\left(\mathcal{W}_i \mathbf{z}_i\right)\\
+\begin{pmatrix}
+A_i &amp; B_i
+\end{pmatrix}
+&amp;:= J_{\bfg_i}(\mathbf{z}_i,\mathbf{w}_i).
+\end{align*}\]</div>
+<p>To compute the Jacobian of <span class="math notranslate nohighlight">\(\bfg_i\)</span>, we use the <em>Chain Rule</em> on the composition <span class="math notranslate nohighlight">\(\bfg_i(\mathbf{z}_i,\mathbf{w}_i) = \bsigma(\bfh_i(\mathbf{z}_i,\mathbf{w}_i))\)</span>
+where we define <span class="math notranslate nohighlight">\(\bfh_i(\mathbf{z}_i,\mathbf{w}_i) = \mathcal{W}_i \mathbf{z}_i\)</span>. That is,</p>
+<div class="math notranslate nohighlight">
+\[
+J_{\bfg_i}(\mathbf{z}_i,\mathbf{w}_i)
+= J_{\bsigma}\left(\mathcal{W}_i \mathbf{z}_i\right)
+J_{\bfh_i}(\mathbf{z}_i,\mathbf{w}_i).
+\]</div>
+<p>In our analysis of logistic regression, we computed the Jacobian of <span class="math notranslate nohighlight">\(h_i\)</span>. We obtained</p>
+<div class="math notranslate nohighlight">
+\[
+J_{\bfh_i}(\mathbf{z}_i,\mathbf{w}_i)
+= \begin{pmatrix}
+\mathbb{A}_{n_i,n_{i+1}}[\mathbf{w}_i] &amp; \mathbb{B}_{n_i,n_{i+1}}[\mathbf{z}_i]
+\end{pmatrix}.
+\]</div>
+<p>Recall that</p>
+<div class="math notranslate nohighlight">
+\[
+\mathbb{A}_{n_i,n_{i+1}}[\mathbf{w}_i]
+=
+\mathcal{W}_i.
+\]</div>
+<p>and</p>
+<div class="math notranslate nohighlight">
+\[
+\mathbb{B}_{n_i,n_{i+1}}[\mathbf{z}_i] 
+= I_{n_{i+1}\times n_{i+1}} \otimes \mathbf{z}_i^T,
+\]</div>
+<p>where here <span class="math notranslate nohighlight">\(\mathbf{e}_{j}\)</span> is the <span class="math notranslate nohighlight">\(j\)</span>-th canonical basis vector in <span class="math notranslate nohighlight">\(\mathbb{R}^{n_{i+1}}\)</span>.</p>
+<p>The Jacobian of</p>
+<div class="math notranslate nohighlight">
+\[
+\bsigma(\mathbf{t})
+= (\sigma_{1}(\mathbf{t}),\ldots,\sigma_{n_{i+1}}(\mathbf{t}))
+:= (\sigma(t_1),\ldots,\sigma(t_{n_{i+1}})),
+\]</div>
+<p>as a function of several variables can be computed from <span class="math notranslate nohighlight">\(\sigma'\)</span>, i.e., the derivative of the single-variable case. Indeed,</p>
+<div class="math notranslate nohighlight">
+\[
+\frac{\partial}{\partial t_j} \sigma_j(\mathbf{t})
+= \sigma'(t_j)
+= \frac{e^{-t_j}}{(1 + e^{-t_j})^2},
+\]</div>
+<p>while for <span class="math notranslate nohighlight">\(\ell \neq j\)</span></p>
+<div class="math notranslate nohighlight">
+\[
+\frac{\partial}{\partial t_j} \sigma_\ell(\mathbf{t})
+=0,
+\]</div>
+<p>as <span class="math notranslate nohighlight">\(\sigma_\ell(\mathbf{t})\)</span> does not depend on <span class="math notranslate nohighlight">\(t_j\)</span>. In other words, the <span class="math notranslate nohighlight">\(j\)</span>-th column of the Jacobian is <span class="math notranslate nohighlight">\(\sigma'(t_j) \,\mathbf{e}_j\)</span> where again <span class="math notranslate nohighlight">\(\mathbf{e}_{j}\)</span> is the <span class="math notranslate nohighlight">\(j\)</span>-th canonical basis vector in <span class="math notranslate nohighlight">\(\mathbb{R}^{n_{i+1}}\)</span>.
+So <span class="math notranslate nohighlight">\(J_{\bsigma}(\mathbf{t})\)</span> is the diagonal matrix with diagonal entries <span class="math notranslate nohighlight">\(\sigma'(t_j)\)</span>, <span class="math notranslate nohighlight">\(j=1, \ldots, n_{i+1}\)</span>, which we denote</p>
+<div class="math notranslate nohighlight">
+\[
+J_{\bsigma}(\mathbf{t})
+= \mathrm{diag}(\bsigma'(\mathbf{t})),
+\]</div>
+<p>where recall that we defined</p>
+<div class="math notranslate nohighlight">
+\[
+\bsigma'(\mathbf{t}) = (\sigma'(t_1), \ldots,\sigma'(t_{n_{i+1}}).
+\]</div>
+<p>Combining the previous formulas, we get</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+J_{\bfg_i}(\mathbf{z}_i,\mathbf{w}_i)
+&amp;= J_{\bsigma}\left(\mathcal{W}_i \mathbf{z}_i\right)
+J_{\bfh_i}(\mathbf{z}_i,\mathbf{w}_i)\\
+&amp;= \mathrm{diag}\left(\bsigma'\left(\mathcal{W}_i \mathbf{z}_i\right)\right) \begin{pmatrix}
+\mathbb{A}_{n_i,n_{i+1}}[\mathbf{w}_i] &amp; \mathbb{B}_{n_i,n_{i+1}}[\mathbf{z}_i]
+\end{pmatrix}\\
+&amp;=\begin{pmatrix}
+\widetilde{\mathbb{A}}_{n_i,n_{i+1}}[\mathbf{z}_i,\mathbf{w}_i] &amp; \widetilde{\mathbb{B}}_{n_i,n_{i+1}}[\mathbf{z}_i,\mathbf{w}_i]
+\end{pmatrix}
+\end{align*}\]</div>
+<p>where we define</p>
+<div class="math notranslate nohighlight">
+\[
+\widetilde{\mathbb{A}}_{n_i,n_{i+1}}[\mathbf{z}_i,\mathbf{w}_i]
+= \mathrm{diag}\left(\bsigma'\left(\mathcal{W}_i \mathbf{z}_i\right)\right) \mathcal{W}_i,
+\]</div>
+<p>and, by part (f) of the <em>Kronecker Product Properties Lemma</em>,</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+\widetilde{\mathbb{B}}_{n_i,n_{i+1}}[\mathbf{z}_i,\mathbf{w}_i] 
+&amp;= \mathrm{diag}\left(\bsigma'\left(\mathcal{W}_i \mathbf{z}_i\right)\right)
+\left(I_{n_{i+1}\times n_{i+1}} \otimes \mathbf{z}_i^T\right)
+= \mathrm{diag}\left(\bsigma'\left(\mathcal{W}_i \mathbf{z}_i\right)\right) \otimes \mathbf{z}_i^T.
+\end{align*}\]</div>
+<p>For layer <span class="math notranslate nohighlight">\(L+1\)</span>, we have previously computed the Jacobian of the softmax function. We get</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+\mathbf{z}_{L+2}
+&amp;:= \bfg_{L+1}(\mathbf{z}_{L+1})
+= \bgamma(\mathbf{z}_{L+1})\\
+A_{L+1}
+&amp;:= J_{\bfg_{L+1}}(\mathbf{z}_{L+1})
+= J_{\bgamma}(\mathbf{z}_{L+1})
+= \mathbb{C}_{K}[\mathbf{z}_{L+1}].
+\end{align*}\]</div>
+<p>Refer to the previous section for an explicit formula for <span class="math notranslate nohighlight">\(\mathbb{C}_{K}[\mathbf{z}_{L+1}]\)</span>.</p>
+<p>Also, as in the multinomial logistic regression case, the loss and gradient of the loss are</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+\mathbf{z}_{L+3}
+&amp;:= \ell_{\mathbf{y}}(\mathbf{z}_{L+2}) = - \sum_{i=1}^K y_i \log z_{L+2,i}\\
+\mathbf{q}_{L+2}
+&amp;:= \nabla \ell_{\mathbf{y}}(\mathbf{z}_{L+2})
+= \left(- \frac{y_1}{z_{L+2,1}},\ldots,- \frac{y_K}{z_{L+2,K}}\right).
+\end{align*}\]</div>
+<p><em>Initialization:</em> <span class="math notranslate nohighlight">\(\mathbf{z}_1 := \mathbf{x}\)</span></p>
+<p><em>Forward layer loop:</em> For <span class="math notranslate nohighlight">\(i = 1,\ldots,L\)</span>:</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+\mathbf{z}_{i+1} &amp;:= g_i(\mathbf{z}_i,\mathbf{w}_i) = \bsigma\left(\mathcal{W}_i \mathbf{z}_i \right)\\
+\begin{pmatrix}
+A_i &amp; B_i
+\end{pmatrix}
+&amp;:= J_{\bfg_i}(\mathbf{z}_i,\mathbf{w}_i)
+=\begin{pmatrix}
+\widetilde{\mathbb{A}}_{n_i,n_{i+1}}[\mathbf{z}_i,\mathbf{w}_i] &amp; \widetilde{\mathbb{B}}_{n_i,n_{i+1}}[\mathbf{z}_i,\mathbf{w}_i]
+\end{pmatrix}
+\end{align*}\]</div>
+<p>and</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+\mathbf{z}_{L+2}
+&amp;:= \bfg_{L+1}(\mathbf{z}_{L+1})
+= \bgamma(\mathbf{z}_{L+1})\\
+A_{L+1}
+&amp;:= J_{\bfg_{L+1}}(\mathbf{z}_{L+1})
+= \mathbb{C}_{K}[\mathbf{z}_{L+1}].
+\end{align*}\]</div>
+<p><em>Loss:</em></p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+\mathbf{z}_{L+3}
+&amp;:= \ell_{\mathbf{y}}(\mathbf{z}_{L+2})\\
+\mathbf{q}_{L+2}
+&amp;:= \nabla {\ell_{\mathbf{y}}}(\mathbf{z}_{L+2})
+= \left(- \frac{y_1}{z_{L+2,1}},\ldots,- \frac{y_K}{z_{L+2,K}}\right).
+\end{align*}\]</div>
+<p><em>Backward layer loop:</em></p>
+<div class="math notranslate nohighlight">
+\[
+\mathbf{p}_{L+1} := A_{L+1}^T \,\mathbf{p}_{L+2}
+= \mathbb{C}_{K}[\mathbf{z}_{L+1}]^T \mathbf{p}_{L+2}
+\]</div>
+<p>and for <span class="math notranslate nohighlight">\(i = L,\ldots,1\)</span>:</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+\mathbf{p}_{i} 
+&amp;:= A_i^T \mathbf{p}_{i+1}
+= \widetilde{\mathbb{A}}_{n_i,n_{i+1}}[\mathbf{z}_i,\mathbf{w}_i]^T \mathbf{p}_{i+1}\\
+\mathbf{q}_{i} 
+&amp;:= B_i^T \mathbf{p}_{i+1} = \widetilde{\mathbb{B}}_{n_i,n_{i+1}}[\mathbf{z}_i,\mathbf{w}_i]^T \mathbf{p}_{i+1}
+\end{align*}\]</div>
+<p><em>Output:</em></p>
+<div class="math notranslate nohighlight">
+\[
+\nabla f_{\mathbf{x},\mathbf{y}}(\mathbf{w})
+= (\mathbf{q}_1,\ldots,\mathbf{q}_L).
+\]</div>
+<p><strong>Implementation</strong> We implement a neural network in TensorFlow. We use the MNIST dataset again. We first load the data and preprocess it.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">mnist</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">datasets</span><span class="o">.</span><span class="n">mnist</span>
+<span class="p">(</span><span class="n">train_images</span><span class="p">,</span> <span class="n">train_labels</span><span class="p">),</span> <span class="p">(</span><span class="n">test_images</span><span class="p">,</span> <span class="n">test_labels</span><span class="p">)</span> <span class="o">=</span> <span class="n">mnist</span><span class="o">.</span><span class="n">load_data</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">train_images</span> <span class="o">=</span> <span class="n">train_images</span> <span class="o">/</span> <span class="mf">255.0</span>
+<span class="n">test_images</span> <span class="o">=</span> <span class="n">test_images</span> <span class="o">/</span> <span class="mf">255.0</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>We construct a three-layer model.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">model</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">Sequential</span><span class="p">([</span>
+    <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">Flatten</span><span class="p">(</span><span class="n">input_shape</span><span class="o">=</span><span class="p">(</span><span class="mi">28</span><span class="p">,</span> <span class="mi">28</span><span class="p">)),</span>
+    <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">Dense</span><span class="p">(</span><span class="mi">32</span><span class="p">,</span><span class="n">activation</span><span class="o">=</span><span class="s1">&#39;sigmoid&#39;</span><span class="p">),</span>
+    <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">Dense</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+<span class="p">])</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>As we did for multinomial logistic regression, we use the Adam optimizer and the cross-entropy loss. We also monitor progress by keeping track of the accuracy on the training data.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">model</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="n">optimizer</span><span class="o">=</span><span class="s1">&#39;adam&#39;</span><span class="p">,</span>
+              <span class="n">loss</span><span class="o">=</span><span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">losses</span><span class="o">.</span><span class="n">SparseCategoricalCrossentropy</span><span class="p">(</span><span class="n">from_logits</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span>
+              <span class="n">metrics</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;accuracy&#39;</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>We train for <span class="math notranslate nohighlight">\(10\)</span> epochs.</p>
+<div class="cell tag_hide-output docutils container">
+<div class="cell_input above-output-prompt docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">train_images</span><span class="p">,</span> <span class="n">train_labels</span><span class="p">,</span> <span class="n">epochs</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<details class="hide below-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell output</span>
+<span class="expanded">Hide code cell output</span>
+</summary>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch 1/10
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1875/1875 - 2s - loss: 0.5920 - accuracy: 0.8642 - 2s/epoch - 1ms/step
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch 2/10
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1875/1875 - 2s - loss: 0.2591 - accuracy: 0.9287 - 2s/epoch - 1ms/step
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch 3/10
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1875/1875 - 2s - loss: 0.2073 - accuracy: 0.9416 - 2s/epoch - 1ms/step
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch 4/10
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1875/1875 - 2s - loss: 0.1780 - accuracy: 0.9496 - 2s/epoch - 829us/step
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch 5/10
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1875/1875 - 2s - loss: 0.1573 - accuracy: 0.9556 - 2s/epoch - 820us/step
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch 6/10
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1875/1875 - 2s - loss: 0.1420 - accuracy: 0.9596 - 2s/epoch - 855us/step
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch 7/10
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1875/1875 - 2s - loss: 0.1299 - accuracy: 0.9628 - 2s/epoch - 809us/step
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch 8/10
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1875/1875 - 2s - loss: 0.1203 - accuracy: 0.9660 - 2s/epoch - 832us/step
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch 9/10
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1875/1875 - 2s - loss: 0.1119 - accuracy: 0.9676 - 2s/epoch - 845us/step
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch 10/10
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1875/1875 - 2s - loss: 0.1046 - accuracy: 0.9701 - 2s/epoch - 824us/step
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;keras.callbacks.History at 0x7f7dc14a4b20&gt;
+</pre></div>
+</div>
+</div>
+</details>
+</div>
+<p>On the test data, we get:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">test_loss</span><span class="p">,</span> <span class="n">test_acc</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span><span class="n">test_images</span><span class="p">,</span>  <span class="n">test_labels</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">Test accuracy:&#39;</span><span class="p">,</span> <span class="n">test_acc</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>313/313 - 0s - loss: 0.1279 - accuracy: 0.9614 - 264ms/epoch - 845us/step
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Test accuracy: 0.9613999724388123
+</pre></div>
+</div>
+</div>
+</div>
+<p>If you run it for <span class="math notranslate nohighlight">\(20\)</span> epochs instead of <span class="math notranslate nohighlight">\(10\)</span>, you will see the accuracy improve <em>on the training set</em>, but the accuracy on the test set will not improve much. Try it!</p>
+<p>Still this is a significantly more accurate model than what we obtained using multinomial logistic regression. One can do even better using a neural network tailored for images, known as <a class="reference external" href="https://cs231n.github.io/convolutional-networks/">convolutional neural networks</a>.</p>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./chap06_opt/05_backprop"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="../04_gd/roch-mmids-opt-gd.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title"><span class="section-number">5.4. </span>Gradient descent and its convergence analysis</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="../06_adv/roch-mmids-opt-adv.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title"><span class="section-number">5.6. </span>Advanced material</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#progressive-functions">5.5.1. Progressive functions</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#applying-the-chain-rule">5.5.2. Applying the chain rule</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#forward-and-backward-propagation">5.5.3. Forward and backward propagation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#a-simple-example-linear-regression">5.5.4. A simple example: linear regression</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#a-detailed-example-multinomial-logistic-regression">5.5.5. A detailed example: multinomial logistic regression</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#neural-networks">5.5.6. Neural networks</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Sebastien Roch
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2024.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=5b4479735964841361fd"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

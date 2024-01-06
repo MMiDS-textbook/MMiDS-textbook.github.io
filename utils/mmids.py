@@ -400,4 +400,44 @@ def viz_cut(G, s, layout):
 
 
 
+# Optimization algorithms
+    
+def desc_update(grad_f, x, alpha):
+    """
+    Performs a gradient descent update on the input variable x.
+
+    Parameters:
+    - grad_f: The gradient of the function f at x.
+    - x: The current value of the variable.
+    - alpha: The learning rate or step size for the update.
+
+    Returns:
+    - The updated value of x after performing the gradient descent update.
+    """
+    return x - alpha*grad_f(x)
+
+
+def gd(f, grad_f, x0, alpha=1e-3, niters=int(1e6)):
+    """
+    Performs gradient descent optimization to minimize a given function.
+
+    Parameters:
+    f (function): The objective function to be minimized.
+    grad_f (function): The gradient function of the objective function.
+    x0 (float or array-like): The initial point for optimization.
+    alpha (float, optional): The learning rate or step size. Defaults to 1e-3.
+    niters (int, optional): The maximum number of iterations. Defaults to 1e6.
+
+    Returns:
+    tuple: A tuple containing the optimized point and the value of the objective function at that point.
+    """
+
+    xk = x0
+    for _ in range(niters):
+        xk = desc_update(grad_f, xk, alpha)
+
+    return xk, f(xk)
+
+
+
 

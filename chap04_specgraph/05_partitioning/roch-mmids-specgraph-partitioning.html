@@ -1,0 +1,1189 @@
+
+
+<!DOCTYPE html>
+
+
+<html data-content_root="" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>4.5. Appplication to graph partitioning &#8212; MMiDS Online Book</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=5b4479735964841361fd" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" href="../../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=5b4479735964841361fd" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd" />
+  <script src="../../_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=5b4479735964841361fd"></script>
+
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/clipboard.min.js"></script>
+    <script src="../../_static/copybutton.js"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../_static/design-tabs.js"></script>
+    <script loading_method="async" src="https://www.googletagmanager.com/gtag/js?id=G-P5E8DW088F"></script>
+    <script>
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){ dataLayer.push(arguments); }
+                gtag('js', new Date());
+                gtag('config', 'G-P5E8DW088F');
+            </script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="../../_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'chap04_specgraph/05_partitioning/roch-mmids-specgraph-partitioning';</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="4.6. Other resources" href="../summary_chap04.html" />
+    <link rel="prev" title="4.4. Spectral properties of the Laplacian matrix" href="../04_laplacian/roch-mmids-specgraph-laplacian.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="None"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+
+<a class="navbar-brand logo" href="../../intro.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/mmids-cover-small.jpg" class="logo__image only-light" alt="MMiDS Online Book - Home"/>
+    <script>document.write(`<img src="../../_static/mmids-cover-small.jpg" class="logo__image only-dark" alt="MMiDS Online Book - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../intro.html">
+                    <b>MATHEMATICAL METHODS in DATA SCIENCE (with Python)</b>
+                </a>
+            </li>
+        </ul>
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../chap01_intro/00_intro/roch-mmids-intro-intro.html">1. Introduction</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../chap01_intro/01_motiv/roch-mmids-intro-motiv.html">1.1. Motivating example: discovering new species</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap01_intro/02_review/roch-mmids-intro-review.html">1.2. Background: review of basic linear algebra, calculus, and probability</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap01_intro/03_clustering/roch-mmids-intro-clustering.html">1.3. Clustering: an objective, an algorithm and a guarantee</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap01_intro/04_highdim/roch-mmids-intro-highdim.html">1.4. Some observations about high-dimensional data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap01_intro/05_adv/roch-mmids-intro-adv.html">1.5. Advanced material</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap01_intro/summary_chap01.html">1.6. Other resources</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../chap02_ls/00_intro/roch-mmids-ls-intro.html">2. Least squares</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../chap02_ls/01_motiv/roch-mmids-ls-motiv.html">2.1. Motivating example: predicting sales</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap02_ls/02_subspaces/roch-mmids-ls-spaces.html">2.2. Background: linear spaces</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap02_ls/03_orthog/roch-mmids-ls-orthog.html">2.3. A key concept: orthogonality</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap02_ls/04_overdetermined/roch-mmids-ls-overdetermined.html">2.4. Overdetermined linear systems and regression analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap02_ls/05_qr/roch-mmids-ls-qr.html">2.5. QR decomposition and Householder transformations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap02_ls/06_adv/roch-mmids-ls-adv.html">2.6. Advanced material</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap02_ls/summary_chap02.html">2.7. Other resources</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../chap03_svd/00_intro/roch-mmids-svd-intro.html">3. Singular value decomposition</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-3"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../chap03_svd/01_motiv/roch-mmids-svd-motiv.html">3.1. Motivating example: vizualizing genetic data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap03_svd/02_spectral/roch-mmids-svd-spectral.html">3.2. Background: review of spectral decomposition</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap03_svd/03_svd/roch-mmids-svd-svd.html">3.3. Dimension reduction and approximating subspaces</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap03_svd/04_power/roch-mmids-svd-power.html">3.4. Power iteration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap03_svd/05_further/roch-mmids-svd-further.html">3.5. Further applications of the SVD</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap03_svd/06_adv/roch-mmids-svd-adv.html">3.6. Advanced material</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap03_svd/summary_chap03.html">3.7. Other resources</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="../00_intro/roch-mmids-specgraph-intro.html">4. Spectral graph theory</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-4"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../01_motiv/roch-mmids-specgraph-motiv.html">4.1. Motivating example: finding communities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../02_graph/roch-mmids-specgraph-graph.html">4.2. Background: review of graphs and associated matrices</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../03_extremal/roch-mmids-specgraph-extremal.html">4.3. Eigenvalues and their variational characterization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../04_laplacian/roch-mmids-specgraph-laplacian.html">4.4. Spectral properties of the Laplacian matrix</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">4.5. Appplication to graph partitioning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../summary_chap04.html">4.6. Other resources</a></li>
+</ul>
+</li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/MMiDS-textbook/MMiDS-textbook.github.io" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/MMiDS-textbook/MMiDS-textbook.github.io/issues/new?title=Issue%20on%20page%20%2Fchap04_specgraph/05_partitioning/roch-mmids-specgraph-partitioning.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/chap04_specgraph/05_partitioning/roch-mmids-specgraph-partitioning.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Appplication to graph partitioning</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#how-to-cut-a-graph">4.5.1. How to cut a graph</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#weighted-case-and-variants">4.5.2. Weighted case and variants</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <section id="appplication-to-graph-partitioning">
+<h1><span class="section-number">4.5. </span>Appplication to graph partitioning<a class="headerlink" href="#appplication-to-graph-partitioning" title="Permalink to this headline">#</a></h1>
+<p>In this section, we use the spectral properties of the Laplacian of a graph to identify “good” cuts.</p>
+<section id="how-to-cut-a-graph">
+<h2><span class="section-number">4.5.1. </span>How to cut a graph<a class="headerlink" href="#how-to-cut-a-graph" title="Permalink to this headline">#</a></h2>
+<p>Let <span class="math notranslate nohighlight">\(G=(V, E)\)</span> be a graph. Imagine that we are interested in finding a good cut. That is, roughly speaking, we seek to divide it into two disjoint subsets of vertices to achieve two goals simultaneously:</p>
+<ol class="arabic simple">
+<li><p>the two sets have relatively few edges between them</p></li>
+<li><p>neither set is too small.</p></li>
+</ol>
+<p>We will show that the Laplacian eigenvectors provide useful information in order to perform this kind of graph cutting. First we formulate the problem formally.</p>
+<p><strong>Cut ratio</strong> One way to make the graph cutting more precise is to consider the following combinatorial quantity.</p>
+<p><strong>DEFINITION</strong> <strong>(Isoperimetric Number)</strong> Let <span class="math notranslate nohighlight">\(G=(V, E)\)</span> be a graph. A cut is a bipartition <span class="math notranslate nohighlight">\((S, S^c)\)</span> of the vertices of <span class="math notranslate nohighlight">\(G\)</span>, where <span class="math notranslate nohighlight">\(S\)</span> and <span class="math notranslate nohighlight">\(S^c = V\setminus S\)</span> are non-empty subsets of <span class="math notranslate nohighlight">\(V\)</span>. The corresponding cutset is the set of edges between <span class="math notranslate nohighlight">\(S\)</span> and <span class="math notranslate nohighlight">\(S^c\)</span>.</p>
+<div class="math notranslate nohighlight">
+\[
+E(S,S^c)
+=
+\{
+\{i,j\} \in E : i \in S, j \in S^c 
+\}.
+\]</div>
+<p>This is also known as the edge boundary of <span class="math notranslate nohighlight">\(S\)</span> (denoted <span class="math notranslate nohighlight">\(\partial S\)</span>). The size of the cutset is then <span class="math notranslate nohighlight">\(|E(S,S^c)|\)</span>, the number of edges between <span class="math notranslate nohighlight">\(S\)</span> to <span class="math notranslate nohighlight">\(S^c\)</span>. The cut ratio of <span class="math notranslate nohighlight">\((S,S^c)\)</span> is defined as</p>
+<div class="math notranslate nohighlight">
+\[
+\phi(S) 
+= 
+\frac{|E(S,S^c)|}{\min\{|S|, |S^c|\}}
+\]</div>
+<p>and the isoperimetric number (or <a class="reference external" href="https://en.wikipedia.org/wiki/Spectral_graph_theory#Cheeger_constant">Cheeger constant</a>) of <span class="math notranslate nohighlight">\(G\)</span> is the smallest value this quantity can take on <span class="math notranslate nohighlight">\(G\)</span>, that is,</p>
+<div class="math notranslate nohighlight">
+\[
+\phi_G
+= 
+\min_{\emptyset \neq S \subset V} \phi(S).
+\]</div>
+<p><span class="math notranslate nohighlight">\(\natural\)</span></p>
+<p>In words: the cut ratio is attempting to minimize the number of edges across a cut, while penalizing cuts with a small number of vertices on either side. These correspond to the goals above and we will use this criterion to assess the quality of graph cuts.</p>
+<p><em>Why do we need the denominator?</em> If we were to minimize only the numerator <span class="math notranslate nohighlight">\(|E(S,S^c)|\)</span> over all cuts (without the deonominator in <span class="math notranslate nohighlight">\(\phi(S)\)</span>), we would get what is known as the <a class="reference external" href="https://en.wikipedia.org/wiki/Minimum_cut">minimum cut (or min-cut) problem</a>. That problem is easier to solve. In particular, it can be solved using a beautiful <a class="reference external" href="https://en.wikipedia.org/wiki/Karger%27s_algorithm">randomized algorithm</a>. However, it tends to produce unbalanced cuts, where one side is much smaller than the other. This is not what we want here.</p>
+<p><strong>EXAMPLE:</strong> <strong>(A Random Tree)</strong> We illustrate the definitions above on an a tree, that is, a connected graph with no cycle. The function <a class="reference external" href="https://networkx.org/documentation/stable/reference/generated/networkx.generators.trees.random_tree.html"><code class="docutils literal notranslate"><span class="pre">networkx.random_tree()</span></code></a> can produce a random one. Here we use a <code class="docutils literal notranslate"><span class="pre">seed</span></code> for reproducibility. Again, we use <span class="math notranslate nohighlight">\(0,\ldots,n-1\)</span> for the vertex set.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">G_tree</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">random_tree</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">111</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell tag_hide-input docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell source</span>
+<span class="expanded">Hide code cell source</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">nx</span><span class="o">.</span><span class="n">draw_networkx</span><span class="p">(</span><span class="n">G_tree</span><span class="p">,</span> <span class="n">pos</span><span class="o">=</span><span class="n">nx</span><span class="o">.</span><span class="n">circular_layout</span><span class="p">(</span><span class="n">G_tree</span><span class="p">),</span>
+                 <span class="n">node_size</span><span class="o">=</span><span class="mi">600</span><span class="p">,</span> <span class="n">node_color</span><span class="o">=</span><span class="s2">&quot;black&quot;</span><span class="p">,</span> 
+                 <span class="n">font_size</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span> <span class="n">font_color</span><span class="o">=</span><span class="s2">&quot;white&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</details>
+<div class="cell_output docutils container">
+<img alt="../../_images/abdb1dff6505d8df18cea16c0b935059aec75d6ed56c2d070613ba8f6cb35e3b.png" src="../../_images/abdb1dff6505d8df18cea16c0b935059aec75d6ed56c2d070613ba8f6cb35e3b.png" />
+</div>
+</div>
+<p>Suppose we take <span class="math notranslate nohighlight">\(S = \{0,1,2,3\}\)</span>. Then <span class="math notranslate nohighlight">\(S^c = \{4,5\}\)</span> and</p>
+<div class="math notranslate nohighlight">
+\[
+E(S,S^c)
+= \{\{1,5\}, \{2,4\}\}.
+\]</div>
+<p>The cut ratio is then</p>
+<div class="math notranslate nohighlight">
+\[
+\phi(S)
+= \frac{|E(S,S^c)|}{\min\{|S|,|S^c|\}}
+= \frac{2}{2}
+= 1.
+\]</div>
+<p>A better cut is given by <span class="math notranslate nohighlight">\(S = \{0,1,5\}\)</span>. In that case <span class="math notranslate nohighlight">\(S^c = \{2,3,4\}\)</span>,</p>
+<div class="math notranslate nohighlight">
+\[
+E(S,S^c)= \{\{1,3\}\},
+\]</div>
+<p>and</p>
+<div class="math notranslate nohighlight">
+\[
+\phi(S)
+= \frac{|E(S,S^c)|}{\min\{|S|,|S^c|\}}
+= \frac{1}{3}.
+\]</div>
+<p>This is also equal to <span class="math notranslate nohighlight">\(\phi_G\)</span>. Indeed, in a connected graph with <span class="math notranslate nohighlight">\(n\)</span> vertices, the numerator is at least <span class="math notranslate nohighlight">\(1\)</span> and the denominator is at most <span class="math notranslate nohighlight">\(n/2\)</span>, which is achieved here. (See <em>Exercise 3.41</em>.) <span class="math notranslate nohighlight">\(\lhd\)</span></p>
+<p><strong>Cheeger’s inequality</strong> A key result of spectral graph theory establishes a quantitative relation between the isoperimetric number and the second smallest Laplacian eigenvalue.</p>
+<p><strong>THEOREM</strong> <strong>(Cheeger Inequality)</strong> Let <span class="math notranslate nohighlight">\(G = (V, E)\)</span> be a graph with <span class="math notranslate nohighlight">\(n = |V|\)</span> vertices and maximum degree <span class="math notranslate nohighlight">\(\bar{\delta}\)</span>. Let <span class="math notranslate nohighlight">\(0 = \mu_1 \leq \mu_2 \leq \cdots \leq \mu_n\)</span> be its Laplacian eigenvalues. Then</p>
+<div class="math notranslate nohighlight">
+\[
+\frac{\phi_G^2}{2 \bar{\delta}} \leq \mu_2 \leq 2 \phi_G.
+\]</div>
+<p><span class="math notranslate nohighlight">\(\sharp\)</span></p>
+<p>We only prove the easy direction, <span class="math notranslate nohighlight">\(\mu_2 \leq 2 \phi_G\)</span>, which shows explicitly how the connection between <span class="math notranslate nohighlight">\(\mu_2\)</span> and <span class="math notranslate nohighlight">\(\phi_G\)</span> comes about.</p>
+<p><em>Proof idea:</em> To show that <span class="math notranslate nohighlight">\(\mu_2 \leq 2 \phi_G\)</span>, we find an appropriate test vector to plug into the extremal characterization of <span class="math notranslate nohighlight">\(\mu_2\)</span> and link it to <span class="math notranslate nohighlight">\(\phi_G\)</span>.</p>
+<p><em>Proof:</em> Recall that, from the <em>Variational Characterization of <span class="math notranslate nohighlight">\(\mu_2\)</span></em>, we have</p>
+<div class="math notranslate nohighlight">
+\[
+\mu_2 
+= \min\left\{
+\sum_{\{u, v\} \in E} (x_u - x_v)^2 \,:\,
+\mathbf{x} = (x_1, \ldots, x_n)^T \in \mathbb{R}^n, 
+\sum_{u=1}^n x_u = 0,
+\sum_{u = 1}^n x_u^2 = 1
+\right\}.
+\]</div>
+<p><em><strong>Constructing a good test vector:</strong></em> We construct an <span class="math notranslate nohighlight">\(\mathbf{x}\)</span> that provides a good upper bound. Let <span class="math notranslate nohighlight">\(\emptyset \neq S \subset V\)</span> be a proper, nonempty subset of <span class="math notranslate nohighlight">\(V\)</span> such that <span class="math notranslate nohighlight">\(0 &lt; |S| \leq \frac{1}{2}|V|\)</span>. We choose a vector that takes one value on <span class="math notranslate nohighlight">\(S\)</span> and a different value on <span class="math notranslate nohighlight">\(S^c\)</span>. Taking a cue from the two-component example above we consider the vector with entries</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+x_i
+=
+\begin{cases}
+\sqrt{\frac{|S^c|}{n |S|}} &amp; \text{if $i \in S$}\\
+- \sqrt{\frac{|S|}{n |S^c|}} &amp; \text{if $i \in S^c$}.
+\end{cases}
+\end{align*}\]</div>
+<p>This choice ensures that</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+\sum_{i=1}^n x_i
+&amp;= \sum_{i\in S} \sqrt{\frac{|S^c|}{n |S|}} + \sum_{i\in S^c} \left(- \sqrt{\frac{|S|}{n |S^c|}}\right)\\
+&amp;= |S| \sqrt{\frac{|S^c|}{n |S|}} - |S^c| \sqrt{\frac{|S|}{n |S^c|}}\\
+&amp;= \sqrt{\frac{|S| |S^c|}{n}} - \sqrt{\frac{|S||S^c| }{n}}\\
+&amp;= 0,
+\end{align*}\]</div>
+<p>as well</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+\sum_{i=1}^n x_i^2
+&amp;= \sum_{i\in S} \left(\sqrt{\frac{|S^c|}{n |S|}}\right)^2  + \sum_{i\in S^c} \left(- \sqrt{\frac{|S|}{n |S^c|}}\right)^2\\
+&amp;= |S| \frac{|S^c|}{n |S|} + |S^c| \frac{|S|}{n |S^c|}\\
+&amp;= \frac{|S^c| + |S|}{n}\\
+&amp;=1.
+\end{align*}\]</div>
+<p>To evaluate the Laplacian quadratic form, we note that <span class="math notranslate nohighlight">\(\mathbf{x}\)</span> takes the same value everywhere on <span class="math notranslate nohighlight">\(S\)</span> (and on <span class="math notranslate nohighlight">\(S^c\)</span>). Hence the sum over edges reduces to</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+\sum_{\{i, j\} \in E} (x_i - x_j)^2
+&amp;= \sum_{\substack{\{i, j\} \in E \\ x_i\neq x_j}} \left(\sqrt{\frac{|S^c|}{n |S|}} 
++ \sqrt{\frac{|S|}{n |S^c|}}\right)^2\\
+&amp;= \sum_{\substack{\{i, j\} \in E \\ x_i\neq x_j}} \left(\frac{|S^c| + |S|}{\sqrt{n |S| |S^c|}}\right)^2\\
+&amp;= |E(S,S^c)|\frac{n}{|S| |S^c|},
+\end{align*}\]</div>
+<p>where we used that, for each edge <span class="math notranslate nohighlight">\(\{i, j\} \in E\)</span> where <span class="math notranslate nohighlight">\(x_i \neq x_j\)</span>, one endvertex is in <span class="math notranslate nohighlight">\(S\)</span> and one endvertex is in <span class="math notranslate nohighlight">\(S^c\)</span>.</p>
+<p><em><strong>Using the definition of the isoperimetric number:</strong></em> So for this choice of <span class="math notranslate nohighlight">\(\mathbf{x}\)</span> we have</p>
+<div class="math notranslate nohighlight">
+\[
+\mu_2 \leq \sum_{\{i, j\} \in E} (x_i - x_j)^2
+= \frac{n |E(S,S^c)|}{|S^c| |S|}
+= \frac{|E(S,S^c)|}{(|S^c|/n) |S|}
+\leq 2 \frac{|E(S,S^c)|}{|S|}
+\]</div>
+<p>where we used that <span class="math notranslate nohighlight">\(|S^c| \geq n/2\)</span>. This inequality holds for any <span class="math notranslate nohighlight">\(S\)</span> such that <span class="math notranslate nohighlight">\(0 &lt; |S| \leq \frac{1}{2}|V|\)</span>. In particular, it holds for the <span class="math notranslate nohighlight">\(S\)</span> producing the smallest value. Hence, by the definition of the isoperimetric number (see <em>Exercise 3.9</em>), we get</p>
+<div class="math notranslate nohighlight">
+\[
+\mu_2 \leq 2 \phi_G
+\]</div>
+<p>as claimed. <span class="math notranslate nohighlight">\(\square\)</span></p>
+<p><strong>NUMERICAL CORNER:</strong> <strong>(A random tree)</strong> We return to the random tree example above. We claimed that <span class="math notranslate nohighlight">\(\phi_G = 1/3\)</span>. The maximum degree is <span class="math notranslate nohighlight">\(\bar{\delta} = 3\)</span>. We now compute <span class="math notranslate nohighlight">\(\mu_2\)</span>. We first compute the Laplacian matrix.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">phi_G</span> <span class="o">=</span> <span class="mi">1</span><span class="o">/</span><span class="mi">3</span>
+<span class="n">max_deg</span> <span class="o">=</span> <span class="mi">3</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>We now compute <span class="math notranslate nohighlight">\(\mu_2\)</span>. We first compute the Laplacian matrix.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">L_tree</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">laplacian_matrix</span><span class="p">(</span><span class="n">G_tree</span><span class="p">)</span><span class="o">.</span><span class="n">toarray</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">L_tree</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[[ 1 -1  0  0  0  0]
+ [-1  3  0 -1  0 -1]
+ [ 0  0  2 -1 -1  0]
+ [ 0 -1 -1  2  0  0]
+ [ 0  0 -1  0  1  0]
+ [ 0 -1  0  0  0  1]]
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">w</span><span class="p">,</span> <span class="n">v</span> <span class="o">=</span> <span class="n">LA</span><span class="o">.</span><span class="n">eigh</span><span class="p">(</span><span class="n">L_tree</span><span class="p">)</span> 
+<span class="n">mu_2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">w</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">mu_2</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.32486912943335355
+</pre></div>
+</div>
+</div>
+</div>
+<p>We check Cheeger’s inequality. The left-hand side is:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="n">phi_G</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">max_deg</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.018518518518518517
+</pre></div>
+</div>
+</div>
+</div>
+<p>The right-hand side is:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="mi">2</span> <span class="o">*</span> <span class="n">phi_G</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.6666666666666666
+</pre></div>
+</div>
+</div>
+</div>
+<p><span class="math notranslate nohighlight">\(\unlhd\)</span></p>
+<p><strong>A graph-cutting algorithm</strong> We only proved the easy direction of the <em>Cheeger Inequality</em>. It is however useful to sketch the other direction, as it contains an important algorithmic idea.</p>
+<p><em><strong>An algorithm:</strong></em> The input is the graph <span class="math notranslate nohighlight">\(G=(V,E)\)</span>. Let <span class="math notranslate nohighlight">\(\mathbf{y}_2 \in \mathbb{R}^n\)</span> be the unit-norm eigenvector of the Laplacian matrix <span class="math notranslate nohighlight">\(L\)</span> associated to its second smallest eigenvalue <span class="math notranslate nohighlight">\(\mu_2\)</span>, i.e., <span class="math notranslate nohighlight">\(\mathbf{y}_2\)</span> is the Fiedler vector. There is one entry of <span class="math notranslate nohighlight">\(\mathbf{y}_2 = (y_{2,1}, \ldots, y_{2,n})^T\)</span> for each vertex of <span class="math notranslate nohighlight">\(G\)</span>. We use these entries to embed the graph <span class="math notranslate nohighlight">\(G\)</span> in <span class="math notranslate nohighlight">\(\mathbb{R}\)</span>: vertex <span class="math notranslate nohighlight">\(i\)</span> is mapped to <span class="math notranslate nohighlight">\(y_{2,i}\)</span>. Now order the entries <span class="math notranslate nohighlight">\(y_{2,\pi(1)}, \ldots, y_{2,\pi(n)}\)</span>, where <span class="math notranslate nohighlight">\(\pi\)</span> is a <a class="reference external" href="https://en.wikipedia.org/wiki/Permutation">permutation</a>, that is, a re-ordering of <span class="math notranslate nohighlight">\(1,\ldots,n\)</span>. Specifically, <span class="math notranslate nohighlight">\(\pi(1)\)</span> is the vertex corresponding to the smallest entry of <span class="math notranslate nohighlight">\(\mathbf{y}_{2}\)</span>, <span class="math notranslate nohighlight">\(\pi(2)\)</span> is the second smallest, and so on. We consider only cuts of the form</p>
+<div class="math notranslate nohighlight">
+\[
+S_k = \{\pi(1), \ldots, \pi(k)\}
+\]</div>
+<p>and we output the cut <span class="math notranslate nohighlight">\((S_k, S_k^c)\)</span> that minimizes the cut ratio</p>
+<div class="math notranslate nohighlight">
+\[
+\phi(S_k)
+= \frac{|E(S_k,S_k^c)|}{\min\{k, n-k\}},
+\]</div>
+<p>for the <span class="math notranslate nohighlight">\(k \leq n-1\)</span>.</p>
+<p>What can be proved rigorously (but we will not do this here) is that there exists some <span class="math notranslate nohighlight">\(k^* \in\{1,\ldots,n-1\}\)</span> such that</p>
+<div class="math notranslate nohighlight">
+\[
+\mu_2 
+= 
+\sum_{\{u, v\} \in E} (y_{2,u} - y_{2,v})^2
+\geq 
+\frac{\phi(S_{k^*})^2}{2 \bar{\delta}}
+\geq 
+\frac{\phi_G^2}{2 \bar{\delta}},
+\]</div>
+<p>which implies the <em>Cheeger Inequality</em>. The middle inequality is the non-trivial one.</p>
+<p>Since <span class="math notranslate nohighlight">\(
+\mu_2 \leq 2 \phi_G
+\)</span>, this implies that</p>
+<div class="math notranslate nohighlight">
+\[
+\phi(S_{k^*})
+\leq \sqrt{4 \bar{\delta} \phi_G}.
+\]</div>
+<p>So <span class="math notranslate nohighlight">\(\phi(S_{k^*})\)</span> may not achieve <span class="math notranslate nohighlight">\(\phi_G\)</span>, but we do get some guarantee on the quality of the cut produced by this algorithm.</p>
+<p>See, for example, [<a class="reference external" href="https://ocw.mit.edu/courses/mathematics/18-409-topics-in-theoretical-computer-science-an-algorithmists-toolkit-fall-2009/index.htm">Kel</a>, Lecture 3, Section 4.2] for more details.</p>
+<p>The above provides a heuristic to find a cut with provable guarantees. We implement it next. In contrast, the problem of finding a cut which minimizes the cut ratio is known to be <a class="reference external" href="https://en.wikipedia.org/wiki/NP-hardness">NP-hard</a>, that is, computationally intractable.</p>
+<p><strong>NUMERICAL CORNER:</strong> We implement the graph cutting algorithm above.</p>
+<p>We now implement our heuristic in Python. We first write an auxiliary function that takes as input an adjacency matrix, an ordering of the vertices and a value <span class="math notranslate nohighlight">\(k\)</span>. It returns the cut ratio for the first <span class="math notranslate nohighlight">\(k\)</span> vertices in the order.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">cut_ratio</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">order</span><span class="p">,</span> <span class="n">k</span><span class="p">):</span>
+    <span class="n">n</span> <span class="o">=</span> <span class="n">A</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="c1"># number of vertices</span>
+    <span class="n">edge_boundary</span> <span class="o">=</span> <span class="mi">0</span> <span class="c1"># initialize size of edge boundary </span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">k</span><span class="o">+</span><span class="mi">1</span><span class="p">):</span> <span class="c1"># for all vertices before cut</span>
+        <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">k</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span><span class="n">n</span><span class="p">):</span> <span class="c1"># for all vertices after cut</span>
+            <span class="n">edge_boundary</span> <span class="o">+=</span> <span class="n">A</span><span class="p">[</span><span class="n">order</span><span class="p">[</span><span class="n">i</span><span class="p">],</span><span class="n">order</span><span class="p">[</span><span class="n">j</span><span class="p">]]</span> <span class="c1"># add one if {i,j} in E</span>
+    <span class="n">denominator</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">minimum</span><span class="p">(</span><span class="n">k</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">n</span><span class="o">-</span><span class="n">k</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">edge_boundary</span><span class="o">/</span><span class="n">denominator</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Using the <code class="docutils literal notranslate"><span class="pre">cut_ratio</span></code> function, we first compute the Laplacian, find the second eigenvector and corresponding order of vertices. Then we compute the cut ratio for every <span class="math notranslate nohighlight">\(k\)</span>. Finally we output the cut (both <span class="math notranslate nohighlight">\(S_k\)</span> and <span class="math notranslate nohighlight">\(S_k^c\)</span>) corresponding to the minimum, as a tuple of arrays.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">spectral_cut2</span><span class="p">(</span><span class="n">A</span><span class="p">):</span>
+    <span class="n">n</span> <span class="o">=</span> <span class="n">A</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="c1"># number of vertices</span>
+    
+    <span class="c1"># laplacian</span>
+    <span class="n">degrees</span> <span class="o">=</span> <span class="n">A</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">D</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">diag</span><span class="p">(</span><span class="n">degrees</span><span class="p">)</span>
+    <span class="n">L</span> <span class="o">=</span> <span class="n">D</span> <span class="o">-</span> <span class="n">A</span>
+
+    <span class="c1"># spectral decomposition</span>
+    <span class="n">w</span><span class="p">,</span> <span class="n">v</span> <span class="o">=</span> <span class="n">LA</span><span class="o">.</span><span class="n">eigh</span><span class="p">(</span><span class="n">L</span><span class="p">)</span> 
+    <span class="n">order</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">v</span><span class="p">[:,</span><span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">w</span><span class="p">)[</span><span class="mi">1</span><span class="p">]])</span> <span class="c1"># index of entries in increasing order</span>
+    
+    <span class="c1"># cut ratios</span>
+    <span class="n">phi</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="c1"># initialize cut ratios</span>
+    <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">):</span>
+        <span class="n">phi</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">cut_ratio</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">order</span><span class="p">,</span> <span class="n">k</span><span class="p">)</span>
+    <span class="n">imin</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmin</span><span class="p">(</span><span class="n">phi</span><span class="p">)</span> <span class="c1"># find best cut ratio</span>
+    <span class="k">return</span> <span class="n">order</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="n">imin</span><span class="o">+</span><span class="mi">1</span><span class="p">],</span> <span class="n">order</span><span class="p">[</span><span class="n">imin</span><span class="o">+</span><span class="mi">1</span><span class="p">:</span><span class="n">n</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>We will illustrate this on the path graph.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">n</span> <span class="o">=</span> <span class="mi">10</span>
+<span class="n">G</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">path_graph</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell tag_hide-input docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell source</span>
+<span class="expanded">Hide code cell source</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">nx</span><span class="o">.</span><span class="n">draw_networkx</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> 
+                 <span class="n">node_size</span><span class="o">=</span><span class="mi">600</span><span class="p">,</span> <span class="n">node_color</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">,</span>
+                 <span class="n">font_size</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span> <span class="n">font_color</span><span class="o">=</span><span class="s1">&#39;white&#39;</span><span class="p">,</span>
+                 <span class="n">pos</span><span class="o">=</span><span class="n">nx</span><span class="o">.</span><span class="n">spectral_layout</span><span class="p">(</span><span class="n">G</span><span class="p">)</span>
+                <span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</details>
+<div class="cell_output docutils container">
+<img alt="../../_images/d2e8d8e048ff2f23b6a6fad4c6b522272524cb90f62efdc2ea27e42a404a33b9.png" src="../../_images/d2e8d8e048ff2f23b6a6fad4c6b522272524cb90f62efdc2ea27e42a404a33b9.png" />
+</div>
+</div>
+<p>We apply our spectral-based cutting algorihtm.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">A</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">adjacency_matrix</span><span class="p">(</span><span class="n">G</span><span class="p">)</span><span class="o">.</span><span class="n">toarray</span><span class="p">()</span>
+<span class="n">s</span><span class="p">,</span> <span class="n">sc</span> <span class="o">=</span> <span class="n">spectral_cut2</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">sc</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[0 1 2 3 4]
+[5 6 7 8 9]
+</pre></div>
+</div>
+</div>
+</div>
+<p>To help with vizualizing the output, we write a function coloring the vertices according to which side of the cut they are on.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">viz_cut</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="n">layout</span><span class="p">):</span>
+    <span class="n">n</span> <span class="o">=</span> <span class="n">G</span><span class="o">.</span><span class="n">number_of_nodes</span><span class="p">()</span>
+    <span class="n">assign</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+    <span class="n">assign</span><span class="p">[</span><span class="n">s</span><span class="p">]</span> <span class="o">=</span> <span class="mi">2</span>
+    <span class="n">nx</span><span class="o">.</span><span class="n">draw_networkx</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">node_color</span><span class="o">=</span><span class="n">assign</span><span class="p">,</span> <span class="n">pos</span><span class="o">=</span><span class="n">layout</span><span class="p">(</span><span class="n">G</span><span class="p">),</span> <span class="n">with_labels</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">viz_cut</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="n">nx</span><span class="o">.</span><span class="n">spectral_layout</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/f21a724806e4fde2c18cb238cf83ad4a9136411f549447527fd7f57cd61432f4.png" src="../../_images/f21a724806e4fde2c18cb238cf83ad4a9136411f549447527fd7f57cd61432f4.png" />
+</div>
+</div>
+<p>Let’s try it on the grid graph. Can you guess what the cut will be?</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">G</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">grid_2d_graph</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span><span class="mi">7</span><span class="p">)</span>
+<span class="n">A</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">adjacency_matrix</span><span class="p">(</span><span class="n">G</span><span class="p">)</span><span class="o">.</span><span class="n">toarray</span><span class="p">()</span>
+<span class="n">s</span><span class="p">,</span> <span class="n">sc</span> <span class="o">=</span> <span class="n">spectral_cut2</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
+<span class="n">viz_cut</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="n">nx</span><span class="o">.</span><span class="n">spectral_layout</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/613e9d105ee5210a66336c59345090c94175ab08608afc910189540c354acb96.png" src="../../_images/613e9d105ee5210a66336c59345090c94175ab08608afc910189540c354acb96.png" />
+</div>
+</div>
+<p><span class="math notranslate nohighlight">\(\unlhd\)</span></p>
+<p><strong>How to compute the second smallest eigenvalue?</strong> There is one last piece of business to take care of. How do we compute the Fiedler vector? Previously, we have seen an iterative approach based on taking powers of the matrix to compute <em>the largest eigenvalue and corresponding eigenvector</em> of a positive semidefinite matrix. We show here how to adapt this approach to our task at hand. The details are left as a series of exercises.</p>
+<p>First, we modify the Laplacian matrix to invert the order of the eigenvalues without changing the eigenvectors themselves. This way the smallest eigenvalues will become the largest ones. By the <em>Laplacian and Maximum Degree Lemma</em>, <span class="math notranslate nohighlight">\(\mu_i \leq 2 \bar{\delta}\)</span> for all <span class="math notranslate nohighlight">\(i=1,\ldots,n\)</span>, where recall that <span class="math notranslate nohighlight">\(\bar{\delta}\)</span> is the largest degree of the graph.</p>
+<p><strong>LEMMA</strong> <strong>(Inverting the Order of Eigenvalues)</strong> For <span class="math notranslate nohighlight">\(i=1,\ldots,n\)</span>, let <span class="math notranslate nohighlight">\(\lambda_i = 2 \bar{\delta} - \mu_i\)</span>. The matrix <span class="math notranslate nohighlight">\(M = 2 \bar{\delta} I_{n\times n} - L\)</span> is positive semidefinite and has eigenvector decomposition</p>
+<div class="math notranslate nohighlight">
+\[
+M = \sum_{i=1}^{n} \lambda_i \mathbf{y}_i \mathbf{y}_i^T.
+\]</div>
+<p><span class="math notranslate nohighlight">\(\flat\)</span></p>
+<p>Second, our goal is now to compute the <em>second largest eigenvalue of <span class="math notranslate nohighlight">\(M\)</span></em>, not the largest one. But we already know the largest one. It is <span class="math notranslate nohighlight">\(\lambda_1 = 2\bar{\delta} - \mu_1 = 2 \bar{\delta}\)</span> and its associated eigenvector is <span class="math notranslate nohighlight">\(\mathbf{y}_1 = \frac{1}{\sqrt{n}}(1,\ldots,1)^T\)</span>. It turns out that we can simply apply power iteration with a starting vector that is orthogonal to <span class="math notranslate nohighlight">\(\mathbf{y}_1\)</span>. Such a vector can be constructed by taking a random vector and subtracting its orthogonal projection on <span class="math notranslate nohighlight">\(\mathbf{y}_1\)</span>.</p>
+<p><strong>LEMMA</strong> <strong>(Power Iteration for the Second Largest Eigenvalue)</strong> Assume that <span class="math notranslate nohighlight">\(\mu_1 &lt; \mu_2 &lt; \mu_3\)</span>. Let <span class="math notranslate nohighlight">\(\mathbf{x} \in \mathbb{R}^n\)</span> be a vector such that <span class="math notranslate nohighlight">\(\langle \mathbf{y}_1, \mathbf{x} \rangle = 0\)</span> and <span class="math notranslate nohighlight">\(\langle \mathbf{y}_2, \mathbf{x} \rangle &gt; 0\)</span>. Then</p>
+<div class="math notranslate nohighlight">
+\[
+\frac{M^{k} \mathbf{x}}{\|M^{k} \mathbf{x}\|} \to \mathbf{y}_2
+\]</div>
+<p>as <span class="math notranslate nohighlight">\(k \to +\infty\)</span>. If instead <span class="math notranslate nohighlight">\(\langle \mathbf{y}_2, \mathbf{x} \rangle &lt; 0\)</span>, then the limit is <span class="math notranslate nohighlight">\(- \mathbf{y}_2\)</span>. <span class="math notranslate nohighlight">\(\flat\)</span></p>
+<p><strong>The relaxation perspective</strong> Here is another intuitive way to shed light on the effectiveness of spectral partitioning. Assume we have a graph <span class="math notranslate nohighlight">\(G = (V,E)\)</span> with an even number <span class="math notranslate nohighlight">\(n = |V|\)</span> of vertices. Suppose we are looking for the best balanced cut <span class="math notranslate nohighlight">\((S,S^c)\)</span> in the sense that it minimizes the number of edges <span class="math notranslate nohighlight">\(|E(S,S^c)|\)</span> across it over all cuts with <span class="math notranslate nohighlight">\(|S| = |S^c| = n/2\)</span>. This is known as the <a class="reference external" href="https://link.springer.com/referenceworkentry/10.1007/978-1-4939-2864-4_231">minimum bisection problem</a>.</p>
+<p>Mathematically, we can formulate this as the followign discrete optimization problem:</p>
+<div class="math notranslate nohighlight">
+\[
+\min\left\{\frac{1}{4} \sum_{\{i,j\} \in E} (x_i - x_j)^2\,:\, \mathbf{x} = (x_1,\ldots,x_n)^T \in \{-1,+1\}^n, \sum_{i=1}^n x_i = 0 \right\}.
+\]</div>
+<p>The condition <span class="math notranslate nohighlight">\(\mathbf{x} \in \{-1,+1\}^n\)</span> implicitly assigns each vertex <span class="math notranslate nohighlight">\(i\)</span> to <span class="math notranslate nohighlight">\(S\)</span> (if <span class="math notranslate nohighlight">\(x_i = -1\)</span>) or <span class="math notranslate nohighlight">\(S^c\)</span> (if <span class="math notranslate nohighlight">\(x_i=+1\)</span>). The condition <span class="math notranslate nohighlight">\(\sum_{i=1}^n x_i = 0\)</span> then ensures that the cut <span class="math notranslate nohighlight">\((S,S^c)\)</span> is balanced, that is, that <span class="math notranslate nohighlight">\(|S| = |S^c|\)</span>. Under this interpretation, the term <span class="math notranslate nohighlight">\((x_i - x_j)^2\)</span> is either <span class="math notranslate nohighlight">\(0\)</span> if <span class="math notranslate nohighlight">\(i\)</span> and <span class="math notranslate nohighlight">\(j\)</span> are on the same side of the cut, or <span class="math notranslate nohighlight">\(4\)</span> if they are on opposite sides.</p>
+<p>This is a hard computational problem. One way to approach such a discrete optimization problem is to relax it. That is, to turn it into an optimization problem with continuous variables. Specifically here we consider instead</p>
+<div class="math notranslate nohighlight">
+\[
+\min\left\{\frac{1}{4} \sum_{\{i,j\} \in E} (x_i - x_j)^2\,:\, \mathbf{x} = (x_1,\ldots,x_n)^T \in \mathbb{R}^n, \sum_{i=1}^n x_i = 0,  \sum_{i=1}^n x_i^2 = n\right\}.
+\]</div>
+<p>The optimal objective value of this relaxed problem is necessarily smaller or equal than the original one. Indeed any solution to the original problem satisfies the constraints of the relaxation. Up to a scaling factor, this last problem is equivalent to the variational characterization of <span class="math notranslate nohighlight">\(\mu_2\)</span>. Indeed, in <em>Exercise 3.40</em>, you are asked to prove that the minimum achieved is <span class="math notranslate nohighlight">\(\frac{\mu_2 n}{4}\)</span>.</p>
+<p><strong>Back to community detection</strong> We return to the <a class="reference external" href="https://en.wikipedia.org/wiki/Zachary%27s_karate_club">Karate Club dataset</a> from the lecture.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">G</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">karate_club_graph</span><span class="p">()</span>
+<span class="n">n</span> <span class="o">=</span> <span class="n">G</span><span class="o">.</span><span class="n">number_of_nodes</span><span class="p">()</span>
+<span class="n">A</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">adjacency_matrix</span><span class="p">(</span><span class="n">G</span><span class="p">)</span><span class="o">.</span><span class="n">toarray</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell tag_hide-input docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell source</span>
+<span class="expanded">Hide code cell source</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">nx</span><span class="o">.</span><span class="n">draw_networkx</span><span class="p">(</span><span class="n">G</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</details>
+<div class="cell_output docutils container">
+<img alt="../../_images/d0cdf813835a2e8882690c573fc3904b33cd37339c89387a699504dc21b374a4.png" src="../../_images/d0cdf813835a2e8882690c573fc3904b33cd37339c89387a699504dc21b374a4.png" />
+</div>
+</div>
+<p>We seek to find natural sub-communities. We use the spectral properties of the Laplacian as described in the lectures.</p>
+<p>We use our <code class="docutils literal notranslate"><span class="pre">spectral_cut2</span></code> and <code class="docutils literal notranslate"><span class="pre">viz_cut</span></code> functions to compute a good cut and vizualize it.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">s</span><span class="p">,</span> <span class="n">sc</span> <span class="o">=</span> <span class="n">spectral_cut2</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">sc</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[18 26 20 14 29 22 24 15 23 25 32 27  9 33 31 28 30  8]
+[ 2 13  1 19  7  3 12  0 21 17 11  4 10  6  5 16]
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">viz_cut</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="n">nx</span><span class="o">.</span><span class="n">spring_layout</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/ec779b728bc081fc806b692d7177c37f219317b49c0e0c06a09b8bc140694cca.png" src="../../_images/ec779b728bc081fc806b692d7177c37f219317b49c0e0c06a09b8bc140694cca.png" />
+</div>
+</div>
+<p>It is not trivial to assess the quality of the resulting cut. But this particular example has a known ground-truth community structure (which partly explains its widespread use). Quoting from <a class="reference external" href="https://en.wikipedia.org/wiki/Zachary%27s_karate_club">Wikipedia</a>:</p>
+<blockquote>
+<div><p>A social network of a karate club was studied by Wayne W. Zachary for a period of three years from 1970 to 1972. The network captures 34 members of a karate club, documenting links between pairs of members who interacted outside the club. During the study a conflict arose between the administrator “John A” and instructor “Mr. Hi” (pseudonyms), which led to the split of the club into two. Half of the members formed a new club around Mr. Hi; members from the other part found a new instructor or gave up karate. Based on collected data Zachary correctly assigned all but one member of the club to the groups they actually joined after the split.</p>
+</div></blockquote>
+<p>This ground truth is the following.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">truth</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> 
+    <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
+<span class="n">nx</span><span class="o">.</span><span class="n">draw_networkx</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">node_color</span><span class="o">=</span><span class="n">truth</span><span class="p">,</span> <span class="n">pos</span><span class="o">=</span><span class="n">nx</span><span class="o">.</span><span class="n">spring_layout</span><span class="p">(</span><span class="n">G</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/a42373e2ebcb0f00a0c24cb3b7e9f688ecb0a082a5cfcff601c14f368a130f18.png" src="../../_images/a42373e2ebcb0f00a0c24cb3b7e9f688ecb0a082a5cfcff601c14f368a130f18.png" />
+</div>
+</div>
+<p>You can check that our cut perfectly matches the ground truth.</p>
+</section>
+<section id="weighted-case-and-variants">
+<h2><span class="section-number">4.5.2. </span>Weighted case and variants<a class="headerlink" href="#weighted-case-and-variants" title="Permalink to this headline">#</a></h2>
+<p>As we mentioned before, the concepts we have introduced can also be extended to weighted graphs, that is, graphs with weights on the edges.</p>
+<p><strong>Laplacian matrix for weighted graphs</strong> In the case of a weighted graph, the Laplacian can then be defined as follows.</p>
+<p><strong>DEFINITION</strong> <strong>(Laplacian for Weighted Graph)</strong> Let <span class="math notranslate nohighlight">\(G = (V, E, w)\)</span> be a weighted graph with <span class="math notranslate nohighlight">\(n = |V|\)</span> vertices and adjacency matrix <span class="math notranslate nohighlight">\(A\)</span>. Let <span class="math notranslate nohighlight">\(D = \mathrm{diag}(\delta(1), \ldots, \delta(n))\)</span> be the weighted degree matrix. The Laplacian matrix associated to <span class="math notranslate nohighlight">\(G\)</span> is defined as <span class="math notranslate nohighlight">\(L = D - A\)</span>. <span class="math notranslate nohighlight">\(\natural\)</span></p>
+<p>It can be shown (Try it!) that the Laplacian quadratic form satisfies in the weighted case</p>
+<div class="math notranslate nohighlight">
+\[
+\langle \mathbf{x}, L \mathbf{x} \rangle
+= \sum_{\{i,j\} \in E} w_{ij} (x_i - x_j)^2
+\]</div>
+<p>for <span class="math notranslate nohighlight">\(\mathbf{x} = (x_1,\ldots,x_n)^T \in \mathbb{R}^n\)</span>.</p>
+<p>As a positive semidefinite matrix (Exercise: Why?), the weighted Laplacian has an orthonormal basis of eigenvectors with nonnegative eigenvalues that satisfy the variational characterization we derived above. In particular, if we denote the eigenvalues <span class="math notranslate nohighlight">\(0 = \mu_1 \leq \mu_2 \leq \cdots \leq \mu_n\)</span>, it follows from <em>Courant-Fischer</em> that</p>
+<div class="math notranslate nohighlight">
+\[
+\mu_2 
+= \min\left\{
+\sum_{\{u, v\} \in E} w_{uv} (x_u - x_v)^2 \,:\,
+\mathbf{x} = (x_1, \ldots, x_n)^T \in \mathbb{R}^n, \sum_{u=1}^n x_u = 0,
+\sum_{u = 1}^n x_u^2 = 1
+\right\}.
+\]</div>
+<p>If we generalize the cut ratio as</p>
+<div class="math notranslate nohighlight">
+\[
+\phi(S)
+= \frac{\sum_{i \in S, j \in S^c} w_{ij}}{\min\{|S|, |S^c|\}}
+\]</div>
+<p>for <span class="math notranslate nohighlight">\(\emptyset \neq S \subset V\)</span> and let</p>
+<div class="math notranslate nohighlight">
+\[
+\phi_G
+= \min\left\{
+\phi(S)\,:\, \emptyset \neq S \subset V
+\right\}
+\]</div>
+<p>it can be shown (Try it!) that</p>
+<div class="math notranslate nohighlight">
+\[
+\mu_2 \leq 2 \phi_G
+\]</div>
+<p>as in the unweighted case.</p>
+<p><strong>Normalized Laplacian</strong> Other variants of the Laplacian matrix have also been studied. We introduced the normalized Laplacian next. Recall that in the weighted case, the degree is defined as <span class="math notranslate nohighlight">\(\delta(i) = \sum_{j:\{i,j\} \in E} w_{i,j}\)</span>.</p>
+<p><strong>DEFINITION</strong> <strong>(Normalized Laplacian)</strong> The normalized Laplacian of <span class="math notranslate nohighlight">\(G = (V,E,w)\)</span> with adjacency matrix <span class="math notranslate nohighlight">\(A\)</span> and degree matrix <span class="math notranslate nohighlight">\(D\)</span> is defined as</p>
+<div class="math notranslate nohighlight">
+\[
+\mathcal{L} = I - D^{-1/2} A D^{-1/2}.
+\]</div>
+<p><span class="math notranslate nohighlight">\(\natural\)</span></p>
+<p>Using our previous observations about multiplication by diagonal matrices, the entries of <span class="math notranslate nohighlight">\(\mathcal{L}\)</span> are</p>
+<div class="math notranslate nohighlight">
+\[
+(\mathcal{L})_{i,j} 
+= (I - (D^{-1/2} A D^{-1/2})_{i,j}
+= 1 - \frac{a_{i,j}}{\sqrt{\delta(i) \delta(j)}}.
+\]</div>
+<p>We also note the following relation to the Laplacian matrix:</p>
+<div class="math notranslate nohighlight">
+\[
+\mathcal{L} 
+= D^{-1/2} L D^{-1/2}.
+\]</div>
+<p>We check that the normalized Laplacian is symmetric:</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+\mathcal{L}^T 
+&amp;= I^T - (D^{-1/2} A D^{-1/2})^T\\
+&amp;= I - (D^{-1/2})^T A^T (D^{-1/2})^T\\
+&amp;= I - D^{-1/2} A D^{-1/2}\\
+&amp;= \mathcal{L}.
+\end{align*}\]</div>
+<p>It is also positive semidefinite. Indeed,</p>
+<div class="math notranslate nohighlight">
+\[
+\mathbf{x}^T \mathcal{L} \mathbf{x}
+= \mathbf{x}^T D^{-1/2} L D^{-1/2} \mathbf{x}
+= (D^{-1/2} \mathbf{x})^T L (D^{-1/2} \mathbf{x})
+\geq 0,
+\]</div>
+<p>by the properties of the Laplacian matrix.</p>
+<p>Hence by the <em>Spectral Theorem</em>, we can write</p>
+<div class="math notranslate nohighlight">
+\[
+\mathcal{L}
+= \sum_{i=1}^n
+\eta_i \mathbf{z}_i \mathbf{z}_i^T,
+\]</div>
+<p>where the <span class="math notranslate nohighlight">\(\mathbf{z}_i\)</span>s are orthonormal eigenvectors of <span class="math notranslate nohighlight">\(\mathcal{L}\)</span> and the eigenvalues satisfy
+<span class="math notranslate nohighlight">\(
+0 \leq \eta_1 \leq \eta_2 \leq \cdots \leq \eta_n.
+\)</span></p>
+<p>One more observation: because the constant vector is eigenvector of <span class="math notranslate nohighlight">\(L\)</span> with eigenvalue <span class="math notranslate nohighlight">\(0\)</span>, we get that <span class="math notranslate nohighlight">\(D^{1/2} \mathbf{1}\)</span> is an eigenvector of <span class="math notranslate nohighlight">\(\mathcal{L}\)</span> with eigenvalue <span class="math notranslate nohighlight">\(0\)</span>. So <span class="math notranslate nohighlight">\(\eta_1 = 0\)</span> and we set</p>
+<div class="math notranslate nohighlight">
+\[
+(\mathbf{z}_1)_i 
+= \left(\frac{D^{1/2} \mathbf{1}}{\|D^{1/2} \mathbf{1}\|_2}\right)_i
+= \sqrt{\frac{\delta(i)}{\sum_{i\in V} \delta(i)}}, \quad \forall i \in [n],
+\]</div>
+<p>which makes <span class="math notranslate nohighlight">\(\mathbf{z}_1\)</span> into a unit norm vector.</p>
+<p>The relationship to the Laplacian matrix immediately implies (see <em>Exercise 3.54</em>) that</p>
+<div class="math notranslate nohighlight">
+\[
+\mathbf{x}^T \mathcal{L} \mathbf{x}
+= \sum_{\{i,j\} \in E} w_{ij} \left(\frac{x_i}{\sqrt{\delta(i)}} - \frac{x_j}{\sqrt{\delta(j)}}\right)^2,
+\]</div>
+<p>for <span class="math notranslate nohighlight">\(\mathbf{x} = (x_1,\ldots,x_n)^T \in \mathbb{R}^n\)</span>.</p>
+<p>Through the change of variables</p>
+<div class="math notranslate nohighlight">
+\[
+y_i = \frac{x_i}{\sqrt{\delta(i)}},
+\]</div>
+<p><em>Courant-Fischer</em> gives this time (<em>Exercise:</em> Why?)</p>
+<div class="math notranslate nohighlight">
+\[
+\eta_2
+= \min\left\{
+\sum_{\{u, v\} \in E} w_{uv} (y_u - y_v)^2 \,:\,
+\mathbf{y} = (y_1, \ldots, y_n)^T \in \mathbb{R}^n, \sum_{u=1}^n \delta(u) y_u = 0,
+\sum_{u = 1}^n \delta(u) y_u^2 = 1
+\right\}.
+\]</div>
+<p>For a subset of vertices <span class="math notranslate nohighlight">\(S \subseteq V\)</span>, let</p>
+<div class="math notranslate nohighlight">
+\[
+|S|_w
+= \sum_{i \in S} \delta(i),
+\]</div>
+<p>which we refer to as the volume of <span class="math notranslate nohighlight">\(S\)</span>. It is measure of the size of <span class="math notranslate nohighlight">\(S\)</span> weighted by the degrees.</p>
+<p>If we consider the normalized cut ratio, or bottleneck ratio,</p>
+<div class="math notranslate nohighlight">
+\[
+\phi^N(S)
+= \frac{\sum_{i \in S, j \in S^c} w_{ij}}{\min\{|S|_w, |S^c|_w\}}
+\]</div>
+<p>for <span class="math notranslate nohighlight">\(\emptyset \neq S \subset V\)</span> and let</p>
+<div class="math notranslate nohighlight">
+\[
+\phi^N_G
+= \min\left\{
+\phi^N(S)\,:\, \emptyset \neq S \subset V
+\right\}
+\]</div>
+<p>it can be shown (Try it!) that</p>
+<div class="math notranslate nohighlight">
+\[
+\eta_2 \leq 2 \phi^N_G.
+\]</div>
+<p>The normalized cut ratio is similar to the cut ratio, except that the notion of balance of the cut is measured in terms of volume. Note that this concept is also useful in the unweighted case.</p>
+<p>We will an application of the normalized Laplacian later in this chapter.</p>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./chap04_specgraph/05_partitioning"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="../04_laplacian/roch-mmids-specgraph-laplacian.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title"><span class="section-number">4.4. </span>Spectral properties of the Laplacian matrix</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="../summary_chap04.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title"><span class="section-number">4.6. </span>Other resources</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#how-to-cut-a-graph">4.5.1. How to cut a graph</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#weighted-case-and-variants">4.5.2. Weighted case and variants</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Sebastien Roch
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2024.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=5b4479735964841361fd"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

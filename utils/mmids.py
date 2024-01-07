@@ -457,3 +457,31 @@ def gd(f, grad_f, x0, alpha=1e-3, niters=int(1e6)):
 
 
 
+# Markov chains algorithms
+
+import numpy as np
+
+def SamplePath(mu, P, T):
+    """
+    Generate a sample path from a Markov chain.
+
+    Parameters:
+    mu (numpy.ndarray): The initial distribution of the Markov chain.
+    P (numpy.ndarray): The transition matrix of the Markov chain.
+    T (int): The length of the sample path.
+
+    Returns:
+    numpy.ndarray: The generated sample path.
+
+    """
+    n = mu.shape[0] # size of state space
+    X = np.zeros(T+1) # initialization of sample path
+    for i in range(T+1):
+        if i == 0: # initial distribution
+            X[i] = np.random.choice(a=np.arange(start=1,stop=n+1),p=mu)
+        else: # next state is chosen from current state row
+            X[i] = np.random.choice(a=np.arange(start=1,stop=n+1),p=P[int(X[i-1]-1),:])
+    return X
+
+
+

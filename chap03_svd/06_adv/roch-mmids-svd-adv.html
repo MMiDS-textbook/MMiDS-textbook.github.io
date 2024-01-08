@@ -199,7 +199,7 @@ const thebe_selector_output = ".output, .cell_output"
 <li class="toctree-l1 current active has-children"><a class="reference internal" href="../00_intro/roch-mmids-svd-intro.html">3. Singular value decomposition</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-3"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="../01_motiv/roch-mmids-svd-motiv.html">3.1. Motivating example: vizualizing genetic data</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../02_spectral/roch-mmids-svd-spectral.html">3.2. Background: review of spectral decomposition</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../03_svd/roch-mmids-svd-svd.html">3.3. Dimension reduction and approximating subspaces</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../03_svd/roch-mmids-svd-svd.html">3.3. Approximating subspaces</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../04_power/roch-mmids-svd-power.html">3.4. Power iteration</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../05_further/roch-mmids-svd-further.html">3.5. Further applications of the SVD</a></li>
 <li class="toctree-l2 current active"><a class="current reference internal" href="#">3.6. Advanced material</a></li>
@@ -220,8 +220,9 @@ const thebe_selector_output = ".output, .cell_output"
 <li class="toctree-l2"><a class="reference internal" href="../../chap05_rwmc/02_conditioning/roch-mmids-rwmc-conditioning.html">5.2. Background: review of conditioning</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../chap05_rwmc/03_mcdefs/roch-mmids-rwmc-mcdefs.html">5.3. Elements of finite Markov chains</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../chap05_rwmc/04_mclimit/roch-mmids-rwmc-mclimit.html">5.4. Limit behavior</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../chap05_rwmc/06_adv/roch-mmids-rwmc-adv.html">5.5. Advanced material</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../chap05_rwmc/summary_chap05.html">5.6. Other resources</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap05_rwmc/05_pagerank/roch-mmids-rwmc-pagerank.html">5.5. Application to PageRank</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap05_rwmc/06_adv/roch-mmids-rwmc-adv.html">5.6. Advanced material</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap05_rwmc/summary_chap05.html">5.7. Other resources</a></li>
 </ul>
 </li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../chap06_opt/00_intro/roch-mmids-opt-intro.html">6. Optimization theory and algorithms</a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-6"><i class="fa-solid fa-chevron-down"></i></label><ul>
@@ -621,8 +622,8 @@ A = \sum_{j=1}^r \sigma_j \mathbf{u}_j \mathbf{v}_j^T
 <div><p>[…] let’s understand the central advantage of doing the projection to [the top <span class="math notranslate nohighlight">\(k\)</span> right singular vectors]. It is simply that for any reasonable (unknown) clustering of data points, the projection brings data points closer to their cluster centers.</p>
 </div></blockquote>
 <p>To elaborate, suppose we have <span class="math notranslate nohighlight">\(n\)</span> data points in <span class="math notranslate nohighlight">\(d\)</span> dimensions in the form of the rows <span class="math notranslate nohighlight">\(\mathbf{a}_i^T\)</span>, <span class="math notranslate nohighlight">\(i=1\ldots, n\)</span>, of matrix <span class="math notranslate nohighlight">\(A \in \mathbb{A}^{n \times d}\)</span>, where we assume that <span class="math notranslate nohighlight">\(n &gt; d\)</span> and that <span class="math notranslate nohighlight">\(A\)</span> has full column rank. Imagine these data points come from an unknown ground-truth <span class="math notranslate nohighlight">\(k\)</span>-clustering assignment <span class="math notranslate nohighlight">\(g(i) \in [k]\)</span>, <span class="math notranslate nohighlight">\(i = 1,\ldots, n\)</span>, with corresponding unknown centers <span class="math notranslate nohighlight">\(\mathbf{c}_j\)</span>, <span class="math notranslate nohighlight">\(j = 1,\ldots, k\)</span>, for <span class="math notranslate nohighlight">\(g(i) = j\)</span>. Let <span class="math notranslate nohighlight">\(C \in \mathbb{R}^{n \times d}\)</span> be the corresponding matrix, that is, row <span class="math notranslate nohighlight">\(i\)</span> of <span class="math notranslate nohighlight">\(C\)</span> is <span class="math notranslate nohighlight">\(\mathbf{c}_j^T\)</span> if <span class="math notranslate nohighlight">\(g(i) = j\)</span>. The <span class="math notranslate nohighlight">\(k\)</span>-means objective of the true clustering is then</p>
-<div class="amsmath math notranslate nohighlight" id="equation-dfc9c626-849a-46bd-a907-71eba989182c">
-<span class="eqno">(3.1)<a class="headerlink" href="#equation-dfc9c626-849a-46bd-a907-71eba989182c" title="Permalink to this equation">#</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-0a973492-e69c-4a5a-a5fb-96c5c95d4e79">
+<span class="eqno">(3.1)<a class="headerlink" href="#equation-0a973492-e69c-4a5a-a5fb-96c5c95d4e79" title="Permalink to this equation">#</a></span>\[\begin{align}
 \sum_{j\in [k]} \sum_{i:g(i)=j} \|\mathbf{a}_i - \mathbf{c}_{j}\|^2
 &amp;= \sum_{j\in [k]} \sum_{i:g(i)=j} \sum_{\ell=1}^d (a_{i,\ell} - c_{j,\ell})^2\\
 &amp;= \sum_{i=1}^n \sum_{\ell=1}^d (a_{i,\ell} - c_{g(i),\ell})^2\\

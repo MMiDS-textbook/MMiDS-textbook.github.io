@@ -484,4 +484,99 @@ def SamplePath(mu, P, T):
     return X
 
 
+def transition_from_digraph(G):
+    """
+    Compute the transition matrix from a directed graph.
+
+    Parameters:
+    - G: NetworkX DiGraph object representing the directed graph.
+
+    Returns:
+    - numpy.ndarray: The transition matrix of the directed graph.
+    """
+    n = G.number_of_nodes()
+    invD = np.zeros((n,n))
+    for i in range(n):
+        invD[i,i] = 1 / G.out_degree(i)
+    A = nx.adjacency_matrix(G).toarray()
+    return invD @ A
+
+
+import numpy as np
+import networkx as nx
+
+def transition_from_graph(G):
+    """
+    Compute the transition matrix from a graph.
+
+    Parameters:
+    - G: NetworkX graph object
+
+    Returns:
+    - numpy.ndarray: The transition matrix of the graph
+    """
+    n = G.number_of_nodes()
+    invD = np.zeros((n,n))
+    for i in range(n):
+        invD[i,i] = 1 / G.degree(i)
+    A = nx.adjacency_matrix(G).toarray()
+    return invD @ A
+
+
+
+def pagerank(M, num_iterations: int = 100, d: float = 0.85):
+    """
+    Parameters
+    ----------
+    M : numpy array
+        adjacency matrix transposed where M_i,j represents 
+        the link from 'j' to 'i', such that for all 'j' sum(i, M_i,j) = 1
+    num_iterations : int, optional
+        number of iterations, by default 100
+    d : float, optional
+        damping factor, by default 0.85
+    
+    Returns
+    -------
+    numpy array
+        a vector of ranks such that v_i is the i-th rank from [0, 1],
+        v sums to 1
+    """
+    n = M.shape[1]
+    v = np.ones(n)
+    v = v / n
+    for _ in range(num_iterations):
+        v = d * M @ v + (1-d) * np.ones(n)/n
+    return v
+
+
+
+def pagerank_from_adjacency(A, num_iter: int = 100, d: float = 0.85):
+    """
+    Parameters
+    ----------
+    A : numpy array
+        adjacency matrix where M_i,j represents 
+        the link from 'i' to 'j'
+    num_iterations : int, optional
+        number of iterations, by default 100
+    d : float, optional
+        damping factor, by default 0.85
+    
+    Returns
+    -------
+    numpy array
+        a vector of ranks such that v_i is the i-th rank from [0, 1],
+        v sums to 1
+    """
+    n = A.shape[0]
+    v = np.ones(n)
+    out_deg = A @ v
+    v = v / n
+    for _ in range(num_iter):
+        v = d * A.T @ np.divide(v, out_deg, out=np.zeros_like(v), where=out_deg!=0) + (1-d) * np.ones(n)/n
+    return v
+
+
+
 

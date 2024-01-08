@@ -431,7 +431,6 @@ document.write(`
                 <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#approximating-subspaces">3.3.1. Approximating subspaces</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#from-approximating-subspaces-to-the-svd-and-back">3.3.2. From approximating subspaces to the SVD and back</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#definition-and-existence-of-the-svd">3.3.3. Definition and existence of the SVD</a></li>
 </ul>
             </nav>
         </div>
@@ -610,10 +609,10 @@ document.write(`
 <section id="from-approximating-subspaces-to-the-svd-and-back">
 <h2><span class="section-number">3.3.2. </span>From approximating subspaces to the SVD and back<a class="headerlink" href="#from-approximating-subspaces-to-the-svd-and-back" title="Permalink to this headline">#</a></h2>
 <p>While solving the approximating subspace problem in the previous section, we derived the building blocks of a matrix factorization that has found many applications, the <a class="reference external" href="https://en.wikipedia.org/wiki/Singular_value_decomposition">singular value decomposition (SVD)</a>. In this section, we define the SVD formally. We describe a simple method to compute it in the next section, where we also return to the application to dimensionality reduction.</p>
-<p>We start with a few useful observations.</p>
-<p><strong>Diagonal matrices</strong> First recall that a matrix <span class="math notranslate nohighlight">\(D \in \mathbb{R}^{k \times r}\)</span> is diagonal if its non-diagonal entries are zero. That is, <span class="math notranslate nohighlight">\(i \neq j\)</span> implies that <span class="math notranslate nohighlight">\(D_{ij} =0\)</span>. Note that a diagonal matrix is not necessarily square and that the diagonal elements are allowed to be zero.</p>
+<p><strong>Some matrix results</strong> We start with a few useful observations.</p>
+<p><em>Diagonal matrices:</em> First recall that a matrix <span class="math notranslate nohighlight">\(D \in \mathbb{R}^{k \times r}\)</span> is diagonal if its non-diagonal entries are zero. That is, <span class="math notranslate nohighlight">\(i \neq j\)</span> implies that <span class="math notranslate nohighlight">\(D_{ij} =0\)</span>. Note that a diagonal matrix is not necessarily square and that the diagonal elements are allowed to be zero.</p>
 <p>Multiplying a matrix by a diagonal one has a very specific effect. Let <span class="math notranslate nohighlight">\(A \in \mathbb{R}^{n \times k}\)</span> and
-<span class="math notranslate nohighlight">\(B \in \mathbb{R}^{r \times m}\)</span>. We focus here on the case <span class="math notranslate nohighlight">\(k \geq r\)</span>. (See <em>Exercise 2.42</em> for the other case.) The matrix product <span class="math notranslate nohighlight">\(A D\)</span> produces a matrix whose columns are linear combinations of the columns of <span class="math notranslate nohighlight">\(A\)</span> where the coefficients are taken from the corresponding column of <span class="math notranslate nohighlight">\(D\)</span>. But the columns of <span class="math notranslate nohighlight">\(D\)</span> have at most one nonzero elements, the diagonal one. So the columns of <span class="math notranslate nohighlight">\(AD\)</span> are in fact multiples of the columns of <span class="math notranslate nohighlight">\(A\)</span></p>
+<span class="math notranslate nohighlight">\(B \in \mathbb{R}^{r \times m}\)</span>. We focus here on the case <span class="math notranslate nohighlight">\(k \geq r\)</span>. The matrix product <span class="math notranslate nohighlight">\(A D\)</span> produces a matrix whose columns are linear combinations of the columns of <span class="math notranslate nohighlight">\(A\)</span> where the coefficients are taken from the corresponding column of <span class="math notranslate nohighlight">\(D\)</span>. But the columns of <span class="math notranslate nohighlight">\(D\)</span> have at most one nonzero elements, the diagonal one. So the columns of <span class="math notranslate nohighlight">\(AD\)</span> are in fact multiples of the columns of <span class="math notranslate nohighlight">\(A\)</span></p>
 <div class="math notranslate nohighlight">
 \[\begin{split}
 AD
@@ -641,7 +640,7 @@ DB
 \end{split}\]</div>
 <p>where <span class="math notranslate nohighlight">\(\mathbf{b}_1^T,\ldots,\mathbf{b}_r^T\)</span> are the rows of <span class="math notranslate nohighlight">\(B\)</span>.</p>
 <p><strong>EXAMPLE:</strong> The following special case will be useful later in this chapter. Suppose <span class="math notranslate nohighlight">\(D, F \in \mathbb{R}^{n \times n}\)</span> are both square diagonal matrices. Then <span class="math notranslate nohighlight">\(D F\)</span> is the matrix whose diagonal elements are <span class="math notranslate nohighlight">\(d_{11} f_{11}, \ldots,d_{nn} f_{nn}\)</span>. <span class="math notranslate nohighlight">\(\lhd\)</span></p>
-<p><strong>Rank-one matrices</strong> Let <span class="math notranslate nohighlight">\(\mathbf{u} = (u_1,\ldots,u_n)^T \in \mathbb{R}^n\)</span> and <span class="math notranslate nohighlight">\(\mathbf{v} = (v_1,\ldots,v_m)^T \in \mathbf{R}^m\)</span> be two column (nonzero) vectors. Their outer product is defined as the matrix</p>
+<p><em>Rank-one matrices:</em> Let <span class="math notranslate nohighlight">\(\mathbf{u} = (u_1,\ldots,u_n)^T \in \mathbb{R}^n\)</span> and <span class="math notranslate nohighlight">\(\mathbf{v} = (v_1,\ldots,v_m)^T \in \mathbf{R}^m\)</span> be two column (nonzero) vectors. Their outer product is defined as the matrix</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}
 \mathbf{u} \mathbf{v}^T
@@ -661,7 +660,7 @@ v_{1} \mathbf{u} &amp; \ldots &amp; v_{m} \mathbf{u} \\
 \end{split}\]</div>
 <p>This is not to be confused with the inner product <span class="math notranslate nohighlight">\(\mathbf{u}^T \mathbf{v}\)</span>, which requires <span class="math notranslate nohighlight">\(n = m\)</span> and produces a scalar.</p>
 <p>If <span class="math notranslate nohighlight">\(\mathbf{u}\)</span> and <span class="math notranslate nohighlight">\(\mathbf{v}\)</span> are nonzero, the matrix <span class="math notranslate nohighlight">\(\mathbf{u} \mathbf{v}^T\)</span> has rank one. Indeed, its columns are all a multiple of the same vector <span class="math notranslate nohighlight">\(\mathbf{u}\)</span>. So the column space spanned by the columns of <span class="math notranslate nohighlight">\(\mathbf{u} \mathbf{v}^T\)</span> is one-dimensional. Vice versa, any rank-one matrix can be written in this form by definition of the rank.</p>
-<p><strong>Matrix-matrix products and outer products</strong> We have seen many different interpretations of matrix-matrix products. Here is yet another one. Let <span class="math notranslate nohighlight">\(A = (a_{ij})_{i,j} \in \mathbb{R}^{n \times k}\)</span> and
+<p><em>Matrix-matrix products and outer products:</em> We have seen many different interpretations of matrix-matrix products. Here is yet another one. Let <span class="math notranslate nohighlight">\(A = (a_{ij})_{i,j} \in \mathbb{R}^{n \times k}\)</span> and
 <span class="math notranslate nohighlight">\(B = (b_{ij})_{i,j} \in \mathbb{R}^{k \times m}\)</span>. Denote by <span class="math notranslate nohighlight">\(\mathbf{a}_1,\ldots,\mathbf{a}_k\)</span> the columns of <span class="math notranslate nohighlight">\(A\)</span>
 and denote by <span class="math notranslate nohighlight">\(\mathbf{b}_1^T,\ldots,\mathbf{b}_k^T\)</span> the rows of <span class="math notranslate nohighlight">\(B\)</span>.</p>
 <p>Then</p>
@@ -719,10 +718,7 @@ a_{nj} b_{j1} &amp; a_{nj} b_{j2} &amp; \cdots &amp; a_{nj} b_{jm}
 </div>
 </div>
 <p><span class="math notranslate nohighlight">\(\unlhd\)</span></p>
-</section>
-<section id="definition-and-existence-of-the-svd">
-<h2><span class="section-number">3.3.3. </span>Definition and existence of the SVD<a class="headerlink" href="#definition-and-existence-of-the-svd" title="Permalink to this headline">#</a></h2>
-<p>We now come to our main definition.</p>
+<p><strong>Definition and existence of the SVD</strong> We now come to our main definition.</p>
 <p><strong>DEFINITION</strong> <strong>(Singular Value Decomposition)</strong> Let <span class="math notranslate nohighlight">\(A \in \mathbb{R}^{n\times m}\)</span> be a matrix. A singular value decomposition (SVD) of <span class="math notranslate nohighlight">\(A\)</span> is a matrix factorization</p>
 <div class="math notranslate nohighlight">
 \[
@@ -1368,7 +1364,6 @@ z_{i2}
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#approximating-subspaces">3.3.1. Approximating subspaces</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#from-approximating-subspaces-to-the-svd-and-back">3.3.2. From approximating subspaces to the SVD and back</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#definition-and-existence-of-the-svd">3.3.3. Definition and existence of the SVD</a></li>
 </ul>
   </nav></div>
 

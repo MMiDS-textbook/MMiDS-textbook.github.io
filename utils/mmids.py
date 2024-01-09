@@ -580,3 +580,111 @@ def pagerank_from_adjacency(A, num_iter: int = 100, d: float = 0.85):
 
 
 
+
+
+# Linear Gaussian models
+
+
+def lgSamplePath(ss, os, F, H, Q, R, x_0, T):
+    """
+    Generate a sample path from a linear Gaussian state space model.
+
+    Parameters:
+    ss (int): The dimension of the state vector.
+    os (int): The dimension of the observation vector.
+    F (ndarray): The state transition matrix of shape (ss, ss).
+    H (ndarray): The observation matrix of shape (os, ss).
+    Q (ndarray): The state noise covariance matrix of shape (ss, ss).
+    R (ndarray): The observation noise covariance matrix of shape (os, os).
+    x_0 (ndarray): The initial state vector of shape (ss,).
+    T (int): The number of time steps.
+
+    Returns:
+    x (ndarray): The generated state path of shape (ss, T).
+    y (ndarray): The generated observation path of shape (os, T).
+    """
+    x = np.zeros((ss,T)) 
+    y = np.zeros((os,T))
+    x[:,0] = x_0
+    ey = np.zeros(os)
+    ey = rng.multivariate_normal(np.zeros(os),R) 
+    y[:,0] = H @ x[:,0] + ey
+    
+    for t in range(1,T):
+        ex = np.zeros(ss)
+        ex = rng.multivariate_normal(np.zeros(ss),Q) # noise on x_t
+        x[:,t] = F @ x[:,t-1] + ex
+        ey = np.zeros(os)
+        ey = rng.multivariate_normal(np.zeros(os),R) # noise on y_t
+        y[:,t] = H @ x[:,t] + ey
+    
+    return x, y
+
+
+
+def kalmanUpdate(ss, A, C, Q, R, y_t, mu_prev, Sig_prev):
+    """
+    Performs the Kalman update step.
+
+    Args:
+        ss (int): State size.
+        A (ndarray): State transition matrix.
+        C (ndarray): Observation matrix.
+        Q (ndarray): Process noise covariance matrix.
+        R (ndarray): Measurement noise covariance matrix.
+        y_t (ndarray): Measurement vector at time t.
+        mu_prev (ndarray): Previous state estimate.
+        Sig_prev (ndarray): Previous state covariance matrix.
+
+    Returns:
+        tuple: Updated state estimate (mu_new) and state covariance matrix (Sig_new).
+    """
+    mu_pred = A @ mu_prev
+    Sig_pred = A @ Sig_prev @ A.T + Q
+    if np.isnan(y_t[0]) or np.isnan(y_t[1]):
+        return mu_pred, Sig_pred
+    else:
+        e_t = y_t - C @ mu_pred  # error at time t
+        S = C @ Sig_pred @ C.T + R
+        Sinv = LA.inv(S)
+        K = Sig_pred @ C.T @ Sinv  # Kalman gain matrix
+        mu_new = mu_pred + K @ e_t
+        Sig_new = (np.diag(np.ones(ss)) - K @ C) @ Sig_pred
+        return mu_new, Sig_new
+    
+
+
+import numpy as np
+
+def kalmanFilter(ss, os, y, A, C, Q, R, init_mu, init_Sig, T):
+    """
+    Apply the Kalman filter algorithm to estimate the hidden states of a linear dynamical system.
+
+    Parameters:
+    - ss (int): Number of hidden states.
+    - os (int): Number of observed states.
+    - y (ndarray): Observations of shape (os, T), where T is the number of time steps.
+    - A (ndarray): State transition matrix of shape (ss, ss).
+    - C (ndarray): Observation matrix of shape (os, ss).
+    - Q (ndarray): Process noise covariance matrix of shape (ss, ss).
+    - R (ndarray): Observation noise covariance matrix of shape (os, os).
+    - init_mu (ndarray): Initial state mean of shape (ss,).
+    - init_Sig (ndarray): Initial state covariance matrix of shape (ss, ss).
+    - T (int): Number of time steps.
+
+    Returns:
+    - mu (ndarray): Estimated state means of shape (ss, T).
+    - Sig (ndarray): Estimated state covariance matrices of shape (ss, ss, T).
+    """
+    mu = np.zeros((ss, T))
+    Sig = np.zeros((ss, ss, T))
+    mu[:,0] = init_mu
+    Sig[:,:,0] = init_Sig
+
+    for t in range(1,T):
+        mu[:,t], Sig[:,:,t] = kalmanUpdate(ss, A, C, Q, R, y[:,t], mu[:,t-1], Sig[:,:,t-1])
+
+    return mu, Sig
+
+
+

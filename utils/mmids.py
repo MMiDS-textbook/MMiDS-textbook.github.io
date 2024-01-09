@@ -688,3 +688,259 @@ def kalmanFilter(ss, os, y, A, C, Q, R, init_mu, init_Sig, T):
 
 
 
+# Probabilistic models
+
+
+def nb_fit_table(N_km, alpha=1., beta=1.):
+    """
+    Fits a Naive Bayes model to a contingency table.
+
+    Parameters:
+    - N_km (ndarray): Contingency table of shape (K, M) where K is the number of classes and M is the number of features.
+    - alpha (float): Smoothing parameter for the class probabilities. Default is 1.
+    - beta (float): Smoothing parameter for the feature probabilities. Default is 1.
+
+    Returns:
+    - pi_k (ndarray): Maximum likelihood estimates for the class probabilities of shape (K,).
+    - p_km (ndarray): Maximum likelihood estimates for the feature probabilities of shape (K, M).
+    """
+    
+    K, M = N_km.shape
+    N_k = np.sum(N_km,axis=-1)
+    N = np.sum(N_k)
+    
+    # MLE for pi_k's
+    pi_k = (N_k+alpha) / (N+K*alpha)
+    
+    # MLE for p_km's
+    p_km = (N_km+beta) / (N_k[:,None]+2*beta)
+
+    return pi_k, p_km
+
+
+def nb_predict(pi_k, p_km, x, label_set):
+    """
+    Predicts the label for a given input using the Naive Bayes classifier.
+
+    Parameters:
+    - pi_k (list): The prior probabilities for each class.
+    - p_km (ndarray): The conditional probabilities for each feature given each class.
+    - x (ndarray): The input features.
+    - label_set (list): The set of possible labels.
+
+    Returns:
+    - predicted_label: The predicted label for the input.
+    """
+   
+    K = len(pi_k)
+    
+    # Computing the score for each k
+    score_k = np.zeros(K)
+    for k in range(K):
+       
+        score_k[k] += - np.log(pi_k[k])
+        score_k[k] += - np.sum(x * np.log(p_km[k,:]) + (1 - x)*np.log(1 - p_km[k,:]))
+    
+    # Computing the minimum
+    argmin = np.argmin(score_k, axis=0)
+    minscr = np.max(score_k, axis=0)
+
+    return label_set[argmin]
+
+
+
+def responsibility(pi_k, p_km, x):
+    """
+    Compute the responsibilities for each component in a mixture model.
+
+    Parameters:
+    - pi_k (array-like): The mixing coefficients for each component.
+    - p_km (array-like): The conditional probabilities for each component.
+    - x (array-like): The observed data.
+
+    Returns:
+    - r_k (array-like): The responsibilities for each component.
+
+    """
+    K = len(pi_k)
+        
+    # Computing the score for each k
+    score_k = np.zeros(K)
+    for k in range(K):
+        score_k[k] += - np.log(pi_k[k])
+        score_k[k] += - np.sum(x*np.log(p_km[k,:]) + (1 - x)*np.log(1 - p_km[k,:]))
+    
+    # Computing responsibilities for each k
+    r_k = np.exp(-score_k)/(np.sum(np.exp(-score_k)))
+        
+    return r_k
+
+
+def update_parameters(eta_km, eta_k, eta, alpha, beta):
+    """
+    Update the parameters for the MMiDS model.
+
+    Parameters:
+    - eta_km: numpy.ndarray, shape (K, M)
+        The count matrix of the number of times each keyword m is assigned to topic k.
+    - eta_k: numpy.ndarray, shape (K,)
+        The count vector of the number of times each topic k is assigned to any document.
+    - eta: float
+        The total count of topic assignments to any document.
+    - alpha: float
+        The hyperparameter for the Dirichlet prior on the topic distribution.
+    - beta: float
+        The hyperparameter for the Dirichlet prior on the keyword distribution.
+
+    Returns:
+    - pi_k: numpy.ndarray, shape (K,)
+        The maximum likelihood estimate of the topic distribution.
+    - p_km: numpy.ndarray, shape (K, M)
+        The maximum likelihood estimate of the keyword distribution.
+    """
+        
+    K, M = N_km.shape
+    
+    # MLE for pi_k's
+    pi_k = (eta_k+alpha) / (eta+K*alpha)
+    
+    # MLE for p_km's
+    p_km = (eta_km+beta) / (eta_k[:,None]+2*beta)
+
+    return pi_k, p_km
+
+
+
+def em_bern(X, K, pi_0, p_0, maxiters=10, alpha=0., beta=0.):
+    """
+    Expectation-Maximization algorithm for estimating parameters of a Bernoulli Mixture Model.
+
+    Parameters:
+    - X: numpy.ndarray
+        Input data matrix of shape (n, M), where n is the number of samples and M is the number of features.
+    - K: int
+        Number of mixture components.
+    - pi_0: numpy.ndarray
+        Initial guess for the mixing coefficients of shape (K,).
+    - p_0: numpy.ndarray
+        Initial guess for the Bernoulli parameters of shape (K, M).
+    - maxiters: int, optional
+        Maximum number of iterations for the EM algorithm. Default is 10.
+    - alpha: float, optional
+        Smoothing parameter for the mixing coefficients. Default is 0.
+    - beta: float, optional
+        Smoothing parameter for the Bernoulli parameters. Default is 0.
+
+    Returns:
+    - pi_k: numpy.ndarray
+        Estimated mixing coefficients of shape (K,).
+    - p_km: numpy.ndarray
+        Estimated Bernoulli parameters of shape (K, M).
+    """
+    
+    n, M = X.shape
+    pi_k = pi_0
+    p_km = p_0
+    
+    for _ in range(maxiters):
+    
+        # E Step
+        r_ki = np.zeros((K, n))
+        for i in range(n):
+            r_ki[:, i] = responsibility(pi_k, p_km, X[i, :])
+        
+        # M Step     
+        eta_km = np.zeros((K, M))
+        eta_k = np.sum(r_ki, axis=-1)
+        eta = np.sum(eta_k)
+        for k in range(K):
+            for m in range(M):
+                eta_km[k, m] = np.sum(X[:, m] * r_ki[k, :]) 
+        pi_k, p_km = update_parameters(eta_km, eta_k, eta, alpha, beta)
+        
+    return pi_k, p_km
+
+
+
+
+
+def hard_responsibility(pi_k, p_km, x):
+    """
+    Compute the hard responsibilities for each cluster based on the given parameters.
+
+    Parameters:
+    - pi_k (numpy.ndarray): The probabilities of each cluster.
+    - p_km (numpy.ndarray): The probabilities of each feature given each cluster.
+    - x (numpy.ndarray): The observed data.
+
+    Returns:
+    - r_k (numpy.ndarray): The hard responsibilities for each cluster.
+    """
+
+    K = len(pi_k)
+        
+    # Computing the score for each k
+    score_k = np.zeros(K)
+    for k in range(K):
+        score_k[k] += - np.log(pi_k[k])
+        score_k[k] += - np.sum(x*np.log(p_km[k,:]) + (1 - x)*np.log(1 - p_km[k,:]))
+    
+    # Computing responsibilities for each k
+    argmin = np.argmin(score_k, axis=0)
+    r_k = np.zeros(K)
+    r_k[argmin] = 1
+
+    return r_k
+
+
+def hard_em_bern(X, K, pi_0, p_0, maxiters=10, alpha=0., beta=0.):
+    """
+    Perform hard expectation-maximization (EM) algorithm for Bernoulli mixture model.
+
+    Parameters:
+    - X: numpy.ndarray
+        Input data matrix of shape (n, M), where n is the number of samples and M is the number of features.
+    - K: int
+        Number of mixture components.
+    - pi_0: numpy.ndarray
+        Initial mixing coefficients of shape (K,).
+    - p_0: numpy.ndarray
+        Initial Bernoulli parameters of shape (K, M).
+    - maxiters: int, optional
+        Maximum number of iterations for the EM algorithm. Default is 10.
+    - alpha: float, optional
+        Hyperparameter for the Dirichlet prior on mixing coefficients. Default is 0.
+    - beta: float, optional
+        Hyperparameter for the Beta prior on Bernoulli parameters. Default is 0.
+
+    Returns:
+    - pi_k: numpy.ndarray
+        Estimated mixing coefficients after the EM algorithm, of shape (K,).
+    - p_km: numpy.ndarray
+        Estimated Bernoulli parameters after the EM algorithm, of shape (K, M).
+    """
+    
+    n, M = X.shape
+    pi_k = pi_0
+    p_km = p_0
+    
+    for _ in range(maxiters):
+    
+        # E Step
+        r_ki = np.zeros((K, n))
+        for i in range(n):
+            r_ki[:, i] = hard_responsibility(pi_k, p_km, X[i, :])
+        
+        # M Step     
+        eta_km = np.zeros((K, M))
+        eta_k = np.sum(r_ki, axis=-1)
+        eta = np.sum(eta_k)
+        for k in range(K):
+            for m in range(M):
+                eta_km[k, m] = np.sum(X[:, m] * r_ki[k, :]) 
+        pi_k, p_km = update_parameters(eta_km, eta_k, eta, alpha, beta)
+        
+    return pi_k, p_km
+
+
+

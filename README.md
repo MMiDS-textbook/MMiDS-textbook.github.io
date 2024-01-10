@@ -1,7 +1,7 @@
 # Mathematical Methods in Data Science (MMiDS)
 
 Online resources for the textbook *Mathematical Methods in Data Science*  by [Sebastien Roch](https://people.math.wisc.edu/~roch/) (UW-Madison, Math).
-This material was developed for the course [MATH 535: MATHEMATICAL METHODS IN DATA SCIENCE](https://people.math.wisc.edu/~roch/mmids/).
+This material was developed for the course [MATH 535: MATHEMATICAL METHODS IN DATA SCIENCE](https://people.math.wisc.edu/~roch/mmids/) at [UW-Madison](https://www.wisc.edu/).
 
 **Textbook**
 

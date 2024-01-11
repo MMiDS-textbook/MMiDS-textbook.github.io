@@ -1,3 +1,5 @@
+![MMiDS logo](./mmids-cover.png)
+
 # Mathematical Methods in Data Science (MMiDS)
 
 Online resources for the textbook *Mathematical Methods in Data Science*  by [Sebastien Roch (UW-Madison, Math)](https://people.math.wisc.edu/~roch/).

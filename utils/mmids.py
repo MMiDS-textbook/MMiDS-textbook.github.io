@@ -654,8 +654,6 @@ def kalmanUpdate(ss, A, C, Q, R, y_t, mu_prev, Sig_prev):
     
 
 
-import numpy as np
-
 def kalmanFilter(ss, os, y, A, C, Q, R, init_mu, init_Sig, T):
     """
     Apply the Kalman filter algorithm to estimate the hidden states of a linear dynamical system.
@@ -689,7 +687,6 @@ def kalmanFilter(ss, os, y, A, C, Q, R, init_mu, init_Sig, T):
 
 
 # Probabilistic models
-
 
 def nb_fit_table(N_km, alpha=1., beta=1.):
     """
@@ -942,5 +939,125 @@ def hard_em_bern(X, K, pi_0, p_0, maxiters=10, alpha=0., beta=0.):
         
     return pi_k, p_km
 
+
+
+
+
+# Gibbs sampling for RBMs
+
+
+def sigmoid(z):
+    """
+    Compute the sigmoid function.
+
+    Parameters:
+    z (float or array-like): The input value(s) to the sigmoid function.
+
+    Returns:
+    float or array-like: The output value(s) of the sigmoid function.
+
+    """
+    return 1 / (1 + np.exp(-z))
+
+
+
+def rbm_mean_hidden(v, W, c):
+    """
+    Computes the mean activation of hidden units in a Restricted Boltzmann Machine (RBM).
+
+    Parameters:
+    v (numpy.ndarray): Input vector of visible units.
+    W (numpy.ndarray): Weight matrix connecting visible and hidden units.
+    c (numpy.ndarray): Bias vector for hidden units.
+
+    Returns:
+    numpy.ndarray: Mean activation of hidden units.
+
+    """
+    return sigmoid(W @ v + c.reshape(len(c),1))
+
+
+def rbm_mean_visible(h, W, b):
+    """
+    Computes the mean of the visible units in a Restricted Boltzmann Machine (RBM).
+
+    Parameters:
+    h (numpy.ndarray): Hidden units values.
+    W (numpy.ndarray): Weight matrix connecting hidden and visible units.
+    b (numpy.ndarray): Bias vector for the visible units.
+
+    Returns:
+    numpy.ndarray: Mean of the visible units.
+
+    """
+    return sigmoid(W.T @ h + b.reshape(len(b),1))
+
+
+
+def rbm_gibbs_update(v, W, b, c):
+    """
+    Performs one Gibbs sampling update step for a Restricted Boltzmann Machine (RBM).
+
+    Args:
+        v (ndarray): Visible units of the RBM.
+        W (ndarray): Weight matrix connecting visible and hidden units.
+        b (ndarray): Bias vector for the visible units.
+        c (ndarray): Bias vector for the hidden units.
+
+    Returns:
+        ndarray: Updated visible units after one Gibbs sampling step.
+    """
+    p_hidden = rbm_mean_hidden(v, W, c)
+    h = rng.binomial(1, p_hidden, p_hidden.shape)
+    p_visible = rbm_mean_visible(h, W, b)
+    v = rng.binomial(1, p_visible, p_visible.shape)
+    return v
+
+
+def rbm_gibbs_sampling(k, v_0, W, b, c):
+    """
+    Perform k steps of Gibbs sampling in a Restricted Boltzmann Machine (RBM).
+
+    Parameters:
+    k (int): The number of Gibbs sampling steps to perform.
+    v_0 (array-like): The initial visible layer state.
+    W (array-like): The weight matrix of the RBM.
+    b (array-like): The bias vector of the hidden layer.
+    c (array-like): The bias vector of the visible layer.
+
+    Returns:
+    array-like: The final visible layer state after k steps of Gibbs sampling.
+    """
+    counter = 0
+    v = v_0
+    while counter < k:
+        v = rbm_gibbs_update(v, W, b, c)
+        counter += 1
+    return v
+
+
+def plot_imgs(z, n_imgs, nx_pixels, ny_pixels):
+    """
+    Plot a grid of images.
+
+    Parameters:
+    - z: numpy array of shape (n_imgs, nx_pixels * ny_pixels)
+        The array of images to be plotted.
+    - n_imgs: int
+        The number of images to be plotted.
+    - nx_pixels: int
+        The number of pixels in the x-axis of each image.
+    - ny_pixels: int
+        The number of pixels in the y-axis of each image.
+    """
+    nx_imgs = np.floor(np.sqrt(n_imgs))
+    ny_imgs = np.ceil(np.sqrt(n_imgs))
+    plt.figure(figsize=(8, 8))
+    for i, comp in enumerate(z):
+        plt.subplot(int(nx_imgs), int(ny_imgs), i + 1)
+        plt.imshow(comp.reshape((nx_pixels, ny_pixels)), cmap=plt.cm.gray_r)
+        plt.xticks([])
+        plt.yticks([])
+    plt.show()
 
 

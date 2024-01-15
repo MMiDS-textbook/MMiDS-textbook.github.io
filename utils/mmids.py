@@ -31,8 +31,6 @@ def opt_reps(X, k, assign):
         reps[i,:] = np.sum(X[in_i,:],axis=0) / len(in_i)
     return reps
 
-import numpy as np
-from numpy import linalg as LA
 
 def opt_clust(X, k, reps):
     """
@@ -339,6 +337,71 @@ def two_clusters(d, n, w):
     X1 = one_cluster(d, n, -w)
     X2 = one_cluster(d, n, w)
     return X1, X2
+
+
+
+
+def gmm2(d, n, phi1, phi2, mu1, sigma1, mu2, sigma2):
+    """
+    Generate samples from a Gaussian Mixture Model (GMM) with two components.
+
+    Parameters:
+    - d (int): The dimensionality of the samples.
+    - n (int): The number of samples to generate.
+    - phi1 (float): The weight of the first component.
+    - phi2 (float): The weight of the second component.
+    - mu1 (array-like): The mean vector of the first component.
+    - sigma1 (array-like): The covariance matrix of the first component.
+    - mu2 (array-like): The mean vector of the second component.
+    - sigma2 (array-like): The covariance matrix of the second component.
+
+    Returns:
+    - X (ndarray): An array of shape (n, d) containing the generated samples.
+    """
+
+    # merge components into tensors
+    phi = np.stack((phi1, phi2))
+    mu = np.stack((mu1, mu2))
+    sigma = np.stack((sigma1, sigma2))
+    X = np.zeros((n, d))
+
+    # choose components of each data point, then generate samples
+    component = rng.choice(2, size=n, p=[phi1, phi2])
+    for i in range(n):
+        X[i, :] = rng.multivariate_normal(
+            mu[component[i], :],
+            sigma[component[i], :, :]
+        )
+
+    return X
+
+
+
+def two_mixed_clusters(d, n, w):
+    """
+    Generate a dataset with two mixed clusters.
+
+    Parameters:
+    - d (int): The dimensionality of the data.
+    - n (int): The number of data points to generate.
+    - w (float): The distance between the means of the two clusters.
+
+    Returns:
+    - data (numpy.ndarray): The generated dataset with shape (n, d).
+    """
+
+    # set parameters
+    phi1 = 0.5
+    phi2 = 0.5
+    mu1 = np.concatenate(([w], np.zeros(d-1)))
+    mu2 = np.concatenate(([-w], np.zeros(d-1)))
+    sigma1 = np.identity(d)
+    sigma2 = np.identity(d)
+    
+    return gmm2(d, n, phi1, phi2, mu1, sigma1, mu2, sigma2)
+
+
+
 
 
 # Spectral graph theory algorithms

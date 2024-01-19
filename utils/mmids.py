@@ -300,6 +300,24 @@ def svd(A, l, maxiter=100):
     return U, S, V
 
 
+def pca(X, l, maxiter=100):
+    """
+    Perform Principal Component Analysis (PCA) on the input data.
+
+    Parameters:
+    X (numpy.ndarray): Input data matrix of shape (n_samples, n_features).
+    l (int): Number of principal components to keep.
+    maxiter (int, optional): Maximum number of iterations for the SVD algorithm. Default is 100.
+
+    Returns:
+    numpy.ndarray: Transformed data matrix of shape (n_samples, l), where l is the number of principal components.
+
+    """
+    mean = np.mean(X, axis=0)  # Compute mean of each column
+    Y = X - mean # Mean center each column
+    U, S, V = svd(Y, l, maxiter=maxiter)
+    return U[:,:l] @ np.diag(S[:l])
+
 
 # Data simulation
 

@@ -632,6 +632,31 @@ def pagerank(A, alpha=0.85, max_iter=100):
 
 
 
+def ppr(A, mu, alpha=0.85, max_iter=100):
+    """
+    Calculates the Personalized PageRank (PPR) vector for a given adjacency matrix.
+
+    Parameters:
+    A (numpy.ndarray): The adjacency matrix representing the graph.
+    mu (float): The teleportation probability.
+    alpha (float, optional): The damping factor. Default is 0.85.
+    max_iter (int, optional): The maximum number of iterations. Default is 100.
+
+    Returns:
+    numpy.ndarray: The PPR vector.
+
+    """
+    n = A.shape[0]
+    P = transition_from_adjacency(A)
+    Q = add_damping(P, alpha, mu)
+    v = mu
+    for _ in range(max_iter):
+        v = Q.T @ v
+    return v
+
+
+    
+
 
 
 

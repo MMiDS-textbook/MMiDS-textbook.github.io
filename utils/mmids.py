@@ -319,6 +319,9 @@ def pca(X, l, maxiter=100):
     return U[:,:l] @ np.diag(S[:l])
 
 
+
+
+
 # Data simulation
 
 def one_cluster(d, n, w):
@@ -497,6 +500,7 @@ def viz_cut(G, s, layout):
 
 
 
+
 # Optimization algorithms
     
 def desc_update(grad_f, x, alpha):
@@ -540,8 +544,6 @@ def gd(f, grad_f, x0, alpha=1e-3, niters=int(1e6)):
 
 # Markov chains algorithms
 
-import numpy as np
-
 def SamplePath(mu, P, T):
     """
     Generate a sample path from a Markov chain.
@@ -565,98 +567,72 @@ def SamplePath(mu, P, T):
     return X
 
 
-def transition_from_digraph(G):
+def transition_from_adjacency(A):
     """
-    Compute the transition matrix from a directed graph.
+    Compute the transition matrix from an adjacency matrix.
 
     Parameters:
-    - G: NetworkX DiGraph object representing the directed graph.
+    A (numpy.ndarray): The adjacency matrix.
 
     Returns:
-    - numpy.ndarray: The transition matrix of the directed graph.
-    """
-    n = G.number_of_nodes()
-    invD = np.zeros((n,n))
-    for i in range(n):
-        invD[i,i] = 1 / G.out_degree(i)
-    A = nx.adjacency_matrix(G).toarray()
-    return invD @ A
+    numpy.ndarray: The transition matrix.
 
-
-import numpy as np
-import networkx as nx
-
-def transition_from_graph(G):
-    """
-    Compute the transition matrix from a graph.
-
-    Parameters:
-    - G: NetworkX graph object
-
-    Returns:
-    - numpy.ndarray: The transition matrix of the graph
-    """
-    n = G.number_of_nodes()
-    invD = np.zeros((n,n))
-    for i in range(n):
-        invD[i,i] = 1 / G.degree(i)
-    A = nx.adjacency_matrix(G).toarray()
-    return invD @ A
-
-
-
-def pagerank(M, num_iterations: int = 100, d: float = 0.85):
-    """
-    Parameters
-    ----------
-    M : numpy array
-        adjacency matrix transposed where M_i,j represents 
-        the link from 'j' to 'i', such that for all 'j' sum(i, M_i,j) = 1
-    num_iterations : int, optional
-        number of iterations, by default 100
-    d : float, optional
-        damping factor, by default 0.85
-    
-    Returns
-    -------
-    numpy array
-        a vector of ranks such that v_i is the i-th rank from [0, 1],
-        v sums to 1
-    """
-    n = M.shape[1]
-    v = np.ones(n)
-    v = v / n
-    for _ in range(num_iterations):
-        v = d * M @ v + (1-d) * np.ones(n)/n
-    return v
-
-
-
-def pagerank_from_adjacency(A, num_iter: int = 100, d: float = 0.85):
-    """
-    Parameters
-    ----------
-    A : numpy array
-        adjacency matrix where M_i,j represents 
-        the link from 'i' to 'j'
-    num_iterations : int, optional
-        number of iterations, by default 100
-    d : float, optional
-        damping factor, by default 0.85
-    
-    Returns
-    -------
-    numpy array
-        a vector of ranks such that v_i is the i-th rank from [0, 1],
-        v sums to 1
     """
     n = A.shape[0]
-    v = np.ones(n)
-    out_deg = A @ v
-    v = v / n
-    for _ in range(num_iter):
-        v = d * A.T @ np.divide(v, out_deg, out=np.zeros_like(v), where=out_deg!=0) + (1-d) * np.ones(n)/n
+    sinks = (A @ np.ones(n)) == 0.
+    P = A.copy()
+    np.fill_diagonal(P, sinks)
+    out_deg = P @ np.ones(n)
+    P = P / out_deg[:, np.newaxis]
+    return P
+
+
+def add_damping(P, alpha, mu):
+    """
+    Adds damping to a matrix P using the given damping factor alpha and damping matrix mu.
+
+    Parameters:
+    P (numpy.ndarray): The matrix to which damping is applied.
+    alpha (float): The damping factor, ranging from 0 to 1.
+    mu (numpy.ndarray): The damping matrix.
+
+    Returns:
+    numpy.ndarray: The damped matrix Q, calculated as alpha * P + (1-alpha) * mu.
+    """
+    Q = alpha * P + (1-alpha) * mu
+    return Q
+
+
+def pagerank(A, alpha=0.85, max_iter=100):
+    """
+    Calculate the PageRank scores for a given adjacency matrix.
+
+    Parameters:
+    - A: numpy.ndarray
+        The adjacency matrix representing the graph.
+    - alpha: float, optional
+        The damping factor, which determines the probability of following a link.
+        Default is 0.85.
+    - max_iter: int, optional
+        The maximum number of iterations for the PageRank algorithm.
+        Default is 100.
+
+    Returns:
+    - v: numpy.ndarray
+        The PageRank scores for each node in the graph.
+    """
+    n = A.shape[0]
+    mu = np.ones(n)/n
+    P = transition_from_adjacency(A)
+    Q = add_damping(P, alpha, mu)
+    v = mu
+    for _ in range(max_iter):
+        v = Q.T @ v
     return v
+
+
+
+
 
 
 

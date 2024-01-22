@@ -5,9 +5,10 @@
 
 import numpy as np
 from numpy import linalg as LA
-from numpy.random import default_rng
 import matplotlib.pyplot as plt
-rng = default_rng(535)
+import networkx as nx
+seed = 535
+rng = np.random.default_rng(seed)
 
 
 # k-means clustering
@@ -878,7 +879,7 @@ def update_parameters(eta_km, eta_k, eta, alpha, beta):
         The maximum likelihood estimate of the keyword distribution.
     """
         
-    K, M = N_km.shape
+    K = len(eta_k)
     
     # MLE for pi_k's
     pi_k = (eta_k+alpha) / (eta+K*alpha)

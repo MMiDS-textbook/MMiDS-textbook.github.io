@@ -8,7 +8,7 @@ This textbook on the **mathematics of data** has two intended audiences:
 
 - *For mathematically-inclined students in data science related fields (at the undergraduate or graduate level)*: it can serve as a mathematical companion to machine learning, AI, and statistics courses.
 
-Content-wise it is a second course in **linear algebra**, **multivariable calculus**, and **probability theory** motivated by and illustrated on data science applications. As such, the reader is expected to be familiar with the basics of those areas, as well as to have been exposed to proofs -- but no knowledge of data science is assumed. Moreover, while the emphasis is on mathematical concepts, programming is used throughout. Basic familiarity with [Python](https://docs.python.org/3/tutorial/index.html) will suffice. The book provides an introduction to some specialized packages, especially [Numpy](https://numpy.org), [NetworkX](https://networkx.org), and [TensorFlow](https://www.tensorflow.org).
+Content-wise it is a second course in **linear algebra**, **multivariable calculus**, and **probability theory** motivated by and illustrated on data science applications. As such, the reader is expected to be familiar with the basics of those areas, as well as to have been exposed to proofs -- but no knowledge of data science is assumed. Moreover, while the emphasis is on mathematical concepts, programming is used throughout. Basic familiarity with [Python](https://docs.python.org/3/tutorial/index.html) will suffice. The book provides an introduction to some specialized packages, especially [Numpy](https://numpy.org), [NetworkX](https://networkx.org), and [PyTorch](https://pytorch.org/).
 
 The book is based on Jupyter notebooks that were developed for
 [MATH 535: Mathematical Methods in Data Science](https://people.math.wisc.edu/~roch/mmids/), a one-semester advanced undergraduate and Master's level course
@@ -22,13 +22,18 @@ offered at [UW-Madison](https://math.wisc.edu/).
  following librairies.
 
 ```python
+# PYTHON 3
 import numpy as np
 from numpy import linalg as LA
 import matplotlib.pyplot as plt
 import pandas as pd
 import networkx as nx
-import tensorflow as tf
-from tensorflow import keras
+import torch
+from torchvision import datasets, transforms
+from torch.utils.data import DataLoader, TensorDataset
+import torch.nn as nn
+import torch.optim as optim
+import torch.nn.functional as F
 import mmids
 seed = 535
 rng = np.random.default_rng(seed)

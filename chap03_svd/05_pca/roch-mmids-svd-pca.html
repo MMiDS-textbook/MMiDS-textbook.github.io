@@ -1,0 +1,1243 @@
+
+
+<!DOCTYPE html>
+
+
+<html data-content_root="" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>3.5. Application to dimensionality reduction &#8212; MMiDS Textbook</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=5b4479735964841361fd" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" href="../../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=5b4479735964841361fd" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd" />
+  <script src="../../_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=5b4479735964841361fd"></script>
+
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/clipboard.min.js"></script>
+    <script src="../../_static/copybutton.js"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../_static/design-tabs.js"></script>
+    <script loading_method="async" src="https://www.googletagmanager.com/gtag/js?id=G-P5E8DW088F"></script>
+    <script>
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){ dataLayer.push(arguments); }
+                gtag('js', new Date());
+                gtag('config', 'G-P5E8DW088F');
+            </script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="../../_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'chap03_svd/05_pca/roch-mmids-svd-pca';</script>
+    <link rel="canonical" href="https://mmids-textbook.github.io/chap03_svd/05_pca/roch-mmids-svd-pca.html" />
+    <link rel="shortcut icon" href="https://mmids-textbook.github.io/favicon-32x32.png"/>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="3.6. Further applications of the SVD" href="../06_further/roch-mmids-svd-further.html" />
+    <link rel="prev" title="3.4. Power iteration" href="../04_power/roch-mmids-svd-power.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="None"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+
+<a class="navbar-brand logo" href="../../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/mmids-cover-small.jpg" class="logo__image only-light" alt="MMiDS Textbook - Home"/>
+    <script>document.write(`<img src="../../_static/mmids-cover-small.jpg" class="logo__image only-dark" alt="MMiDS Textbook - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../index.html">
+                    <b>MATHEMATICAL METHODS in DATA SCIENCE (with Python)</b>
+                </a>
+            </li>
+        </ul>
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../chap01_intro/00_intro/roch-mmids-intro-intro.html">1. Introduction</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../chap01_intro/01_motiv/roch-mmids-intro-motiv.html">1.1. Motivating example: identifying penguin species</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap01_intro/02_review/roch-mmids-intro-review.html">1.2. Background: quick refresher of matrix algebra, differential calculus, and elementary probability</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap01_intro/03_clustering/roch-mmids-intro-clustering.html">1.3. Clustering: an objective, an algorithm and a guarantee</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap01_intro/04_highdim/roch-mmids-intro-highdim.html">1.4. Some observations about high-dimensional data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap01_intro/05_adv/roch-mmids-intro-adv.html">1.5. Advanced material</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap01_intro/summary_chap01.html">1.6. Other resources</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../chap02_ls/00_intro/roch-mmids-ls-intro.html">2. Least squares: geometric, algebraic, and numerical aspects</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../chap02_ls/01_motiv/roch-mmids-ls-motiv.html">2.1. Motivating example: predicting sales</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap02_ls/02_subspaces/roch-mmids-ls-spaces.html">2.2. Background: review of vector spaces</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap02_ls/03_orthog/roch-mmids-ls-orthog.html">2.3. Orthogonal projection and overdetermined linear systems</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap02_ls/04_qr/roch-mmids-ls-qr.html">2.4. QR decomposition and Householder transformations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap02_ls/05_regression/roch-mmids-ls-regression.html">2.5. Application to regression analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap02_ls/06_adv/roch-mmids-ls-adv.html">2.6. Advanced material</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap02_ls/summary_chap02.html">2.7. Other resources</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="../00_intro/roch-mmids-svd-intro.html">3. Singular value decomposition</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-3"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../01_motiv/roch-mmids-svd-motiv.html">3.1. Motivating example: visualizing viral genomes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../02_spectral/roch-mmids-svd-spectral.html">3.2. Background: further review of linear algebra</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../03_svd/roch-mmids-svd-svd.html">3.3. Approximating subspaces and the SVD</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../04_power/roch-mmids-svd-power.html">3.4. Power iteration</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">3.5. Application to dimensionality reduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../06_further/roch-mmids-svd-further.html">3.6. Further applications of the SVD</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../07_adv/roch-mmids-svd-adv.html">3.7. Advanced material</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../summary_chap03.html">3.8. Other resources</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../chap04_specgraph/00_intro/roch-mmids-specgraph-intro.html">4. Spectral graph theory</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-4"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../chap04_specgraph/01_motiv/roch-mmids-specgraph-motiv.html">4.1. Motivating example: uncovering social groups</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap04_specgraph/02_graph/roch-mmids-specgraph-graph.html">4.2. Background: basic concepts in graph theory</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap04_specgraph/03_extremal/roch-mmids-specgraph-extremal.html">4.3. Variational characterization of eigenvalues</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap04_specgraph/04_laplacian/roch-mmids-specgraph-laplacian.html">4.4. Spectral properties of the Laplacian matrix</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap04_specgraph/05_partitioning/roch-mmids-specgraph-partitioning.html">4.5. Application to graph partitioning via spectral clustering</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap04_specgraph/summary_chap04.html">4.6. Other resources</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../chap05_rwmc/00_intro/roch-mmids-rwmc-intro.html">5. Random walks on graphs and Markov chains</a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-5"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../chap05_rwmc/01_motiv/roch-mmids-rwmc-motiv.html">5.1. Motivating example: discovering relevant mathematical topics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap05_rwmc/02_conditioning/roch-mmids-rwmc-conditioning.html">5.2. Background: review of conditional probability</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap05_rwmc/03_mcdefs/roch-mmids-rwmc-mcdefs.html">5.3. Elements of finite Markov chains</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap05_rwmc/04_mclimit/roch-mmids-rwmc-mclimit.html">5.4. Limit behavior</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap05_rwmc/05_pagerank/roch-mmids-rwmc-pagerank.html">5.5. Random walks on graphs and application to PageRank</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap05_rwmc/06_adv/roch-mmids-rwmc-adv.html">5.6. Advanced material</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap05_rwmc/summary_chap05.html">5.7. Other resources</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../chap06_opt/00_intro/roch-mmids-opt-intro.html">6. Optimization theory and algorithms</a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-6"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../chap06_opt/01_motiv/roch-mmids-opt-motiv.html">6.1. Motivating example:  deciphering handwriting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap06_opt/02_several/roch-mmids-opt-several.html">6.2. Background: review of differentiable functions of several variables and introduction to automatic differentiation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap06_opt/03_optimality/roch-mmids-opt-optimality.html">6.3. Optimality conditions and convexity</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap06_opt/04_gd/roch-mmids-opt-gd.html">6.4. Gradient descent and its convergence analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap06_opt/05_backprop/roch-mmids-opt-backprop.html">6.5. Backpropagation and application to neural networks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap06_opt/06_adv/roch-mmids-opt-adv.html">6.6. Advanced material</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap06_opt/summary_chap06.html">6.7. Other resources</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../chap07_prob/00_intro/roch-mmids-prob-intro.html">7. Probabilistic models: from simple to complex</a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-7"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../chap07_prob/01_motiv/roch-mmids-prob-motiv.html">7.1. Motivating example: tracking location</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap07_prob/02_parametric/roch-mmids-prob-parametric.html">7.2. Background: introduction to parametric families and maximum likelihood estimation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap07_prob/03_joint/roch-mmids-prob-joint.html">7.3. Modeling correlated random variables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap07_prob/04_kalman/roch-mmids-prob-kalman.html">7.4. Linear-Gaussian models and Kalman filtering</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap07_prob/05_gibbs/roch-mmids-prob-gibbs.html">7.5. Gibbs sampling with application to generating images</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap07_prob/summary_chap07.html">7.6. Other resources</a></li>
+</ul>
+</li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/MMiDS-textbook/MMiDS-textbook.github.io" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/MMiDS-textbook/MMiDS-textbook.github.io/issues/new?title=Issue%20on%20page%20%2Fchap03_svd/05_pca/roch-mmids-svd-pca.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/chap03_svd/05_pca/roch-mmids-svd-pca.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Application to dimensionality reduction</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#principal-components-analysis">3.5.1. Principal components analysis</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#back-to-our-genetic-dataset">3.5.2. Back to our genetic dataset</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <p><span class="math notranslate nohighlight">\(\newcommand{\horz}{\rule[.5ex]{2.5ex}{0.5pt}}\)</span></p>
+<section id="application-to-dimensionality-reduction">
+<h1><span class="section-number">3.5. </span>Application to dimensionality reduction<a class="headerlink" href="#application-to-dimensionality-reduction" title="Permalink to this headline">#</a></h1>
+<p>We discuss an application to principal components analysis and revisit our genetic dataset from ealier in the chapter.</p>
+<section id="principal-components-analysis">
+<h2><span class="section-number">3.5.1. </span>Principal components analysis<a class="headerlink" href="#principal-components-analysis" title="Permalink to this headline">#</a></h2>
+<p>Principal components analysis (PCA) is a commonly used dimensionality reduction approach that is mathematically equivalent closely related to what we described in the previous sections. We formalize the connection.</p>
+<p><em>The data matrix:</em> In PCA we are given <span class="math notranslate nohighlight">\(n\)</span> data points <span class="math notranslate nohighlight">\(\mathbf{x}_1,\ldots,\mathbf{x}_n \in \mathbb{R}^p\)</span> with <span class="math notranslate nohighlight">\(p\)</span> features (i.e., coordinates). We denote the components of <span class="math notranslate nohighlight">\(\mathbf{x}_i\)</span> as <span class="math notranslate nohighlight">\((x_{i1},\ldots,x_{ip})^T\)</span>. As usual, we stack them up into a matrix <span class="math notranslate nohighlight">\(X\)</span> whose <span class="math notranslate nohighlight">\(i\)</span>-th row is <span class="math notranslate nohighlight">\(\mathbf{x}_i^T\)</span>.</p>
+<p>The first step of PCA is to center the data, i.e., we assume that</p>
+<div class="math notranslate nohighlight">
+\[
+\frac{1}{n} \sum_{i=1}^n x_{ij} = 0, \qquad \forall j=1,\ldots,p
+\]</div>
+<p>Put differently, the empirical mean of each column is <span class="math notranslate nohighlight">\(0\)</span>. Quoting <a class="reference external" href="https://en.wikipedia.org/wiki/Principal_component_analysis#Further_considerations">Wikipedia</a> (and this will become clearer below):</p>
+<blockquote>
+<div><p>Mean subtraction (a.k.a. “mean centering”) is necessary for performing classical PCA to ensure that the first principal component describes the direction of maximum variance. If mean subtraction is not performed, the first principal component might instead correspond more or less to the mean of the data. A mean of zero is needed for finding a basis that minimizes the mean square error of the approximation of the data.</p>
+</div></blockquote>
+<p>An optional step is to divide each column by the square root of its <a class="reference external" href="https://en.wikipedia.org/wiki/Variance#Unbiased_sample_variance">sample variance</a>, i.e., assume that</p>
+<div class="math notranslate nohighlight">
+\[
+\frac{1}{n-1} \sum_{i=1}^n x_{ij}^2 = 1, \qquad \forall j=1,\ldots,p.
+\]</div>
+<p>As we mentioned in a previous chapter, this is particularly important when the features are measured in different units to ensure that their variability can be meaningfully compared.</p>
+<p><em>The first principal component:</em> The first principal component is the linear combination of the features</p>
+<div class="math notranslate nohighlight">
+\[
+t_{i1}
+= \phi_{11} x_{i1} + \cdots + \phi_{p1} x_{ip}
+\]</div>
+<p>with largest sample variance. For this to make sense, we need to constrain the <span class="math notranslate nohighlight">\(\phi_{j1}\)</span>’s. Specifically, we require</p>
+<div class="math notranslate nohighlight">
+\[
+\sum_{j=1}^p \phi_{j1}^2 = 1.
+\]</div>
+<p>The <span class="math notranslate nohighlight">\(\phi_{j1}\)</span>’s are referred to as the <em>loadings</em> and the <span class="math notranslate nohighlight">\(t_{i1}\)</span>’s are referred to as the <em>scores</em>.</p>
+<p>Formally, we seek to solve</p>
+<div class="math notranslate nohighlight">
+\[
+\max\left\{\frac{1}{n-1} \sum_{i=1}^n \left(\sum_{j=1}^p \phi_{j1} x_{ij}\right)^2\ :\ \sum_{j=1}^p \phi_{j1}^2 = 1\right\},
+\]</div>
+<p>where we used the fact that the <span class="math notranslate nohighlight">\(t_{i1}\)</span>’s are centered</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+\frac{1}{n} \sum_{i=1}^n t_{i1}
+&amp;= \frac{1}{n} \sum_{i=1}^n [\phi_{11} x_{i1} + \cdots + \phi_{p1} x_{ip}]\\
+&amp;= \phi_{11} \frac{1}{n} \sum_{i=1}^n  x_{i1} + \cdots + \phi_{p1} \frac{1}{n} \sum_{i=1}^n  x_{ip}\\
+&amp;= 0,
+\end{align*}\]</div>
+<p>to compute their sample variance as the mean of their square</p>
+<div class="math notranslate nohighlight">
+\[
+\frac{1}{n-1}\sum_{i=1}^n t_{i1}^2 
+= \frac{1}{n-1} \sum_{i=1}^n \left(\sum_{j=1}^p \phi_{j1} x_{ij}\right)^2.
+\]</div>
+<p>Let <span class="math notranslate nohighlight">\(\boldsymbol{\phi}_1 = (\phi_{11},\ldots,\phi_{p1})^T\)</span> and <span class="math notranslate nohighlight">\(\mathbf{t}_1 = (t_{11},\ldots,t_{n1})^T\)</span>. Then for all <span class="math notranslate nohighlight">\(i\)</span></p>
+<div class="math notranslate nohighlight">
+\[
+t_{i1} = \mathbf{x}_i^T \boldsymbol{\phi}_1,
+\]</div>
+<p>or in vector form</p>
+<div class="math notranslate nohighlight">
+\[
+\mathbf{t}_1 = X \boldsymbol{\phi}_1.
+\]</div>
+<p>Also</p>
+<div class="math notranslate nohighlight">
+\[
+\frac{1}{n-1}\sum_{i=1}^n t_{i1}^2 
+= \frac{1}{n-1} \|\mathbf{t}_1\|^2
+= \frac{1}{n-1} \|X \boldsymbol{\phi}_1\|^2.
+\]</div>
+<p>Rewriting the maximization problem above in matrix form,</p>
+<div class="math notranslate nohighlight">
+\[
+\max\left\{\frac{1}{n-1} \|X \boldsymbol{\phi}_1\|^2 : \|\boldsymbol{\phi}_1\|^2 = 1\right\},
+\]</div>
+<p>we see that we have already encountered this problem (up to the factor of <span class="math notranslate nohighlight">\(1/(n-1)\)</span> which does not affect the solution). The solution is to take <span class="math notranslate nohighlight">\(\boldsymbol{\phi}_1\)</span> to be the top right singular vector of <span class="math notranslate nohighlight">\(X\)</span>.</p>
+<p><em>The second principal component:</em> The second principal component is the linear combination of the features</p>
+<div class="math notranslate nohighlight">
+\[
+t_{i2}
+= \phi_{12} x_{i1} + \cdots + \phi_{p2} x_{ip}
+\]</div>
+<p>with largest sample variance that is also uncorrelated with the first principal component, in the sense that</p>
+<div class="math notranslate nohighlight">
+\[
+\frac{1}{n-1} \sum_{i=1}^n t_{i1} t_{i2} = 0.
+\]</div>
+<p>The next lemma shows how to deal with this condition. Again, we also require</p>
+<div class="math notranslate nohighlight">
+\[
+\sum_{j=1}^p \phi_{j2}^2 = 1.
+\]</div>
+<p>As before, let <span class="math notranslate nohighlight">\(\boldsymbol{\phi}_2 = (\phi_{12},\ldots,\phi_{p2})^T\)</span> and <span class="math notranslate nohighlight">\(\mathbf{t}_2 = (t_{12},\ldots,t_{n2})^T\)</span>.</p>
+<p><strong>LEMMA</strong> <strong>(Uncorrelated Principal Components)</strong> Assume <span class="math notranslate nohighlight">\(X \neq \mathbf{0}\)</span>. Let <span class="math notranslate nohighlight">\(t_{i1}\)</span>, <span class="math notranslate nohighlight">\(t_{i2}\)</span>, <span class="math notranslate nohighlight">\(\boldsymbol{\phi}_1\)</span>, <span class="math notranslate nohighlight">\(\boldsymbol{\phi}_2\)</span> be as above. Then</p>
+<div class="math notranslate nohighlight">
+\[
+\frac{1}{n-1} \sum_{i=1}^n t_{i1} t_{i2} = 0
+\]</div>
+<p>holds if and only if</p>
+<div class="math notranslate nohighlight">
+\[
+\langle \boldsymbol{\phi}_1, \boldsymbol{\phi}_2 \rangle = 0.
+\]</div>
+<p><span class="math notranslate nohighlight">\(\flat\)</span></p>
+<p><em>Proof:</em> The condition</p>
+<div class="math notranslate nohighlight">
+\[
+\frac{1}{n-1} \sum_{i=1}^n t_{i1} t_{i2} = 0
+\]</div>
+<p>is equivalent to</p>
+<div class="math notranslate nohighlight">
+\[
+\langle \mathbf{t}_1, \mathbf{t}_2 \rangle = 0,
+\]</div>
+<p>where we dropped the <span class="math notranslate nohighlight">\(1/n\)</span> factor as it does not play any role. Using that <span class="math notranslate nohighlight">\(\mathbf{t}_1 = X \boldsymbol{\phi}_1\)</span>, and similarly, <span class="math notranslate nohighlight">\(\mathbf{t}_2 = X \boldsymbol{\phi}_2\)</span>, this is in turn equivalent to</p>
+<div class="math notranslate nohighlight">
+\[
+\langle X \boldsymbol{\phi}_1, X \boldsymbol{\phi}_2 \rangle = 0.
+\]</div>
+<p>Because <span class="math notranslate nohighlight">\(\boldsymbol{\phi}_1\)</span> can be chosen as a top right singular vector in an SVD of <span class="math notranslate nohighlight">\(X\)</span>, it follows from the <em>SVD Relations</em> that
+<span class="math notranslate nohighlight">\(X^T X \boldsymbol{\phi}_1 = \sigma_1^2 \boldsymbol{\phi}_1\)</span>, where <span class="math notranslate nohighlight">\(\sigma_1\)</span> is the singular value associated to <span class="math notranslate nohighlight">\(\boldsymbol{\phi}_1\)</span>. Since <span class="math notranslate nohighlight">\(X \neq 0\)</span>, <span class="math notranslate nohighlight">\(\sigma_1 &gt; 0\)</span>. Plugging this in the inner product on the left hand side above, we get</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+\langle X \boldsymbol{\phi}_1, X \boldsymbol{\phi}_2 \rangle
+&amp;= \langle X \boldsymbol{\phi}_2, X \boldsymbol{\phi}_1 \rangle\\
+&amp;= (X \boldsymbol{\phi}_2)^T (X \boldsymbol{\phi}_1)\\
+&amp;= \boldsymbol{\phi}_2^T X^T X \boldsymbol{\phi}_1\\
+&amp;= \boldsymbol{\phi}_2^T (\sigma_1 \boldsymbol{\phi}_1)\\
+&amp;= \langle \boldsymbol{\phi}_2, \sigma_1 \boldsymbol{\phi}_1 \rangle\\
+&amp;= \sigma_1 \langle \boldsymbol{\phi}_1, \boldsymbol{\phi}_2 \rangle.
+\end{align*}\]</div>
+<p>Because <span class="math notranslate nohighlight">\(\sigma_1 \neq 0\)</span>, this is <span class="math notranslate nohighlight">\(0\)</span> if and only if <span class="math notranslate nohighlight">\(\langle \boldsymbol{\phi}_1, \boldsymbol{\phi}_2 \rangle = 0\)</span>. <span class="math notranslate nohighlight">\(\square\)</span></p>
+<p>As a result, we can write the maximization problem for the second principal component in matrix form as</p>
+<div class="math notranslate nohighlight">
+\[
+\max\left\{\frac{1}{n-1} \|X \boldsymbol{\phi}_2\|^2 : \|\boldsymbol{\phi}_2\|^2 = 1, \langle \boldsymbol{\phi}_1, \boldsymbol{\phi}_2 \rangle = 0\right\}.
+\]</div>
+<p>Again, we see that we have encountered this problem before. The solution is to take <span class="math notranslate nohighlight">\(\boldsymbol{\phi}_2\)</span> to be a second right singular vector in an SVD of <span class="math notranslate nohighlight">\(X\)</span>.</p>
+<p><em>Further principal components:</em> We can proceed in a similar fashion and define further principal components.</p>
+<p>To quote <a class="reference external" href="https://en.wikipedia.org/wiki/Principal_component_analysis#Further_considerations">Wikipedia</a>:</p>
+<blockquote>
+<div><p>PCA essentially rotates the set of points around their mean in order to align with the principal components. This moves as much of the variance as possible (using an orthogonal transformation) into the first few dimensions. The values in the remaining dimensions, therefore, tend to be small and may be dropped with minimal loss of information (see below). PCA is often used in this manner for dimensionality reduction. PCA has the distinction of being the optimal orthogonal transformation for keeping the subspace that has largest “variance” (as defined above).</p>
+</div></blockquote>
+<p>Formally, let</p>
+<div class="math notranslate nohighlight">
+\[
+X = U \Sigma V^T
+\]</div>
+<p>be the SVD of the data matrix <span class="math notranslate nohighlight">\(X\)</span>. The principal component transformation, truncated at the <span class="math notranslate nohighlight">\(\ell\)</span>-th component, is</p>
+<div class="math notranslate nohighlight">
+\[
+T = X V_{(\ell)}, 
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(T\)</span> is the matrix whose colums are the vectors <span class="math notranslate nohighlight">\(\mathbf{t}_1,\ldots,\mathbf{t}_\ell\)</span>. Recall that <span class="math notranslate nohighlight">\(V_{(\ell)}\)</span> is the matrix made of the first <span class="math notranslate nohighlight">\(k\)</span> columns of <span class="math notranslate nohighlight">\(V\)</span>.</p>
+<p>Then, using the orthonormality of the right singular vectors,</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+T 
+= U \Sigma V^T V_{(\ell)}
+= U \Sigma \begin{bmatrix} I_{\ell \times \ell}\\
+\mathbf{0}_{(p-\ell)\times \ell}\end{bmatrix}
+= U \begin{bmatrix}\Sigma_{(\ell)}\\ \mathbf{0}_{(p-\ell)\times \ell}\end{bmatrix}
+= U_{(\ell)} \Sigma_{(\ell)}.
+\end{split}\]</div>
+<p>Put differently, the vector <span class="math notranslate nohighlight">\(\mathbf{t}_i\)</span> is the left singular vector <span class="math notranslate nohighlight">\(\mathbf{u}_i\)</span> scaled by the corresponding singular value <span class="math notranslate nohighlight">\(\sigma_i\)</span>.</p>
+<p><strong>NUMERICAL CORNER:</strong> Having established a formal connection between PCA and SVD, we implement PCA using our SVD algorithm (in <a class="reference external" href="https://raw.githubusercontent.com/MMiDS-textbook/MMiDS-textbook.github.io/main/utils/mmids.py">mmids.py</a>). We perform mean centering (now is the time to read that quote about the importance of mean centering again), but not the optional standardization. We use the fact that, in Numpy, subtracting a matrix by a vector whose dimension matches the number of columns performs row-wise subtraction.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">pca</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">l</span><span class="p">,</span> <span class="n">maxiter</span><span class="o">=</span><span class="mi">100</span><span class="p">):</span>
+    <span class="n">mean</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>  <span class="c1"># Compute mean of each column</span>
+    <span class="n">Y</span> <span class="o">=</span> <span class="n">X</span> <span class="o">-</span> <span class="n">mean</span> <span class="c1"># Mean center each column</span>
+    <span class="n">U</span><span class="p">,</span> <span class="n">S</span><span class="p">,</span> <span class="n">V</span> <span class="o">=</span> <span class="n">mmids</span><span class="o">.</span><span class="n">svd</span><span class="p">(</span><span class="n">Y</span><span class="p">,</span> <span class="n">l</span><span class="p">,</span> <span class="n">maxiter</span><span class="o">=</span><span class="n">maxiter</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">U</span><span class="p">[:,:</span><span class="n">l</span><span class="p">]</span> <span class="o">@</span> <span class="n">np</span><span class="o">.</span><span class="n">diag</span><span class="p">(</span><span class="n">S</span><span class="p">[:</span><span class="n">l</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>We apply it to the Gaussian Mixture Model.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">d</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">w</span> <span class="o">=</span> <span class="mi">1000</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mf">3.</span>
+<span class="n">X</span> <span class="o">=</span> <span class="n">mmids</span><span class="o">.</span><span class="n">two_mixed_clusters</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">w</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">T</span> <span class="o">=</span> <span class="n">pca</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Plotting the result, we see that PCA does succeed in finding the main direction of variation, with the first principal component aligning well with the first coordinate.</p>
+<div class="cell tag_hide-input docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell source</span>
+<span class="expanded">Hide code cell source</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">111</span><span class="p">,</span><span class="n">aspect</span><span class="o">=</span><span class="s1">&#39;equal&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">T</span><span class="p">[:,</span><span class="mi">0</span><span class="p">],</span> <span class="n">T</span><span class="p">[:,</span><span class="mi">1</span><span class="p">],</span> <span class="n">s</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</details>
+<div class="cell_output docutils container">
+<img alt="../../_images/1c3dcb9a657ce0984a2f300a723210f26c62aefcaae1953a98e3795ac26226ba.png" src="../../_images/1c3dcb9a657ce0984a2f300a723210f26c62aefcaae1953a98e3795ac26226ba.png" />
+</div>
+</div>
+<p>Note however that the first two principal components (especially the second one) in fact “capture more noise” than what can be seen in the first two coordinates, a form of overfitting.</p>
+<div class="cell tag_hide-input docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell source</span>
+<span class="expanded">Hide code cell source</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">111</span><span class="p">,</span><span class="n">aspect</span><span class="o">=</span><span class="s1">&#39;equal&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">X</span><span class="p">[:,</span><span class="mi">0</span><span class="p">],</span> <span class="n">X</span><span class="p">[:,</span><span class="mi">1</span><span class="p">],</span> <span class="n">s</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</details>
+<div class="cell_output docutils container">
+<img alt="../../_images/9c7637732d78152ff4422bd46959cc2b3bb10e54001c9d9d2dc28d4d0a831c5a.png" src="../../_images/9c7637732d78152ff4422bd46959cc2b3bb10e54001c9d9d2dc28d4d0a831c5a.png" />
+</div>
+</div>
+<p><strong>TRY IT!</strong> Compute the first two right singular vectors <span class="math notranslate nohighlight">\(\mathbf{v}_1\)</span> and <span class="math notranslate nohighlight">\(\mathbf{v}_2\)</span> of <span class="math notranslate nohighlight">\(X\)</span> after mean centering. Do they align well with the first and second standard basis vectors <span class="math notranslate nohighlight">\(\mathbf{e}_1\)</span> and <span class="math notranslate nohighlight">\(\mathbf{e}_2\)</span>? Why or why not? (<a class="reference external" href="https://colab.research.google.com/github/MMiDS-textbook/MMiDS-textbook.github.io/blob/main/just_the_code/roch_mmids_chap_svd_notebook.ipynb">Open in Colab</a>)</p>
+<p><span class="math notranslate nohighlight">\(\unlhd\)</span></p>
+</section>
+<section id="back-to-our-genetic-dataset">
+<h2><span class="section-number">3.5.2. </span>Back to our genetic dataset<a class="headerlink" href="#back-to-our-genetic-dataset" title="Permalink to this headline">#</a></h2>
+<p>We return to our motivating example. We apply PCA to our genetic dataset.</p>
+<p><img alt="Viruses" src="../../_images/3D_visualization_of_virus-small.png" /></p>
+<p><strong>Image credit:</strong> Made with <a class="reference external" href="https://www.midjourney.com/">Midjourney</a></p>
+<p>We load the dataset again and examine its first rows.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;h3n2-snp.csv&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>strain</th>
+      <th>s6a</th>
+      <th>s6c</th>
+      <th>s6g</th>
+      <th>s17a</th>
+      <th>s17g</th>
+      <th>s17t</th>
+      <th>s39a</th>
+      <th>s39c</th>
+      <th>s39g</th>
+      <th>...</th>
+      <th>s977g</th>
+      <th>s978a</th>
+      <th>s978c</th>
+      <th>s978g</th>
+      <th>s978t</th>
+      <th>s979a</th>
+      <th>s979c</th>
+      <th>s979t</th>
+      <th>s980a</th>
+      <th>s980c</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>AB434107</td>
+      <td>1.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>1.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>1.0</td>
+      <td>...</td>
+      <td>0.0</td>
+      <td>1.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>1.0</td>
+      <td>0.0</td>
+      <td>1.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>AB434108</td>
+      <td>1.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>1.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>1.0</td>
+      <td>...</td>
+      <td>0.0</td>
+      <td>1.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>1.0</td>
+      <td>0.0</td>
+      <td>1.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>CY000113</td>
+      <td>1.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>1.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>1.0</td>
+      <td>...</td>
+      <td>0.0</td>
+      <td>1.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>1.0</td>
+      <td>0.0</td>
+      <td>1.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>CY000209</td>
+      <td>1.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>1.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>1.0</td>
+      <td>...</td>
+      <td>0.0</td>
+      <td>1.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>1.0</td>
+      <td>0.0</td>
+      <td>1.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>CY000217</td>
+      <td>1.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>1.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>1.0</td>
+      <td>...</td>
+      <td>0.0</td>
+      <td>1.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>1.0</td>
+      <td>0.0</td>
+      <td>1.0</td>
+      <td>0.0</td>
+    </tr>
+  </tbody>
+</table>
+<p>5 rows × 318 columns</p>
+</div></div></div>
+</div>
+<p>Recall that it contains <span class="math notranslate nohighlight">\(1642\)</span> strains and lives in a <span class="math notranslate nohighlight">\(318\)</span>-dimensional space.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">shape</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(1642, 318)
+</pre></div>
+</div>
+</div>
+</div>
+<p>Our goal is to find a “good” low-dimensional representation of the data. Ten dimensions will do here. We use PCA.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">A</span> <span class="o">=</span> <span class="n">df</span><span class="p">[[</span><span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">))]]</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">n_dims</span> <span class="o">=</span> <span class="mi">10</span>
+<span class="n">T</span> <span class="o">=</span> <span class="n">pca</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">n_dims</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>We plot the first two principal components, and see what appears to be some potential structure.</p>
+<div class="cell tag_hide-input docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell source</span>
+<span class="expanded">Hide code cell source</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">111</span><span class="p">,</span><span class="n">aspect</span><span class="o">=</span><span class="s1">&#39;equal&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">T</span><span class="p">[:,</span><span class="mi">0</span><span class="p">],</span> <span class="n">T</span><span class="p">[:,</span><span class="mi">1</span><span class="p">],</span> <span class="n">s</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</details>
+<div class="cell_output docutils container">
+<img alt="../../_images/e0944cc5bc0280ab77afe71f3da7239e6d91d8e4dc969934620788923ff2c85d.png" src="../../_images/e0944cc5bc0280ab77afe71f3da7239e6d91d8e4dc969934620788923ff2c85d.png" />
+</div>
+</div>
+<p>There seems to be some reasonably well-defined clusters in this projection. We use <span class="math notranslate nohighlight">\(k\)</span>-means to identiy clusters. We take advantage of the implementation in scikit-learn, <a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.cluster.KMeans.html">sklearn.cluster.KMeans</a>. By default, it finds <span class="math notranslate nohighlight">\(8\)</span> clusters. The clusters can be extracted from the attribute <code class="docutils literal notranslate"><span class="pre">labels_</span></code>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.cluster</span> <span class="kn">import</span> <span class="n">KMeans</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">n_clusters</span> <span class="o">=</span> <span class="mi">8</span>
+<span class="n">kmeans</span> <span class="o">=</span> <span class="n">KMeans</span><span class="p">(</span><span class="n">n_clusters</span><span class="o">=</span><span class="n">n_clusters</span><span class="p">,</span> <span class="n">init</span><span class="o">=</span><span class="s1">&#39;k-means++&#39;</span><span class="p">,</span> <span class="n">n_init</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">T</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">assign</span> <span class="o">=</span> <span class="n">kmeans</span><span class="o">.</span><span class="n">labels_</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>To further reveal the structure, we look at our the clusters spread out over the years. That information is in a separate file.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">dfoth</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;h3n2-other.csv&#39;</span><span class="p">)</span>
+<span class="n">dfoth</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>strain</th>
+      <th>length</th>
+      <th>country</th>
+      <th>year</th>
+      <th>lon</th>
+      <th>lat</th>
+      <th>date</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>AB434107</td>
+      <td>1701</td>
+      <td>Japan</td>
+      <td>2002</td>
+      <td>137.215474</td>
+      <td>35.584176</td>
+      <td>2002/02/25</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>AB434108</td>
+      <td>1701</td>
+      <td>Japan</td>
+      <td>2002</td>
+      <td>137.215474</td>
+      <td>35.584176</td>
+      <td>2002/03/01</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>CY000113</td>
+      <td>1762</td>
+      <td>USA</td>
+      <td>2002</td>
+      <td>-73.940000</td>
+      <td>40.670000</td>
+      <td>2002/01/29</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>CY000209</td>
+      <td>1760</td>
+      <td>USA</td>
+      <td>2002</td>
+      <td>-73.940000</td>
+      <td>40.670000</td>
+      <td>2002/01/17</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>CY000217</td>
+      <td>1760</td>
+      <td>USA</td>
+      <td>2002</td>
+      <td>-73.940000</td>
+      <td>40.670000</td>
+      <td>2002/02/26</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">year</span> <span class="o">=</span> <span class="n">dfoth</span><span class="p">[</span><span class="s1">&#39;year&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>For each cluster, we plot how many of its data points come from a specific year. Each cluster has a different color.</p>
+<div class="cell tag_hide-input docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell source</span>
+<span class="expanded">Hide code cell source</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
+
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_clusters</span><span class="p">):</span>
+    <span class="n">unique</span><span class="p">,</span> <span class="n">counts</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">year</span><span class="p">[</span><span class="n">assign</span> <span class="o">==</span> <span class="n">i</span><span class="p">],</span> <span class="n">return_counts</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span><span class="n">unique</span><span class="p">,</span> <span class="n">counts</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">i</span><span class="p">)</span>
+
+<span class="n">ax</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">xlim</span><span class="o">=</span><span class="p">(</span><span class="mi">2001</span><span class="p">,</span> <span class="mi">2007</span><span class="p">),</span> <span class="n">xticks</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">2002</span><span class="p">,</span> <span class="mi">2007</span><span class="p">))</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</details>
+<div class="cell_output docutils container">
+<img alt="../../_images/a9dd604b6c67e78e62ad1b86a7f4415eea9269780adce191471126c4a7a13f04.png" src="../../_images/a9dd604b6c67e78e62ad1b86a7f4415eea9269780adce191471126c4a7a13f04.png" />
+</div>
+</div>
+<p>Remarkably, we see that each cluster comes mostly from one year or two consecutive ones. In other words, the clustering in this low-dimensional projection captures some true underlying structure that is not explicitly in the genetic data on which it is computed.</p>
+<p>Going back to the first two principal components, we color the points on the scatterplot by year. (We use <a class="reference external" href="https://matplotlib.org/stable/api/collections_api.html#matplotlib.collections.PathCollection.legend_elements"><code class="docutils literal notranslate"><span class="pre">legend_elements()</span></code></a> for automatic legend creation.)</p>
+<div class="cell tag_hide-input docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell source</span>
+<span class="expanded">Hide code cell source</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">111</span><span class="p">,</span> <span class="n">aspect</span><span class="o">=</span><span class="s1">&#39;equal&#39;</span><span class="p">)</span>
+<span class="n">scatter</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">T</span><span class="p">[:,</span><span class="mi">0</span><span class="p">],</span> <span class="n">T</span><span class="p">[:,</span><span class="mi">1</span><span class="p">],</span> <span class="n">s</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>  <span class="n">c</span><span class="o">=</span><span class="n">year</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">year</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="o">*</span><span class="n">scatter</span><span class="o">.</span><span class="n">legend_elements</span><span class="p">())</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</details>
+<div class="cell_output docutils container">
+<img alt="../../_images/e2977870eda54f1a5ceea378ab2e1144ac67b7ced9fc8630be02027750342f27.png" src="../../_images/e2977870eda54f1a5ceea378ab2e1144ac67b7ced9fc8630be02027750342f27.png" />
+</div>
+</div>
+<p>To some extent, one can “see” the virus evolving from year to year. The <span class="math notranslate nohighlight">\(x\)</span>-axis in particular seems to correlate strongly with the year, in the sense that samples from later years tend to be towards one side of the plot.</p>
+<p>To further quantify this observation, we use <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.corrcoef.html">numpy.corrcoef</a> to compute the correlation coefficients between the year and the first <span class="math notranslate nohighlight">\(10\)</span> principal components.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">corr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">n_dims</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_dims</span><span class="p">):</span>
+    <span class="n">corr</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">corrcoef</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">stack</span><span class="p">((</span><span class="n">T</span><span class="p">[:,</span><span class="n">i</span><span class="p">],</span> <span class="n">year</span><span class="p">)))[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">corr</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[-0.7905001  -0.42806325  0.0870437  -0.16841178 -0.05751986  0.06046913
+  0.07913293 -0.01474969  0.02544753 -0.04315045]
+</pre></div>
+</div>
+</div>
+</div>
+<p>Indeed, we see that the first three or four principal components correlate well with the year.</p>
+<p>Using <a class="reference external" href="https://bmcgenet.biomedcentral.com/articles/10.1186/1471-2156-11-94/figures/8">related techniques</a>, one can also identify which mutations distinguish different epidemics (i.e., years).</p>
+<p><strong>LEARNING BY CHATTING</strong> Ask your favorite AI chatbots about the difference between principal components analysis (PCA) and linear discriminant analysis (LDA).</p>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./chap03_svd/05_pca"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="../04_power/roch-mmids-svd-power.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title"><span class="section-number">3.4. </span>Power iteration</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="../06_further/roch-mmids-svd-further.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title"><span class="section-number">3.6. </span>Further applications of the SVD</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#principal-components-analysis">3.5.1. Principal components analysis</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#back-to-our-genetic-dataset">3.5.2. Back to our genetic dataset</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Sebastien Roch
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2024.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=5b4479735964841361fd"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

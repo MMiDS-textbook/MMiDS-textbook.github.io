@@ -1,0 +1,1548 @@
+
+
+<!DOCTYPE html>
+
+
+<html data-content_root="" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>6.3. Optimality conditions and convexity &#8212; MMiDS Textbook</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=5b4479735964841361fd" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" href="../../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=5b4479735964841361fd" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd" />
+  <script src="../../_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=5b4479735964841361fd"></script>
+
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/clipboard.min.js"></script>
+    <script src="../../_static/copybutton.js"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../_static/design-tabs.js"></script>
+    <script loading_method="async" src="https://www.googletagmanager.com/gtag/js?id=G-P5E8DW088F"></script>
+    <script>
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){ dataLayer.push(arguments); }
+                gtag('js', new Date());
+                gtag('config', 'G-P5E8DW088F');
+            </script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="../../_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'chap06_opt/03_optimality/roch-mmids-opt-optimality';</script>
+    <link rel="canonical" href="https://mmids-textbook.github.io/chap06_opt/03_optimality/roch-mmids-opt-optimality.html" />
+    <link rel="shortcut icon" href="https://mmids-textbook.github.io/favicon-32x32.png"/>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="6.4. Gradient descent and its convergence analysis" href="../04_gd/roch-mmids-opt-gd.html" />
+    <link rel="prev" title="6.2. Background: review of differentiable functions of several variables and introduction to automatic differentiation" href="../02_several/roch-mmids-opt-several.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="None"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+
+<a class="navbar-brand logo" href="../../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/mmids-cover-small.jpg" class="logo__image only-light" alt="MMiDS Textbook - Home"/>
+    <script>document.write(`<img src="../../_static/mmids-cover-small.jpg" class="logo__image only-dark" alt="MMiDS Textbook - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../index.html">
+                    <b>MATHEMATICAL METHODS in DATA SCIENCE (with Python)</b>
+                </a>
+            </li>
+        </ul>
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../chap01_intro/00_intro/roch-mmids-intro-intro.html">1. Introduction</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../chap01_intro/01_motiv/roch-mmids-intro-motiv.html">1.1. Motivating example: identifying penguin species</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap01_intro/02_review/roch-mmids-intro-review.html">1.2. Background: quick refresher of matrix algebra, differential calculus, and elementary probability</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap01_intro/03_clustering/roch-mmids-intro-clustering.html">1.3. Clustering: an objective, an algorithm and a guarantee</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap01_intro/04_highdim/roch-mmids-intro-highdim.html">1.4. Some observations about high-dimensional data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap01_intro/05_adv/roch-mmids-intro-adv.html">1.5. Advanced material</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap01_intro/summary_chap01.html">1.6. Other resources</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../chap02_ls/00_intro/roch-mmids-ls-intro.html">2. Least squares: geometric, algebraic, and numerical aspects</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../chap02_ls/01_motiv/roch-mmids-ls-motiv.html">2.1. Motivating example: predicting sales</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap02_ls/02_subspaces/roch-mmids-ls-spaces.html">2.2. Background: review of vector spaces</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap02_ls/03_orthog/roch-mmids-ls-orthog.html">2.3. Orthogonal projection and overdetermined linear systems</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap02_ls/04_qr/roch-mmids-ls-qr.html">2.4. QR decomposition and Householder transformations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap02_ls/05_regression/roch-mmids-ls-regression.html">2.5. Application to regression analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap02_ls/06_adv/roch-mmids-ls-adv.html">2.6. Advanced material</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap02_ls/summary_chap02.html">2.7. Other resources</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../chap03_svd/00_intro/roch-mmids-svd-intro.html">3. Singular value decomposition</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-3"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../chap03_svd/01_motiv/roch-mmids-svd-motiv.html">3.1. Motivating example: visualizing viral genomes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap03_svd/02_spectral/roch-mmids-svd-spectral.html">3.2. Background: further review of linear algebra</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap03_svd/03_svd/roch-mmids-svd-svd.html">3.3. Approximating subspaces and the SVD</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap03_svd/04_power/roch-mmids-svd-power.html">3.4. Power iteration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap03_svd/05_pca/roch-mmids-svd-pca.html">3.5. Application to dimensionality reduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap03_svd/06_further/roch-mmids-svd-further.html">3.6. Further applications of the SVD</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap03_svd/07_adv/roch-mmids-svd-adv.html">3.7. Advanced material</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap03_svd/summary_chap03.html">3.8. Other resources</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../chap04_specgraph/00_intro/roch-mmids-specgraph-intro.html">4. Spectral graph theory</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-4"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../chap04_specgraph/01_motiv/roch-mmids-specgraph-motiv.html">4.1. Motivating example: uncovering social groups</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap04_specgraph/02_graph/roch-mmids-specgraph-graph.html">4.2. Background: basic concepts in graph theory</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap04_specgraph/03_extremal/roch-mmids-specgraph-extremal.html">4.3. Variational characterization of eigenvalues</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap04_specgraph/04_laplacian/roch-mmids-specgraph-laplacian.html">4.4. Spectral properties of the Laplacian matrix</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap04_specgraph/05_partitioning/roch-mmids-specgraph-partitioning.html">4.5. Application to graph partitioning via spectral clustering</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap04_specgraph/summary_chap04.html">4.6. Other resources</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../chap05_rwmc/00_intro/roch-mmids-rwmc-intro.html">5. Random walks on graphs and Markov chains</a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-5"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../chap05_rwmc/01_motiv/roch-mmids-rwmc-motiv.html">5.1. Motivating example: discovering relevant mathematical topics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap05_rwmc/02_conditioning/roch-mmids-rwmc-conditioning.html">5.2. Background: review of conditional probability</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap05_rwmc/03_mcdefs/roch-mmids-rwmc-mcdefs.html">5.3. Elements of finite Markov chains</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap05_rwmc/04_mclimit/roch-mmids-rwmc-mclimit.html">5.4. Limit behavior</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap05_rwmc/05_pagerank/roch-mmids-rwmc-pagerank.html">5.5. Random walks on graphs and application to PageRank</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap05_rwmc/06_adv/roch-mmids-rwmc-adv.html">5.6. Advanced material</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap05_rwmc/summary_chap05.html">5.7. Other resources</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="../00_intro/roch-mmids-opt-intro.html">6. Optimization theory and algorithms</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-6"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../01_motiv/roch-mmids-opt-motiv.html">6.1. Motivating example:  deciphering handwriting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../02_several/roch-mmids-opt-several.html">6.2. Background: review of differentiable functions of several variables and introduction to automatic differentiation</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">6.3. Optimality conditions and convexity</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../04_gd/roch-mmids-opt-gd.html">6.4. Gradient descent and its convergence analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../05_backprop/roch-mmids-opt-backprop.html">6.5. Backpropagation and application to neural networks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../06_adv/roch-mmids-opt-adv.html">6.6. Advanced material</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../summary_chap06.html">6.7. Other resources</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../chap07_prob/00_intro/roch-mmids-prob-intro.html">7. Probabilistic models: from simple to complex</a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-7"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../chap07_prob/01_motiv/roch-mmids-prob-motiv.html">7.1. Motivating example: tracking location</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap07_prob/02_parametric/roch-mmids-prob-parametric.html">7.2. Background: introduction to parametric families and maximum likelihood estimation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap07_prob/03_joint/roch-mmids-prob-joint.html">7.3. Modeling correlated random variables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap07_prob/04_kalman/roch-mmids-prob-kalman.html">7.4. Linear-Gaussian models and Kalman filtering</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap07_prob/05_gibbs/roch-mmids-prob-gibbs.html">7.5. Gibbs sampling with application to generating images</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap07_prob/summary_chap07.html">7.6. Other resources</a></li>
+</ul>
+</li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/MMiDS-textbook/MMiDS-textbook.github.io" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/MMiDS-textbook/MMiDS-textbook.github.io/issues/new?title=Issue%20on%20page%20%2Fchap06_opt/03_optimality/roch-mmids-opt-optimality.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/chap06_opt/03_optimality/roch-mmids-opt-optimality.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Optimality conditions and convexity</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#first-order-conditions">6.3.1. First-order conditions</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#second-order-conditions">6.3.2. Second-order conditions</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#convexity">6.3.3. Convexity</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#convexity-and-unconstrained-optimization">6.3.4. Convexity and unconstrained optimization</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#a-data-science-example-ridge-regression">6.3.5. A data science example: ridge regression</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <p><span class="math notranslate nohighlight">\(\newcommand{\bSigma}{\boldsymbol{\Sigma}}\)</span> <span class="math notranslate nohighlight">\(\newcommand{\bmu}{\boldsymbol{\mu}}\)</span></p>
+<section id="optimality-conditions-and-convexity">
+<h1><span class="section-number">6.3. </span>Optimality conditions and convexity<a class="headerlink" href="#optimality-conditions-and-convexity" title="Permalink to this headline">#</a></h1>
+<p>In this section, we derive optimality conditions for unconstrained continuous optimization problems.</p>
+<p>We will be interested in unconstrained optimization of the form:</p>
+<div class="math notranslate nohighlight">
+\[
+\min_{\mathbf{x} \in \mathbb{R}^d} f(\mathbf{x})
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(f : \mathbb{R}^d \to \mathbb{R}\)</span>. In this subsection, we define several notions of solution and derive characterizations.</p>
+<p>Recall the definition of a global minimizer.</p>
+<p><strong>DEFINITION</strong> <strong>(Global minimizer)</strong> Let <span class="math notranslate nohighlight">\(f : \mathbb{R}^d \to \mathbb{R}\)</span>. The point <span class="math notranslate nohighlight">\(\mathbf{x}^* \in \mathbb{R}^d\)</span> is a global minimizer of <span class="math notranslate nohighlight">\(f\)</span> over <span class="math notranslate nohighlight">\(\mathbb{R}^d\)</span> if</p>
+<div class="math notranslate nohighlight">
+\[
+f(\mathbf{x}) 
+\geq f(\mathbf{x}^*), \quad \forall \mathbf{x} \in \mathbb{R}^d. 
+\]</div>
+<p><span class="math notranslate nohighlight">\(\natural\)</span></p>
+<p>We have observed before that, in general, finding a global minimizer and certifying that one has been found can be difficult unless some special structure is present. Therefore weaker notions of solution are needed. Recall the notion of a local minimizer.</p>
+<p><strong>DEFINITION</strong> <strong>(Local minimizer)</strong> Let <span class="math notranslate nohighlight">\(f : \mathbb{R}^d \to \mathbb{R}\)</span>. The point <span class="math notranslate nohighlight">\(\mathbf{x}^* \in \mathbb{R}^d\)</span> is a local minimizer of <span class="math notranslate nohighlight">\(f\)</span> over <span class="math notranslate nohighlight">\(\mathbb{R}^d\)</span> if there is <span class="math notranslate nohighlight">\(\delta &gt; 0\)</span> such that</p>
+<div class="math notranslate nohighlight">
+\[
+f(\mathbf{x}) 
+\geq f(\mathbf{x}^*), \quad \forall \mathbf{x} \in B_{\delta}(\mathbf{x}^*) \setminus \{\mathbf{x}^*\}. 
+\]</div>
+<p>If the inequality is strict, we say that <span class="math notranslate nohighlight">\(\mathbf{x}^*\)</span> is a strict local minimizer. <span class="math notranslate nohighlight">\(\natural\)</span></p>
+<p>In words, <span class="math notranslate nohighlight">\(\mathbf{x}^*\)</span> is a local minimizer if there is open ball around <span class="math notranslate nohighlight">\(\mathbf{x}^*\)</span> where it attains the minimum value. The difference between global and local minimizers is illustrated in the next figure.</p>
+<p><img alt="Local and global optima" src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/68/Extrema_example_original.svg/600px-Extrema_example_original.svg.png" /></p>
+<p><strong>Figure:</strong> Local and global optima. (<a class="reference external" href="https://commons.wikimedia.org/wiki/File:Extrema_example_original.svg">Source</a>)</p>
+<section id="first-order-conditions">
+<h2><span class="section-number">6.3.1. </span>First-order conditions<a class="headerlink" href="#first-order-conditions" title="Permalink to this headline">#</a></h2>
+<p>Local minimizers can be characterized in terms of the gradient. We first define the concept of directional derivative.</p>
+<p><strong>Directional derivative</strong> Partial derivatives measure the rate of change of a function along the axes. More generally:</p>
+<p><strong>DEFINITION</strong> <strong>(Directional Derivative)</strong> Let <span class="math notranslate nohighlight">\(f : D \to \mathbb{R}\)</span> where <span class="math notranslate nohighlight">\(D \subseteq \mathbb{R}^d\)</span>, let <span class="math notranslate nohighlight">\(\mathbf{x}_0 \in D\)</span> be an interior point of <span class="math notranslate nohighlight">\(D\)</span> and let <span class="math notranslate nohighlight">\(\mathbf{v} \in \mathbb{R}^d\)</span> be a nonzero vector. The directional derivative of <span class="math notranslate nohighlight">\(f\)</span> at <span class="math notranslate nohighlight">\(\mathbf{x}_0\)</span> in the direction <span class="math notranslate nohighlight">\(\mathbf{v}\)</span> is</p>
+<div class="math notranslate nohighlight">
+\[
+\frac{\partial f (\mathbf{x}_0)}{\partial \mathbf{v}} 
+= \lim_{h \to 0} \frac{f(\mathbf{x}_0 + h \mathbf{v}) - f(\mathbf{x}_0)}{h}
+\]</div>
+<p>provided the limit exists. <span class="math notranslate nohighlight">\(\natural\)</span></p>
+<p>Note that taking <span class="math notranslate nohighlight">\(\mathbf{v} = \mathbf{e}_i\)</span> recovers the <span class="math notranslate nohighlight">\(i\)</span>-th partial derivative</p>
+<div class="math notranslate nohighlight">
+\[
+\frac{\partial f (\mathbf{x}_0)}{\partial \mathbf{e}_i} 
+= \lim_{h \to 0} \frac{f(\mathbf{x}_0 + h \mathbf{e}_i) - f(\mathbf{x}_0)}{h}
+= \frac{\partial f (\mathbf{x}_0)}{\partial x_i}.
+\]</div>
+<p>Conversely, a general directional derivative can be expressed in terms of the partial derivatives.</p>
+<p><strong>THEOREM</strong> <strong>(Directional Derivative from Gradient)</strong> Let <span class="math notranslate nohighlight">\(f : D \to \mathbb{R}\)</span> where <span class="math notranslate nohighlight">\(D \subseteq \mathbb{R}^d\)</span>, let <span class="math notranslate nohighlight">\(\mathbf{x}_0 \in D\)</span> be an interior point of <span class="math notranslate nohighlight">\(D\)</span> and let <span class="math notranslate nohighlight">\(\mathbf{v} \in \mathbb{R}^d\)</span> be a vector. Assume that <span class="math notranslate nohighlight">\(f\)</span> is continuously differentiable at <span class="math notranslate nohighlight">\(\mathbf{x}_0\)</span>. Then the directional derivative of <span class="math notranslate nohighlight">\(f\)</span> at <span class="math notranslate nohighlight">\(\mathbf{x}_0\)</span> in the direction <span class="math notranslate nohighlight">\(\mathbf{v}\)</span> is given by</p>
+<div class="math notranslate nohighlight">
+\[
+\frac{\partial f (\mathbf{x}_0)}{\partial \mathbf{v}} 
+= \nabla f(\mathbf{x}_0)^T \mathbf{v}.
+\]</div>
+<p><span class="math notranslate nohighlight">\(\sharp\)</span></p>
+<p><em>Proof idea:</em> To bring out the partial derivatives, we re-write the directional derivative as the derivative of a composition of <span class="math notranslate nohighlight">\(f\)</span> with an affine function. We then use the <em>Chain Rule</em>.</p>
+<p><em>Proof:</em> Consider the composition <span class="math notranslate nohighlight">\(\beta(h) = f(\boldsymbol{\alpha}(h))\)</span> where <span class="math notranslate nohighlight">\(\boldsymbol{\alpha}(h) = \mathbf{x}_0 + h \mathbf{v}\)</span>. Observe that <span class="math notranslate nohighlight">\(\boldsymbol{\alpha}(0)= \mathbf{x}_0\)</span> and <span class="math notranslate nohighlight">\(\beta(0)= f(\mathbf{x}_0)\)</span>. Then, by definition of the derivative,</p>
+<div class="math notranslate nohighlight">
+\[
+\frac{\mathrm{d} \beta(0)}{\mathrm{d} h}
+= \lim_{h \to 0} \frac{\beta(h) - \beta(0)}{h}
+= \lim_{h \to 0} \frac{f(\mathbf{x}_0 + h \mathbf{v}) - f(\mathbf{x}_0)}{h}
+= \frac{\partial f (\mathbf{x}_0)}{\partial \mathbf{v}}.
+\]</div>
+<p>Applying the <em>Chain Rule</em> and the <em>Parametric Line Example</em> from the previous section, we arrive at</p>
+<div class="math notranslate nohighlight">
+\[
+\frac{\mathrm{d} \beta(0)}{\mathrm{d} h}
+= \nabla f(\boldsymbol{\alpha}(0))^T 
+\boldsymbol{\alpha}'(0)
+= \nabla f(\mathbf{x}_0)^T 
+\mathbf{v}.
+\]</div>
+<p><span class="math notranslate nohighlight">\(\square\)</span></p>
+<p>Here is an example:</p>
+<p><img alt="Directional Derivative" src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/43/Directional_derivative_contour_plot.svg/485px-Directional_derivative_contour_plot.svg.png" /></p>
+<p><strong>Figure:</strong> Directional derivative (<a class="reference external" href="https://commons.wikimedia.org/wiki/File:Directional_derivative_contour_plot.svg">Source</a>)</p>
+<p><strong>Descent direction</strong> Earlier in the book, we proved a key insight about the derivative of a single-variable function <span class="math notranslate nohighlight">\(f\)</span> at a point <span class="math notranslate nohighlight">\(x_0\)</span>: it tells us where to find smaller values.</p>
+<p><strong>LEMMA</strong> <strong>(Descent Direction)</strong> Let <span class="math notranslate nohighlight">\(f : D \to \mathbb{R}\)</span> with <span class="math notranslate nohighlight">\(D \subseteq \mathbb{R}\)</span> and let <span class="math notranslate nohighlight">\(x_0 \in D\)</span> be an interior point of <span class="math notranslate nohighlight">\(D\)</span> where <span class="math notranslate nohighlight">\(f'(x_0)\)</span> exists. If <span class="math notranslate nohighlight">\(f'(x_0) &gt; 0\)</span>, then there is an open ball <span class="math notranslate nohighlight">\(B_\delta(x_0) \subseteq D\)</span> around <span class="math notranslate nohighlight">\(x_0\)</span>
+such that for each <span class="math notranslate nohighlight">\(x\)</span> in <span class="math notranslate nohighlight">\(B_\delta(x_0)\)</span>:</p>
+<p>(a) <span class="math notranslate nohighlight">\(f(x) &gt; f(x_0)\)</span> if <span class="math notranslate nohighlight">\(x &gt; x_0\)</span>,</p>
+<p>(b) <span class="math notranslate nohighlight">\(f(x) &lt; f(x_0)\)</span> if <span class="math notranslate nohighlight">\(x &lt; x_0\)</span>.</p>
+<p>If instead <span class="math notranslate nohighlight">\(f'(x_0) &lt; 0\)</span>, the opposite holds. <span class="math notranslate nohighlight">\(\flat\)</span></p>
+<p>We generalize the <em>Descent Direction Lemma</em> to the multivariable case. We first need to define what a descent direction is.</p>
+<p><strong>DEFINITION</strong> <strong>(Descent Direction)</strong> Let <span class="math notranslate nohighlight">\(f : \mathbb{R}^d \to \mathbb{R}\)</span>. A vector <span class="math notranslate nohighlight">\(\mathbf{v}\)</span> is a descent direction for <span class="math notranslate nohighlight">\(f\)</span> at <span class="math notranslate nohighlight">\(\mathbf{x}_0\)</span> if there is <span class="math notranslate nohighlight">\(\alpha^* &gt; 0\)</span> such that</p>
+<div class="math notranslate nohighlight">
+\[
+f(\mathbf{x}_0 + \alpha \mathbf{v})
+&lt; f(\mathbf{x}_0), \quad \forall \alpha \in (0,\alpha^*).
+\]</div>
+<p><span class="math notranslate nohighlight">\(\natural\)</span></p>
+<p>In the continuously differentiable case, the directional derivative gives a criterion for descent directions.</p>
+<p><strong>LEMMA</strong> <strong>(Descent Direction and Directional Derivative)</strong> Let <span class="math notranslate nohighlight">\(f : \mathbb{R}^d \to \mathbb{R}\)</span> be continuously differentiable at <span class="math notranslate nohighlight">\(\mathbf{x}_0\)</span>. A vector <span class="math notranslate nohighlight">\(\mathbf{v}\)</span> is a descent direction for <span class="math notranslate nohighlight">\(f\)</span> at <span class="math notranslate nohighlight">\(\mathbf{x}_0\)</span> if</p>
+<div class="math notranslate nohighlight">
+\[
+\frac{\partial f (\mathbf{x}_0)}{\partial \mathbf{v}} 
+= \nabla f(\mathbf{x}_0)^T \mathbf{v}
+&lt; 0
+\]</div>
+<p>that is, if the directional derivative of <span class="math notranslate nohighlight">\(f\)</span> at <span class="math notranslate nohighlight">\(\mathbf{x}_0\)</span> in the direction <span class="math notranslate nohighlight">\(\mathbf{v}\)</span> is negative. <span class="math notranslate nohighlight">\(\flat\)</span></p>
+<p><em>Proof idea:</em> In anticipation of the proof of the second-order condition, we use the <em>Mean Value Theorem</em> to show that <span class="math notranslate nohighlight">\(f\)</span> takes smaller values in direction <span class="math notranslate nohighlight">\(\mathbf{v}\)</span>. For a simpler proof based on the definition of the directional derivative, see <em>Exercise 4.73</em>.</p>
+<p><em>Proof:</em> Suppose there is <span class="math notranslate nohighlight">\(\mathbf{v} \in \mathbb{R}^d\)</span> such that <span class="math notranslate nohighlight">\(\nabla f(\mathbf{x}_0)^T \mathbf{v} = -\eta &lt; 0\)</span>. For <span class="math notranslate nohighlight">\(\alpha &gt; 0\)</span>, the <em>Mean Value Theorem</em> implies that there is <span class="math notranslate nohighlight">\(\xi_\alpha \in (0,1)\)</span> such that</p>
+<div class="math notranslate nohighlight">
+\[
+f(\mathbf{x}_0 + \alpha \mathbf{v})
+= f(\mathbf{x}_0) + \nabla f(\mathbf{x}_0 + \xi_\alpha \alpha \mathbf{v})^T(\alpha \mathbf{v})
+= f(\mathbf{x}_0) + \alpha  \nabla f(\mathbf{x}_0 + \xi_\alpha \alpha \mathbf{v})^T \mathbf{v}.
+\]</div>
+<p>We want to show that the second term on the right-hand side is negative. We cannot immediately apply our condition on <span class="math notranslate nohighlight">\(\mathbf{v}\)</span> as the gradient in the previous equation is taken at <span class="math notranslate nohighlight">\(\mathbf{x}_0 + \xi_\alpha \alpha \mathbf{v}\)</span>, not <span class="math notranslate nohighlight">\(\mathbf{x}_0\)</span>.</p>
+<p>The gradient is continuous (in the sense that all its components are continuous). In particular, the function <span class="math notranslate nohighlight">\(\nabla f(\mathbf{x})^T \mathbf{v}\)</span> is continuous as a linear combination of continuous functions. By the definition of continuity, for any <span class="math notranslate nohighlight">\(\epsilon &gt; 0\)</span> - say <span class="math notranslate nohighlight">\(\epsilon = \eta/2\)</span> - there is <span class="math notranslate nohighlight">\(\delta &gt; 0\)</span> small enough such that all <span class="math notranslate nohighlight">\(\mathbf{x} \in B_\delta(\mathbf{x}_0)\)</span> satisfy</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+\left|\nabla f(\mathbf{x})^T \mathbf{v}
+- \nabla f(\mathbf{x}_0)^T \mathbf{v}\,\right|
+&amp;&lt; \epsilon = \eta/2.
+\end{align*}\]</div>
+<p>Take <span class="math notranslate nohighlight">\(\alpha^* &gt; 0\)</span> small enough that <span class="math notranslate nohighlight">\(\mathbf{x}_0 + \alpha^* \mathbf{v} \in B_\delta(\mathbf{x}_0)\)</span>. Then, for all <span class="math notranslate nohighlight">\(\alpha \in (0,\alpha^*)\)</span>, whatever <span class="math notranslate nohighlight">\(\xi_\alpha \in (0,1)\)</span> is, it holds that <span class="math notranslate nohighlight">\(\mathbf{x}_0 + \xi_\alpha \alpha \mathbf{v} \in B_\delta(\mathbf{x}_0)\)</span>. Hence,</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+\nabla f(\mathbf{x}_0 + \xi_\alpha \alpha \mathbf{v})^T \mathbf{v}
+&amp;= \nabla f(\mathbf{x}_0)^T \mathbf{v} + (\nabla f(\mathbf{x}_0 + \xi_\alpha \alpha \mathbf{v})^T \mathbf{v} - \nabla f(\mathbf{x}_0)^T \mathbf{v})\\
+&amp;\leq \nabla f(\mathbf{x}_0)^T \mathbf{v} + 
+\left|\nabla f(\mathbf{x}_0 + \xi_\alpha \alpha \mathbf{v})^T \mathbf{v} - \nabla f(\mathbf{x}_0)^T \mathbf{v}\,\right|\\
+&amp;&lt;  -\eta + \eta/2\\
+&amp;= - \eta/2 &lt; 0.
+\end{align*}\]</div>
+<p>by definition of <span class="math notranslate nohighlight">\(\eta\)</span>. That implies</p>
+<div class="math notranslate nohighlight">
+\[
+f(\mathbf{x}_0 + \alpha \mathbf{v})
+&lt; f(\mathbf{x}_0) - \alpha \eta/2 &lt; f(\mathbf{x}_0),
+\quad \forall \alpha \in (0,\alpha^*)
+\]</div>
+<p>and proves the claim. <span class="math notranslate nohighlight">\(\square\)</span></p>
+<p><strong>LEMMA</strong> <strong>(Descent Direction: Multivariable Version)</strong> Let <span class="math notranslate nohighlight">\(f : \mathbb{R}^d \to \mathbb{R}\)</span> be continuously differentiable at <span class="math notranslate nohighlight">\(\mathbf{x}_0\)</span> and assume that <span class="math notranslate nohighlight">\(\nabla f(\mathbf{x}_0) \neq 0\)</span>. Then <span class="math notranslate nohighlight">\(f\)</span> has a descent direction at <span class="math notranslate nohighlight">\(\mathbf{x}_0\)</span>. <span class="math notranslate nohighlight">\(\flat\)</span></p>
+<p><em>Proof:</em> Take <span class="math notranslate nohighlight">\(\mathbf{v} = - \nabla f(\mathbf{x}_0)\)</span>. Then <span class="math notranslate nohighlight">\(\nabla f(\mathbf{x}_0)^T \mathbf{v} = - \|\nabla f(\mathbf{x}_0)\|^2 &lt; 0\)</span> since <span class="math notranslate nohighlight">\(\nabla f(\mathbf{x}_0) \neq \mathbf{0}\)</span>. <span class="math notranslate nohighlight">\(\square\)</span></p>
+<p>This leads to the following fundamental result.</p>
+<p><strong>THEOREM</strong> <strong>(First-Order Necessary Condition)</strong> Let <span class="math notranslate nohighlight">\(f : \mathbb{R}^d \to \mathbb{R}\)</span> be continuously differentiable on <span class="math notranslate nohighlight">\(\mathbb{R}^d\)</span>. If <span class="math notranslate nohighlight">\(\mathbf{x}_0\)</span> is a local minimizer, then <span class="math notranslate nohighlight">\(\nabla f(\mathbf{x}_0) = \mathbf{0}\)</span>. <span class="math notranslate nohighlight">\(\sharp\)</span></p>
+<p><em>Proof idea:</em> In a descent direction, <span class="math notranslate nohighlight">\(f\)</span> decreases hence there cannot be one at a local minimizer.</p>
+<p><em>Proof:</em> We argue by contradiction. Suppose that <span class="math notranslate nohighlight">\(\nabla f(\mathbf{x}_0) \neq 0\)</span>. By the <em>Descent Direction Lemma</em>, there is a descent direction <span class="math notranslate nohighlight">\(\mathbf{v} \in \mathbb{R}^d\)</span> at <span class="math notranslate nohighlight">\(\mathbf{x}_0\)</span>. That implies</p>
+<div class="math notranslate nohighlight">
+\[
+f(\mathbf{x}_0 + \alpha \mathbf{v})
+&lt; f(\mathbf{x}_0), \quad \forall \alpha \in (0, \alpha^*) 
+\]</div>
+<p>for some <span class="math notranslate nohighlight">\(\alpha^* &gt; 0\)</span>. So every open ball around <span class="math notranslate nohighlight">\(\mathbf{x}_0\)</span> has a point achieving a smaller value than <span class="math notranslate nohighlight">\(f(\mathbf{x}_0)\)</span>. Thus <span class="math notranslate nohighlight">\(\mathbf{x}_0\)</span> is not a local minimizer, a contradiction. So it must be that <span class="math notranslate nohighlight">\(\nabla f(\mathbf{x}_0) = \mathbf{0}\)</span>. <span class="math notranslate nohighlight">\(\square\)</span></p>
+<p>A point satisfying the first-order necessary condition is called a stationary point.</p>
+<p><strong>DEFINITION</strong> <strong>(Stationary Point)</strong> Let <span class="math notranslate nohighlight">\(f : D \to \mathbb{R}\)</span> be continuously differentiable on an open set <span class="math notranslate nohighlight">\(D \subseteq \mathbb{R}^d\)</span>. If <span class="math notranslate nohighlight">\(\nabla f(\mathbf{x}_0) = \mathbf{0}\)</span>, we say that <span class="math notranslate nohighlight">\(\mathbf{x}_0 \in D\)</span> is a stationary point of <span class="math notranslate nohighlight">\(f\)</span>. <span class="math notranslate nohighlight">\(\natural\)</span></p>
+<p><strong>EXAMPLE:</strong> <strong>(Rayleight Quotient)</strong> Here we revisit the Rayleigh quotient. Let <span class="math notranslate nohighlight">\(A \in \mathbb{R}^{d \times d}\)</span> be a symmetric matrix. Recall that the Rayleigh quotient is defined as</p>
+<div class="math notranslate nohighlight">
+\[
+\mathcal{R}_A(\mathbf{u})
+= \frac{\langle \mathbf{u}, A \mathbf{u} \rangle}{\langle \mathbf{u}, \mathbf{u} \rangle}
+\]</div>
+<p>which is defined for any <span class="math notranslate nohighlight">\(\mathbf{u} = (u_1,\ldots,u_d) \neq \mathbf{0}\)</span> in <span class="math notranslate nohighlight">\(\mathbb{R}^{d}\)</span>. As a function from <span class="math notranslate nohighlight">\(\mathbb{R}^{d}\)</span> to <span class="math notranslate nohighlight">\(\mathbb{R}\setminus \{\mathbf{0}\}\)</span>, <span class="math notranslate nohighlight">\(\mathcal{R}_A(\mathbf{u})\)</span> is continuously differentiable. We find its stationary points.</p>
+<p>We use the <a class="reference external" href="https://en.wikipedia.org/wiki/Quotient_rule">quotient rule</a> and our previous results on the gradient of quadratic functions. Specifically, note that (using that <span class="math notranslate nohighlight">\(A\)</span> is symmetric)</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+\frac{\partial}{\partial u_i} \mathcal{R}_A(\mathbf{u})
+&amp;= \frac{\left(\frac{\partial}{\partial u_i} \langle \mathbf{u}, A \mathbf{u} \rangle\right) \langle \mathbf{u}, \mathbf{u} \rangle
+- \langle \mathbf{u}, A \mathbf{u} \rangle \left( \frac{\partial}{\partial u_i} \langle \mathbf{u}, \mathbf{u} \rangle\right)}{\langle \mathbf{u}, \mathbf{u} \rangle^2}\\
+&amp;= \frac{2\left(\frac{\partial}{\partial u_i} \frac{1}{2}\mathbf{u}^T A \mathbf{u}\right) \|\mathbf{u}\|^2
+- \mathbf{u}^T A \mathbf{u} \left( \frac{\partial}{\partial u_i} \sum_{j=1}^d u_j^2\right)}{\|\mathbf{u}\|^4}\\
+&amp;= \frac{2\left(A \mathbf{u}\right)_i \|\mathbf{u}\|^2
+- \mathbf{u}^T A \mathbf{u} \left( 2 u_i \right)}{\|\mathbf{u}\|^4}\\
+&amp;= \frac{2}{\|\mathbf{u}\|^2}\left\{\left(A \mathbf{u}\right)_i
+- \mathcal{R}_A(\mathbf{u}) u_i \right\}.
+\end{align*}\]</div>
+<p>In vector form this is</p>
+<div class="math notranslate nohighlight">
+\[
+\nabla \mathcal{R}_A(\mathbf{u})
+= \frac{2}{\|\mathbf{u}\|^2} \left\{A \mathbf{u}
+- \mathcal{R}_A(\mathbf{u}) \,\mathbf{u} \right\}.
+\]</div>
+<p>The stationary points satisfy <span class="math notranslate nohighlight">\(\nabla \mathcal{R}_A(\mathbf{u})
+= \mathbf{0}\)</span>, or after getting rid of the denominator and rearranging,</p>
+<div class="math notranslate nohighlight">
+\[
+A \mathbf{u}
+= \mathcal{R}_A(\mathbf{u}) \,\mathbf{u}.
+\]</div>
+<p>We already know the solutions to this system: the eigenvectors of <span class="math notranslate nohighlight">\(A\)</span>. Indeed, if <span class="math notranslate nohighlight">\(\mathbf{q}_i\)</span> is a unit eigenvector of <span class="math notranslate nohighlight">\(A\)</span> with eigenvalue <span class="math notranslate nohighlight">\(\lambda_i\)</span>, then we have seen that <span class="math notranslate nohighlight">\(\mathcal{R}_A(\mathbf{q}_i) = \lambda_i\)</span> and we get</p>
+<div class="math notranslate nohighlight">
+\[
+A \mathbf{q}_i
+= \mathcal{R}_A(\mathbf{q}_i) \,\mathbf{q}_i.
+\]</div>
+<p>We know from <em>Courant-Fischer</em> that the eigenvectors of <span class="math notranslate nohighlight">\(A\)</span> are not in general local minimizers of its Rayleigh quotient - in fact one of them is a global maximizer! <span class="math notranslate nohighlight">\(\lhd\)</span></p>
+</section>
+<section id="second-order-conditions">
+<h2><span class="section-number">6.3.2. </span>Second-order conditions<a class="headerlink" href="#second-order-conditions" title="Permalink to this headline">#</a></h2>
+<p>Local minimizers can also be characterized in terms of the Hessian.</p>
+<p>We will make use of <em>Taylor’s Theorem</em>, a generalization of the <em>Mean Value Theorem</em> that provides polynomial approximations to a function around a point. We restrict ourselves to the case of a linear approximation with second-order error term, which will suffice for our purposes.</p>
+<p><strong>Taylor’s theorem</strong> We begin by reviewing the single-variable case, which we will use to prove the general verison.</p>
+<p><strong>THEOREM</strong> <strong>(Taylor)</strong> Let <span class="math notranslate nohighlight">\(f: D \to \mathbb{R}\)</span> where <span class="math notranslate nohighlight">\(D \subseteq \mathbb{R}\)</span>. Suppose <span class="math notranslate nohighlight">\(f\)</span> has a continuous derivative on <span class="math notranslate nohighlight">\([a,b]\)</span> and that its second derivative exists on <span class="math notranslate nohighlight">\((a,b)\)</span>. Then for any <span class="math notranslate nohighlight">\(x \in [a, b]\)</span></p>
+<div class="math notranslate nohighlight">
+\[
+f(x)
+= f(a) + (x-a) f'(a) + \frac{1}{2} (x-a)^2 f''(\xi)
+\]</div>
+<p>for some <span class="math notranslate nohighlight">\(a &lt; \xi &lt; x\)</span>. <span class="math notranslate nohighlight">\(\sharp\)</span></p>
+<p>The third term on the right-hand side of <em>Taylor’s Theorem</em> is called the Lagrange remainder. It can be seen as an error term between <span class="math notranslate nohighlight">\(f(x)\)</span> and the linear approximation <span class="math notranslate nohighlight">\(f(a) + (x-a) f'(a)\)</span>. There are <a class="reference external" href="https://en.wikipedia.org/wiki/Taylor%27s_theorem#Explicit_formulas_for_the_remainder">other forms</a> for the remainder. The form we stated here is useful when one has a bound on the second derivative. Here is an example.</p>
+<p><strong>EXAMPLE:</strong> Consider <span class="math notranslate nohighlight">\(f(x) = e^x\)</span>. Then <span class="math notranslate nohighlight">\(f'(x) = f''(x) = e^x\)</span>. Suppose we are interested in approximating <span class="math notranslate nohighlight">\(f\)</span> in the interval <span class="math notranslate nohighlight">\([0,1]\)</span>. We take <span class="math notranslate nohighlight">\(a=0\)</span> and <span class="math notranslate nohighlight">\(b=1\)</span> in <em>Taylor’s Theorem</em>. The linear term is</p>
+<div class="math notranslate nohighlight">
+\[
+f(a) + (x-a) f'(a) = 1 + x e^0 = 1 + x.
+\]</div>
+<p>Then for any <span class="math notranslate nohighlight">\(x \in [0,1]\)</span></p>
+<div class="math notranslate nohighlight">
+\[
+f(x) = 1 + x + \frac{1}{2}x^2 e^{\xi_x}
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(\xi_x \in (0,1)\)</span> depends on <span class="math notranslate nohighlight">\(x\)</span>. We get a uniform bound on the error over <span class="math notranslate nohighlight">\([0,1]\)</span> by replacing <span class="math notranslate nohighlight">\(\xi_x\)</span> with its worst possible value over <span class="math notranslate nohighlight">\([0,1]\)</span></p>
+<div class="math notranslate nohighlight">
+\[
+|f(x) - (1+x)| \leq \frac{1}{2}x^2 e^{\xi_x} \leq \frac{e}{2} x^2.
+\]</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">100</span><span class="p">)</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+<span class="n">taylor</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">+</span> <span class="n">x</span>
+<span class="n">err</span> <span class="o">=</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="n">x</span><span class="o">**</span><span class="mi">2</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell tag_hide-input docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell source</span>
+<span class="expanded">Hide code cell source</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">,</span><span class="n">label</span><span class="o">=</span><span class="s1">&#39;f&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">taylor</span><span class="p">,</span><span class="n">label</span><span class="o">=</span><span class="s1">&#39;taylor&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</details>
+<div class="cell_output docutils container">
+<img alt="../../_images/bf51958454b7d85af104b2b81f1540b36239d4a3031b5f02fdb19481af92c6dd.png" src="../../_images/bf51958454b7d85af104b2b81f1540b36239d4a3031b5f02fdb19481af92c6dd.png" />
+</div>
+</div>
+<p>If we plot the upper and lower bounds, we see that <span class="math notranslate nohighlight">\(f\)</span> indeed falls within them.</p>
+<div class="cell tag_hide-input docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell source</span>
+<span class="expanded">Hide code cell source</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">,</span><span class="n">label</span><span class="o">=</span><span class="s1">&#39;f&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">taylor</span><span class="p">,</span><span class="n">label</span><span class="o">=</span><span class="s1">&#39;taylor&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">taylor</span><span class="o">-</span><span class="n">err</span><span class="p">,</span><span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;:&#39;</span><span class="p">,</span><span class="n">color</span><span class="o">=</span><span class="s1">&#39;green&#39;</span><span class="p">,</span><span class="n">label</span><span class="o">=</span><span class="s1">&#39;lower&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">taylor</span><span class="o">+</span><span class="n">err</span><span class="p">,</span><span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span><span class="n">color</span><span class="o">=</span><span class="s1">&#39;green&#39;</span><span class="p">,</span><span class="n">label</span><span class="o">=</span><span class="s1">&#39;upper&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</details>
+<div class="cell_output docutils container">
+<img alt="../../_images/fdd6d97aaaa0257afd239c9538e849a50097d956f994dec03a924f6921fec8a5.png" src="../../_images/fdd6d97aaaa0257afd239c9538e849a50097d956f994dec03a924f6921fec8a5.png" />
+</div>
+</div>
+<p><span class="math notranslate nohighlight">\(\lhd\)</span></p>
+<p>In the case of several variables, we again restrict ourselves to the second order. For the more general version, see e.g. <a class="reference external" href="https://en.wikipedia.org/wiki/Taylor's_theorem#Taylor's_theorem_for_multivariate_functions">Wikipedia</a>.</p>
+<p><strong>THEOREM</strong> <strong>(Taylor)</strong> Let <span class="math notranslate nohighlight">\(f : D \to \mathbb{R}\)</span> where <span class="math notranslate nohighlight">\(D \subseteq \mathbb{R}^d\)</span>. Let <span class="math notranslate nohighlight">\(\mathbf{x}_0 \in D\)</span> and <span class="math notranslate nohighlight">\(\delta &gt; 0\)</span> be such that <span class="math notranslate nohighlight">\(B_\delta(\mathbf{x}_0) \subseteq D\)</span>. If <span class="math notranslate nohighlight">\(f\)</span> is twice continuously differentiable on <span class="math notranslate nohighlight">\(B_\delta(\mathbf{x}_0)\)</span>, then for any <span class="math notranslate nohighlight">\(\mathbf{x} \in B_\delta(\mathbf{x}_0)\)</span></p>
+<div class="math notranslate nohighlight">
+\[
+f(\mathbf{x})
+= f(\mathbf{x}_0) + \nabla f(\mathbf{x}_0)^T (\mathbf{x} - \mathbf{x}_0) 
++ \frac{1}{2} (\mathbf{x} - \mathbf{x}_0)^T 
+\,\mathbf{H}_f(\mathbf{x}_0 + \xi (\mathbf{x} - \mathbf{x}_0))
+\,(\mathbf{x} - \mathbf{x}_0),
+\]</div>
+<p>for some <span class="math notranslate nohighlight">\(\xi \in (0,1)\)</span>. <span class="math notranslate nohighlight">\(\sharp\)</span></p>
+<p>As in the single-variable case, we think of <span class="math notranslate nohighlight">\(f(\mathbf{x}_0) + \nabla f(\mathbf{x}_0)^T (\mathbf{x} - \mathbf{x}_0)\)</span> for fixed <span class="math notranslate nohighlight">\(\mathbf{x}_0\)</span> as a linear - or more accurately affine - approximation to <span class="math notranslate nohighlight">\(f\)</span> at <span class="math notranslate nohighlight">\(\mathbf{x}_0\)</span>. The third term on the right-hand side above quantifies the error of this approximation.</p>
+<p><em>Proof idea:</em> We apply the single-variable result to <span class="math notranslate nohighlight">\(\phi(t) = f(\boldsymbol{\alpha}(t))\)</span>. We use the <em>Chain Rule</em> to compute the needed derivatives.</p>
+<p><em>Proof:</em> Let <span class="math notranslate nohighlight">\(\mathbf{p} = \mathbf{x} - \mathbf{x}_0\)</span> and <span class="math notranslate nohighlight">\(\phi(t) = f(\boldsymbol{\alpha}(t))\)</span> where <span class="math notranslate nohighlight">\(\boldsymbol{\alpha}(t) = \mathbf{x}_0 + t \mathbf{p}\)</span>. Observe that <span class="math notranslate nohighlight">\(\phi(0) = f(\mathbf{x}_0)\)</span> and <span class="math notranslate nohighlight">\(\phi(1) = f(\mathbf{x})\)</span>. As observed in the proof of the <em>Mean Value Theorem</em>, <span class="math notranslate nohighlight">\(\phi'(t) = \nabla f(\boldsymbol{\alpha}(t))^T \mathbf{p}\)</span>. By the <em>Chain Rule</em> and our previous <em>Parametric Line Example</em>,</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+\phi''(t)
+&amp;= \frac{\mathrm{d}}{\mathrm{d} t}
+\left[\sum_{i=1}^d \frac{\partial f(\boldsymbol{\alpha}(t))}{\partial x_i} p_i \right]\\
+&amp;= 
+\sum_{i=1}^d \left(\nabla \frac{\partial f(\boldsymbol{\alpha}(t))}{\partial x_i}\right)^T \boldsymbol{\alpha}'(t) \,p_i \\
+&amp;= \sum_{i=1}^d \sum_{j=1}^d \frac{\partial^2 f(\boldsymbol{\alpha}(t))}{\partial x_j \partial x_i}  p_j p_i\\
+&amp;= \mathbf{p}^T 
+\,\mathbf{H}_f(\mathbf{x}_0 + t \mathbf{p})
+\,\mathbf{p}.
+\end{align*}\]</div>
+<p>In particular, <span class="math notranslate nohighlight">\(\phi\)</span> has continuous first and second derivatives on <span class="math notranslate nohighlight">\([0,1]\)</span>.</p>
+<p>By <em>Taylor’s Theorem</em> in the single-variable case</p>
+<div class="math notranslate nohighlight">
+\[
+\phi(t)
+= \phi(0) + t \phi'(0) + \frac{1}{2} t^2 \phi''(\xi)
+\]</div>
+<p>for some <span class="math notranslate nohighlight">\(\xi \in (0,t)\)</span>. Plugging in the expressions for <span class="math notranslate nohighlight">\(\phi(0)\)</span>, <span class="math notranslate nohighlight">\(\phi'(0)\)</span> and <span class="math notranslate nohighlight">\(\phi''(\xi)\)</span> and taking <span class="math notranslate nohighlight">\(t=1\)</span> gives the claim. <span class="math notranslate nohighlight">\(\square\)</span></p>
+<p><strong>EXAMPLE:</strong> Consider the function <span class="math notranslate nohighlight">\(f(x_1, x_2) = x_1 x_2 + x_1^2 + e^{x_1} \cos x_2\)</span>. We apply <em>Taylor’s Theorem</em> with <span class="math notranslate nohighlight">\(\mathbf{x}_0 = (0, 0)\)</span> and <span class="math notranslate nohighlight">\(\mathbf{x} = (x_1, x_2)\)</span>. The gradient is</p>
+<div class="math notranslate nohighlight">
+\[
+\nabla f(x_1, x_2) = (x_2 + 2 x_1 + e^{x_1} \cos x_2, x_1 - e^{x_1} \sin x_2 )^T
+\]</div>
+<p>and the Hessian is</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\mathbf{H}_f(x_1, x_2)
+= \begin{pmatrix}
+2 + e^{x_1} \cos x_2 &amp; 1 - e^{x_1} \sin x_2\\
+1 - e^{x_1} \sin x_2 &amp; - e^{x_1} \cos x_2 
+\end{pmatrix}.
+\end{split}\]</div>
+<p>So <span class="math notranslate nohighlight">\(f(0,0) = 1\)</span> and <span class="math notranslate nohighlight">\(\nabla f(0,0) = (1, 0)^T\)</span>. Thus,
+by <em>Taylor’s Theorem</em>, there is <span class="math notranslate nohighlight">\(\xi \in (0,1)\)</span> such that</p>
+<div class="math notranslate nohighlight">
+\[
+f(x_1, x_2)
+= 1 + x_1 
++ \frac{1}{2}[2 x_1^2 + 2 x_1 x_2 
++ (x_1^2 - x_2^2) \,e^{\xi x_1} \cos(\xi x_2)
+- 2 x_1 x_2 e^{\xi x_1} \sin(\xi x_2)].
+\]</div>
+<p><span class="math notranslate nohighlight">\(\lhd\)</span></p>
+<p><strong>Weyl’s inequality</strong> We will also need a bound on the eigenvalues of symmetric matrices. The proof is in an optional section below.</p>
+<p>For a symmetric matrix <span class="math notranslate nohighlight">\(C \in  \mathbb{R}^{d \times d}\)</span>, we let <span class="math notranslate nohighlight">\(\lambda_j(C)\)</span>, <span class="math notranslate nohighlight">\(j=1, \ldots, d\)</span>, be the eigenvalues of <span class="math notranslate nohighlight">\(C\)</span> in non-increasing order with corresponding orthonormal eigenvectors <span class="math notranslate nohighlight">\(\mathbf{v}_j\)</span>, <span class="math notranslate nohighlight">\(j=1, \ldots, d\)</span>. The following lemma is one version of what is known as <em>Weyl’s Inequality</em>.</p>
+<p><strong>LEMMA</strong> <strong>(Weyl)</strong> Let <span class="math notranslate nohighlight">\(A \in \mathbb{R}^{d \times d}\)</span> and <span class="math notranslate nohighlight">\(B \in \mathbb{R}^{d \times d}\)</span> be symmetric matrices. Then, for all <span class="math notranslate nohighlight">\(j=1, \ldots, d\)</span>,</p>
+<div class="math notranslate nohighlight">
+\[
+\max_{j \in [d]} \left|\lambda_j(B) - \lambda_j(A)\right|
+\leq \|B- A\|_2
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(\|C\|_2\)</span> is the induced <span class="math notranslate nohighlight">\(2\)</span>-norm of <span class="math notranslate nohighlight">\(C\)</span>. <span class="math notranslate nohighlight">\(\flat\)</span></p>
+<p><strong>Necessary condition</strong> When <span class="math notranslate nohighlight">\(f\)</span> is twice continuously differentiable, we get a necessary condition based on the Hessian.</p>
+<p><strong>THEOREM</strong> <strong>(Second-Order Necessary Condition)</strong> Let <span class="math notranslate nohighlight">\(f : \mathbb{R}^d \to \mathbb{R}\)</span> be twice continuously differentiable on <span class="math notranslate nohighlight">\(\mathbb{R}^d\)</span>. If <span class="math notranslate nohighlight">\(\mathbf{x}_0\)</span> is a local minimizer, then <span class="math notranslate nohighlight">\(\nabla f(\mathbf{x}_0) = \mathbf{0}\)</span> and <span class="math notranslate nohighlight">\(\mathbf{H}_f(\mathbf{x}_0)\)</span> is positive semidefinite. <span class="math notranslate nohighlight">\(\sharp\)</span></p>
+<p><em>Proof idea:</em> By <em>Taylor</em> and the <em>First-Order Necessary Condition</em>,</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+f(\mathbf{x}_0 + \alpha \mathbf{v})
+&amp;= f(\mathbf{x}_0) 
++ \nabla f(\mathbf{x}_0)^T(\alpha \mathbf{v})
++ \frac{1}{2}(\alpha \mathbf{v})^T \mathbf{H}_f(\mathbf{x}_0 + \xi_\alpha \alpha \mathbf{v}) (\alpha \mathbf{v})\\
+&amp;= f(\mathbf{x}_0) 
++ \frac{1}{2}\alpha^2 \mathbf{v}^T \mathbf{H}_f(\mathbf{x}_0 + \xi_\alpha \alpha \mathbf{v})\,\mathbf{v}.
+\end{align*}\]</div>
+<p>If <span class="math notranslate nohighlight">\(\mathbf{H}_f\)</span> is positive semidefinite in a neighborhood around <span class="math notranslate nohighlight">\(\mathbf{x}_0\)</span>, then the second term on the right-hand side is nonnegative, which is necessary for <span class="math notranslate nohighlight">\(\mathbf{x}_0\)</span> to be a local minimizer. Formally we argue  by contradiction. The proof goes along the same lines as the argument leading to the <em>First-Order Necessary Condition</em>.</p>
+<p><em>Proof:</em> We argue by contradiction. Suppose that <span class="math notranslate nohighlight">\(\mathbf{H}_f(\mathbf{x}_0)\)</span> is not positive semidefinite. From the <em>Symmetry of the Hessian Theorem</em> and the <em>Spectral Theorem</em>, <span class="math notranslate nohighlight">\(\mathbf{H}_f(\mathbf{x}_0)\)</span> has a spectral decomposition. From the <em>Characterization of Positive Semidefiniteness</em>, however, it follows that <span class="math notranslate nohighlight">\(\mathbf{H}_f(\mathbf{x}_0)\)</span> must have at least one negative eigenvalue <span class="math notranslate nohighlight">\(- \eta &lt; 0\)</span>. Let <span class="math notranslate nohighlight">\(\mathbf{v}\)</span> be a corresponding unit eigenvector.</p>
+<p>We have that <span class="math notranslate nohighlight">\(\langle \mathbf{v}, \mathbf{H}_f(\mathbf{x}_0) \,\mathbf{v} \rangle = - \eta &lt; 0\)</span>. For <span class="math notranslate nohighlight">\(\alpha &gt; 0\)</span>, <em>Taylor’s Theorem</em> implies that there is <span class="math notranslate nohighlight">\(\xi_\alpha \in (0,1)\)</span> such that</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+f(\mathbf{x}_0 + \alpha \mathbf{v})
+&amp;= f(\mathbf{x}_0) 
++ \nabla f(\mathbf{x}_0)^T(\alpha \mathbf{v})
++ \frac{1}{2} (\alpha \mathbf{v})^T \mathbf{H}_f(\mathbf{x}_0 + \xi_\alpha \alpha \mathbf{v}) (\alpha \mathbf{v})\\
+&amp;= f(\mathbf{x}_0) 
++ \frac{1}{2} \alpha^2 \mathbf{v}^T \mathbf{H}_f(\mathbf{x}_0 + \xi_\alpha \alpha \mathbf{v})\,\mathbf{v}
+\end{align*}\]</div>
+<p>where we used <span class="math notranslate nohighlight">\(\nabla f(\mathbf{x}_0) = \mathbf{0}\)</span> by the <em>First-Order Necessary Condition</em>. We want to show that the second term on the right-hand side is negative.</p>
+<p>The Hessian is continuous (in the sense that all its entries are continuous functions of <span class="math notranslate nohighlight">\(\mathbf{x}\)</span>). In particular, the function <span class="math notranslate nohighlight">\( \mathbf{v}^T \mathbf{H}_f(\mathbf{x}) \,\mathbf{v}\)</span> is continuous as a linear combination of continuous functions. So, by definition of continuity, for any <span class="math notranslate nohighlight">\(\epsilon &gt; 0\)</span> - say <span class="math notranslate nohighlight">\(\epsilon = \eta/2\)</span> - there is <span class="math notranslate nohighlight">\(\delta &gt; 0\)</span> small enough that</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+\left| \mathbf{v}^T \mathbf{H}_f(\mathbf{x}) \,\mathbf{v}
+- \mathbf{v}^T \mathbf{H}_f(\mathbf{x}_0) \,\mathbf{v} \right| 
+&amp;&lt; \eta/2
+\end{align*}\]</div>
+<p>for all <span class="math notranslate nohighlight">\(\mathbf{x} \in B_\delta(\mathbf{x}_0)\)</span>.</p>
+<p>Take <span class="math notranslate nohighlight">\(\alpha^* &gt; 0\)</span> small enough that <span class="math notranslate nohighlight">\(\mathbf{x}_0 + \alpha^* \mathbf{v} \in B_\delta(\mathbf{x}_0)\)</span>. Then, for all <span class="math notranslate nohighlight">\(\alpha \in (0,\alpha^*)\)</span>, whatever <span class="math notranslate nohighlight">\(\xi_\alpha \in (0,1)\)</span> is, it holds that <span class="math notranslate nohighlight">\(\mathbf{x}_0 + \xi_\alpha \alpha \mathbf{v} \in B_\delta(\mathbf{x}_0)\)</span>. Hence,</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+\mathbf{v}^T \mathbf{H}_f(\mathbf{x}_0 + \xi_\alpha \alpha \mathbf{v}) \,\mathbf{v} 
+&amp;= \mathbf{v}^T \mathbf{H}_f(\mathbf{x}_0) \,\mathbf{v}  
++ (\mathbf{v}^T \mathbf{H}_f(\mathbf{x}_0 + \xi_\alpha \alpha \mathbf{v}) \,\mathbf{v}  
+- \mathbf{v}^T \mathbf{H}_f(\mathbf{x}_0) \,\mathbf{v} )\\
+&amp;\leq \mathbf{v}^T \mathbf{H}_f(\mathbf{x}_0) \,\mathbf{v}  
++ |\mathbf{v}^T \mathbf{H}_f(\mathbf{x}_0 + \xi_\alpha \alpha \mathbf{v}) \,\mathbf{v}  
+- \mathbf{v}^T \mathbf{H}_f(\mathbf{x}_0) \,\mathbf{v}|\\
+&amp;&lt; -\eta 
++ \eta/2\\
+&amp;&lt; - \eta/2 &lt; 0.
+\end{align*}\]</div>
+<p>by definition of <span class="math notranslate nohighlight">\(\eta\)</span>. That implies</p>
+<div class="math notranslate nohighlight">
+\[
+f(\mathbf{x}_0 + \alpha \mathbf{v})
+&lt; f(\mathbf{x}_0) - \alpha^2 \eta/4 &lt; f(\mathbf{x}_0). 
+\]</div>
+<p>Since this holds for all sufficiently small <span class="math notranslate nohighlight">\(\alpha\)</span>, every open ball around <span class="math notranslate nohighlight">\(\mathbf{x}_0\)</span> has a point achieving a lower value than <span class="math notranslate nohighlight">\(f(\mathbf{x}_0)\)</span>. Thus <span class="math notranslate nohighlight">\(\mathbf{x}_0\)</span> is not a local minimizer, a contradiction. So it must be that <span class="math notranslate nohighlight">\(\mathbf{H}_f(\mathbf{x}_0) \succeq \mathbf{0}\)</span>. <span class="math notranslate nohighlight">\(\square\)</span></p>
+<p><strong>Sufficient condition</strong> The necessary condition above is not in general sufficient, as the following example shows.</p>
+<p><strong>EXAMPLE:</strong> Let <span class="math notranslate nohighlight">\(f(x) = x^3\)</span>. Then <span class="math notranslate nohighlight">\(f'(x) = 3 x^2\)</span> and <span class="math notranslate nohighlight">\(f''(x) = 6 x\)</span> so that <span class="math notranslate nohighlight">\(f'(0) = 0\)</span> and <span class="math notranslate nohighlight">\(f''(0) \geq 0\)</span>. Hence <span class="math notranslate nohighlight">\(x=0\)</span> is a stationary point. But <span class="math notranslate nohighlight">\(x=0\)</span> is not a local minimizer. Indeed <span class="math notranslate nohighlight">\(f(0) = 0\)</span> but, for any <span class="math notranslate nohighlight">\(\delta &gt; 0\)</span>, <span class="math notranslate nohighlight">\(f(-\delta) &lt; 0\)</span>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">100</span><span class="p">)</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">x</span><span class="o">**</span><span class="mi">3</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell tag_hide-input docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell source</span>
+<span class="expanded">Hide code cell source</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylim</span><span class="p">(</span><span class="o">-</span><span class="mi">5</span><span class="p">,</span><span class="mi">5</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</details>
+<div class="cell_output docutils container">
+<img alt="../../_images/bacb8226c02259d5c8d3ac3696c8f550c191f6f7e8ef37607493eaa697afa95e.png" src="../../_images/bacb8226c02259d5c8d3ac3696c8f550c191f6f7e8ef37607493eaa697afa95e.png" />
+</div>
+</div>
+<p><span class="math notranslate nohighlight">\(\lhd\)</span></p>
+<p>We give sufficient conditions for a point to be a local minimizer.</p>
+<p><strong>THEOREM</strong> <strong>(Second-Order Sufficient Condition)</strong> Let <span class="math notranslate nohighlight">\(f : \mathbb{R}^d \to \mathbb{R}\)</span> be twice continuously differentiable on <span class="math notranslate nohighlight">\(\mathbb{R}^d\)</span>. If <span class="math notranslate nohighlight">\(\nabla f(\mathbf{x}_0) = \mathbf{0}\)</span> and <span class="math notranslate nohighlight">\(\mathbf{H}_f(\mathbf{x}_0)\)</span> is positive definite, then <span class="math notranslate nohighlight">\(\mathbf{x}_0\)</span> is a strict local minimizer. <span class="math notranslate nohighlight">\(\sharp\)</span></p>
+<p><em>Proof idea:</em> We use <em>Taylor’s Theorem</em> again. This time we use the positive definiteness of the Hessian to bound the value of the function from below. We use <em>Weyl</em> to show that the eigenvalues of the Hessian are continuous, which implies that the Hessian remains positive definite in an open ball around <span class="math notranslate nohighlight">\(\mathbf{x}_0\)</span>.</p>
+<p><em>Proof:</em> By <em>Taylor’s Theorem</em>, for all <span class="math notranslate nohighlight">\(\mathbf{v}\)</span> there is <span class="math notranslate nohighlight">\(\xi_{\mathbf{v}} \in (0,1)\)</span></p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+f(\mathbf{x}_0 + \mathbf{v})
+&amp;= f(\mathbf{x}_0) 
++ \nabla f(\mathbf{x}_0)^T \mathbf{v}
++ \frac{1}{2} \mathbf{v}^T \,\mathbf{H}_f(\mathbf{x}_0 + \xi_{\mathbf{v}} \mathbf{v}) \,\mathbf{v}\\
+&amp;= f(\mathbf{x}_0) 
++ \frac{1}{2} \mathbf{v}^T \,\mathbf{H}_f(\mathbf{x}_0 + \xi_{\mathbf{v}} \mathbf{v}) \,\mathbf{v},
+\end{align*}\]</div>
+<p>where we used that <span class="math notranslate nohighlight">\(\nabla f(\mathbf{x}_0) = \mathbf{0}\)</span>. The second term on the last line is <span class="math notranslate nohighlight">\(0\)</span> at <span class="math notranslate nohighlight">\(\mathbf{v} = \mathbf{0}\)</span>. Our goal is to show that is strictly positive in a neighborhood of <span class="math notranslate nohighlight">\(\mathbf{0}\)</span>. For this, we prove a uniform strictly positive lower bound on the eigenvalues of <span class="math notranslate nohighlight">\(\mathbf{H}_f\)</span>.</p>
+<p>Formally, we claim that there is <span class="math notranslate nohighlight">\(\delta &gt; 0\)</span> such that <span class="math notranslate nohighlight">\(\mathbf{H}_f(\mathbf{x})\)</span> is positive definite for all <span class="math notranslate nohighlight">\(\mathbf{x} \in B_{\delta}(\mathbf{x}_0)\)</span>. That is the case when <span class="math notranslate nohighlight">\(\mathbf{x} = \mathbf{x}_0\)</span> and let <span class="math notranslate nohighlight">\(\mu := \lambda_d(\mathbf{H}_f(\mathbf{x}_0))&gt; 0\)</span> be the smallest eigenvalue of <span class="math notranslate nohighlight">\(\mathbf{H}_f(\mathbf{x}_0)\)</span>. We use <em>Weyl</em> to bound the eigenvalues of the Hessian from below around <span class="math notranslate nohighlight">\(\mathbf{x}_0\)</span>. For any vector <span class="math notranslate nohighlight">\(\mathbf{v} \in \mathbb{R}^d\)</span>, we have for all <span class="math notranslate nohighlight">\(j =1, \ldots, d\)</span></p>
+<div class="math notranslate nohighlight">
+\[
+\lambda_j(\mathbf{H}_f(\mathbf{x}_0 + \mathbf{v}))
+\geq \lambda_j(\mathbf{H}_f(\mathbf{x}_0)) - \|\mathbf{H}_f(\mathbf{x}_0 + \mathbf{v}) - \mathbf{H}_f(\mathbf{x}_0)\|_2
+\]</div>
+<p>where we used the notation introduced above.</p>
+<p>We bound <span class="math notranslate nohighlight">\(\lambda_j(\mathbf{H}_f(\mathbf{x}_0))
+\geq \lambda_d(\mathbf{H}_f(\mathbf{x}_0)) = \mu\)</span> and</p>
+<div class="math notranslate nohighlight">
+\[
+\|\mathbf{H}_f(\mathbf{x}_0 + \mathbf{v}) - \mathbf{H}_f(\mathbf{x}_0)\|_2
+\leq \|\mathbf{H}_f(\mathbf{x}_0 + \mathbf{v}) - \mathbf{H}_f(\mathbf{x}_0)\|_F.
+\]</div>
+<p>The Frobenius norm above is continuous in <span class="math notranslate nohighlight">\(\mathbf{v}\)</span> as a composition of continuous functions. Moreover, we of course have at <span class="math notranslate nohighlight">\(\mathbf{v} = \mathbf{0}\)</span> that this Frobenius norm is <span class="math notranslate nohighlight">\(0\)</span>. Hence, by definition of continuity, for any <span class="math notranslate nohighlight">\(\epsilon &gt; 0\)</span> - say <span class="math notranslate nohighlight">\(\epsilon := \mu/2\)</span> - there is <span class="math notranslate nohighlight">\(\delta &gt; 0\)</span> such that <span class="math notranslate nohighlight">\(\mathbf{v} \in B_{\delta}(\mathbf{0})\)</span> implies <span class="math notranslate nohighlight">\(\|\mathbf{H}_f(\mathbf{x}_0 + \mathbf{v}) - \mathbf{H}_f(\mathbf{x}_0)\|_F &lt; \epsilon = \mu/2\)</span>.</p>
+<p>Plugging back above finally gives for any such <span class="math notranslate nohighlight">\(\mathbf{v}\)</span> and all <span class="math notranslate nohighlight">\(j=1,\ldots,d\)</span></p>
+<div class="math notranslate nohighlight">
+\[
+\lambda_j(\mathbf{H}_f(\mathbf{x}_0 + \mathbf{v})) &gt; \mu/2 &gt; 0.
+\]</div>
+<p>In particular, <span class="math notranslate nohighlight">\(\mathbf{H}_f(\mathbf{x}_0 + \mathbf{v})\)</span> is positive definite and <span class="math notranslate nohighlight">\(\langle \mathbf{u}, \mathbf{H}_f(\mathbf{x}_0 + \mathbf{v}) \,\mathbf{u} \rangle &gt; \frac{\mu}{2} \|\mathbf{u}\|^2\)</span> for any <span class="math notranslate nohighlight">\(\mathbf{u}\)</span> by <em>Courant-Fischer</em>.</p>
+<p>Going back to our Taylor expansion, <span class="math notranslate nohighlight">\(\forall \mathbf{v} \in B_{\delta}(\mathbf{0}) \setminus \{\mathbf{0}\}\)</span> there is <span class="math notranslate nohighlight">\(\xi_{\mathbf{v}} \in (0,1)\)</span></p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+f(\mathbf{x}_0 + \mathbf{v})
+&amp;= f(\mathbf{x}_0) 
++ \frac{1}{2} \mathbf{v}^T \,\mathbf{H}_f(\mathbf{x}_0 + \xi_{\mathbf{v}} \mathbf{v}) \,\mathbf{v}\\
+&amp;&gt; f(\mathbf{x}_0) 
++ \frac{\mu}{4} \|\mathbf{v}\|^2\\
+&amp;&gt; f(\mathbf{x}_0) 
+\end{align*}\]</div>
+<p>where we used that <span class="math notranslate nohighlight">\(\|\xi_{\mathbf{v}} \mathbf{v}\| = \xi_{\mathbf{v}} \|\mathbf{v}\| \leq \rho\)</span>. Therefore <span class="math notranslate nohighlight">\(\mathbf{x}_0\)</span> is a strict local minimizer. <span class="math notranslate nohighlight">\(\square\)</span></p>
+</section>
+<section id="convexity">
+<h2><span class="section-number">6.3.3. </span>Convexity<a class="headerlink" href="#convexity" title="Permalink to this headline">#</a></h2>
+<p>Our optimality conditions have only concerned local minimizers. Indeed, in the absence of global structure, local information such as gradients and Hessians can only inform us about the immediate neighborhood of points. Here we introduce convexity, a commonly encountered condition under which local minimizers become global minimizers.</p>
+<p><strong>Convex sets</strong> We start with convex sets.</p>
+<p><strong>DEFINITION</strong> <strong>(Convex Set)</strong> A set <span class="math notranslate nohighlight">\(D \subseteq \mathbb{R}^d\)</span> is convex if for all <span class="math notranslate nohighlight">\(\mathbf{x}, \mathbf{y} \in D\)</span> and all <span class="math notranslate nohighlight">\(\alpha \in (0,1)\)</span></p>
+<div class="math notranslate nohighlight">
+\[
+(1-\alpha) \mathbf{x} + \alpha \mathbf{y} \in D.
+\]</div>
+<p><span class="math notranslate nohighlight">\(\natural\)</span></p>
+<p>Note that, as <span class="math notranslate nohighlight">\(\alpha\)</span> goes from <span class="math notranslate nohighlight">\(0\)</span> to <span class="math notranslate nohighlight">\(1\)</span>,</p>
+<div class="math notranslate nohighlight">
+\[
+(1-\alpha) \mathbf{x} + \alpha \mathbf{y} = \mathbf{x} + \alpha (\mathbf{y} - \mathbf{x}),
+\]</div>
+<p>traces a line joining <span class="math notranslate nohighlight">\(\mathbf{x}\)</span> and <span class="math notranslate nohighlight">\(\mathbf{y}\)</span>. In words, a set is convex if all segments between pairs of points in the set also lie in it.</p>
+<p>The following is a convex set:</p>
+<p><img alt="A convex set " src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/6b/Convex_polygon_illustration1.svg/254px-Convex_polygon_illustration1.svg.png" /></p>
+<p><strong>Figure:</strong> A convex set (<a class="reference external" href="https://commons.wikimedia.org/wiki/File:Convex_polygon_illustration1.svg">Source</a>)</p>
+<p>While the following is not:</p>
+<p><img alt="A set that is not convex" src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/6c/Convex_polygon_illustration2.svg/254px-Convex_polygon_illustration2.svg.png" /></p>
+<p><strong>Figure:</strong> A set that is not convex (<a class="reference external" href="https://commons.wikimedia.org/wiki/File:Convex_polygon_illustration2.svg">Source</a>)</p>
+<p><strong>EXAMPLE:</strong> An open ball in <span class="math notranslate nohighlight">\(\mathbb{R}^d\)</span> is convex. Indeed, let <span class="math notranslate nohighlight">\(\delta &gt; 0\)</span> and <span class="math notranslate nohighlight">\(\mathbf{x}_0 \in \mathbb{R}^d\)</span>. For any <span class="math notranslate nohighlight">\(\mathbf{x}, \mathbf{y} \in B_{\delta}(\mathbf{x}_0)\)</span> and any <span class="math notranslate nohighlight">\(\alpha \in [0,1]\)</span>, we have</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+\|[(1-\alpha) \mathbf{x} + \alpha \mathbf{y}] - \mathbf{x}_0\|_2
+&amp;= \|(1-\alpha) (\mathbf{x} - \mathbf{x}_0) + \alpha (\mathbf{y} - \mathbf{x}_0)\|_2\\
+&amp;\leq  \|(1-\alpha) (\mathbf{x} - \mathbf{x}_0)\|_2 + \|\alpha (\mathbf{y} - \mathbf{x}_0)\|_2\\
+&amp;= (1-\alpha) \|\mathbf{x} - \mathbf{x}_0\|_2 + \alpha \|\mathbf{y} - \mathbf{x}_0\|_2\\
+&amp;&lt; (1-\alpha) \delta + \alpha \delta\\
+&amp;= \delta
+\end{align*}\]</div>
+<p>where we used the triangle inequality on the second line. Hence we have established that <span class="math notranslate nohighlight">\((1-\alpha) \mathbf{x} + \alpha \mathbf{y} \in B_{\delta}(\mathbf{x}_0)\)</span>.</p>
+<p>One remark. All we used in this argument is that the Euclidean norm is homogeneous and satisfies the triangle inequality. That is true of every norm. So we conclude that an open ball under any norm is convex. Also, the open nature of the set played no role. The same holds for closed balls in any norm. <span class="math notranslate nohighlight">\(\lhd\)</span></p>
+<p><strong>EXAMPLE:</strong> Here is an important generalization. Think of the space of <span class="math notranslate nohighlight">\(n \times n\)</span> symmetric matrices</p>
+<div class="math notranslate nohighlight">
+\[
+\mathbf{S}^n 
+= \left\{
+X \in \mathbb{R}^{n \times n}\,:\, X = X^T
+\right\},
+\]</div>
+<p>as a linear subspace of <span class="math notranslate nohighlight">\(\mathbb{R}^{n^2}\)</span> (How?). The dimension of <span class="math notranslate nohighlight">\(\mathbf{S}^n\)</span> is <span class="math notranslate nohighlight">\({n \choose 2} + n\)</span>, the number of free parameters under the symmetry assumption. Consider now the set of all positive semidefinite matrices in <span class="math notranslate nohighlight">\(\mathbf{S}^n\)</span></p>
+<div class="math notranslate nohighlight">
+\[
+\mathbf{S}_+^n 
+= \left\{
+X \in \mathbf{S}^n \,:\, X \succeq \mathbf{0}
+\right\}.
+\]</div>
+<p>(Recall that <span class="math notranslate nohighlight">\(\mathbf{S}_+^n\)</span> is not the same as the set of symmetric matrices with nonnegative elements.)</p>
+<p>We claim that the set <span class="math notranslate nohighlight">\(\mathbf{S}_+^n\)</span> is convex. Indeed let <span class="math notranslate nohighlight">\(X, Y \in \mathbf{S}_+^n\)</span> and <span class="math notranslate nohighlight">\(\alpha \in [0,1]\)</span>. Then by postive semidefiniteness of <span class="math notranslate nohighlight">\(X\)</span> and <span class="math notranslate nohighlight">\(Y\)</span>, for any <span class="math notranslate nohighlight">\(\mathbf{v} \in \mathbb{R}^n\)</span></p>
+<div class="math notranslate nohighlight">
+\[
+\langle \mathbf{v}, [(1-\alpha) X + \alpha Y] \mathbf{v}\rangle
+= (1-\alpha) \langle \mathbf{v}, X \mathbf{v}\rangle
++ \alpha \langle \mathbf{v}, Y \mathbf{v}\rangle
+\geq 0.
+\]</div>
+<p>This shows that <span class="math notranslate nohighlight">\((1-\alpha) X + \alpha Y \succeq \mathbf{0}\)</span> and hence that <span class="math notranslate nohighlight">\(\mathbf{S}_+^n\)</span> is convex. <span class="math notranslate nohighlight">\(\lhd\)</span></p>
+<p>A number of operations preserve convexity. In an abuse of notation, we think of a pair of vectors <span class="math notranslate nohighlight">\((\mathbf{x}_1, \mathbf{x}_2) \in \mathbb{R}^d \times \mathbb{R}^{f}\)</span> as a vector in <span class="math notranslate nohighlight">\(\mathbb{R}^{d+f}\)</span>. Put differently, <span class="math notranslate nohighlight">\((\mathbf{x}_1, \mathbf{x}_2)\)</span> is the vertical concatenation of column vectors <span class="math notranslate nohighlight">\(\mathbf{x}_1\)</span> and <span class="math notranslate nohighlight">\(\mathbf{x}_2\)</span>. This is not to be confused with <span class="math notranslate nohighlight">\(\begin{pmatrix}\mathbf{x}_1 &amp; \mathbf{x}_2\end{pmatrix}\)</span> which is the <span class="math notranslate nohighlight">\(d \times 2\)</span> matrix with columns <span class="math notranslate nohighlight">\(\mathbf{x}_1\)</span> and <span class="math notranslate nohighlight">\(\mathbf{x}_2\)</span>.</p>
+<p><strong>LEMMA</strong> <strong>(Operations that Preserve Convexity)</strong> Let <span class="math notranslate nohighlight">\(S_1, S_2 \subseteq \mathbb{R}^d\)</span>, <span class="math notranslate nohighlight">\(S_3 \subseteq \mathbb{R}^{f}\)</span>, and  <span class="math notranslate nohighlight">\(S_4 \subseteq \mathbb{R}^{d+f}\)</span> be convex sets. Let <span class="math notranslate nohighlight">\(\beta \in \mathbb{R}\)</span> and <span class="math notranslate nohighlight">\(\mathbf{b} \in \mathbb{R}^d\)</span>. The following sets are also convex:</p>
+<p>(a) <em>Scaling:</em> <span class="math notranslate nohighlight">\(\beta S_1 = \{\beta \mathbf{x}\,:\, \mathbf{x} \in S_1\}\)</span></p>
+<p>(b) <em>Translation:</em> <span class="math notranslate nohighlight">\(S_1 + \mathbf{b} = \{\mathbf{x} + \mathbf{b}\,:\, \mathbf{x} \in S_1\}\)</span></p>
+<p>© <em>Sum:</em> <span class="math notranslate nohighlight">\(S_1 + S_2 = \{\mathbf{x}_1 + \mathbf{x}_2\,:\, \mathbf{x}_1 \in S_1 \text{ and } \mathbf{x}_2 \in S_2\}\)</span></p>
+<p>(d) <em>Cartesian product:</em> <span class="math notranslate nohighlight">\(S_1 \times S_3 = \{(\mathbf{x}_1, \mathbf{x}_2) \,:\, \mathbf{x}_1 \in S_1 \text{ and } \mathbf{x}_2 \in S_3\}\)</span></p>
+<p>(e) <em>Projection:</em> <span class="math notranslate nohighlight">\(T = \{\mathbf{x}_1\,:\, (\mathbf{x}_1, \mathbf{x}_2) \in S_4 \text{ for some }\mathbf{x}_2 \in \mathbb{R}^f\}\)</span></p>
+<p>(f) <em>Intersection:</em> <span class="math notranslate nohighlight">\(S_1 \cap S_2\)</span></p>
+<p><span class="math notranslate nohighlight">\(\flat\)</span></p>
+<p><em>Proof:</em> We only prove (f). The other statements are left as an exercise. Suppose <span class="math notranslate nohighlight">\(\mathbf{x}, \mathbf{y} \in S_1 \cap S_2\)</span> and <span class="math notranslate nohighlight">\(\alpha \in [0,1]\)</span>. Then, by the convexity of <span class="math notranslate nohighlight">\(S_1\)</span>, <span class="math notranslate nohighlight">\((1-\alpha) \mathbf{x} + \alpha \mathbf{y} \in S_1\)</span> and, by the convexity of <span class="math notranslate nohighlight">\(S_2\)</span>, <span class="math notranslate nohighlight">\((1-\alpha) \mathbf{x} + \alpha \mathbf{y} \in S_2\)</span>. Hence</p>
+<div class="math notranslate nohighlight">
+\[
+(1-\alpha) \mathbf{x} + \alpha \mathbf{y} \in S_1 \cap S_2.
+\]</div>
+<p>This property can be extended to an intersection of an arbitrary number of convex sets. <span class="math notranslate nohighlight">\(\square\)</span></p>
+<p><strong>Convex functions</strong> Our main interest is in convex functions.</p>
+<p>Here is the definition.</p>
+<p><strong>DEFINITION</strong> <strong>(Convex Function)</strong> A function <span class="math notranslate nohighlight">\(f : \mathbb{R}^d \to \mathbb{R}\)</span> is convex if, for all <span class="math notranslate nohighlight">\(\mathbf{x}, \mathbf{y} \in \mathbb{R}^d\)</span> and all <span class="math notranslate nohighlight">\(\alpha \in (0,1)\)</span></p>
+<div class="math notranslate nohighlight">
+\[
+f((1-\alpha) \mathbf{x} + \alpha \mathbf{y})
+\leq (1-\alpha) f(\mathbf{x}) + \alpha f(\mathbf{y}).
+\]</div>
+<p>More generally, a function <span class="math notranslate nohighlight">\(f : D \to \mathbb{R}\)</span> over a convex domain <span class="math notranslate nohighlight">\(D \subseteq \mathbb{R}^d\)</span> is convex if the definition above holds over all <span class="math notranslate nohighlight">\(\mathbf{x}, \mathbf{y} \in D\)</span>. A function is said to be strictly convex if a strict inequality holds. If <span class="math notranslate nohighlight">\(-f\)</span> is convex (respectively, strictly convex), then <span class="math notranslate nohighlight">\(f\)</span> is said to be concave (respectively, strictly concave). <span class="math notranslate nohighlight">\(\natural\)</span></p>
+<p>The definition above is sometimes referred to as the <a class="reference external" href="https://en.wikipedia.org/wiki/Secant_line">secant line</a> definition (see the next figure).</p>
+<p><img alt="A convex function " src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c7/ConvexFunction.svg/1024px-ConvexFunction.svg.png" /></p>
+<p><strong>Figure:</strong> A convex function (<a class="reference external" href="https://commons.wikimedia.org/wiki/File:ConvexFunction.svg">Source</a>)</p>
+<p><strong>LEMMA</strong> <strong>(Affine Functions are Convex)</strong> Let <span class="math notranslate nohighlight">\(\mathbf{w} \in \mathbb{R}^d\)</span> and <span class="math notranslate nohighlight">\(b \in \mathbb{R}\)</span>. The function <span class="math notranslate nohighlight">\(f(\mathbf{x}) = \mathbf{w}^T \mathbf{x} + b\)</span> is convex. <span class="math notranslate nohighlight">\(\flat\)</span></p>
+<p><em>Proof:</em> For any <span class="math notranslate nohighlight">\(\mathbf{x}, \mathbf{y} \in \mathbb{R}^d\)</span> and <span class="math notranslate nohighlight">\(\alpha \in [0,1]\)</span>,</p>
+<div class="math notranslate nohighlight">
+\[
+f((1-\alpha) \mathbf{x} + \alpha \mathbf{y})
+= \mathbf{w}^T [(1-\alpha) \mathbf{x} + \alpha \mathbf{y}] + b
+= (1-\alpha)[\mathbf{w}^T \mathbf{x} + b] + \alpha [\mathbf{w}^T \mathbf{y} + b]
+\]</div>
+<p>which proves the claim. <span class="math notranslate nohighlight">\(\square\)</span></p>
+<p>Here is a less straightforward example. A concrete application is given below. (See also <em>Exercise 4.47</em> for the supremum version of this claim - which does not require the constraint set to be convex!)</p>
+<p><strong>LEMMA</strong> <strong>(Infimum over a Convex Set)</strong> Let <span class="math notranslate nohighlight">\(f : \mathbb{R}^{d+f} \to \mathbb{R}\)</span> be a convex function and let <span class="math notranslate nohighlight">\(C \subseteq \mathbb{R}^{f}\)</span> be a convex set. The function</p>
+<div class="math notranslate nohighlight">
+\[
+g(\mathbf{x})
+= \inf_{\mathbf{y} \in C} f(\mathbf{x},\mathbf{y}),
+\]</div>
+<p>is convex provided <span class="math notranslate nohighlight">\(g(\mathbf{x}) &gt; -\infty\)</span> for all <span class="math notranslate nohighlight">\(\mathbf{x} \in \mathbb{R}^d\)</span>. <span class="math notranslate nohighlight">\(\flat\)</span></p>
+<p><em>Proof:</em> Let <span class="math notranslate nohighlight">\(\mathbf{x}_1, \mathbf{x}_2 \in \mathbb{R}^d\)</span> and <span class="math notranslate nohighlight">\(\alpha \in [0,1]\)</span>. For <span class="math notranslate nohighlight">\(i=1,2\)</span>, by definition of <span class="math notranslate nohighlight">\(g\)</span>, for any <span class="math notranslate nohighlight">\(\epsilon &gt; 0\)</span> there is <span class="math notranslate nohighlight">\(\mathbf{y}_i \in C\)</span> such that <span class="math notranslate nohighlight">\(f(\mathbf{x}_i, \mathbf{y}_i) \leq g(\mathbf{x}_i) + \epsilon\)</span>.</p>
+<p>By the convexity of <span class="math notranslate nohighlight">\(C\)</span>, <span class="math notranslate nohighlight">\(\alpha \mathbf{y}_1 + (1- \alpha)\mathbf{y}_2 \in C\)</span>. So because <span class="math notranslate nohighlight">\(g\)</span> is an infimum over points <span class="math notranslate nohighlight">\(\mathbf{y}\)</span> in <span class="math notranslate nohighlight">\(C\)</span>, we have</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+g(\alpha \mathbf{x}_1 + (1- \alpha)\mathbf{x}_2)
+&amp;\leq f(\alpha \mathbf{x}_1 + (1- \alpha)\mathbf{x}_2, \alpha \mathbf{y}_1 + (1- \alpha)\mathbf{y}_2)\\
+&amp;= f(\alpha (\mathbf{x}_1, \mathbf{y}_1) + (1- \alpha)(\mathbf{x}_2, \mathbf{y}_2))\\
+&amp;\leq \alpha f(\mathbf{x}_1, \mathbf{y}_1) + (1- \alpha)f(\mathbf{x}_2, \mathbf{y}_2)\\
+&amp;\leq \alpha [g(\mathbf{x}_1) + \epsilon] + (1- \alpha)[g(\mathbf{x}_2) + \epsilon]\\
+&amp;\leq \alpha g(\mathbf{x}_1) + (1- \alpha) g(\mathbf{x}_2) + \epsilon,
+\end{align*}\]</div>
+<p>where we used the convexity of <span class="math notranslate nohighlight">\(f\)</span> on the second line.  Because <span class="math notranslate nohighlight">\(\epsilon &gt; 0\)</span> is arbitrary, the claim follows. <span class="math notranslate nohighlight">\(\square\)</span></p>
+<p><strong>EXAMPLE:</strong> <strong>(Distance to a Convex Set)</strong> Let <span class="math notranslate nohighlight">\(C\)</span> be a convex set in <span class="math notranslate nohighlight">\(\mathbb{R}^d\)</span>. We show that the distance to <span class="math notranslate nohighlight">\(C\)</span></p>
+<div class="math notranslate nohighlight">
+\[
+g(\mathbf{x})
+= \inf_{\mathbf{y} \in C} \|\mathbf{x} - \mathbf{y}\|_2,
+\]</div>
+<p>is convex.</p>
+<p>To apply the previous lemma, we first need to show that <span class="math notranslate nohighlight">\(f(\mathbf{x},\mathbf{y}) := \|\mathbf{x} - \mathbf{y}\|_2\)</span> is convex as a function of <span class="math notranslate nohighlight">\((\mathbf{x}, \mathbf{y})\)</span>. Let <span class="math notranslate nohighlight">\(\mathbf{x}_1, \mathbf{x}_2 \in \mathbb{R}^d\)</span>, <span class="math notranslate nohighlight">\(\mathbf{y}_1, \mathbf{y}_2 \in C\)</span>, and <span class="math notranslate nohighlight">\(\alpha \in [0,1]\)</span>. We want to show that <span class="math notranslate nohighlight">\(f\)</span> evaluated at the convex combination</p>
+<div class="math notranslate nohighlight">
+\[
+\alpha (\mathbf{x}_1,\mathbf{y}_1)
++ (1-\alpha) (\mathbf{x}_2,\mathbf{y}_2)
+= (\alpha \mathbf{x}_1 + (1-\alpha)\mathbf{x}_2, \alpha \mathbf{y}_1 + (1-\alpha)\mathbf{y}_2),
+\]</div>
+<p>is upper bounded by the same convex combination of the values of <span class="math notranslate nohighlight">\(f\)</span> at <span class="math notranslate nohighlight">\((\mathbf{x}_1,\mathbf{y}_1)\)</span> and <span class="math notranslate nohighlight">\((\mathbf{x}_2,\mathbf{y}_2)\)</span>.</p>
+<p>By the triangle inequality and the homogeneity of the norm,</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+&amp;f(\alpha \mathbf{x}_1 + (1-\alpha)\mathbf{x}_2, \alpha \mathbf{y}_1 + (1-\alpha)\mathbf{y}_2)\\
+&amp;=\|[\alpha \mathbf{x}_1 + (1-\alpha)\mathbf{x}_2] -  [\alpha \mathbf{y}_1 + (1-\alpha)\mathbf{y}_2]\|_2\\
+&amp;= \|\alpha (\mathbf{x}_1 - \mathbf{y}_1 ) + (1-\alpha)(\mathbf{x}_2 - \mathbf{y}_2)\|_2\\
+&amp;\leq \alpha\|\mathbf{x}_1 - \mathbf{y}_1\|_2 + (1-\alpha)\|\mathbf{x}_2 - \mathbf{y}_2\|_2\\
+&amp;= \alpha f(\mathbf{x}_1, \mathbf{y}_1) + (1-\alpha)f(\mathbf{x}_2, \mathbf{y}_2).
+\end{align*}\]</div>
+<p>It remains to show that <span class="math notranslate nohighlight">\(g(\mathbf{x}) &gt; -\infty\)</span> for all <span class="math notranslate nohighlight">\(\mathbf{x}\)</span>. But this is immediate since <span class="math notranslate nohighlight">\( \|\mathbf{x} - \mathbf{y}\|_2 \geq 0\)</span>. Hence the previous lemma gives the claim. <span class="math notranslate nohighlight">\(\lhd\)</span></p>
+<p><strong>Conditions based on the gradient and Hessian</strong> A common way to prove that a function is convex is to look at its Hessian (or second derivative in the single-variable case). But we start with a first-order characterization of convexity.</p>
+<p><strong>LEMMA</strong> <strong>(First-Order Convexity Condition)</strong> Let <span class="math notranslate nohighlight">\(f : \mathbb{R}^d \to \mathbb{R}\)</span> be continuously differentiable. Then <span class="math notranslate nohighlight">\(f\)</span> is convex if and only if</p>
+<div class="math notranslate nohighlight">
+\[
+f(\mathbf{y})
+\geq f(\mathbf{x}) + \nabla f(\mathbf{x})^T (\mathbf{y}-\mathbf{x}),
+\qquad \forall \mathbf{x}, \mathbf{y} \in \mathbb{R}^d.
+\]</div>
+<p><span class="math notranslate nohighlight">\(\flat\)</span></p>
+<p>On the right-hand side above, you should recognize the linear approximation to <span class="math notranslate nohighlight">\(f\)</span> at <span class="math notranslate nohighlight">\(\mathbf{x}\)</span> from <em>Taylor’s Theorem</em> without the remainder.</p>
+<p>The condition is illustrated below.</p>
+<p><img alt="First-order convexity" src="https://i.stack.imgur.com/ehKVz.png" /></p>
+<p>(<a class="reference external" href="https://math.stackexchange.com/questions/1518550/geometric-interpretation-of-first-order-condition">Source</a>)</p>
+<p><em>Proof (First-Order Convexity Condition):</em> Suppose first that <span class="math notranslate nohighlight">\(f(\mathbf{z}_2)
+\geq f(\mathbf{z}_1) + \nabla f(\mathbf{z}_1)^T (\mathbf{z}_2-\mathbf{z}_1)\)</span> for all <span class="math notranslate nohighlight">\(\mathbf{z}_1, \mathbf{z}_2\)</span>. For any <span class="math notranslate nohighlight">\(\mathbf{x}, \mathbf{y}\)</span> and <span class="math notranslate nohighlight">\(\alpha \in [0,1]\)</span>, let <span class="math notranslate nohighlight">\(\mathbf{w} = (1-\alpha) \mathbf{x} + \alpha \mathbf{y}\)</span>. Then taking <span class="math notranslate nohighlight">\(\mathbf{z}_1 = \mathbf{w}\)</span> and <span class="math notranslate nohighlight">\(\mathbf{z}_2 = \mathbf{x}\)</span> gives</p>
+<div class="math notranslate nohighlight">
+\[
+f(\mathbf{x})
+\geq f(\mathbf{w}) + \nabla f(\mathbf{w})^T (\mathbf{x}-\mathbf{w})
+\]</div>
+<p>and taking <span class="math notranslate nohighlight">\(\mathbf{z}_1 = \mathbf{w}\)</span> and <span class="math notranslate nohighlight">\(\mathbf{z}_2 = \mathbf{y}\)</span> gives</p>
+<div class="math notranslate nohighlight">
+\[
+f(\mathbf{y})
+\geq f(\mathbf{w}) + \nabla f(\mathbf{w})^T (\mathbf{y}-\mathbf{w}).
+\]</div>
+<p>Multiplying the first inequality by <span class="math notranslate nohighlight">\((1-\alpha)\)</span> and the second one by <span class="math notranslate nohighlight">\(\alpha\)</span>, and adding them up gives</p>
+<div class="math notranslate nohighlight">
+\[
+(1-\alpha) f(\mathbf{x}) + \alpha f(\mathbf{y})
+\geq f(\mathbf{w}) + \nabla f(\mathbf{w})^T ([(1-\alpha) \mathbf{x} + \alpha \mathbf{y}] - \mathbf{w})
+= f(\mathbf{w})
+\]</div>
+<p>proving convexity.</p>
+<p>For the other direction, assume that <span class="math notranslate nohighlight">\(f\)</span> is convex. For any <span class="math notranslate nohighlight">\(\mathbf{x}, \mathbf{y}\)</span> and <span class="math notranslate nohighlight">\(\alpha \in (0,1)\)</span>, by the <em>Mean Value Theorem</em>, for some <span class="math notranslate nohighlight">\(\xi_\alpha \in (0,1)\)</span> it holds that</p>
+<div class="math notranslate nohighlight">
+\[
+f(\mathbf{w})
+= f(\mathbf{x} + \alpha (\mathbf{y} - \mathbf{x}))
+= f(\mathbf{x}) + \alpha (\mathbf{y} - \mathbf{x})^T \nabla f (\mathbf{x} + \xi_\alpha \alpha (\mathbf{y} - \mathbf{x}))
+\]</div>
+<p>while convexity implies</p>
+<div class="math notranslate nohighlight">
+\[
+f(\mathbf{w})
+\leq (1-\alpha) f(\mathbf{x}) + \alpha f(\mathbf{y}).
+\]</div>
+<p>Combining, rearranging and dividing by <span class="math notranslate nohighlight">\(\alpha\)</span> gives</p>
+<div class="math notranslate nohighlight">
+\[
+(\mathbf{y} - \mathbf{x})^T \nabla f (\mathbf{x} + \xi_\alpha \alpha (\mathbf{y} - \mathbf{x}))
+\leq f(\mathbf{y}) - f(\mathbf{x}).
+\]</div>
+<p>Taking <span class="math notranslate nohighlight">\(\alpha \to 0\)</span> gives the claim. <span class="math notranslate nohighlight">\(\square\)</span></p>
+<p><strong>LEMMA</strong> <strong>(Second-Order Convexity Condition)</strong> Let <span class="math notranslate nohighlight">\(f : \mathbb{R}^d \to \mathbb{R}\)</span> be twice continuously differentiable. Then <span class="math notranslate nohighlight">\(f\)</span> is convex if and only if <span class="math notranslate nohighlight">\(H_f(\mathbf{x})\)</span> is positive semidefinite for all <span class="math notranslate nohighlight">\(\mathbf{x} \in \mathbb{R}^d\)</span>. <span class="math notranslate nohighlight">\(\flat\)</span></p>
+<p><em>Proof:</em> Suppose first that <span class="math notranslate nohighlight">\(H_f(\mathbf{z}_1) \succeq 0\)</span> for all <span class="math notranslate nohighlight">\(\mathbf{z}_1\)</span>. For any <span class="math notranslate nohighlight">\(\mathbf{x}, \mathbf{y}\)</span>, by <em>Taylor</em>, there is <span class="math notranslate nohighlight">\(\xi \in (0,1)\)</span> such that</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+f(\mathbf{y})
+&amp;= f(\mathbf{x}) + \nabla f(\mathbf{x})^T (\mathbf{y}-\mathbf{x})
++ (\mathbf{y}-\mathbf{x})^T H_f(\mathbf{x} + \xi(\mathbf{y} - \mathbf{x})) \,(\mathbf{y}-\mathbf{x})\\
+&amp;\geq f(\mathbf{x}) + \nabla f(\mathbf{x})^T (\mathbf{y}-\mathbf{x})
+\end{align*}\]</div>
+<p>where we used the positive semidefiniteness of the Hessian. By the <em>First-Order Convexity Condition</em>, it implies that <span class="math notranslate nohighlight">\(f\)</span> is convex.</p>
+<p>For the other direction, assume that <span class="math notranslate nohighlight">\(f\)</span> is convex. For any <span class="math notranslate nohighlight">\(\mathbf{x}, \mathbf{w}\)</span> and <span class="math notranslate nohighlight">\(\alpha \in (0,1)\)</span>, by <em>Taylor</em> again, for some <span class="math notranslate nohighlight">\(\xi_\alpha \in (0,1)\)</span> it holds that</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+f(\mathbf{x} + \alpha \mathbf{w})
+= f(\mathbf{x}) + \alpha \mathbf{w}^T \nabla f (\mathbf{x})
++ \alpha^2 \mathbf{w}^T H_f(\mathbf{x} + \xi_\alpha \alpha \mathbf{w}) \,\mathbf{w}
+\end{align*}\]</div>
+<p>while the <em>First-Order Convexity Condition</em> implies</p>
+<div class="math notranslate nohighlight">
+\[
+f(\mathbf{x} + \alpha \mathbf{w})
+\geq f(\mathbf{x}) + \alpha \mathbf{w}^T \nabla f (\mathbf{x}).
+\]</div>
+<p>Combining, rearranging and dividing by <span class="math notranslate nohighlight">\(\alpha^2\)</span> gives</p>
+<div class="math notranslate nohighlight">
+\[
+\mathbf{w}^T H_f(\mathbf{x} + \xi_\alpha \alpha \mathbf{w}) \,\mathbf{w} \geq 0.
+\]</div>
+<p>Taking <span class="math notranslate nohighlight">\(\alpha \to 0\)</span> and using the continuity of the Hessian shows that <span class="math notranslate nohighlight">\(\mathbf{w}^T H_f(\mathbf{x}) \,\mathbf{w} \geq 0\)</span>. Since <span class="math notranslate nohighlight">\(\mathbf{w}\)</span> is arbitrary, this implies that the Hessian is positive semidefinite at <span class="math notranslate nohighlight">\(\mathbf{x}\)</span>. This holds for any <span class="math notranslate nohighlight">\(\mathbf{x}\)</span>, which proves the claim. <span class="math notranslate nohighlight">\(\square\)</span></p>
+<p><strong>EXAMPLE:</strong> Consider the quadratic function</p>
+<div class="math notranslate nohighlight">
+\[
+f(\mathbf{x})
+= \frac{1}{2} \mathbf{x}^T P \mathbf{x} + \mathbf{q}^T \mathbf{x} + r,
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(P\)</span> is a symmetric matrix. We showed previously that the Hessian is</p>
+<div class="math notranslate nohighlight">
+\[
+H_f(\mathbf{x}) = \frac{1}{2}[P + P^T] = P.
+\]</div>
+<p>So <span class="math notranslate nohighlight">\(f\)</span> is convex if and only if the matrix <span class="math notranslate nohighlight">\(P\)</span> is positive semidefinite. <span class="math notranslate nohighlight">\(\lhd\)</span></p>
+<p><strong>EXAMPLE:</strong> <strong>(Log-concavity)</strong> A function <span class="math notranslate nohighlight">\(f :\mathbb{R}^d \to \mathbb{R}\)</span> is said to be log-concave if <span class="math notranslate nohighlight">\(-\log f\)</span> is convex. Put differently, we require for all <span class="math notranslate nohighlight">\(\mathbf{x}, \mathbf{y} \in \mathbb{R}^d\)</span> and <span class="math notranslate nohighlight">\(\alpha \in (0,1)\)</span></p>
+<div class="math notranslate nohighlight">
+\[
+- \log f((1-\alpha)\mathbf{x} + \alpha \mathbf{y})
+\leq - (1-\alpha) \log f(\mathbf{x}) - \alpha \log f(\mathbf{y}),
+\]</div>
+<p>This is equivalent to</p>
+<div class="math notranslate nohighlight">
+\[
+\log f((1-\alpha)\mathbf{x} + \alpha \mathbf{y}) \geq
+(1-\alpha) \log f(\mathbf{x}) + \alpha \log f(\mathbf{y}) ,
+\]</div>
+<p>Or, because <span class="math notranslate nohighlight">\(a \log b = \log b^a\)</span> and the logarithm is strictly increasing,</p>
+<div class="math notranslate nohighlight">
+\[
+f((1-\alpha)\mathbf{x} + \alpha \mathbf{y}) \geq f(\mathbf{x})^{1-\alpha} f(\mathbf{y})^{\alpha}.
+\]</div>
+<p>We will see later in the course that a multivariate Gaussian vector <span class="math notranslate nohighlight">\(\mathbf{X}\)</span> on <span class="math notranslate nohighlight">\(\mathbb{R}^d\)</span> with mean <span class="math notranslate nohighlight">\(\bmu \in \mathbb{R}^d\)</span> and positive definite covariance matrix <span class="math notranslate nohighlight">\(\bSigma \in \mathbb{R}^{d \times d}\)</span> has probability density function (PDF)</p>
+<div class="math notranslate nohighlight">
+\[
+f_{\bmu, \bSigma}(\mathbf{x})
+= \frac{1}{(2\pi)^{d/2} \,|\bSigma|^{1/2}}
+\exp\left(-\frac{1}{2}(\mathbf{x} - \bmu)^T \bSigma^{-1} (\mathbf{x} - \bmu)\right)
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(|A|\)</span> is the <a class="reference external" href="https://en.wikipedia.org/wiki/Determinant">determinant</a> of <span class="math notranslate nohighlight">\(A\)</span>, which in the case of a symmetric matrix is simply the product of its eigenvalues. We claim that this PDF is log-concave.</p>
+<p>From the definition,</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+&amp;- \log f_{\bmu, \bSigma}(\mathbf{x})\\
+&amp;= \frac{1}{2}(\mathbf{x} - \bmu)^T \bSigma^{-1} (\mathbf{x} - \bmu) + \log (2\pi)^{d/2} \,|\bSigma|^{1/2}\\
+&amp;= \frac{1}{2}\mathbf{x}^T \bSigma^{-1} \mathbf{x} 
+- \bmu^T \bSigma^{-1} \mathbf{x}
++ \left[\frac{1}{2}\bmu^T \bSigma^{-1} \bmu + \log (2\pi)^{d/2} \,|\bSigma|^{1/2}\right].
+\end{align*}\]</div>
+<p>Let <span class="math notranslate nohighlight">\(P = \bSigma^{-1}\)</span>, <span class="math notranslate nohighlight">\(\mathbf{q} = - \bmu^T \bSigma^{-1}\)</span> and <span class="math notranslate nohighlight">\(r = \frac{1}{2}\bmu^T \bSigma^{-1} \bmu + \log (2\pi)^{d/2} \,|\bSigma|^{1/2}\)</span>.</p>
+<p>The previous example then implies that the PDF is log-concave if <span class="math notranslate nohighlight">\(\bSigma^{-1}\)</span> is positive semidefinite. Since <span class="math notranslate nohighlight">\(\bSigma\)</span> is positive definite by assumption, <span class="math notranslate nohighlight">\(\bSigma = Q \Lambda Q^T\)</span> has a spectral decomposition where all diagonal entries of <span class="math notranslate nohighlight">\(\Lambda\)</span> are stricly positive. Then <span class="math notranslate nohighlight">\(\bSigma^{-1} = Q \Lambda^{-1} Q^T\)</span> where the diagonal entries of <span class="math notranslate nohighlight">\(\Lambda^{-1}\)</span> are the inverses of those of <span class="math notranslate nohighlight">\(\Lambda\)</span> - and hence strictly positive as well. In particular, <span class="math notranslate nohighlight">\(\bSigma^{-1}\)</span> is positive semidefinite. <span class="math notranslate nohighlight">\(\lhd\)</span></p>
+</section>
+<section id="convexity-and-unconstrained-optimization">
+<h2><span class="section-number">6.3.4. </span>Convexity and unconstrained optimization<a class="headerlink" href="#convexity-and-unconstrained-optimization" title="Permalink to this headline">#</a></h2>
+<p>Now comes the key property of convex functions (at least as far as we are concerned).</p>
+<p><strong>Global minimization in the convex case</strong> In the convex case, global minimization reduces to local minimization.</p>
+<p><strong>THEOREM</strong> <strong>(Global Minimizers of Convex Functions)</strong> Let <span class="math notranslate nohighlight">\(f : \mathbb{R}^d \to \mathbb{R}\)</span> be a convex function. Then any local minimizer of <span class="math notranslate nohighlight">\(f\)</span> is also a global minimizer. <span class="math notranslate nohighlight">\(\sharp\)</span></p>
+<p><em>Proof:</em> By contradiction, suppose <span class="math notranslate nohighlight">\(\mathbf{x}_0\)</span> is a local minimizer, but not a global minimizer. Then there is <span class="math notranslate nohighlight">\(\mathbf{y}\)</span> such that</p>
+<div class="math notranslate nohighlight">
+\[
+f(\mathbf{y}) &lt; f(\mathbf{x}_0).
+\]</div>
+<p>By convexity, for any <span class="math notranslate nohighlight">\(\alpha \in (0,1)\)</span></p>
+<div class="math notranslate nohighlight">
+\[
+f(\mathbf{x}_0 + \alpha (\mathbf{y} - \mathbf{x}_0))
+\leq (1-\alpha) f(\mathbf{x}_0) + \alpha f(\mathbf{y}) 
+&lt; f(\mathbf{x}_0).
+\]</div>
+<p>But that implies that every open ball around <span class="math notranslate nohighlight">\(\mathbf{x}_0\)</span> contains a point taking a smaller value than <span class="math notranslate nohighlight">\(f(\mathbf{x}_0)\)</span>, a contradiction. <span class="math notranslate nohighlight">\(\square\)</span></p>
+<p>In the continuously differentiable case, we get in addition that a vanishing gradient at <span class="math notranslate nohighlight">\(\mathbf{x}_0\)</span> is now a sufficient condition for <span class="math notranslate nohighlight">\(\mathbf{x}_0\)</span> to be a local – and therefore global – minimizer.</p>
+<p><strong>THEOREM</strong> <strong>(First-Order Sufficient Condition for Convex Functions)</strong> Let <span class="math notranslate nohighlight">\(f : \mathbb{R}^d \to \mathbb{R}\)</span> be a continuously differentiable, convex function. If <span class="math notranslate nohighlight">\(\nabla f(\mathbf{x}_0) = \mathbf{0}\)</span> then <span class="math notranslate nohighlight">\(\mathbf{x}_0\)</span> is a global minimizer. <span class="math notranslate nohighlight">\(\sharp\)</span></p>
+<p><em>Proof:</em> Assume <span class="math notranslate nohighlight">\(\nabla f(\mathbf{x}_0) = \mathbf{0}\)</span>. By the <em>First-Order Convexity Condition</em>, for any <span class="math notranslate nohighlight">\(\mathbf{y}\)</span></p>
+<div class="math notranslate nohighlight">
+\[
+f(\mathbf{y}) - f(\mathbf{x}_0) \geq \nabla f(\mathbf{x}_0)^T (\mathbf{y} - \mathbf{x}_0) = 0.
+\]</div>
+<p>That proves the claim. <span class="math notranslate nohighlight">\(\square\)</span></p>
+<p><strong>EXAMPLE:</strong> <strong>(Quadratic Function)</strong> Consider the quadratic function</p>
+<div class="math notranslate nohighlight">
+\[
+f(\mathbf{x})
+= \frac{1}{2} \mathbf{x}^T P \mathbf{x} + \mathbf{q}^T \mathbf{x} + r
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(P\)</span> is symmetric and positive semidefinite. The Hessian is then</p>
+<div class="math notranslate nohighlight">
+\[
+H_f(\mathbf{x}) = \frac{1}{2}[P + P^T] = P
+\]</div>
+<p>for any <span class="math notranslate nohighlight">\(\mathbf{x}\)</span>. So <span class="math notranslate nohighlight">\(f\)</span> is convex. Further the gradient is</p>
+<div class="math notranslate nohighlight">
+\[
+\nabla f(\mathbf{x}) = P\mathbf{x} + \mathbf{q}
+\]</div>
+<p>for all <span class="math notranslate nohighlight">\(\mathbf{x}\)</span>.</p>
+<p>Any <span class="math notranslate nohighlight">\(\mathbf{x}\)</span> satisfying</p>
+<div class="math notranslate nohighlight">
+\[
+P\mathbf{x} = - \mathbf{q}
+\]</div>
+<p>is a global minimizer. <span class="math notranslate nohighlight">\(\lhd\)</span></p>
+<p>When <span class="math notranslate nohighlight">\(f\)</span> is strictly convex, the global minimizer is unique (if it exists). (Why?)</p>
+<p>For our purposes, we will need a uniform version of strict convexity, strong convexity, which we define in the next section.</p>
+<p><strong>Strong convexity</strong> With stronger assumptions, we obtain stronger guarantees. One such assumption is strong convexity, which we define next in the special case of twice continuously differentiable functions.</p>
+<p>We will use the following notation. Let <span class="math notranslate nohighlight">\(A, B \in \mathbb{R}^{d \times d}\)</span> be symmetric matrices. Recall that <span class="math notranslate nohighlight">\(A \succeq 0\)</span> means that <span class="math notranslate nohighlight">\(A\)</span> is positive semidefinite. We write <span class="math notranslate nohighlight">\(A \preceq B\)</span> (respectively <span class="math notranslate nohighlight">\(A \succeq B\)</span>) to indicate that <span class="math notranslate nohighlight">\(B - A \succeq 0\)</span> (respectively <span class="math notranslate nohighlight">\(A - B \succeq 0\)</span>). A different, useful way to put this is the following. Recall that <span class="math notranslate nohighlight">\(B - A \succeq 0\)</span> means <span class="math notranslate nohighlight">\(\mathbf{z}^T B\mathbf{z} - \mathbf{z}^T A\mathbf{z} \geq 0\)</span> for all <span class="math notranslate nohighlight">\(\mathbf{z} \in \mathbb{R}^{d}\)</span>. Hence, rearranging,</p>
+<div class="math notranslate nohighlight">
+\[
+A \preceq B
+\iff \mathbf{z}^T A\mathbf{z} \leq \mathbf{z}^T B\mathbf{z}, \qquad \forall \mathbf{z} \in \mathbb{R}^{d}.
+\]</div>
+<p>Similarly,</p>
+<div class="math notranslate nohighlight">
+\[
+A \succeq B
+\iff \mathbf{z}^T A\mathbf{z} \geq \mathbf{z}^T B\mathbf{z}, \qquad \forall \mathbf{z} \in \mathbb{R}^{d}.
+\]</div>
+<p><strong>DEFINITION</strong> <strong>(Strongly Convex Function)</strong> Let <span class="math notranslate nohighlight">\(f : \mathbb{R}^d \to \mathbb{R}\)</span> be twice continuously differentiable and let <span class="math notranslate nohighlight">\(m &gt; 0\)</span>. We say that <span class="math notranslate nohighlight">\(f\)</span> is <span class="math notranslate nohighlight">\(m\)</span>-strongly convex if</p>
+<div class="math notranslate nohighlight">
+\[
+H_f(\mathbf{x}) \succeq m I_{d \times d},
+\quad \forall \mathbf{x} \in \mathbb{R}^d.
+\]</div>
+<p><span class="math notranslate nohighlight">\(\natural\)</span></p>
+<p>By the observation above, noting that <span class="math notranslate nohighlight">\(\mathbf{z}^T I\mathbf{z} = \|\mathbf{z}\|^2\)</span>, we get that the condition above is equivalent to</p>
+<div class="math notranslate nohighlight">
+\[
+\mathbf{z}^T H_f(\mathbf{x}) \,\mathbf{z} \geq m \|\mathbf{z}\|^2,
+\quad \forall \mathbf{x}, \mathbf{z} \in \mathbb{R}^d.
+\]</div>
+<p>Combined with <em>Taylor’s Theorem</em>, this gives immediately the following. The proof is left as an exercise (see <em>Exercise 4.18</em>). Also <em>Exercise 4.16</em> gives a practical way to check the strong convexity condition.</p>
+<p><strong>LEMMA</strong> <strong>(Quadratic Bound for Strongly Convex Functions)</strong> Let <span class="math notranslate nohighlight">\(f : \mathbb{R}^d \to \mathbb{R}\)</span> be twice continuously differentiable. Then <span class="math notranslate nohighlight">\(f\)</span> is <span class="math notranslate nohighlight">\(m\)</span>-strongly convex if and only if</p>
+<div class="math notranslate nohighlight">
+\[
+f(\mathbf{y})
+\geq f(\mathbf{x}) 
++ \nabla f(\mathbf{x})^T(\mathbf{y} - \mathbf{x})
++ \frac{m}{2} \|\mathbf{y} - \mathbf{x}\|^2,
+\qquad \forall \mathbf{x}, \mathbf{y} \in \mathbb{R}^d.
+\]</div>
+<p><span class="math notranslate nohighlight">\(\flat\)</span></p>
+<p>The previous lemma immediately leads to the following fundamental result.</p>
+<p><strong>THEOREM</strong> <strong>(Global Minimizer of Strongly Convex Functions)</strong> Let <span class="math notranslate nohighlight">\(f : \mathbb{R}^d \to \mathbb{R}\)</span> be twice continuously differentiable and <span class="math notranslate nohighlight">\(m\)</span>-strongly convex with <span class="math notranslate nohighlight">\(m&gt;0\)</span>. If <span class="math notranslate nohighlight">\(\nabla f(\mathbf{x}^*) = \mathbf{0}\)</span>, then <span class="math notranslate nohighlight">\(\mathbf{x}^*\)</span> is a unique global minimizer of <span class="math notranslate nohighlight">\(f\)</span>. <span class="math notranslate nohighlight">\(\sharp\)</span></p>
+<p><em>Proof:</em> If <span class="math notranslate nohighlight">\(\nabla f(\mathbf{x}^*) = \mathbf{0}\)</span>, by the <em>Quadratic Bound for Strongly Convex Functions</em>,</p>
+<div class="math notranslate nohighlight">
+\[
+f(\mathbf{y})
+\geq f(\mathbf{x}^*) 
++ \frac{m}{2} \|\mathbf{y} - \mathbf{x}^*\|^2
+&gt; f(\mathbf{x}^*) 
+\]</div>
+<p>for all <span class="math notranslate nohighlight">\(\mathbf{y} \neq \mathbf{x}^*\)</span>, which proves the claim. <span class="math notranslate nohighlight">\(\square\)</span></p>
+<p><strong>EXAMPLE:</strong> <strong>(Quadratic Function, continued)</strong> Consider again the quadratic function</p>
+<div class="math notranslate nohighlight">
+\[
+f(\mathbf{x})
+= \frac{1}{2} \mathbf{x}^T P \mathbf{x} + \mathbf{q}^T \mathbf{x} + r
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(P\)</span> is symmetric and, this time, positive definite. Again, for any <span class="math notranslate nohighlight">\(\mathbf{x}\)</span>, the Hessian is</p>
+<div class="math notranslate nohighlight">
+\[
+H_f(\mathbf{x}) = \frac{1}{2}[P + P^T] = P.
+\]</div>
+<p>So all eigenvalues of <span class="math notranslate nohighlight">\(H_f(\mathbf{x}) = P\)</span> are stricly positive. Let <span class="math notranslate nohighlight">\(\mu &gt; 0\)</span> be the smallest one. Then <em>Exercise 4.16</em> implies that <span class="math notranslate nohighlight">\(f\)</span> is <span class="math notranslate nohighlight">\(\mu\)</span>-strongly convex.</p>
+<p>The theorem above then indicates that there is a unique global minimizer to the least-squares objective in that case. Using previous calculation, it is obtained by computing <span class="math notranslate nohighlight">\(\mathbf{x}^* = - P^{-1} \mathbf{q}\)</span>. (Why is <span class="math notranslate nohighlight">\(P\)</span> invertible?) <span class="math notranslate nohighlight">\(\lhd\)</span></p>
+<p><strong>EXAMPLE:</strong> Consider the least-squares objective function</p>
+<div class="math notranslate nohighlight">
+\[
+f(\mathbf{x}) = \|A \mathbf{x} - \mathbf{b}\|^2,
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(A \in \mathbb{R}^{n \times d}\)</span> has full column rank and <span class="math notranslate nohighlight">\(\mathbf{b} \in \mathbb{R}^n\)</span>. This objective function can be rewritten as a quadratic function</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+f(\mathbf{x}) 
+&amp;=  \|A \mathbf{x} - \mathbf{b}\|^2\\
+&amp;= (A \mathbf{x} - \mathbf{b})^T(A \mathbf{x} - \mathbf{b})\\
+&amp;= \mathbf{x}^T A^T A \mathbf{x} - 2 \mathbf{b}^T A \mathbf{x} + \mathbf{b}^T \mathbf{b}\\
+&amp;= \frac{1}{2} \mathbf{x}^T  P \mathbf{x} + \mathbf{q}^T \mathbf{x} + r
+\end{align*}\]</div>
+<p>where <span class="math notranslate nohighlight">\(P = 2 A^T A\)</span> is symmetric, <span class="math notranslate nohighlight">\(\mathbf{q} = - 2 A^T \mathbf{b}\)</span>, and <span class="math notranslate nohighlight">\(r= \mathbf{b}^T \mathbf{b} = \|\mathbf{b}\|^2\)</span>.</p>
+<p>By the previous example, the Hessian of <span class="math notranslate nohighlight">\(f\)</span> is</p>
+<div class="math notranslate nohighlight">
+\[
+H_f(\mathbf{x})
+= 2 A^T A.
+\]</div>
+<p>This Hessian is positive definite. Indeed we have proved previously that, for any <span class="math notranslate nohighlight">\(\mathbf{z} \in \mathbf{R}^d\)</span>,</p>
+<div class="math notranslate nohighlight">
+\[
+\langle \mathbf{z}, 2 A^T A \mathbf{z}\rangle 
+= 2 (A \mathbf{z})^T (A \mathbf{z})
+= 2 \|A \mathbf{z}\|^2 &gt; 0,
+\]</div>
+<p>since <span class="math notranslate nohighlight">\(A \mathbf{z} = \mathbf{0}\)</span> implies <span class="math notranslate nohighlight">\(\mathbf{z} = \mathbf{0}\)</span> by the full column rank assumption.</p>
+<p>So all eigenvalues of <span class="math notranslate nohighlight">\(H_f(\mathbf{x}) = 2 A^T A\)</span> are stricly positive. Let <span class="math notranslate nohighlight">\(\mu &gt; 0\)</span> be the smallest one. Then <span class="math notranslate nohighlight">\(f\)</span> is <span class="math notranslate nohighlight">\(\mu\)</span>-strongly convex (Why?).</p>
+<p>The theorem above then indicates that there is a unique global minimizer to the least-squares objective in that case. <span class="math notranslate nohighlight">\(\lhd\)</span></p>
+</section>
+<section id="a-data-science-example-ridge-regression">
+<h2><span class="section-number">6.3.5. </span>A data science example: ridge regression<a class="headerlink" href="#a-data-science-example-ridge-regression" title="Permalink to this headline">#</a></h2>
+<p>We saw in a previous subsection that the pseudoinverse gives a least norm solution to an underdetermined linear system. A similar idea turns out to be useful in the overdetermined case as well, particularly when the columns of the matrix <span class="math notranslate nohighlight">\(A\)</span> are linearly dependent or close to linearly dependent (which is sometimes referred as <a class="reference external" href="https://en.wikipedia.org/wiki/Multicollinearity">multicollinearity</a> in statistics). This is called ridge regression or Tikhonov regularization. It trades off minimizing the fit to the data versus minimizing the norm of the solution. More precisely, for a parameter <span class="math notranslate nohighlight">\(\lambda &gt; 0\)</span> to be chosen, we solve</p>
+<div class="math notranslate nohighlight">
+\[
+\min_{\mathbf{x} \in \mathbb{R}^m} \|A \mathbf{x} - \mathbf{b}\|_2^2 + \lambda \|\mathbf{x}\|_2^2.
+\]</div>
+<p>The second term is referred to as an <span class="math notranslate nohighlight">\(\ell_2\)</span>-regularizer. Here <span class="math notranslate nohighlight">\(A \in \mathbb{R}^{n\times m}\)</span> with <span class="math notranslate nohighlight">\(n \geq m\)</span> and <span class="math notranslate nohighlight">\(\mathbf{b} \in \mathbb{R}^n\)</span>.</p>
+<p><strong>Solving the problem</strong> To solve this optimization problem, we show that the objective function is strongly convex. We then find its unique stationary point. Rewriting the objective in quadratic function form</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+f(\mathbf{x})
+&amp;= \|A \mathbf{x} - \mathbf{b}\|_2^2 + \lambda \|\mathbf{x}\|_2^2\\
+&amp;=  \mathbf{x}^T A^T A \mathbf{x} - 2 \mathbf{b}^T A \mathbf{x} + \mathbf{b}^T \mathbf{b}
++ \lambda \mathbf{x}^T \mathbf{x}\\
+&amp;= \mathbf{x}^T (A^T A + \lambda I_{m \times m}) \mathbf{x} - 2 \mathbf{b}^T A \mathbf{x} + \mathbf{b}^T \mathbf{b}\\
+&amp;= \frac{1}{2} \mathbf{x}^T  P \mathbf{x} + \mathbf{q}^T \mathbf{x} + r,
+\end{align*}\]</div>
+<p>where <span class="math notranslate nohighlight">\(P = 2 (A^T A + \lambda I_{m \times m})\)</span> is symmetric, <span class="math notranslate nohighlight">\(\mathbf{q} = - 2 A^T \mathbf{b}\)</span>, and <span class="math notranslate nohighlight">\(r= \mathbf{b}^T \mathbf{b} = \|\mathbf{b}\|^2\)</span>.</p>
+<p>As we previously computed, the Hessian of <span class="math notranslate nohighlight">\(f\)</span> is <span class="math notranslate nohighlight">\(H_f(\mathbf{x})= P\)</span>. Now comes a key observation. The matrix <span class="math notranslate nohighlight">\(P\)</span> is positive definite whenever <span class="math notranslate nohighlight">\(\lambda &gt; 0\)</span>. Indeed, for any <span class="math notranslate nohighlight">\(\mathbf{z} \in \mathbb{R}^m\)</span>,</p>
+<div class="math notranslate nohighlight">
+\[
+\mathbf{z}^T [2 (A^T A + \lambda I_{m \times m})] \mathbf{z}
+= 2 \|A \mathbf{z}\|_2^2 + 2 \|\mathbf{z}\|_2^2 &gt; 0.
+\]</div>
+<p>So all eigenvalues of <span class="math notranslate nohighlight">\(H_f(\mathbf{x}) = 2 (A^T A + \lambda I_{m \times m})\)</span> are stricly positive. Let <span class="math notranslate nohighlight">\(\mu &gt; 0\)</span> be the smallest one. Then <span class="math notranslate nohighlight">\(f\)</span> is <span class="math notranslate nohighlight">\(\mu\)</span>-strongly convex (Why?). This holds whether or not the columns of <span class="math notranslate nohighlight">\(A\)</span> are linearly independent.</p>
+<p>The stationary points are easily characterized. Recall that the gradient is <span class="math notranslate nohighlight">\(\nabla f(\mathbf{x}) = P \mathbf{x} + \mathbf{q}\)</span>. Equating to <span class="math notranslate nohighlight">\(\mathbf{0}\)</span> leads to the system</p>
+<div class="math notranslate nohighlight">
+\[
+2 (A^T A + \lambda I_{m \times m}) \mathbf{x} - 2 A^T \mathbf{b} = \mathbf{0},
+\]</div>
+<p>that is</p>
+<div class="math notranslate nohighlight">
+\[
+\mathbf{x}^{**}
+= (A^T A + \lambda I_{m \times m})^{-1} A^T \mathbf{b}.
+\]</div>
+<p>The matrix in parenthesis is invertible as it is <span class="math notranslate nohighlight">\(1/2\)</span> of the Hessian, which is positive definite.</p>
+<p><strong>Connection to SVD</strong> Expressing the solution in terms of a compact SVD</p>
+<div class="math notranslate nohighlight">
+\[
+A = U \Sigma V^T = \sum_{j=1}^r \sigma_j \mathbf{u}_j \mathbf{v}_j^T.
+\]</div>
+<p>provides some insights into how ridge regression works. Suppose that <span class="math notranslate nohighlight">\(A\)</span> has full column rank. That implies that <span class="math notranslate nohighlight">\(V V^T = I_{m \times m}\)</span>. Then observe that</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+(A^T A + \lambda I_{m \times m})^{-1}
+&amp;= (V \Sigma U^T U \Sigma V^T + \lambda I_{m \times m})^{-1}\\
+&amp;= (V \Sigma^2 V^T + \lambda I_{m \times m})^{-1}\\
+&amp;= (V \Sigma^2 V^T + V \lambda I_{m \times m} V^T)^{-1}\\
+&amp;= (V [\Sigma^2 + \lambda I_{m \times m}] V^T)^{-1}\\
+&amp;= V (\Sigma^2 + \lambda I_{m \times m})^{-1} V^T.
+\end{align*}\]</div>
+<p>Hence</p>
+<div class="math notranslate nohighlight">
+\[
+\mathbf{x}^{**}
+= (A^T A + \lambda I_{m \times m})^{-1} A^T \mathbf{b}
+= V (\Sigma^2 + \lambda I_{m \times m})^{-1} V^T V \Sigma U^T \mathbf{b}
+= V (\Sigma^2 + \lambda I_{m \times m})^{-1} \Sigma U^T \mathbf{b}.
+\]</div>
+<p>Our predictions are</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+A \mathbf{x}^{**}
+&amp;= U \Sigma V^T V (\Sigma^2 + \lambda I_{m \times m})^{-1} \Sigma U^T \mathbf{b}\\
+&amp;= U \Sigma (\Sigma^2 + \lambda I_{m \times m})^{-1} \Sigma U^T \mathbf{b}\\
+&amp;= \sum_{j=1}^r \mathbf{u}_j \left\{\frac{\sigma_j^2}{\sigma_j^2 + \lambda} \right\} \mathbf{u}_j^T \mathbf{b}.
+\end{align*}\]</div>
+<p>Note that the terms in curly brackets are <span class="math notranslate nohighlight">\(&lt; 1\)</span> when <span class="math notranslate nohighlight">\(\lambda &gt; 0\)</span>.</p>
+<p>Compare this to the unregularized least squares solution <span class="math notranslate nohighlight">\(\mathbf{}\)</span>, which is obtained simply by setting <span class="math notranslate nohighlight">\(\lambda = 0\)</span> above,</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+A \mathbf{x}^*
+&amp;= \sum_{j=1}^r \mathbf{u}_j  \mathbf{u}_j^T \mathbf{b}.
+\end{align*}\]</div>
+<p>The difference is that the regularized solution reduces (potentially significantly) the contributions from the left singular vectors corresponding to small singular values.</p>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./chap06_opt/03_optimality"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="../02_several/roch-mmids-opt-several.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title"><span class="section-number">6.2. </span>Background: review of differentiable functions of several variables and introduction to automatic differentiation</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="../04_gd/roch-mmids-opt-gd.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title"><span class="section-number">6.4. </span>Gradient descent and its convergence analysis</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#first-order-conditions">6.3.1. First-order conditions</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#second-order-conditions">6.3.2. Second-order conditions</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#convexity">6.3.3. Convexity</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#convexity-and-unconstrained-optimization">6.3.4. Convexity and unconstrained optimization</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#a-data-science-example-ridge-regression">6.3.5. A data science example: ridge regression</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Sebastien Roch
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2024.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=5b4479735964841361fd"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

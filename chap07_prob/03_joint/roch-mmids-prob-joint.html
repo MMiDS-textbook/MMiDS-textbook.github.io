@@ -1,0 +1,1606 @@
+
+
+<!DOCTYPE html>
+
+
+<html data-content_root="" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>7.3. Modeling correlated random variables &#8212; MMiDS Textbook</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=5b4479735964841361fd" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" href="../../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=5b4479735964841361fd" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd" />
+  <script src="../../_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=5b4479735964841361fd"></script>
+
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/clipboard.min.js"></script>
+    <script src="../../_static/copybutton.js"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../_static/design-tabs.js"></script>
+    <script loading_method="async" src="https://www.googletagmanager.com/gtag/js?id=G-P5E8DW088F"></script>
+    <script>
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){ dataLayer.push(arguments); }
+                gtag('js', new Date());
+                gtag('config', 'G-P5E8DW088F');
+            </script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="../../_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'chap07_prob/03_joint/roch-mmids-prob-joint';</script>
+    <link rel="canonical" href="https://mmids-textbook.github.io/chap07_prob/03_joint/roch-mmids-prob-joint.html" />
+    <link rel="shortcut icon" href="https://mmids-textbook.github.io/favicon-32x32.png"/>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="7.4. Linear-Gaussian models and Kalman filtering" href="../04_kalman/roch-mmids-prob-kalman.html" />
+    <link rel="prev" title="7.2. Background: introduction to parametric families and maximum likelihood estimation" href="../02_parametric/roch-mmids-prob-parametric.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="None"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+
+<a class="navbar-brand logo" href="../../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/mmids-cover-small.jpg" class="logo__image only-light" alt="MMiDS Textbook - Home"/>
+    <script>document.write(`<img src="../../_static/mmids-cover-small.jpg" class="logo__image only-dark" alt="MMiDS Textbook - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../index.html">
+                    <b>MATHEMATICAL METHODS in DATA SCIENCE (with Python)</b>
+                </a>
+            </li>
+        </ul>
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../chap01_intro/00_intro/roch-mmids-intro-intro.html">1. Introduction</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../chap01_intro/01_motiv/roch-mmids-intro-motiv.html">1.1. Motivating example: identifying penguin species</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap01_intro/02_review/roch-mmids-intro-review.html">1.2. Background: quick refresher of matrix algebra, differential calculus, and elementary probability</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap01_intro/03_clustering/roch-mmids-intro-clustering.html">1.3. Clustering: an objective, an algorithm and a guarantee</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap01_intro/04_highdim/roch-mmids-intro-highdim.html">1.4. Some observations about high-dimensional data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap01_intro/05_adv/roch-mmids-intro-adv.html">1.5. Advanced material</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap01_intro/summary_chap01.html">1.6. Other resources</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../chap02_ls/00_intro/roch-mmids-ls-intro.html">2. Least squares: geometric, algebraic, and numerical aspects</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../chap02_ls/01_motiv/roch-mmids-ls-motiv.html">2.1. Motivating example: predicting sales</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap02_ls/02_subspaces/roch-mmids-ls-spaces.html">2.2. Background: review of vector spaces</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap02_ls/03_orthog/roch-mmids-ls-orthog.html">2.3. Orthogonal projection and overdetermined linear systems</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap02_ls/04_qr/roch-mmids-ls-qr.html">2.4. QR decomposition and Householder transformations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap02_ls/05_regression/roch-mmids-ls-regression.html">2.5. Application to regression analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap02_ls/06_adv/roch-mmids-ls-adv.html">2.6. Advanced material</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap02_ls/summary_chap02.html">2.7. Other resources</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../chap03_svd/00_intro/roch-mmids-svd-intro.html">3. Singular value decomposition</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-3"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../chap03_svd/01_motiv/roch-mmids-svd-motiv.html">3.1. Motivating example: visualizing viral genomes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap03_svd/02_spectral/roch-mmids-svd-spectral.html">3.2. Background: further review of linear algebra</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap03_svd/03_svd/roch-mmids-svd-svd.html">3.3. Approximating subspaces and the SVD</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap03_svd/04_power/roch-mmids-svd-power.html">3.4. Power iteration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap03_svd/05_pca/roch-mmids-svd-pca.html">3.5. Application to dimensionality reduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap03_svd/06_further/roch-mmids-svd-further.html">3.6. Further applications of the SVD</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap03_svd/07_adv/roch-mmids-svd-adv.html">3.7. Advanced material</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap03_svd/summary_chap03.html">3.8. Other resources</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../chap04_specgraph/00_intro/roch-mmids-specgraph-intro.html">4. Spectral graph theory</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-4"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../chap04_specgraph/01_motiv/roch-mmids-specgraph-motiv.html">4.1. Motivating example: uncovering social groups</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap04_specgraph/02_graph/roch-mmids-specgraph-graph.html">4.2. Background: basic concepts in graph theory</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap04_specgraph/03_extremal/roch-mmids-specgraph-extremal.html">4.3. Variational characterization of eigenvalues</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap04_specgraph/04_laplacian/roch-mmids-specgraph-laplacian.html">4.4. Spectral properties of the Laplacian matrix</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap04_specgraph/05_partitioning/roch-mmids-specgraph-partitioning.html">4.5. Application to graph partitioning via spectral clustering</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap04_specgraph/summary_chap04.html">4.6. Other resources</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../chap05_rwmc/00_intro/roch-mmids-rwmc-intro.html">5. Random walks on graphs and Markov chains</a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-5"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../chap05_rwmc/01_motiv/roch-mmids-rwmc-motiv.html">5.1. Motivating example: discovering relevant mathematical topics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap05_rwmc/02_conditioning/roch-mmids-rwmc-conditioning.html">5.2. Background: review of conditional probability</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap05_rwmc/03_mcdefs/roch-mmids-rwmc-mcdefs.html">5.3. Elements of finite Markov chains</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap05_rwmc/04_mclimit/roch-mmids-rwmc-mclimit.html">5.4. Limit behavior</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap05_rwmc/05_pagerank/roch-mmids-rwmc-pagerank.html">5.5. Random walks on graphs and application to PageRank</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap05_rwmc/06_adv/roch-mmids-rwmc-adv.html">5.6. Advanced material</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap05_rwmc/summary_chap05.html">5.7. Other resources</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../chap06_opt/00_intro/roch-mmids-opt-intro.html">6. Optimization theory and algorithms</a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-6"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../chap06_opt/01_motiv/roch-mmids-opt-motiv.html">6.1. Motivating example:  deciphering handwriting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap06_opt/02_several/roch-mmids-opt-several.html">6.2. Background: review of differentiable functions of several variables and introduction to automatic differentiation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap06_opt/03_optimality/roch-mmids-opt-optimality.html">6.3. Optimality conditions and convexity</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap06_opt/04_gd/roch-mmids-opt-gd.html">6.4. Gradient descent and its convergence analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap06_opt/05_backprop/roch-mmids-opt-backprop.html">6.5. Backpropagation and application to neural networks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap06_opt/06_adv/roch-mmids-opt-adv.html">6.6. Advanced material</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap06_opt/summary_chap06.html">6.7. Other resources</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="../00_intro/roch-mmids-prob-intro.html">7. Probabilistic models: from simple to complex</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-7"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../01_motiv/roch-mmids-prob-motiv.html">7.1. Motivating example: tracking location</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../02_parametric/roch-mmids-prob-parametric.html">7.2. Background: introduction to parametric families and maximum likelihood estimation</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">7.3. Modeling correlated random variables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../04_kalman/roch-mmids-prob-kalman.html">7.4. Linear-Gaussian models and Kalman filtering</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../05_gibbs/roch-mmids-prob-gibbs.html">7.5. Gibbs sampling with application to generating images</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../summary_chap07.html">7.6. Other resources</a></li>
+</ul>
+</li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/MMiDS-textbook/MMiDS-textbook.github.io" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/MMiDS-textbook/MMiDS-textbook.github.io/issues/new?title=Issue%20on%20page%20%2Fchap07_prob/03_joint/roch-mmids-prob-joint.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/chap07_prob/03_joint/roch-mmids-prob-joint.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Modeling correlated random variables</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#marginalizing-out-an-unobserved-random-variable">7.3.1. Marginalizing out an unobserved random variable</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#using-conditional-independence-relations">7.3.2. Using conditional independence relations</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#example-1-naive-bayes">7.3.3. Example 1: Naive Bayes</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#example-2-mixtures-of-multivariate-bernoullis-and-the-em-algorithm">7.3.4. Example 2: Mixtures of multivariate Bernoullis and the EM algorithm</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <p><span class="math notranslate nohighlight">\(\newcommand{\P}{\mathbb{P}}\)</span> <span class="math notranslate nohighlight">\(\newcommand{\E}{\mathbb{E}}\)</span> <span class="math notranslate nohighlight">\(\newcommand{\S}{\mathcal{S}}\)</span> <span class="math notranslate nohighlight">\(\newcommand{\var}{\mathrm{Var}}\)</span> <span class="math notranslate nohighlight">\(\newcommand{\btheta}{\boldsymbol{\theta}}\)</span> <span class="math notranslate nohighlight">\(\newcommand{\bphi}{\boldsymbol{\phi}}\)</span> <span class="math notranslate nohighlight">\(\newcommand{\bpi}{\boldsymbol{\pi}}\)</span> <span class="math notranslate nohighlight">\(\newcommand{\bmu}{\boldsymbol{\mu}}\)</span> <span class="math notranslate nohighlight">\(\newcommand{\blambda}{\boldsymbol{\lambda}}\)</span> <span class="math notranslate nohighlight">\(\newcommand{\bSigma}{\boldsymbol{\Sigma}}\)</span> <span class="math notranslate nohighlight">\(\newcommand{\balpha}{\boldsymbol{\alpha}}\)</span> <span class="math notranslate nohighlight">\(\newcommand{\indep}{\perp\!\!\!\perp}\)</span> <span class="math notranslate nohighlight">\(\newcommand{\bp}{\mathbf{p}}\)</span> <span class="math notranslate nohighlight">\(\newcommand{\bx}{\mathbf{x}}\)</span> <span class="math notranslate nohighlight">\(\newcommand{\bX}{\mathbf{X}}\)</span> <span class="math notranslate nohighlight">\(\newcommand{\by}{\mathbf{y}}\)</span> <span class="math notranslate nohighlight">\(\newcommand{\bY}{\mathbf{Y}}\)</span> <span class="math notranslate nohighlight">\(\newcommand{\bz}{\mathbf{z}}\)</span> <span class="math notranslate nohighlight">\(\newcommand{\bZ}{\mathbf{Z}}\)</span> <span class="math notranslate nohighlight">\(\newcommand{\bw}{\mathbf{w}}\)</span> <span class="math notranslate nohighlight">\(\newcommand{\bW}{\mathbf{W}}\)</span> <span class="math notranslate nohighlight">\(\newcommand{\pa}{\mathrm{pa}}\)</span></p>
+<section id="modeling-correlated-random-variables">
+<h1><span class="section-number">7.3. </span>Modeling correlated random variables<a class="headerlink" href="#modeling-correlated-random-variables" title="Permalink to this headline">#</a></h1>
+<p>In this notebook, we discuss two standard techniques for constructing joint distributions from simpler building blocks: (1) marginalizing out an unobserved random variable and (2) imposing conditional independence relations. Combining them produces a large class of models known as probabilistic graphical models. As before, we make our derivations in the finite support case, but these can be adapted to continuous cases.</p>
+<p>Our starting point for both techniques will be the product rule: if <span class="math notranslate nohighlight">\(\bX = (X_1,\ldots,X_r)\)</span> is a discrete random vector, then for any <span class="math notranslate nohighlight">\(\bx = (x_1,\ldots,x_r) \in \S_{\mathbf{X}}\)</span></p>
+<div class="math notranslate nohighlight">
+\[
+\P[\bX = \bx]
+= \P\left[\cap_{i=1}^r \{X_i = x_i\}\right]
+= \prod_{i=1}^r \P\left[X_i = x_i \,\middle|\, \cap_{j=1}^{i-1} \{X_j = x_j\} \right].
+\]</div>
+<p>Hence, we can specify a joint distribution through a chain marginal and conditional distributions. Note that we can re-order the variables <span class="math notranslate nohighlight">\(X_1, \ldots, X_r\)</span> arbitrarily, giving rise to different representations.</p>
+<section id="marginalizing-out-an-unobserved-random-variable">
+<h2><span class="section-number">7.3.1. </span>Marginalizing out an unobserved random variable<a class="headerlink" href="#marginalizing-out-an-unobserved-random-variable" title="Permalink to this headline">#</a></h2>
+<p>Mixtures are a natural way to define probability distributions. The basic idea is to consider a pair of random vectors <span class="math notranslate nohighlight">\((\bX,\bY)\)</span> and assume that <span class="math notranslate nohighlight">\(\bY\)</span> is unobserved. The effect on the observed vector <span class="math notranslate nohighlight">\(\bX\)</span> is that <span class="math notranslate nohighlight">\(\bY\)</span> is marginalized out. Indeed, by the law of total probability, for any <span class="math notranslate nohighlight">\(\bx \in \S_\bX\)</span></p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+p_\bX(\bx)
+&amp;= \P[\bX = \bx]\\
+&amp;= \sum_{\by \in \S_\bY} \P[\bX=\bx|\bY=\by] \,\P[\bY=\by]\\
+&amp;= \sum_{\by \in \S_\bY} p_{\bX|\bY}(\bx|\by) \,p_\bY(\by)
+\end{align*}\]</div>
+<p>where we used that the events <span class="math notranslate nohighlight">\(\{\bY=\by\}\)</span>, <span class="math notranslate nohighlight">\(\by \in \S_\bY\)</span>, form a partition of the probability space. We interpret this equation as defining <span class="math notranslate nohighlight">\(p_\bX(\bx)\)</span> as a convex combination - a mixture - of the distributions <span class="math notranslate nohighlight">\(p_{\bX|\bY}(\bx|\by)\)</span>, <span class="math notranslate nohighlight">\(\by \in \S_\bY\)</span>, with mixing weights <span class="math notranslate nohighlight">\(p_\bY(\by)\)</span>. In general, we need to specify the full conditional probability distribution (CPD): <span class="math notranslate nohighlight">\(p_{\bX|\bY}(\bx|\by), \forall \bx \in \S_{\bX}, \by \in \S_\bY\)</span>. But assuming that the mixing weights and/or CPD come from parametric families can help reduce the complexity of the model.</p>
+<p>In particular, in the parametric context, this gives rise to a powerful approach to expanding distribution families. Suppose <span class="math notranslate nohighlight">\(\{p_\btheta:\btheta \in \Theta\}\)</span> is a parametric family of distributions. Let <span class="math notranslate nohighlight">\(K \geq 2\)</span>, <span class="math notranslate nohighlight">\(\btheta_1, \ldots, \btheta_K \in \Theta\)</span> and <span class="math notranslate nohighlight">\(\bpi = (\pi_1,\ldots,\pi_K) \in \Delta_K\)</span>. Suppose <span class="math notranslate nohighlight">\(Y \sim \mathrm{Cat}(\bpi)\)</span> and that the conditional distributions satisfy</p>
+<div class="math notranslate nohighlight">
+\[
+p_{\bX|Y}(\bx|i)
+= p_{\btheta_i}(\bx).
+\]</div>
+<p>We write this as <span class="math notranslate nohighlight">\(\bX|\{Y=i\} \sim p_{\btheta_i}\)</span>. Then we obtain the mixture model</p>
+<div class="math notranslate nohighlight">
+\[
+p_{\bX}(\bx)
+= \sum_{i=1}^K p_{\bX|Y}(\bx|i) \,p_Y(i)
+= \sum_{i=1}^K \pi_i p_{\btheta_i}(\bx).
+\]</div>
+<p><strong>EXAMPLE:</strong> <strong>(Mixture of Multinomials)</strong> Let <span class="math notranslate nohighlight">\(n, m , K \geq 1\)</span>, <span class="math notranslate nohighlight">\(\bpi \in \Delta_K\)</span> and, for <span class="math notranslate nohighlight">\(i=1,\ldots,K\)</span>, <span class="math notranslate nohighlight">\(\mathbf{p}_i = (p_{i1},\ldots,p_{im}) \in \Delta_m\)</span>.
+Suppose that <span class="math notranslate nohighlight">\(Y \sim \mathrm{Cat}(\bpi)\)</span> and that the conditional distributions are</p>
+<div class="math notranslate nohighlight">
+\[
+\bX|\{Y=i\} \sim \mathrm{Mult}(n, \mathbf{p}_i).
+\]</div>
+<p>Then <span class="math notranslate nohighlight">\(\bX\)</span> is a mixture of multinomials. Its distribution is then</p>
+<div class="math notranslate nohighlight">
+\[
+p_\bX(\bx)
+= \sum_{i=1}^K \pi_i \frac{n!}{x_1!\cdots x_m!} \prod_{j=1}^m p_{ij}^{x_j}.
+\]</div>
+<p><span class="math notranslate nohighlight">\(\lhd\)</span></p>
+<p>Next is an important continuous example.</p>
+<p><strong>EXAMPLE:</strong> <strong>(Gaussian mixture model)</strong> For <span class="math notranslate nohighlight">\(i=1,\ldots,K\)</span>, let <span class="math notranslate nohighlight">\(\bmu_i\)</span> and <span class="math notranslate nohighlight">\(\bSigma_i\)</span> be the mean and covariance matrix of a multivariate normal distribution. Let <span class="math notranslate nohighlight">\(\bpi \in \Delta_K\)</span>. A Gaussian Mixture Model (GMM) is obtained as follows: take <span class="math notranslate nohighlight">\(Y \sim \mathrm{Cat}(\bpi)\)</span> and</p>
+<div class="math notranslate nohighlight">
+\[
+\bX|\{Y=i\} \sim \mathcal{N}(\bmu_i, \bSigma_i).
+\]</div>
+<p>It has a probability density function of the form</p>
+<div class="math notranslate nohighlight">
+\[
+f_\bX(\bx)
+= \sum_{i=1}^K \pi_i \frac{1}{(2\pi)^{d/2} \,|\bSigma_i|^{1/2}}
+\exp\left(-\frac{1}{2}(\mathbf{x} - \bmu_i)^T \bSigma_i^{-1} (\bx - \bmu_i)\right).
+\]</div>
+<p>This is illustrated below.</p>
+<p><img alt="GMM" src="https://miro.medium.com/max/1400/1*yyazQ3QnW-gj__noFczZMA.png" /></p>
+<p><strong>Figure:</strong> Density of a GMM (<a class="reference external" href="https://towardsdatascience.com/understanding-anomaly-detection-in-python-using-gaussian-mixture-model-e26e5d06094b">Source</a>)</p>
+<p>We could also consider continuous mixing distributions. Several standard approaches, e.g. probabilistic PCA, factor analysis and independent components analysis, use such mixtures. See [<a class="reference external" href="https://www.microsoft.com/en-us/research/uploads/prod/2006/01/Bishop-Pattern-Recognition-and-Machine-Learning-2006.pdf">Bis</a>, Chapter 12]. <span class="math notranslate nohighlight">\(\lhd\)</span></p>
+<p><strong>NUMERICAL CORNER</strong> In Numpy, the module <a class="reference external" href="https://numpy.org/doc/stable/reference/random/index.html">numpy.random</a> also provides a way to sample from mixture models by using <a class="reference external" href="https://numpy.org/doc/stable/reference/random/generated/numpy.random.Generator.choice.html">numpy.random.Generator.choice</a>. This is better seen on an example.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">seed</span> <span class="o">=</span> <span class="mi">535</span> <span class="c1"># setting the seed</span>
+<span class="n">rng</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">(</span><span class="n">seed</span><span class="p">)</span> 
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># constructs a mixture of three normal distributions,</span>
+<span class="c1"># with prior probabilities [0.2, 0.5, 0.3]</span>
+<span class="n">mus</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="o">-</span><span class="mf">2.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">3.0</span><span class="p">])</span>
+<span class="n">sigmas</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">1.2</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">2.5</span><span class="p">])</span>
+<span class="n">coeffs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">N</span> <span class="o">=</span> <span class="mi">5</span> <span class="c1"># number of samples</span>
+<span class="n">which</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="n">N</span><span class="p">,</span><span class="n">p</span><span class="o">=</span><span class="n">coeffs</span><span class="p">)</span>
+<span class="n">rng</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">mus</span><span class="p">[</span><span class="n">which</span><span class="p">],</span><span class="n">sigmas</span><span class="p">[</span><span class="n">which</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([ 7.85481903, -0.14756359, -0.41493119, -0.26154523,  0.88082854])
+</pre></div>
+</div>
+</div>
+</div>
+<p><span class="math notranslate nohighlight">\(\unlhd\)</span></p>
+</section>
+<section id="using-conditional-independence-relations">
+<h2><span class="section-number">7.3.2. </span>Using conditional independence relations<a class="headerlink" href="#using-conditional-independence-relations" title="Permalink to this headline">#</a></h2>
+<p>Another powerful approach is the use of conditional independence.</p>
+<p><strong>Reminder</strong> Recall the definition.</p>
+<p><strong>DEFINITION</strong> <strong>(Conditional Independence)</strong> Let <span class="math notranslate nohighlight">\(A, B, C\)</span> be events such that <span class="math notranslate nohighlight">\(\P[C] &gt; 0\)</span>. Then <span class="math notranslate nohighlight">\(A\)</span> and <span class="math notranslate nohighlight">\(B\)</span> are conditionally independent given <span class="math notranslate nohighlight">\(C\)</span>, denoted <span class="math notranslate nohighlight">\(A \indep B | C\)</span>, if</p>
+<div class="math notranslate nohighlight">
+\[
+\P[A \cap B| C] = \P[A|C] \,\P[B|C].
+\]</div>
+<p><span class="math notranslate nohighlight">\(\natural\)</span></p>
+<p>The following property will play a role.</p>
+<p><strong>LEMMA</strong> <strong>(Role of Independence)</strong> Let <span class="math notranslate nohighlight">\(\bX, \bY, \bW\)</span> be discrete random vectors such that <span class="math notranslate nohighlight">\(\bX \indep \bY | \bW\)</span>. For all <span class="math notranslate nohighlight">\(\bx \in \S_\bX\)</span>, <span class="math notranslate nohighlight">\(\by \in \S_\bY\)</span> and <span class="math notranslate nohighlight">\(\bw \in \S_\bW\)</span>,</p>
+<div class="math notranslate nohighlight">
+\[
+\P[\bX = \bx | \bY=\by, \bW=\bw]
+= \P[\bX = \bx | \bW = \bw].
+\]</div>
+<p><span class="math notranslate nohighlight">\(\flat\)</span></p>
+<p><em>Proof:</em> In a previous exercise, we showed that <span class="math notranslate nohighlight">\(A \indep B | C\)</span> implies <span class="math notranslate nohighlight">\(\P[A | B\cap C] = \P[A | C]\)</span>. That implies the claim. <span class="math notranslate nohighlight">\(\square\)</span></p>
+<p><strong>The basic configurations</strong> The case of three random variables exemplifies key probabilistic relationships. By the product rule, we can write</p>
+<div class="math notranslate nohighlight">
+\[
+\P[X=x, Y=y, Z=z]
+= \P[X=x] \,\P[Y=y|X=x] \,\P[Z=z | X=x, Y=y].
+\]</div>
+<p>This is conveniently represented through a digraph where the vertices are the variables. Recall that an arrow <span class="math notranslate nohighlight">\((i,j)\)</span>, from <span class="math notranslate nohighlight">\(i\)</span> to <span class="math notranslate nohighlight">\(j\)</span>, indicates that <span class="math notranslate nohighlight">\(i\)</span> is a parent of <span class="math notranslate nohighlight">\(j\)</span> and that <span class="math notranslate nohighlight">\(j\)</span> is a child of <span class="math notranslate nohighlight">\(i\)</span>. Let <span class="math notranslate nohighlight">\(\pa(i)\)</span> be the set of parents of <span class="math notranslate nohighlight">\(i\)</span>. The digraph <span class="math notranslate nohighlight">\(G = (V, E)\)</span> below encodes the following sampling scheme, referred as ancestral sampling:</p>
+<ol class="arabic simple">
+<li><p>First we pick <span class="math notranslate nohighlight">\(X\)</span> according to its marginal <span class="math notranslate nohighlight">\(\P[X=x]\)</span>. Note that <span class="math notranslate nohighlight">\(X\)</span> has no parent in <span class="math notranslate nohighlight">\(G\)</span>.</p></li>
+<li><p>Second we pick <span class="math notranslate nohighlight">\(Y\)</span> according to the CPD <span class="math notranslate nohighlight">\(\P[Y=y|X=x]\)</span>. Note that <span class="math notranslate nohighlight">\(X\)</span> is the only parent of <span class="math notranslate nohighlight">\(Y\)</span>.</p></li>
+<li><p>Finally we pick <span class="math notranslate nohighlight">\(Z\)</span> according to the CPD <span class="math notranslate nohighlight">\(\P[Z=z|X=x, Y=y]\)</span>. Note that the parents of <span class="math notranslate nohighlight">\(Z\)</span> are <span class="math notranslate nohighlight">\(X\)</span> and <span class="math notranslate nohighlight">\(Y\)</span>.</p></li>
+</ol>
+<p><img alt="The full case" src="../../_images/dgm-full1-small.png" /></p>
+<p><strong>Figure:</strong> The full case</p>
+<p>Note that the graph above is acyclic, that is, it has no directed cycle. In particular, the ordering of variables <span class="math notranslate nohighlight">\(X, Y, Z\)</span> is a <a class="reference external" href="https://en.wikipedia.org/wiki/Topological_sorting">topological ordering</a>, that is, an ordering of the vertices where all edges <span class="math notranslate nohighlight">\((i,j)\)</span> are such that <span class="math notranslate nohighlight">\(i\)</span> comes before <span class="math notranslate nohighlight">\(j\)</span>.</p>
+<p>The same joint distribution can be represented by a different digraph if the product rule is used in a different order. For instance,</p>
+<div class="math notranslate nohighlight">
+\[
+\P[X=x, Y=y, Z=z]
+= \P[Z=z] \,\P[Y=y|Z=z] \,\P[X=x | Z=z, Y=y]
+\]</div>
+<p>is represented by the following digraph.</p>
+<p><img alt="Another full case" src="../../_images/dgm-full2-small.png" /></p>
+<p><strong>Figure:</strong> Another full case</p>
+<p><em>The fork:</em> Removing edges in the first graph above encodes conditional independence relations. For instance, removing the edge from <span class="math notranslate nohighlight">\(Y\)</span> to <span class="math notranslate nohighlight">\(Z\)</span> gives the following graph, known as a fork. We denote this configuration as <span class="math notranslate nohighlight">\(Y \leftarrow X \rightarrow Z\)</span>.</p>
+<p><img alt="The fork" src="../../_images/dgm-fork-small.png" /></p>
+<p><strong>Figure:</strong> The fork</p>
+<p>The joint distribution simplifies as follows:</p>
+<div class="math notranslate nohighlight">
+\[
+\P[X=x, Y=y, Z=z]
+= \P[X=x] \,\P[Y=y|X=x] \,\P[Z=z | X=x].
+\]</div>
+<p>So, in this case, what has changed is that the CPD of <span class="math notranslate nohighlight">\(Z\)</span> does not depend on the value of <span class="math notranslate nohighlight">\(Y\)</span>. That is, <span class="math notranslate nohighlight">\(Z \indep Y|X\)</span>. Indeed, we can check that claim directly</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+\P[Y= y, Z=z|X=x]
+&amp;= \frac{\P[X=x, Y= y, Z=z]}{\P[X=x]}\\
+&amp;= \frac{\P[X=x] \,\P[Y=y|X=x] \,\P[Z=z | X=x]}{\P[X=x]}\\
+&amp;= \P[Y=y|X=x] \,\P[Z=z | X=x]
+\end{align*}\]</div>
+<p>as claimed.</p>
+<p><em>The chain:</em> Removing the edge from <span class="math notranslate nohighlight">\(X\)</span> to <span class="math notranslate nohighlight">\(Z\)</span> gives the following graph, known as a chain (or pipe). We denote this configuration as <span class="math notranslate nohighlight">\(X \rightarrow Y \rightarrow Z\)</span>.</p>
+<p><img alt="The chain" src="../../_images/dgm-chain-small.png" /></p>
+<p><strong>Figure:</strong> The chain</p>
+<p>The joint distribution simplifies as follows:</p>
+<div class="math notranslate nohighlight">
+\[
+\P[X=x, Y=y, Z=z]
+= \P[X=x] \,\P[Y=y|X=x] \,\P[Z=z | Y=y].
+\]</div>
+<p>In this case, what has changed is that the CPD of <span class="math notranslate nohighlight">\(Z\)</span> does not depend on the value of <span class="math notranslate nohighlight">\(X\)</span>. Compare that to the fork. The corresponding conditional independence relation is <span class="math notranslate nohighlight">\(Z \indep X|Y\)</span>. Indeed, we can check that claim directly</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+\P[X= x, Z=z|Y=y]
+&amp;= \frac{\P[X=x, Y= y, Z=z]}{\P[Y=y]}\\
+&amp;= \frac{\P[X=x] \,\P[Y=y|X=x] \,\P[Z=z | Y=y]}{\P[Y=y]}
+\end{align*}\]</div>
+<p>Now we have to use Bayes’ rule to get</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+&amp;= \frac{\P[X=x] \,\P[Y=y|X=x] \,\P[Z=z | Y=y]}{\P[Y=y]}\\
+&amp;= \frac{\P[Y=y|X=x]\,\P[X=x]}{\P[Y=y]} \P[Z=z | Y=y]\\
+&amp;= \P[X=x|Y=y] \,\P[Z=z | Y=y]
+\end{align*}\]</div>
+<p>as claimed.</p>
+<p><em>The collider:</em> Removing the edge from <span class="math notranslate nohighlight">\(X\)</span> to <span class="math notranslate nohighlight">\(Y\)</span> gives the following graph, known as a collider. We denote this configuration as <span class="math notranslate nohighlight">\(X \rightarrow Z \leftarrow Y\)</span>.</p>
+<p><img alt="The collider" src="../../_images/dgm-collider-small.png" /></p>
+<p><strong>Figure:</strong> The collider</p>
+<p>The joint distribution simplifies as follows:</p>
+<div class="math notranslate nohighlight">
+\[
+\P[X=x, Y=y, Z=z]
+= \P[X=x] \,\P[Y=y] \,\P[Z=z | X=x, Y=y].
+\]</div>
+<p>In this case, what has changed is that the CPD of <span class="math notranslate nohighlight">\(Y\)</span> does not depend on the value of <span class="math notranslate nohighlight">\(X\)</span>. Compare that to the fork and the chain. This time we have <span class="math notranslate nohighlight">\(X \indep Y\)</span>. Indeed, we can check that claim directly</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+\P[X= x, Y=y]
+&amp;= \sum_{z \in \S_z} \P[X=x, Y=y, Z=z]\\
+&amp;=  \sum_{z \in \S_z} \P[X=x] \,\P[Y=y] \,\P[Z=z | X=x, Y=y]\\
+&amp;= \P[X=x] \,\P[Y=y]
+\end{align*}\]</div>
+<p>as claimed.</p>
+<p>Perhaps counter-intuitively, conditioning on <span class="math notranslate nohighlight">\(Z\)</span> makes <span class="math notranslate nohighlight">\(X\)</span> and <span class="math notranslate nohighlight">\(Y\)</span> dependent in general. This is known as explaining away or Berkson’s Paradox. Quoting my colleague <a class="reference external" href="https://en.wikipedia.org/wiki/Berkson%27s_paradox#Ellenberg_example">Jordan Ellenberg</a>:</p>
+<blockquote>
+<div><p>Suppose Alex will only date a man if his niceness plus his handsomeness exceeds some threshold. Then nicer men do not have to be as handsome to qualify for Alex’s dating pool. So, among the men that Alex dates, Alex may observe that the nicer ones are less handsome on average (and vice versa), even if these traits are uncorrelated in the general population. Note that this does not mean that men in the dating pool compare unfavorably with men in the population. On the contrary, Alex’s selection criterion means that Alex has high standards. The average nice man that Alex dates is actually more handsome than the average man in the population (since even among nice men, the ugliest portion of the population is skipped). Berkson’s negative correlation is an effect that arises within the dating pool: the rude men that Alex dates must have been even more handsome to qualify.</p>
+</div></blockquote>
+</section>
+<section id="example-1-naive-bayes">
+<h2><span class="section-number">7.3.3. </span>Example 1: Naive Bayes<a class="headerlink" href="#example-1-naive-bayes" title="Permalink to this headline">#</a></h2>
+<p>The model-based justification for logistic regression in the previous section used a so-called <a class="reference external" href="https://en.wikipedia.org/wiki/Discriminative_model">discriminative approach</a>, where the conditional distribution of the target <span class="math notranslate nohighlight">\(y\)</span> given the features <span class="math notranslate nohighlight">\(\mathbf{x}\)</span> is specified - but not the full distribution of the data <span class="math notranslate nohighlight">\((\mathbf{x}, y)\)</span>. Here we give an example of the <a class="reference external" href="https://en.wikipedia.org/wiki/Generative_model">generative approach</a>, which models the full distribution. For a discussion of the benefits and drawbacks of each approach, see for example <a class="reference external" href="https://en.wikipedia.org/wiki/Discriminative_model#Contrast_with_generative_model">here</a>.</p>
+<p>The Naive Bayes model is a simple discrete model for supervised learning. It is useful for document classification for instance, and we will use that terminology here to be concrete. We assume that a document has a single topic <span class="math notranslate nohighlight">\(C\)</span> from a list <span class="math notranslate nohighlight">\(\mathcal{C} = \{1, \ldots, K\}\)</span> with probability distribution <span class="math notranslate nohighlight">\(\pi_k = \P[C = k]\)</span>. There is a vocabulary of size <span class="math notranslate nohighlight">\(M\)</span> and we record the presence or absence of a word <span class="math notranslate nohighlight">\(m\)</span> in the document with a Bernoulli variable <span class="math notranslate nohighlight">\(X_m\)</span>, where <span class="math notranslate nohighlight">\(p_{km} = \P[X_m = 1|C = k]\)</span>. We denote by <span class="math notranslate nohighlight">\(\bX = (X_1, \ldots, X_M)\)</span> the corresponding vector.</p>
+<p>The conditional independence assumption comes next: we assume that, given a topic <span class="math notranslate nohighlight">\(C\)</span>, the word occurrences are independent. That is,</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+\P[\bX = \bx|C=k]
+&amp;= \prod_{m=1}^M \P[X_m = x_m|C = k]\\
+&amp;= \prod_{m=1}^M p_{km}^{x_m} (1-p_{km})^{1-x_m}.
+\end{align*}\]</div>
+<p>Finally, the joint distribution is</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+\P[C = k, \bX = \bx]
+&amp;= \P[\bX = \bx|C=k] \,\P[C=k]\\
+&amp;= \pi_k \prod_{m=1}^M p_{km}^{x_m} (1-p_{km})^{1-x_m}.
+\end{align*}\]</div>
+<p><em>Model fitting:</em> Before using the model for prediction, one must first fit the model from training data <span class="math notranslate nohighlight">\(\{\bx_i, c_i\}_{i=1}^n\)</span>. In this case, it means estimating the unknown parameters <span class="math notranslate nohighlight">\(\bpi\)</span> and <span class="math notranslate nohighlight">\(\{\bp_k\}_{k=1}^K\)</span>, where <span class="math notranslate nohighlight">\(\bp_k = (p_{k1},\ldots, p_{kM})\)</span>. For each <span class="math notranslate nohighlight">\(k, m\)</span> let</p>
+<div class="math notranslate nohighlight">
+\[
+N_{km} = \sum_{i=1}^n \mathbf{1}_{\{c_i = k\}}x_{i,m},
+\quad 
+N_{k} = \sum_{i=1}^n \mathbf{1}_{\{c_i = k\}}.
+\]</div>
+<p>We use maximum likelihood estimation which, recall, entails finding the parameters that maximize the probability of observing the data</p>
+<div class="math notranslate nohighlight">
+\[
+\mathcal{L}(\bpi, \{\bp_k\}; \{\bx_i, c_i\})
+= \prod_{i=1}^n \pi_{c_i} \prod_{m=1}^M p_{c_i, m}^{x_{i,m}} (1-p_{c_i, m})^{1-x_{i,m}}.
+\]</div>
+<p>Here, as usual, we assume that the samples are independent and identically distributed. We take a logarithm to turn the products into sums and consider the negative log-likelihood</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+&amp; L_n(\bpi, \{\bp_k\}; \{\bx_i, c_i\})\\
+&amp;\quad = - \sum_{i=1}^n \log \pi_{c_i} - \sum_{i=1}^n \sum_{m=1}^M [x_{i,m} \log p_{c_{i}, m} + (1-x_{i,m}) \log (1-p_{c_i, m})]\\
+&amp;\quad = - \sum_{k=1}^K N_k \log \pi_k - \sum_{k=1}^K \sum_{m=1}^M [N_{km} \log p_{km} + (N_k-N_{km}) \log (1-p_{km})].
+\end{align*}\]</div>
+<p>The negative log-likelihood can be broken up naturally into several terms that depend on different sets of parameters – and therefore can be optimized separately. First, there is a term that depends only on the <span class="math notranslate nohighlight">\(\pi_k\)</span>’s</p>
+<div class="math notranslate nohighlight">
+\[
+J_0(\bpi; \{\bx_i, c_i\}) = - \sum_{k=1}^K N_k \log \pi_k.
+\]</div>
+<p>The rest of the sum can be further split into <span class="math notranslate nohighlight">\(KM\)</span> terms, each depending only on <span class="math notranslate nohighlight">\(p_{km}\)</span> for a fixed <span class="math notranslate nohighlight">\(k\)</span> and m</p>
+<div class="math notranslate nohighlight">
+\[
+J_{km}(p_{km}; \{\bx_i, c_i\})
+= - N_{km} \log p_{km} - (N_k-N_{km}) \log (1-p_{km}).
+\]</div>
+<p>So</p>
+<div class="math notranslate nohighlight">
+\[
+L_n(\bpi, \{\bp_k\}; \{\bx_i, c_i\})
+= J_0(\bpi; \{\bx_i, c_i\}) + \sum_{k=1}^K \sum_{m=1}^M J_{km}(p_{km}; \{\bx_i, c_i\}).
+\]</div>
+<p>We minimize these terms separately. We assume that <span class="math notranslate nohighlight">\(N_k &gt; 0\)</span> for all <span class="math notranslate nohighlight">\(k\)</span>.</p>
+<p>We use a special case of maximum likelihood estimation, which we previously worked out in an example, where we consider the space of all probability distributions over a finite set. The maximum likelihood estimator in that case is given by the empirical frequencies. Notice that minimizing <span class="math notranslate nohighlight">\(I_0(\bpi; \{\bx_i, c_i\})\)</span> is precisely of this form: we observe <span class="math notranslate nohighlight">\(N_k\)</span> samples from class <span class="math notranslate nohighlight">\(k\)</span> and we seek the maximum likelihood estimator of, <span class="math notranslate nohighlight">\(\pi_k\)</span>, the probability of observing <span class="math notranslate nohighlight">\(k\)</span>. Hence the solution is simply</p>
+<div class="math notranslate nohighlight">
+\[
+\hat{\pi}_k = \frac{N_k}{N},
+\]</div>
+<p>for all <span class="math notranslate nohighlight">\(k\)</span>. Similarly, for each <span class="math notranslate nohighlight">\(k\)</span>, <span class="math notranslate nohighlight">\(m\)</span>, <span class="math notranslate nohighlight">\(I_{km}\)</span> is of that form as well. Here the states correspond to word <span class="math notranslate nohighlight">\(m\)</span> being present or absent in a document of class <span class="math notranslate nohighlight">\(k\)</span>, and we observe <span class="math notranslate nohighlight">\(N_{km}\)</span> documents of type <span class="math notranslate nohighlight">\(k\)</span> where <span class="math notranslate nohighlight">\(m\)</span> is present. So the solution is</p>
+<div class="math notranslate nohighlight">
+\[
+\hat{p}_{km} = \frac{N_{km}}{N_k}
+\]</div>
+<p>for all <span class="math notranslate nohighlight">\(k, m\)</span>.</p>
+<p><em>Prediction:</em> To predict the class of a new document, it is natural to maximize over <span class="math notranslate nohighlight">\(k\)</span> the probability that <span class="math notranslate nohighlight">\(\{C=k\}\)</span> given <span class="math notranslate nohighlight">\(\{\bX = \bx\}\)</span>. By Bayes’ rule,</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+\P[C=k | \bX = \bx]
+&amp;= \frac{\P[C = k, \bX = \bx]}{\P[\bX = \bx]}\\
+&amp;= \frac{\pi_k \prod_{m=1}^M p_{km}^{x_m} (1-p_{km})^{1-x_m}}
+{\sum_{k'=1}^K \pi_{k'} \prod_{m=1}^M p_{k'm}^{x_m} (1-p_{k'm})^{1-x_m}}.
+\end{align*}\]</div>
+<p>As the denominator does not in fact depend on <span class="math notranslate nohighlight">\(k\)</span>, maximizing <span class="math notranslate nohighlight">\(\P[C=c_k | \bX = \bx]\)</span> boils down to maximizing the numerator <span class="math notranslate nohighlight">\(\pi_k \prod_{m=1}^M p_{km}^{x_m} (1-p_{km})^{1-x_m}\)</span>, which is straighforward to compute. Since the parameters are unknown, we use <span class="math notranslate nohighlight">\(\hat{\pi}_k\)</span> and <span class="math notranslate nohighlight">\(\hat{p}_{km}\)</span> in place of <span class="math notranslate nohighlight">\(\pi_k\)</span> and <span class="math notranslate nohighlight">\(p_{km}\)</span>. As we did previously, we often take a negative logarithm, which has some numerical advantages, and we refer to it as the score</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+- \log\left(\pi_k \prod_{m=1}^M p_{km}^{x_m} (1-p_{km})^{1-x_m}\right)
+= -\log\pi_k - \sum_{m=1}^M [x_m \log p_{km} + (1-x_m) \log (1-p_{km})].
+\end{align*}\]</div>
+<p>While maximum likehood estimation has <a class="reference external" href="https://en.wikipedia.org/wiki/Maximum_likelihood_estimation#Properties">desirable theoretical properties</a>, it does suffer from <a class="reference external" href="https://towardsdatascience.com/parameter-inference-maximum-aposteriori-estimate-49f3cd98267a">overfitting</a>. If for instance a particular word does not occur in any training document, then the probability of observing a new document containing that word is <span class="math notranslate nohighlight">\(0\)</span> for any class and the maximization problem above is not well-defined.</p>
+<p>One approach to deal with this is <a class="reference external" href="https://en.wikipedia.org/wiki/Additive_smoothing">Laplace smoothing</a></p>
+<div class="math notranslate nohighlight">
+\[
+\bar{\pi}_k = \frac{N_k + \alpha}{N + K \alpha},
+\quad \bar{p}_{km} = \frac{N_{km} + \beta}{N_k + 2 \beta}
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(\alpha, \beta &gt; 0\)</span>, which can be justified using a Bayesian perspective.</p>
+<p><strong>NUMERICAL CORNER</strong> We implement the Naive Bayes model. We use <a class="reference external" href="https://en.wikipedia.org/wiki/Additive_smoothing">Laplace smoothing</a> to avoid overfitting issues.</p>
+<p>We use a simple example from <a class="reference external" href="https://towardsdatascience.com/all-about-naive-bayes-8e13cef044cf">Towards Data Science</a>:</p>
+<blockquote>
+<div><p><strong>Example:</strong> let’s say we have data on 1000 pieces of fruit. The fruit being a Banana, Orange or some other fruit and imagine we know 3 features of each fruit, whether it’s long or not, sweet or not and yellow or not, as displayed in the table below.</p>
+</div></blockquote>
+<p><img alt="Table" src="https://miro.medium.com/max/1066/1*B_uXqox7nHfwTa1HH4Fc_A.png" /></p>
+<blockquote>
+<div><p>[…] Which should provide enough evidence to predict the class of another fruit as it’s introduced.</p>
+</div></blockquote>
+<p>We encode the data into a table, where the rows are the classes and the columns are the features. The entries are the corresponding <span class="math notranslate nohighlight">\(N_{km}\)</span>’s. In addition we provide the vector <span class="math notranslate nohighlight">\(N_k\)</span>, which is the last column above, and the value <span class="math notranslate nohighlight">\(N\)</span>, which is the sum of the entries of <span class="math notranslate nohighlight">\(N_k\)</span>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">N_km</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mf">400.</span><span class="p">,</span> <span class="mf">350.</span><span class="p">,</span> <span class="mf">450.</span><span class="p">],[</span><span class="mf">0.</span><span class="p">,</span> <span class="mf">150.</span><span class="p">,</span> <span class="mf">300.</span><span class="p">],[</span><span class="mf">100.</span><span class="p">,</span> <span class="mf">150.</span><span class="p">,</span> <span class="mf">50.</span><span class="p">]])</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">nb_fit_table</span><span class="p">(</span><span class="n">N_km</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">1.</span><span class="p">,</span> <span class="n">beta</span><span class="o">=</span><span class="mf">1.</span><span class="p">):</span>
+    
+    <span class="n">K</span><span class="p">,</span> <span class="n">M</span> <span class="o">=</span> <span class="n">N_km</span><span class="o">.</span><span class="n">shape</span>
+    <span class="n">N_k</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">N_km</span><span class="p">,</span><span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">N</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">N_k</span><span class="p">)</span>
+    
+    <span class="c1"># MLE for pi_k&#39;s</span>
+    <span class="n">pi_k</span> <span class="o">=</span> <span class="p">(</span><span class="n">N_k</span><span class="o">+</span><span class="n">alpha</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">N</span><span class="o">+</span><span class="n">K</span><span class="o">*</span><span class="n">alpha</span><span class="p">)</span>
+    
+    <span class="c1"># MLE for p_km&#39;s</span>
+    <span class="n">p_km</span> <span class="o">=</span> <span class="p">(</span><span class="n">N_km</span><span class="o">+</span><span class="n">beta</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">N_k</span><span class="p">[:,</span><span class="kc">None</span><span class="p">]</span><span class="o">+</span><span class="mi">2</span><span class="o">*</span><span class="n">beta</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">pi_k</span><span class="p">,</span> <span class="n">p_km</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>We run it on our simple dataset.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pi_k</span><span class="p">,</span> <span class="n">p_km</span> <span class="o">=</span> <span class="n">nb_fit_table</span><span class="p">(</span><span class="n">N_km</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">pi_k</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[0.61495136 0.23092678 0.15412186]
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">p_km</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[[0.33361065 0.29201331 0.37520799]
+ [0.00221239 0.3340708  0.6659292 ]
+ [0.33443709 0.5        0.16887417]]
+</pre></div>
+</div>
+</div>
+</div>
+<p>Continuing on with our previous example:</p>
+<blockquote>
+<div><p>So let’s say we’re given the features of a piece of fruit and we need to predict the class. If we’re told that the additional fruit is Long, Sweet and Yellow, we can classify it using the [prediction] formula and subbing in the values for each outcome, whether it’s a Banana, an Orange or Other Fruit. The one with the highest probability (score) being the winner.</p>
+</div></blockquote>
+<p>The next function computes the negative logarithm of <span class="math notranslate nohighlight">\(\pi_k \prod_{m=1}^M p_{km}^{x_m} (1-p_{km})^{1-x_m}\)</span>, that is, the score of <span class="math notranslate nohighlight">\(k\)</span>, and outputs a <span class="math notranslate nohighlight">\(k\)</span> achieving the minimum score.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">nb_predict</span><span class="p">(</span><span class="n">pi_k</span><span class="p">,</span> <span class="n">p_km</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">label_set</span><span class="p">):</span>
+   
+    <span class="n">K</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">pi_k</span><span class="p">)</span>
+    
+    <span class="c1"># Computing the score for each k</span>
+    <span class="n">score_k</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">K</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">K</span><span class="p">):</span>
+       
+        <span class="n">score_k</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">+=</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">pi_k</span><span class="p">[</span><span class="n">k</span><span class="p">])</span>
+        <span class="n">score_k</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">+=</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">x</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">p_km</span><span class="p">[</span><span class="n">k</span><span class="p">,:])</span> <span class="o">+</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">x</span><span class="p">)</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">p_km</span><span class="p">[</span><span class="n">k</span><span class="p">,:]))</span>
+    
+    <span class="c1"># Computing the minimum</span>
+    <span class="n">argmin</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmin</span><span class="p">(</span><span class="n">score_k</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+    <span class="n">minscr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">score_k</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">label_set</span><span class="p">[</span><span class="n">argmin</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>We run it on our dataset with the additional fruit from the quote above.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">label_set</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Banana&#39;</span><span class="p">,</span> <span class="s1">&#39;Orange&#39;</span><span class="p">,</span> <span class="s1">&#39;Other&#39;</span><span class="p">]</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">1.</span><span class="p">,</span> <span class="mf">1.</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">nb_predict</span><span class="p">(</span><span class="n">pi_k</span><span class="p">,</span> <span class="n">p_km</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">label_set</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&#39;Banana&#39;
+</pre></div>
+</div>
+</div>
+</div>
+<p><span class="math notranslate nohighlight">\(\unlhd\)</span></p>
+</section>
+<section id="example-2-mixtures-of-multivariate-bernoullis-and-the-em-algorithm">
+<h2><span class="section-number">7.3.4. </span>Example 2: Mixtures of multivariate Bernoullis and the EM algorithm<a class="headerlink" href="#example-2-mixtures-of-multivariate-bernoullis-and-the-em-algorithm" title="Permalink to this headline">#</a></h2>
+<p>We consider now a mixture version of the previous example. Let again <span class="math notranslate nohighlight">\(\mathcal{C} = \{1, \ldots, K\}\)</span> be a collection of classes. Let <span class="math notranslate nohighlight">\(C\)</span> be a random variable taking values in <span class="math notranslate nohighlight">\(\mathcal{C}\)</span> and, for <span class="math notranslate nohighlight">\(m=1, \ldots, M\)</span>, let <span class="math notranslate nohighlight">\(X_i\)</span> take values in <span class="math notranslate nohighlight">\(\{0,1\}\)</span>. Define <span class="math notranslate nohighlight">\(\pi_k = \P[C = c_k]\)</span> and <span class="math notranslate nohighlight">\(p_{km} = \P[X_m = 1|C = c_k]\)</span> for <span class="math notranslate nohighlight">\(m = 1,\ldots, M\)</span>. We denote by <span class="math notranslate nohighlight">\(\bX = (X_1, \ldots, X_M)\)</span> the corresponding vector of <span class="math notranslate nohighlight">\(X_i\)</span>’s and assume that the entries are conditionally independent given <span class="math notranslate nohighlight">\(C\)</span>.</p>
+<p>However, we assume this time that <span class="math notranslate nohighlight">\(C\)</span> itself is <em>not observed</em>. So the resulting joint distribution is the mixture</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+\P[\bX = \bx]
+&amp;= \sum_{k=1}^K \P[C = k, \bX = \bx]\\
+&amp;= \sum_{k=1}^K \P[\bX = \bx|C=k] \,\P[C=k]\\
+&amp;= \sum_{k=1}^K \pi_k \prod_{m=1}^M p_{km}^{x_m} (1-p_{km})^{1-x_m}.
+\end{align*}\]</div>
+<p>This type of model is useful in particular for clustering tasks, where the <span class="math notranslate nohighlight">\(c_k\)</span>’s can be thought of as different clusters. Similarly to what we did in the previous section, our goal is to infer the parameters from samples and then predict the class of an old or new sample given its features. The main - substantial - difference is that the true labels of the samples are not observed. As we will see, that complicates the task considerably.</p>
+<p><strong>Model fitting</strong> We first fit the model from training data <span class="math notranslate nohighlight">\(\{\bx_i\}_{i=1}^n\)</span>. Recall that the corresponding class labels <span class="math notranslate nohighlight">\(c_i\)</span>’s are not observed. In this type of model, they are referred to as hidden or latent variables and we will come back to their inference below.</p>
+<p>We would like to use maximum likelihood estimation, that is, maximize the probability of observing the data</p>
+<div class="math notranslate nohighlight">
+\[
+\mathcal{L}(\bpi, \{\bp_k\}; \{\bx_i\})
+= \prod_{i=1}^n \left( \sum_{k=1}^K \pi_{k} \prod_{m=1}^M p_{k, m}^{x_{i,m}} (1-p_{k, m})^{1-x_{i,m}}\right).
+\]</div>
+<p>As usual, we assume that the samples are independent and identically distributed. Consider the negative log-likelihood</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+L_n(\bpi, \{\bp_k\}; \{\bx_i\})
+&amp;= - \sum_{i=1}^n \log \left( \sum_{k=1}^K \pi_{k} \prod_{m=1}^M p_{k, m}^{x_{i,m}} (1-p_{k, m})^{1-x_{i,m}}\right).
+\end{align*}\]</div>
+<p>Already, we see that things are potentially more difficult than they were in the supervised (or fully observed) case. The negative log-likelihood does not decompose into a sum of terms depending on different sets of parameters.</p>
+<p>At this point, one could fall back on the field of optimization and use a gradient-based method to minimize the negative log-likelihood. Indeed that is an option, although note that one must be careful to account for the constrained nature of the problem (here the parameters sum to one). There is a vast array of constrained optimization techniques suited for this task.</p>
+<p>Instead a more popular approach in this context, the EM algorithm, is based on the general principle of majorization-minimization, which we have encountered implicitly in the <span class="math notranslate nohighlight">\(k\)</span>-means algorithm and the convergence proof of gradient descent in the smooth case. We detail this important principle in the next subsection before returning to model fitting in mixtures.</p>
+<p><strong>Majorization-minimization</strong> Here is a deceptively simple, yet powerful observation. Suppose we want to minimize a function <span class="math notranslate nohighlight">\(f : \mathbb{R}^d \to \mathbb{R}\)</span>. Finding a local minimum of <span class="math notranslate nohighlight">\(f\)</span> may not be easy. But imagine that for each <span class="math notranslate nohighlight">\(\mathbf{x} \in \mathbb{R}^d\)</span> we have a surrogate function <span class="math notranslate nohighlight">\(U_{\mathbf{x}} : \mathbb{R}^d \to \mathbb{R}\)</span> that (1) dominates <span class="math notranslate nohighlight">\(f\)</span> in the following sense</p>
+<div class="math notranslate nohighlight">
+\[
+U_\mathbf{x}(\mathbf{z}) \geq f(\mathbf{z}), \quad \forall \mathbf{z} \in \mathbb{R}^d 
+\]</div>
+<p>and (2) equals <span class="math notranslate nohighlight">\(f\)</span> at <span class="math notranslate nohighlight">\(\mathbf{x}\)</span></p>
+<div class="math notranslate nohighlight">
+\[
+U_\mathbf{x}(\mathbf{x}) = f(\mathbf{x}).
+\]</div>
+<p>We say that <span class="math notranslate nohighlight">\(U_\mathbf{x}\)</span> majorizes <span class="math notranslate nohighlight">\(f\)</span> at <span class="math notranslate nohighlight">\(\mathbf{x}\)</span>. Then <span class="math notranslate nohighlight">\(U_\mathbf{x}\)</span> can be used to make progress towards minimizing <span class="math notranslate nohighlight">\(f\)</span>, that is, find a point <span class="math notranslate nohighlight">\(\mathbf{x}'\)</span> such that <span class="math notranslate nohighlight">\(f(\mathbf{x}') \leq f(\mathbf{x})\)</span>. If <span class="math notranslate nohighlight">\(U_\mathbf{x}\)</span> is easier to minimize than <span class="math notranslate nohighlight">\(f\)</span> itself, say because an explicit minimum can be computed, then this observation proved in the next lemma naturally leads to an iterative algorithm.</p>
+<p><img alt="Majorization" src="https://www.researchgate.net/profile/Francis_Bach/publication/268227141/figure/fig3/AS:613912244400128&#64;1523379493092/Illustration-of-the-basic-majorization-minimization-principle-The-objective-function-f.png" /></p>
+<p><strong>Figure:</strong> Majorization (<a class="reference external" href="https://www.researchgate.net/figure/Illustration-of-the-basic-majorization-minimization-principle-The-objective-function-f_fig3_268227141">Source</a>)</p>
+<p><strong>LEMMA</strong> <strong>(Majorization-Minimization)</strong> Let <span class="math notranslate nohighlight">\(f : \mathbb{R}^d \to \mathbb{R}\)</span> and suppose <span class="math notranslate nohighlight">\(U_{\mathbf{x}}\)</span> majorizes <span class="math notranslate nohighlight">\(f\)</span> at <span class="math notranslate nohighlight">\(\mathbf{x}\)</span>. Let <span class="math notranslate nohighlight">\(\mathbf{x}'\)</span> be a global minimum of <span class="math notranslate nohighlight">\(U_\mathbf{x}\)</span>. Then</p>
+<div class="math notranslate nohighlight">
+\[
+f(\mathbf{x}') \leq f(\mathbf{x}).
+\]</div>
+<p><span class="math notranslate nohighlight">\(\flat\)</span></p>
+<p><em>Proof:</em> Indeed</p>
+<div class="math notranslate nohighlight">
+\[
+f(\mathbf{x}') \leq U_\mathbf{x}(\mathbf{x}') \leq U_{\mathbf{x}}(\mathbf{x}) = f(\mathbf{x}),
+\]</div>
+<p>where the first inequality follows from the domination property of <span class="math notranslate nohighlight">\(U_\mathbf{x}\)</span>, the second inequality follows from the fact that <span class="math notranslate nohighlight">\(\mathbf{x}'\)</span> is a global minimum  of <span class="math notranslate nohighlight">\(U_\mathbf{x}\)</span> and the equality follows from the fact that <span class="math notranslate nohighlight">\(U_{\mathbf{x}}\)</span> equals <span class="math notranslate nohighlight">\(f\)</span> at <span class="math notranslate nohighlight">\(\mathbf{x}\)</span>. <span class="math notranslate nohighlight">\(\square\)</span></p>
+<p>We have already encountered this idea.</p>
+<p><strong>EXAMPLE:</strong> <strong>(Minimizing a smooth function)</strong> Let <span class="math notranslate nohighlight">\(f : \mathbb{R}^d \to \mathbb{R}\)</span> be <span class="math notranslate nohighlight">\(L\)</span>-smooth. By the <em>Quadratic Bound for Smooth Functions</em>, for all <span class="math notranslate nohighlight">\(\mathbf{x}, \mathbf{z} \in \mathbb{R}^d\)</span> it holds that</p>
+<div class="math notranslate nohighlight">
+\[
+f(\mathbf{z})
+\leq U_{\mathbf{x}}(\mathbf{z})
+:= f(\mathbf{x}) 
++ \nabla f(\mathbf{x})^T(\mathbf{z} - \mathbf{x})
++ \frac{L}{2} \|\mathbf{z} - \mathbf{x}\|^2.
+\]</div>
+<p>By showing that <span class="math notranslate nohighlight">\(U_{\mathbf{x}}\)</span> is minimized at <span class="math notranslate nohighlight">\(\mathbf{z} = \mathbf{x} - (1/L)\nabla f(\mathbf{x})\)</span>, we previously obtained the descent guarantee</p>
+<div class="math notranslate nohighlight">
+\[
+f(\mathbf{x} - (1/L)\nabla f(\mathbf{x}))
+\leq f(\mathbf{x}) - \frac{1}{2 L} \|\nabla f(\mathbf{x})\|^2
+\]</div>
+<p>for gradient descent, which played a central role in the analysis of its convergence. <span class="math notranslate nohighlight">\(\lhd\)</span></p>
+<p><strong>EXAMPLE:</strong> <strong>(<span class="math notranslate nohighlight">\(k\)</span>-means)</strong> Let <span class="math notranslate nohighlight">\(\mathbf{x}_1,\ldots,\mathbf{x}_n\)</span> be <span class="math notranslate nohighlight">\(n\)</span> vectors in <span class="math notranslate nohighlight">\(\mathbb{R}^d\)</span>. One way to formulate the <span class="math notranslate nohighlight">\(k\)</span>-means clustering problem is as the minimization of</p>
+<div class="math notranslate nohighlight">
+\[
+f(\bmu_1,\ldots,\bmu_K)
+= \sum_{i=1}^n \min_{j \in [K]} \|\mathbf{x}_i - \bmu_j\|^2
+\]</div>
+<p>over the centers <span class="math notranslate nohighlight">\(\bmu_1,\ldots,\bmu_K\)</span>, where recall that <span class="math notranslate nohighlight">\([K] = \{1,\ldots,K\}\)</span>. For fixed <span class="math notranslate nohighlight">\(\bmu_1,\ldots,\bmu_K\)</span> and <span class="math notranslate nohighlight">\(\mathbf{m} = (\bmu_1,\ldots,\bmu_K)\)</span>, define</p>
+<div class="math notranslate nohighlight">
+\[
+c_\mathbf{m}(i) \in \arg\min\left\{\|\mathbf{x}_i - \bmu_j\|^2 \ :\ j \in [K]\right\},
+\quad i=1,\ldots,n
+\]</div>
+<p>and</p>
+<div class="math notranslate nohighlight">
+\[
+U_\mathbf{m}(\blambda_1,\ldots,\blambda_K) 
+= \sum_{i=1}^n \|\mathbf{x}_i - \blambda_{c_\mathbf{m}(i)}\|^2
+\]</div>
+<p>for <span class="math notranslate nohighlight">\(\blambda_1,\ldots,\blambda_K \in \mathbb{R}^d\)</span>. That is, we fix the optimal cluster assignments under <span class="math notranslate nohighlight">\(\bmu_1,\ldots,\bmu_K\)</span> and then vary the centers.</p>
+<p>We claim that <span class="math notranslate nohighlight">\(U_\mathbf{m}\)</span> is majorizing <span class="math notranslate nohighlight">\(f\)</span> at <span class="math notranslate nohighlight">\(\bmu_1,\ldots,\bmu_K\)</span>. Indeed</p>
+<div class="math notranslate nohighlight">
+\[
+f(\blambda_1,\ldots,\blambda_K)
+= \sum_{i=1}^n \min_{j \in [K]} \|\mathbf{x}_i - \blambda_j\|^2
+\leq \sum_{i=1}^n \|\mathbf{x}_i - \blambda_{c_\mathbf{m}(i)}\|^2
+= U_\mathbf{m}(\blambda_1,\ldots,\blambda_K)
+\]</div>
+<p>and</p>
+<div class="math notranslate nohighlight">
+\[
+f(\bmu_1,\ldots,\bmu_K)
+= \sum_{i=1}^n \min_{j \in [K]} \|\mathbf{x}_i - \bmu_j\|^2
+= \sum_{i=1}^n \|\mathbf{x}_i - \bmu_{c_\mathbf{m}(i)}\|^2
+= U_\mathbf{m}(\bmu_1,\ldots,\bmu_K).
+\]</div>
+<p>Moreover <span class="math notranslate nohighlight">\(U_\mathbf{m}(\blambda_1,\ldots,\blambda_K)\)</span> is easy to minimize. We showed previously that the optimal representatives are</p>
+<div class="math notranslate nohighlight">
+\[
+\boldsymbol{\mu}_j' = \frac{1}{|C_j|} \sum_{i\in C_j} \mathbf{x}_i
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(C_j = \{i : c_\mathbf{m}(i) = j\}\)</span>.</p>
+<p>The <em>Majorization-Minimization Lemma</em> implies that</p>
+<div class="math notranslate nohighlight">
+\[
+f(\bmu_1',\ldots,\bmu_K')
+\leq f(\bmu_1,\ldots,\bmu_K).
+\]</div>
+<p>This argument is equivalent to our previous analysis of the <span class="math notranslate nohighlight">\(k\)</span>-means algorithm. <span class="math notranslate nohighlight">\(\lhd\)</span></p>
+<p><strong>EM algorithm</strong> The <a class="reference external" href="https://en.wikipedia.org/wiki/Expectation%E2%80%93maximization_algorithm">Expectation-Maximization (EM) algorithm</a> is an instantiation of the majorization-minimization principle that applies widely to parameter estimation of mixtures. Here we focus on the mixture of multivariate Bernoullis.</p>
+<p>Here recall that the objective to be minimized is</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+L_n(\bpi, \{\bp_k\}; \{\bx_i\})
+&amp;= - \sum_{i=1}^n \log \left( \sum_{k=1}^K \pi_{k} \prod_{m=1}^M p_{k, m}^{x_{i,m}} (1-p_{k, m})^{1-x_{i,m}}\right).
+\end{align*}\]</div>
+<p>To simplify the notation and highlight the general idea, we let <span class="math notranslate nohighlight">\(\btheta = (\bpi, \{\bp_k\})\)</span>, denote by <span class="math notranslate nohighlight">\(\Theta\)</span> the set of allowed values for <span class="math notranslate nohighlight">\(\btheta\)</span>, and use <span class="math notranslate nohighlight">\(\P_\btheta\)</span> to indicate that probabilities are computed under the parameters <span class="math notranslate nohighlight">\(\btheta\)</span>. We also return to the description of the model in terms of the unobserved latent variables <span class="math notranslate nohighlight">\(\{C_i\}\)</span>. That is, we write the negative log-likelihood as</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+L_n(\btheta)
+&amp;= - \sum_{i=1}^n \log \left( \sum_{k=1}^K \P_\btheta[\bX_i = \bx_i|C_i = k] \,\P_\btheta[C_i = k]\right)\\
+&amp;= - \sum_{i=1}^n \log \left( \sum_{k=1}^K \P_\btheta[\bX_i = \bx_i, C_i = k] \right).
+\end{align*}\]</div>
+<p>To derive a majorizing function, we use the convexity of the negative logarithm. Indeed</p>
+<div class="math notranslate nohighlight">
+\[
+\frac{\partial}{\partial z}[- \log z]
+= - \frac{1}{z}
+\quad
+\text{and}
+\quad
+\frac{\partial^2}{\partial^2 z}[- \log z]
+= \frac{1}{z^2} &gt; 0,
+\quad
+\forall z &gt; 0.
+\]</div>
+<p>The first step of the construction is not obvious - it just works. For each <span class="math notranslate nohighlight">\(i=1,\ldots,n\)</span>, we let <span class="math notranslate nohighlight">\(r_{k,i}^\btheta\)</span>, <span class="math notranslate nohighlight">\(k=1,\ldots,K\)</span>, be a stricly positive probability distribution on <span class="math notranslate nohighlight">\([K]\)</span>. In other words, it defines a convex combination for every <span class="math notranslate nohighlight">\(i\)</span>. Then we use convexity to obtain the upper bound</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+L_n(\tilde\btheta)
+&amp;= - \sum_{i=1}^n \log \left( \sum_{k=1}^K r_{k,i}^\btheta \frac{\P_{\tilde\btheta}[\bX_i = \bx_i, C_i = k]}{r_{k,i}^\btheta} \right)\\
+&amp;\leq - \sum_{i=1}^n \sum_{k=1}^K r_{k,i}^\btheta \log \left(\frac{\P_{\tilde\btheta}[\bX_i = \bx_i, C_i = k]}{r_{k,i}^\btheta} \right),
+\end{align*}\]</div>
+<p>which holds for any <span class="math notranslate nohighlight">\(\tilde\btheta = (\tilde\bpi, \{\tilde\bp_k\}) \in \Theta\)</span>. We choose <span class="math notranslate nohighlight">\(r_{k,i}^\btheta = \P_\btheta[C_i = k|\bX_i = \bx_i]\)</span> (which for the time being we assume is strictly positive), denote the right-hand side of the inequality by <span class="math notranslate nohighlight">\(U_{n}(\tilde\btheta|\btheta)\)</span> (as a function of <span class="math notranslate nohighlight">\(\tilde\btheta\)</span>) and make two observations.</p>
+<p>(1) <em>Dominating property</em>: For any <span class="math notranslate nohighlight">\(\tilde\btheta \in \Theta\)</span>, the inequality above implies immediately that <span class="math notranslate nohighlight">\(L_n(\tilde\btheta) \leq U_n(\tilde\btheta|\btheta)\)</span>.</p>
+<p>(2) <em>Equality at <span class="math notranslate nohighlight">\(\btheta\)</span></em>: At <span class="math notranslate nohighlight">\(\tilde\btheta = \btheta\)</span>,</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+U_n(\btheta|\btheta) 
+&amp;= - \sum_{i=1}^n \sum_{k=1}^K r_{k,i}^\btheta \log \left(\frac{\P_\btheta[\bX_i = \bx_i, C_i = k]}{r_{k,i}^\btheta} \right)\\
+&amp;= - \sum_{i=1}^n \sum_{k=1}^K r_{k,i}^\btheta \log \left(\frac{\P_\btheta[C_i = k | \bX_i = \bx_i]
+\P_\btheta[\bX_i = \bx_i]}{r_{k,i}^\btheta} \right)\\
+&amp;= - \sum_{i=1}^n \sum_{k=1}^K r_{k,i}^\btheta \log
+\P_\btheta[\bX_i = \bx_i]\\
+&amp;= - \sum_{i=1}^n \log
+\P_\btheta[\bX_i = \bx_i]
+= L_n(\btheta).
+\end{align*}\]</div>
+<p>The two properties above show that <span class="math notranslate nohighlight">\(U_n(\tilde\btheta|\btheta)\)</span>, as a function of <span class="math notranslate nohighlight">\(\tilde\btheta\)</span>, majorizes <span class="math notranslate nohighlight">\(L_n\)</span> at <span class="math notranslate nohighlight">\(\btheta\)</span>.</p>
+<p><strong>LEMMA</strong> <strong>(EM Guarantee)</strong> Let <span class="math notranslate nohighlight">\(\btheta^*\)</span> be a global minimizer of <span class="math notranslate nohighlight">\(U_n(\tilde\btheta|\btheta)\)</span> as a function of <span class="math notranslate nohighlight">\(\tilde\btheta\)</span>, provided it exists. Then</p>
+<div class="math notranslate nohighlight">
+\[
+L_n(\btheta^*) \leq L_n(\btheta).
+\]</div>
+<p><span class="math notranslate nohighlight">\(\flat\)</span></p>
+<p><em>Proof:</em> The result follows directly from the <em>Majorization-Minimization Lemma</em>. <span class="math notranslate nohighlight">\(\square\)</span></p>
+<p>What have we gained from this? As we mentioned before, using the <em>Majorization-Minimization Lemma</em> makes sense if <span class="math notranslate nohighlight">\(Q_n\)</span> is easier to minimize than <span class="math notranslate nohighlight">\(L_n\)</span> itself. Let us see why that is the case here.</p>
+<p>The function <span class="math notranslate nohighlight">\(Q_n\)</span> naturally decomposes into two terms</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+Q_n(\tilde\btheta|\btheta)
+&amp;= - \sum_{i=1}^n \sum_{k=1}^K r_{k,i}^\btheta \log \left(\frac{\P_{\tilde\btheta}[\bX_i = \bx_i, C_i = k]}{r_{k,i}^\btheta} \right)\\
+&amp;= - \sum_{i=1}^n \sum_{k=1}^K r_{k,i}^\btheta \log \P_{\tilde\btheta}[\bX_i = \bx_i, C_i = k]
++ \sum_{i=1}^n \sum_{k=1}^K r_{k,i}^\btheta \log r_{k,i}^\btheta.
+\end{align*}\]</div>
+<p>Because <span class="math notranslate nohighlight">\(r_{k,i}^\btheta\)</span> depends on <span class="math notranslate nohighlight">\(\btheta\)</span> <em>but not <span class="math notranslate nohighlight">\(\tilde\btheta\)</span></em>, the second term is irrelevant to the opimization with respect to <span class="math notranslate nohighlight">\(\tilde\btheta\)</span>.</p>
+<p>If <span class="math notranslate nohighlight">\(\btheta\)</span> is our current estimate of the parameters, then the quantity <span class="math notranslate nohighlight">\(r_{k,i}^\btheta = \P_\btheta[C_i = k|\bX_i = \bx_i]\)</span> is our estimate of the probability that the sample <span class="math notranslate nohighlight">\(\bx_i\)</span> comes from cluster <span class="math notranslate nohighlight">\(k\)</span>. So the first term above</p>
+<div class="math notranslate nohighlight">
+\[
+Q_n(\tilde\btheta|\btheta)
+= - \sum_{i=1}^n \sum_{k=1}^K r_{k,i}^\btheta \log \P_{\tilde\btheta}[\bX_i = \bx_i, C_i = k]
+\]</div>
+<p>is the expected negative log-likelihood of the fully observed data under our estimate of the cluster assignments. By fully observed, we mean that it includes the cluster variables <span class="math notranslate nohighlight">\(C_i\)</span>. Of course, in reality, those variables are not observed, but we have estimated their probability distribution given the observed data <span class="math notranslate nohighlight">\(\{\bx_i\}\)</span>, and we are taking an expectation with respect to that distribution.</p>
+<p>The key observation is that minimizing <span class="math notranslate nohighlight">\(Q_n(\tilde\btheta|\btheta)\)</span> over <span class="math notranslate nohighlight">\(\tilde\btheta\)</span> is a variant of fitting a Naive Bayes model. And there is a straightforward formula for that. In essence that is because, when the cluster assignments are observed, the negative log-likehood decomposes: it naturally breaks up into terms that depend on separate sets of parameters, each of which can be optimized with a closed-form expression. The same happens with <span class="math notranslate nohighlight">\(Q_n\)</span>.</p>
+<p><em>E Step:</em> Specifically,</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+Q_n(\tilde\btheta|\btheta)
+&amp;= - \sum_{i=1}^n \sum_{k=1}^K r_{k,i}^\btheta \log \P_{\tilde\btheta}[\bX_i = \bx_i, C_i = k]\\
+&amp;= - \sum_{i=1}^n \sum_{k=1}^K r_{k,i}^\btheta \log \left(\prod_{i=1}^n \tilde{\pi}_{k} \prod_{m=1}^M \tilde{p}_{k, m}^{x_{i,m}} (1-\tilde{p}_{k,m})^{1-x_{i,m}}\right)\\
+&amp;= - \sum_{k=1}^K \eta_k^\btheta \log \tilde{\pi}_k - \sum_{k=1}^K \sum_{m=1}^M [\eta_{k,m}^\btheta \log \tilde{p}_{k,m} + (\eta_k^\btheta-\eta_{k,m}^\btheta) \log (1-\tilde{p}_{k,m})],
+\end{align*}\]</div>
+<p>where we defined, for <span class="math notranslate nohighlight">\(k=1,\ldots,K\)</span>,</p>
+<div class="math notranslate nohighlight">
+\[
+\eta_{k,m}^\btheta
+= \sum_{i=1}^n x_{i,m} r_{k,i}^\btheta
+\quad
+\text{and}
+\quad
+\eta_k^\btheta 
+= \sum_{i=1}^n r_{k,i}^\btheta.
+\]</div>
+<p>We have previously computed <span class="math notranslate nohighlight">\(r_{k,i}^\btheta = \P_\btheta[C_i = k|\bX_i = \bx_i]\)</span> for prediction under the Naive Bayes model. We showed that</p>
+<div class="math notranslate nohighlight">
+\[
+r_{k,i}^\btheta
+= \frac{\pi_k \prod_{m=1}^M p_{k,m}^{x_{i,m}} (1-p_{k,m})^{1-x_{i,m}}}
+{\sum_{k'=1}^K \pi_{k'} \prod_{m=1}^M p_{k',m}^{x_{i,m}} (1-p_{k',m})^{1-x_{i,m}}},
+\]</div>
+<p>which in this context is referred to as the responsibility that cluster <span class="math notranslate nohighlight">\(k\)</span> takes for data point <span class="math notranslate nohighlight">\(i\)</span>.</p>
+<p><em>M Step:</em> Adapting our previous calculutions for fitting a Naive Bayes model, we get that <span class="math notranslate nohighlight">\(Q_n(\tilde\btheta|\btheta)\)</span> is minimized at</p>
+<div class="math notranslate nohighlight">
+\[
+\pi_k^* = \frac{\eta_k^\btheta}{n}
+\quad
+\text{and}
+\quad 
+p_{k,m}^* = \frac{\eta_{k,m}^\btheta}{\eta_k^\btheta}
+\quad
+\forall k \in [K], m \in [M].
+\]</div>
+<p>We used the fact that</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+\sum_{k=1}^K \eta_k^\btheta
+&amp;= \sum_{k=1}^K \sum_{i=1}^n r_{k,i}^\btheta\\
+&amp;= \sum_{i=1}^n \sum_{k=1}^K \P_\btheta[C_i = k|\bX_i = \bx_i]\\
+&amp;= \sum_{i=1}^n 1\\ 
+&amp;= n,
+\end{align*}\]</div>
+<p>since the conditional probability <span class="math notranslate nohighlight">\(\P_\btheta[C_i = k|\bX_i = \bx_i]\)</span> adds up to one when summed over <span class="math notranslate nohighlight">\(k\)</span>.</p>
+<p>To summarize, the EM algorithm works as follows in this case. Assume we have data points <span class="math notranslate nohighlight">\(\{\bx_i\}_{i=1}^n\)</span>, that we have fixed <span class="math notranslate nohighlight">\(K\)</span> and that we have some initial parameter estimate <span class="math notranslate nohighlight">\(\btheta^0 = (\bpi^0, \{\bp_k^0\}) \in \Theta\)</span> with strictly positive <span class="math notranslate nohighlight">\(\pi_k^0\)</span>’s and <span class="math notranslate nohighlight">\(p_{k,m}^0\)</span>’s. For <span class="math notranslate nohighlight">\(t = 0,1,\ldots, T-1\)</span> we compute for all <span class="math notranslate nohighlight">\(i \in [n]\)</span>, <span class="math notranslate nohighlight">\(k \in [K]\)</span>, and <span class="math notranslate nohighlight">\(m \in [M]\)</span></p>
+<div class="math notranslate nohighlight">
+\[
+r_{k,i}^t
+= \frac{\pi_k^t \prod_{m=1}^M (p_{k,m}^t)^{x_{i,m}} (1-p_{k,m}^t)^{1-x_{i,m}}}
+{\sum_{k'=1}^K \pi_{k'}^t \prod_{m=1}^M (p_{k',m}^t)^{x_{i,m}} (1-p_{k',m}^t)^{1-x_{i,m}}},
+\quad
+\text{(E Step)}
+\]</div>
+<div class="math notranslate nohighlight">
+\[
+\eta_{k,m}^t
+= \sum_{i=1}^n x_{i,m} r_{k,i}^t
+\quad
+\text{and}
+\quad
+\eta_k^t 
+= \sum_{i=1}^n r_{k,i}^t,
+\]</div>
+<p>and</p>
+<div class="math notranslate nohighlight">
+\[
+\pi_k^{t+1} = \frac{\eta_k^t}{n}
+\quad
+\text{and}
+\quad 
+p_{k,m}^{t+1} = \frac{\eta_{k,m}^t}{\eta_k^t}.
+\quad
+\text{(M Step)}
+\]</div>
+<p>Provided <span class="math notranslate nohighlight">\(\sum_{i=1}^n x_{i,m} &gt; 0\)</span> for all <span class="math notranslate nohighlight">\(m\)</span>, the <span class="math notranslate nohighlight">\(\eta_{k,m}^t\)</span>’s and <span class="math notranslate nohighlight">\(\eta_k^t\)</span>’s remain positive for all <span class="math notranslate nohighlight">\(t\)</span> and the algorithm is well-defined. The <em>EM Guarantee</em> stipulates that the negative log-likelihood cannot deteriorate, although note that it does not guarantee convergence to a global minimum.</p>
+<p><strong>NUMERICAL CORNER</strong> We implement the EM algorithm for mixtures of multivariate Bernoullis. For this purpose, we adapt our previous Naive Bayes routines. We also allow for the possibility of using Laplace smoothing.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">responsibility</span><span class="p">(</span><span class="n">pi_k</span><span class="p">,</span> <span class="n">p_km</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+   
+    <span class="n">K</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">pi_k</span><span class="p">)</span>
+        
+    <span class="c1"># Computing the score for each k</span>
+    <span class="n">score_k</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">K</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">K</span><span class="p">):</span>
+       
+        <span class="n">score_k</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">+=</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">pi_k</span><span class="p">[</span><span class="n">k</span><span class="p">])</span>
+        <span class="n">score_k</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">+=</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">x</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">p_km</span><span class="p">[</span><span class="n">k</span><span class="p">,:])</span> <span class="o">+</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">x</span><span class="p">)</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">p_km</span><span class="p">[</span><span class="n">k</span><span class="p">,:]))</span>
+    
+    <span class="c1"># Computing responsibilities for each k</span>
+    <span class="n">r_k</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">score_k</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">score_k</span><span class="p">)))</span>
+        
+    <span class="k">return</span> <span class="n">r_k</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">update_parameters</span><span class="p">(</span><span class="n">eta_km</span><span class="p">,</span> <span class="n">eta_k</span><span class="p">,</span> <span class="n">eta</span><span class="p">,</span> <span class="n">alpha</span><span class="p">,</span> <span class="n">beta</span><span class="p">):</span>
+
+    <span class="n">K</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">eta_k</span><span class="p">)</span>
+    
+    <span class="c1"># MLE for pi_k&#39;s</span>
+    <span class="n">pi_k</span> <span class="o">=</span> <span class="p">(</span><span class="n">eta_k</span><span class="o">+</span><span class="n">alpha</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">eta</span><span class="o">+</span><span class="n">K</span><span class="o">*</span><span class="n">alpha</span><span class="p">)</span>
+    
+    <span class="c1"># MLE for p_km&#39;s</span>
+    <span class="n">p_km</span> <span class="o">=</span> <span class="p">(</span><span class="n">eta_km</span><span class="o">+</span><span class="n">beta</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">eta_k</span><span class="p">[:,</span><span class="kc">None</span><span class="p">]</span><span class="o">+</span><span class="mi">2</span><span class="o">*</span><span class="n">beta</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">pi_k</span><span class="p">,</span> <span class="n">p_km</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>We implement the E and M Step next.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">em_bern</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">K</span><span class="p">,</span> <span class="n">pi_0</span><span class="p">,</span> <span class="n">p_0</span><span class="p">,</span> <span class="n">maxiters</span> <span class="o">=</span> <span class="mi">10</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.</span><span class="p">,</span> <span class="n">beta</span><span class="o">=</span><span class="mf">0.</span><span class="p">):</span>
+    
+    <span class="n">n</span><span class="p">,</span> <span class="n">M</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">shape</span>
+    <span class="n">pi_k</span> <span class="o">=</span> <span class="n">pi_0</span>
+    <span class="n">p_km</span> <span class="o">=</span> <span class="n">p_0</span>
+    
+    <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">maxiters</span><span class="p">):</span>
+    
+        <span class="c1"># E Step</span>
+        <span class="n">r_ki</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">K</span><span class="p">,</span><span class="n">n</span><span class="p">))</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+            <span class="n">r_ki</span><span class="p">[:,</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">responsibility</span><span class="p">(</span><span class="n">pi_k</span><span class="p">,</span> <span class="n">p_km</span><span class="p">,</span> <span class="n">X</span><span class="p">[</span><span class="n">i</span><span class="p">,:])</span>
+        
+        <span class="c1"># M Step     </span>
+        <span class="n">eta_km</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">K</span><span class="p">,</span><span class="n">M</span><span class="p">))</span>
+        <span class="n">eta_k</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">r_ki</span><span class="p">,</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">eta</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">eta_k</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">K</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">M</span><span class="p">):</span>
+                <span class="n">eta_km</span><span class="p">[</span><span class="n">k</span><span class="p">,</span><span class="n">m</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">X</span><span class="p">[:,</span><span class="n">m</span><span class="p">]</span> <span class="o">*</span> <span class="n">r_ki</span><span class="p">[</span><span class="n">k</span><span class="p">,:])</span> 
+        <span class="n">pi_k</span><span class="p">,</span> <span class="n">p_km</span> <span class="o">=</span> <span class="n">update_parameters</span><span class="p">(</span><span class="n">eta_km</span><span class="p">,</span> <span class="n">eta_k</span><span class="p">,</span> <span class="n">eta</span><span class="p">,</span> <span class="n">alpha</span><span class="p">,</span> <span class="n">beta</span><span class="p">)</span>
+        
+    <span class="k">return</span> <span class="n">pi_k</span><span class="p">,</span> <span class="n">p_km</span>   
+</pre></div>
+</div>
+</div>
+</div>
+<p>We test the algorithm on a very simple dataset.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">1.</span><span class="p">,</span> <span class="mf">1.</span><span class="p">],</span>
+              <span class="p">[</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">1.</span><span class="p">,</span> <span class="mf">1.</span><span class="p">],</span>
+              <span class="p">[</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">1.</span><span class="p">,</span> <span class="mf">1.</span><span class="p">],</span>
+              <span class="p">[</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="mf">1.</span><span class="p">],</span>
+              <span class="p">[</span><span class="mf">0.</span><span class="p">,</span> <span class="mf">1.</span><span class="p">,</span> <span class="mf">1.</span><span class="p">],</span>
+              <span class="p">[</span><span class="mf">0.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">],</span>
+              <span class="p">[</span><span class="mf">0.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">],</span>
+              <span class="p">[</span><span class="mf">0.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="mf">1.</span><span class="p">]])</span>
+<span class="n">n</span><span class="p">,</span> <span class="n">M</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">shape</span>
+<span class="n">K</span> <span class="o">=</span> <span class="mi">2</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">seed</span> <span class="o">=</span> <span class="mi">535</span>
+<span class="n">rng</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">(</span><span class="n">seed</span><span class="p">)</span>
+<span class="n">pi_0</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">K</span><span class="p">)</span><span class="o">/</span><span class="n">K</span>
+<span class="n">p_0</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">random</span><span class="p">((</span><span class="n">K</span><span class="p">,</span><span class="n">M</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pi_k</span><span class="p">,</span> <span class="n">p_km</span> <span class="o">=</span> <span class="n">em_bern</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">K</span><span class="p">,</span> <span class="n">pi_0</span><span class="p">,</span> <span class="n">p_0</span><span class="p">,</span> <span class="n">maxiters</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span> <span class="n">beta</span><span class="o">=</span><span class="mf">0.01</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">pi_k</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[0.66500949 0.33499051]
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">p_km</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[[0.74982646 0.74982646 0.99800266]
+ [0.00496739 0.00496739 0.25487292]]
+</pre></div>
+</div>
+</div>
+</div>
+<p>We compute the probability that the vector <span class="math notranslate nohighlight">\((0, 0, 1)\)</span> is in each cluster.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">x_test</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="mf">1.</span><span class="p">])</span>
+<span class="n">responsibility</span><span class="p">(</span><span class="n">pi_k</span><span class="p">,</span> <span class="n">p_km</span><span class="p">,</span> <span class="n">x_test</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([0.32947702, 0.67052298])
+</pre></div>
+</div>
+</div>
+</div>
+<p>To give a more involved example, we return to the MNIST dataset. There are two common ways to write a <span class="math notranslate nohighlight">\(2\)</span>. Let’s see if a mixture of multivariate Bernoullis can find them. We load the dataset and extract the images labelled <span class="math notranslate nohighlight">\(2\)</span>.</p>
+<div class="cell tag_hide-input docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell source</span>
+<span class="expanded">Hide code cell source</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Download and load the MNIST dataset</span>
+<span class="n">mnist</span> <span class="o">=</span> <span class="n">datasets</span><span class="o">.</span><span class="n">MNIST</span><span class="p">(</span><span class="n">root</span><span class="o">=</span><span class="s1">&#39;./data&#39;</span><span class="p">,</span> 
+                       <span class="n">train</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> 
+                       <span class="n">download</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> 
+                       <span class="n">transform</span><span class="o">=</span><span class="n">transforms</span><span class="o">.</span><span class="n">ToTensor</span><span class="p">())</span>
+
+<span class="c1"># Convert the dataset to a PyTorch DataLoader</span>
+<span class="n">train_loader</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">DataLoader</span><span class="p">(</span><span class="n">mnist</span><span class="p">,</span> 
+                                           <span class="n">batch_size</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">mnist</span><span class="p">),</span> 
+                                           <span class="n">shuffle</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+<span class="c1"># Extract images and labels from the DataLoader</span>
+<span class="n">imgs</span><span class="p">,</span> <span class="n">labels</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="nb">iter</span><span class="p">(</span><span class="n">train_loader</span><span class="p">))</span>
+<span class="n">imgs</span> <span class="o">=</span> <span class="n">imgs</span><span class="o">.</span><span class="n">squeeze</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span>
+<span class="n">labels</span> <span class="o">=</span> <span class="n">labels</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</details>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Filter out images with label 2</span>
+<span class="n">mask</span> <span class="o">=</span> <span class="n">labels</span> <span class="o">==</span> <span class="mi">2</span>
+<span class="n">imgs2</span> <span class="o">=</span> <span class="n">imgs</span><span class="p">[</span><span class="n">mask</span><span class="p">]</span>
+<span class="n">labels2</span> <span class="o">=</span> <span class="n">labels</span><span class="p">[</span><span class="n">mask</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Next, we transform the images into vectors and convert into black and white by rounding.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">imgs2</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">imgs2</span><span class="p">),</span> <span class="o">-</span><span class="mi">1</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>We can convert back as follows.</p>
+<div class="cell tag_hide-input docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell source</span>
+<span class="expanded">Hide code cell source</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">X</span><span class="p">[</span><span class="mi">0</span><span class="p">,:]</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="mi">28</span><span class="p">,</span><span class="mi">28</span><span class="p">)))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</details>
+<div class="cell_output docutils container">
+<img alt="../../_images/4a37458a239686a8d42c6fc391a99a4944db495b613ea8a25c334cd9ee4ddb63.png" src="../../_images/4a37458a239686a8d42c6fc391a99a4944db495b613ea8a25c334cd9ee4ddb63.png" />
+</div>
+</div>
+<p>In this example, the probabilities involved are very small and the responsibilities are close to <span class="math notranslate nohighlight">\(0\)</span> or <span class="math notranslate nohighlight">\(1\)</span>. We use a variant, called hard EM, which replaces responsibilities with the one-hot encoding of the largest responsibility.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">hard_responsibility</span><span class="p">(</span><span class="n">pi_k</span><span class="p">,</span> <span class="n">p_km</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+   
+    <span class="n">K</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">pi_k</span><span class="p">)</span>
+        
+    <span class="c1"># Computing the score for each k</span>
+    <span class="n">score_k</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">K</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">K</span><span class="p">):</span>
+       
+        <span class="n">score_k</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">+=</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">pi_k</span><span class="p">[</span><span class="n">k</span><span class="p">])</span>
+        <span class="n">score_k</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">+=</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">x</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">p_km</span><span class="p">[</span><span class="n">k</span><span class="p">,:])</span> <span class="o">+</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">x</span><span class="p">)</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">p_km</span><span class="p">[</span><span class="n">k</span><span class="p">,:]))</span>
+    
+    <span class="c1"># Computing responsibilities for each k</span>
+    <span class="n">argmin</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmin</span><span class="p">(</span><span class="n">score_k</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+    <span class="n">r_k</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">K</span><span class="p">)</span>
+    <span class="n">r_k</span><span class="p">[</span><span class="n">argmin</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+
+    <span class="k">return</span> <span class="n">r_k</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">hard_em_bern</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">K</span><span class="p">,</span> <span class="n">pi_0</span><span class="p">,</span> <span class="n">p_0</span><span class="p">,</span> <span class="n">maxiters</span> <span class="o">=</span> <span class="mi">10</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.</span><span class="p">,</span> <span class="n">beta</span><span class="o">=</span><span class="mf">0.</span><span class="p">):</span>
+    
+    <span class="n">n</span><span class="p">,</span> <span class="n">M</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">shape</span>
+    <span class="n">pi_k</span> <span class="o">=</span> <span class="n">pi_0</span>
+    <span class="n">p_km</span> <span class="o">=</span> <span class="n">p_0</span>
+    
+    <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">maxiters</span><span class="p">):</span>
+    
+        <span class="c1"># E Step</span>
+        <span class="n">r_ki</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">K</span><span class="p">,</span><span class="n">n</span><span class="p">))</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+            <span class="n">r_ki</span><span class="p">[:,</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">hard_responsibility</span><span class="p">(</span><span class="n">pi_k</span><span class="p">,</span> <span class="n">p_km</span><span class="p">,</span> <span class="n">X</span><span class="p">[</span><span class="n">i</span><span class="p">,:])</span>
+        
+        <span class="c1"># M Step     </span>
+        <span class="n">eta_km</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">K</span><span class="p">,</span><span class="n">M</span><span class="p">))</span>
+        <span class="n">eta_k</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">r_ki</span><span class="p">,</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">eta</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">eta_k</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">K</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">M</span><span class="p">):</span>
+                <span class="n">eta_km</span><span class="p">[</span><span class="n">k</span><span class="p">,</span><span class="n">m</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">X</span><span class="p">[:,</span><span class="n">m</span><span class="p">]</span> <span class="o">*</span> <span class="n">r_ki</span><span class="p">[</span><span class="n">k</span><span class="p">,:])</span> 
+        <span class="n">pi_k</span><span class="p">,</span> <span class="n">p_km</span> <span class="o">=</span> <span class="n">update_parameters</span><span class="p">(</span><span class="n">eta_km</span><span class="p">,</span> <span class="n">eta_k</span><span class="p">,</span> <span class="n">eta</span><span class="p">,</span> <span class="n">alpha</span><span class="p">,</span> <span class="n">beta</span><span class="p">)</span>
+        
+    <span class="k">return</span> <span class="n">pi_k</span><span class="p">,</span> <span class="n">p_km</span>   
+</pre></div>
+</div>
+</div>
+</div>
+<p>We run the algorithm with <span class="math notranslate nohighlight">\(2\)</span> clusters. You may have to run it a few times to get a meaningful clustering.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">n</span><span class="p">,</span> <span class="n">M</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">shape</span>
+<span class="n">K</span> <span class="o">=</span> <span class="mi">2</span>
+<span class="n">seed</span> <span class="o">=</span> <span class="mi">535</span>
+<span class="n">rng</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">(</span><span class="n">seed</span><span class="p">)</span>
+<span class="n">pi_0</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">K</span><span class="p">)</span><span class="o">/</span><span class="n">K</span>
+<span class="n">p_0</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">random</span><span class="p">((</span><span class="n">K</span><span class="p">,</span><span class="n">M</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pi_k</span><span class="p">,</span> <span class="n">p_km</span> <span class="o">=</span> <span class="n">hard_em_bern</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">K</span><span class="p">,</span> <span class="n">pi_0</span><span class="p">,</span> <span class="n">p_0</span><span class="p">,</span> <span class="n">maxiters</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">1.</span><span class="p">,</span> <span class="n">beta</span><span class="o">=</span><span class="mf">1.</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">pi_k</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[0.57969799 0.42030201]
+</pre></div>
+</div>
+</div>
+</div>
+<p>We vizualize the two uncovered clusters by rendering their means as an image. Here is one of them.</p>
+<div class="cell tag_hide-input docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell source</span>
+<span class="expanded">Hide code cell source</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">p_km</span><span class="p">[</span><span class="mi">0</span><span class="p">,:]</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="mi">28</span><span class="p">,</span><span class="mi">28</span><span class="p">)))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</details>
+<div class="cell_output docutils container">
+<img alt="../../_images/b7a671e602cf64ef3fb14a3002df0537db2bdb18ded0f7d22db0e2d75ed5a70e.png" src="../../_images/b7a671e602cf64ef3fb14a3002df0537db2bdb18ded0f7d22db0e2d75ed5a70e.png" />
+</div>
+</div>
+<p>Here is the other one.</p>
+<div class="cell tag_hide-input docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell source</span>
+<span class="expanded">Hide code cell source</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">p_km</span><span class="p">[</span><span class="mi">1</span><span class="p">,:]</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="mi">28</span><span class="p">,</span><span class="mi">28</span><span class="p">)))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</details>
+<div class="cell_output docutils container">
+<img alt="../../_images/d6c44af2a5ebd8fe6a4465c38bbb4e5e9c05b8f6d998bd8d96841d64910b0d99.png" src="../../_images/d6c44af2a5ebd8fe6a4465c38bbb4e5e9c05b8f6d998bd8d96841d64910b0d99.png" />
+</div>
+</div>
+<p><span class="math notranslate nohighlight">\(\unlhd\)</span></p>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./chap07_prob/03_joint"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="../02_parametric/roch-mmids-prob-parametric.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title"><span class="section-number">7.2. </span>Background: introduction to parametric families and maximum likelihood estimation</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="../04_kalman/roch-mmids-prob-kalman.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title"><span class="section-number">7.4. </span>Linear-Gaussian models and Kalman filtering</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#marginalizing-out-an-unobserved-random-variable">7.3.1. Marginalizing out an unobserved random variable</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#using-conditional-independence-relations">7.3.2. Using conditional independence relations</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#example-1-naive-bayes">7.3.3. Example 1: Naive Bayes</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#example-2-mixtures-of-multivariate-bernoullis-and-the-em-algorithm">7.3.4. Example 2: Mixtures of multivariate Bernoullis and the EM algorithm</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Sebastien Roch
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2024.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=5b4479735964841361fd"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

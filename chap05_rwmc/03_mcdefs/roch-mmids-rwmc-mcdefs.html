@@ -548,8 +548,12 @@ X_t
 <span class="expanded">Hide code cell source</span>
 </summary>
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">nx</span><span class="o">.</span><span class="n">draw_networkx</span><span class="p">(</span><span class="n">G_petersen</span><span class="p">,</span> <span class="n">pos</span><span class="o">=</span><span class="n">nx</span><span class="o">.</span><span class="n">circular_layout</span><span class="p">(</span><span class="n">G_petersen</span><span class="p">),</span> <span class="n">labels</span><span class="o">=</span><span class="p">{</span><span class="n">i</span><span class="p">:</span> <span class="n">i</span><span class="o">+</span><span class="mi">1</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">)},</span> 
-                 <span class="n">node_size</span><span class="o">=</span><span class="mi">600</span><span class="p">,</span> <span class="n">node_color</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">,</span> <span class="n">font_size</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span> <span class="n">font_color</span><span class="o">=</span><span class="s1">&#39;white&#39;</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">nx</span><span class="o">.</span><span class="n">draw_networkx</span><span class="p">(</span><span class="n">G_petersen</span><span class="p">,</span> 
+                 <span class="n">pos</span><span class="o">=</span><span class="n">nx</span><span class="o">.</span><span class="n">circular_layout</span><span class="p">(</span><span class="n">G_petersen</span><span class="p">),</span> 
+                 <span class="n">labels</span><span class="o">=</span><span class="p">{</span><span class="n">i</span><span class="p">:</span> <span class="n">i</span><span class="o">+</span><span class="mi">1</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">)},</span> 
+                 <span class="n">node_size</span><span class="o">=</span><span class="mi">600</span><span class="p">,</span> <span class="n">node_color</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">,</span> 
+                 <span class="n">font_size</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span> 
+                 <span class="n">font_color</span><span class="o">=</span><span class="s1">&#39;white&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -745,7 +749,7 @@ P = \begin{pmatrix}
 </div>
 <p><span class="math notranslate nohighlight">\(\lhd\)</span></p>
 <p>Transition matrices have a very special structure.</p>
-<p><strong>THEOREM:</strong> <strong>(Transition Matrix is Stochastic)</strong> The transition matrix <span class="math notranslate nohighlight">\(P\)</span> is a stochastic matrix, that is, all its entries are nonnegative and all its rows sum to one. <span class="math notranslate nohighlight">\(\sharp\)</span></p>
+<p><strong>THEOREM</strong> <strong>(Transition Matrix is Stochastic)</strong> The transition matrix <span class="math notranslate nohighlight">\(P\)</span> is a stochastic matrix, that is, all its entries are nonnegative and all its rows sum to one. <span class="math notranslate nohighlight">\(\sharp\)</span></p>
 <p><em>Proof:</em> Indeed,</p>
 <div class="math notranslate nohighlight">
 \[
@@ -755,8 +759,9 @@ P = \begin{pmatrix}
 <p>In matrix form, the condition can be stated as <span class="math notranslate nohighlight">\(P \mathbf{1} = \mathbf{1}\)</span>, where <span class="math notranslate nohighlight">\(\mathbf{1}\)</span> is an all-one vector of the appropriate size.</p>
 <p>We have seen that any transition matrix is stochastic. Conversely, any stochastic matrix is the transition matrix of a Markov chain. That is, we can specify a Markov chain by choosing the number of states <span class="math notranslate nohighlight">\(n\)</span>, an initial distribution over <span class="math notranslate nohighlight">\(\mathcal{S} = [n]\)</span> and a stochastic matrix <span class="math notranslate nohighlight">\(P \in \mathbb{R}^{n\times n}\)</span>. Row <span class="math notranslate nohighlight">\(i\)</span> of <span class="math notranslate nohighlight">\(P\)</span> stipulates the probability distribution of the next state given that we are currently at state <span class="math notranslate nohighlight">\(i\)</span>.</p>
 <p><strong>EXAMPLE:</strong> <strong>(Robot Vacuum)</strong> Suppose a robot vacuum roams around a large mansion with the following rooms: <span class="math notranslate nohighlight">\(1=\mathrm{Study}\)</span>, <span class="math notranslate nohighlight">\(2=\mathrm{Hall}\)</span>, <span class="math notranslate nohighlight">\(3=\mathrm{Lounge}\)</span>, <span class="math notranslate nohighlight">\(4=\mathrm{Library}\)</span>, <span class="math notranslate nohighlight">\(5=\mathrm{Billiard\ Room}\)</span>, <span class="math notranslate nohighlight">\(6=\mathrm{Dining\ Room}\)</span>, <span class="math notranslate nohighlight">\(7=\mathrm{Conservatory}\)</span>, <span class="math notranslate nohighlight">\(8=\mathrm{Ball\ Room}\)</span>, <span class="math notranslate nohighlight">\(9=\mathrm{Kitchen}\)</span>.</p>
-<p><img alt="Rooomba" src="../../_images/Roomba_and_a_wrench-small.png" /></p>
-<p><strong>Image credit:</strong> Made with <a class="reference external" href="https://www.midjourney.com/">Midjourney</a></p>
+<p><strong>Figure:</strong> A wrench. (<em>Credit:</em> Made with <a class="reference external" href="https://www.midjourney.com/">Midjourney</a>)</p>
+<p><img alt="Roomba" src="../../_images/Roomba_and_a_wrench-small.png" /></p>
+<p><span class="math notranslate nohighlight">\(\bowtie\)</span></p>
 <p>Once it is done cleaning a room, it moves to another one nearby according to the following stochastic matrix (check it is stochastic!):</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}

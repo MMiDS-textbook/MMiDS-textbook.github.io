@@ -491,8 +491,9 @@ f'(x_0)
 \]</div>
 <p>is called the gradient of <span class="math notranslate nohighlight">\(f\)</span> at <span class="math notranslate nohighlight">\(\mathbf{x}_0\)</span>. <span class="math notranslate nohighlight">\(\natural\)</span></p>
 <p>Note that the gradient is itself a function of <span class="math notranslate nohighlight">\(\mathbf{x}\)</span>. In fact, unlike <span class="math notranslate nohighlight">\(f\)</span>, it is a vector-valued function.</p>
-<p><img alt="Gradient as a function" src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d2/3d-gradient-cos.svg/573px-3d-gradient-cos.svg.png" /></p>
 <p><strong>Figure:</strong> Gradient as a function (<a class="reference external" href="https://commons.wikimedia.org/wiki/File:3d-gradient-cos.svg">Source</a>)</p>
+<p><img alt="Gradient as a function" src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d2/3d-gradient-cos.svg/573px-3d-gradient-cos.svg.png" /></p>
+<p><span class="math notranslate nohighlight">\(\bowtie\)</span></p>
 <p><strong>EXAMPLE:</strong> Consider the affine function</p>
 <div class="math notranslate nohighlight">
 \[
@@ -557,14 +558,8 @@ f(\mathbf{x})
 + \mathbf{q}.
 \]</div>
 <p>If <span class="math notranslate nohighlight">\(P\)</span> is symmetric, this further simplifies to
-$
-\nabla f(\mathbf{x})
-= P ,\mathbf{x}</p>
-<ul class="simple">
-<li><p>\mathbf{q}.
-<span class="math notranslate nohighlight">\(
-\)</span>\lhd$</p></li>
-</ul>
+<span class="math notranslate nohighlight">\(\nabla f(\mathbf{x}) = P \,\mathbf{x} + \mathbf{q}\)</span>.
+<span class="math notranslate nohighlight">\(\lhd\)</span></p>
 <p>It will be useful to compute the derivative of a function <span class="math notranslate nohighlight">\(f(\mathbf{x})\)</span> of several variables along a parametric curve <span class="math notranslate nohighlight">\(\mathbf{g}(t) = (g_1(t), \ldots, g_d(t))^T \in \mathbb{R}^d\)</span> for <span class="math notranslate nohighlight">\(t\)</span> in some closed interval of <span class="math notranslate nohighlight">\(\mathbb{R}\)</span>. The following result is a special case of an important fact. We will use the following notation</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}
@@ -773,7 +768,7 @@ tensor(1.)
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Perform automatic differentiation</span>
-<span class="n">predict</span> <span class="o">=</span> <span class="n">X</span> <span class="o">@</span> <span class="n">theta</span>  <span class="c1"># Classifier with parameter vector θ</span>
+<span class="n">predict</span> <span class="o">=</span> <span class="n">X</span> <span class="o">@</span> <span class="n">theta</span>  <span class="c1"># Classifier with parameter vector theta</span>
 <span class="n">loss</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">sum</span><span class="p">((</span><span class="n">predict</span> <span class="o">-</span> <span class="n">y</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>  <span class="c1"># Loss function</span>
 <span class="n">loss</span><span class="o">.</span><span class="n">backward</span><span class="p">()</span>  <span class="c1"># Compute gradients</span>
 </pre></div>
@@ -788,8 +783,8 @@ tensor(1.)
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>tensor([[11.3024],
-        [ 2.0425]])
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>tensor([[15.5813],
+        [20.3407]])
 </pre></div>
 </div>
 </div>
@@ -969,10 +964,7 @@ f(x + h)
 \[
 \lim_{\mathbf{h} \to 0} \frac{\|\mathbf{r}(\mathbf{h})\|_2}{\|\mathbf{h}\|_2} = 0.
 \]</div>
-<p>The matrix
-<span class="math notranslate nohighlight">\(
-\mathbf{f}'(\mathbf{x}) = A
-\)</span>
+<p>The matrix <span class="math notranslate nohighlight">\(\mathbf{f}'(\mathbf{x}) = A\)</span>
 is called the differential of <span class="math notranslate nohighlight">\(\mathbf{f}\)</span> at <span class="math notranslate nohighlight">\(\mathbf{x}\)</span>, and we see that the affine map <span class="math notranslate nohighlight">\(\mathbf{f}(\mathbf{x}) + A \mathbf{h}\)</span> provides an approximation of <span class="math notranslate nohighlight">\(\mathbf{f}\)</span> in the neighborhood of <span class="math notranslate nohighlight">\(\mathbf{x}\)</span>.</p>
 <p>We will not derive the full theory here. In the case where each component of <span class="math notranslate nohighlight">\(\mathbf{f}\)</span> has continuous partial derivatives in a neighborhood of <span class="math notranslate nohighlight">\(\mathbf{x}\)</span>, the differential exists is equal to the Jacobian, as defined next.</p>
 <p><strong>DEFINITION</strong> <strong>(Jacobian)</strong> Let <span class="math notranslate nohighlight">\(\mathbf{f} = (f_1, \ldots, f_m)  : D \to \mathbb{R}^m\)</span> where <span class="math notranslate nohighlight">\(D \subseteq \mathbb{R}^d\)</span> and let <span class="math notranslate nohighlight">\(\mathbf{x}_0 \in D\)</span> be an interior point of <span class="math notranslate nohighlight">\(D\)</span> where <span class="math notranslate nohighlight">\(\frac{\partial f_j (\mathbf{x}_0)}{\partial x_i}\)</span> exists for all <span class="math notranslate nohighlight">\(i, j\)</span>. The Jacobian of <span class="math notranslate nohighlight">\(\mathbf{f}\)</span> at <span class="math notranslate nohighlight">\(\mathbf{x}_0\)</span> is the <span class="math notranslate nohighlight">\(d \times m\)</span> matrix</p>
@@ -1115,15 +1107,9 @@ J_{\mathbf{g} \circ \mathbf{f}}(\mathbf{x}_0)
 <p>where the notation <span class="math notranslate nohighlight">\(\frac{\partial g}
 {\partial f_k}\)</span> indicates the partial derivative of <span class="math notranslate nohighlight">\(g\)</span> with respect to its <span class="math notranslate nohighlight">\(k\)</span>-th component. In matrix form, the claim follows. <span class="math notranslate nohighlight">\(\square\)</span></p>
 <p><strong>EXAMPLE:</strong> <strong>(Affine Map continued)</strong> Let <span class="math notranslate nohighlight">\(A \in \mathbb{R}^{m \times d}\)</span> and <span class="math notranslate nohighlight">\(\mathbf{b} \in \mathbb{R}^{m}\)</span>. Define again the vector-valued function <span class="math notranslate nohighlight">\(\mathbf{f}  : \mathbb{R}^d \to \mathbb{R}^m\)</span> as
-<span class="math notranslate nohighlight">\(
-\mathbf{f}(\mathbf{x})
-= A \mathbf{x} + \mathbf{b}.
-\)</span>
+<span class="math notranslate nohighlight">\(\mathbf{f}(\mathbf{x}) = A \mathbf{x} + \mathbf{b}\)</span>.
 In addition, let <span class="math notranslate nohighlight">\(C \in \mathbb{R}^{p \times m}\)</span> and <span class="math notranslate nohighlight">\(\mathbf{d} \in \mathbb{R}^{p}\)</span>, define <span class="math notranslate nohighlight">\(\mathbf{g}  : \mathbb{R}^m \to \mathbb{R}^p\)</span> as
-<span class="math notranslate nohighlight">\(
-\mathbf{g}(\mathbf{y})
-= C \mathbf{y} + \mathbf{d}.
-\)</span></p>
+<span class="math notranslate nohighlight">\(\mathbf{g}(\mathbf{y}) = C \mathbf{y} + \mathbf{d}\)</span>.</p>
 <p>Then</p>
 <div class="math notranslate nohighlight">
 \[

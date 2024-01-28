@@ -472,8 +472,9 @@ document.write(`
 \bY_t =   H\,\bX_t + \bV_t
 \]</div>
 <p>where the <span class="math notranslate nohighlight">\(\bV_t\)</span>’s are i.i.d. <span class="math notranslate nohighlight">\(\mathcal{N}(\mathbf{0}, R)\)</span> and <span class="math notranslate nohighlight">\(H \in \mathbb{R}^{d \times d_0}\)</span> and <span class="math notranslate nohighlight">\(R \in \mathbb{R}^{d}\)</span> are known matrices. Graphically, it can be represented as follows, where as before each variable is node and its conditional distribution depends only on its parent nodes.</p>
-<p><img alt="HMM" src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/83/Hmm_temporal_bayesian_net.svg/640px-Hmm_temporal_bayesian_net.svg.png" /></p>
 <p><strong>Figure:</strong> HMM (<a class="reference external" href="https://commons.wikimedia.org/wiki/File:Hmm_temporal_bayesian_net.svg">Source</a>)</p>
+<p><img alt="HMM" src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/83/Hmm_temporal_bayesian_net.svg/640px-Hmm_temporal_bayesian_net.svg.png" /></p>
+<p><span class="math notranslate nohighlight">\(\bowtie\)</span></p>
 <p>Our goal is to infer the unobserved states given the observed process. Specifically, we look at the filtering problem. Quoting <a class="reference external" href="https://en.wikipedia.org/wiki/Hidden_Markov_model#Filtering">Wikipedia</a>:</p>
 <blockquote>
 <div><p>The task is to compute, given the model’s parameters and a sequence of observations, the distribution over hidden states of the last latent variable at the end of the sequence, i.e. to compute
@@ -526,8 +527,9 @@ K_t
 <section id="location-tracking">
 <h2><span class="section-number">7.4.2. </span>Location tracking<a class="headerlink" href="#location-tracking" title="Permalink to this headline">#</a></h2>
 <p>We apply Kalman filtering to location tracking. Returning to our cyborg corgi example, we imagine that we get noisy observations about the successive its positions in a park. (Think of GPS measurements.) We seek to get a better estimate of its location using the method above. See for example this <a class="reference external" href="https://towardsdatascience.com/optimal-estimation-algorithms-kalman-and-particle-filters-be62dcb5e83">blog post</a> on location tracking.</p>
-<p><img alt="Kids in a dojo" src="../../_images/robot_corgi_in_a_park-small.png" /></p>
-<p><strong>Image credit:</strong> Made with <a class="reference external" href="https://www.midjourney.com/">Midjourney</a></p>
+<p><strong>Figure:</strong> Cyborg corgi (<em>Credit:</em> Made with <a class="reference external" href="https://www.midjourney.com/">Midjourney</a>)</p>
+<p><img alt="Cyborg corgi" src="../../_images/robot_corgi_in_a_park-small.png" /></p>
+<p><span class="math notranslate nohighlight">\(\bowtie\)</span></p>
 <p>We model the true location as a linear-Gaussian system over the 2d position <span class="math notranslate nohighlight">\((z_{1t}, z_{2t})_t\)</span> and velocity <span class="math notranslate nohighlight">\((\dot{z}_{1t}, \dot{z}_{2t})_t\)</span> sampled at <span class="math notranslate nohighlight">\(\Delta\)</span> intervals of time. Formally, the system is</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}
@@ -808,27 +810,6 @@ H = \begin{pmatrix}
 <span class="n">mu</span><span class="p">,</span> <span class="n">Sig</span> <span class="o">=</span> <span class="n">kalmanFilter</span><span class="p">(</span><span class="n">ss</span><span class="p">,</span> <span class="n">os</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">F</span><span class="p">,</span> <span class="n">H</span><span class="p">,</span> <span class="n">Q</span><span class="p">,</span> <span class="n">R</span><span class="p">,</span> <span class="n">init_mu</span><span class="p">,</span> <span class="n">init_Sig</span><span class="p">,</span> <span class="n">T</span><span class="p">)</span>
 </pre></div>
 </div>
-</div>
-</div>
-<div class="cell tag_hide-input docutils container">
-<details class="hide above-input">
-<summary aria-label="Toggle hidden content">
-<span class="collapsed">Show code cell source</span>
-<span class="expanded">Hide code cell source</span>
-</summary>
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">,:],</span> <span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">,:],</span> <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="s1">&#39;g&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">xlim</span><span class="p">((</span><span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">,:])</span><span class="o">-</span><span class="mi">5</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">,:])</span><span class="o">+</span><span class="mi">5</span><span class="p">))</span> 
-<span class="n">plt</span><span class="o">.</span><span class="n">ylim</span><span class="p">((</span><span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">,:])</span><span class="o">-</span><span class="mi">5</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">,:])</span><span class="o">+</span><span class="mi">5</span><span class="p">))</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">y</span><span class="p">[</span><span class="mi">0</span><span class="p">,:],</span> <span class="n">y</span><span class="p">[</span><span class="mi">1</span><span class="p">,:],</span> <span class="n">c</span><span class="o">=</span><span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">mu</span><span class="p">[</span><span class="mi">0</span><span class="p">,:],</span> <span class="n">mu</span><span class="p">[</span><span class="mi">1</span><span class="p">,:],</span> <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;s&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
-</pre></div>
-</div>
-</div>
-</details>
-<div class="cell_output docutils container">
-<img alt="../../_images/a2950f0a36ed0e25e84a10bedb02ef986f18687f61c29b36ee5b620d2df020b0.png" src="../../_images/a2950f0a36ed0e25e84a10bedb02ef986f18687f61c29b36ee5b620d2df020b0.png" />
 </div>
 </div>
 </section>

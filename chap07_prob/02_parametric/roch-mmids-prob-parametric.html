@@ -462,23 +462,23 @@ document.write(`
 <h1><span class="section-number">7.2. </span>Background: introduction to parametric families and maximum likelihood estimation<a class="headerlink" href="#background-introduction-to-parametric-families-and-maximum-likelihood-estimation" title="Permalink to this headline">#</a></h1>
 <p>We introduce the basic building blocks in constructing probabilistic models. We introduce a common family of distributions, the exponential family.</p>
 <p>Throughout this topic, all formal proofs are done under the assumption of a discrete distribution with finite support to avoid unnecessary technicalities and focus rather on the concepts. But everything we discuss can be adapted to continuous or hybrid distributions.</p>
-<p>Parametric families of probability distributions serve as basic building blocks for more complex models. By this, we mean a collection <span class="math notranslate nohighlight">\(\{p_\btheta:\btheta \in \Theta\}\)</span>, where <span class="math notranslate nohighlight">\(p_\btheta\)</span> is a probability distribution over a set <span class="math notranslate nohighlight">\(\S_\btheta\)</span> and <span class="math notranslate nohighlight">\(\btheta\)</span> is a vector-valued parameter.</p>
+<p>Parametric families of probability distributions serve as basic building blocks for more complex models. By this, we mean a collection <span class="math notranslate nohighlight">\(\{p_{\btheta}:\btheta \in \Theta\}\)</span>, where <span class="math notranslate nohighlight">\(p_{\btheta}\)</span> is a probability distribution over a set <span class="math notranslate nohighlight">\(\S_{\btheta}\)</span> and <span class="math notranslate nohighlight">\(\btheta\)</span> is a vector-valued parameter.</p>
 <p><strong>EXAMPLE:</strong> <strong>(Bernoulli)</strong> The random variable <span class="math notranslate nohighlight">\(X\)</span> is Bernoulli with parameter <span class="math notranslate nohighlight">\(q \in [0,1]\)</span>, denoted <span class="math notranslate nohighlight">\(X \sim \mathrm{Ber}(q)\)</span>, if it takes values in <span class="math notranslate nohighlight">\(\S_X = \{0,1\}\)</span> and <span class="math notranslate nohighlight">\(\P[X=1] = q\)</span>. Varying <span class="math notranslate nohighlight">\(q\)</span> produces the family of Bernoulli distributions. <span class="math notranslate nohighlight">\(\lhd\)</span></p>
 <p>Here we focus on the exponential family, which includes many common distributions (including the Bernoulli distribution).</p>
 <section id="exponential-family">
 <h2><span class="section-number">7.2.1. </span>Exponential family<a class="headerlink" href="#exponential-family" title="Permalink to this headline">#</a></h2>
 <p>One particularly useful class of probability distributions in data science is the <a class="reference external" href="https://en.wikipedia.org/wiki/Exponential_family#Vector_parameter">exponential family</a>, which includes many well-known cases.</p>
-<p><strong>DEFINITION</strong> <strong>(Exponential Family - Discrete Case)</strong> A parametric collection of probability distributions <span class="math notranslate nohighlight">\(\{p_\btheta:\btheta \in \Theta\}\)</span> over a discrete space <span class="math notranslate nohighlight">\(\S\)</span> is an exponential family if it can be written in the form</p>
+<p><strong>DEFINITION</strong> <strong>(Exponential Family - Discrete Case)</strong> A parametric collection of probability distributions <span class="math notranslate nohighlight">\(\{p_{\btheta}:\btheta \in \Theta\}\)</span> over a discrete space <span class="math notranslate nohighlight">\(\S\)</span> is an exponential family if it can be written in the form</p>
 <div class="math notranslate nohighlight">
 \[
-p_\btheta(\mathbf{x})
+p_{\btheta}(\mathbf{x})
 = \frac{1}{Z(\btheta)} h(\mathbf{x}) \exp\left(\btheta^T \bphi(\mathbf{x})\right)
 \]</div>
 <p>where <span class="math notranslate nohighlight">\(\btheta \in \mathbb{R}^m\)</span> are the canonical parameters, <span class="math notranslate nohighlight">\(\bphi : \S \to \mathbb{R}^m\)</span> are the sufficient statistics and <span class="math notranslate nohighlight">\(Z(\btheta)\)</span> is the partition function.
 It is often convenient to introduce the function <span class="math notranslate nohighlight">\(A(\btheta) = \log Z(\btheta)\)</span> and re-write</p>
 <div class="math notranslate nohighlight">
 \[
-p_\btheta(\mathbf{x})
+p_{\btheta}(\mathbf{x})
 = h(\mathbf{x}) \exp\left(\btheta^T \bphi(\mathbf{x}) - A(\btheta)\right).
 \]</div>
 <p><span class="math notranslate nohighlight">\(\natural\)</span></p>
@@ -534,8 +534,9 @@ f_{\bmu, \bSigma}(\mathbf{x})
 \exp\left(-\frac{1}{2}(\mathbf{x} - \bmu)^T \bSigma^{-1} (\mathbf{x} - \bmu)\right)
 \]</div>
 <p>where <span class="math notranslate nohighlight">\(|A|\)</span> is the <a class="reference external" href="https://en.wikipedia.org/wiki/Determinant">determinant</a> of <span class="math notranslate nohighlight">\(A\)</span>. We use the notation <span class="math notranslate nohighlight">\(\mathbf{X} \sim \mathcal{N}(\bmu, \bSigma)\)</span>.</p>
-<p><img alt="Multivariate normal distribution" src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/57/Multivariate_Gaussian.png/640px-Multivariate_Gaussian.png" /></p>
 <p><strong>Figure:</strong> Multivariate normal distribution (<a class="reference external" href="https://commons.wikimedia.org/wiki/File:Multivariate_Gaussian.png">Source</a>)</p>
+<p><img alt="Multivariate normal distribution" src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/57/Multivariate_Gaussian.png/640px-Multivariate_Gaussian.png" /></p>
+<p><span class="math notranslate nohighlight">\(\bowtie\)</span></p>
 <p>Rewriting the density as</p>
 <div class="math notranslate nohighlight">
 \[
@@ -634,7 +635,7 @@ f_{\balpha}(\mathbf{x})
 </section>
 <section id="parameter-estimation">
 <h2><span class="section-number">7.2.2. </span>Parameter estimation<a class="headerlink" href="#parameter-estimation" title="Permalink to this headline">#</a></h2>
-<p>When modeling data via a parametric family of distributions, the parameters must be determined from the data itself. In a typical setting, we assume that the data comprises <span class="math notranslate nohighlight">\(n\)</span> independent samples <span class="math notranslate nohighlight">\(\mathbf{X}_1,\ldots,\mathbf{X}_n\)</span> from a parametric family <span class="math notranslate nohighlight">\(p_\btheta\)</span> with unknown <span class="math notranslate nohighlight">\(\btheta \in \Theta\)</span>. Many methods exist for estimating <span class="math notranslate nohighlight">\(\btheta\)</span>, depending on the context. Here we focus on perhaps the best-known approach, <a class="reference external" href="https://en.wikipedia.org/wiki/Maximum_likelihood_estimation">maximum likelihood estimation</a>. It has many <a class="reference external" href="https://en.wikipedia.org/wiki/Maximum_likelihood_estimation#Properties">good theoretical properties</a> which we will not describe here, as well as <a class="reference external" href="https://stats.stackexchange.com/questions/261056/why-does-maximum-likelihood-estimation-have-issues-with-over-fitting">drawbacks</a>.</p>
+<p>When modeling data via a parametric family of distributions, the parameters must be determined from the data itself. In a typical setting, we assume that the data comprises <span class="math notranslate nohighlight">\(n\)</span> independent samples <span class="math notranslate nohighlight">\(\mathbf{X}_1,\ldots,\mathbf{X}_n\)</span> from a parametric family <span class="math notranslate nohighlight">\(p_{\btheta}\)</span> with unknown <span class="math notranslate nohighlight">\(\btheta \in \Theta\)</span>. Many methods exist for estimating <span class="math notranslate nohighlight">\(\btheta\)</span>, depending on the context. Here we focus on perhaps the best-known approach, <a class="reference external" href="https://en.wikipedia.org/wiki/Maximum_likelihood_estimation">maximum likelihood estimation</a>. It has many <a class="reference external" href="https://en.wikipedia.org/wiki/Maximum_likelihood_estimation#Properties">good theoretical properties</a> which we will not describe here, as well as <a class="reference external" href="https://stats.stackexchange.com/questions/261056/why-does-maximum-likelihood-estimation-have-issues-with-over-fitting">drawbacks</a>.</p>
 <p>The idea behind maximum likelihood estimation is simple and intuitive: we choose the parameter that maximizes the probability of observing the data.</p>
 <p><strong>DEFINITION</strong> <strong>(Maximum likelihood estimator)</strong> Assume that <span class="math notranslate nohighlight">\(\mathbf{X}_1,\ldots,\mathbf{X}_n\)</span> are <span class="math notranslate nohighlight">\(n\)</span> independent samples from a parametric family <span class="math notranslate nohighlight">\(p_{\btheta^*}\)</span> with unknown <span class="math notranslate nohighlight">\(\btheta^* \in \Theta\)</span>. The maximum likelihood estimator of <span class="math notranslate nohighlight">\(\btheta\)</span> is defined as</p>
 <div class="math notranslate nohighlight">
@@ -649,7 +650,7 @@ L_n(\btheta; \{\mathbf{X}_i\}_{i=1}^n)
 = - \sum_{i=1}^n \log p_{\btheta}(\mathbf{X}_i).
 \]</div>
 <p><span class="math notranslate nohighlight">\(\natural\)</span></p>
-<p>We can give an alternative perspective on the maximum likelihood estimator. Assume that <span class="math notranslate nohighlight">\(p_\btheta\)</span> is supported on a fixed finite set <span class="math notranslate nohighlight">\(\X\)</span> for all <span class="math notranslate nohighlight">\(\btheta \in \Theta\)</span>. Given samples <span class="math notranslate nohighlight">\(\mathbf{X}_1,\ldots,\mathbf{X}_n\)</span>, for each <span class="math notranslate nohighlight">\(\mathbf{x} \in \X\)</span>, let</p>
+<p>We can give an alternative perspective on the maximum likelihood estimator. Assume that <span class="math notranslate nohighlight">\(p_{\btheta}\)</span> is supported on a fixed finite set <span class="math notranslate nohighlight">\(\X\)</span> for all <span class="math notranslate nohighlight">\(\btheta \in \Theta\)</span>. Given samples <span class="math notranslate nohighlight">\(\mathbf{X}_1,\ldots,\mathbf{X}_n\)</span>, for each <span class="math notranslate nohighlight">\(\mathbf{x} \in \X\)</span>, let</p>
 <div class="math notranslate nohighlight">
 \[
 N_\mathbf{x} = \frac{1}{n} \sum_{i=1}^n \mathbf{1}_{\{\mathbf{X}_i = \mathbf{x}\}}
@@ -661,7 +662,7 @@ N_\mathbf{x} = \frac{1}{n} \sum_{i=1}^n \mathbf{1}_{\{\mathbf{X}_i = \mathbf{x}\
 \]</div>
 <p>be the empirical frequency of <span class="math notranslate nohighlight">\(\mathbf{x}\)</span> in the sample. Observe that <span class="math notranslate nohighlight">\(\hat\mu_n\)</span> is a probability distribution over <span class="math notranslate nohighlight">\(\X\)</span>.</p>
 <p>The following theorem characterizes the maximum likelihood estimator in terms of the <a class="reference external" href="https://en.wikipedia.org/wiki/Kullback%E2%80%93Leibler_divergence">Kullback-Liebler divergence</a>, which was introduced in a previous section.</p>
-<p><strong>THEOREM</strong> <strong>(MLE via KL)</strong> Assume that, for all <span class="math notranslate nohighlight">\(\btheta \in \Theta\)</span>, <span class="math notranslate nohighlight">\(p_\btheta\)</span> is supported on a fixed finite set <span class="math notranslate nohighlight">\(\X\)</span> and that <span class="math notranslate nohighlight">\(p_\btheta(\mathbf{x}) &gt; 0\)</span> for all <span class="math notranslate nohighlight">\(\mathbf{x} \in \X\)</span>. Given samples <span class="math notranslate nohighlight">\(\mathbf{X}_1,\ldots,\mathbf{X}_n\)</span> from <span class="math notranslate nohighlight">\(p_{\btheta^*}\)</span>, let <span class="math notranslate nohighlight">\(\{\hat\mu_n(\mathbf{x})\}_{\mathbf{x} \in \X}\)</span> be the corresponding empirical frequencies. Then the maximum likelihood estimator <span class="math notranslate nohighlight">\(\hat\btheta_{\mathrm{MLE}}\)</span> of <span class="math notranslate nohighlight">\(\btheta\)</span> is also a solution to</p>
+<p><strong>THEOREM</strong> <strong>(MLE via KL)</strong> Assume that, for all <span class="math notranslate nohighlight">\(\btheta \in \Theta\)</span>, <span class="math notranslate nohighlight">\(p_{\btheta}\)</span> is supported on a fixed finite set <span class="math notranslate nohighlight">\(\X\)</span> and that <span class="math notranslate nohighlight">\(p_{\btheta}(\mathbf{x}) &gt; 0\)</span> for all <span class="math notranslate nohighlight">\(\mathbf{x} \in \X\)</span>. Given samples <span class="math notranslate nohighlight">\(\mathbf{X}_1,\ldots,\mathbf{X}_n\)</span> from <span class="math notranslate nohighlight">\(p_{\btheta^*}\)</span>, let <span class="math notranslate nohighlight">\(\{\hat\mu_n(\mathbf{x})\}_{\mathbf{x} \in \X}\)</span> be the corresponding empirical frequencies. Then the maximum likelihood estimator <span class="math notranslate nohighlight">\(\hat\btheta_{\mathrm{MLE}}\)</span> of <span class="math notranslate nohighlight">\(\btheta\)</span> is also a solution to</p>
 <div class="math notranslate nohighlight">
 \[
 \hat\btheta_{\mathrm{MLE}}
@@ -674,26 +675,26 @@ N_\mathbf{x} = \frac{1}{n} \sum_{i=1}^n \mathbf{1}_{\{\mathbf{X}_i = \mathbf{x}\
 \[
 L_n(\btheta; \{\mathbf{X}_i\}_{i=1}^n)
 = - \sum_{i=1}^n \log p_{\btheta}(\mathbf{X}_i)
-= - \sum_{\mathbf{x} \in \X} N_{\mathbf{x}} \log p_\btheta(\mathbf{x}).
+= - \sum_{\mathbf{x} \in \X} N_{\mathbf{x}} \log p_{\btheta}(\mathbf{x}).
 \]</div>
 <p>To bring out the Kullback-Liebler divergence,
 we further transform the previous equation into</p>
 <div class="amsmath math notranslate nohighlight">
 \[\begin{align*}
 \frac{1}{n} L_n(\btheta; \{\mathbf{X}_i\}_{i=1}^n)
-&amp;= - \frac{1}{n} \sum_{\mathbf{x} \in \X} N_{\mathbf{x}} \log p_\btheta(\mathbf{x})\\
-&amp;= \sum_{\mathbf{x} \in \X} (N_{\mathbf{x}}/n) \log \frac{N_{\mathbf{x}}/n}{p_\btheta(\mathbf{x})} - \sum_{\mathbf{x} \in \X} (N_{\mathbf{x}}/n) \log (N_{\mathbf{x}}/n)\\
-&amp;= \sum_{\mathbf{x} \in \X} \hat\mu_n(\mathbf{x}) \log \frac{\hat\mu_n(\mathbf{x})}{p_\btheta(\mathbf{x})} - \sum_{\mathbf{x} \in \X} \hat\mu_n(\mathbf{x}) \log \hat\mu_n(\mathbf{x})\\
+&amp;= - \frac{1}{n} \sum_{\mathbf{x} \in \X} N_{\mathbf{x}} \log p_{\btheta}(\mathbf{x})\\
+&amp;= \sum_{\mathbf{x} \in \X} (N_{\mathbf{x}}/n) \log \frac{N_{\mathbf{x}}/n}{p_{\btheta}(\mathbf{x})} - \sum_{\mathbf{x} \in \X} (N_{\mathbf{x}}/n) \log (N_{\mathbf{x}}/n)\\
+&amp;= \sum_{\mathbf{x} \in \X} \hat\mu_n(\mathbf{x}) \log \frac{\hat\mu_n(\mathbf{x})}{p_{\btheta}(\mathbf{x})} - \sum_{\mathbf{x} \in \X} \hat\mu_n(\mathbf{x}) \log \hat\mu_n(\mathbf{x})\\
 &amp;= \mathrm{KL}(\hat{\mu}_n \| p_{\btheta}) + \mathrm{H}(\hat\mu_n),
 \end{align*}\]</div>
 <p>where the second term is referred to as the <a class="reference external" href="https://en.wikipedia.org/wiki/Entropy_(information_theory)">entropy</a> of <span class="math notranslate nohighlight">\(\hat\mu_n\)</span>.</p>
 <p>Because <span class="math notranslate nohighlight">\(\mathrm{H}(\hat\mu_n)\)</span> does not depend on <span class="math notranslate nohighlight">\(\btheta\)</span>, minimizing <span class="math notranslate nohighlight">\(L_n(\btheta; \{\mathbf{X}_i\}_{i=1}^n)\)</span> is equivalent to minimizing <span class="math notranslate nohighlight">\(\mathrm{KL}(\hat{\mu}_n \| p_{\btheta})\)</span> as claimed. <span class="math notranslate nohighlight">\(\square\)</span></p>
-<p>In words, the maximum likelihood estimator chooses the parametric distribution that is closest to <span class="math notranslate nohighlight">\(\hat\mu_n\)</span> in Kullback-Liebler divergence. One can think of this as projecting <span class="math notranslate nohighlight">\(\hat\mu_n\)</span> onto the space <span class="math notranslate nohighlight">\(\{p_\btheta : \btheta \in \Theta\}\)</span> under the Kullback-Liebler notion of distance.</p>
-<p><strong>EXAMPLE:</strong> <strong>(Special case)</strong> One special case is where <span class="math notranslate nohighlight">\(\X\)</span> is finite, <span class="math notranslate nohighlight">\(\btheta = (\theta_\mathbf{x})_{\mathbf{x} \in \X}\)</span> is a probability distribution over <span class="math notranslate nohighlight">\(\X\)</span> and <span class="math notranslate nohighlight">\(p_\btheta = \btheta\)</span>. That is, we consider the class of all probability distributions over <span class="math notranslate nohighlight">\(\X\)</span>. Given samples <span class="math notranslate nohighlight">\(\mathbf{X}_1,\ldots,\mathbf{X}_n\)</span> from <span class="math notranslate nohighlight">\(p_{\btheta^*}\)</span>, in this case</p>
+<p>In words, the maximum likelihood estimator chooses the parametric distribution that is closest to <span class="math notranslate nohighlight">\(\hat\mu_n\)</span> in Kullback-Liebler divergence. One can think of this as projecting <span class="math notranslate nohighlight">\(\hat\mu_n\)</span> onto the space <span class="math notranslate nohighlight">\(\{p_{\btheta} : \btheta \in \Theta\}\)</span> under the Kullback-Liebler notion of distance.</p>
+<p><strong>EXAMPLE:</strong> <strong>(Special case)</strong> One special case is where <span class="math notranslate nohighlight">\(\X\)</span> is finite, <span class="math notranslate nohighlight">\(\btheta = (\theta_\mathbf{x})_{\mathbf{x} \in \X}\)</span> is a probability distribution over <span class="math notranslate nohighlight">\(\X\)</span> and <span class="math notranslate nohighlight">\(p_{\btheta} = \btheta\)</span>. That is, we consider the class of all probability distributions over <span class="math notranslate nohighlight">\(\X\)</span>. Given samples <span class="math notranslate nohighlight">\(\mathbf{X}_1,\ldots,\mathbf{X}_n\)</span> from <span class="math notranslate nohighlight">\(p_{\btheta^*}\)</span>, in this case</p>
 <div class="math notranslate nohighlight">
 \[
 \mathrm{KL}(\hat{\mu}_n \| p_{\btheta}) 
-= \sum_{\mathbf{x} \in \X} \hat\mu_n(\mathbf{x}) \log \frac{\hat\mu_n(\mathbf{x})}{p_\btheta(\mathbf{x})}
+= \sum_{\mathbf{x} \in \X} \hat\mu_n(\mathbf{x}) \log \frac{\hat\mu_n(\mathbf{x})}{p_{\btheta}(\mathbf{x})}
 = \sum_{\mathbf{x} \in \X} \hat\mu_n(\mathbf{x}) \log \frac{\hat\mu_n(\mathbf{x})}{\theta_\mathbf{x}},
 \]</div>
 <p>where recall that, by convention, if <span class="math notranslate nohighlight">\(\hat\mu_n(\mathbf{x}) = 0\)</span> then <span class="math notranslate nohighlight">\(\hat\mu_n(\mathbf{x}) \log \frac{\hat\mu_n(\mathbf{x})}{\theta_\mathbf{x}} = 0\)</span> for any <span class="math notranslate nohighlight">\(\theta_\mathbf{x}\)</span>. So, letting <span class="math notranslate nohighlight">\(\mathbb{X}_n = \{\mathbf{X}_1,\ldots,\mathbf{X}_n\}\)</span> be the set of distinct values encountered in the sample (ignoring repetitions), we have</p>
@@ -704,13 +705,13 @@ we further transform the previous equation into</p>
 \]</div>
 <p>Note that <span class="math notranslate nohighlight">\(\sum_{\mathbf{x} \in \mathbb{X}_n} \hat\mu_n(\mathbf{x}) = 1\)</span>.</p>
 <p>We have previously established <em>Gibbs’ inequality</em> which says that: for any <span class="math notranslate nohighlight">\(\mathbf{p}, \mathbf{q} \in \Delta_K\)</span> with <span class="math notranslate nohighlight">\(\mathbf{q} &gt; \mathbf{0}\)</span>, it holds that <span class="math notranslate nohighlight">\(\mathrm{KL}(\mathbf{p} \| \mathbf{q}) \geq 0\)</span>. A quick look at the proof shows that the result holds as long as <span class="math notranslate nohighlight">\(\sum_{i=1}^K q_i \leq 1\)</span> instead of <span class="math notranslate nohighlight">\(\sum_{i=1}^K q_i = 1\)</span>.</p>
-<p>The minimum <span class="math notranslate nohighlight">\(\mathrm{KL}(\hat{\mu}_n \| p_{\btheta})  = 0\)</span> can be achieved by setting <span class="math notranslate nohighlight">\(\btheta_\mathbf{x} = \hat\mu_n(\mathbf{x})\)</span> for all <span class="math notranslate nohighlight">\(\mathbf{x} \in \mathbb{X}_n\)</span>
-and <span class="math notranslate nohighlight">\(\btheta_\mathbf{x} = 0\)</span> for all <span class="math notranslate nohighlight">\(\mathbf{x} \notin \mathbb{X}_n\)</span>. The condition</p>
+<p>The minimum <span class="math notranslate nohighlight">\(\mathrm{KL}(\hat{\mu}_n \| p_{\btheta})  = 0\)</span> can be achieved by setting <span class="math notranslate nohighlight">\(\btheta_{\mathbf{x}} = \hat\mu_n(\mathbf{x})\)</span> for all <span class="math notranslate nohighlight">\(\mathbf{x} \in \mathbb{X}_n\)</span>
+and <span class="math notranslate nohighlight">\(\btheta_{\mathbf{x}} = 0\)</span> for all <span class="math notranslate nohighlight">\(\mathbf{x} \notin \mathbb{X}_n\)</span>. The condition</p>
 <div class="math notranslate nohighlight">
 \[
-\sum_{\mathbf{x} \in \X} \btheta_\mathbf{x}
-= \sum_{\mathbf{x} \in \mathbb{X}_n} \btheta_\mathbf{x}
-+ \sum_{\mathbf{x} \notin \mathbb{X}_n} \btheta_\mathbf{x}
+\sum_{\mathbf{x} \in \X} \btheta_{\mathbf{x}}
+= \sum_{\mathbf{x} \in \mathbb{X}_n} \btheta_{\mathbf{x}}
++ \sum_{\mathbf{x} \notin \mathbb{X}_n} \btheta_{\mathbf{x}}
 = \sum_{\mathbf{x} \in \mathbb{X}_n} \hat\mu_n(\mathbf{x})
 = 1,
 \]</div>
@@ -720,10 +721,10 @@ and <span class="math notranslate nohighlight">\(\btheta_\mathbf{x} = 0\)</span>
 <section id="parameter-estimation-for-exponential-families">
 <h2><span class="section-number">7.2.3. </span>Parameter estimation for exponential families<a class="headerlink" href="#parameter-estimation-for-exponential-families" title="Permalink to this headline">#</a></h2>
 <p>For exponential families, maximum likelihood estimation takes a particularly natural form. We provide details in the discrete case.</p>
-<p><strong>THEOREM</strong> <strong>(Maximum Likelihood Estimator for Exponential Families)</strong> Assume that <span class="math notranslate nohighlight">\(p_\btheta\)</span> takes the exponential family form</p>
+<p><strong>THEOREM</strong> <strong>(Maximum Likelihood Estimator for Exponential Families)</strong> Assume that <span class="math notranslate nohighlight">\(p_{\btheta}\)</span> takes the exponential family form</p>
 <div class="math notranslate nohighlight">
 \[
-p_\btheta(\mathbf{x})
+p_{\btheta}(\mathbf{x})
 = h(\mathbf{x}) \exp\left(\btheta^T \bphi(\mathbf{x}) - A(\btheta)\right)
 \]</div>
 <p>and that the support <span class="math notranslate nohighlight">\(\S\)</span> is finite. Let <span class="math notranslate nohighlight">\(\mathbf{X}_1,\ldots,\mathbf{X}_n\)</span> be <span class="math notranslate nohighlight">\(n\)</span> independent samples from a parametric family <span class="math notranslate nohighlight">\(p_{\btheta^*}\)</span> with unknown <span class="math notranslate nohighlight">\(\btheta^* \in \Theta\)</span>. Then <span class="math notranslate nohighlight">\(L_n(\btheta; \{\mathbf{X}_i\}_{i=1}^n)\)</span>,  as a function of <span class="math notranslate nohighlight">\(\btheta\)</span>, is convex and the maximum likelihood estimator of <span class="math notranslate nohighlight">\(\btheta\)</span> - if it exists - solves the system of moment-matching equations</p>
@@ -758,10 +759,10 @@ p_\btheta(\mathbf{x})
 \end{align*}\]</div>
 <p>Since this inequality holds for any <span class="math notranslate nohighlight">\(\mathbf{y}\)</span>, it follows by definition that <span class="math notranslate nohighlight">\(\mathrm{K}_{\mathbf{Z}, \mathbf{Z}} \succeq 0\)</span>. <span class="math notranslate nohighlight">\(\square\)</span></p>
 <p>The function <span class="math notranslate nohighlight">\(A\)</span> has properties worth highlighting.</p>
-<p><strong>LEMMA</strong> <strong>(Derivatives of <span class="math notranslate nohighlight">\(A\)</span>)</strong> Assume that <span class="math notranslate nohighlight">\(p_\btheta\)</span> takes the exponential family form</p>
+<p><strong>LEMMA</strong> <strong>(Derivatives of <span class="math notranslate nohighlight">\(A\)</span>)</strong> Assume that <span class="math notranslate nohighlight">\(p_{\btheta}\)</span> takes the exponential family form</p>
 <div class="math notranslate nohighlight">
 \[
-p_\btheta(\mathbf{x})
+p_{\btheta}(\mathbf{x})
 = h(\mathbf{x}) \exp\left(\btheta^T \bphi(\mathbf{x}) - A(\btheta)\right)
 \]</div>
 <p>and that the support <span class="math notranslate nohighlight">\(\S\)</span> is finite. Then</p>
@@ -771,7 +772,7 @@ p_\btheta(\mathbf{x})
 \qquad \text{and} \qquad
 \mathbf{H}_A (\btheta) = \mathrm{K}_{\bphi(\mathbf{X}), \bphi(\mathbf{X})},
 \]</div>
-<p>where <span class="math notranslate nohighlight">\(\mathbf{X} \sim p_\btheta\)</span>. <span class="math notranslate nohighlight">\(\flat\)</span></p>
+<p>where <span class="math notranslate nohighlight">\(\mathbf{X} \sim p_{\btheta}\)</span>. <span class="math notranslate nohighlight">\(\flat\)</span></p>
 <p><em>Proof idea:</em> Follows from a direct calculation.</p>
 <p><em>Proof:</em> We observe first that</p>
 <div class="math notranslate nohighlight">
@@ -780,7 +781,7 @@ A(\btheta)
 = \log Z(\btheta)
 = \log\left(\sum_{\mathbf{x} \in \S} h(\mathbf{x}) \exp(\btheta^T \bphi(\mathbf{x}))\right),
 \]</div>
-<p>where we used the fact that, by definition, <span class="math notranslate nohighlight">\(Z(\btheta)\)</span> is the normalization constant of <span class="math notranslate nohighlight">\(p_\btheta\)</span>. In particular, as the logarithm of a finite, weighted sum of exponentials, the function <span class="math notranslate nohighlight">\(A(\btheta)\)</span> is continuously differentiable. Hence so is <span class="math notranslate nohighlight">\(p_\theta(\mathbf{x})\)</span> as a function of <span class="math notranslate nohighlight">\(\btheta\)</span>.</p>
+<p>where we used the fact that, by definition, <span class="math notranslate nohighlight">\(Z(\btheta)\)</span> is the normalization constant of <span class="math notranslate nohighlight">\(p_{\btheta}\)</span>. In particular, as the logarithm of a finite, weighted sum of exponentials, the function <span class="math notranslate nohighlight">\(A(\btheta)\)</span> is continuously differentiable. Hence so is <span class="math notranslate nohighlight">\(p_{\btheta}(\mathbf{x})\)</span> as a function of <span class="math notranslate nohighlight">\(\btheta\)</span>.</p>
 <p>From the formula above and the basic rules of calculus,</p>
 <div class="amsmath math notranslate nohighlight">
 \[\begin{align*}
@@ -791,7 +792,7 @@ A(\btheta)
 &amp;= \sum_{\mathbf{x} \in \S} \phi_j(\mathbf{x}) h(\mathbf{x}) \exp(\btheta^T \bphi(\mathbf{x}) - A(\btheta))\\
 &amp;= \E[\phi_j(\mathbf{X})],
 \end{align*}\]</div>
-<p>where <span class="math notranslate nohighlight">\(\mathbf{X} \sim p_\btheta\)</span>.</p>
+<p>where <span class="math notranslate nohighlight">\(\mathbf{X} \sim p_{\btheta}\)</span>.</p>
 <p>Differentiating again, this time with respect to <span class="math notranslate nohighlight">\(\theta_i\)</span>, we obtain</p>
 <div class="amsmath math notranslate nohighlight">
 \[\begin{align*}
@@ -803,19 +804,19 @@ A(\btheta)
 &amp; \qquad\qquad \times \left(\sum_{\mathbf{x} \in \S} \phi_j(\mathbf{x}) h(\mathbf{x}) \exp(\btheta^T \bphi(\mathbf{x}) - A(\btheta)) \right)\\
 &amp;= \E[\phi_i(\mathbf{X})\phi_j(\mathbf{X})] - \E[\phi_i(\mathbf{X})]\E[\phi_j(\mathbf{X})],
 \end{align*}\]</div>
-<p>where again <span class="math notranslate nohighlight">\(\mathbf{X} \sim p_\btheta\)</span>. That concludes the proof. <span class="math notranslate nohighlight">\(\square\)</span></p>
+<p>where again <span class="math notranslate nohighlight">\(\mathbf{X} \sim p_{\btheta}\)</span>. That concludes the proof. <span class="math notranslate nohighlight">\(\square\)</span></p>
 <p>We are now ready to the prove the main theorem.</p>
 <p><em>Proof:</em> <em>(Maximum Likelihood Estimator for Exponential Families)</em> We begin by computing the stationary points of the log-likelihood, for which we need the gradient with respect to <span class="math notranslate nohighlight">\(\btheta \in \mathbb{R}^m\)</span>. We will also need the second-order derivatives to establish convexity. We have</p>
 <div class="amsmath math notranslate nohighlight">
 \[\begin{align*}
-\frac{\partial}{\partial \theta_j} \{- \log p_\btheta(\mathbf{x})\}
+\frac{\partial}{\partial \theta_j} \{- \log p_{\btheta}(\mathbf{x})\}
 &amp;= \frac{\partial}{\partial \theta_j} \left\{- \log h(\mathbf{x}) - \btheta^T \bphi(\mathbf{x}) + A(\btheta)\right\}\\
 &amp;= - \phi_j(\mathbf{x}) + \frac{\partial}{\partial \theta_j} A(\btheta).
 \end{align*}\]</div>
 <p>and</p>
 <div class="amsmath math notranslate nohighlight">
 \[\begin{align*}
-\frac{\partial^2}{\partial \theta_i \partial \theta_j} \{- \log p_\btheta(\mathbf{x})\}
+\frac{\partial^2}{\partial \theta_i \partial \theta_j} \{- \log p_{\btheta}(\mathbf{x})\}
 &amp;= \frac{\partial}{\partial \theta_i} \left\{- \phi_j(\mathbf{x}) + \frac{\partial}{\partial \theta_j} A(\btheta)\right\}\\
 &amp;= \frac{\partial^2}{\partial \theta_i \partial \theta_j} A(\btheta).
 \end{align*}\]</div>
@@ -852,7 +853,7 @@ A(\btheta)
 <p><strong>EXAMPLE:</strong> <strong>(Bernoulli, continued)</strong> For <span class="math notranslate nohighlight">\(x \in \{0,1\}\)</span>, recall that the <span class="math notranslate nohighlight">\(\mathrm{Ber}(q)\)</span> distribution can be written as</p>
 <div class="amsmath math notranslate nohighlight">
 \[\begin{align*}
-p_\theta(x)
+p_{\theta}(x)
 &amp;= \frac{1}{Z(\theta)} h(x) \exp(\theta \,\phi(x))
 \end{align*}\]</div>
 <p>where we define <span class="math notranslate nohighlight">\(h(x) = 1\)</span>, <span class="math notranslate nohighlight">\(\phi(x) = x\)</span>, <span class="math notranslate nohighlight">\(\theta = \log \left(\frac{q}{1-q}\right)\)</span> and <span class="math notranslate nohighlight">\(Z(\theta) = \sigma(\theta)\)</span>. Let <span class="math notranslate nohighlight">\(X_1,\ldots,X_n\)</span> be independent samples from <span class="math notranslate nohighlight">\(p_{\theta^*}\)</span>.</p>
@@ -965,7 +966,7 @@ So the Hessian of the minus log-likelihood is</p>
 <p><strong>EXAMPLE:</strong> <strong>(Linear regression)</strong> Consider the case where <span class="math notranslate nohighlight">\(p_\theta\)</span> is a univariate Gaussian with mean <span class="math notranslate nohighlight">\(\theta\)</span> and fixed variance <span class="math notranslate nohighlight">\(1\)</span>. That is,</p>
 <div class="amsmath math notranslate nohighlight">
 \[\begin{align*}
-p_\theta(y)
+p_{\theta}(y)
 &amp;= \frac{1}{\sqrt{2 \pi}}
 \exp\left(- \frac{(y - \theta)^2}{2}\right)\\
 &amp;= \frac{1}{\sqrt{2 \pi}}
@@ -1011,10 +1012,10 @@ L_n(\mathbf{w};\{(\mathbf{x}_i,y_i)_{i=1}^n\})
 \end{align*}\]</div>
 <p>Observe that mimizing this expression over <span class="math notranslate nohighlight">\(\mathbf{w}\)</span> is equivalent to solving the least-squares problem as the first term does not depend on <span class="math notranslate nohighlight">\(\mathbf{w}\)</span> and the factor of <span class="math notranslate nohighlight">\(1/2\)</span> does not affect the optimum.</p>
 <p>While we have rederived the least squares problem from a probabilistic model, it should not be noted that the Gaussian assumption is not in fact required for linear regression to be efffective. Rather, it gives a different perspective on the same problem. <span class="math notranslate nohighlight">\(\lhd\)</span></p>
-<p><strong>EXAMPLE:</strong> <strong>(Logistic regression)</strong> Consider the case where <span class="math notranslate nohighlight">\(p_\theta\)</span> is a Bernoulli distribution. That is, for <span class="math notranslate nohighlight">\(y \in \{0,1\}\)</span>,</p>
+<p><strong>EXAMPLE:</strong> <strong>(Logistic regression)</strong> Consider the case where <span class="math notranslate nohighlight">\(p_{\theta}\)</span> is a Bernoulli distribution. That is, for <span class="math notranslate nohighlight">\(y \in \{0,1\}\)</span>,</p>
 <div class="amsmath math notranslate nohighlight">
 \[\begin{align*}
-p_\theta(y)
+p_{\theta}(y)
 &amp;=  h(y) \exp(\theta \,\phi(y) - A(\theta)),
 \end{align*}\]</div>
 <p>where  <span class="math notranslate nohighlight">\(h(y) = 1\)</span>, <span class="math notranslate nohighlight">\(\phi(y) = y\)</span> and <span class="math notranslate nohighlight">\(A(\theta) = \log(1 + e^\theta)\)</span>. We now assume that <span class="math notranslate nohighlight">\(\theta = \mathbf{x}^T \mathbf{w}\)</span> to obtain the corresponding generalized linear model. Given data points <span class="math notranslate nohighlight">\((\mathbf{x}_i,y_i)_{i=1}^n\)</span>, the maximum likelihood estimator <span class="math notranslate nohighlight">\(\hat{\mathbf{w}}_{\mathrm{MLE}}\)</span> solves the equation</p>
@@ -1054,7 +1055,7 @@ L_n(\mathbf{w};\{(\mathbf{x}_i,y_i)_{i=1}^n\})
 &amp;= - \sum_{i=1}^n \mathbf{x}_i (y_i - \sigma(\mathbf{x}_i^T \mathbf{w})).
 \end{align*}\]</div>
 <p>This expression is indeed consistent with what we previously derived for logistic regression. <span class="math notranslate nohighlight">\(\lhd\)</span></p>
-<p>In practice, generalized linear models of moderate dimension are often fitted using the second-order method Iterative Reweighted Least Squares (IRLS), which generalizes the special case for logistic regression we encountered in a previous assignment.</p>
+<p>In practice, generalized linear models of moderate dimension are often fitted using the second-order method Iterative Reweighted Least Squares (IRLS), which generalizes the special case for logistic regression.</p>
 </section>
 </section>
 

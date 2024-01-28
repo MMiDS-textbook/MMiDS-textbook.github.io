@@ -480,7 +480,7 @@ p_\bX(\bx)
 &amp;= \sum_{\by \in \S_\bY} p_{\bX|\bY}(\bx|\by) \,p_\bY(\by)
 \end{align*}\]</div>
 <p>where we used that the events <span class="math notranslate nohighlight">\(\{\bY=\by\}\)</span>, <span class="math notranslate nohighlight">\(\by \in \S_\bY\)</span>, form a partition of the probability space. We interpret this equation as defining <span class="math notranslate nohighlight">\(p_\bX(\bx)\)</span> as a convex combination - a mixture - of the distributions <span class="math notranslate nohighlight">\(p_{\bX|\bY}(\bx|\by)\)</span>, <span class="math notranslate nohighlight">\(\by \in \S_\bY\)</span>, with mixing weights <span class="math notranslate nohighlight">\(p_\bY(\by)\)</span>. In general, we need to specify the full conditional probability distribution (CPD): <span class="math notranslate nohighlight">\(p_{\bX|\bY}(\bx|\by), \forall \bx \in \S_{\bX}, \by \in \S_\bY\)</span>. But assuming that the mixing weights and/or CPD come from parametric families can help reduce the complexity of the model.</p>
-<p>In particular, in the parametric context, this gives rise to a powerful approach to expanding distribution families. Suppose <span class="math notranslate nohighlight">\(\{p_\btheta:\btheta \in \Theta\}\)</span> is a parametric family of distributions. Let <span class="math notranslate nohighlight">\(K \geq 2\)</span>, <span class="math notranslate nohighlight">\(\btheta_1, \ldots, \btheta_K \in \Theta\)</span> and <span class="math notranslate nohighlight">\(\bpi = (\pi_1,\ldots,\pi_K) \in \Delta_K\)</span>. Suppose <span class="math notranslate nohighlight">\(Y \sim \mathrm{Cat}(\bpi)\)</span> and that the conditional distributions satisfy</p>
+<p>In particular, in the parametric context, this gives rise to a powerful approach to expanding distribution families. Suppose <span class="math notranslate nohighlight">\(\{p_{\btheta}:\btheta \in \Theta\}\)</span> is a parametric family of distributions. Let <span class="math notranslate nohighlight">\(K \geq 2\)</span>, <span class="math notranslate nohighlight">\(\btheta_1, \ldots, \btheta_K \in \Theta\)</span> and <span class="math notranslate nohighlight">\(\bpi = (\pi_1,\ldots,\pi_K) \in \Delta_K\)</span>. Suppose <span class="math notranslate nohighlight">\(Y \sim \mathrm{Cat}(\bpi)\)</span> and that the conditional distributions satisfy</p>
 <div class="math notranslate nohighlight">
 \[
 p_{\bX|Y}(\bx|i)
@@ -520,8 +520,9 @@ f_\bX(\bx)
 \exp\left(-\frac{1}{2}(\mathbf{x} - \bmu_i)^T \bSigma_i^{-1} (\bx - \bmu_i)\right).
 \]</div>
 <p>This is illustrated below.</p>
-<p><img alt="GMM" src="https://miro.medium.com/max/1400/1*yyazQ3QnW-gj__noFczZMA.png" /></p>
 <p><strong>Figure:</strong> Density of a GMM (<a class="reference external" href="https://towardsdatascience.com/understanding-anomaly-detection-in-python-using-gaussian-mixture-model-e26e5d06094b">Source</a>)</p>
+<p><img alt="GMM" src="https://miro.medium.com/max/1400/1*yyazQ3QnW-gj__noFczZMA.png" /></p>
+<p><span class="math notranslate nohighlight">\(\bowtie\)</span></p>
 <p>We could also consider continuous mixing distributions. Several standard approaches, e.g. probabilistic PCA, factor analysis and independent components analysis, use such mixtures. See [<a class="reference external" href="https://www.microsoft.com/en-us/research/uploads/prod/2006/01/Bishop-Pattern-Recognition-and-Machine-Learning-2006.pdf">Bis</a>, Chapter 12]. <span class="math notranslate nohighlight">\(\lhd\)</span></p>
 <p><strong>NUMERICAL CORNER</strong> In Numpy, the module <a class="reference external" href="https://numpy.org/doc/stable/reference/random/index.html">numpy.random</a> also provides a way to sample from mixture models by using <a class="reference external" href="https://numpy.org/doc/stable/reference/random/generated/numpy.random.Generator.choice.html">numpy.random.Generator.choice</a>. This is better seen on an example.</p>
 <div class="cell docutils container">
@@ -590,8 +591,9 @@ f_\bX(\bx)
 <li><p>Second we pick <span class="math notranslate nohighlight">\(Y\)</span> according to the CPD <span class="math notranslate nohighlight">\(\P[Y=y|X=x]\)</span>. Note that <span class="math notranslate nohighlight">\(X\)</span> is the only parent of <span class="math notranslate nohighlight">\(Y\)</span>.</p></li>
 <li><p>Finally we pick <span class="math notranslate nohighlight">\(Z\)</span> according to the CPD <span class="math notranslate nohighlight">\(\P[Z=z|X=x, Y=y]\)</span>. Note that the parents of <span class="math notranslate nohighlight">\(Z\)</span> are <span class="math notranslate nohighlight">\(X\)</span> and <span class="math notranslate nohighlight">\(Y\)</span>.</p></li>
 </ol>
-<p><img alt="The full case" src="../../_images/dgm-full1-small.png" /></p>
 <p><strong>Figure:</strong> The full case</p>
+<p><img alt="The full case" src="../../_images/dgm-full1-small.png" /></p>
+<p><span class="math notranslate nohighlight">\(\bowtie\)</span></p>
 <p>Note that the graph above is acyclic, that is, it has no directed cycle. In particular, the ordering of variables <span class="math notranslate nohighlight">\(X, Y, Z\)</span> is a <a class="reference external" href="https://en.wikipedia.org/wiki/Topological_sorting">topological ordering</a>, that is, an ordering of the vertices where all edges <span class="math notranslate nohighlight">\((i,j)\)</span> are such that <span class="math notranslate nohighlight">\(i\)</span> comes before <span class="math notranslate nohighlight">\(j\)</span>.</p>
 <p>The same joint distribution can be represented by a different digraph if the product rule is used in a different order. For instance,</p>
 <div class="math notranslate nohighlight">
@@ -600,11 +602,13 @@ f_\bX(\bx)
 = \P[Z=z] \,\P[Y=y|Z=z] \,\P[X=x | Z=z, Y=y]
 \]</div>
 <p>is represented by the following digraph.</p>
-<p><img alt="Another full case" src="../../_images/dgm-full2-small.png" /></p>
 <p><strong>Figure:</strong> Another full case</p>
+<p><img alt="Another full case" src="../../_images/dgm-full2-small.png" /></p>
+<p><span class="math notranslate nohighlight">\(\bowtie\)</span></p>
 <p><em>The fork:</em> Removing edges in the first graph above encodes conditional independence relations. For instance, removing the edge from <span class="math notranslate nohighlight">\(Y\)</span> to <span class="math notranslate nohighlight">\(Z\)</span> gives the following graph, known as a fork. We denote this configuration as <span class="math notranslate nohighlight">\(Y \leftarrow X \rightarrow Z\)</span>.</p>
-<p><img alt="The fork" src="../../_images/dgm-fork-small.png" /></p>
 <p><strong>Figure:</strong> The fork</p>
+<p><img alt="The fork" src="../../_images/dgm-fork-small.png" /></p>
+<p><span class="math notranslate nohighlight">\(\bowtie\)</span></p>
 <p>The joint distribution simplifies as follows:</p>
 <div class="math notranslate nohighlight">
 \[
@@ -621,8 +625,9 @@ f_\bX(\bx)
 \end{align*}\]</div>
 <p>as claimed.</p>
 <p><em>The chain:</em> Removing the edge from <span class="math notranslate nohighlight">\(X\)</span> to <span class="math notranslate nohighlight">\(Z\)</span> gives the following graph, known as a chain (or pipe). We denote this configuration as <span class="math notranslate nohighlight">\(X \rightarrow Y \rightarrow Z\)</span>.</p>
-<p><img alt="The chain" src="../../_images/dgm-chain-small.png" /></p>
 <p><strong>Figure:</strong> The chain</p>
+<p><img alt="The chain" src="../../_images/dgm-chain-small.png" /></p>
+<p><span class="math notranslate nohighlight">\(\bowtie\)</span></p>
 <p>The joint distribution simplifies as follows:</p>
 <div class="math notranslate nohighlight">
 \[
@@ -645,8 +650,9 @@ f_\bX(\bx)
 \end{align*}\]</div>
 <p>as claimed.</p>
 <p><em>The collider:</em> Removing the edge from <span class="math notranslate nohighlight">\(X\)</span> to <span class="math notranslate nohighlight">\(Y\)</span> gives the following graph, known as a collider. We denote this configuration as <span class="math notranslate nohighlight">\(X \rightarrow Z \leftarrow Y\)</span>.</p>
-<p><img alt="The collider" src="../../_images/dgm-collider-small.png" /></p>
 <p><strong>Figure:</strong> The collider</p>
+<p><img alt="The collider" src="../../_images/dgm-collider-small.png" /></p>
+<p><span class="math notranslate nohighlight">\(\bowtie\)</span></p>
 <p>The joint distribution simplifies as follows:</p>
 <div class="math notranslate nohighlight">
 \[
@@ -761,7 +767,7 @@ L_n(\bpi, \{\bp_k\}; \{\bx_i, c_i\})
 <blockquote>
 <div><p><strong>Example:</strong> let’s say we have data on 1000 pieces of fruit. The fruit being a Banana, Orange or some other fruit and imagine we know 3 features of each fruit, whether it’s long or not, sweet or not and yellow or not, as displayed in the table below.</p>
 </div></blockquote>
-<p><img alt="Table" src="https://miro.medium.com/max/1066/1*B_uXqox7nHfwTa1HH4Fc_A.png" /></p>
+<p><img alt="Table" src="../../_images/1*B_uXqox7nHfwTa1HH4Fc_A.png" /></p>
 <blockquote>
 <div><p>[…] Which should provide enough evidence to predict the class of another fruit as it’s introduced.</p>
 </div></blockquote>
@@ -915,8 +921,9 @@ U_\mathbf{x}(\mathbf{z}) \geq f(\mathbf{z}), \quad \forall \mathbf{z} \in \mathb
 U_\mathbf{x}(\mathbf{x}) = f(\mathbf{x}).
 \]</div>
 <p>We say that <span class="math notranslate nohighlight">\(U_\mathbf{x}\)</span> majorizes <span class="math notranslate nohighlight">\(f\)</span> at <span class="math notranslate nohighlight">\(\mathbf{x}\)</span>. Then <span class="math notranslate nohighlight">\(U_\mathbf{x}\)</span> can be used to make progress towards minimizing <span class="math notranslate nohighlight">\(f\)</span>, that is, find a point <span class="math notranslate nohighlight">\(\mathbf{x}'\)</span> such that <span class="math notranslate nohighlight">\(f(\mathbf{x}') \leq f(\mathbf{x})\)</span>. If <span class="math notranslate nohighlight">\(U_\mathbf{x}\)</span> is easier to minimize than <span class="math notranslate nohighlight">\(f\)</span> itself, say because an explicit minimum can be computed, then this observation proved in the next lemma naturally leads to an iterative algorithm.</p>
-<p><img alt="Majorization" src="https://www.researchgate.net/profile/Francis_Bach/publication/268227141/figure/fig3/AS:613912244400128&#64;1523379493092/Illustration-of-the-basic-majorization-minimization-principle-The-objective-function-f.png" /></p>
 <p><strong>Figure:</strong> Majorization (<a class="reference external" href="https://www.researchgate.net/figure/Illustration-of-the-basic-majorization-minimization-principle-The-objective-function-f_fig3_268227141">Source</a>)</p>
+<p><img alt="Majorization" src="https://www.researchgate.net/profile/Francis_Bach/publication/268227141/figure/fig3/AS:613912244400128&#64;1523379493092/Illustration-of-the-basic-majorization-minimization-principle-The-objective-function-f.png" /></p>
+<p><span class="math notranslate nohighlight">\(\bowtie\)</span></p>
 <p><strong>LEMMA</strong> <strong>(Majorization-Minimization)</strong> Let <span class="math notranslate nohighlight">\(f : \mathbb{R}^d \to \mathbb{R}\)</span> and suppose <span class="math notranslate nohighlight">\(U_{\mathbf{x}}\)</span> majorizes <span class="math notranslate nohighlight">\(f\)</span> at <span class="math notranslate nohighlight">\(\mathbf{x}\)</span>. Let <span class="math notranslate nohighlight">\(\mathbf{x}'\)</span> be a global minimum of <span class="math notranslate nohighlight">\(U_\mathbf{x}\)</span>. Then</p>
 <div class="math notranslate nohighlight">
 \[
@@ -1001,12 +1008,12 @@ f(\bmu_1',\ldots,\bmu_K')
 L_n(\bpi, \{\bp_k\}; \{\bx_i\})
 &amp;= - \sum_{i=1}^n \log \left( \sum_{k=1}^K \pi_{k} \prod_{m=1}^M p_{k, m}^{x_{i,m}} (1-p_{k, m})^{1-x_{i,m}}\right).
 \end{align*}\]</div>
-<p>To simplify the notation and highlight the general idea, we let <span class="math notranslate nohighlight">\(\btheta = (\bpi, \{\bp_k\})\)</span>, denote by <span class="math notranslate nohighlight">\(\Theta\)</span> the set of allowed values for <span class="math notranslate nohighlight">\(\btheta\)</span>, and use <span class="math notranslate nohighlight">\(\P_\btheta\)</span> to indicate that probabilities are computed under the parameters <span class="math notranslate nohighlight">\(\btheta\)</span>. We also return to the description of the model in terms of the unobserved latent variables <span class="math notranslate nohighlight">\(\{C_i\}\)</span>. That is, we write the negative log-likelihood as</p>
+<p>To simplify the notation and highlight the general idea, we let <span class="math notranslate nohighlight">\(\btheta = (\bpi, \{\bp_k\})\)</span>, denote by <span class="math notranslate nohighlight">\(\Theta\)</span> the set of allowed values for <span class="math notranslate nohighlight">\(\btheta\)</span>, and use <span class="math notranslate nohighlight">\(\P_{\btheta}\)</span> to indicate that probabilities are computed under the parameters <span class="math notranslate nohighlight">\(\btheta\)</span>. We also return to the description of the model in terms of the unobserved latent variables <span class="math notranslate nohighlight">\(\{C_i\}\)</span>. That is, we write the negative log-likelihood as</p>
 <div class="amsmath math notranslate nohighlight">
 \[\begin{align*}
 L_n(\btheta)
-&amp;= - \sum_{i=1}^n \log \left( \sum_{k=1}^K \P_\btheta[\bX_i = \bx_i|C_i = k] \,\P_\btheta[C_i = k]\right)\\
-&amp;= - \sum_{i=1}^n \log \left( \sum_{k=1}^K \P_\btheta[\bX_i = \bx_i, C_i = k] \right).
+&amp;= - \sum_{i=1}^n \log \left( \sum_{k=1}^K \P_{\btheta}[\bX_i = \bx_i|C_i = k] \,\P_{\btheta}[C_i = k]\right)\\
+&amp;= - \sum_{i=1}^n \log \left( \sum_{k=1}^K \P_{\btheta}[\bX_i = \bx_i, C_i = k] \right).
 \end{align*}\]</div>
 <p>To derive a majorizing function, we use the convexity of the negative logarithm. Indeed</p>
 <div class="math notranslate nohighlight">
@@ -1021,26 +1028,26 @@ L_n(\btheta)
 \quad
 \forall z &gt; 0.
 \]</div>
-<p>The first step of the construction is not obvious - it just works. For each <span class="math notranslate nohighlight">\(i=1,\ldots,n\)</span>, we let <span class="math notranslate nohighlight">\(r_{k,i}^\btheta\)</span>, <span class="math notranslate nohighlight">\(k=1,\ldots,K\)</span>, be a stricly positive probability distribution on <span class="math notranslate nohighlight">\([K]\)</span>. In other words, it defines a convex combination for every <span class="math notranslate nohighlight">\(i\)</span>. Then we use convexity to obtain the upper bound</p>
+<p>The first step of the construction is not obvious - it just works. For each <span class="math notranslate nohighlight">\(i=1,\ldots,n\)</span>, we let <span class="math notranslate nohighlight">\(r_{k,i}^{\btheta}\)</span>, <span class="math notranslate nohighlight">\(k=1,\ldots,K\)</span>, be a stricly positive probability distribution on <span class="math notranslate nohighlight">\([K]\)</span>. In other words, it defines a convex combination for every <span class="math notranslate nohighlight">\(i\)</span>. Then we use convexity to obtain the upper bound</p>
 <div class="amsmath math notranslate nohighlight">
 \[\begin{align*}
 L_n(\tilde\btheta)
-&amp;= - \sum_{i=1}^n \log \left( \sum_{k=1}^K r_{k,i}^\btheta \frac{\P_{\tilde\btheta}[\bX_i = \bx_i, C_i = k]}{r_{k,i}^\btheta} \right)\\
-&amp;\leq - \sum_{i=1}^n \sum_{k=1}^K r_{k,i}^\btheta \log \left(\frac{\P_{\tilde\btheta}[\bX_i = \bx_i, C_i = k]}{r_{k,i}^\btheta} \right),
+&amp;= - \sum_{i=1}^n \log \left( \sum_{k=1}^K r_{k,i}^{\btheta} \frac{\P_{\tilde\btheta}[\bX_i = \bx_i, C_i = k]}{r_{k,i}^{\btheta}} \right)\\
+&amp;\leq - \sum_{i=1}^n \sum_{k=1}^K r_{k,i}^{\btheta} \log \left(\frac{\P_{\tilde\btheta}[\bX_i = \bx_i, C_i = k]}{r_{k,i}^{\btheta}} \right),
 \end{align*}\]</div>
-<p>which holds for any <span class="math notranslate nohighlight">\(\tilde\btheta = (\tilde\bpi, \{\tilde\bp_k\}) \in \Theta\)</span>. We choose <span class="math notranslate nohighlight">\(r_{k,i}^\btheta = \P_\btheta[C_i = k|\bX_i = \bx_i]\)</span> (which for the time being we assume is strictly positive), denote the right-hand side of the inequality by <span class="math notranslate nohighlight">\(U_{n}(\tilde\btheta|\btheta)\)</span> (as a function of <span class="math notranslate nohighlight">\(\tilde\btheta\)</span>) and make two observations.</p>
+<p>which holds for any <span class="math notranslate nohighlight">\(\tilde\btheta = (\tilde\bpi, \{\tilde\bp_k\}) \in \Theta\)</span>. We choose <span class="math notranslate nohighlight">\(r_{k,i}^{\btheta} = \P_{\btheta}[C_i = k|\bX_i = \bx_i]\)</span> (which for the time being we assume is strictly positive), denote the right-hand side of the inequality by <span class="math notranslate nohighlight">\(U_{n}(\tilde\btheta|\btheta)\)</span> (as a function of <span class="math notranslate nohighlight">\(\tilde\btheta\)</span>) and make two observations.</p>
 <p>(1) <em>Dominating property</em>: For any <span class="math notranslate nohighlight">\(\tilde\btheta \in \Theta\)</span>, the inequality above implies immediately that <span class="math notranslate nohighlight">\(L_n(\tilde\btheta) \leq U_n(\tilde\btheta|\btheta)\)</span>.</p>
 <p>(2) <em>Equality at <span class="math notranslate nohighlight">\(\btheta\)</span></em>: At <span class="math notranslate nohighlight">\(\tilde\btheta = \btheta\)</span>,</p>
 <div class="amsmath math notranslate nohighlight">
 \[\begin{align*}
 U_n(\btheta|\btheta) 
-&amp;= - \sum_{i=1}^n \sum_{k=1}^K r_{k,i}^\btheta \log \left(\frac{\P_\btheta[\bX_i = \bx_i, C_i = k]}{r_{k,i}^\btheta} \right)\\
-&amp;= - \sum_{i=1}^n \sum_{k=1}^K r_{k,i}^\btheta \log \left(\frac{\P_\btheta[C_i = k | \bX_i = \bx_i]
-\P_\btheta[\bX_i = \bx_i]}{r_{k,i}^\btheta} \right)\\
-&amp;= - \sum_{i=1}^n \sum_{k=1}^K r_{k,i}^\btheta \log
-\P_\btheta[\bX_i = \bx_i]\\
+&amp;= - \sum_{i=1}^n \sum_{k=1}^K r_{k,i}^{\btheta} \log \left(\frac{\P_{\btheta}[\bX_i = \bx_i, C_i = k]}{r_{k,i}^{\btheta}} \right)\\
+&amp;= - \sum_{i=1}^n \sum_{k=1}^K r_{k,i}^{\btheta} \log \left(\frac{\P_{\btheta}[C_i = k | \bX_i = \bx_i]
+\P_{\btheta}[\bX_i = \bx_i]}{r_{k,i}^{\btheta}} \right)\\
+&amp;= - \sum_{i=1}^n \sum_{k=1}^K r_{k,i}^{\btheta} \log
+\P_{\btheta}[\bX_i = \bx_i]\\
 &amp;= - \sum_{i=1}^n \log
-\P_\btheta[\bX_i = \bx_i]
+\P_{\btheta}[\bX_i = \bx_i]
 = L_n(\btheta).
 \end{align*}\]</div>
 <p>The two properties above show that <span class="math notranslate nohighlight">\(U_n(\tilde\btheta|\btheta)\)</span>, as a function of <span class="math notranslate nohighlight">\(\tilde\btheta\)</span>, majorizes <span class="math notranslate nohighlight">\(L_n\)</span> at <span class="math notranslate nohighlight">\(\btheta\)</span>.</p>
@@ -1056,16 +1063,16 @@ L_n(\btheta^*) \leq L_n(\btheta).
 <div class="amsmath math notranslate nohighlight">
 \[\begin{align*}
 Q_n(\tilde\btheta|\btheta)
-&amp;= - \sum_{i=1}^n \sum_{k=1}^K r_{k,i}^\btheta \log \left(\frac{\P_{\tilde\btheta}[\bX_i = \bx_i, C_i = k]}{r_{k,i}^\btheta} \right)\\
-&amp;= - \sum_{i=1}^n \sum_{k=1}^K r_{k,i}^\btheta \log \P_{\tilde\btheta}[\bX_i = \bx_i, C_i = k]
-+ \sum_{i=1}^n \sum_{k=1}^K r_{k,i}^\btheta \log r_{k,i}^\btheta.
+&amp;= - \sum_{i=1}^n \sum_{k=1}^K r_{k,i}^{\btheta} \log \left(\frac{\P_{\tilde\btheta}[\bX_i = \bx_i, C_i = k]}{r_{k,i}^{\btheta}} \right)\\
+&amp;= - \sum_{i=1}^n \sum_{k=1}^K r_{k,i}^{\btheta} \log \P_{\tilde\btheta}[\bX_i = \bx_i, C_i = k]
++ \sum_{i=1}^n \sum_{k=1}^K r_{k,i}^{\btheta} \log r_{k,i}^{\btheta}.
 \end{align*}\]</div>
-<p>Because <span class="math notranslate nohighlight">\(r_{k,i}^\btheta\)</span> depends on <span class="math notranslate nohighlight">\(\btheta\)</span> <em>but not <span class="math notranslate nohighlight">\(\tilde\btheta\)</span></em>, the second term is irrelevant to the opimization with respect to <span class="math notranslate nohighlight">\(\tilde\btheta\)</span>.</p>
-<p>If <span class="math notranslate nohighlight">\(\btheta\)</span> is our current estimate of the parameters, then the quantity <span class="math notranslate nohighlight">\(r_{k,i}^\btheta = \P_\btheta[C_i = k|\bX_i = \bx_i]\)</span> is our estimate of the probability that the sample <span class="math notranslate nohighlight">\(\bx_i\)</span> comes from cluster <span class="math notranslate nohighlight">\(k\)</span>. So the first term above</p>
+<p>Because <span class="math notranslate nohighlight">\(r_{k,i}^{\btheta}\)</span> depends on <span class="math notranslate nohighlight">\(\btheta\)</span> <em>but not <span class="math notranslate nohighlight">\(\tilde\btheta\)</span></em>, the second term is irrelevant to the opimization with respect to <span class="math notranslate nohighlight">\(\tilde\btheta\)</span>.</p>
+<p>If <span class="math notranslate nohighlight">\(\btheta\)</span> is our current estimate of the parameters, then the quantity <span class="math notranslate nohighlight">\(r_{k,i}^{\btheta} = \P_{\btheta}[C_i = k|\bX_i = \bx_i]\)</span> is our estimate of the probability that the sample <span class="math notranslate nohighlight">\(\bx_i\)</span> comes from cluster <span class="math notranslate nohighlight">\(k\)</span>. So the first term above</p>
 <div class="math notranslate nohighlight">
 \[
 Q_n(\tilde\btheta|\btheta)
-= - \sum_{i=1}^n \sum_{k=1}^K r_{k,i}^\btheta \log \P_{\tilde\btheta}[\bX_i = \bx_i, C_i = k]
+= - \sum_{i=1}^n \sum_{k=1}^K r_{k,i}^{\btheta} \log \P_{\tilde\btheta}[\bX_i = \bx_i, C_i = k]
 \]</div>
 <p>is the expected negative log-likelihood of the fully observed data under our estimate of the cluster assignments. By fully observed, we mean that it includes the cluster variables <span class="math notranslate nohighlight">\(C_i\)</span>. Of course, in reality, those variables are not observed, but we have estimated their probability distribution given the observed data <span class="math notranslate nohighlight">\(\{\bx_i\}\)</span>, and we are taking an expectation with respect to that distribution.</p>
 <p>The key observation is that minimizing <span class="math notranslate nohighlight">\(Q_n(\tilde\btheta|\btheta)\)</span> over <span class="math notranslate nohighlight">\(\tilde\btheta\)</span> is a variant of fitting a Naive Bayes model. And there is a straightforward formula for that. In essence that is because, when the cluster assignments are observed, the negative log-likehood decomposes: it naturally breaks up into terms that depend on separate sets of parameters, each of which can be optimized with a closed-form expression. The same happens with <span class="math notranslate nohighlight">\(Q_n\)</span>.</p>
@@ -1073,25 +1080,25 @@ Q_n(\tilde\btheta|\btheta)
 <div class="amsmath math notranslate nohighlight">
 \[\begin{align*}
 Q_n(\tilde\btheta|\btheta)
-&amp;= - \sum_{i=1}^n \sum_{k=1}^K r_{k,i}^\btheta \log \P_{\tilde\btheta}[\bX_i = \bx_i, C_i = k]\\
-&amp;= - \sum_{i=1}^n \sum_{k=1}^K r_{k,i}^\btheta \log \left(\prod_{i=1}^n \tilde{\pi}_{k} \prod_{m=1}^M \tilde{p}_{k, m}^{x_{i,m}} (1-\tilde{p}_{k,m})^{1-x_{i,m}}\right)\\
-&amp;= - \sum_{k=1}^K \eta_k^\btheta \log \tilde{\pi}_k - \sum_{k=1}^K \sum_{m=1}^M [\eta_{k,m}^\btheta \log \tilde{p}_{k,m} + (\eta_k^\btheta-\eta_{k,m}^\btheta) \log (1-\tilde{p}_{k,m})],
+&amp;= - \sum_{i=1}^n \sum_{k=1}^K r_{k,i}^{\btheta} \log \P_{\tilde\btheta}[\bX_i = \bx_i, C_i = k]\\
+&amp;= - \sum_{i=1}^n \sum_{k=1}^K r_{k,i}^{\btheta} \log \left(\prod_{i=1}^n \tilde{\pi}_{k} \prod_{m=1}^M \tilde{p}_{k, m}^{x_{i,m}} (1-\tilde{p}_{k,m})^{1-x_{i,m}}\right)\\
+&amp;= - \sum_{k=1}^K \eta_k^{\btheta} \log \tilde{\pi}_k - \sum_{k=1}^K \sum_{m=1}^M [\eta_{k,m}^{\btheta} \log \tilde{p}_{k,m} + (\eta_k^{\btheta}-\eta_{k,m}^{\btheta}) \log (1-\tilde{p}_{k,m})],
 \end{align*}\]</div>
 <p>where we defined, for <span class="math notranslate nohighlight">\(k=1,\ldots,K\)</span>,</p>
 <div class="math notranslate nohighlight">
 \[
-\eta_{k,m}^\btheta
-= \sum_{i=1}^n x_{i,m} r_{k,i}^\btheta
+\eta_{k,m}^{\btheta}
+= \sum_{i=1}^n x_{i,m} r_{k,i}^{\btheta}
 \quad
 \text{and}
 \quad
-\eta_k^\btheta 
-= \sum_{i=1}^n r_{k,i}^\btheta.
+\eta_k^{\btheta} 
+= \sum_{i=1}^n r_{k,i}^{\btheta}.
 \]</div>
-<p>We have previously computed <span class="math notranslate nohighlight">\(r_{k,i}^\btheta = \P_\btheta[C_i = k|\bX_i = \bx_i]\)</span> for prediction under the Naive Bayes model. We showed that</p>
+<p>We have previously computed <span class="math notranslate nohighlight">\(r_{k,i}^{\btheta} = \P_{\btheta}[C_i = k|\bX_i = \bx_i]\)</span> for prediction under the Naive Bayes model. We showed that</p>
 <div class="math notranslate nohighlight">
 \[
-r_{k,i}^\btheta
+r_{k,i}^{\btheta}
 = \frac{\pi_k \prod_{m=1}^M p_{k,m}^{x_{i,m}} (1-p_{k,m})^{1-x_{i,m}}}
 {\sum_{k'=1}^K \pi_{k'} \prod_{m=1}^M p_{k',m}^{x_{i,m}} (1-p_{k',m})^{1-x_{i,m}}},
 \]</div>
@@ -1099,24 +1106,24 @@ r_{k,i}^\btheta
 <p><em>M Step:</em> Adapting our previous calculutions for fitting a Naive Bayes model, we get that <span class="math notranslate nohighlight">\(Q_n(\tilde\btheta|\btheta)\)</span> is minimized at</p>
 <div class="math notranslate nohighlight">
 \[
-\pi_k^* = \frac{\eta_k^\btheta}{n}
+\pi_k^* = \frac{\eta_k^{\btheta}}{n}
 \quad
 \text{and}
 \quad 
-p_{k,m}^* = \frac{\eta_{k,m}^\btheta}{\eta_k^\btheta}
+p_{k,m}^* = \frac{\eta_{k,m}^{\btheta}}{\eta_k^{\btheta}}
 \quad
 \forall k \in [K], m \in [M].
 \]</div>
 <p>We used the fact that</p>
 <div class="amsmath math notranslate nohighlight">
 \[\begin{align*}
-\sum_{k=1}^K \eta_k^\btheta
-&amp;= \sum_{k=1}^K \sum_{i=1}^n r_{k,i}^\btheta\\
-&amp;= \sum_{i=1}^n \sum_{k=1}^K \P_\btheta[C_i = k|\bX_i = \bx_i]\\
+\sum_{k=1}^K \eta_k^{\btheta}
+&amp;= \sum_{k=1}^K \sum_{i=1}^n r_{k,i}^{\btheta}\\
+&amp;= \sum_{i=1}^n \sum_{k=1}^K \P_{\btheta}[C_i = k|\bX_i = \bx_i]\\
 &amp;= \sum_{i=1}^n 1\\ 
 &amp;= n,
 \end{align*}\]</div>
-<p>since the conditional probability <span class="math notranslate nohighlight">\(\P_\btheta[C_i = k|\bX_i = \bx_i]\)</span> adds up to one when summed over <span class="math notranslate nohighlight">\(k\)</span>.</p>
+<p>since the conditional probability <span class="math notranslate nohighlight">\(\P_{\btheta}[C_i = k|\bX_i = \bx_i]\)</span> adds up to one when summed over <span class="math notranslate nohighlight">\(k\)</span>.</p>
 <p>To summarize, the EM algorithm works as follows in this case. Assume we have data points <span class="math notranslate nohighlight">\(\{\bx_i\}_{i=1}^n\)</span>, that we have fixed <span class="math notranslate nohighlight">\(K\)</span> and that we have some initial parameter estimate <span class="math notranslate nohighlight">\(\btheta^0 = (\bpi^0, \{\bp_k^0\}) \in \Theta\)</span> with strictly positive <span class="math notranslate nohighlight">\(\pi_k^0\)</span>’s and <span class="math notranslate nohighlight">\(p_{k,m}^0\)</span>’s. For <span class="math notranslate nohighlight">\(t = 0,1,\ldots, T-1\)</span> we compute for all <span class="math notranslate nohighlight">\(i \in [n]\)</span>, <span class="math notranslate nohighlight">\(k \in [K]\)</span>, and <span class="math notranslate nohighlight">\(m \in [M]\)</span></p>
 <div class="math notranslate nohighlight">
 \[
@@ -1413,8 +1420,6 @@ p_{k,m}^{t+1} = \frac{\eta_{k,m}^t}{\eta_k^t}.
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">n</span><span class="p">,</span> <span class="n">M</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">shape</span>
 <span class="n">K</span> <span class="o">=</span> <span class="mi">2</span>
-<span class="n">seed</span> <span class="o">=</span> <span class="mi">535</span>
-<span class="n">rng</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">(</span><span class="n">seed</span><span class="p">)</span>
 <span class="n">pi_0</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">K</span><span class="p">)</span><span class="o">/</span><span class="n">K</span>
 <span class="n">p_0</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">random</span><span class="p">((</span><span class="n">K</span><span class="p">,</span><span class="n">M</span><span class="p">))</span>
 </pre></div>
@@ -1435,7 +1440,7 @@ p_{k,m}^{t+1} = \frac{\eta_{k,m}^t}{\eta_k^t}.
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[0.57969799 0.42030201]
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[0.43338926 0.56661074]
 </pre></div>
 </div>
 </div>
@@ -1456,7 +1461,7 @@ p_{k,m}^{t+1} = \frac{\eta_{k,m}^t}{\eta_k^t}.
 </div>
 </details>
 <div class="cell_output docutils container">
-<img alt="../../_images/b7a671e602cf64ef3fb14a3002df0537db2bdb18ded0f7d22db0e2d75ed5a70e.png" src="../../_images/b7a671e602cf64ef3fb14a3002df0537db2bdb18ded0f7d22db0e2d75ed5a70e.png" />
+<img alt="../../_images/e482e0d5655fe576f2f8f8f0e0375bfc65ef719f1d25b51fcbf3b7b056cc06a2.png" src="../../_images/e482e0d5655fe576f2f8f8f0e0375bfc65ef719f1d25b51fcbf3b7b056cc06a2.png" />
 </div>
 </div>
 <p>Here is the other one.</p>
@@ -1475,7 +1480,7 @@ p_{k,m}^{t+1} = \frac{\eta_{k,m}^t}{\eta_k^t}.
 </div>
 </details>
 <div class="cell_output docutils container">
-<img alt="../../_images/d6c44af2a5ebd8fe6a4465c38bbb4e5e9c05b8f6d998bd8d96841d64910b0d99.png" src="../../_images/d6c44af2a5ebd8fe6a4465c38bbb4e5e9c05b8f6d998bd8d96841d64910b0d99.png" />
+<img alt="../../_images/3f77482c9e2e3d82802275117509314c66b6b94b246fdaab48b3cf27000c9b12.png" src="../../_images/3f77482c9e2e3d82802275117509314c66b6b94b246fdaab48b3cf27000c9b12.png" />
 </div>
 </div>
 <p><span class="math notranslate nohighlight">\(\unlhd\)</span></p>

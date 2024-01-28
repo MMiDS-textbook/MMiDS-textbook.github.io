@@ -806,7 +806,7 @@ Similarly, it can be checked (try it!) that a move to <span class="math notransl
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1.0
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2.0
 </pre></div>
 </div>
 </div>
@@ -840,7 +840,7 @@ Similarly, it can be checked (try it!) that a move to <span class="math notransl
 </div>
 </details>
 <div class="cell_output docutils container">
-<img alt="../../_images/c209bc72c9242316b15f8388c691b609ef2c783f9a6a172d8bf674d1003dc660.png" src="../../_images/c209bc72c9242316b15f8388c691b609ef2c783f9a6a172d8bf674d1003dc660.png" />
+<img alt="../../_images/154e13b2020d5ce0406251e35c6a7f4edf54cf8e6a579ad4f8b758cad741e92f.png" src="../../_images/154e13b2020d5ce0406251e35c6a7f4edf54cf8e6a579ad4f8b758cad741e92f.png" />
 </div>
 </div>
 <p>If we increase the parameter <span class="math notranslate nohighlight">\(\lambda\)</span> (which is not quite the mean; why?), we expect the sampled distribution to shift to the right. We must recompute the transition matrix first.</p>
@@ -878,7 +878,7 @@ Similarly, it can be checked (try it!) that a move to <span class="math notransl
 </div>
 </details>
 <div class="cell_output docutils container">
-<img alt="../../_images/a674cdd12294de5c615f6039bb70616c535ecc95538d2203cf676ca993027426.png" src="../../_images/a674cdd12294de5c615f6039bb70616c535ecc95538d2203cf676ca993027426.png" />
+<img alt="../../_images/ceac5cca2f3fb6098386327c023df753fcde65e6a19677db4e7642d440f1158f.png" src="../../_images/ceac5cca2f3fb6098386327c023df753fcde65e6a19677db4e7642d440f1158f.png" />
 </div>
 </div>
 <p><strong>TRY IT!</strong> Redo the simulations, but this time implement a general Metropolis-Hastings algorithm rather than specifying the transition matrix directly. That is, implement the algorithm for an arbitrary <span class="math notranslate nohighlight">\(\bpi\)</span> and <span class="math notranslate nohighlight">\(Q\)</span>. Assume the state space is <span class="math notranslate nohighlight">\([n]\)</span>. (<a class="reference external" href="https://colab.research.google.com/github/MMiDS-textbook/MMiDS-textbook.github.io/blob/main/just_the_code/roch_mmids_chap_prob_notebook.ipynb">Open in Colab</a>)</p>
@@ -933,18 +933,13 @@ P(y, x)
 \bx_{-i} = (x_1, \ldots,x_{i-1}, x_{i+1}, \ldots, x_d)
 \]</div>
 <p>for the vector <span class="math notranslate nohighlight">\(\bx\)</span> where the coordinate <span class="math notranslate nohighlight">\(x_i\)</span> is dropped.</p>
-<p>If <span class="math notranslate nohighlight">\(\pi\)</span> is the target distribution, we let
-<span class="math notranslate nohighlight">\(
-\pi_i(x_i|\bx_{-i}) 
-\)</span>
-be the conditional probability that <span class="math notranslate nohighlight">\(X_i = x_i\)</span> given that <span class="math notranslate nohighlight">\(\bX_{-i} = \bx_{-i}\)</span> under the distribution <span class="math notranslate nohighlight">\(\pi\)</span>, i.e., <span class="math notranslate nohighlight">\(\bX = (X_1,\ldots,X_d) \sim \pi\)</span>. We assume that <span class="math notranslate nohighlight">\(\pi_{\bx} &gt; 0\)</span> for all <span class="math notranslate nohighlight">\(\bx \in \Z^d\)</span>. As a result, <span class="math notranslate nohighlight">\(
-\pi_i(x_i|\bx_{-i}) &gt; 0
-\)</span> as well (Prove it!).</p>
+<p>If <span class="math notranslate nohighlight">\(\pi\)</span> is the target distribution, we let <span class="math notranslate nohighlight">\(\pi_i(x_i|\bx_{-i})\)</span>
+be the conditional probability that <span class="math notranslate nohighlight">\(X_i = x_i\)</span> given that <span class="math notranslate nohighlight">\(\bX_{-i} = \bx_{-i}\)</span> under the distribution <span class="math notranslate nohighlight">\(\pi\)</span>, i.e., <span class="math notranslate nohighlight">\(\bX = (X_1,\ldots,X_d) \sim \pi\)</span>. We assume that <span class="math notranslate nohighlight">\(\pi_{\bx} &gt; 0\)</span> for all <span class="math notranslate nohighlight">\(\bx \in \Z^d\)</span>. As a result, <span class="math notranslate nohighlight">\(\pi_i(x_i|\bx_{-i}) &gt; 0\)</span> as well (Prove it!).</p>
 <p>A basic version of the Gibbs sampler generates a sequence of vectors <span class="math notranslate nohighlight">\(\bX_0, \bX_1, \ldots, \bX_t, \ldots\)</span> in <span class="math notranslate nohighlight">\(\Z^d\)</span> as follows. We denote the coordinates of <span class="math notranslate nohighlight">\(\bX_t\)</span> by <span class="math notranslate nohighlight">\((X_{t,1}, \ldots, X_{t,d})\)</span>. We denote the vector of all coordinates of <span class="math notranslate nohighlight">\(\bX_t\)</span> except <span class="math notranslate nohighlight">\(i\)</span> by <span class="math notranslate nohighlight">\(\bX_{t,-i}\)</span>.</p>
 <p>Pick <span class="math notranslate nohighlight">\(\bX_0\)</span> according to an arbitrary initial distribution <span class="math notranslate nohighlight">\(\mu\)</span> over <span class="math notranslate nohighlight">\(\Z^d\)</span>.</p>
 <p>At each time <span class="math notranslate nohighlight">\(t \geq 1\)</span>:</p>
 <p>1- Pick a coordinate <span class="math notranslate nohighlight">\(i\)</span> uniformly at random in <span class="math notranslate nohighlight">\([d]\)</span>.</p>
-<p>2- Update coordinate <span class="math notranslate nohighlight">\(X_{t,i}\)</span> according to <span class="math notranslate nohighlight">\(\pi_i(\,\cdot\,|\bX_{t-1,-i}) \)</span> while leaving all other coordinates unchanged.</p>
+<p>2- Update coordinate <span class="math notranslate nohighlight">\(X_{t,i}\)</span> according to <span class="math notranslate nohighlight">\(\pi_i(\,\cdot\,|\bX_{t-1,-i})\)</span> while leaving all other coordinates unchanged.</p>
 <p>We will implement it in a special case in the next subsection. But first we argue that it has the desired stationary distribution.</p>
 <p>It suffices to establish that the Gibbs sampler is a special case of the Metropolis-Hastings algorithm. For this, we must identify the appropriate proposal chain <span class="math notranslate nohighlight">\(Q\)</span>.</p>
 <p>We claim that the following choice works: for <span class="math notranslate nohighlight">\(\bx \neq \by\)</span>,</p>
@@ -969,14 +964,10 @@ Q(\bx, \by)
 \end{align*}\]</div>
 <p>where we used that <span class="math notranslate nohighlight">\(\bx_{-i} = \by_{-i}\)</span> in the second equality.</p>
 <p>Recall the definition of the conditional probability as a ratio: <span class="math notranslate nohighlight">\(\P[A|B] = \P[A\cap B]/\P[B]\)</span>. Applying that definition, both conditional probabilities
-<span class="math notranslate nohighlight">\(
-\pi_i(x_i|\bx_{-i})
-\)</span>
+<span class="math notranslate nohighlight">\(\pi_i(x_i|\bx_{-i})\)</span>
 and
-<span class="math notranslate nohighlight">\(
-\pi_i(y_i|\bx_{-i})
-\)</span>
-have the <em>same denominator</em>. Their respective numerators on the other hand are <span class="math notranslate nohighlight">\(\pi_\bx\)</span> and <span class="math notranslate nohighlight">\(\pi_\by\)</span>. Hence,</p>
+<span class="math notranslate nohighlight">\(\pi_i(y_i|\bx_{-i})\)</span>
+have the <em>same denominator</em>. Their respective numerators on the other hand are <span class="math notranslate nohighlight">\(\pi_{\bx}\)</span> and <span class="math notranslate nohighlight">\(\pi_{\by}\)</span>. Hence,</p>
 <div class="math notranslate nohighlight">
 \[
 \min\left\{1, \frac{\pi_{\by}}{\pi_{\bx}} \frac{\pi_i(x_i|\bx_{-i})}{\pi_i(y_i|\bx_{-i})} \right\}
@@ -987,8 +978,9 @@ have the <em>same denominator</em>. Their respective numerators on the other han
 <p>Here we picked a coordinate at random. It turns out that other choices are possible/ For example, one could update each coordinate in some deterministic order; or one could update blocks of coordinates at a time. Under some conditions, these schemes can still produce to an algorithm simulating the desired distribution. We will detail this here, but our implementation below does use a block scheme.</p>
 <p><strong>An example: restricted Boltzmann machines (RBM)</strong> We implement the Gibbs sampler on a specific probabilistic model, a so-called restricted Boltzmann machine (RBM), and apply it to the generation of random images from a “realistic” distribution. For more on Boltzmann machines, including their restricted and deep versions, see <a class="reference external" href="https://en.wikipedia.org/wiki/Boltzmann_machine">here</a>. We will not describe them in great details here, but only use them as an example of a complex distribution.</p>
 <p><em>Probabilistic model:</em> An RBM has <span class="math notranslate nohighlight">\(m\)</span> visible units (i.e., observed variables) and <span class="math notranslate nohighlight">\(n\)</span> hidden units (i.e., hidden variables). It is represented by a complete bipartite graph between the two.</p>
-<p><img alt="An RBM" src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e8/Restricted_Boltzmann_machine.svg/310px-Restricted_Boltzmann_machine.svg.png" /></p>
 <p><strong>Figure:</strong> An RBM (<a class="reference external" href="https://commons.wikimedia.org/wiki/File:Restricted_Boltzmann_machine.svg">Source</a>)</p>
+<p><img alt="An RBM" src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e8/Restricted_Boltzmann_machine.svg/310px-Restricted_Boltzmann_machine.svg.png" /></p>
+<p><span class="math notranslate nohighlight">\(\bowtie\)</span></p>
 <p>Visible unit <span class="math notranslate nohighlight">\(i\)</span> is associated a variable <span class="math notranslate nohighlight">\(v_i\)</span> and hidden unit <span class="math notranslate nohighlight">\(j\)</span> is associated a variable <span class="math notranslate nohighlight">\(h_j\)</span>. We define the corresponding vectors <span class="math notranslate nohighlight">\(\bv = (v_1,\ldots,v_m)\)</span> and <span class="math notranslate nohighlight">\(\bh = (h_1,\ldots,h_n)\)</span>. For our purposes, it will suffice to assume that <span class="math notranslate nohighlight">\(\bv \in \{0,1\}^m\)</span> and <span class="math notranslate nohighlight">\(\bh \in \{0,1\}^n\)</span>. These are referred to as binary units.</p>
 <p>The probabilistic model has a number of parameters. Each visible unit <span class="math notranslate nohighlight">\(i\)</span> has an offset <span class="math notranslate nohighlight">\(b_i \in \mathbb{R}\)</span> and each hidden unit <span class="math notranslate nohighlight">\(j\)</span> has an offset <span class="math notranslate nohighlight">\(c_j \in \mathbb{R}\)</span>. We write <span class="math notranslate nohighlight">\(\bb = (b_1,\ldots,b_m)\)</span> and <span class="math notranslate nohighlight">\(\bc = (c_1,\ldots,c_n)\)</span> for the offset vectors. For each pair <span class="math notranslate nohighlight">\((i,j)\)</span> of visible and hidden units (or, put differently, for each edge in the complete bipartite graph), there is a weight <span class="math notranslate nohighlight">\(w_{i,j} \in \mathbb{R}\)</span>. We write <span class="math notranslate nohighlight">\(W = (w_{i,j})_{i,j=1}^{m,n}\)</span> for the weight matrix.</p>
 <p>To define the probability distribution, we need the so-called <a class="reference external" href="https://en.wikipedia.org/wiki/Energy-based_model">energy</a> (as you may have guessed, this terminology comes from related models in <a class="reference external" href="https://en.wikipedia.org/wiki/Boltzmann_distribution">physics</a>): for <span class="math notranslate nohighlight">\(\bv \in \{0,1\}^m\)</span> and <span class="math notranslate nohighlight">\(\bh \in \{0,1\}^n\)</span>,</p>

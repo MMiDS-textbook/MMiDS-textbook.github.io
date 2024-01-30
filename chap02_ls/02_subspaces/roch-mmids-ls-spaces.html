@@ -9,7 +9,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>2.2. Background: review of vector spaces &#8212; MMiDS Textbook</title>
+    <title>2.2. Background: review of vector spaces and matrix inverses &#8212; MMiDS Textbook</title>
   
   
   
@@ -190,7 +190,7 @@ const thebe_selector_output = ".output, .cell_output"
 </li>
 <li class="toctree-l1 current active has-children"><a class="reference internal" href="../00_intro/roch-mmids-ls-intro.html">2. Least squares: geometric, algebraic, and numerical aspects</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="../01_motiv/roch-mmids-ls-motiv.html">2.1. Motivating example: predicting sales</a></li>
-<li class="toctree-l2 current active"><a class="current reference internal" href="#">2.2. Background: review of vector spaces</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">2.2. Background: review of vector spaces and matrix inverses</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../03_orthog/roch-mmids-ls-orthog.html">2.3. Orthogonal projection and overdetermined linear systems</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../04_qr/roch-mmids-ls-qr.html">2.4. QR decomposition and Householder transformations</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../05_regression/roch-mmids-ls-regression.html">2.5. Application to regression analysis</a></li>
@@ -432,7 +432,7 @@ document.write(`
               
 
 <div id="jb-print-docs-body" class="onlyprint">
-    <h1>Background: review of vector spaces</h1>
+    <h1>Background: review of vector spaces and matrix inverses</h1>
     <!-- Table of contents -->
     <div id="print-main-content">
         <div id="jb-print-toc">
@@ -444,8 +444,8 @@ document.write(`
                 <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#subspaces">2.2.1. Subspaces</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#linear-independence">2.2.2. Linear independence</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dimension-of-a-subspace">2.2.3. Dimension of a subspace</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#a-key-concept-orthogonality">2.2.4. A key concept: orthogonality</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#a-key-concept-orthogonality">2.2.3. A key concept: orthogonality</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#inverses">2.2.4. Inverses</a></li>
 </ul>
             </nav>
         </div>
@@ -457,8 +457,8 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article" role="main">
                   
-  <section id="background-review-of-vector-spaces">
-<h1><span class="section-number">2.2. </span>Background: review of vector spaces<a class="headerlink" href="#background-review-of-vector-spaces" title="Permalink to this headline">#</a></h1>
+  <section id="background-review-of-vector-spaces-and-matrix-inverses">
+<h1><span class="section-number">2.2. </span>Background: review of vector spaces and matrix inverses<a class="headerlink" href="#background-review-of-vector-spaces-and-matrix-inverses" title="Permalink to this headline">#</a></h1>
 <p>In this section, we introduce some basic linear algebra concepts that will be needed throughout this chapter (and later on).</p>
 <section id="subspaces">
 <h2><span class="section-number">2.2.1. </span>Subspaces<a class="headerlink" href="#subspaces" title="Permalink to this headline">#</a></h2>
@@ -710,9 +710,6 @@ A =
 <p>since <span class="math notranslate nohighlight">\(\mathbf{e}_i\)</span> has a non-zero <span class="math notranslate nohighlight">\(i\)</span>-th entry while all vectors on the right-hand side have a zero in entry <span class="math notranslate nohighlight">\(i\)</span>. So the vectors <span class="math notranslate nohighlight">\(\mathbf{e}_1, \ldots, \mathbf{e}_n\)</span> are linearly independent. <span class="math notranslate nohighlight">\(\lhd\)</span></p>
 <p>A key property of a basis is that it provides a <em>unique</em> representation of the vectors in the subspace. Indeed, let <span class="math notranslate nohighlight">\(U\)</span> be a linear subspace and <span class="math notranslate nohighlight">\(\mathbf{u}_1,\ldots,\mathbf{u}_m\)</span> be a basis of <span class="math notranslate nohighlight">\(U\)</span>. Suppose that <span class="math notranslate nohighlight">\(\mathbf{w} \in U\)</span> can be written as both <span class="math notranslate nohighlight">\(\mathbf{w} = \sum_{j=1}^m \alpha_j \mathbf{u}_j\)</span> and <span class="math notranslate nohighlight">\(\mathbf{w} = \sum_{j=1}^m \alpha_j' \mathbf{u}_j\)</span>. Then subtracting one equation from the other we arrive at <span class="math notranslate nohighlight">\(\sum_{j=1}^m (\alpha_j - \alpha_j') \,\mathbf{u}_j = \mathbf{0}\)</span>. By linear independence, we have <span class="math notranslate nohighlight">\(\alpha_j - \alpha_j' = 0\)</span> for each <span class="math notranslate nohighlight">\(j\)</span>. That is, there is only one way to express <span class="math notranslate nohighlight">\(\mathbf{w}\)</span> as a linear combination of the basis.</p>
 <p>The basis itself on the other hand is not unique.</p>
-</section>
-<section id="dimension-of-a-subspace">
-<h2><span class="section-number">2.2.3. </span>Dimension of a subspace<a class="headerlink" href="#dimension-of-a-subspace" title="Permalink to this headline">#</a></h2>
 <p>A second key property of a basis is that it always has the <em>same number of elements</em>, which is called the dimension of the subspace.</p>
 <p><strong>THEOREM</strong> <strong>(Dimension)</strong> Let <span class="math notranslate nohighlight">\(U \neq \{\mathbf{0}\}\)</span> be a linear subspace of <span class="math notranslate nohighlight">\(\mathbb{R}^n\)</span>. Then all bases of <span class="math notranslate nohighlight">\(U\)</span> have the same number of elements. We call this number the dimension of <span class="math notranslate nohighlight">\(U\)</span> and denote it by <span class="math notranslate nohighlight">\(\mathrm{dim}(U)\)</span>. <span class="math notranslate nohighlight">\(\sharp\)</span></p>
 <p>The proof is optional and is provided in a later section. It relies on the <em>Linear Dependence Lemma</em>, which is also stated in the next section. That fundamental lemma has many useful implications, some of which we state now.</p>
@@ -903,7 +900,7 @@ C
 <p>By the <em>Reducing a Spanning List Lemma</em>, the right hand side is at most the length of the spanning list, i.e., <span class="math notranslate nohighlight">\(h+\ell\)</span>. But by construction <span class="math notranslate nohighlight">\(\mathrm{rk}(A) = h\)</span> and <span class="math notranslate nohighlight">\(\mathrm{rk}(B) = \ell\)</span>, so we are done. <span class="math notranslate nohighlight">\(\lhd\)</span></p>
 </section>
 <section id="a-key-concept-orthogonality">
-<h2><span class="section-number">2.2.4. </span>A key concept: orthogonality<a class="headerlink" href="#a-key-concept-orthogonality" title="Permalink to this headline">#</a></h2>
+<h2><span class="section-number">2.2.3. </span>A key concept: orthogonality<a class="headerlink" href="#a-key-concept-orthogonality" title="Permalink to this headline">#</a></h2>
 <p>Orthogonality plays a key role in linear algebra for data science thanks to its computational properties and its connection to the least-squares problem.</p>
 <p><strong>DEFINITION</strong> <strong>(Orthogonality)</strong> Vectors <span class="math notranslate nohighlight">\(\mathbf{u}\)</span> and <span class="math notranslate nohighlight">\(\mathbf{v}\)</span> in <span class="math notranslate nohighlight">\(\mathbb{R}^n\)</span> (as column vectors) are orthogonal if their inner product is zero</p>
 <div class="math notranslate nohighlight">
@@ -1183,6 +1180,93 @@ q_{21} \\
 <span class="math notranslate nohighlight">\(\mathrm{span}(\mathbf{a}_1,\ldots,\mathbf{a}_m)\)</span>. <span class="math notranslate nohighlight">\(\sharp\)</span></p>
 <p>But, first, we define the orthogonal projection, which will play a key role in our applications.</p>
 </section>
+<section id="inverses">
+<h2><span class="section-number">2.2.4. </span>Inverses<a class="headerlink" href="#inverses" title="Permalink to this headline">#</a></h2>
+<p>Recall the following important definition.</p>
+<p><strong>DEFINITION</strong> <strong>(Nonsingular Matrix)</strong> A square matrix <span class="math notranslate nohighlight">\(A \in \mathbb{R}^{n \times n}\)</span> is nonsingular if it has rank <span class="math notranslate nohighlight">\(n\)</span>. In that case, we also say that <span class="math notranslate nohighlight">\(A\)</span> is of full rank. <span class="math notranslate nohighlight">\(\natural\)</span></p>
+<p>An implication of this is that <span class="math notranslate nohighlight">\(A\)</span> is nonsingular if and only if its columns form a basis of <span class="math notranslate nohighlight">\(\mathbb{R}^n\)</span>. Indeed, suppose the columns of <span class="math notranslate nohighlight">\(A\)</span> form a basis of <span class="math notranslate nohighlight">\(\mathbb{R}^n\)</span>. Then the dimension of <span class="math notranslate nohighlight">\(\mathrm{col}(A)\)</span> is <span class="math notranslate nohighlight">\(n\)</span>, which means the rank is <span class="math notranslate nohighlight">\(n\)</span>. In the other direction, suppose <span class="math notranslate nohighlight">\(A\)</span> has rank <span class="math notranslate nohighlight">\(n\)</span>.</p>
+<ol class="arabic simple">
+<li><p>We first prove a general statement: the columns of <span class="math notranslate nohighlight">\(Z \in \mathbb{R}^{k \times m}\)</span> form a basis of <span class="math notranslate nohighlight">\(\mathrm{col}(Z)\)</span> whenever <span class="math notranslate nohighlight">\(Z\)</span> is of full column rank. Indeed, the columns of <span class="math notranslate nohighlight">\(Z\)</span> by definition span <span class="math notranslate nohighlight">\(\mathrm{col}(Z)\)</span>. By the <em>Reducing a Spanning List Lemma</em>, they can be reduced into a basis of <span class="math notranslate nohighlight">\(\mathrm{col}(Z)\)</span>. If <span class="math notranslate nohighlight">\(Z\)</span> has full column rank, then the length of any basis of <span class="math notranslate nohighlight">\(\mathrm{col}(Z)\)</span> is equal to the number of columns of <span class="math notranslate nohighlight">\(Z\)</span>. So the columns of <span class="math notranslate nohighlight">\(Z\)</span> must already form a basis.</p></li>
+<li><p>Apply the previous claim to <span class="math notranslate nohighlight">\(Z = A\)</span>. Then, since the columns of <span class="math notranslate nohighlight">\(A\)</span> form an independent list in <span class="math notranslate nohighlight">\(\mathbb{R}^n\)</span>, by the <em>Completing an Independent List Lemma</em> they can be completed into a basis of <span class="math notranslate nohighlight">\(\mathbb{R}^n\)</span>. But there are already <span class="math notranslate nohighlight">\(n\)</span> of them, the dimension of <span class="math notranslate nohighlight">\(\mathbb{R}^n\)</span>, so they must already form a basis of <span class="math notranslate nohighlight">\(\mathbb{R}^n\)</span>. In other words, we have proved another general fact: an independent list of length <span class="math notranslate nohighlight">\(n\)</span> in <span class="math notranslate nohighlight">\(\mathbb{R}^n\)</span> is a basis of <span class="math notranslate nohighlight">\(\mathbb{R}^n\)</span>.</p></li>
+</ol>
+<p>Equivalently:</p>
+<p><strong>LEMMA</strong> <strong>(Invertibility)</strong> A square matrix <span class="math notranslate nohighlight">\(A \in \mathbb{R}^{n \times n}\)</span> is nonsingular if and only if there exists a unique <span class="math notranslate nohighlight">\(A^{-1}\)</span> such that</p>
+<div class="math notranslate nohighlight">
+\[
+A A^{-1} = A^{-1} A = I_{n \times n}.
+\]</div>
+<p>The matrix <span class="math notranslate nohighlight">\(A^{-1}\)</span> is referred to as the inverse of <span class="math notranslate nohighlight">\(A\)</span>. We also say that <span class="math notranslate nohighlight">\(A\)</span> is invertible. <span class="math notranslate nohighlight">\(\flat\)</span></p>
+<p><em>Proof idea:</em> We use the nonsingularity of <span class="math notranslate nohighlight">\(A\)</span> to write the columns of the identity matrix as unique linear combinations of the columns of <span class="math notranslate nohighlight">\(A\)</span>.</p>
+<p><em>Proof:</em> Suppose first that <span class="math notranslate nohighlight">\(A\)</span> has rank <span class="math notranslate nohighlight">\(n\)</span>. Then its columns are linearly independent and form a basis of <span class="math notranslate nohighlight">\(\mathbb{R}^n\)</span>. In particular, for any <span class="math notranslate nohighlight">\(i\)</span> the standard basis vector <span class="math notranslate nohighlight">\(\mathbf{e}_i\)</span> can be written as a unique linear combination of the columns of <span class="math notranslate nohighlight">\(A\)</span>, i.e., there is <span class="math notranslate nohighlight">\(\mathbf{b}_i\)</span> such that <span class="math notranslate nohighlight">\(A \mathbf{b}_i =\mathbf{e}_i\)</span>. Let <span class="math notranslate nohighlight">\(B\)</span> be the matrix with columns <span class="math notranslate nohighlight">\(\mathbf{b}_i\)</span>, <span class="math notranslate nohighlight">\(i=1,\ldots,n\)</span>. By construction, <span class="math notranslate nohighlight">\(A B = I_{n\times n}\)</span>. Applying the same idea to the rows of <span class="math notranslate nohighlight">\(A\)</span> (which by the <em>Row Rank Equals Column Rank Lemma</em> also form a basis of <span class="math notranslate nohighlight">\(\mathbb{R}^n\)</span>), there is a unique <span class="math notranslate nohighlight">\(C\)</span> such that <span class="math notranslate nohighlight">\(C A = I_{n\times n}\)</span>. Multiplying both sides by <span class="math notranslate nohighlight">\(B\)</span>, we get</p>
+<div class="math notranslate nohighlight">
+\[
+C = C A B = I_{n \times n} B = B.
+\]</div>
+<p>So we take <span class="math notranslate nohighlight">\(A^{-1} = B = C\)</span>.</p>
+<p>In the other direction, following the same argument, the equation <span class="math notranslate nohighlight">\(A A^{-1} = I_{n \times n}\)</span> implies that the standard basis of <span class="math notranslate nohighlight">\(\mathbb{R}^n\)</span> is in the column space of <span class="math notranslate nohighlight">\(A\)</span>. So the columns of <span class="math notranslate nohighlight">\(A\)</span> are a spanning list of all of <span class="math notranslate nohighlight">\(\mathbb{R}^n\)</span> and <span class="math notranslate nohighlight">\(\mathrm{rk}(A) = n\)</span>. That proves the claim. <span class="math notranslate nohighlight">\(\square\)</span></p>
+<p><strong>THEOREM</strong> <strong>(Inverting a Nonsingular System)</strong> Let <span class="math notranslate nohighlight">\(A \in \mathbb{R}^{n \times n}\)</span> be a nonsingular square matrix. Then for any <span class="math notranslate nohighlight">\(\mathbf{b} \in \mathbb{R}^n\)</span>, there exists a unique <span class="math notranslate nohighlight">\(\mathbf{x} \in \mathbb{R}^n\)</span> such that <span class="math notranslate nohighlight">\(A \mathbf{x} = \mathbf{b}\)</span>. Moreover <span class="math notranslate nohighlight">\(\mathbf{x} = A^{-1} \mathbf{b}\)</span>. <span class="math notranslate nohighlight">\(\sharp\)</span></p>
+<p><em>Proof:</em> The first claim follows immediately from the fact that the columns of <span class="math notranslate nohighlight">\(A\)</span> form a basis of <span class="math notranslate nohighlight">\(\mathbb{R}^n\)</span>. For the second claim, note that</p>
+<div class="math notranslate nohighlight">
+\[
+\mathbf{x} = A^{-1} A \mathbf{x} = A^{-1} \mathbf{b}.
+\]</div>
+<p><span class="math notranslate nohighlight">\(\square\)</span></p>
+<p><strong>EXAMPLE:</strong> Let <span class="math notranslate nohighlight">\(A \in \mathbb{R}^{n \times m}\)</span> with <span class="math notranslate nohighlight">\(n \geq m\)</span> have full column rank, i.e. rank <span class="math notranslate nohighlight">\(m\)</span>. We will show that the square matrix <span class="math notranslate nohighlight">\(B = A^T A\)</span> is then invertible.</p>
+<p>By a claim above, the columns of <span class="math notranslate nohighlight">\(A\)</span> form a basis of its column space. In particular they are linearly independent. We will use this below.</p>
+<p>Observe that <span class="math notranslate nohighlight">\(B\)</span> is an <span class="math notranslate nohighlight">\(m \times m\)</span> matrix. By definition, to show that it is nonsingular, we need to establish that it has rank <span class="math notranslate nohighlight">\(m\)</span>, or put differently that its columns are also linearly independent. By the matrix version of the <em>Equivalent Definition of Linear Independence</em>, it suffices to show that</p>
+<div class="math notranslate nohighlight">
+\[
+B \mathbf{x} = \mathbf{0} \implies \mathbf{x} = \mathbf{0}.
+\]</div>
+<p>We establish this next.</p>
+<p>Since <span class="math notranslate nohighlight">\(B = A^T A\)</span>, the equation <span class="math notranslate nohighlight">\(B \mathbf{x} = \mathbf{0}\)</span> implies</p>
+<div class="math notranslate nohighlight">
+\[
+A^T A \mathbf{x} = \mathbf{0}.
+\]</div>
+<p>Now comes the key idea: we multiply both sides by <span class="math notranslate nohighlight">\(\mathbf{x}^T\)</span>. The left-hand side becomes</p>
+<div class="math notranslate nohighlight">
+\[
+\mathbf{x}^T (A^T A \mathbf{x}) 
+= (A \mathbf{x})^T (A \mathbf{x}) 
+= \|A \mathbf{x}\|^2,
+\]</div>
+<p>where we used that, for matrices <span class="math notranslate nohighlight">\(C, D\)</span>, we have <span class="math notranslate nohighlight">\((CD)^T = D^T C^T\)</span>. The right-hand side becomes <span class="math notranslate nohighlight">\(\mathbf{x}^T \mathbf{0} = 0\)</span>. Hence we have shown that <span class="math notranslate nohighlight">\(A^T A \mathbf{x} = \mathbf{0}\)</span> in fact implies <span class="math notranslate nohighlight">\(\|A \mathbf{x}\|^2 = 0\)</span>.</p>
+<p>By the point-separating property of the Euclidean norm, the condition <span class="math notranslate nohighlight">\(\|A \mathbf{x}\|^2 = 0\)</span> implies <span class="math notranslate nohighlight">\(A \mathbf{x} = \mathbf{0}\)</span>. Because <span class="math notranslate nohighlight">\(A\)</span> has linearly independent columns, the <em>Equivalent Definition of Linear Independence</em> in its matrix form again implies that <span class="math notranslate nohighlight">\(\mathbf{x} = \mathbf{0}\)</span>, which is what we needed to prove. <span class="math notranslate nohighlight">\(\lhd\)</span></p>
+<p><strong>EXAMPLE:</strong> Let <span class="math notranslate nohighlight">\(\mathbf{q}_1,\ldots,\mathbf{q}_n\)</span> be an orthonormal basis of <span class="math notranslate nohighlight">\(\mathbb{R}^n\)</span> and form the matrix</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+Q =
+\begin{pmatrix}
+| &amp;  &amp; | \\
+\mathbf{q}_1 &amp; \ldots &amp; \mathbf{q}_n \\
+| &amp;  &amp; | 
+\end{pmatrix}.
+\end{split}\]</div>
+<p>We show that <span class="math notranslate nohighlight">\(Q^{-1} = Q^T\)</span>.</p>
+<p>By the definition of matrix multiplication</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+Q^T Q
+=
+\begin{pmatrix}
+\langle \mathbf{q}_1, \mathbf{q}_1 \rangle &amp; \cdots &amp; \langle \mathbf{q}_1, \mathbf{q}_n \rangle \\
+\langle \mathbf{q}_2, \mathbf{q}_1 \rangle &amp; \cdots &amp; \langle \mathbf{q}_2, \mathbf{q}_n \rangle \\
+\vdots &amp; \ddots &amp; \vdots \\
+\langle \mathbf{q}_n, \mathbf{q}_1 \rangle &amp; \cdots &amp; \langle \mathbf{q}_n, \mathbf{q}_n \rangle
+\end{pmatrix}
+= I_{n \times n}
+\end{split}\]</div>
+<p>where <span class="math notranslate nohighlight">\(I_{n \times n}\)</span> denotes the <span class="math notranslate nohighlight">\(n \times n\)</span> identity matrix. This of course follows from the fact that the <span class="math notranslate nohighlight">\(\mathbf{q}_i\)</span>’s are orthonormal.</p>
+<p>In the other direction, we claim that <span class="math notranslate nohighlight">\(Q Q^T = I_{n \times n}\)</span> as well. Indeed the matrix <span class="math notranslate nohighlight">\(Q Q^T\)</span> is the orthogonal projection on the span of the <span class="math notranslate nohighlight">\(\mathbf{q}_i\)</span>’s, that is, <span class="math notranslate nohighlight">\(\mathbb{R}^n\)</span>. By the <em>Orthogonal Projection Theorem</em>, the orthogonal projection <span class="math notranslate nohighlight">\(Q Q^T \mathbf{v}\)</span> finds the closest vector to <span class="math notranslate nohighlight">\(\mathbf{v}\)</span> in the span of the <span class="math notranslate nohighlight">\(\mathbf{q}_i\)</span>’s. But that span contains all vectors, including <span class="math notranslate nohighlight">\(\mathbf{v}\)</span>, so we must have <span class="math notranslate nohighlight">\(Q Q^T \mathbf{v} = \mathbf{v}\)</span>. Since this holds for all <span class="math notranslate nohighlight">\(\mathbf{v} \in \mathbb{R}^n\)</span>, the matrix <span class="math notranslate nohighlight">\(Q Q^T\)</span> is the identity map and we have proved the claim. <span class="math notranslate nohighlight">\(\lhd\)</span></p>
+<p>Matrices that satisfy</p>
+<div class="math notranslate nohighlight">
+\[
+Q^T Q = Q Q^T = I_{n \times n}
+\]</div>
+<p>are called orthogonal matrices.</p>
+<p><strong>DEFINITION</strong> <strong>(Orthogonal Matrix)</strong> A square matrix <span class="math notranslate nohighlight">\(Q \in \mathbb{R}^{m\times m}\)</span> is orthogonal if <span class="math notranslate nohighlight">\(Q^T Q = Q Q^T = I_{m \times m}\)</span>. <span class="math notranslate nohighlight">\(\natural\)</span></p>
+</section>
 </section>
 
     <script type="text/x-thebe-config">
@@ -1250,8 +1334,8 @@ q_{21} \\
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#subspaces">2.2.1. Subspaces</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#linear-independence">2.2.2. Linear independence</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dimension-of-a-subspace">2.2.3. Dimension of a subspace</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#a-key-concept-orthogonality">2.2.4. A key concept: orthogonality</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#a-key-concept-orthogonality">2.2.3. A key concept: orthogonality</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#inverses">2.2.4. Inverses</a></li>
 </ul>
   </nav></div>
 

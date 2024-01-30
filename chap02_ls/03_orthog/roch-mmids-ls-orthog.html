@@ -76,7 +76,7 @@ const thebe_selector_output = ".output, .cell_output"
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
     <link rel="next" title="2.4. QR decomposition and Householder transformations" href="../04_qr/roch-mmids-ls-qr.html" />
-    <link rel="prev" title="2.2. Background: review of vector spaces" href="../02_subspaces/roch-mmids-ls-spaces.html" />
+    <link rel="prev" title="2.2. Background: review of vector spaces and matrix inverses" href="../02_subspaces/roch-mmids-ls-spaces.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   </head>
@@ -190,7 +190,7 @@ const thebe_selector_output = ".output, .cell_output"
 </li>
 <li class="toctree-l1 current active has-children"><a class="reference internal" href="../00_intro/roch-mmids-ls-intro.html">2. Least squares: geometric, algebraic, and numerical aspects</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="../01_motiv/roch-mmids-ls-motiv.html">2.1. Motivating example: predicting sales</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../02_subspaces/roch-mmids-ls-spaces.html">2.2. Background: review of vector spaces</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../02_subspaces/roch-mmids-ls-spaces.html">2.2. Background: review of vector spaces and matrix inverses</a></li>
 <li class="toctree-l2 current active"><a class="current reference internal" href="#">2.3. Orthogonal projection and overdetermined linear systems</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../04_qr/roch-mmids-ls-qr.html">2.4. QR decomposition and Householder transformations</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../05_regression/roch-mmids-ls-regression.html">2.5. Application to regression analysis</a></li>
@@ -442,9 +442,8 @@ document.write(`
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#inverses">2.3.1. Inverses</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#orthogonal-projection">2.3.2. Orthogonal projection</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overdetermined-systems">2.3.3. Overdetermined systems</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#orthogonal-projection">2.3.1. Orthogonal projection</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overdetermined-systems">2.3.2. Overdetermined systems</a></li>
 </ul>
             </nav>
         </div>
@@ -463,95 +462,12 @@ document.write(`
 \[
 A \mathbf{x} \approx \mathbf{b}.
 \]</div>
-<section id="inverses">
-<h2><span class="section-number">2.3.1. </span>Inverses<a class="headerlink" href="#inverses" title="Permalink to this headline">#</a></h2>
-<p>We begin with the important special case where <span class="math notranslate nohighlight">\(A\)</span> is invertible.</p>
+<p>In the special case where <span class="math notranslate nohighlight">\(A\)</span> is invertible, a unique exact solution exists. Indeed:</p>
 <p><strong>DEFINITION</strong> <strong>(Nonsingular Matrix)</strong> A square matrix <span class="math notranslate nohighlight">\(A \in \mathbb{R}^{n \times n}\)</span> is nonsingular if it has rank <span class="math notranslate nohighlight">\(n\)</span>. In that case, we also say that <span class="math notranslate nohighlight">\(A\)</span> is of full rank. <span class="math notranslate nohighlight">\(\natural\)</span></p>
-<p>An implication of this is that <span class="math notranslate nohighlight">\(A\)</span> is nonsingular if and only if its columns form a basis of <span class="math notranslate nohighlight">\(\mathbb{R}^n\)</span>. Indeed, suppose the columns of <span class="math notranslate nohighlight">\(A\)</span> form a basis of <span class="math notranslate nohighlight">\(\mathbb{R}^n\)</span>. Then the dimension of <span class="math notranslate nohighlight">\(\mathrm{col}(A)\)</span> is <span class="math notranslate nohighlight">\(n\)</span>, which means the rank is <span class="math notranslate nohighlight">\(n\)</span>. In the other direction, suppose <span class="math notranslate nohighlight">\(A\)</span> has rank <span class="math notranslate nohighlight">\(n\)</span>.</p>
-<ol class="arabic simple">
-<li><p>We first prove a general statement: the columns of <span class="math notranslate nohighlight">\(Z \in \mathbb{R}^{k \times m}\)</span> form a basis of <span class="math notranslate nohighlight">\(\mathrm{col}(Z)\)</span> whenever <span class="math notranslate nohighlight">\(Z\)</span> is of full column rank. Indeed, the columns of <span class="math notranslate nohighlight">\(Z\)</span> by definition span <span class="math notranslate nohighlight">\(\mathrm{col}(Z)\)</span>. By the <em>Reducing a Spanning List Lemma</em>, they can be reduced into a basis of <span class="math notranslate nohighlight">\(\mathrm{col}(Z)\)</span>. If <span class="math notranslate nohighlight">\(Z\)</span> has full column rank, then the length of any basis of <span class="math notranslate nohighlight">\(\mathrm{col}(Z)\)</span> is equal to the number of columns of <span class="math notranslate nohighlight">\(Z\)</span>. So the columns of <span class="math notranslate nohighlight">\(Z\)</span> must already form a basis.</p></li>
-<li><p>Apply the previous claim to <span class="math notranslate nohighlight">\(Z = A\)</span>. Then, since the columns of <span class="math notranslate nohighlight">\(A\)</span> form an independent list in <span class="math notranslate nohighlight">\(\mathbb{R}^n\)</span>, by the <em>Completing an Independent List Lemma</em> they can be completed into a basis of <span class="math notranslate nohighlight">\(\mathbb{R}^n\)</span>. But there are already <span class="math notranslate nohighlight">\(n\)</span> of them, the dimension of <span class="math notranslate nohighlight">\(\mathbb{R}^n\)</span>, so they must already form a basis of <span class="math notranslate nohighlight">\(\mathbb{R}^n\)</span>. In other words, we have proved another general fact: an independent list of length <span class="math notranslate nohighlight">\(n\)</span> in <span class="math notranslate nohighlight">\(\mathbb{R}^n\)</span> is a basis of <span class="math notranslate nohighlight">\(\mathbb{R}^n\)</span>.</p></li>
-</ol>
-<p>Equivalently:</p>
-<p><strong>LEMMA</strong> <strong>(Invertibility)</strong> A square matrix <span class="math notranslate nohighlight">\(A \in \mathbb{R}^{n \times n}\)</span> is nonsingular if and only if there exists a unique <span class="math notranslate nohighlight">\(A^{-1}\)</span> such that</p>
-<div class="math notranslate nohighlight">
-\[
-A A^{-1} = A^{-1} A = I_{n \times n}.
-\]</div>
-<p>The matrix <span class="math notranslate nohighlight">\(A^{-1}\)</span> is referred to as the inverse of <span class="math notranslate nohighlight">\(A\)</span>. We also say that <span class="math notranslate nohighlight">\(A\)</span> is invertible. <span class="math notranslate nohighlight">\(\flat\)</span></p>
-<p><em>Proof idea:</em> We use the nonsingularity of <span class="math notranslate nohighlight">\(A\)</span> to write the columns of the identity matrix as unique linear combinations of the columns of <span class="math notranslate nohighlight">\(A\)</span>.</p>
-<p><em>Proof:</em> Suppose first that <span class="math notranslate nohighlight">\(A\)</span> has rank <span class="math notranslate nohighlight">\(n\)</span>. Then its columns are linearly independent and form a basis of <span class="math notranslate nohighlight">\(\mathbb{R}^n\)</span>. In particular, for any <span class="math notranslate nohighlight">\(i\)</span> the standard basis vector <span class="math notranslate nohighlight">\(\mathbf{e}_i\)</span> can be written as a unique linear combination of the columns of <span class="math notranslate nohighlight">\(A\)</span>, i.e., there is <span class="math notranslate nohighlight">\(\mathbf{b}_i\)</span> such that <span class="math notranslate nohighlight">\(A \mathbf{b}_i =\mathbf{e}_i\)</span>. Let <span class="math notranslate nohighlight">\(B\)</span> be the matrix with columns <span class="math notranslate nohighlight">\(\mathbf{b}_i\)</span>, <span class="math notranslate nohighlight">\(i=1,\ldots,n\)</span>. By construction, <span class="math notranslate nohighlight">\(A B = I_{n\times n}\)</span>. Applying the same idea to the rows of <span class="math notranslate nohighlight">\(A\)</span> (which by the <em>Row Rank Equals Column Rank Lemma</em> also form a basis of <span class="math notranslate nohighlight">\(\mathbb{R}^n\)</span>), there is a unique <span class="math notranslate nohighlight">\(C\)</span> such that <span class="math notranslate nohighlight">\(C A = I_{n\times n}\)</span>. Multiplying both sides by <span class="math notranslate nohighlight">\(B\)</span>, we get</p>
-<div class="math notranslate nohighlight">
-\[
-C = C A B = I_{n \times n} B = B.
-\]</div>
-<p>So we take <span class="math notranslate nohighlight">\(A^{-1} = B = C\)</span>.</p>
-<p>In the other direction, following the same argument, the equation <span class="math notranslate nohighlight">\(A A^{-1} = I_{n \times n}\)</span> implies that the standard basis of <span class="math notranslate nohighlight">\(\mathbb{R}^n\)</span> is in the column space of <span class="math notranslate nohighlight">\(A\)</span>. So the columns of <span class="math notranslate nohighlight">\(A\)</span> are a spanning list of all of <span class="math notranslate nohighlight">\(\mathbb{R}^n\)</span> and <span class="math notranslate nohighlight">\(\mathrm{rk}(A) = n\)</span>. That proves the claim. <span class="math notranslate nohighlight">\(\square\)</span></p>
 <p><strong>THEOREM</strong> <strong>(Inverting a Nonsingular System)</strong> Let <span class="math notranslate nohighlight">\(A \in \mathbb{R}^{n \times n}\)</span> be a nonsingular square matrix. Then for any <span class="math notranslate nohighlight">\(\mathbf{b} \in \mathbb{R}^n\)</span>, there exists a unique <span class="math notranslate nohighlight">\(\mathbf{x} \in \mathbb{R}^n\)</span> such that <span class="math notranslate nohighlight">\(A \mathbf{x} = \mathbf{b}\)</span>. Moreover <span class="math notranslate nohighlight">\(\mathbf{x} = A^{-1} \mathbf{b}\)</span>. <span class="math notranslate nohighlight">\(\sharp\)</span></p>
-<p><em>Proof:</em> The first claim follows immediately from the fact that the columns of <span class="math notranslate nohighlight">\(A\)</span> form a basis of <span class="math notranslate nohighlight">\(\mathbb{R}^n\)</span>. For the second claim, note that</p>
-<div class="math notranslate nohighlight">
-\[
-\mathbf{x} = A^{-1} A \mathbf{x} = A^{-1} \mathbf{b}.
-\]</div>
-<p><span class="math notranslate nohighlight">\(\square\)</span></p>
-<p><strong>EXAMPLE:</strong> Let <span class="math notranslate nohighlight">\(A \in \mathbb{R}^{n \times m}\)</span> with <span class="math notranslate nohighlight">\(n \geq m\)</span> have full column rank, i.e. rank <span class="math notranslate nohighlight">\(m\)</span>. We will show that the square matrix <span class="math notranslate nohighlight">\(B = A^T A\)</span> is then invertible.</p>
-<p>By a claim above, the columns of <span class="math notranslate nohighlight">\(A\)</span> form a basis of its column space. In particular they are linearly independent. We will use this below.</p>
-<p>Observe that <span class="math notranslate nohighlight">\(B\)</span> is an <span class="math notranslate nohighlight">\(m \times m\)</span> matrix. By definition, to show that it is nonsingular, we need to establish that it has rank <span class="math notranslate nohighlight">\(m\)</span>, or put differently that its columns are also linearly independent. By the matrix version of the <em>Equivalent Definition of Linear Independence</em>, it suffices to show that</p>
-<div class="math notranslate nohighlight">
-\[
-B \mathbf{x} = \mathbf{0} \implies \mathbf{x} = \mathbf{0}.
-\]</div>
-<p>We establish this next.</p>
-<p>Since <span class="math notranslate nohighlight">\(B = A^T A\)</span>, the equation <span class="math notranslate nohighlight">\(B \mathbf{x} = \mathbf{0}\)</span> implies</p>
-<div class="math notranslate nohighlight">
-\[
-A^T A \mathbf{x} = \mathbf{0}.
-\]</div>
-<p>Now comes the key idea: we multiply both sides by <span class="math notranslate nohighlight">\(\mathbf{x}^T\)</span>. The left-hand side becomes</p>
-<div class="math notranslate nohighlight">
-\[
-\mathbf{x}^T (A^T A \mathbf{x}) 
-= (A \mathbf{x})^T (A \mathbf{x}) 
-= \|A \mathbf{x}\|^2,
-\]</div>
-<p>where we used that, for matrices <span class="math notranslate nohighlight">\(C, D\)</span>, we have <span class="math notranslate nohighlight">\((CD)^T = D^T C^T\)</span>. The right-hand side becomes <span class="math notranslate nohighlight">\(\mathbf{x}^T \mathbf{0} = 0\)</span>. Hence we have shown that <span class="math notranslate nohighlight">\(A^T A \mathbf{x} = \mathbf{0}\)</span> in fact implies <span class="math notranslate nohighlight">\(\|A \mathbf{x}\|^2 = 0\)</span>.</p>
-<p>By the point-separating property of the Euclidean norm, the condition <span class="math notranslate nohighlight">\(\|A \mathbf{x}\|^2 = 0\)</span> implies <span class="math notranslate nohighlight">\(A \mathbf{x} = \mathbf{0}\)</span>. Because <span class="math notranslate nohighlight">\(A\)</span> has linearly independent columns, the <em>Equivalent Definition of Linear Independence</em> in its matrix form again implies that <span class="math notranslate nohighlight">\(\mathbf{x} = \mathbf{0}\)</span>, which is what we needed to prove. <span class="math notranslate nohighlight">\(\lhd\)</span></p>
-<p><strong>EXAMPLE:</strong> Let <span class="math notranslate nohighlight">\(\mathbf{q}_1,\ldots,\mathbf{q}_n\)</span> be an orthonormal basis of <span class="math notranslate nohighlight">\(\mathbb{R}^n\)</span> and form the matrix</p>
-<div class="math notranslate nohighlight">
-\[\begin{split}
-Q =
-\begin{pmatrix}
-| &amp;  &amp; | \\
-\mathbf{q}_1 &amp; \ldots &amp; \mathbf{q}_n \\
-| &amp;  &amp; | 
-\end{pmatrix}.
-\end{split}\]</div>
-<p>We show that <span class="math notranslate nohighlight">\(Q^{-1} = Q^T\)</span>.</p>
-<p>By the definition of matrix multiplication</p>
-<div class="math notranslate nohighlight">
-\[\begin{split}
-Q^T Q
-=
-\begin{pmatrix}
-\langle \mathbf{q}_1, \mathbf{q}_1 \rangle &amp; \cdots &amp; \langle \mathbf{q}_1, \mathbf{q}_n \rangle \\
-\langle \mathbf{q}_2, \mathbf{q}_1 \rangle &amp; \cdots &amp; \langle \mathbf{q}_2, \mathbf{q}_n \rangle \\
-\vdots &amp; \ddots &amp; \vdots \\
-\langle \mathbf{q}_n, \mathbf{q}_1 \rangle &amp; \cdots &amp; \langle \mathbf{q}_n, \mathbf{q}_n \rangle
-\end{pmatrix}
-= I_{n \times n}
-\end{split}\]</div>
-<p>where <span class="math notranslate nohighlight">\(I_{n \times n}\)</span> denotes the <span class="math notranslate nohighlight">\(n \times n\)</span> identity matrix. This of course follows from the fact that the <span class="math notranslate nohighlight">\(\mathbf{q}_i\)</span>’s are orthonormal.</p>
-<p>In the other direction, we claim that <span class="math notranslate nohighlight">\(Q Q^T = I_{n \times n}\)</span> as well. Indeed the matrix <span class="math notranslate nohighlight">\(Q Q^T\)</span> is the orthogonal projection on the span of the <span class="math notranslate nohighlight">\(\mathbf{q}_i\)</span>’s, that is, <span class="math notranslate nohighlight">\(\mathbb{R}^n\)</span>. By the <em>Orthogonal Projection Theorem</em>, the orthogonal projection <span class="math notranslate nohighlight">\(Q Q^T \mathbf{v}\)</span> finds the closest vector to <span class="math notranslate nohighlight">\(\mathbf{v}\)</span> in the span of the <span class="math notranslate nohighlight">\(\mathbf{q}_i\)</span>’s. But that span contains all vectors, including <span class="math notranslate nohighlight">\(\mathbf{v}\)</span>, so we must have <span class="math notranslate nohighlight">\(Q Q^T \mathbf{v} = \mathbf{v}\)</span>. Since this holds for all <span class="math notranslate nohighlight">\(\mathbf{v} \in \mathbb{R}^n\)</span>, the matrix <span class="math notranslate nohighlight">\(Q Q^T\)</span> is the identity map and we have proved the claim. <span class="math notranslate nohighlight">\(\lhd\)</span></p>
-<p>Matrices that satisfy</p>
-<div class="math notranslate nohighlight">
-\[
-Q^T Q = Q Q^T = I_{n \times n}
-\]</div>
-<p>are called orthogonal matrices.</p>
-<p><strong>DEFINITION</strong> <strong>(Orthogonal Matrix)</strong> A square matrix <span class="math notranslate nohighlight">\(Q \in \mathbb{R}^{m\times m}\)</span> is orthogonal if <span class="math notranslate nohighlight">\(Q^T Q = Q Q^T = I_{m \times m}\)</span>. <span class="math notranslate nohighlight">\(\natural\)</span></p>
-</section>
+<p>In general, however, a solution may not exist or may not be unique. We focus here on the over-determined case where the former situation generically occurs.</p>
 <section id="orthogonal-projection">
-<h2><span class="section-number">2.3.2. </span>Orthogonal projection<a class="headerlink" href="#orthogonal-projection" title="Permalink to this headline">#</a></h2>
+<h2><span class="section-number">2.3.1. </span>Orthogonal projection<a class="headerlink" href="#orthogonal-projection" title="Permalink to this headline">#</a></h2>
 <p>To solve the overdetermined case, i.e., when <span class="math notranslate nohighlight">\(n &gt; m\)</span>, we consider the following more general problem first. We have a linear subspace <span class="math notranslate nohighlight">\(U \subseteq \mathbb{R}^n\)</span> and a vector <span class="math notranslate nohighlight">\(\mathbf{v} \notin U\)</span>. We want to find the vector <span class="math notranslate nohighlight">\(\mathbf{p}\)</span> in <span class="math notranslate nohighlight">\(U\)</span> that is closest to <span class="math notranslate nohighlight">\(\mathbf{v}\)</span> in <span class="math notranslate nohighlight">\(2\)</span>-norm, that is, we want to solve</p>
 <div class="math notranslate nohighlight">
 \[
@@ -833,7 +749,7 @@ Q Q^T
 <p>as previously computed. <span class="math notranslate nohighlight">\(\lhd\)</span></p>
 </section>
 <section id="overdetermined-systems">
-<h2><span class="section-number">2.3.3. </span>Overdetermined systems<a class="headerlink" href="#overdetermined-systems" title="Permalink to this headline">#</a></h2>
+<h2><span class="section-number">2.3.2. </span>Overdetermined systems<a class="headerlink" href="#overdetermined-systems" title="Permalink to this headline">#</a></h2>
 <p>In this section, we discuss the least-squares problem. Let again <span class="math notranslate nohighlight">\(A \in \mathbb{R}^{n\times m}\)</span> be an <span class="math notranslate nohighlight">\(n\times m\)</span> matrix with linearly independent columns and let <span class="math notranslate nohighlight">\(\mathbf{b} \in \mathbb{R}^n\)</span> be a vector. We are looking to solve the system</p>
 <div class="math notranslate nohighlight">
 \[
@@ -1001,7 +917,7 @@ A = \begin{pmatrix}
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title"><span class="section-number">2.2. </span>Background: review of vector spaces</p>
+        <p class="prev-next-title"><span class="section-number">2.2. </span>Background: review of vector spaces and matrix inverses</p>
       </div>
     </a>
     <a class="right-next"
@@ -1028,9 +944,8 @@ A = \begin{pmatrix}
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#inverses">2.3.1. Inverses</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#orthogonal-projection">2.3.2. Orthogonal projection</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overdetermined-systems">2.3.3. Overdetermined systems</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#orthogonal-projection">2.3.1. Orthogonal projection</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overdetermined-systems">2.3.2. Overdetermined systems</a></li>
 </ul>
   </nav></div>
 

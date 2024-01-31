@@ -14389,7 +14389,7 @@ div.jp-OutputPrompt {
 <p><em>Course:</em> <a href="https://people.math.wisc.edu/~roch/mmids/">Math 535</a> - Mathematical Methods in Data Science (MMiDS)<br>
 <em>Chapter:</em> 2-Least squares<br>
 <em>Author:</em> <a href="https://people.math.wisc.edu/~roch/">Sebastien Roch</a>, Department of Mathematics, University of Wisconsin-Madison<br>
-<em>Updated:</em> Jan 27, 2024<br>
+<em>Updated:</em> Jan 31, 2024<br>
 <em>Copyright:</em> &copy; 2024 Sebastien Roch</p>
 <hr>
 
@@ -14398,6 +14398,14 @@ div.jp-OutputPrompt {
 <div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput  celltag_colab-keep" data-mime-type="text/markdown">
 <h2 id="Motivating-example:-predicting-sales">Motivating example: predicting sales<a class="anchor-link" href="#Motivating-example:-predicting-sales">&#182;</a></h2>
+</div>
+</div></section></section><section><section>
+<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput  celltag_colab-keep" data-mime-type="text/markdown">
+<p><strong>Figure:</strong> Helpful map of ML by scitkit-learn (<a href="https://scikit-learn.org/stable/tutorial/machine_learning_map/index.html">Source</a>)</p>
+<p><img src="https://scikit-learn.org/stable/_static/ml_map.png" alt="ml-cheat-sheet"></p>
+<p>$\bowtie$</p>
+
 </div>
 </div></section></section><section><section>
 <div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
@@ -14731,13 +14739,13 @@ $$
 </ul>
 
 </div>
-</div></section></section><section><section>
+</div><div class="fragment">
 <div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput  celltag_colab-keep" data-mime-type="text/markdown">
 <p>We implement this method in Python. We use the function <a href="https://numpy.org/doc/stable/reference/generated/numpy.argsort.html"><code>numpy.argsort</code></a> to sort an array and the function <a href="https://numpy.org/doc/stable/reference/generated/numpy.absolute.html"><code>numpy.absolute</code></a> to compute the absolute deviation. Our quick implementation here assumes that the $\mathbf{x}_i$'s are scalars, i.e., one-dimensional vectors.</p>
 
 </div>
-</div><div class="fragment"><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
+</div></div><div class="fragment"><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
 <div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[8]:</div>
@@ -14887,7 +14895,82 @@ $$
 </div></div></section></section><section><section>
 <div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput  celltag_colab-keep" data-mime-type="text/markdown">
-<h2 id="Background:-review-of-vector-spaces">Background: review of vector spaces<a class="anchor-link" href="#Background:-review-of-vector-spaces">&#182;</a></h2>
+<p>One downside of $k$-NN regression is that it does not give an easily interpretable relationship: if I increase my TV budget by $\Delta$ dollars, how is it expected to affect the sales? Another issue arises in high dimension where the counter-intuitive phenomena we discussed in a previous section can have a significant impact. Recall in particular the <em>High-dimensional Cube Theorem</em>. If we have $d$ predictors -- where $d$ is large -- and our data is distributed uniformly in a bounded region, then any given $\mathbf{x}$ will be far from any of our data points. In that case, the $y$-values of the closest $\mathbf{x}_i$'s may not be predictive. This is referred to as the <a href="https://en.wikipedia.org/wiki/Curse_of_dimensionality">Curse of Dimensionality</a>.</p>
+
+</div>
+</div></section></section><section><section>
+<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput  celltag_colab-keep" data-mime-type="text/markdown">
+<p>One way out is to make stronger assumptions on the function $f$. For instance, we can assume that the true relationship is (approximately) affine, that is,</p>
+$$
+y \approx \beta_0 + \beta_1 x.
+$$<p>Or if we have $d$ predictors:</p>
+$$
+y \approx \beta_0 + \sum_{j=1}^d \beta_j x_j.
+$$<p>How do we estimate appropriate intercept and coefficients? The standard approach is to minimize the sum of the squared errors</p>
+$$
+\sum_{i=1}^n \left(y_i - \left\{\beta_0 + \sum_{j=1}^d \beta_j (\mathbf{x}_{i})_j\right\}\right)^2,
+$$<p>where $(\mathbf{x}_{i})_j$ is the $j$-th entry of input vector $\mathbf{x}_i$ and $y_i$ is the corresponding $y$-value. This is called <a href="https://en.wikipedia.org/wiki/Linear_regression">multiple linear regression</a>.</p>
+
+</div>
+</div></section></section><section><section>
+<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput  celltag_colab-keep" data-mime-type="text/markdown">
+<p>It is a <a href="https://en.wikipedia.org/wiki/Least_squares">least-squares problem</a>. We re-write it in a more convenient matrix form and combine $\beta_0$ with the other $\beta_i$'s by adding a dummy predictor to each sample. Let</p>
+$$
+\mathbf{y} = 
+\begin{pmatrix}
+y_1 \\
+y_2 \\
+\vdots \\
+y_n
+\end{pmatrix},
+\quad\quad
+A =
+\begin{pmatrix}
+1 &amp; \mathbf{x}_1^T \\
+1 &amp; \mathbf{x}_2^T \\
+\vdots &amp; \vdots \\
+1 &amp; \mathbf{x}_n^T
+\end{pmatrix}
+\quad\text{and}\quad
+\boldsymbol{\beta} = 
+\begin{pmatrix}
+\beta_0 \\
+\beta_1 \\
+\vdots \\
+\beta_d
+\end{pmatrix}.
+$$<p>Then observe that</p>
+\begin{align*}
+\|\mathbf{y} 
+- A \boldsymbol{\beta}\|^2
+&amp;= \sum_{i=1}^n \left(y_i - (A \boldsymbol{\beta})_i\right)^2\\
+&amp;= \sum_{i=1}^n \left(y_i - \left\{\beta_0 + \sum_{j=1}^d \beta_j (\mathbf{x}_{i})_j\right\}\right)^2.
+\end{align*}
+</div>
+</div></section></section><section><section>
+<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput  celltag_colab-keep" data-mime-type="text/markdown">
+<p>The linear least-squares problem is then formulated as</p>
+$$
+\min_{\boldsymbol{\beta}} 
+\|\mathbf{y} 
+- A \boldsymbol{\beta}\|^2.
+$$<p>In words, we are looking for a linear combination of the columns of $A$ that is closest to $\mathbf{y}$ in Euclidean distance. Indeed, minimizing the squared Euclidean distance is equivalent to minimizing its square root, as the latter in an increasing function.</p>
+
+</div>
+</div><div class="fragment">
+<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput  celltag_colab-keep" data-mime-type="text/markdown">
+<p>One could solve this optimization problem through calculus (and we will come back to this approach later in the course), but understanding the geometric and algebraic structure of the problem turns out to provide powerful insights into its solution -- and that of many of problems in data science. It will also be an opportunity to review some basic linear-algebraic concepts along the way.</p>
+<p>We will come back to the <code>Advertising</code> dataset later in the chapter.</p>
+
+</div>
+</div></div></section></section><section><section>
+<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput  celltag_colab-keep" data-mime-type="text/markdown">
+<h2 id="Background:-review-of-vector-spaces-and-matrix-inverses">Background: review of vector spaces and matrix inverses<a class="anchor-link" href="#Background:-review-of-vector-spaces-and-matrix-inverses">&#182;</a></h2>
 </div>
 </div></section></section><section><section>
 <div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">

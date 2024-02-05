@@ -1347,13 +1347,13 @@ H_f(\mathbf{x})
 </section>
 <section id="a-data-science-example-ridge-regression">
 <h2><span class="section-number">6.3.5. </span>A data science example: ridge regression<a class="headerlink" href="#a-data-science-example-ridge-regression" title="Permalink to this headline">#</a></h2>
-<p>We saw in a previous subsection that the pseudoinverse gives a least norm solution to an underdetermined linear system. A similar idea turns out to be useful in the overdetermined case as well, particularly when the columns of the matrix <span class="math notranslate nohighlight">\(A\)</span> are linearly dependent or close to linearly dependent (which is sometimes referred as <a class="reference external" href="https://en.wikipedia.org/wiki/Multicollinearity">multicollinearity</a> in statistics). This is called ridge regression or Tikhonov regularization. It trades off minimizing the fit to the data versus minimizing the norm of the solution. More precisely, for a parameter <span class="math notranslate nohighlight">\(\lambda &gt; 0\)</span> to be chosen, we solve</p>
+<p>The <a class="reference external" href="https://en.wikipedia.org/wiki/Moore%E2%80%93Penrose_inverse">pseudoinverse</a> gives a least norm solution to an underdetermined linear system. A similar idea turns out to be useful in the overdetermined case as well, particularly when the columns of the matrix <span class="math notranslate nohighlight">\(A\)</span> are linearly dependent or close to linearly dependent (which is sometimes referred as <a class="reference external" href="https://en.wikipedia.org/wiki/Multicollinearity">multicollinearity</a> in statistics). This is called ridge regression or Tikhonov regularization. It trades off minimizing the fit to the data versus minimizing the norm of the solution. More precisely, for a parameter <span class="math notranslate nohighlight">\(\lambda &gt; 0\)</span> to be chosen, we solve</p>
 <div class="math notranslate nohighlight">
 \[
 \min_{\mathbf{x} \in \mathbb{R}^m} \|A \mathbf{x} - \mathbf{b}\|_2^2 + \lambda \|\mathbf{x}\|_2^2.
 \]</div>
 <p>The second term is referred to as an <span class="math notranslate nohighlight">\(\ell_2\)</span>-regularizer. Here <span class="math notranslate nohighlight">\(A \in \mathbb{R}^{n\times m}\)</span> with <span class="math notranslate nohighlight">\(n \geq m\)</span> and <span class="math notranslate nohighlight">\(\mathbf{b} \in \mathbb{R}^n\)</span>.</p>
-<p><strong>Solving the problem</strong> To solve this optimization problem, we show that the objective function is strongly convex. We then find its unique stationary point. Rewriting the objective in quadratic function form</p>
+<p>To solve this optimization problem, we show that the objective function is strongly convex. We then find its unique stationary point. Rewriting the objective in quadratic function form</p>
 <div class="amsmath math notranslate nohighlight">
 \[\begin{align*}
 f(\mathbf{x})
@@ -1370,7 +1370,7 @@ f(\mathbf{x})
 \mathbf{z}^T [2 (A^T A + \lambda I_{m \times m})] \mathbf{z}
 = 2 \|A \mathbf{z}\|_2^2 + 2 \lambda \|\mathbf{z}\|_2^2 &gt; 0.
 \]</div>
-<p>So all eigenvalues of <span class="math notranslate nohighlight">\(H_f(\mathbf{x}) = 2 (A^T A + \lambda I_{m \times m})\)</span> are stricly positive. Let <span class="math notranslate nohighlight">\(\mu &gt; 0\)</span> be the smallest one. Then <span class="math notranslate nohighlight">\(f\)</span> is <span class="math notranslate nohighlight">\(\mu\)</span>-strongly convex (Why?). This holds whether or not the columns of <span class="math notranslate nohighlight">\(A\)</span> are linearly independent.</p>
+<p>Let <span class="math notranslate nohighlight">\(\mu = 2 \lambda &gt; 0\)</span>. Then <span class="math notranslate nohighlight">\(f\)</span> is <span class="math notranslate nohighlight">\(\mu\)</span>-strongly convex. This holds whether or not the columns of <span class="math notranslate nohighlight">\(A\)</span> are linearly independent.</p>
 <p>The stationary points are easily characterized. Recall that the gradient is <span class="math notranslate nohighlight">\(\nabla f(\mathbf{x}) = P \mathbf{x} + \mathbf{q}\)</span>. Equating to <span class="math notranslate nohighlight">\(\mathbf{0}\)</span> leads to the system</p>
 <div class="math notranslate nohighlight">
 \[
@@ -1415,13 +1415,13 @@ A \mathbf{x}^{**}
 &amp;= \sum_{j=1}^r \mathbf{u}_j \left\{\frac{\sigma_j^2}{\sigma_j^2 + \lambda} \right\} \mathbf{u}_j^T \mathbf{b}.
 \end{align*}\]</div>
 <p>Note that the terms in curly brackets are <span class="math notranslate nohighlight">\(&lt; 1\)</span> when <span class="math notranslate nohighlight">\(\lambda &gt; 0\)</span>.</p>
-<p>Compare this to the unregularized least squares solution <span class="math notranslate nohighlight">\(\mathbf{}\)</span>, which is obtained simply by setting <span class="math notranslate nohighlight">\(\lambda = 0\)</span> above,</p>
+<p>Compare this to the unregularized least squares solution, which is obtained simply by setting <span class="math notranslate nohighlight">\(\lambda = 0\)</span> above,</p>
 <div class="amsmath math notranslate nohighlight">
 \[\begin{align*}
 A \mathbf{x}^*
 &amp;= \sum_{j=1}^r \mathbf{u}_j  \mathbf{u}_j^T \mathbf{b}.
 \end{align*}\]</div>
-<p>The difference is that the regularized solution reduces (potentially significantly) the contributions from the left singular vectors corresponding to small singular values.</p>
+<p>The difference is that the regularized solution reduces the contributions from the left singular vectors corresponding to small singular values.</p>
 </section>
 </section>
 

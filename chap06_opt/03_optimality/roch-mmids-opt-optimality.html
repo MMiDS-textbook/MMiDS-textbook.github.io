@@ -242,7 +242,7 @@ const thebe_selector_output = ".output, .cell_output"
 <li class="toctree-l2"><a class="reference internal" href="../../chap07_prob/01_motiv/roch-mmids-prob-motiv.html">7.1. Motivating example: tracking location</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../chap07_prob/02_parametric/roch-mmids-prob-parametric.html">7.2. Background: introduction to parametric families and maximum likelihood estimation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../chap07_prob/03_joint/roch-mmids-prob-joint.html">7.3. Modeling correlated random variables</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../chap07_prob/04_kalman/roch-mmids-prob-kalman.html">7.4. Linear-Gaussian models and Kalman filtering</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap07_prob/04_kalman/roch-mmids-prob-kalman.html">7.4. Linear-Gaussian models and Kalman filtering <em>(under construction)</em></a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../chap07_prob/05_gibbs/roch-mmids-prob-gibbs.html">7.5. Gibbs sampling with application to generating images</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../chap07_prob/summary_chap07.html">7.6. Other resources</a></li>
 </ul>
@@ -607,7 +607,7 @@ f(\mathbf{x}_0 + \alpha \mathbf{v})
 <p>for some <span class="math notranslate nohighlight">\(\alpha^* &gt; 0\)</span>. So every open ball around <span class="math notranslate nohighlight">\(\mathbf{x}_0\)</span> has a point achieving a smaller value than <span class="math notranslate nohighlight">\(f(\mathbf{x}_0)\)</span>. Thus <span class="math notranslate nohighlight">\(\mathbf{x}_0\)</span> is not a local minimizer, a contradiction. So it must be that <span class="math notranslate nohighlight">\(\nabla f(\mathbf{x}_0) = \mathbf{0}\)</span>. <span class="math notranslate nohighlight">\(\square\)</span></p>
 <p>A point satisfying the first-order necessary condition is called a stationary point.</p>
 <p><strong>DEFINITION</strong> <strong>(Stationary Point)</strong> Let <span class="math notranslate nohighlight">\(f : D \to \mathbb{R}\)</span> be continuously differentiable on an open set <span class="math notranslate nohighlight">\(D \subseteq \mathbb{R}^d\)</span>. If <span class="math notranslate nohighlight">\(\nabla f(\mathbf{x}_0) = \mathbf{0}\)</span>, we say that <span class="math notranslate nohighlight">\(\mathbf{x}_0 \in D\)</span> is a stationary point of <span class="math notranslate nohighlight">\(f\)</span>. <span class="math notranslate nohighlight">\(\natural\)</span></p>
-<p><strong>EXAMPLE:</strong> <strong>(Rayleight Quotient)</strong> Here we revisit the Rayleigh quotient. Let <span class="math notranslate nohighlight">\(A \in \mathbb{R}^{d \times d}\)</span> be a symmetric matrix. Recall that the Rayleigh quotient is defined as</p>
+<p><strong>EXAMPLE:</strong> <strong>(Rayleight Quotient)</strong> Let <span class="math notranslate nohighlight">\(A \in \mathbb{R}^{d \times d}\)</span> be a symmetric matrix. The associated Rayleigh quotient is</p>
 <div class="math notranslate nohighlight">
 \[
 \mathcal{R}_A(\mathbf{u})
@@ -641,13 +641,13 @@ f(\mathbf{x}_0 + \alpha \mathbf{v})
 A \mathbf{u}
 = \mathcal{R}_A(\mathbf{u}) \,\mathbf{u}.
 \]</div>
-<p>We already know the solutions to this system: the eigenvectors of <span class="math notranslate nohighlight">\(A\)</span>. Indeed, if <span class="math notranslate nohighlight">\(\mathbf{q}_i\)</span> is a unit eigenvector of <span class="math notranslate nohighlight">\(A\)</span> with eigenvalue <span class="math notranslate nohighlight">\(\lambda_i\)</span>, then we have seen that <span class="math notranslate nohighlight">\(\mathcal{R}_A(\mathbf{q}_i) = \lambda_i\)</span> and we get</p>
+<p>The solutions to this system are eigenvectors of <span class="math notranslate nohighlight">\(A\)</span>. If <span class="math notranslate nohighlight">\(\mathbf{q}_i\)</span> is a unit eigenvector of <span class="math notranslate nohighlight">\(A\)</span> with eigenvalue <span class="math notranslate nohighlight">\(\lambda_i\)</span>, then we have that <span class="math notranslate nohighlight">\(\mathcal{R}_A(\mathbf{q}_i) = \lambda_i\)</span> and</p>
 <div class="math notranslate nohighlight">
 \[
 A \mathbf{q}_i
 = \mathcal{R}_A(\mathbf{q}_i) \,\mathbf{q}_i.
 \]</div>
-<p>We know from <em>Courant-Fischer</em> that the eigenvectors of <span class="math notranslate nohighlight">\(A\)</span> are not in general local minimizers of its Rayleigh quotient - in fact one of them is a global maximizer! <span class="math notranslate nohighlight">\(\lhd\)</span></p>
+<p>From <em>Courant-Fischer</em>, the eigenvectors of <span class="math notranslate nohighlight">\(A\)</span> are not in general local minimizers of its Rayleigh quotient - in fact one of them is a global maximizer! <span class="math notranslate nohighlight">\(\lhd\)</span></p>
 </section>
 <section id="second-order-conditions">
 <h2><span class="section-number">6.3.2. </span>Second-order conditions<a class="headerlink" href="#second-order-conditions" title="Permalink to this headline">#</a></h2>
@@ -788,7 +788,7 @@ f(x_1, x_2)
 - 2 x_1 x_2 e^{\xi x_1} \sin(\xi x_2)].
 \]</div>
 <p><span class="math notranslate nohighlight">\(\lhd\)</span></p>
-<p><strong>Weyl’s inequality</strong> We will also need a bound on the eigenvalues of symmetric matrices. The proof is in an optional section below.</p>
+<p><strong>Weyl’s inequality</strong> We will also need a bound on the eigenvalues of symmetric matrices. The proof is in an optional section.</p>
 <p>For a symmetric matrix <span class="math notranslate nohighlight">\(C \in  \mathbb{R}^{d \times d}\)</span>, we let <span class="math notranslate nohighlight">\(\lambda_j(C)\)</span>, <span class="math notranslate nohighlight">\(j=1, \ldots, d\)</span>, be the eigenvalues of <span class="math notranslate nohighlight">\(C\)</span> in non-increasing order with corresponding orthonormal eigenvectors <span class="math notranslate nohighlight">\(\mathbf{v}_j\)</span>, <span class="math notranslate nohighlight">\(j=1, \ldots, d\)</span>. The following lemma is one version of what is known as <em>Weyl’s Inequality</em>.</p>
 <p><strong>LEMMA</strong> <strong>(Weyl)</strong> Let <span class="math notranslate nohighlight">\(A \in \mathbb{R}^{d \times d}\)</span> and <span class="math notranslate nohighlight">\(B \in \mathbb{R}^{d \times d}\)</span> be symmetric matrices. Then, for all <span class="math notranslate nohighlight">\(j=1, \ldots, d\)</span>,</p>
 <div class="math notranslate nohighlight">
@@ -894,7 +894,7 @@ f(\mathbf{x}_0 + \mathbf{v})
 + \frac{1}{2} \mathbf{v}^T \,\mathbf{H}_f(\mathbf{x}_0 + \xi_{\mathbf{v}} \mathbf{v}) \,\mathbf{v},
 \end{align*}\]</div>
 <p>where we used that <span class="math notranslate nohighlight">\(\nabla f(\mathbf{x}_0) = \mathbf{0}\)</span>. The second term on the last line is <span class="math notranslate nohighlight">\(0\)</span> at <span class="math notranslate nohighlight">\(\mathbf{v} = \mathbf{0}\)</span>. Our goal is to show that is strictly positive in a neighborhood of <span class="math notranslate nohighlight">\(\mathbf{0}\)</span>. For this, we prove a uniform strictly positive lower bound on the eigenvalues of <span class="math notranslate nohighlight">\(\mathbf{H}_f\)</span>.</p>
-<p>Formally, we claim that there is <span class="math notranslate nohighlight">\(\delta &gt; 0\)</span> such that <span class="math notranslate nohighlight">\(\mathbf{H}_f(\mathbf{x})\)</span> is positive definite for all <span class="math notranslate nohighlight">\(\mathbf{x} \in B_{\delta}(\mathbf{x}_0)\)</span>. That is the case when <span class="math notranslate nohighlight">\(\mathbf{x} = \mathbf{x}_0\)</span> and let <span class="math notranslate nohighlight">\(\mu := \lambda_d(\mathbf{H}_f(\mathbf{x}_0))&gt; 0\)</span> be the smallest eigenvalue of <span class="math notranslate nohighlight">\(\mathbf{H}_f(\mathbf{x}_0)\)</span>. We use <em>Weyl</em> to bound the eigenvalues of the Hessian from below around <span class="math notranslate nohighlight">\(\mathbf{x}_0\)</span>. For any vector <span class="math notranslate nohighlight">\(\mathbf{v} \in \mathbb{R}^d\)</span>, we have for all <span class="math notranslate nohighlight">\(j =1, \ldots, d\)</span></p>
+<p>Formally, we claim that there is <span class="math notranslate nohighlight">\(\delta &gt; 0\)</span> such that <span class="math notranslate nohighlight">\(\mathbf{H}_f(\mathbf{x})\)</span> is positive definite for all <span class="math notranslate nohighlight">\(\mathbf{x} \in B_{\delta}(\mathbf{x}_0)\)</span>. That is the case when <span class="math notranslate nohighlight">\(\mathbf{x} = \mathbf{x}_0\)</span>. Let <span class="math notranslate nohighlight">\(\mu := \lambda_d(\mathbf{H}_f(\mathbf{x}_0))&gt; 0\)</span> be the smallest eigenvalue of <span class="math notranslate nohighlight">\(\mathbf{H}_f(\mathbf{x}_0)\)</span>. We use <em>Weyl</em> to bound the eigenvalues of the Hessian from below around <span class="math notranslate nohighlight">\(\mathbf{x}_0\)</span>. For any vector <span class="math notranslate nohighlight">\(\mathbf{v} \in \mathbb{R}^d\)</span>, we have for all <span class="math notranslate nohighlight">\(j =1, \ldots, d\)</span></p>
 <div class="math notranslate nohighlight">
 \[
 \lambda_j(\mathbf{H}_f(\mathbf{x}_0 + \mathbf{v}))

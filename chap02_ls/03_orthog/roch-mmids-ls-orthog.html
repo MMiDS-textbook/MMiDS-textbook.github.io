@@ -242,7 +242,7 @@ const thebe_selector_output = ".output, .cell_output"
 <li class="toctree-l2"><a class="reference internal" href="../../chap07_prob/01_motiv/roch-mmids-prob-motiv.html">7.1. Motivating example: tracking location</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../chap07_prob/02_parametric/roch-mmids-prob-parametric.html">7.2. Background: introduction to parametric families and maximum likelihood estimation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../chap07_prob/03_joint/roch-mmids-prob-joint.html">7.3. Modeling correlated random variables</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../chap07_prob/04_kalman/roch-mmids-prob-kalman.html">7.4. Linear-Gaussian models and Kalman filtering</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap07_prob/04_kalman/roch-mmids-prob-kalman.html">7.4. Linear-Gaussian models and Kalman filtering <em>(under construction)</em></a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../chap07_prob/05_gibbs/roch-mmids-prob-gibbs.html">7.5. Gibbs sampling with application to generating images</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../chap07_prob/summary_chap07.html">7.6. Other resources</a></li>
 </ul>
@@ -468,7 +468,7 @@ A \mathbf{x} \approx \mathbf{b}.
 <p>In general, however, a solution may not exist or may not be unique. We focus here on the over-determined case where the former situation generically occurs.</p>
 <section id="orthogonal-projection">
 <h2><span class="section-number">2.3.1. </span>Orthogonal projection<a class="headerlink" href="#orthogonal-projection" title="Permalink to this headline">#</a></h2>
-<p>To solve the overdetermined case, i.e., when <span class="math notranslate nohighlight">\(n &gt; m\)</span>, we consider the following more general problem first. We have a linear subspace <span class="math notranslate nohighlight">\(U \subseteq \mathbb{R}^n\)</span> and a vector <span class="math notranslate nohighlight">\(\mathbf{v} \notin U\)</span>. We want to find the vector <span class="math notranslate nohighlight">\(\mathbf{p}\)</span> in <span class="math notranslate nohighlight">\(U\)</span> that is closest to <span class="math notranslate nohighlight">\(\mathbf{v}\)</span> in <span class="math notranslate nohighlight">\(2\)</span>-norm, that is, we want to solve</p>
+<p>To solve the overdetermined case, i.e., when <span class="math notranslate nohighlight">\(n &gt; m\)</span>, we consider the following more general problem first. We have a linear subspace <span class="math notranslate nohighlight">\(U \subseteq \mathbb{R}^n\)</span> and a vector <span class="math notranslate nohighlight">\(\mathbf{v} \notin U\)</span>. We want to find the vector <span class="math notranslate nohighlight">\(\mathbf{p}\)</span> in <span class="math notranslate nohighlight">\(U\)</span> that is closest to <span class="math notranslate nohighlight">\(\mathbf{v}\)</span> in Euclidean norm, that is, we want to solve</p>
 <div class="math notranslate nohighlight">
 \[
 \min_{\mathbf{p} \in U} \|\mathbf{p} - \mathbf{v}\|.
@@ -515,25 +515,19 @@ A \mathbf{x} \approx \mathbf{b}.
 \]</div>
 <p><span class="math notranslate nohighlight">\(\natural\)</span></p>
 <p><strong>THEOREM</strong> <strong>(Orthogonal Projection)</strong> Let <span class="math notranslate nohighlight">\(U \subseteq V\)</span> be a linear subspace and let <span class="math notranslate nohighlight">\(\mathbf{v} \in \mathbb{R}^n\)</span>. Then:</p>
-<ol class="arabic simple">
-<li><p>There exists a unique solution <span class="math notranslate nohighlight">\(\mathbf{p}^*\)</span> to</p></li>
-</ol>
+<p>a) There exists a unique solution <span class="math notranslate nohighlight">\(\mathbf{p}^*\)</span> to</p>
 <div class="math notranslate nohighlight">
 \[
 \min_{\mathbf{p} \in U} \|\mathbf{p} - \mathbf{v}\|.
 \]</div>
 <p>We denote it by <span class="math notranslate nohighlight">\(\mathbf{p}^* = \mathrm{proj}_U \mathbf{v}\)</span> and refer to it as the orthogonal projection of <span class="math notranslate nohighlight">\(\mathbf{v}\)</span> onto <span class="math notranslate nohighlight">\(U\)</span>.</p>
-<ol class="arabic simple" start="2">
-<li><p>The solution <span class="math notranslate nohighlight">\(\mathbf{p}^*\)</span> is characterized geometrically by</p></li>
-</ol>
+<p>b) The solution <span class="math notranslate nohighlight">\(\mathbf{p}^*\)</span> is characterized geometrically by</p>
 <div class="math notranslate nohighlight">
 \[
 (*) \qquad \left\langle \mathbf{v} - \mathbf{p}^*,  \mathbf{u}\right\rangle =0,
 \quad \forall \mathbf{u} \in U.
 \]</div>
-<ol class="arabic simple" start="3">
-<li><p>For any orthonormal basis <span class="math notranslate nohighlight">\(\mathbf{q}_1,\ldots,\mathbf{q}_m\)</span>  of <span class="math notranslate nohighlight">\(U\)</span>,</p></li>
-</ol>
+<p>c) For any orthonormal basis <span class="math notranslate nohighlight">\(\mathbf{q}_1,\ldots,\mathbf{q}_m\)</span>  of <span class="math notranslate nohighlight">\(U\)</span>,</p>
 <div class="math notranslate nohighlight">
 \[
 \mathrm{proj}_U \mathbf{v} = \mathrm{proj}_{\{\mathbf{q}_i\}_{i=1}^m} \mathbf{v}.
@@ -553,7 +547,7 @@ A \mathbf{x} \approx \mathbf{b}.
 &amp;= \|\mathbf{p} - \mathbf{p}^*\|^2 + \|\mathbf{p}^* - \mathbf{v}\|^2\\
 &amp;\geq \|\mathbf{p}^* - \mathbf{v}\|^2.
 \end{align*}\]</div>
-<p>Furthermore, equality holds only if <span class="math notranslate nohighlight">\(\|\mathbf{p} - \mathbf{p}^*\|^2 = 0\)</span> which holds only if <span class="math notranslate nohighlight">\(\mathbf{p} = \mathbf{p}^*\)</span> by the point-separating property of the <span class="math notranslate nohighlight">\(2\)</span>-norm. Hence, if such a vector <span class="math notranslate nohighlight">\(\mathbf{p}^*\)</span> exists, it is unique.</p>
+<p>Furthermore, equality holds only if <span class="math notranslate nohighlight">\(\|\mathbf{p} - \mathbf{p}^*\|^2 = 0\)</span> which holds only if <span class="math notranslate nohighlight">\(\mathbf{p} = \mathbf{p}^*\)</span> by the point-separating property of the Euclidean norm. Hence, if such a vector <span class="math notranslate nohighlight">\(\mathbf{p}^*\)</span> exists, it is unique.</p>
 <p>It remains to show that there is at least one vector in <span class="math notranslate nohighlight">\(U\)</span> satisfying <span class="math notranslate nohighlight">\((*)\)</span>. By <em>Gram-Schmidt</em>, the linear subspace <span class="math notranslate nohighlight">\(U\)</span> has an orthonormal basis <span class="math notranslate nohighlight">\(\mathbf{q}_1,\ldots,\mathbf{q}_m\)</span>. By definition, <span class="math notranslate nohighlight">\(\mathrm{proj}_{\{\mathbf{q}_i\}_{i=1}^m} \mathbf{v} \in \mathrm{span}(\{\mathbf{q}_i\}_{i=1}^m) = U\)</span>. We show that <span class="math notranslate nohighlight">\(\mathrm{proj}_{\{\mathbf{q}_i\}_{i=1}^m} \mathbf{v}\)</span> satisfies <span class="math notranslate nohighlight">\((*)\)</span>. We can write any <span class="math notranslate nohighlight">\(\mathbf{u} \in U\)</span> as
 <span class="math notranslate nohighlight">\(\sum_{i=1}^m \alpha_i \mathbf{q}_i\)</span> with <span class="math notranslate nohighlight">\(\alpha_i = \langle \mathbf{u}, \mathbf{q}_i \rangle\)</span>. So, using this representation, we get</p>
 <div class="amsmath math notranslate nohighlight">

@@ -191,7 +191,7 @@ const thebe_selector_output = ".output, .cell_output"
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../chap02_ls/00_intro/roch-mmids-ls-intro.html">2. Least squares: geometric, algebraic, and numerical aspects</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../chap02_ls/01_motiv/roch-mmids-ls-motiv.html">2.1. Motivating example: predicting sales</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../chap02_ls/02_subspaces/roch-mmids-ls-spaces.html">2.2. Background: review of vector spaces and matrix inverses</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../chap02_ls/03_orthog/roch-mmids-ls-orthog.html">2.3. Orthogonal projection and overdetermined linear systems</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap02_ls/03_orthog/roch-mmids-ls-orthog.html">2.3. The geometry of least squares</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../chap02_ls/04_qr/roch-mmids-ls-qr.html">2.4. QR decomposition and Householder transformations</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../chap02_ls/05_regression/roch-mmids-ls-regression.html">2.5. Application to regression analysis</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../chap02_ls/06_adv/roch-mmids-ls-adv.html">2.6. Advanced material</a></li>
@@ -215,7 +215,8 @@ const thebe_selector_output = ".output, .cell_output"
 <li class="toctree-l2"><a class="reference internal" href="../../chap04_specgraph/03_extremal/roch-mmids-specgraph-extremal.html">4.3. Variational characterization of eigenvalues</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../chap04_specgraph/04_laplacian/roch-mmids-specgraph-laplacian.html">4.4. Spectral properties of the Laplacian matrix</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../chap04_specgraph/05_partitioning/roch-mmids-specgraph-partitioning.html">4.5. Application to graph partitioning via spectral clustering</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../chap04_specgraph/summary_chap04.html">4.6. Other resources</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap04_specgraph/06_adv/roch-mmids-specgraph-adv.html">4.6. More advanced material</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap04_specgraph/summary_chap04.html">4.7. Other resources</a></li>
 </ul>
 </li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../chap05_rwmc/00_intro/roch-mmids-rwmc-intro.html">5. Random walks on graphs and Markov chains</a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-5"><i class="fa-solid fa-chevron-down"></i></label><ul>
@@ -234,7 +235,7 @@ const thebe_selector_output = ".output, .cell_output"
 <li class="toctree-l2"><a class="reference internal" href="../03_optimality/roch-mmids-opt-optimality.html">6.3. Optimality conditions and convexity</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../04_gd/roch-mmids-opt-gd.html">6.4. Gradient descent and its convergence analysis</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../05_backprop/roch-mmids-opt-backprop.html">6.5. Backpropagation and application to neural networks</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../06_adv/roch-mmids-opt-adv.html">6.6. Advanced material</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../06_adv/roch-mmids-opt-adv.html">6.6. More advanced material</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../summary_chap06.html">6.7. Other resources</a></li>
 </ul>
 </li>
@@ -445,6 +446,7 @@ document.write(`
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#gradient">6.2.1. Gradient</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#second-order-derivatives">6.2.2. Second-order derivatives</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#jacobian-and-chain-rule">6.2.3. Jacobian and chain rule</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#brief-introduction-to-automatic-differentiation">6.2.4. Brief introduction to automatic differentiation</a></li>
 </ul>
             </nav>
         </div>
@@ -483,11 +485,11 @@ f'(x_0)
 = \lim_{h \to 0} \frac{f(\mathbf{x}_0 + h \mathbf{e}_i) - f(\mathbf{x}_0)}{h}
 \]</div>
 <p>provided the limit exists. If <span class="math notranslate nohighlight">\(\frac{\partial f (\mathbf{x}_0)}{\partial x_i}\)</span> exists and is continuous in an open ball around <span class="math notranslate nohighlight">\(\mathbf{x}_0\)</span> for all <span class="math notranslate nohighlight">\(i\)</span>, then we say that <span class="math notranslate nohighlight">\(f\)</span> continuously differentiable at <span class="math notranslate nohighlight">\(\mathbf{x}_0\)</span>. <span class="math notranslate nohighlight">\(\natural\)</span></p>
-<p><strong>DEFINITION</strong> <strong>(Gradient)</strong> Let <span class="math notranslate nohighlight">\(f : D \to \mathbb{R}\)</span> where <span class="math notranslate nohighlight">\(D \subseteq \mathbb{R}^d\)</span> and let <span class="math notranslate nohighlight">\(\mathbf{x}_0 \in D\)</span> be an interior point of <span class="math notranslate nohighlight">\(D\)</span>. Assume <span class="math notranslate nohighlight">\(f\)</span> is continuously differentiable at <span class="math notranslate nohighlight">\(\mathbf{x}_0\)</span>. The vector</p>
+<p><strong>DEFINITION</strong> <strong>(Gradient)</strong> Let <span class="math notranslate nohighlight">\(f : D \to \mathbb{R}\)</span> where <span class="math notranslate nohighlight">\(D \subseteq \mathbb{R}^d\)</span> and let <span class="math notranslate nohighlight">\(\mathbf{x}_0 \in D\)</span> be an interior point of <span class="math notranslate nohighlight">\(D\)</span>. Assume <span class="math notranslate nohighlight">\(f\)</span> is continuously differentiable at <span class="math notranslate nohighlight">\(\mathbf{x}_0\)</span>. The (column) vector</p>
 <div class="math notranslate nohighlight">
 \[
 \nabla f(\mathbf{x}_0) 
-= \left(\frac{\partial f (\mathbf{x}_0)}{\partial x_1}, \ldots, \frac{\partial f (\mathbf{x}_0)}{\partial x_d}\right)^T
+= \left(\frac{\partial f (\mathbf{x}_0)}{\partial x_1}, \ldots, \frac{\partial f (\mathbf{x}_0)}{\partial x_d}\right)
 \]</div>
 <p>is called the gradient of <span class="math notranslate nohighlight">\(f\)</span> at <span class="math notranslate nohighlight">\(\mathbf{x}_0\)</span>. <span class="math notranslate nohighlight">\(\natural\)</span></p>
 <p>Note that the gradient is itself a function of <span class="math notranslate nohighlight">\(\mathbf{x}\)</span>. In fact, unlike <span class="math notranslate nohighlight">\(f\)</span>, it is a vector-valued function.</p>
@@ -683,113 +685,6 @@ f(\mathbf{x})
 = \phi(0) + t \phi'(\xi)
 \]</div>
 <p>for some <span class="math notranslate nohighlight">\(\xi \in (0,t)\)</span>. Plugging in the expressions for <span class="math notranslate nohighlight">\(\phi(0)\)</span> and <span class="math notranslate nohighlight">\(\phi'(\xi)\)</span> and taking <span class="math notranslate nohighlight">\(t=1\)</span> gives the claim. <span class="math notranslate nohighlight">\(\square\)</span></p>
-<p><strong>NUMERICAL CORNER:</strong> We illustrate the use of <a class="reference external" href="https://en.wikipedia.org/wiki/Automatic_differentiation">automatic differentiation</a> to compute gradients.</p>
-<p>Quoting <a class="reference external" href="https://en.wikipedia.org/wiki/Automatic_differentiation">Wikipedia</a>:</p>
-<blockquote>
-<div><p>In mathematics and computer algebra, automatic differentiation (AD), also called algorithmic differentiation or computational differentiation, is a set of techniques to numerically evaluate the derivative of a function specified by a computer program. AD exploits the fact that every computer program, no matter how complicated, executes a sequence of elementary arithmetic operations (addition, subtraction, multiplication, division, etc.) and elementary functions (exp, log, sin, cos, etc.). By applying the chain rule repeatedly to these operations, derivatives of arbitrary order can be computed automatically, accurately to working precision, and using at most a small constant factor more arithmetic operations than the original program. Automatic differentiation is distinct from symbolic differentiation and numerical differentiation (the method of finite differences). Symbolic differentiation can lead to inefficient code and faces the difficulty of converting a computer program into a single expression, while numerical differentiation can introduce round-off errors in the discretization process and cancellation.</p>
-</div></blockquote>
-<p>We will use <a class="reference external" href="https://pytorch.org/tutorials/">PyTorch</a>. It uses <a class="reference external" href="https://pytorch.org/tutorials/beginner/basics/tensorqs_tutorial.html">tensors</a>, which in many ways behave similarly to Numpy arrays. See <a class="reference external" href="https://pytorch.org/tutorials/beginner/basics/autogradqs_tutorial.html">here</a> for a quick introduction. Here is an example. We first initialize the tensors. Here each corresponds to a single real variable. With the option <a class="reference external" href="https://pytorch.org/docs/stable/generated/torch.Tensor.requires_grad.html#torch.Tensor.requires_grad"><code class="docutils literal notranslate"><span class="pre">requires_grad=True</span></code></a>, we indicate that these are variables with respect to which a gradient will be taken later. We initialize the tensors where the derivatives will be computed.</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Initialize variables</span>
-<span class="n">x</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">requires_grad</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="n">y</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="mf">2.0</span><span class="p">,</span> <span class="n">requires_grad</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-<p>The function <a class="reference external" href="https://pytorch.org/docs/stable/generated/torch.Tensor.backward.html"><code class="docutils literal notranslate"><span class="pre">.backward()</span></code></a> computes the gradient using backpropagation, to which we will return later. The partial derivatives are accessed with <a class="reference external" href="https://pytorch.org/docs/stable/generated/torch.Tensor.grad.html"><code class="docutils literal notranslate"><span class="pre">.grad</span></code></a>.</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Perform automatic differentiation</span>
-<span class="n">f</span> <span class="o">=</span> <span class="mi">3</span> <span class="o">*</span> <span class="n">x</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">torch</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">+</span> <span class="n">y</span>
-<span class="n">f</span><span class="o">.</span><span class="n">backward</span><span class="p">()</span>  <span class="c1"># Compute gradients</span>
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Print gradients</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">grad</span><span class="p">)</span>  <span class="c1"># df/dx</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">y</span><span class="o">.</span><span class="n">grad</span><span class="p">)</span>  <span class="c1"># df/dy</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>tensor(8.7183)
-tensor(1.)
-</pre></div>
-</div>
-</div>
-</div>
-<p>The input parameters can also be vectors, which allows to consider function of large numbers of variables.</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># New variables for the second example</span>
-<span class="n">z</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">2.</span><span class="p">,</span> <span class="mf">3.</span><span class="p">],</span> <span class="n">requires_grad</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Perform automatic differentiation</span>
-<span class="n">g</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">z</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
-<span class="n">g</span><span class="o">.</span><span class="n">backward</span><span class="p">()</span>  <span class="c1"># Compute gradients</span>
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Print gradient</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">z</span><span class="o">.</span><span class="n">grad</span><span class="p">)</span>  <span class="c1"># gradient is (2 z_1, 2 z_2, 2 z_3)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>tensor([2., 4., 6.])
-</pre></div>
-</div>
-</div>
-</div>
-<p>Here is another typical example in a data science context.</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Variables for the third example</span>
-<span class="n">X</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>  <span class="c1"># Random dataset (features)</span>
-<span class="n">y</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([[</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="mf">1.</span><span class="p">]])</span>  <span class="c1"># Dataset (labels)</span>
-<span class="n">theta</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">requires_grad</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>  <span class="c1"># Parameter assignment</span>
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Perform automatic differentiation</span>
-<span class="n">predict</span> <span class="o">=</span> <span class="n">X</span> <span class="o">@</span> <span class="n">theta</span>  <span class="c1"># Classifier with parameter vector theta</span>
-<span class="n">loss</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">sum</span><span class="p">((</span><span class="n">predict</span> <span class="o">-</span> <span class="n">y</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>  <span class="c1"># Loss function</span>
-<span class="n">loss</span><span class="o">.</span><span class="n">backward</span><span class="p">()</span>  <span class="c1"># Compute gradients</span>
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Print gradient</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">theta</span><span class="o">.</span><span class="n">grad</span><span class="p">)</span>  <span class="c1"># gradient of loss</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>tensor([[10.3864],
-        [20.8024]])
-</pre></div>
-</div>
-</div>
-</div>
-<p><span class="math notranslate nohighlight">\(\unlhd\)</span></p>
 </section>
 <section id="second-order-derivatives">
 <h2><span class="section-number">6.2.2. </span>Second-order derivatives<a class="headerlink" href="#second-order-derivatives" title="Permalink to this headline">#</a></h2>
@@ -907,7 +802,6 @@ f(\mathbf{x})
 \mathbf{H}_f(\mathbf{x}) = \frac{1}{2}[P + P^T].
 \]</div>
 <p>Observe that this is indeed a symmetric matrix. <span class="math notranslate nohighlight">\(\lhd\)</span></p>
-<p><strong>LEARNING BY CHATTING:</strong> Ask your favorite AI chatbot to explain how to compute a second derivative using PyTorch (it’s bit tricky). Ask for code that you can apply to the previous examples.</p>
 </section>
 <section id="jacobian-and-chain-rule">
 <h2><span class="section-number">6.2.3. </span>Jacobian and chain rule<a class="headerlink" href="#jacobian-and-chain-rule" title="Permalink to this headline">#</a></h2>
@@ -1129,6 +1023,116 @@ J_{\mathbf{g} \circ \mathbf{f}}(\mathbf{x})
 \]</div>
 <p><span class="math notranslate nohighlight">\(\lhd\)</span></p>
 </section>
+<section id="brief-introduction-to-automatic-differentiation">
+<h2><span class="section-number">6.2.4. </span>Brief introduction to automatic differentiation<a class="headerlink" href="#brief-introduction-to-automatic-differentiation" title="Permalink to this headline">#</a></h2>
+<p>We illustrate the use of <a class="reference external" href="https://en.wikipedia.org/wiki/Automatic_differentiation">automatic differentiation</a> to compute gradients.</p>
+<p>Quoting <a class="reference external" href="https://en.wikipedia.org/wiki/Automatic_differentiation">Wikipedia</a>:</p>
+<blockquote>
+<div><p>In mathematics and computer algebra, automatic differentiation (AD), also called algorithmic differentiation or computational differentiation, is a set of techniques to numerically evaluate the derivative of a function specified by a computer program. AD exploits the fact that every computer program, no matter how complicated, executes a sequence of elementary arithmetic operations (addition, subtraction, multiplication, division, etc.) and elementary functions (exp, log, sin, cos, etc.). By applying the chain rule repeatedly to these operations, derivatives of arbitrary order can be computed automatically, accurately to working precision, and using at most a small constant factor more arithmetic operations than the original program. Automatic differentiation is distinct from symbolic differentiation and numerical differentiation (the method of finite differences). Symbolic differentiation can lead to inefficient code and faces the difficulty of converting a computer program into a single expression, while numerical differentiation can introduce round-off errors in the discretization process and cancellation.</p>
+</div></blockquote>
+<p>We will use <a class="reference external" href="https://pytorch.org/tutorials/">PyTorch</a>. It uses <a class="reference external" href="https://pytorch.org/tutorials/beginner/basics/tensorqs_tutorial.html">tensors</a>, which in many ways behave similarly to Numpy arrays. See <a class="reference external" href="https://pytorch.org/tutorials/beginner/basics/autogradqs_tutorial.html">here</a> for a quick introduction. Here is an example. We first initialize the tensors. Here each corresponds to a single real variable. With the option <a class="reference external" href="https://pytorch.org/docs/stable/generated/torch.Tensor.requires_grad.html#torch.Tensor.requires_grad"><code class="docutils literal notranslate"><span class="pre">requires_grad=True</span></code></a>, we indicate that these are variables with respect to which a gradient will be taken later. We initialize the tensors where the derivatives will be computed.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Initialize variables</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">requires_grad</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="mf">2.0</span><span class="p">,</span> <span class="n">requires_grad</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>The function <a class="reference external" href="https://pytorch.org/docs/stable/generated/torch.Tensor.backward.html"><code class="docutils literal notranslate"><span class="pre">.backward()</span></code></a> computes the gradient using backpropagation, to which we will return later. The partial derivatives are accessed with <a class="reference external" href="https://pytorch.org/docs/stable/generated/torch.Tensor.grad.html"><code class="docutils literal notranslate"><span class="pre">.grad</span></code></a>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Perform automatic differentiation</span>
+<span class="n">f</span> <span class="o">=</span> <span class="mi">3</span> <span class="o">*</span> <span class="n">x</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">torch</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">+</span> <span class="n">y</span>
+<span class="n">f</span><span class="o">.</span><span class="n">backward</span><span class="p">()</span>  <span class="c1"># Compute gradients</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Print gradients</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">grad</span><span class="p">)</span>  <span class="c1"># df/dx</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">y</span><span class="o">.</span><span class="n">grad</span><span class="p">)</span>  <span class="c1"># df/dy</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>tensor(8.7183)
+tensor(1.)
+</pre></div>
+</div>
+</div>
+</div>
+<p>The input parameters can also be vectors, which allows to consider function of large numbers of variables.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># New variables for the second example</span>
+<span class="n">z</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">2.</span><span class="p">,</span> <span class="mf">3.</span><span class="p">],</span> <span class="n">requires_grad</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Perform automatic differentiation</span>
+<span class="n">g</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">z</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">g</span><span class="o">.</span><span class="n">backward</span><span class="p">()</span>  <span class="c1"># Compute gradients</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Print gradient</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">z</span><span class="o">.</span><span class="n">grad</span><span class="p">)</span>  <span class="c1"># gradient is (2 z_1, 2 z_2, 2 z_3)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>tensor([2., 4., 6.])
+</pre></div>
+</div>
+</div>
+</div>
+<p>Here is another typical example in a data science context.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Variables for the third example</span>
+<span class="n">X</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>  <span class="c1"># Random dataset (features)</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([[</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="mf">1.</span><span class="p">]])</span>  <span class="c1"># Dataset (labels)</span>
+<span class="n">theta</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">requires_grad</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>  <span class="c1"># Parameter assignment</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Perform automatic differentiation</span>
+<span class="n">predict</span> <span class="o">=</span> <span class="n">X</span> <span class="o">@</span> <span class="n">theta</span>  <span class="c1"># Classifier with parameter vector theta</span>
+<span class="n">loss</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">sum</span><span class="p">((</span><span class="n">predict</span> <span class="o">-</span> <span class="n">y</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>  <span class="c1"># Loss function</span>
+<span class="n">loss</span><span class="o">.</span><span class="n">backward</span><span class="p">()</span>  <span class="c1"># Compute gradients</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Print gradient</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">theta</span><span class="o">.</span><span class="n">grad</span><span class="p">)</span>  <span class="c1"># gradient of loss</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>tensor([[49.4326],
+        [ 2.1552]])
+</pre></div>
+</div>
+</div>
+</div>
+<p><strong>LEARNING BY CHATTING:</strong> Ask your favorite AI chatbot to explain how to compute a second derivative using PyTorch (it’s bit tricky). Ask for code that you can apply to the previous examples.</p>
+</section>
 </section>
 
     <script type="text/x-thebe-config">
@@ -1197,6 +1201,7 @@ J_{\mathbf{g} \circ \mathbf{f}}(\mathbf{x})
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#gradient">6.2.1. Gradient</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#second-order-derivatives">6.2.2. Second-order derivatives</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#jacobian-and-chain-rule">6.2.3. Jacobian and chain rule</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#brief-introduction-to-automatic-differentiation">6.2.4. Brief introduction to automatic differentiation</a></li>
 </ul>
   </nav></div>
 

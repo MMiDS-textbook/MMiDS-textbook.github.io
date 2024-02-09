@@ -191,7 +191,7 @@ const thebe_selector_output = ".output, .cell_output"
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../chap02_ls/00_intro/roch-mmids-ls-intro.html">2. Least squares: geometric, algebraic, and numerical aspects</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../chap02_ls/01_motiv/roch-mmids-ls-motiv.html">2.1. Motivating example: predicting sales</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../chap02_ls/02_subspaces/roch-mmids-ls-spaces.html">2.2. Background: review of vector spaces and matrix inverses</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../chap02_ls/03_orthog/roch-mmids-ls-orthog.html">2.3. Orthogonal projection and overdetermined linear systems</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap02_ls/03_orthog/roch-mmids-ls-orthog.html">2.3. The geometry of least squares</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../chap02_ls/04_qr/roch-mmids-ls-qr.html">2.4. QR decomposition and Householder transformations</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../chap02_ls/05_regression/roch-mmids-ls-regression.html">2.5. Application to regression analysis</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../chap02_ls/06_adv/roch-mmids-ls-adv.html">2.6. Advanced material</a></li>
@@ -215,7 +215,8 @@ const thebe_selector_output = ".output, .cell_output"
 <li class="toctree-l2"><a class="reference internal" href="../../chap04_specgraph/03_extremal/roch-mmids-specgraph-extremal.html">4.3. Variational characterization of eigenvalues</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../chap04_specgraph/04_laplacian/roch-mmids-specgraph-laplacian.html">4.4. Spectral properties of the Laplacian matrix</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../chap04_specgraph/05_partitioning/roch-mmids-specgraph-partitioning.html">4.5. Application to graph partitioning via spectral clustering</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../chap04_specgraph/summary_chap04.html">4.6. Other resources</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap04_specgraph/06_adv/roch-mmids-specgraph-adv.html">4.6. More advanced material</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap04_specgraph/summary_chap04.html">4.7. Other resources</a></li>
 </ul>
 </li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../chap05_rwmc/00_intro/roch-mmids-rwmc-intro.html">5. Random walks on graphs and Markov chains</a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-5"><i class="fa-solid fa-chevron-down"></i></label><ul>
@@ -234,7 +235,7 @@ const thebe_selector_output = ".output, .cell_output"
 <li class="toctree-l2 current active"><a class="current reference internal" href="#">6.3. Optimality conditions and convexity</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../04_gd/roch-mmids-opt-gd.html">6.4. Gradient descent and its convergence analysis</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../05_backprop/roch-mmids-opt-backprop.html">6.5. Backpropagation and application to neural networks</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../06_adv/roch-mmids-opt-adv.html">6.6. Advanced material</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../06_adv/roch-mmids-opt-adv.html">6.6. More advanced material</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../summary_chap06.html">6.7. Other resources</a></li>
 </ul>
 </li>
@@ -499,6 +500,7 @@ f(\mathbf{x})
 = \lim_{h \to 0} \frac{f(\mathbf{x}_0 + h \mathbf{v}) - f(\mathbf{x}_0)}{h}
 \]</div>
 <p>provided the limit exists. <span class="math notranslate nohighlight">\(\natural\)</span></p>
+<p>Typically, <span class="math notranslate nohighlight">\(\mathbf{v}\)</span> is a unit vector.</p>
 <p>Note that taking <span class="math notranslate nohighlight">\(\mathbf{v} = \mathbf{e}_i\)</span> recovers the <span class="math notranslate nohighlight">\(i\)</span>-th partial derivative</p>
 <div class="math notranslate nohighlight">
 \[
@@ -536,6 +538,18 @@ f(\mathbf{x})
 <p><strong>Figure:</strong> Directional derivative (<a class="reference external" href="https://commons.wikimedia.org/wiki/File:Directional_derivative_contour_plot.svg">Source</a>)</p>
 <p><img alt="Directional Derivative" src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/43/Directional_derivative_contour_plot.svg/485px-Directional_derivative_contour_plot.svg.png" /></p>
 <p><span class="math notranslate nohighlight">\(\bowtie\)</span></p>
+<p><strong>THINK-PAIR-SHARE:</strong> Let <span class="math notranslate nohighlight">\(f : \mathbb{R}^2 \to \mathbb{R}\)</span> be continuously differentiable. Suppose that</p>
+<div class="math notranslate nohighlight">
+\[
+\frac{\partial f (\mathbf{x}_0)}{\partial \mathbf{v}} 
+= \frac{3}{\sqrt{5}} 
+\qquad 
+\text{and}
+\qquad
+\frac{\partial f (\mathbf{x}_0)}{\partial \mathbf{w}} 
+= \frac{5}{\sqrt{5}}
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(\mathbf{v} = (1,2)/\sqrt{5}\)</span> and <span class="math notranslate nohighlight">\(\mathbf{w} = (2,1)/\sqrt{5}\)</span>. Compute the gradient of <span class="math notranslate nohighlight">\(f\)</span> at <span class="math notranslate nohighlight">\(\mathbf{x}_0\)</span>. <span class="math notranslate nohighlight">\(\ddagger\)</span></p>
 <p><strong>Descent direction</strong> Earlier in the book, we proved a key insight about the derivative of a single-variable function <span class="math notranslate nohighlight">\(f\)</span> at a point <span class="math notranslate nohighlight">\(x_0\)</span>: it tells us where to find smaller values.</p>
 <p><strong>LEMMA</strong> <strong>(Descent Direction)</strong> Let <span class="math notranslate nohighlight">\(f : D \to \mathbb{R}\)</span> with <span class="math notranslate nohighlight">\(D \subseteq \mathbb{R}\)</span> and let <span class="math notranslate nohighlight">\(x_0 \in D\)</span> be an interior point of <span class="math notranslate nohighlight">\(D\)</span> where <span class="math notranslate nohighlight">\(f'(x_0)\)</span> exists. If <span class="math notranslate nohighlight">\(f'(x_0) &gt; 0\)</span>, then there is an open ball <span class="math notranslate nohighlight">\(B_\delta(x_0) \subseteq D\)</span> around <span class="math notranslate nohighlight">\(x_0\)</span>
 such that for each <span class="math notranslate nohighlight">\(x\)</span> in <span class="math notranslate nohighlight">\(B_\delta(x_0)\)</span>:</p>
@@ -559,7 +573,7 @@ f(\mathbf{x}_0 + \alpha \mathbf{v})
 &lt; 0
 \]</div>
 <p>that is, if the directional derivative of <span class="math notranslate nohighlight">\(f\)</span> at <span class="math notranslate nohighlight">\(\mathbf{x}_0\)</span> in the direction <span class="math notranslate nohighlight">\(\mathbf{v}\)</span> is negative. <span class="math notranslate nohighlight">\(\flat\)</span></p>
-<p><em>Proof idea:</em> In anticipation of the proof of the second-order condition, we use the <em>Mean Value Theorem</em> to show that <span class="math notranslate nohighlight">\(f\)</span> takes smaller values in direction <span class="math notranslate nohighlight">\(\mathbf{v}\)</span>. For a simpler proof based on the definition of the directional derivative, see <em>Exercise 4.73</em>.</p>
+<p><em>Proof idea:</em> In anticipation of the proof of the second-order condition, we use the <em>Mean Value Theorem</em> to show that <span class="math notranslate nohighlight">\(f\)</span> takes smaller values in direction <span class="math notranslate nohighlight">\(\mathbf{v}\)</span>. A simpler proof based on the definition of the directional derivative is also possible (Try it!).</p>
 <p><em>Proof:</em> Suppose there is <span class="math notranslate nohighlight">\(\mathbf{v} \in \mathbb{R}^d\)</span> such that <span class="math notranslate nohighlight">\(\nabla f(\mathbf{x}_0)^T \mathbf{v} = -\eta &lt; 0\)</span>. For <span class="math notranslate nohighlight">\(\alpha &gt; 0\)</span>, the <em>Mean Value Theorem</em> implies that there is <span class="math notranslate nohighlight">\(\xi_\alpha \in (0,1)\)</span> such that</p>
 <div class="math notranslate nohighlight">
 \[
@@ -788,15 +802,6 @@ f(x_1, x_2)
 - 2 x_1 x_2 e^{\xi x_1} \sin(\xi x_2)].
 \]</div>
 <p><span class="math notranslate nohighlight">\(\lhd\)</span></p>
-<p><strong>Weyl’s inequality</strong> We will also need a bound on the eigenvalues of symmetric matrices. The proof is in an optional section.</p>
-<p>For a symmetric matrix <span class="math notranslate nohighlight">\(C \in  \mathbb{R}^{d \times d}\)</span>, we let <span class="math notranslate nohighlight">\(\lambda_j(C)\)</span>, <span class="math notranslate nohighlight">\(j=1, \ldots, d\)</span>, be the eigenvalues of <span class="math notranslate nohighlight">\(C\)</span> in non-increasing order with corresponding orthonormal eigenvectors <span class="math notranslate nohighlight">\(\mathbf{v}_j\)</span>, <span class="math notranslate nohighlight">\(j=1, \ldots, d\)</span>. The following lemma is one version of what is known as <em>Weyl’s Inequality</em>.</p>
-<p><strong>LEMMA</strong> <strong>(Weyl)</strong> Let <span class="math notranslate nohighlight">\(A \in \mathbb{R}^{d \times d}\)</span> and <span class="math notranslate nohighlight">\(B \in \mathbb{R}^{d \times d}\)</span> be symmetric matrices. Then, for all <span class="math notranslate nohighlight">\(j=1, \ldots, d\)</span>,</p>
-<div class="math notranslate nohighlight">
-\[
-\max_{j \in [d]} \left|\lambda_j(B) - \lambda_j(A)\right|
-\leq \|B- A\|_2
-\]</div>
-<p>where <span class="math notranslate nohighlight">\(\|C\|_2\)</span> is the induced <span class="math notranslate nohighlight">\(2\)</span>-norm of <span class="math notranslate nohighlight">\(C\)</span>. <span class="math notranslate nohighlight">\(\flat\)</span></p>
 <p><strong>Necessary condition</strong> When <span class="math notranslate nohighlight">\(f\)</span> is twice continuously differentiable, we get a necessary condition based on the Hessian.</p>
 <p><strong>THEOREM</strong> <strong>(Second-Order Necessary Condition)</strong> Let <span class="math notranslate nohighlight">\(f : \mathbb{R}^d \to \mathbb{R}\)</span> be twice continuously differentiable on <span class="math notranslate nohighlight">\(\mathbb{R}^d\)</span>. If <span class="math notranslate nohighlight">\(\mathbf{x}_0\)</span> is a local minimizer, then <span class="math notranslate nohighlight">\(\nabla f(\mathbf{x}_0) = \mathbf{0}\)</span> and <span class="math notranslate nohighlight">\(\mathbf{H}_f(\mathbf{x}_0)\)</span> is positive semidefinite. <span class="math notranslate nohighlight">\(\sharp\)</span></p>
 <p><em>Proof idea:</em> By <em>Taylor</em> and the <em>First-Order Necessary Condition</em>,</p>
@@ -810,8 +815,12 @@ f(\mathbf{x}_0 + \alpha \mathbf{v})
 + \frac{1}{2}\alpha^2 \mathbf{v}^T \mathbf{H}_f(\mathbf{x}_0 + \xi_\alpha \alpha \mathbf{v})\,\mathbf{v}.
 \end{align*}\]</div>
 <p>If <span class="math notranslate nohighlight">\(\mathbf{H}_f\)</span> is positive semidefinite in a neighborhood around <span class="math notranslate nohighlight">\(\mathbf{x}_0\)</span>, then the second term on the right-hand side is nonnegative, which is necessary for <span class="math notranslate nohighlight">\(\mathbf{x}_0\)</span> to be a local minimizer. Formally we argue  by contradiction. The proof goes along the same lines as the argument leading to the <em>First-Order Necessary Condition</em>.</p>
-<p><em>Proof:</em> We argue by contradiction. Suppose that <span class="math notranslate nohighlight">\(\mathbf{H}_f(\mathbf{x}_0)\)</span> is not positive semidefinite. From the <em>Symmetry of the Hessian Theorem</em> and the <em>Spectral Theorem</em>, <span class="math notranslate nohighlight">\(\mathbf{H}_f(\mathbf{x}_0)\)</span> has a spectral decomposition. From the <em>Characterization of Positive Semidefiniteness</em>, however, it follows that <span class="math notranslate nohighlight">\(\mathbf{H}_f(\mathbf{x}_0)\)</span> must have at least one negative eigenvalue <span class="math notranslate nohighlight">\(- \eta &lt; 0\)</span>. Let <span class="math notranslate nohighlight">\(\mathbf{v}\)</span> be a corresponding unit eigenvector.</p>
-<p>We have that <span class="math notranslate nohighlight">\(\langle \mathbf{v}, \mathbf{H}_f(\mathbf{x}_0) \,\mathbf{v} \rangle = - \eta &lt; 0\)</span>. For <span class="math notranslate nohighlight">\(\alpha &gt; 0\)</span>, <em>Taylor’s Theorem</em> implies that there is <span class="math notranslate nohighlight">\(\xi_\alpha \in (0,1)\)</span> such that</p>
+<p><em>Proof:</em> We argue by contradiction. Suppose that <span class="math notranslate nohighlight">\(\mathbf{H}_f(\mathbf{x}_0)\)</span> is not positive semidefinite. By definition, there must be a unit vector <span class="math notranslate nohighlight">\(\mathbf{v}\)</span> such that</p>
+<div class="math notranslate nohighlight">
+\[
+\langle \mathbf{v}, \mathbf{H}_f(\mathbf{x}_0) \,\mathbf{v} \rangle = - \eta &lt; 0.
+\]</div>
+<p>For <span class="math notranslate nohighlight">\(\alpha &gt; 0\)</span>, <em>Taylor’s Theorem</em> implies that there is <span class="math notranslate nohighlight">\(\xi_\alpha \in (0,1)\)</span> such that</p>
 <div class="amsmath math notranslate nohighlight">
 \[\begin{align*}
 f(\mathbf{x}_0 + \alpha \mathbf{v})
@@ -880,52 +889,8 @@ f(\mathbf{x}_0 + \alpha \mathbf{v})
 </div>
 </div>
 <p><span class="math notranslate nohighlight">\(\lhd\)</span></p>
-<p>We give sufficient conditions for a point to be a local minimizer.</p>
+<p>We give sufficient conditions for a point to be a local minimizer. The proof is relegated to an optional section.</p>
 <p><strong>THEOREM</strong> <strong>(Second-Order Sufficient Condition)</strong> Let <span class="math notranslate nohighlight">\(f : \mathbb{R}^d \to \mathbb{R}\)</span> be twice continuously differentiable on <span class="math notranslate nohighlight">\(\mathbb{R}^d\)</span>. If <span class="math notranslate nohighlight">\(\nabla f(\mathbf{x}_0) = \mathbf{0}\)</span> and <span class="math notranslate nohighlight">\(\mathbf{H}_f(\mathbf{x}_0)\)</span> is positive definite, then <span class="math notranslate nohighlight">\(\mathbf{x}_0\)</span> is a strict local minimizer. <span class="math notranslate nohighlight">\(\sharp\)</span></p>
-<p><em>Proof idea:</em> We use <em>Taylor’s Theorem</em> again. This time we use the positive definiteness of the Hessian to bound the value of the function from below. We use <em>Weyl</em> to show that the eigenvalues of the Hessian are continuous, which implies that the Hessian remains positive definite in an open ball around <span class="math notranslate nohighlight">\(\mathbf{x}_0\)</span>.</p>
-<p><em>Proof:</em> By <em>Taylor’s Theorem</em>, for all <span class="math notranslate nohighlight">\(\mathbf{v}\)</span> there is <span class="math notranslate nohighlight">\(\xi_{\mathbf{v}} \in (0,1)\)</span></p>
-<div class="amsmath math notranslate nohighlight">
-\[\begin{align*}
-f(\mathbf{x}_0 + \mathbf{v})
-&amp;= f(\mathbf{x}_0) 
-+ \nabla f(\mathbf{x}_0)^T \mathbf{v}
-+ \frac{1}{2} \mathbf{v}^T \,\mathbf{H}_f(\mathbf{x}_0 + \xi_{\mathbf{v}} \mathbf{v}) \,\mathbf{v}\\
-&amp;= f(\mathbf{x}_0) 
-+ \frac{1}{2} \mathbf{v}^T \,\mathbf{H}_f(\mathbf{x}_0 + \xi_{\mathbf{v}} \mathbf{v}) \,\mathbf{v},
-\end{align*}\]</div>
-<p>where we used that <span class="math notranslate nohighlight">\(\nabla f(\mathbf{x}_0) = \mathbf{0}\)</span>. The second term on the last line is <span class="math notranslate nohighlight">\(0\)</span> at <span class="math notranslate nohighlight">\(\mathbf{v} = \mathbf{0}\)</span>. Our goal is to show that is strictly positive in a neighborhood of <span class="math notranslate nohighlight">\(\mathbf{0}\)</span>. For this, we prove a uniform strictly positive lower bound on the eigenvalues of <span class="math notranslate nohighlight">\(\mathbf{H}_f\)</span>.</p>
-<p>Formally, we claim that there is <span class="math notranslate nohighlight">\(\delta &gt; 0\)</span> such that <span class="math notranslate nohighlight">\(\mathbf{H}_f(\mathbf{x})\)</span> is positive definite for all <span class="math notranslate nohighlight">\(\mathbf{x} \in B_{\delta}(\mathbf{x}_0)\)</span>. That is the case when <span class="math notranslate nohighlight">\(\mathbf{x} = \mathbf{x}_0\)</span>. Let <span class="math notranslate nohighlight">\(\mu := \lambda_d(\mathbf{H}_f(\mathbf{x}_0))&gt; 0\)</span> be the smallest eigenvalue of <span class="math notranslate nohighlight">\(\mathbf{H}_f(\mathbf{x}_0)\)</span>. We use <em>Weyl</em> to bound the eigenvalues of the Hessian from below around <span class="math notranslate nohighlight">\(\mathbf{x}_0\)</span>. For any vector <span class="math notranslate nohighlight">\(\mathbf{v} \in \mathbb{R}^d\)</span>, we have for all <span class="math notranslate nohighlight">\(j =1, \ldots, d\)</span></p>
-<div class="math notranslate nohighlight">
-\[
-\lambda_j(\mathbf{H}_f(\mathbf{x}_0 + \mathbf{v}))
-\geq \lambda_j(\mathbf{H}_f(\mathbf{x}_0)) - \|\mathbf{H}_f(\mathbf{x}_0 + \mathbf{v}) - \mathbf{H}_f(\mathbf{x}_0)\|_2
-\]</div>
-<p>where we used the notation introduced above.</p>
-<p>We bound <span class="math notranslate nohighlight">\(\lambda_j(\mathbf{H}_f(\mathbf{x}_0))
-\geq \lambda_d(\mathbf{H}_f(\mathbf{x}_0)) = \mu\)</span> and</p>
-<div class="math notranslate nohighlight">
-\[
-\|\mathbf{H}_f(\mathbf{x}_0 + \mathbf{v}) - \mathbf{H}_f(\mathbf{x}_0)\|_2
-\leq \|\mathbf{H}_f(\mathbf{x}_0 + \mathbf{v}) - \mathbf{H}_f(\mathbf{x}_0)\|_F.
-\]</div>
-<p>The Frobenius norm above is continuous in <span class="math notranslate nohighlight">\(\mathbf{v}\)</span> as a composition of continuous functions. Moreover, we of course have at <span class="math notranslate nohighlight">\(\mathbf{v} = \mathbf{0}\)</span> that this Frobenius norm is <span class="math notranslate nohighlight">\(0\)</span>. Hence, by definition of continuity, for any <span class="math notranslate nohighlight">\(\epsilon &gt; 0\)</span> - say <span class="math notranslate nohighlight">\(\epsilon := \mu/2\)</span> - there is <span class="math notranslate nohighlight">\(\delta &gt; 0\)</span> such that <span class="math notranslate nohighlight">\(\mathbf{v} \in B_{\delta}(\mathbf{0})\)</span> implies <span class="math notranslate nohighlight">\(\|\mathbf{H}_f(\mathbf{x}_0 + \mathbf{v}) - \mathbf{H}_f(\mathbf{x}_0)\|_F &lt; \epsilon = \mu/2\)</span>.</p>
-<p>Plugging back above finally gives for any such <span class="math notranslate nohighlight">\(\mathbf{v}\)</span> and all <span class="math notranslate nohighlight">\(j=1,\ldots,d\)</span></p>
-<div class="math notranslate nohighlight">
-\[
-\lambda_j(\mathbf{H}_f(\mathbf{x}_0 + \mathbf{v})) &gt; \mu/2 &gt; 0.
-\]</div>
-<p>In particular, <span class="math notranslate nohighlight">\(\mathbf{H}_f(\mathbf{x}_0 + \mathbf{v})\)</span> is positive definite and <span class="math notranslate nohighlight">\(\langle \mathbf{u}, \mathbf{H}_f(\mathbf{x}_0 + \mathbf{v}) \,\mathbf{u} \rangle &gt; \frac{\mu}{2} \|\mathbf{u}\|^2\)</span> for any <span class="math notranslate nohighlight">\(\mathbf{u}\)</span> by <em>Courant-Fischer</em>.</p>
-<p>Going back to our Taylor expansion, <span class="math notranslate nohighlight">\(\forall \mathbf{v} \in B_{\delta}(\mathbf{0}) \setminus \{\mathbf{0}\}\)</span> there is <span class="math notranslate nohighlight">\(\xi_{\mathbf{v}} \in (0,1)\)</span></p>
-<div class="amsmath math notranslate nohighlight">
-\[\begin{align*}
-f(\mathbf{x}_0 + \mathbf{v})
-&amp;= f(\mathbf{x}_0) 
-+ \frac{1}{2} \mathbf{v}^T \,\mathbf{H}_f(\mathbf{x}_0 + \xi_{\mathbf{v}} \mathbf{v}) \,\mathbf{v}\\
-&amp;&gt; f(\mathbf{x}_0) 
-+ \frac{\mu}{4} \|\mathbf{v}\|^2\\
-&amp;&gt; f(\mathbf{x}_0) 
-\end{align*}\]</div>
-<p>where we used that <span class="math notranslate nohighlight">\(\|\xi_{\mathbf{v}} \mathbf{v}\| = \xi_{\mathbf{v}} \|\mathbf{v}\| \leq \rho\)</span>. Therefore <span class="math notranslate nohighlight">\(\mathbf{x}_0\)</span> is a strict local minimizer. <span class="math notranslate nohighlight">\(\square\)</span></p>
 </section>
 <section id="convexity">
 <h2><span class="section-number">6.3.3. </span>Convexity<a class="headerlink" href="#convexity" title="Permalink to this headline">#</a></h2>
@@ -1024,7 +989,7 @@ f((1-\alpha) \mathbf{x} + \alpha \mathbf{y})
 = (1-\alpha)[\mathbf{w}^T \mathbf{x} + b] + \alpha [\mathbf{w}^T \mathbf{y} + b]
 \]</div>
 <p>which proves the claim. <span class="math notranslate nohighlight">\(\square\)</span></p>
-<p>Here is a less straightforward example. A concrete application is given below. (See also <em>Exercise 4.47</em> for the supremum version of this claim - which does not require the constraint set to be convex!)</p>
+<p>Here is a less straightforward example. A concrete application is given below.</p>
 <p><strong>LEMMA</strong> <strong>(Infimum over a Convex Set)</strong> Let <span class="math notranslate nohighlight">\(f : \mathbb{R}^{d+f} \to \mathbb{R}\)</span> be a convex function and let <span class="math notranslate nohighlight">\(C \subseteq \mathbb{R}^{f}\)</span> be a convex set. The function</p>
 <div class="math notranslate nohighlight">
 \[
@@ -1311,7 +1276,7 @@ f(\mathbf{x})
 \[
 H_f(\mathbf{x}) = \frac{1}{2}[P + P^T] = P.
 \]</div>
-<p>So all eigenvalues of <span class="math notranslate nohighlight">\(H_f(\mathbf{x}) = P\)</span> are stricly positive. Let <span class="math notranslate nohighlight">\(\mu &gt; 0\)</span> be the smallest one. Then <em>Exercise 4.16</em> implies that <span class="math notranslate nohighlight">\(f\)</span> is <span class="math notranslate nohighlight">\(\mu\)</span>-strongly convex.</p>
+<p>So all eigenvalues of <span class="math notranslate nohighlight">\(H_f(\mathbf{x}) = P\)</span> are stricly positive. Let <span class="math notranslate nohighlight">\(\mu &gt; 0\)</span> be the smallest one. Then <span class="math notranslate nohighlight">\(f\)</span> is <span class="math notranslate nohighlight">\(\mu\)</span>-strongly convex.</p>
 <p>The theorem above then indicates that there is a unique global minimizer to the least-squares objective in that case. Using previous calculation, it is obtained by computing <span class="math notranslate nohighlight">\(\mathbf{x}^* = - P^{-1} \mathbf{q}\)</span>. (Why is <span class="math notranslate nohighlight">\(P\)</span> invertible?) <span class="math notranslate nohighlight">\(\lhd\)</span></p>
 <p><strong>EXAMPLE:</strong> Consider the least-squares objective function</p>
 <div class="math notranslate nohighlight">

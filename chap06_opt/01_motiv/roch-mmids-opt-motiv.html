@@ -191,7 +191,7 @@ const thebe_selector_output = ".output, .cell_output"
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../chap02_ls/00_intro/roch-mmids-ls-intro.html">2. Least squares: geometric, algebraic, and numerical aspects</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../chap02_ls/01_motiv/roch-mmids-ls-motiv.html">2.1. Motivating example: predicting sales</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../chap02_ls/02_subspaces/roch-mmids-ls-spaces.html">2.2. Background: review of vector spaces and matrix inverses</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../chap02_ls/03_orthog/roch-mmids-ls-orthog.html">2.3. Orthogonal projection and overdetermined linear systems</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap02_ls/03_orthog/roch-mmids-ls-orthog.html">2.3. The geometry of least squares</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../chap02_ls/04_qr/roch-mmids-ls-qr.html">2.4. QR decomposition and Householder transformations</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../chap02_ls/05_regression/roch-mmids-ls-regression.html">2.5. Application to regression analysis</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../chap02_ls/06_adv/roch-mmids-ls-adv.html">2.6. Advanced material</a></li>
@@ -215,7 +215,8 @@ const thebe_selector_output = ".output, .cell_output"
 <li class="toctree-l2"><a class="reference internal" href="../../chap04_specgraph/03_extremal/roch-mmids-specgraph-extremal.html">4.3. Variational characterization of eigenvalues</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../chap04_specgraph/04_laplacian/roch-mmids-specgraph-laplacian.html">4.4. Spectral properties of the Laplacian matrix</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../chap04_specgraph/05_partitioning/roch-mmids-specgraph-partitioning.html">4.5. Application to graph partitioning via spectral clustering</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../chap04_specgraph/summary_chap04.html">4.6. Other resources</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap04_specgraph/06_adv/roch-mmids-specgraph-adv.html">4.6. More advanced material</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap04_specgraph/summary_chap04.html">4.7. Other resources</a></li>
 </ul>
 </li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../chap05_rwmc/00_intro/roch-mmids-rwmc-intro.html">5. Random walks on graphs and Markov chains</a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-5"><i class="fa-solid fa-chevron-down"></i></label><ul>
@@ -234,7 +235,7 @@ const thebe_selector_output = ".output, .cell_output"
 <li class="toctree-l2"><a class="reference internal" href="../03_optimality/roch-mmids-opt-optimality.html">6.3. Optimality conditions and convexity</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../04_gd/roch-mmids-opt-gd.html">6.4. Gradient descent and its convergence analysis</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../05_backprop/roch-mmids-opt-backprop.html">6.5. Backpropagation and application to neural networks</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../06_adv/roch-mmids-opt-adv.html">6.6. Advanced material</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../06_adv/roch-mmids-opt-adv.html">6.6. More advanced material</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../summary_chap06.html">6.7. Other resources</a></li>
 </ul>
 </li>
@@ -595,9 +596,9 @@ document.write(`
 <p>The input data is now of the form <span class="math notranslate nohighlight">\(\{(\mathbf{x}_i, y_i) : i=1,\ldots, n\}\)</span> where <span class="math notranslate nohighlight">\(\mathbf{x}_i \in \mathbb{R}^d\)</span> are the features and <span class="math notranslate nohighlight">\(y_i \in \{0,1\}\)</span> is the label. Above we use the matrix representation <span class="math notranslate nohighlight">\(X \in \mathbb{R}^{d \times n}\)</span> with columns <span class="math notranslate nohighlight">\(\mathbf{x}_i\)</span>, <span class="math notranslate nohighlight">\(i = 1,\ldots, n\)</span> and <span class="math notranslate nohighlight">\(\mathbf{y} = (y_1, \ldots, y_n)^T \in \{0,1\}^n\)</span>.</p>
 <p>Our goal:</p>
 <blockquote>
-<div><p>to learn a classifier from the examples <span class="math notranslate nohighlight">\(\{(\mathbf{x}_i, y_i) : i=1,\ldots, n\}\)</span>, that is, a function <span class="math notranslate nohighlight">\(\hat{f} : \mathbb{R}^d \to \mathbb{R}\)</span> such that <span class="math notranslate nohighlight">\(\hat{f}(\mathbf{x}_i) \approx y_i\)</span>.</p>
+<div><p>learn a classifier from the examples <span class="math notranslate nohighlight">\(\{(\mathbf{x}_i, y_i) : i=1,\ldots, n\}\)</span>, that is, a function <span class="math notranslate nohighlight">\(\hat{f} : \mathbb{R}^d \to \mathbb{R}\)</span> such that <span class="math notranslate nohighlight">\(\hat{f}(\mathbf{x}_i) \approx y_i\)</span>.</p>
 </div></blockquote>
-<p>This problem is referred to as <a class="reference external" href="https://en.wikipedia.org/wiki/Binary_classification">binary classification</a>.</p>
+<p>We may want to enforce that the output is in <span class="math notranslate nohighlight">\(\{0,1\}\)</span> as well. This problem is referred to as <a class="reference external" href="https://en.wikipedia.org/wiki/Binary_classification">binary classification</a>.</p>
 <p>A natural approach to this type of <a class="reference external" href="https://en.wikipedia.org/wiki/Supervised_learning">supervised learning</a> problem is to define two objects:</p>
 <ol class="arabic simple">
 <li><p><strong>Family of classifiers:</strong> A class <span class="math notranslate nohighlight">\(\widehat{\mathcal{F}}\)</span> of classifiers from which to pick <span class="math notranslate nohighlight">\(\hat{f}\)</span>.</p></li>
@@ -633,6 +634,7 @@ document.write(`
 - \frac{1}{n} \sum_{i=1}^n y_i \log(\sigma(\mathbf{x}_i^T \boldsymbol{\theta}))
 - \frac{1}{n} \sum_{i=1}^n (1-y_i) \log(1- \sigma(\mathbf{x}_i^T \boldsymbol{\theta})).
 \]</div>
+<p>To obtain a prediction in <span class="math notranslate nohighlight">\(\{0,1\}\)</span> here, we could cutoff <span class="math notranslate nohighlight">\(\hat{f}(\mathbf{x})\)</span> at a threshold <span class="math notranslate nohighlight">\(\tau \in [0,1]\)</span>, that is, return <span class="math notranslate nohighlight">\(\mathbf{1}\{\hat{f}(\mathbf{x}) &gt; \tau\}\)</span>.</p>
 <p>We will explain in a later chapter where this choice comes from.</p>
 <p>The purpose of this chapter is to develop some of the mathematical theory and algorithms needed to solve this type of optimization formulation.</p>
 </section>

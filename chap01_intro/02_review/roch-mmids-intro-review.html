@@ -191,7 +191,7 @@ const thebe_selector_output = ".output, .cell_output"
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../chap02_ls/00_intro/roch-mmids-ls-intro.html">2. Least squares: geometric, algebraic, and numerical aspects</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../chap02_ls/01_motiv/roch-mmids-ls-motiv.html">2.1. Motivating example: predicting sales</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../chap02_ls/02_subspaces/roch-mmids-ls-spaces.html">2.2. Background: review of vector spaces and matrix inverses</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../chap02_ls/03_orthog/roch-mmids-ls-orthog.html">2.3. Orthogonal projection and overdetermined linear systems</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap02_ls/03_orthog/roch-mmids-ls-orthog.html">2.3. The geometry of least squares</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../chap02_ls/04_qr/roch-mmids-ls-qr.html">2.4. QR decomposition and Householder transformations</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../chap02_ls/05_regression/roch-mmids-ls-regression.html">2.5. Application to regression analysis</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../chap02_ls/06_adv/roch-mmids-ls-adv.html">2.6. Advanced material</a></li>
@@ -215,7 +215,8 @@ const thebe_selector_output = ".output, .cell_output"
 <li class="toctree-l2"><a class="reference internal" href="../../chap04_specgraph/03_extremal/roch-mmids-specgraph-extremal.html">4.3. Variational characterization of eigenvalues</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../chap04_specgraph/04_laplacian/roch-mmids-specgraph-laplacian.html">4.4. Spectral properties of the Laplacian matrix</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../chap04_specgraph/05_partitioning/roch-mmids-specgraph-partitioning.html">4.5. Application to graph partitioning via spectral clustering</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../chap04_specgraph/summary_chap04.html">4.6. Other resources</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap04_specgraph/06_adv/roch-mmids-specgraph-adv.html">4.6. More advanced material</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap04_specgraph/summary_chap04.html">4.7. Other resources</a></li>
 </ul>
 </li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../chap05_rwmc/00_intro/roch-mmids-rwmc-intro.html">5. Random walks on graphs and Markov chains</a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-5"><i class="fa-solid fa-chevron-down"></i></label><ul>
@@ -234,7 +235,7 @@ const thebe_selector_output = ".output, .cell_output"
 <li class="toctree-l2"><a class="reference internal" href="../../chap06_opt/03_optimality/roch-mmids-opt-optimality.html">6.3. Optimality conditions and convexity</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../chap06_opt/04_gd/roch-mmids-opt-gd.html">6.4. Gradient descent and its convergence analysis</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../chap06_opt/05_backprop/roch-mmids-opt-backprop.html">6.5. Backpropagation and application to neural networks</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../chap06_opt/06_adv/roch-mmids-opt-adv.html">6.6. Advanced material</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap06_opt/06_adv/roch-mmids-opt-adv.html">6.6. More advanced material</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../chap06_opt/summary_chap06.html">6.7. Other resources</a></li>
 </ul>
 </li>
@@ -493,6 +494,23 @@ x_d
 \]</div>
 <p>is the <a class="reference external" href="https://en.wikipedia.org/wiki/Inner_product_space">inner product</a> of <span class="math notranslate nohighlight">\(\mathbf{u}\)</span> and <span class="math notranslate nohighlight">\(\mathbf{v}\)</span>.
 This is also known as the <span class="math notranslate nohighlight">\(\ell^2\)</span>-norm.</p>
+<p>The inner product has the following useful properties (Check them!). For one, it is symmetric in the sense that</p>
+<div class="math notranslate nohighlight">
+\[
+\langle \mathbf{x}, \mathbf{y} \rangle 
+= \langle \mathbf{y}, \mathbf{x} \rangle \qquad \forall \mathbf{x}, \mathbf{y} \in \mathbb{R}^n.
+\]</div>
+<p>Second, it is linear in each input: for any <span class="math notranslate nohighlight">\(\mathbf{x}_1, \mathbf{x}_2, \mathbf{x}_3 \in \mathbb{R}^n\)</span> and <span class="math notranslate nohighlight">\(\beta \in \mathbb{R}\)</span>, it holds that</p>
+<div class="math notranslate nohighlight">
+\[
+\langle \beta \,\mathbf{x}_1 + \mathbf{x}_2, \mathbf{x}_3 \rangle = \beta \,\langle \mathbf{x}_1,\mathbf{x}_3\rangle + \langle \mathbf{x}_2,\mathbf{x}_3\rangle.
+\]</div>
+<p>Repeated application of the latter property implies for instance that: for any <span class="math notranslate nohighlight">\(\mathbf{x}_1, \ldots, \mathbf{x}_m, \mathbf{y}_1, \ldots, \mathbf{y}_\ell, \in \mathbb{R}^n\)</span>,</p>
+<div class="math notranslate nohighlight">
+\[
+\left\langle \sum_{i=1}^m \mathbf{x}_i, \sum_{j=1}^\ell \mathbf{y}_j \right\rangle
+= \sum_{i=1}^m \sum_{j=1}^\ell \langle \mathbf{x}_i,\mathbf{y}_j\rangle.
+\]</div>
 <p>The triangle inequality for the <span class="math notranslate nohighlight">\(\ell^2\)</span>-norm <a class="reference external" href="https://en.wikipedia.org/wiki/Cauchy%E2%80%93Schwarz_inequality#Analysis">follows</a> from the <a class="reference external" href="https://en.wikipedia.org/wiki/Cauchy%E2%80%93Schwarz_inequality">Cauchy–Schwarz inequality</a>, which is useful in proving many facts.</p>
 <p><strong>THEOREM</strong> <strong>(Cauchy–Schwarz)</strong> For all <span class="math notranslate nohighlight">\(\mathbf{u}, \mathbf{v} \in \mathbb{R}^d\)</span></p>
 <div class="math notranslate nohighlight">
@@ -553,7 +571,7 @@ d(\mathbf{u},\mathbf{v})
 <p><strong>DEFINITION</strong> <strong>(Norm):</strong> A norm is a function <span class="math notranslate nohighlight">\(\ell\)</span> from <span class="math notranslate nohighlight">\(\mathbb{R}^d\)</span> to <span class="math notranslate nohighlight">\(\mathbb{R}_+\)</span> that satisfies for all <span class="math notranslate nohighlight">\(a \in \mathbb{R}\)</span>,
 <span class="math notranslate nohighlight">\(\mathbf{u}, \mathbf{v} \in \mathbb{R}^d\)</span></p>
 <ul class="simple">
-<li><p><em>(Homogeneity):</em> <span class="math notranslate nohighlight">\(\ell(a \mathbf{u}) = |a| \ell(\mathbf{u})\)</span></p></li>
+<li><p><em>(Absolute homogeneity):</em> <span class="math notranslate nohighlight">\(\ell(a \mathbf{u}) = |a| \ell(\mathbf{u})\)</span></p></li>
 <li><p><em>(Triangle inequality):</em> <span class="math notranslate nohighlight">\(\ell(\mathbf{u}+\mathbf{v}) \leq \ell(\mathbf{u}) + \ell(\mathbf{v})\)</span></p></li>
 <li><p><em>(Point-separating):</em> <span class="math notranslate nohighlight">\(\ell(\mathbf{u}) = 0\)</span> implies <span class="math notranslate nohighlight">\(\mathbf{u} =0\)</span>.</p></li>
 </ul>
@@ -700,6 +718,7 @@ A^T
 \end{bmatrix}.
 \end{split}\]</div>
 <p><span class="math notranslate nohighlight">\(\lhd\)</span></p>
+<p><strong>DEFINITION</strong> <strong>(Symmetric Matrix)</strong> A square matrix <span class="math notranslate nohighlight">\(B \in \mathbb{R}^{n \times n}\)</span> is symmetric if <span class="math notranslate nohighlight">\(B^T = B\)</span>. <span class="math notranslate nohighlight">\(\natural\)</span></p>
 <p>The transpose in particular can be used to turn a column vector into a row vector and vice versa. That is, if <span class="math notranslate nohighlight">\(\mathbf{b} = (b_1, b_2, \ldots,b_n) \in \mathbb{R}^n\)</span> is a column vector</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}
@@ -803,7 +822,12 @@ c_i = (A\mathbf{b})_i = \sum_{j=1}^m A_{ij} b_j.
 \[
 A \mathbf{b} = \sum_{j=1}^m A_{\cdot,j} b_j,
 \]</div>
-<p>that is, <span class="math notranslate nohighlight">\(A \mathbf{b}\)</span> is a linear combination of the columns of <span class="math notranslate nohighlight">\(A\)</span> where the coefficients are the entries of <span class="math notranslate nohighlight">\(\mathbf{b}\)</span>.</p>
+<p>that is, <span class="math notranslate nohighlight">\(A \mathbf{b}\)</span> is a linear combination of the columns of <span class="math notranslate nohighlight">\(A\)</span> where the coefficients are the entries of <span class="math notranslate nohighlight">\(\mathbf{b}\)</span>. Matrix-vector products are linear in the following sense (Check it!): for any <span class="math notranslate nohighlight">\(\gamma \in \mathbb{R}\)</span> and <span class="math notranslate nohighlight">\(\mathbf{b}_1, \mathbf{b}_2 \in \mathbb{R}^m\)</span></p>
+<div class="math notranslate nohighlight">
+\[
+A(\gamma \mathbf{b}_1 + \mathbf{b}_2)
+= \gamma A\mathbf{b}_1 + A \mathbf{b}_2.
+\]</div>
 <p><strong>EXAMPLE:</strong> <strong>(continued)</strong> Consider the column vector <span class="math notranslate nohighlight">\(\mathbf{b} = (1, 0)^T\)</span>. Then</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}
@@ -968,6 +992,37 @@ b_{n} b_{1} &amp; b_{n} b_{2} &amp; \cdots &amp; b_{n} b_{n}
 </div>
 </div>
 <p><span class="math notranslate nohighlight">\(\unlhd\)</span></p>
+<p><strong>Quadratic forms</strong> Let <span class="math notranslate nohighlight">\(B \in \mathbb{R}^{n \times n}\)</span> be a square matrix. The associated quadratic form</p>
+<div class="math notranslate nohighlight">
+\[
+\langle \mathbf{z}, B \mathbf{z} \rangle 
+= \mathbf{z}^T B \mathbf{z}
+= \sum_{i=1}^n z_i \sum_{j=1}^n B_{i,j} z_j
+= \sum_{i=1}^n \sum_{j=1}^n z_i B_{i,j} z_j
+\]</div>
+<p>defined for any <span class="math notranslate nohighlight">\(\mathbf{z} = (z_1,\ldots,z_n)\)</span>, will make many appearances throughout.</p>
+<p>A <a class="reference external" href="https://en.wikipedia.org/wiki/Homogeneous_polynomial">form</a> is a homogeneous polynomial <span class="math notranslate nohighlight">\(f(\mathbf{z})\)</span>, viewed as a function of <span class="math notranslate nohighlight">\(\mathbf{z}\)</span>. By <a class="reference external" href="https://en.wikipedia.org/wiki/Homogeneous_function">homogeneous</a>, we mean that for any <span class="math notranslate nohighlight">\(\mathbf{z} \in \mathbb{R}^n\)</span> and any scalar <span class="math notranslate nohighlight">\(\alpha \in \mathbb{R}\)</span></p>
+<div class="math notranslate nohighlight">
+\[
+f(\alpha \mathbf{z})
+= \alpha^k f(\mathbf{z}),
+\]</div>
+<p>for some integer <span class="math notranslate nohighlight">\(k\)</span> that is called the degree of homogeneity. (Note that this is different from the absolute homogeneity of norms.) When <span class="math notranslate nohighlight">\(k=2\)</span>, we refer to a quadratic form. Let us check that <span class="math notranslate nohighlight">\(\langle \mathbf{z}, B \mathbf{z} \rangle\)</span> indeed satisfies these properties. The alternative expression <span class="math notranslate nohighlight">\(\sum_{i=1}^n \sum_{j=1}^n z_i B_{i,j} z_j\)</span> makes it clear that it is a [polynomial] in the variables <span class="math notranslate nohighlight">\(z_1,\ldots,z_n\)</span>. Moreover, for any <span class="math notranslate nohighlight">\(\alpha \in \mathbb{R}\)</span>, by using linearity multiple times</p>
+<div class="math notranslate nohighlight">
+\[
+\langle \alpha \mathbf{z}, B (\alpha \mathbf{z}) \rangle
+= \langle \alpha \mathbf{z}, \alpha B \mathbf{z} \rangle
+=  \alpha \langle \mathbf{z}, \alpha B \mathbf{z} \rangle
+=  \alpha^2 \langle \mathbf{z}, B \mathbf{z} \rangle.
+\]</div>
+<p>In particular, the following property of matrices will play an important role. It is defined in terms of the associated quadratic form.</p>
+<p><strong>DEFINITION</strong> <strong>(Positive Semidefinite Matrix)</strong> A symmetric matrix <span class="math notranslate nohighlight">\(B \in \mathbb{R}^{n \times n}\)</span> is positive semidefinite if</p>
+<div class="math notranslate nohighlight">
+\[
+\langle \mathbf{z}, B \mathbf{z} \rangle \geq 0, \quad \forall \mathbf{z} \neq \mathbf{0}. 
+\]</div>
+<p>We also write <span class="math notranslate nohighlight">\(B \succeq 0\)</span> in that case. If the inequality above is strict, we say that <span class="math notranslate nohighlight">\(B\)</span> is positive definite, in which case we write <span class="math notranslate nohighlight">\(B \succ 0\)</span>. <span class="math notranslate nohighlight">\(\natural\)</span></p>
+<p>We will see an important example later in this section.</p>
 </section>
 <section id="differential-calculus">
 <h2><span class="section-number">1.2.2. </span>Differential calculus<a class="headerlink" href="#differential-calculus" title="Permalink to this headline">#</a></h2>
@@ -1576,7 +1631,7 @@ F_X(z) = \mathbb{P}[X \leq z], \qquad \forall z \in \mathbb{R}.
 \right],
 \]</div>
 <p>where we think of <span class="math notranslate nohighlight">\(\bX\)</span> as a column vector.</p>
-<p>Covariance matrices have two special properties: they symmetric and positive semidefinite.</p>
+<p>Covariance matrices have two special properties: they are symmetric and positive semidefinite.</p>
 <p><strong>DEFINITION</strong> <strong>(Symmetric Matrix)</strong> A square matrix <span class="math notranslate nohighlight">\(B \in \mathbb{R}^{n \times n}\)</span> is symmetric if <span class="math notranslate nohighlight">\(B^T = B\)</span>. <span class="math notranslate nohighlight">\(\natural\)</span></p>
 <p><strong>DEFINITION</strong> <strong>(Positive Semidefinite Matrix)</strong> A symmetric matrix <span class="math notranslate nohighlight">\(B \in \mathbb{R}^{n \times n}\)</span> is positive semidefinite if</p>
 <div class="math notranslate nohighlight">

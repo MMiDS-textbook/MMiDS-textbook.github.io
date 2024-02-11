@@ -75,7 +75,7 @@ const thebe_selector_output = ".output, .cell_output"
     <link rel="shortcut icon" href="https://mmids-textbook.github.io/favicon-32x32.png"/>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="6.5. Backpropagation and application to neural networks" href="../05_backprop/roch-mmids-opt-backprop.html" />
+    <link rel="next" title="6.5. Backpropagation and neural networks" href="../05_backprop/roch-mmids-opt-backprop.html" />
     <link rel="prev" title="6.3. Optimality conditions and convexity" href="../03_optimality/roch-mmids-opt-optimality.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
@@ -234,7 +234,7 @@ const thebe_selector_output = ".output, .cell_output"
 <li class="toctree-l2"><a class="reference internal" href="../02_several/roch-mmids-opt-several.html">6.2. Background: review of differentiable functions of several variables and introduction to automatic differentiation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../03_optimality/roch-mmids-opt-optimality.html">6.3. Optimality conditions and convexity</a></li>
 <li class="toctree-l2 current active"><a class="current reference internal" href="#">6.4. Gradient descent and its convergence analysis</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../05_backprop/roch-mmids-opt-backprop.html">6.5. Backpropagation and application to neural networks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../05_backprop/roch-mmids-opt-backprop.html">6.5. Backpropagation and neural networks</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../06_adv/roch-mmids-opt-adv.html">6.6. More advanced material</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../summary_chap06.html">6.7. Other resources</a></li>
 </ul>
@@ -445,7 +445,8 @@ document.write(`
                 <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#gradient-descent">6.4.1. Gradient descent</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#convergence-analysis">6.4.2. Convergence analysis</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#implementing-gradient-descent-in-pytorch">6.4.3. Implementing gradient descent in PyTorch</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#application-to-logistic-regression">6.4.3. Application to logistic regression</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#implementing-gradient-descent-in-pytorch">6.4.4. Implementing gradient descent in PyTorch</a></li>
 </ul>
             </nav>
         </div>
@@ -457,7 +458,8 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article" role="main">
                   
-  <section id="gradient-descent-and-its-convergence-analysis">
+  <p><span class="math notranslate nohighlight">\(\newcommand{\bSigma}{\boldsymbol{\Sigma}}\)</span> <span class="math notranslate nohighlight">\(\newcommand{\bmu}{\boldsymbol{\mu}}\)</span> <span class="math notranslate nohighlight">\(\newcommand{\bsigma}{\boldsymbol{\sigma}}\)</span></p>
+<section id="gradient-descent-and-its-convergence-analysis">
 <h1><span class="section-number">6.4. </span>Gradient descent and its convergence analysis<a class="headerlink" href="#gradient-descent-and-its-convergence-analysis" title="Permalink to this headline">#</a></h1>
 <p>We consider a natural approach for solving optimization problems numerically: a class of algorithms known as descent methods.</p>
 <p>Let <span class="math notranslate nohighlight">\(f : \mathbb{R}^d \to \mathbb{R}\)</span> be continuously differentiable. We restrict ourselves to unconstrained minimization problems of the form</p>
@@ -1191,8 +1193,995 @@ f(x^1) - f(x^*)
 </div>
 <p><span class="math notranslate nohighlight">\(\unlhd\)</span></p>
 </section>
+<section id="application-to-logistic-regression">
+<h2><span class="section-number">6.4.3. </span>Application to logistic regression<a class="headerlink" href="#application-to-logistic-regression" title="Permalink to this headline">#</a></h2>
+<p>We return to logistic regression, which we alluded to in the motivating example of this chapter.</p>
+<p>The input data is of the form <span class="math notranslate nohighlight">\(\{(\boldsymbol{\alpha}_i, b_i) : i=1,\ldots, n\}\)</span> where <span class="math notranslate nohighlight">\(\boldsymbol{\alpha}_i \in \mathbb{R}^d\)</span> are the features and <span class="math notranslate nohighlight">\(b_i \in \{0,1\}\)</span> is the label. As before we use a matrix representation: <span class="math notranslate nohighlight">\(A \in \mathbb{R}^{n \times d}\)</span> has rows <span class="math notranslate nohighlight">\(\boldsymbol{\alpha}_i^T\)</span>, <span class="math notranslate nohighlight">\(i = 1,\ldots, n\)</span> and <span class="math notranslate nohighlight">\(\mathbf{b} = (b_1, \ldots, b_n) \in \{0,1\}^n\)</span>.</p>
+<p><strong>Logistic model.</strong> We summarize the logistic regression approach. Our goal is to find a function of the features that approximates the probability of the label <span class="math notranslate nohighlight">\(1\)</span>. For this purpose, we model the <a class="reference external" href="https://en.wikipedia.org/wiki/Logit">log-odds</a> (or logit function) of the probability of label <span class="math notranslate nohighlight">\(1\)</span> as a linear function of the features</p>
+<div class="math notranslate nohighlight">
+\[
+\log \frac{p(\mathbf{x}; \boldsymbol{\alpha}_i)}{1-p(\mathbf{x}; \boldsymbol{\alpha}_i)}
+= \boldsymbol{\alpha}_i^T \mathbf{x}
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(\mathbf{x} \in \mathbb{R}^d\)</span>. Inverting this expression gives</p>
+<div class="math notranslate nohighlight">
+\[
+p(\mathbf{x}; \boldsymbol{\alpha}_i)
+= \sigma(\boldsymbol{\alpha}_i^T \mathbf{x})
+\]</div>
+<p>where the <a class="reference external" href="https://en.wikipedia.org/wiki/Logistic_function">sigmoid</a> function is</p>
+<div class="math notranslate nohighlight">
+\[
+\sigma(z)
+= \frac{1}{1 + e^{-z}}
+\]</div>
+<p>for <span class="math notranslate nohighlight">\(z \in \mathbb{R}\)</span>.</p>
+<p>We plot the sigmoid function.</p>
+<div class="cell tag_colab-keep docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">sigmoid</span><span class="p">(</span><span class="n">z</span><span class="p">):</span> 
+    <span class="k">return</span> <span class="mi">1</span><span class="o">/</span><span class="p">(</span><span class="mi">1</span><span class="o">+</span><span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">z</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell tag_colab-keep tag_hide-input docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell source</span>
+<span class="expanded">Hide code cell source</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">grid</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">grid</span><span class="p">,</span><span class="n">sigmoid</span><span class="p">(</span><span class="n">grid</span><span class="p">),</span><span class="s1">&#39;r&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</details>
+<div class="cell_output docutils container">
+<img alt="../../_images/3a41178260e7745bb28b0c3801aeb9940f113981f9150c5b339ec0156890d8a4.png" src="../../_images/3a41178260e7745bb28b0c3801aeb9940f113981f9150c5b339ec0156890d8a4.png" />
+</div>
+</div>
+<p>We seek to maximize the probability of observing the data (also known as <a class="reference external" href="https://en.wikipedia.org/wiki/Likelihood_function">likelihood function</a>) assuming the labels are independent given the features, which is given by</p>
+<div class="math notranslate nohighlight">
+\[
+\mathcal{L}(\mathbf{x}; A, \mathbf{b})
+= \prod_{i=1}^n p(\boldsymbol{\alpha}_i; \mathbf{x})^{b_i} 
+(1- p(\boldsymbol{\alpha}_i; \mathbf{x}))^{1-b_i}
+\]</div>
+<p>Taking a logarithm, multiplying by <span class="math notranslate nohighlight">\(-1/n\)</span> and substituting the sigmoid function, we want to minimize the <a class="reference external" href="https://en.wikipedia.org/wiki/Cross_entropy#Cross-entropy_loss_function_and_logistic_regression">cross-entropy loss</a></p>
+<div class="math notranslate nohighlight">
+\[
+\ell(\mathbf{x}; A, \mathbf{b})
+= \frac{1}{n} \sum_{i=1}^n \left\{- b_i \log(\sigma(\boldsymbol{\alpha}_i^T \mathbf{x}))
+- (1-b_i) \log(1- \sigma(\boldsymbol{\alpha}_i^T \mathbf{x}))\right\}.
+\]</div>
+<p>That is, we solve</p>
+<div class="math notranslate nohighlight">
+\[
+\min_{\mathbf{x} \in \mathbb{R}^d} \ell(\mathbf{x}; A, \mathbf{b}).
+\]</div>
+<p>The fact that the objective function <span class="math notranslate nohighlight">\(\ell\)</span> is an average over the samples will play a role later on.</p>
+<p>To use gradient descent, we need the gradient of <span class="math notranslate nohighlight">\(\ell\)</span>. We use the <em>Chain Rule</em> and first compute the derivative of <span class="math notranslate nohighlight">\(\sigma\)</span> which is</p>
+<div class="math notranslate nohighlight">
+\[
+\sigma'(z)
+= \frac{e^{-z}}{(1 + e^{-z})^2}
+= \frac{1}{1 + e^{-z}}\left(1 - \frac{1}{1 + e^{-z}}\right)
+= \sigma(z) (1 - \sigma(z)).
+\]</div>
+<p>The latter expression is known as the <a class="reference external" href="https://en.wikipedia.org/wiki/Logistic_function#Logistic_differential_equation">logistic differential equation</a>. It arises in a variety of applications, including the modeling of <a class="reference external" href="https://towardsdatascience.com/covid-19-infection-in-italy-mathematical-models-and-predictions-7784b4d7dd8d">population dynamics</a>. Here it will be a convenient way to compute the gradient. Indeed observe that by the <em>Chain Rule</em> (entry-wise)</p>
+<div class="math notranslate nohighlight">
+\[
+\frac{\partial}{\partial x_j} \sigma(\boldsymbol{\alpha}_i^T \mathbf{x})
+= \sigma(\boldsymbol{\alpha}_i^T \mathbf{x}) (1 - \sigma(\boldsymbol{\alpha}_i^T \mathbf{x}))\, \alpha_{ij}
+\]</div>
+<p>so that</p>
+<div class="math notranslate nohighlight">
+\[
+\nabla\sigma(\boldsymbol{\alpha}_i^T \mathbf{x})
+= \sigma(\boldsymbol{\alpha}_i^T \mathbf{x}) (1 - \sigma(\boldsymbol{\alpha}_i^T \mathbf{x}))\, \boldsymbol{\alpha}_i
+\]</div>
+<p>where, throughout, the gradient is with respect to <span class="math notranslate nohighlight">\(\mathbf{x}\)</span>.</p>
+<p>By another application of the <em>Chain Rule</em>, since <span class="math notranslate nohighlight">\(\frac{\mathrm{d}}{\mathrm{d} z} \log z = \frac{1}{z}\)</span>,</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+&amp;\nabla\ell(\mathbf{x}; A, \mathbf{b})\\
+&amp;= \nabla\left[\frac{1}{n} \sum_{i=1}^n \left\{- b_i \log(\sigma(\boldsymbol{\alpha_i}^T \mathbf{x}))
+- (1-b_i) \log(1- \sigma(\boldsymbol{\alpha_i}^T \mathbf{x}))\right\}\right]\\
+&amp;= - \frac{1}{n} \sum_{i=1}^n \frac{b_i}{\sigma(\boldsymbol{\alpha}_i^T \mathbf{x})} \nabla\sigma(\boldsymbol{\alpha}_i^T \mathbf{x})
+- \frac{1}{n} \sum_{i=1}^n \frac{1-b_i}{1- \sigma(\boldsymbol{\alpha}_i^T \mathbf{x})} \nabla(1 - \sigma(\boldsymbol{\alpha}_i^T \mathbf{x}))\\
+&amp;= - \frac{1}{n} \sum_{i=1}^n \frac{b_i}{\sigma(\boldsymbol{\alpha}_i^T \mathbf{x})} \nabla\sigma(\boldsymbol{\alpha}_i^T \mathbf{x})
++ \frac{1}{n} \sum_{i=1}^n \frac{1-b_i}{1- \sigma(\boldsymbol{\alpha}_i^T \mathbf{x})} \nabla\sigma(\boldsymbol{\alpha}_i^T \mathbf{x}).
+\end{align*}\]</div>
+<p>Using the expression for the gradient of the sigmoid functions, this is</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+&amp;= - \frac{1}{n} \sum_{i=1}^n \frac{b_i}{\sigma(\boldsymbol{\alpha}_i^T \mathbf{x})} \sigma(\boldsymbol{\alpha}_i^T \mathbf{x}) (1 - \sigma(\boldsymbol{\alpha}_i^T \mathbf{x})) \,\boldsymbol{\alpha}_i\\
+&amp;\quad\quad + \frac{1}{n} \sum_{i=1}^n \frac{1-b_i}{1- \sigma(\boldsymbol{\alpha}_i^T \mathbf{x})} \sigma(\boldsymbol{\alpha}_i^T \mathbf{x}) (1 - \sigma(\boldsymbol{\alpha}_i^T \mathbf{x})) \,\boldsymbol{\alpha}_i\\
+&amp;= - \frac{1}{n} \sum_{i=1}^n \left(
+b_i (1 - \sigma(\boldsymbol{\alpha}_i^T \mathbf{x})) - (1-b_i)\sigma(\boldsymbol{\alpha}_i^T \mathbf{x}) 
+\right)\,\boldsymbol{\alpha}_i\\
+&amp;= - \frac{1}{n} \sum_{i=1}^n (
+b_i - \sigma(\boldsymbol{\alpha}_i^T \mathbf{x}) 
+) \,\boldsymbol{\alpha}_i.
+\end{align*}\]</div>
+<p>To implement this formula below, it will be useful to re-write it in terms of the matrix representation <span class="math notranslate nohighlight">\(A \in \mathbb{R}^{n \times d}\)</span> (which has rows <span class="math notranslate nohighlight">\(\boldsymbol{\alpha}_i^T\)</span>, <span class="math notranslate nohighlight">\(i = 1,\ldots, n\)</span>) and <span class="math notranslate nohighlight">\(\mathbf{b} = (b_1, \ldots, b_n) \in \{0,1\}^n\)</span>. Let <span class="math notranslate nohighlight">\(\bsigma : \mathbb{R}^n \to \mathbb{R}\)</span> be the vector-valued function that applies the sigmoid <span class="math notranslate nohighlight">\(\sigma\)</span> entry-wise, i.e., <span class="math notranslate nohighlight">\(\bsigma(\mathbf{z}) = (\sigma(z_1),\ldots,\sigma(z_n))\)</span> where <span class="math notranslate nohighlight">\(\mathbf{z} = (z_1,\ldots,z_n)\)</span>. Thinking of <span class="math notranslate nohighlight">\(\sum_{i=1}^n (b_i - \sigma(\boldsymbol{\alpha}_i^T \mathbf{x})\,\boldsymbol{\alpha}_i\)</span> as a linear combination of the columns of <span class="math notranslate nohighlight">\(A\)</span> with coefficients being the entries of the vector <span class="math notranslate nohighlight">\(\mathbf{b} - \bsigma(A \mathbf{x})\)</span>, we that</p>
+<div class="math notranslate nohighlight">
+\[
+\nabla\ell(\mathbf{x}; A, \mathbf{b})
+= - \frac{1}{n} \sum_{i=1}^n (
+b_i - \sigma(\boldsymbol{\alpha}_i^T \mathbf{x}) 
+) \,\boldsymbol{\alpha}_i
+= -\frac{1}{n} A^T [\mathbf{b} - \bsigma(A \mathbf{x})].
+\]</div>
+<p>We turn to the Hessian. By symmetry, we can think of the <span class="math notranslate nohighlight">\(j\)</span>-th column of the Hessian as the gradient of the partial derivative with respect to <span class="math notranslate nohighlight">\(x_j\)</span>. We note that</p>
+<div class="math notranslate nohighlight">
+\[
+\nabla [(b - \sigma(\boldsymbol{\alpha}_i^T \mathbf{x}))\, \alpha_{ij}] 
+= - \nabla [\sigma(\boldsymbol{\alpha}_i^T \mathbf{x})] \, \alpha_{ij} 
+=  - \sigma(\boldsymbol{\alpha}_i^T \mathbf{x}) (1 - \sigma(\boldsymbol{\alpha}_i^T \mathbf{x}))\, \boldsymbol{\alpha}_i\alpha_{ij}.
+\]</div>
+<p>Thus, using the fact that <span class="math notranslate nohighlight">\(\boldsymbol{\alpha}_i\alpha_{ij}\)</span> is the <span class="math notranslate nohighlight">\(j\)</span>-th column of the matrix <span class="math notranslate nohighlight">\(\boldsymbol{\alpha}_i \boldsymbol{\alpha}_i^T\)</span>,</p>
+<div class="math notranslate nohighlight">
+\[
+\mathbf{H}_{\ell}(\mathbf{x}; A, \mathbf{b})
+= \frac{1}{n} \sum_{i=1}^n \sigma(\boldsymbol{\alpha}_i^T \mathbf{x}) (1 - \sigma(\boldsymbol{\alpha}_i^T \mathbf{x}))\, \boldsymbol{\alpha}_i \boldsymbol{\alpha}_i^T
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(\mathbf{H}_{\ell}(\mathbf{x}; A, \mathbf{b})\)</span> indicates the Hessian with respect to the <span class="math notranslate nohighlight">\(\mathbf{x}\)</span> variables, for fixed <span class="math notranslate nohighlight">\(A, \mathbf{b}\)</span>.</p>
+<p><strong>LEMMA</strong> <strong>(Convexity of logistic regression)</strong> The function <span class="math notranslate nohighlight">\(\ell(\mathbf{x}; A, \mathbf{b})\)</span> is convex as a function of <span class="math notranslate nohighlight">\(\mathbf{x} \in \mathbb{R}^d\)</span>. <span class="math notranslate nohighlight">\(\flat\)</span></p>
+<p><em>Proof:</em> Indeed, the Hessian is positive semidefinite: for any <span class="math notranslate nohighlight">\(\mathbf{z} \in \mathbb{R}^d\)</span></p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{align*}
+\mathbf{z}^T \,\mathbf{H}_{\ell}(\mathbf{x}; A, \mathbf{b}) \,\mathbf{z}
+&amp;= \frac{1}{n} \sum_{i=1}^n \sigma(\boldsymbol{\alpha}_i^T \mathbf{x}) (1 - \sigma(\boldsymbol{\alpha}_i^T \mathbf{x}))\, \mathbf{z}^T \boldsymbol{\alpha}_i \boldsymbol{\alpha}_i^T \mathbf{z}\\
+&amp;= \frac{1}{n} \sum_{i=1}^n \sigma(\boldsymbol{\alpha}_i^T \mathbf{x}) (1 - \sigma(\boldsymbol{\alpha}_i^T \mathbf{x}))\, (\mathbf{z}^T \boldsymbol{\alpha}_i)^2\\ 
+&amp;\geq 0 
+\end{align*}
+\end{split}\]</div>
+<p>since <span class="math notranslate nohighlight">\(\sigma(t) \in [0,1]\)</span> for all <span class="math notranslate nohighlight">\(t\)</span>. <span class="math notranslate nohighlight">\(\square\)</span></p>
+<p><strong>LEMMA</strong> <strong>(Smoothness of logistic regression)</strong> The Hessian of <span class="math notranslate nohighlight">\(\ell(\mathbf{x};A, \mathbf{b})\)</span> (as a function of <span class="math notranslate nohighlight">\(\mathbf{x} \in \mathbb{R}^d\)</span>) satisfies</p>
+<div class="math notranslate nohighlight">
+\[
+\mathbf{H}_{\ell}(\mathbf{x}; A, \mathbf{b})
+\preceq \frac{1}{n} A^T A.
+\]</div>
+<p>Furthermore, the function <span class="math notranslate nohighlight">\(\ell(\mathbf{x}; A, \mathbf{b})\)</span> is <span class="math notranslate nohighlight">\(L\)</span>-smooth for</p>
+<div class="math notranslate nohighlight">
+\[
+L= \frac{1}{n} \sum_{i=1}^n \|\boldsymbol{\alpha}_i\|^2.
+\]</div>
+<p><span class="math notranslate nohighlight">\(\flat\)</span></p>
+<p><em>Proof:</em> We use convexity. Moreover, since <span class="math notranslate nohighlight">\(\sigma(t) \in [0,1]\)</span> for all <span class="math notranslate nohighlight">\(t\)</span>, for any unit vector <span class="math notranslate nohighlight">\(\mathbf{z} \in \mathbb{R}^d\)</span>,</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+0 \leq \mathbf{z}^T \,\mathbf{H}_{\ell}(\mathbf{x}; A, \mathbf{b}) \,\mathbf{z}
+&amp;= \frac{1}{n} \sum_{i=1}^n \sigma(\boldsymbol{\alpha}_i^T \mathbf{x}) (1 - \sigma(\boldsymbol{\alpha}_i^T \mathbf{x}))\, (\mathbf{z}^T \boldsymbol{\alpha}_i)^2\\ 
+&amp;\leq  \frac{1}{n} \sum_{i=1}^n (\mathbf{z}^T \boldsymbol{\alpha}_i)^2.
+\end{align*}\]</div>
+<p>That implies <span class="math notranslate nohighlight">\(L\)</span>-smoothness by <em>Cauchy-Schwarz</em>. <span class="math notranslate nohighlight">\(\square\)</span></p>
+<p>Convexity is one reason for working with the cross-entropy loss (<a class="reference external" href="https://math.stackexchange.com/questions/1582452/logistic-regression-prove-that-the-cost-function-is-convex">rather than the mean squared error</a> for instance).</p>
+<p>For step size <span class="math notranslate nohighlight">\(\beta\)</span>, one step of gradient descent is therefore</p>
+<div class="math notranslate nohighlight">
+\[
+\mathbf{x}^{t+1}
+= \mathbf{x}^{t} +\beta \frac{1}{n} \sum_{i=1}^n (
+b_i - \sigma(\boldsymbol{\alpha}_i^T \mathbf{x}^t) 
+) \,\boldsymbol{\alpha}_i.
+\]</div>
+<p>In <a class="reference external" href="https://en.wikipedia.org/wiki/Stochastic_gradient_descent">stochastic gradient descent</a> (SGD), a variant of gradient descent, we pick a sample <span class="math notranslate nohighlight">\(I_t\)</span> uniformly at random in <span class="math notranslate nohighlight">\(\{1,\ldots,n\}\)</span> and update as follows</p>
+<div class="math notranslate nohighlight">
+\[
+\mathbf{x}^{t+1}
+= \mathbf{x}^{t} +\beta \, (
+b_{I_t} - \sigma(\boldsymbol{\alpha}_{I_t}^T \mathbf{x}^t) 
+) \, \boldsymbol{\alpha}_{I_t}.
+\]</div>
+<p>For the mini-batch version of SGD, we pick a random sub-sample <span class="math notranslate nohighlight">\(\mathcal{B}_t \subseteq \{1,\ldots,n\}\)</span> of size <span class="math notranslate nohighlight">\(B\)</span></p>
+<div class="math notranslate nohighlight">
+\[
+\mathbf{x}^{t+1}
+= \mathbf{x}^{t} +\beta \frac{1}{B} \sum_{i\in \mathcal{B}_t} (
+b_i - \sigma(\boldsymbol{\alpha}_i^T \mathbf{x}^t) 
+) \,\boldsymbol{\alpha}_i.
+\]</div>
+<p>The key observation about the two stochastic updates above is that, in expectation, they perform a step of gradient descent. That turns out to be enough and it has computational advantages.</p>
+<p><strong>Lebron James 2017 NBA Playoffs dataset</strong> We start with a simple dataset from UC Berkeley’s <a class="reference external" href="http://www.ds100.org">DS100</a> course. The file <code class="docutils literal notranslate"><span class="pre">lebron.csv</span></code> is available <a class="reference external" href="https://github.com/MMiDS-textbook/MMiDS-textbook.github.io/tree/main/utils/datasets">here</a>. Quoting a previous version of the course’s textbook:</p>
+<blockquote>
+<div><p>In basketball, players score by shooting a ball through a hoop. One such player, LeBron James, is widely considered one of the best basketball players ever for his incredible ability to score. LeBron plays in the National Basketball Association (NBA), the United States’s premier basketball league. We’ve collected a dataset of all of LeBron’s attempts in the 2017 NBA Playoff Games using the NBA statistics website (<a class="reference external" href="https://stats.nba.com/">https://stats.nba.com/</a>).</p>
+</div></blockquote>
+<p>We first load the data and look at its summary.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;lebron.csv&#39;</span><span class="p">)</span>
+<span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>game_date</th>
+      <th>minute</th>
+      <th>opponent</th>
+      <th>action_type</th>
+      <th>shot_type</th>
+      <th>shot_distance</th>
+      <th>shot_made</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>20170415</td>
+      <td>10</td>
+      <td>IND</td>
+      <td>Driving Layup Shot</td>
+      <td>2PT Field Goal</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>20170415</td>
+      <td>11</td>
+      <td>IND</td>
+      <td>Driving Layup Shot</td>
+      <td>2PT Field Goal</td>
+      <td>0</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>20170415</td>
+      <td>14</td>
+      <td>IND</td>
+      <td>Layup Shot</td>
+      <td>2PT Field Goal</td>
+      <td>0</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>20170415</td>
+      <td>15</td>
+      <td>IND</td>
+      <td>Driving Layup Shot</td>
+      <td>2PT Field Goal</td>
+      <td>0</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>20170415</td>
+      <td>18</td>
+      <td>IND</td>
+      <td>Alley Oop Dunk Shot</td>
+      <td>2PT Field Goal</td>
+      <td>0</td>
+      <td>1</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">describe</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>game_date</th>
+      <th>minute</th>
+      <th>shot_distance</th>
+      <th>shot_made</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>count</th>
+      <td>3.840000e+02</td>
+      <td>384.00000</td>
+      <td>384.000000</td>
+      <td>384.000000</td>
+    </tr>
+    <tr>
+      <th>mean</th>
+      <td>2.017052e+07</td>
+      <td>24.40625</td>
+      <td>10.695312</td>
+      <td>0.565104</td>
+    </tr>
+    <tr>
+      <th>std</th>
+      <td>6.948501e+01</td>
+      <td>13.67304</td>
+      <td>10.547586</td>
+      <td>0.496390</td>
+    </tr>
+    <tr>
+      <th>min</th>
+      <td>2.017042e+07</td>
+      <td>1.00000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+    </tr>
+    <tr>
+      <th>25%</th>
+      <td>2.017050e+07</td>
+      <td>13.00000</td>
+      <td>1.000000</td>
+      <td>0.000000</td>
+    </tr>
+    <tr>
+      <th>50%</th>
+      <td>2.017052e+07</td>
+      <td>25.00000</td>
+      <td>6.500000</td>
+      <td>1.000000</td>
+    </tr>
+    <tr>
+      <th>75%</th>
+      <td>2.017060e+07</td>
+      <td>35.00000</td>
+      <td>23.000000</td>
+      <td>1.000000</td>
+    </tr>
+    <tr>
+      <th>max</th>
+      <td>2.017061e+07</td>
+      <td>48.00000</td>
+      <td>31.000000</td>
+      <td>1.000000</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<p>The two columns we will be interested in are <code class="docutils literal notranslate"><span class="pre">shot_distance</span></code> (LeBron’s distance from the basket when the shot was attempted (ft)) and <code class="docutils literal notranslate"><span class="pre">shot_made</span></code> (0 if the shot missed, 1 if the shot went in). As the summary table above indicates, the average distance was <code class="docutils literal notranslate"><span class="pre">10.6953</span></code> and the frequency of shots made was <code class="docutils literal notranslate"><span class="pre">0.565104</span></code>. We extract those two columns and display them on a scatter plot.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">feature</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;shot_distance&#39;</span><span class="p">]</span>
+<span class="n">label</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;shot_made&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell tag_hide-input docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell source</span>
+<span class="expanded">Hide code cell source</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">feature</span><span class="p">,</span> <span class="n">label</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.2</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</details>
+<div class="cell_output docutils container">
+<img alt="../../_images/b2192bc870da96b5ac1261d1146eaf75854774e7c3ccdbe6d6cc66248236923d.png" src="../../_images/b2192bc870da96b5ac1261d1146eaf75854774e7c3ccdbe6d6cc66248236923d.png" />
+</div>
+</div>
+<p>As you can see, this kind of data is hard to vizualize because of the superposition of points with the same <span class="math notranslate nohighlight">\(x\)</span> and <span class="math notranslate nohighlight">\(y\)</span>-values. One trick is to jiggle the <span class="math notranslate nohighlight">\(y\)</span>’s a little bit by adding Gaussian noise. We do this next and plot again.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">label_jitter</span> <span class="o">=</span> <span class="n">label</span> <span class="o">+</span> <span class="mf">0.05</span><span class="o">*</span><span class="n">rng</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="n">label</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell tag_hide-input docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell source</span>
+<span class="expanded">Hide code cell source</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">feature</span><span class="p">,</span> <span class="n">label_jitter</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.2</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</details>
+<div class="cell_output docutils container">
+<img alt="../../_images/896c7d0be6bb27870c356d64b67f8ca8a650e26cd48dd72a23f2ed52ad9b5b6f.png" src="../../_images/896c7d0be6bb27870c356d64b67f8ca8a650e26cd48dd72a23f2ed52ad9b5b6f.png" />
+</div>
+</div>
+<p>We modify our implementation of gradient descent to take a dataset as input. That will also be useful to generalize to stochastic gradient descent. Recall that to run gradient descent, we first implement a function computing a descent update. It takes as input a function <code class="docutils literal notranslate"><span class="pre">grad_fn</span></code> computing the gradient itself, as well as a current iterate and a step size. We now also feed a dataset as additional input.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">desc_update_for_logreg</span><span class="p">(</span><span class="n">grad_fn</span><span class="p">,</span> <span class="n">A</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">curr_x</span><span class="p">,</span> <span class="n">beta</span><span class="p">):</span>
+    <span class="n">gradient</span> <span class="o">=</span> <span class="n">grad_fn</span><span class="p">(</span><span class="n">curr_x</span><span class="p">,</span> <span class="n">A</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">curr_x</span> <span class="o">-</span> <span class="n">beta</span><span class="o">*</span><span class="n">gradient</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>We are ready to implement GD. Our function takes as input a function <code class="docutils literal notranslate"><span class="pre">loss_fn</span></code> computing the objective, a function <code class="docutils literal notranslate"><span class="pre">grad_fn</span></code> computing the gradient, the dataset <code class="docutils literal notranslate"><span class="pre">A</span></code> and <code class="docutils literal notranslate"><span class="pre">b</span></code>, and an initial guess <code class="docutils literal notranslate"><span class="pre">init_x</span></code>. Optional parameters are the step size and the number of iterations.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">gd_for_logreg</span><span class="p">(</span><span class="n">loss_fn</span><span class="p">,</span> <span class="n">grad_fn</span><span class="p">,</span> <span class="n">A</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">init_x</span><span class="p">,</span> <span class="n">beta</span><span class="o">=</span><span class="mf">1e-3</span><span class="p">,</span> <span class="n">niters</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="mf">1e5</span><span class="p">)):</span>
+    
+    <span class="c1"># initialization</span>
+    <span class="n">curr_x</span> <span class="o">=</span> <span class="n">init_x</span>
+    
+    <span class="c1"># until the maximum number of iterations</span>
+    <span class="k">for</span> <span class="nb">iter</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">niters</span><span class="p">):</span>
+        <span class="n">curr_x</span> <span class="o">=</span> <span class="n">desc_update_for_logreg</span><span class="p">(</span><span class="n">grad_fn</span><span class="p">,</span> <span class="n">A</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">curr_x</span><span class="p">,</span> <span class="n">beta</span><span class="p">)</span>
+    
+    <span class="k">return</span> <span class="n">curr_x</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>We apply GD to logistic regression. We first construct the data matrices <span class="math notranslate nohighlight">\(A\)</span> and <span class="math notranslate nohighlight">\(\mathbf{b}\)</span>. To allow an affine function of the features, we add a column of <span class="math notranslate nohighlight">\(1\)</span>’s as we have done before.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">A</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">stack</span><span class="p">((</span><span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">label</span><span class="p">)),</span><span class="n">feature</span><span class="p">),</span><span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">b</span> <span class="o">=</span> <span class="n">label</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>To implement <code class="docutils literal notranslate"><span class="pre">loss_fn</span></code> and <code class="docutils literal notranslate"><span class="pre">grad_fn</span></code>, we define the sigmoid as above. Below, <code class="docutils literal notranslate"><span class="pre">pred_fn</span></code> is <span class="math notranslate nohighlight">\(\bsigma(A \mathbf{x})\)</span>. Here we write the loss function as</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{align*}
+\ell(\mathbf{x}; A, \mathbf{b})
+&amp;= \frac{1}{n} \sum_{i=1}^n \left\{- b_i \log(\sigma(\boldsymbol{\alpha_i}^T \mathbf{x}))
+- (1-b_i) \log(1- \sigma(\boldsymbol{\alpha_i}^T \mathbf{x}))\right\}\\
+&amp;= \mathrm{mean}\left(-\mathbf{b} \odot \mathbf{log}(\bsigma(A \mathbf{x})) - (\mathbf{1} - \mathbf{b}) \odot \mathbf{log}(\mathbf{1} - \bsigma(A \mathbf{x}))\right),
+\end{align*}
+\end{split}\]</div>
+<p>where <span class="math notranslate nohighlight">\(\odot\)</span> is the Hadamard product, or element-wise product (for example <span class="math notranslate nohighlight">\(\mathbf{u} \odot \mathbf{v} = (u_1 v_1, \ldots,u_n v_n)^T\)</span>), the logarithm (denoted in bold) is applied element-wise and <span class="math notranslate nohighlight">\(\mathrm{mean}(\mathbf{z})\)</span> is the mean of the entries of <span class="math notranslate nohighlight">\(\mathbf{z}\)</span> (i.e., <span class="math notranslate nohighlight">\(\mathrm{mean}(\mathbf{z}) = n^{-1} \sum_{i=1}^n z_i\)</span>).</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">pred_fn</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">A</span><span class="p">):</span> 
+    <span class="k">return</span> <span class="n">sigmoid</span><span class="p">(</span><span class="n">A</span> <span class="o">@</span> <span class="n">x</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">loss_fn</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">A</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span> 
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="o">-</span><span class="n">b</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">pred_fn</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">A</span><span class="p">))</span> <span class="o">-</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">b</span><span class="p">)</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">pred_fn</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">A</span><span class="p">)))</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">grad_fn</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">A</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
+    <span class="k">return</span> <span class="o">-</span><span class="n">A</span><span class="o">.</span><span class="n">T</span> <span class="o">@</span> <span class="p">(</span><span class="n">b</span> <span class="o">-</span> <span class="n">pred_fn</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">A</span><span class="p">))</span><span class="o">/</span><span class="nb">len</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>We run GD starting from <span class="math notranslate nohighlight">\((0,0)\)</span> with a step size computed from the smoothness of the objective as above.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">L</span> <span class="o">=</span> <span class="n">LA</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">A</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span> <span class="o">/</span><span class="nb">len</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
+<span class="n">stepsize</span> <span class="o">=</span> <span class="mi">1</span><span class="o">/</span><span class="n">L</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">stepsize</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.0044179063265799194
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">init_x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">A</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+<span class="n">best_x</span> <span class="o">=</span> <span class="n">gd_for_logreg</span><span class="p">(</span><span class="n">loss_fn</span><span class="p">,</span> <span class="n">grad_fn</span><span class="p">,</span> <span class="n">A</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">init_x</span><span class="p">,</span> <span class="n">beta</span><span class="o">=</span><span class="n">stepsize</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">best_x</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[ 0.90959003 -0.05890828]
+</pre></div>
+</div>
+</div>
+</div>
+<p>Finally we plot the results.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">grid</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">feature</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">feature</span><span class="p">),</span> <span class="mi">100</span><span class="p">)</span>
+<span class="n">feature_grid</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">stack</span><span class="p">((</span><span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">grid</span><span class="p">)),</span><span class="n">grid</span><span class="p">),</span><span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">predict_grid</span> <span class="o">=</span> <span class="n">sigmoid</span><span class="p">(</span><span class="n">feature_grid</span> <span class="o">@</span> <span class="n">best_x</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell tag_hide-input docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell source</span>
+<span class="expanded">Hide code cell source</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">feature</span><span class="p">,</span> <span class="n">label_jitter</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.2</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">grid</span><span class="p">,</span><span class="n">predict_grid</span><span class="p">,</span><span class="s1">&#39;r&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</details>
+<div class="cell_output docutils container">
+<img alt="../../_images/c5d38efebb59f70fa33f1624498dc9e57f56ae9b8452f0ac06da5296c7510b52.png" src="../../_images/c5d38efebb59f70fa33f1624498dc9e57f56ae9b8452f0ac06da5296c7510b52.png" />
+</div>
+</div>
+<p><strong>South African Heart Disease dataset</strong> We analyze a dataset from [<a class="reference external" href="https://web.stanford.edu/~hastie/ElemStatLearn/">ESL</a>], which can be downloaded <a class="reference external" href="https://web.stanford.edu/~hastie/ElemStatLearn/data.html">here</a>. Quoting [<a class="reference external" href="https://web.stanford.edu/~hastie/ElemStatLearn/">ESL</a>, Section 4.4.2]</p>
+<blockquote>
+<div><p>The data […] are a subset of the Coronary Risk-Factor Study (CORIS) baseline survey, carried out in three rural areas of the Western Cape, South Africa (Rousseauw et al., 1983). The aim of the study was to establish the intensity of ischemic heart disease risk factors in that high-incidence region. The data represent white males between 15 and 64, and the response variable is the presence or absence of myocardial infarction (MI) at the time of the survey (the overall prevalence of MI was 5.1% in this region). There are 160 cases in our data set, and a sample of 302 controls. These data are described in more detail in Hastie and Tibshirani (1987).</p>
+</div></blockquote>
+<p>We load the data, which we slightly reformatted and look at a summary.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;SAHeart.csv&#39;</span><span class="p">)</span>
+<span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>sbp</th>
+      <th>tobacco</th>
+      <th>ldl</th>
+      <th>adiposity</th>
+      <th>typea</th>
+      <th>obesity</th>
+      <th>alcohol</th>
+      <th>age</th>
+      <th>chd</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>160.0</td>
+      <td>12.00</td>
+      <td>5.73</td>
+      <td>23.11</td>
+      <td>49.0</td>
+      <td>25.30</td>
+      <td>97.20</td>
+      <td>52.0</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>144.0</td>
+      <td>0.01</td>
+      <td>4.41</td>
+      <td>28.61</td>
+      <td>55.0</td>
+      <td>28.87</td>
+      <td>2.06</td>
+      <td>63.0</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>118.0</td>
+      <td>0.08</td>
+      <td>3.48</td>
+      <td>32.28</td>
+      <td>52.0</td>
+      <td>29.14</td>
+      <td>3.81</td>
+      <td>46.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>170.0</td>
+      <td>7.50</td>
+      <td>6.41</td>
+      <td>38.03</td>
+      <td>51.0</td>
+      <td>31.99</td>
+      <td>24.26</td>
+      <td>58.0</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>134.0</td>
+      <td>13.60</td>
+      <td>3.50</td>
+      <td>27.78</td>
+      <td>60.0</td>
+      <td>25.99</td>
+      <td>57.34</td>
+      <td>49.0</td>
+      <td>1.0</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">describe</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>sbp</th>
+      <th>tobacco</th>
+      <th>ldl</th>
+      <th>adiposity</th>
+      <th>typea</th>
+      <th>obesity</th>
+      <th>alcohol</th>
+      <th>age</th>
+      <th>chd</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>count</th>
+      <td>462.000000</td>
+      <td>462.000000</td>
+      <td>462.000000</td>
+      <td>462.000000</td>
+      <td>462.000000</td>
+      <td>462.000000</td>
+      <td>462.000000</td>
+      <td>462.000000</td>
+      <td>462.000000</td>
+    </tr>
+    <tr>
+      <th>mean</th>
+      <td>138.326840</td>
+      <td>3.635649</td>
+      <td>4.740325</td>
+      <td>25.406732</td>
+      <td>53.103896</td>
+      <td>26.044113</td>
+      <td>17.044394</td>
+      <td>42.816017</td>
+      <td>0.346320</td>
+    </tr>
+    <tr>
+      <th>std</th>
+      <td>20.496317</td>
+      <td>4.593024</td>
+      <td>2.070909</td>
+      <td>7.780699</td>
+      <td>9.817534</td>
+      <td>4.213680</td>
+      <td>24.481059</td>
+      <td>14.608956</td>
+      <td>0.476313</td>
+    </tr>
+    <tr>
+      <th>min</th>
+      <td>101.000000</td>
+      <td>0.000000</td>
+      <td>0.980000</td>
+      <td>6.740000</td>
+      <td>13.000000</td>
+      <td>14.700000</td>
+      <td>0.000000</td>
+      <td>15.000000</td>
+      <td>0.000000</td>
+    </tr>
+    <tr>
+      <th>25%</th>
+      <td>124.000000</td>
+      <td>0.052500</td>
+      <td>3.282500</td>
+      <td>19.775000</td>
+      <td>47.000000</td>
+      <td>22.985000</td>
+      <td>0.510000</td>
+      <td>31.000000</td>
+      <td>0.000000</td>
+    </tr>
+    <tr>
+      <th>50%</th>
+      <td>134.000000</td>
+      <td>2.000000</td>
+      <td>4.340000</td>
+      <td>26.115000</td>
+      <td>53.000000</td>
+      <td>25.805000</td>
+      <td>7.510000</td>
+      <td>45.000000</td>
+      <td>0.000000</td>
+    </tr>
+    <tr>
+      <th>75%</th>
+      <td>148.000000</td>
+      <td>5.500000</td>
+      <td>5.790000</td>
+      <td>31.227500</td>
+      <td>60.000000</td>
+      <td>28.497500</td>
+      <td>23.892500</td>
+      <td>55.000000</td>
+      <td>1.000000</td>
+    </tr>
+    <tr>
+      <th>max</th>
+      <td>218.000000</td>
+      <td>31.200000</td>
+      <td>15.330000</td>
+      <td>42.490000</td>
+      <td>78.000000</td>
+      <td>46.580000</td>
+      <td>147.190000</td>
+      <td>64.000000</td>
+      <td>1.000000</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<p>Our goal to predict <code class="docutils literal notranslate"><span class="pre">chd</span></code>, which stands for coronary heart disease, based on the other variables (which are briefly described <a class="reference external" href="https://web.stanford.edu/~hastie/ElemStatLearn/datasets/SAheart.info.txt">here</a>). We use logistic regression again.</p>
+<p>We first construct the data matrices. We only use three of the predictors, as the convergence is quite slow. Try it for yourself!</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">feature</span> <span class="o">=</span> <span class="n">df</span><span class="p">[[</span><span class="s1">&#39;tobacco&#39;</span><span class="p">,</span> <span class="s1">&#39;ldl&#39;</span><span class="p">,</span> <span class="s1">&#39;age&#39;</span><span class="p">]]</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">feature</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[[1.200e+01 5.730e+00 5.200e+01]
+ [1.000e-02 4.410e+00 6.300e+01]
+ [8.000e-02 3.480e+00 4.600e+01]
+ ...
+ [3.000e+00 1.590e+00 5.500e+01]
+ [5.400e+00 1.161e+01 4.000e+01]
+ [0.000e+00 4.820e+00 4.600e+01]]
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">label</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;chd&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">A</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="n">label</span><span class="p">),</span><span class="mi">1</span><span class="p">)),</span><span class="n">feature</span><span class="p">),</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[[1.000e+00 1.200e+01 5.730e+00 5.200e+01]
+ [1.000e+00 1.000e-02 4.410e+00 6.300e+01]
+ [1.000e+00 8.000e-02 3.480e+00 4.600e+01]
+ ...
+ [1.000e+00 3.000e+00 1.590e+00 5.500e+01]
+ [1.000e+00 5.400e+00 1.161e+01 4.000e+01]
+ [1.000e+00 0.000e+00 4.820e+00 4.600e+01]]
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">b</span> <span class="o">=</span> <span class="n">label</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>We re-use the functions <code class="docutils literal notranslate"><span class="pre">loss_fn</span></code> and <code class="docutils literal notranslate"><span class="pre">grad_fn</span></code>, which were written for general logistic regression problems.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">init_x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">A</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">L</span> <span class="o">=</span> <span class="n">LA</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">A</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span> <span class="o">/</span><span class="nb">len</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
+<span class="n">stepsize</span> <span class="o">=</span> <span class="mi">1</span><span class="o">/</span><span class="n">L</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">stepsize</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.00047434072581205094
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">best_x</span> <span class="o">=</span> <span class="n">gd_for_logreg</span><span class="p">(</span><span class="n">loss_fn</span><span class="p">,</span> <span class="n">grad_fn</span><span class="p">,</span> <span class="n">A</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">init_x</span><span class="p">,</span> <span class="n">beta</span><span class="o">=</span><span class="n">stepsize</span><span class="p">,</span> <span class="n">niters</span><span class="o">=</span><span class="mi">1000000</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">best_x</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[-4.01602283  0.07651133  0.1856912   0.04802978]
+</pre></div>
+</div>
+</div>
+</div>
+<p>The outcome is harder to vizualize. To get a sense of how accurate the result is, we compare our predictions to the true labels. By prediction, let us say that we mean that we predict label <span class="math notranslate nohighlight">\(1\)</span> whenever <span class="math notranslate nohighlight">\(\sigma(\boldsymbol{\alpha}^T \mathbf{x}) &gt; 1/2\)</span>. We try this on the training set. (A better approach would be to split the data into training and testing sets, but we will not do this here.)</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">logis_acc</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">A</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">((</span><span class="n">pred_fn</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">A</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mf">0.5</span><span class="p">)</span> <span class="o">==</span> <span class="n">b</span><span class="p">)</span><span class="o">/</span><span class="nb">len</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">logis_acc</span><span class="p">(</span><span class="n">best_x</span><span class="p">,</span> <span class="n">A</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.7251082251082251
+</pre></div>
+</div>
+</div>
+</div>
+<p>We also try mini-batch stochastic gradient descent (SGD). Recall that we pick a random sub-sample <span class="math notranslate nohighlight">\(\mathcal{B} \subseteq \{1,\ldots,n\}\)</span> of size <span class="math notranslate nohighlight">\(B\)</span> and then the update is</p>
+<div class="math notranslate nohighlight">
+\[
+\mathbf{x}^{k+1}
+= \mathbf{x}^{k} +\beta \frac{1}{B} \sum_{i\in \mathcal{B}} (
+b_i - \sigma(\boldsymbol{\alpha}_i^T \mathbf{x}^k) 
+) \,\boldsymbol{\alpha}_i.
+\]</div>
+<p>Hence, the only modification needed to the code is to pick a random mini-batch which can be fed to the descent update sub-routine as dataset.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">sgd_for_logreg</span><span class="p">(</span><span class="n">loss_fn</span><span class="p">,</span> <span class="n">grad_fn</span><span class="p">,</span> <span class="n">A</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">init_x</span><span class="p">,</span> <span class="n">beta</span><span class="o">=</span><span class="mf">1e-3</span><span class="p">,</span> <span class="n">niters</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="mf">1e5</span><span class="p">),</span> <span class="n">batch</span><span class="o">=</span><span class="mi">40</span><span class="p">):</span>
+    
+    <span class="c1"># initialization</span>
+    <span class="n">curr_x</span> <span class="o">=</span> <span class="n">init_x</span>
+    
+    <span class="c1"># until the maximum number of iterations</span>
+    <span class="n">nsamples</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">niters</span><span class="p">):</span>
+        <span class="n">I</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">integers</span><span class="p">(</span><span class="n">nsamples</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">batch</span><span class="p">)</span>
+        <span class="n">curr_x</span> <span class="o">=</span> <span class="n">desc_update_for_logreg</span><span class="p">(</span><span class="n">grad_fn</span><span class="p">,</span> <span class="n">A</span><span class="p">[</span><span class="n">I</span><span class="p">,:],</span> <span class="n">b</span><span class="p">[</span><span class="n">I</span><span class="p">],</span> <span class="n">curr_x</span><span class="p">,</span> <span class="n">beta</span><span class="p">)</span>
+    
+    <span class="k">return</span> <span class="n">curr_x</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">init_x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">A</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">best_x</span> <span class="o">=</span> <span class="n">sgd_for_logreg</span><span class="p">(</span><span class="n">loss_fn</span><span class="p">,</span> <span class="n">grad_fn</span><span class="p">,</span> <span class="n">A</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">init_x</span><span class="p">,</span> <span class="n">beta</span><span class="o">=</span><span class="n">stepsize</span><span class="p">,</span> <span class="n">niters</span><span class="o">=</span><span class="mi">1000000</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">best_x</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[-4.02241376  0.07713229  0.18654377  0.04636768]
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">logis_acc</span><span class="p">(</span><span class="n">best_x</span><span class="p">,</span> <span class="n">A</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.7186147186147186
+</pre></div>
+</div>
+</div>
+</div>
+</section>
 <section id="implementing-gradient-descent-in-pytorch">
-<h2><span class="section-number">6.4.3. </span>Implementing gradient descent in PyTorch<a class="headerlink" href="#implementing-gradient-descent-in-pytorch" title="Permalink to this headline">#</a></h2>
+<h2><span class="section-number">6.4.4. </span>Implementing gradient descent in PyTorch<a class="headerlink" href="#implementing-gradient-descent-in-pytorch" title="Permalink to this headline">#</a></h2>
 <p>Rather than explicitly specifying the gradient function, we could use PyTorch to compute it automatically. This is done next. Note that the descent update is done within <a class="reference external" href="https://pytorch.org/docs/stable/generated/torch.no_grad.html"><code class="docutils literal notranslate"><span class="pre">with</span> <span class="pre">torch.no_grad()</span></code></a>, which ensures that the update operation itself is not tracked for gradient computation. Here the input <code class="docutils literal notranslate"><span class="pre">x0</span></code> as well as the output <code class="docutils literal notranslate"><span class="pre">xk.numpy(force=True)</span></code> are Numpy arrays. The function <a class="reference external" href="https://pytorch.org/docs/stable/generated/torch.Tensor.numpy.html"><code class="docutils literal notranslate"><span class="pre">numpy()</span></code></a> converts a PyTorch tensor to a Numpy array (see the documentation for an explanation of the <code class="docutils literal notranslate"><span class="pre">force=True</span></code> option).</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1319,7 +2308,7 @@ f(x^1) - f(x^*)
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title"><span class="section-number">6.5. </span>Backpropagation and application to neural networks</p>
+        <p class="prev-next-title"><span class="section-number">6.5. </span>Backpropagation and neural networks</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -1340,7 +2329,8 @@ f(x^1) - f(x^*)
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#gradient-descent">6.4.1. Gradient descent</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#convergence-analysis">6.4.2. Convergence analysis</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#implementing-gradient-descent-in-pytorch">6.4.3. Implementing gradient descent in PyTorch</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#application-to-logistic-regression">6.4.3. Application to logistic regression</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#implementing-gradient-descent-in-pytorch">6.4.4. Implementing gradient descent in PyTorch</a></li>
 </ul>
   </nav></div>
 

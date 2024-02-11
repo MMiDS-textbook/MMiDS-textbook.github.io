@@ -215,7 +215,7 @@ const thebe_selector_output = ".output, .cell_output"
 <li class="toctree-l2"><a class="reference internal" href="../../chap04_specgraph/03_extremal/roch-mmids-specgraph-extremal.html">4.3. Variational characterization of eigenvalues</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../chap04_specgraph/04_laplacian/roch-mmids-specgraph-laplacian.html">4.4. Spectral properties of the Laplacian matrix</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../chap04_specgraph/05_partitioning/roch-mmids-specgraph-partitioning.html">4.5. Application to graph partitioning via spectral clustering</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../chap04_specgraph/06_adv/roch-mmids-specgraph-adv.html">4.6. More advanced material</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap04_specgraph/06_adv/roch-mmids-specgraph-adv.html">4.6. More advanced material: Weyl’s inequality; image segmentation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../chap04_specgraph/summary_chap04.html">4.7. Other resources</a></li>
 </ul>
 </li>
@@ -2154,6 +2154,40 @@ b_i - \sigma(\boldsymbol{\alpha}_i^T \mathbf{x}^k)
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
+<span class="ne">KeyboardInterrupt</span><span class="g g-Whitespace">                         </span>Traceback (most recent call last)
+<span class="o">&lt;</span><span class="n">ipython</span><span class="o">-</span><span class="nb">input</span><span class="o">-</span><span class="mi">66</span><span class="o">-</span><span class="n">d380ae9d0132</span><span class="o">&gt;</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
+<span class="ne">----&gt; </span><span class="mi">1</span> <span class="n">best_x</span> <span class="o">=</span> <span class="n">sgd_for_logreg</span><span class="p">(</span><span class="n">loss_fn</span><span class="p">,</span> <span class="n">grad_fn</span><span class="p">,</span> <span class="n">A</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">init_x</span><span class="p">,</span> <span class="n">beta</span><span class="o">=</span><span class="n">stepsize</span><span class="p">,</span> <span class="n">niters</span><span class="o">=</span><span class="mi">1000000</span><span class="p">)</span>
+
+<span class="nn">&lt;ipython-input-64-38274be31f67&gt;</span> in <span class="ni">sgd_for_logreg</span><span class="nt">(loss_fn, grad_fn, A, b, init_x, beta, niters, batch)</span>
+<span class="g g-Whitespace">      </span><span class="mi">8</span>     <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">niters</span><span class="p">):</span>
+<span class="g g-Whitespace">      </span><span class="mi">9</span>         <span class="n">I</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">integers</span><span class="p">(</span><span class="n">nsamples</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">batch</span><span class="p">)</span>
+<span class="ne">---&gt; </span><span class="mi">10</span>         <span class="n">curr_x</span> <span class="o">=</span> <span class="n">desc_update_for_logreg</span><span class="p">(</span><span class="n">grad_fn</span><span class="p">,</span> <span class="n">A</span><span class="p">[</span><span class="n">I</span><span class="p">,:],</span> <span class="n">b</span><span class="p">[</span><span class="n">I</span><span class="p">],</span> <span class="n">curr_x</span><span class="p">,</span> <span class="n">beta</span><span class="p">)</span>
+<span class="g g-Whitespace">     </span><span class="mi">11</span> 
+<span class="g g-Whitespace">     </span><span class="mi">12</span>     <span class="k">return</span> <span class="n">curr_x</span>
+
+<span class="nn">&lt;ipython-input-42-c455903c96b6&gt;</span> in <span class="ni">desc_update_for_logreg</span><span class="nt">(grad_fn, A, b, curr_x, beta)</span>
+<span class="g g-Whitespace">      </span><span class="mi">1</span> <span class="k">def</span> <span class="nf">desc_update_for_logreg</span><span class="p">(</span><span class="n">grad_fn</span><span class="p">,</span> <span class="n">A</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">curr_x</span><span class="p">,</span> <span class="n">beta</span><span class="p">):</span>
+<span class="ne">----&gt; </span><span class="mi">2</span>     <span class="n">gradient</span> <span class="o">=</span> <span class="n">grad_fn</span><span class="p">(</span><span class="n">curr_x</span><span class="p">,</span> <span class="n">A</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>
+<span class="g g-Whitespace">      </span><span class="mi">3</span>     <span class="k">return</span> <span class="n">curr_x</span> <span class="o">-</span> <span class="n">beta</span><span class="o">*</span><span class="n">gradient</span>
+
+<span class="nn">&lt;ipython-input-47-b741b9b641f6&gt;</span> in <span class="ni">grad_fn</span><span class="nt">(x, A, b)</span>
+<span class="g g-Whitespace">      </span><span class="mi">1</span> <span class="k">def</span> <span class="nf">grad_fn</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">A</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
+<span class="ne">----&gt; </span><span class="mi">2</span>     <span class="k">return</span> <span class="o">-</span><span class="n">A</span><span class="o">.</span><span class="n">T</span> <span class="o">@</span> <span class="p">(</span><span class="n">b</span> <span class="o">-</span> <span class="n">pred_fn</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">A</span><span class="p">))</span><span class="o">/</span><span class="nb">len</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
+
+<span class="nn">&lt;ipython-input-45-050598f03648&gt;</span> in <span class="ni">pred_fn</span><span class="nt">(x, A)</span>
+<span class="g g-Whitespace">      </span><span class="mi">1</span> <span class="k">def</span> <span class="nf">pred_fn</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">A</span><span class="p">):</span>
+<span class="ne">----&gt; </span><span class="mi">2</span>     <span class="k">return</span> <span class="n">sigmoid</span><span class="p">(</span><span class="n">A</span> <span class="o">@</span> <span class="n">x</span><span class="p">)</span>
+
+<span class="nn">&lt;ipython-input-34-2a25e30dd092&gt;</span> in <span class="ni">sigmoid</span><span class="nt">(z)</span>
+<span class="g g-Whitespace">      </span><span class="mi">1</span> <span class="k">def</span> <span class="nf">sigmoid</span><span class="p">(</span><span class="n">z</span><span class="p">):</span>
+<span class="ne">----&gt; </span><span class="mi">2</span>     <span class="k">return</span> <span class="mi">1</span><span class="o">/</span><span class="p">(</span><span class="mi">1</span><span class="o">+</span><span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">z</span><span class="p">))</span>
+
+<span class="ne">KeyboardInterrupt</span>: 
+</pre></div>
+</div>
+</div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -2161,20 +2195,10 @@ b_i - \sigma(\boldsymbol{\alpha}_i^T \mathbf{x}^k)
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[-4.02241376  0.07713229  0.18654377  0.04636768]
-</pre></div>
-</div>
-</div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">logis_acc</span><span class="p">(</span><span class="n">best_x</span><span class="p">,</span> <span class="n">A</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.7186147186147186
 </pre></div>
 </div>
 </div>
@@ -2232,9 +2256,6 @@ b_i - \sigma(\boldsymbol{\alpha}_i^T \mathbf{x}^k)
 </div>
 </div>
 </details>
-<div class="cell_output docutils container">
-<img alt="../../_images/cbf18d50a283cbb0751f62883f6c2e3641b9426348945cb53b851e6c9b0a2ec8.png" src="../../_images/cbf18d50a283cbb0751f62883f6c2e3641b9426348945cb53b851e6c9b0a2ec8.png" />
-</div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -2242,20 +2263,10 @@ b_i - \sigma(\boldsymbol{\alpha}_i^T \mathbf{x}^k)
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array(0.03277362, dtype=float32), 3.5202472645323724e-05)
-</pre></div>
-</div>
-</div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">gd_with_ad</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="n">niters</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array(-4.9335055, dtype=float32), -120.07894897460938)
 </pre></div>
 </div>
 </div>

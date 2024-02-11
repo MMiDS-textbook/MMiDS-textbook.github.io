@@ -445,6 +445,7 @@ document.write(`
                 <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#gradient-descent">6.4.1. Gradient descent</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#convergence-analysis">6.4.2. Convergence analysis</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#implementing-gradient-descent-in-pytorch">6.4.3. Implementing gradient descent in PyTorch</a></li>
 </ul>
             </nav>
         </div>
@@ -763,56 +764,6 @@ A^T A \mathbf{x} = A^T \mathbf{b}
 </div>
 </div>
 </div>
-<p>Rather than explicitly specifying the gradient function, we could use PyTorch to compute it automatically. This is done next. Note that the descent update is done within <a class="reference external" href="https://pytorch.org/docs/stable/generated/torch.no_grad.html"><code class="docutils literal notranslate"><span class="pre">with</span> <span class="pre">torch.no_grad()</span></code></a>, which ensures that the update operation itself is not tracked for gradient computation. Here the input <code class="docutils literal notranslate"><span class="pre">x0</span></code> as well as the output <code class="docutils literal notranslate"><span class="pre">xk.numpy(force=True)</span></code> are Numpy arrays. The function <a class="reference external" href="https://pytorch.org/docs/stable/generated/torch.Tensor.numpy.html"><code class="docutils literal notranslate"><span class="pre">numpy()</span></code></a> converts a PyTorch tensor to a Numpy array (see the documentation for an explanation of the <code class="docutils literal notranslate"><span class="pre">force=True</span></code> option).</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">gd_with_ad</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">x0</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">1e-3</span><span class="p">,</span> <span class="n">niters</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="mf">1e6</span><span class="p">)):</span>
-    <span class="n">xk</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">x0</span><span class="p">,</span> 
-                      <span class="n">requires_grad</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> 
-                      <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">float</span><span class="p">)</span>
-    
-    <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">niters</span><span class="p">):</span>
-        <span class="c1"># Compute the function value and its gradient</span>
-        <span class="n">value</span> <span class="o">=</span> <span class="n">f</span><span class="p">(</span><span class="n">xk</span><span class="p">)</span>
-        <span class="n">value</span><span class="o">.</span><span class="n">backward</span><span class="p">()</span>
-
-        <span class="c1"># Perform a gradient descent step</span>
-        <span class="k">with</span> <span class="n">torch</span><span class="o">.</span><span class="n">no_grad</span><span class="p">():</span>  <span class="c1"># Temporarily set all requires_grad flags to False</span>
-            <span class="n">xk</span> <span class="o">-=</span> <span class="n">alpha</span> <span class="o">*</span> <span class="n">xk</span><span class="o">.</span><span class="n">grad</span>
-
-        <span class="c1"># Zero the gradients for the next iteration</span>
-        <span class="n">xk</span><span class="o">.</span><span class="n">grad</span><span class="o">.</span><span class="n">zero_</span><span class="p">()</span>
-
-    <span class="k">return</span> <span class="n">xk</span><span class="o">.</span><span class="n">numpy</span><span class="p">(</span><span class="n">force</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span> <span class="n">f</span><span class="p">(</span><span class="n">xk</span><span class="p">)</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
-</pre></div>
-</div>
-</div>
-</div>
-<p>We revisit our last example.</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">gd_with_ad</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">niters</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="mf">1e4</span><span class="p">))</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array(0.03277362, dtype=float32), 3.5202472645323724e-05)
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">gd_with_ad</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="n">niters</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array(-4.9335055, dtype=float32), -120.07894897460938)
-</pre></div>
-</div>
-</div>
-</div>
 <p><span class="math notranslate nohighlight">\(\unlhd\)</span></p>
 </section>
 <section id="convergence-analysis">
@@ -838,6 +789,12 @@ A \preceq B
 - L \|\mathbf{z}\|^2 \leq \mathbf{z}^T H_f(\mathbf{x}) \,\mathbf{z} \leq L \|\mathbf{z}\|^2,
 \quad \forall \mathbf{x}, \mathbf{z} \in \mathbb{R}^d.
 \]</div>
+<p>A different way to put this is that the second directional derivative satisfies</p>
+<div class="math notranslate nohighlight">
+\[
+- L \leq \frac{\partial^2 f (\mathbf{x})}{\partial \mathbf{v}^2} \leq L
+\]</div>
+<p>for all <span class="math notranslate nohighlight">\(\mathbf{x} \in \mathbb{R}^d\)</span> and all unit vectors <span class="math notranslate nohighlight">\(\mathbf{v} \in \mathbb{R}^d\)</span>.</p>
 <p>Combined with <em>Taylor’s Theorem</em>, this gives immediately the following.</p>
 <p><strong>LEMMA</strong> <strong>(Quadratic Bound for Smooth Functions)</strong> Let <span class="math notranslate nohighlight">\(f : \mathbb{R}^d \to \mathbb{R}\)</span> be twice continuously differentiable. Then <span class="math notranslate nohighlight">\(f\)</span> is <span class="math notranslate nohighlight">\(L\)</span>-smooth if and only if for all <span class="math notranslate nohighlight">\(\mathbf{x}, \mathbf{y} \in \mathbb{R}^d\)</span> it holds that</p>
 <div class="math notranslate nohighlight">
@@ -921,7 +878,7 @@ f(\mathbf{x}^{t+1}) \leq f(\mathbf{x}^t),
 \[
 S \geq  \frac{2L [f(\mathbf{x}^0) - \bar{f}]}{\epsilon^2}.
 \]</div>
-<p>The heart of the proof is the following fundamental inequality. It also explains the choice of steplength.</p>
+<p>The heart of the proof is the following fundamental inequality. It also informs the choice of steplength.</p>
 <p><strong>LEMMA</strong> <strong>(Descent Guarantee in the Smooth Case)</strong> Suppose that <span class="math notranslate nohighlight">\(f : \mathbb{R}^d \to \mathbb{R}\)</span> is <span class="math notranslate nohighlight">\(L\)</span>-smooth. For any <span class="math notranslate nohighlight">\(\mathbf{x} \in \mathbb{R}^d\)</span>,</p>
 <div class="math notranslate nohighlight">
 \[
@@ -956,13 +913,6 @@ f\left(\mathbf{x} - \frac{1}{L} \nabla f(\mathbf{x})\right)
 \]</div>
 <p>as claimed. <span class="math notranslate nohighlight">\(\square\)</span></p>
 <p><strong>NUMERICAL CORNER:</strong> We give a numerical example using a special case of logistic regression. We illustrate it on a random dataset. The functions <span class="math notranslate nohighlight">\(\hat{f}\)</span>, <span class="math notranslate nohighlight">\(\mathcal{L}\)</span> and <span class="math notranslate nohighlight">\(\frac{\partial}{\partial x}\mathcal{L}\)</span> are defined next.</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">rng</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">(</span><span class="mi">535</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">fhat</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">a</span><span class="p">):</span>
@@ -1015,7 +965,7 @@ f\left(\mathbf{x} - \frac{1}{L} \nabla f(\mathbf{x})\right)
 <img alt="../../_images/2e3d92fd7ae1220bc257797da60a7f8b8bc9bdab2974d38f384f4677ab824975.png" src="../../_images/2e3d92fd7ae1220bc257797da60a7f8b8bc9bdab2974d38f384f4677ab824975.png" />
 </div>
 </div>
-<p>We plot next the upper and lower bounds in the <em>Quadratic Bound for Smooth Functions</em> around <span class="math notranslate nohighlight">\(x = x_0\)</span>. Based on <em>Exercise 4.17</em>, we can take <span class="math notranslate nohighlight">\(L=1\)</span>. Observe that minimizing the upper quadratic bound leads to a decrease in <span class="math notranslate nohighlight">\(\mathcal{L}\)</span>.</p>
+<p>We plot next the upper and lower bounds in the <em>Quadratic Bound for Smooth Functions</em> around <span class="math notranslate nohighlight">\(x = x_0\)</span>. It turns out we can take <span class="math notranslate nohighlight">\(L=1\)</span>. Observe that minimizing the upper quadratic bound leads to a decrease in <span class="math notranslate nohighlight">\(\mathcal{L}\)</span>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">x0</span> <span class="o">=</span> <span class="o">-</span><span class="mf">0.3</span>
@@ -1077,7 +1027,8 @@ f(\mathbf{x}^S)
 &amp;\leq \frac{2L [f(\mathbf{x}^0) - \bar{f}]}{S}
 \end{align*}\]</div>
 <p>as the minimum is necessarily less or equal than the average. Moreover, as <span class="math notranslate nohighlight">\(S \to +\infty\)</span>, we must have <span class="math notranslate nohighlight">\(\|\nabla f(\mathbf{x}^S)\|^2 \to 0\)</span> by standard <a class="reference external" href="https://math.stackexchange.com/questions/62389/relationships-between-bounded-and-convergent-series">analytical</a> <a class="reference external" href="https://math.stackexchange.com/questions/107961/if-a-series-converges-then-the-sequence-of-terms-converges-to-0">arguments</a>. That proves the claim. <span class="math notranslate nohighlight">\(\square\)</span></p>
-<p><strong>Smooth and strongly convex case</strong> With stronger assumptions, we obtain stronger convergence results. One such assumption is strong convexity, which we defined in the previous section for twice continuously differentiable functions. Recall the definition and compare with that of a smooth function.</p>
+<p><strong>Smooth and strongly convex case</strong> With stronger assumptions, we obtain stronger convergence results. One such assumption is strong convexity, which we defined in the previous section for twice continuously differentiable functions.</p>
+<p>Recall the definition and compare with that of a smooth function.</p>
 <p><strong>DEFINITION</strong> <strong>(Strongly Convex Function)</strong> Let <span class="math notranslate nohighlight">\(f : \mathbb{R}^d \to \mathbb{R}\)</span> be twice continuously differentiable and let <span class="math notranslate nohighlight">\(m &gt; 0\)</span>. We say that <span class="math notranslate nohighlight">\(f\)</span> is <span class="math notranslate nohighlight">\(m\)</span>-strongly convex if</p>
 <div class="math notranslate nohighlight">
 \[
@@ -1105,7 +1056,7 @@ f(\mathbf{x}^*)
 + \frac{1}{2} \mathbf{w}^T P \,\mathbf{w}
 \end{align*}\]</div>
 <p>where on the second line we defined <span class="math notranslate nohighlight">\(\mathbf{w} = \mathbf{x}^* - \mathbf{x}\)</span>. The right-hand side is a quadratic function in <span class="math notranslate nohighlight">\(\mathbf{w}\)</span> (for <span class="math notranslate nohighlight">\(\mathbf{x}\)</span> fixed), and on the third line we used our previous notation <span class="math notranslate nohighlight">\(P\)</span>, <span class="math notranslate nohighlight">\(\mathbf{q}\)</span> and <span class="math notranslate nohighlight">\(r\)</span> for such a function. So the inequality is still valid if we replace <span class="math notranslate nohighlight">\(\mathbf{w}\)</span> with the global minimizer <span class="math notranslate nohighlight">\(\mathbf{w}^*\)</span> of that quadratic function.</p>
-<p>The matrix <span class="math notranslate nohighlight">\(P = m I_{d \times d}\)</span> is positive definite since its eigenvalues are all equal to <span class="math notranslate nohighlight">\(m &gt; 0\)</span>. By a previous example, we know that the minimizer is achieved when the gradient <span class="math notranslate nohighlight">\(\frac{1}{2}[P + P^T]\mathbf{w}^* + \mathbf{q} = \mathbf{0}\)</span>, which is equivalent to</p>
+<p>The matrix <span class="math notranslate nohighlight">\(P = m I_{d \times d}\)</span> is positive definite. By a previous example, we know that the minimizer is achieved when the gradient <span class="math notranslate nohighlight">\(\frac{1}{2}[P + P^T]\mathbf{w}^* + \mathbf{q} = \mathbf{0}\)</span>, which is equivalent to</p>
 <div class="math notranslate nohighlight">
 \[
 \mathbf{w}^* 
@@ -1240,6 +1191,88 @@ f(x^1) - f(x^*)
 </div>
 <p><span class="math notranslate nohighlight">\(\unlhd\)</span></p>
 </section>
+<section id="implementing-gradient-descent-in-pytorch">
+<h2><span class="section-number">6.4.3. </span>Implementing gradient descent in PyTorch<a class="headerlink" href="#implementing-gradient-descent-in-pytorch" title="Permalink to this headline">#</a></h2>
+<p>Rather than explicitly specifying the gradient function, we could use PyTorch to compute it automatically. This is done next. Note that the descent update is done within <a class="reference external" href="https://pytorch.org/docs/stable/generated/torch.no_grad.html"><code class="docutils literal notranslate"><span class="pre">with</span> <span class="pre">torch.no_grad()</span></code></a>, which ensures that the update operation itself is not tracked for gradient computation. Here the input <code class="docutils literal notranslate"><span class="pre">x0</span></code> as well as the output <code class="docutils literal notranslate"><span class="pre">xk.numpy(force=True)</span></code> are Numpy arrays. The function <a class="reference external" href="https://pytorch.org/docs/stable/generated/torch.Tensor.numpy.html"><code class="docutils literal notranslate"><span class="pre">numpy()</span></code></a> converts a PyTorch tensor to a Numpy array (see the documentation for an explanation of the <code class="docutils literal notranslate"><span class="pre">force=True</span></code> option).</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">gd_with_ad</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">x0</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">1e-3</span><span class="p">,</span> <span class="n">niters</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="mf">1e6</span><span class="p">)):</span>
+    <span class="n">xk</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">x0</span><span class="p">,</span> 
+                      <span class="n">requires_grad</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> 
+                      <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">float</span><span class="p">)</span>
+    
+    <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">niters</span><span class="p">):</span>
+        <span class="c1"># Compute the function value and its gradient</span>
+        <span class="n">value</span> <span class="o">=</span> <span class="n">f</span><span class="p">(</span><span class="n">xk</span><span class="p">)</span>
+        <span class="n">value</span><span class="o">.</span><span class="n">backward</span><span class="p">()</span>
+
+        <span class="c1"># Perform a gradient descent step</span>
+        <span class="k">with</span> <span class="n">torch</span><span class="o">.</span><span class="n">no_grad</span><span class="p">():</span>  <span class="c1"># Temporarily set all requires_grad flags to False</span>
+            <span class="n">xk</span> <span class="o">-=</span> <span class="n">alpha</span> <span class="o">*</span> <span class="n">xk</span><span class="o">.</span><span class="n">grad</span>
+
+        <span class="c1"># Zero the gradients for the next iteration</span>
+        <span class="n">xk</span><span class="o">.</span><span class="n">grad</span><span class="o">.</span><span class="n">zero_</span><span class="p">()</span>
+
+    <span class="k">return</span> <span class="n">xk</span><span class="o">.</span><span class="n">numpy</span><span class="p">(</span><span class="n">force</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span> <span class="n">f</span><span class="p">(</span><span class="n">xk</span><span class="p">)</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>We revisit a previous example.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">f</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">x</span><span class="o">**</span><span class="mi">3</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell tag_hide-input docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell source</span>
+<span class="expanded">Hide code cell source</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">xgrid</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">100</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">xgrid</span><span class="p">,</span> <span class="n">f</span><span class="p">(</span><span class="n">xgrid</span><span class="p">),</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;f&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylim</span><span class="p">((</span><span class="o">-</span><span class="mi">10</span><span class="p">,</span><span class="mi">10</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</details>
+<div class="cell_output docutils container">
+<img alt="../../_images/cbf18d50a283cbb0751f62883f6c2e3641b9426348945cb53b851e6c9b0a2ec8.png" src="../../_images/cbf18d50a283cbb0751f62883f6c2e3641b9426348945cb53b851e6c9b0a2ec8.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">gd_with_ad</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">niters</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="mf">1e4</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array(0.03277362, dtype=float32), 3.5202472645323724e-05)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">gd_with_ad</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="n">niters</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array(-4.9335055, dtype=float32), -120.07894897460938)
+</pre></div>
+</div>
+</div>
+</div>
+<p><span class="math notranslate nohighlight">\(\unlhd\)</span></p>
+</section>
 </section>
 
     <script type="text/x-thebe-config">
@@ -1307,6 +1340,7 @@ f(x^1) - f(x^*)
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#gradient-descent">6.4.1. Gradient descent</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#convergence-analysis">6.4.2. Convergence analysis</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#implementing-gradient-descent-in-pytorch">6.4.3. Implementing gradient descent in PyTorch</a></li>
 </ul>
   </nav></div>
 

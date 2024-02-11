@@ -1218,18 +1218,64 @@ P\mathbf{x} = - \mathbf{q}
 <p>is a global minimizer. <span class="math notranslate nohighlight">\(\lhd\)</span></p>
 <p>When <span class="math notranslate nohighlight">\(f\)</span> is strictly convex, the global minimizer is unique (if it exists). (Why?)</p>
 <p>For our purposes, we will need a uniform version of strict convexity, strong convexity, which we define in the next section.</p>
-<p><strong>Strong convexity</strong> With stronger assumptions, we obtain stronger guarantees. One such assumption is strong convexity, which we define next in the special case of twice continuously differentiable functions.</p>
-<p>We will use the following notation. Let <span class="math notranslate nohighlight">\(A, B \in \mathbb{R}^{d \times d}\)</span> be symmetric matrices. Recall that <span class="math notranslate nohighlight">\(A \succeq 0\)</span> means that <span class="math notranslate nohighlight">\(A\)</span> is positive semidefinite. We write <span class="math notranslate nohighlight">\(A \preceq B\)</span> (respectively <span class="math notranslate nohighlight">\(A \succeq B\)</span>) to indicate that <span class="math notranslate nohighlight">\(B - A \succeq 0\)</span> (respectively <span class="math notranslate nohighlight">\(A - B \succeq 0\)</span>). A different, useful way to put this is the following. Recall that <span class="math notranslate nohighlight">\(B - A \succeq 0\)</span> means <span class="math notranslate nohighlight">\(\mathbf{z}^T B\mathbf{z} - \mathbf{z}^T A\mathbf{z} \geq 0\)</span> for all <span class="math notranslate nohighlight">\(\mathbf{z} \in \mathbb{R}^{d}\)</span>. Hence, rearranging,</p>
+<p><strong>Strong convexity</strong> With stronger assumptions, we obtain stronger guarantees. One such assumption is strong convexity, which we define next in the special case of twice continuously differentiable functions. It generalizes the single-variable condition of requiring that the second derivative <span class="math notranslate nohighlight">\(f''(x) &gt; m &gt; 0\)</span> for all <span class="math notranslate nohighlight">\(x \in \mathbb{R}\)</span>. Instead we require that the second derivative “in every direction” is bounded from below. For this purpose, it will be convenient to introduce a notion of second directional derivative.</p>
+<p><strong>DEFINITION</strong> <strong>(Second Directional Derivative)</strong> Let <span class="math notranslate nohighlight">\(f : D \to \mathbb{R}\)</span> where <span class="math notranslate nohighlight">\(D \subseteq \mathbb{R}^d\)</span>, let <span class="math notranslate nohighlight">\(\mathbf{x}_0 \in D\)</span> be an interior point of <span class="math notranslate nohighlight">\(D\)</span> and let <span class="math notranslate nohighlight">\(\mathbf{v} \in \mathbb{R}^d\)</span> be a nonzero vector. The second directional derivative of <span class="math notranslate nohighlight">\(f\)</span> at <span class="math notranslate nohighlight">\(\mathbf{x}_0\)</span> in the direction <span class="math notranslate nohighlight">\(\mathbf{v}\)</span> is</p>
+<div class="math notranslate nohighlight">
+\[
+\frac{\partial^2 f (\mathbf{x}_0)}{\partial \mathbf{v}^2} 
+= \lim_{h \to 0} \frac{1}{h} \left[\frac{\partial f(\mathbf{x}_0 + h \mathbf{v})}{\partial \mathbf{v}} - \frac{\partial f(\mathbf{x}_0)}{\partial \mathbf{v}}\right]
+\]</div>
+<p>provided the limit exists. <span class="math notranslate nohighlight">\(\natural\)</span></p>
+<p>Typically, <span class="math notranslate nohighlight">\(\mathbf{v}\)</span> is a unit vector.</p>
+<p><strong>THEOREM</strong> <strong>(Second Directional Derivative from Hessian)</strong> Let <span class="math notranslate nohighlight">\(f : D \to \mathbb{R}\)</span> where <span class="math notranslate nohighlight">\(D \subseteq \mathbb{R}^d\)</span>, let <span class="math notranslate nohighlight">\(\mathbf{x}_0 \in D\)</span> be an interior point of <span class="math notranslate nohighlight">\(D\)</span> and let <span class="math notranslate nohighlight">\(\mathbf{v} \in \mathbb{R}^d\)</span> be a vector. Assume that <span class="math notranslate nohighlight">\(f\)</span> is twice continuously differentiable at <span class="math notranslate nohighlight">\(\mathbf{x}_0\)</span>. Then the second directional derivative of <span class="math notranslate nohighlight">\(f\)</span> at <span class="math notranslate nohighlight">\(\mathbf{x}_0\)</span> in the direction <span class="math notranslate nohighlight">\(\mathbf{v}\)</span> is given by</p>
+<div class="math notranslate nohighlight">
+\[
+\frac{\partial^2 f (\mathbf{x}_0)}{\partial \mathbf{v}^2} 
+= \mathbf{v}^T H_f(\mathbf{x}_0) \,\mathbf{v}.
+\]</div>
+<p><span class="math notranslate nohighlight">\(\sharp\)</span></p>
+<p><em>Proof idea:</em> We use the result for the directional derivative.</p>
+<p><em>Proof:</em> Then, by definition of the derivative,</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+\lim_{h \to 0} \frac{1}{h} \left[\frac{\partial f(\mathbf{x}_0 + h \mathbf{v})}{\partial \mathbf{v}} - \frac{\partial f(\mathbf{x}_0)}{\partial \mathbf{v}}\right]
+&amp;= \lim_{h \to 0} \frac{1}{h} \left[\nabla f(\mathbf{x}_0 + h \mathbf{v})^T \mathbf{v} - \nabla f(\mathbf{x}_0)^T \mathbf{v}\right]\\
+&amp;= \lim_{h \to 0} \frac{1}{h} \sum_{i=1}^n v_i \left[\frac{\partial f(\mathbf{x}_0 + h \mathbf{v})}{\partial v_i} - \frac{\partial f(\mathbf{x}_0)}{\partial v_i} \right]\\
+&amp;= \sum_{i=1}^n v_i \lim_{h \to 0} \frac{1}{h} \left[\frac{\partial f(\mathbf{x}_0 + h \mathbf{v})}{\partial v_i} - \frac{\partial f(\mathbf{x}_0)}{\partial v_i} \right]\\
+&amp;= \sum_{i=1}^n v_i \frac{\partial g_i (\mathbf{x}_0)}{\partial \mathbf{v}},
+\end{align*}\]</div>
+<p>where <span class="math notranslate nohighlight">\(g_i(\mathbf{x}_0) = \frac{\partial f(\mathbf{x}_0)}{\partial v_i}\)</span>. So</p>
+<div class="math notranslate nohighlight">
+\[
+\frac{\partial g_i (\mathbf{x}_0)}{\partial \mathbf{v}} 
+= \nabla g_i(\mathbf{x}_0)^T \mathbf{v}
+= \sum_{j=1}^n v_j \frac{\partial^2 f(\mathbf{x}_0)}{\partial v_i\partial v_j}
+\]</div>
+<p>by the <em>Directional Derivative from Gradient Theorem</em>. Plugging back above we get</p>
+<div class="math notranslate nohighlight">
+\[
+\frac{\partial^2 f (\mathbf{x}_0)}{\partial \mathbf{v}^2} 
+=  \sum_{i=1}^n v_i \sum_{j=1}^n v_j \frac{\partial^2 f(\mathbf{x}_0)}{\partial v_i\partial v_j}
+= \mathbf{v}^T H_f(\mathbf{x}_0) \,\mathbf{v}.
+\]</div>
+<p><span class="math notranslate nohighlight">\(\square\)</span></p>
+<p>A strongly convex function is one where the second directional derivative along all unit vector directions is uniformly bounded away from <span class="math notranslate nohighlight">\(0\)</span>. That is, there is <span class="math notranslate nohighlight">\(m &gt; 0\)</span> such that</p>
+<div class="math notranslate nohighlight">
+\[
+\frac{\partial^2 f (\mathbf{x})}{\partial \mathbf{v}^2} = \mathbf{v}^T H_f(\mathbf{x}) \,\mathbf{v} \geq m
+\]</div>
+<p>for all <span class="math notranslate nohighlight">\(\mathbf{x} \in \mathbb{R}^d\)</span> and all unit vectors <span class="math notranslate nohighlight">\(\mathbf{v} \in \mathbb{R}^d\)</span>.</p>
+<p>We will use the following notation to state it formally. Let <span class="math notranslate nohighlight">\(A, B \in \mathbb{R}^{d \times d}\)</span> be symmetric matrices. Recall that <span class="math notranslate nohighlight">\(A \succeq 0\)</span> means that <span class="math notranslate nohighlight">\(A\)</span> is positive semidefinite. We write <span class="math notranslate nohighlight">\(A \preceq B\)</span> (respectively <span class="math notranslate nohighlight">\(A \succeq B\)</span>) to indicate that <span class="math notranslate nohighlight">\(B - A \succeq 0\)</span> (respectively <span class="math notranslate nohighlight">\(A - B \succeq 0\)</span>). A different, useful way to put this is the following. Recall that <span class="math notranslate nohighlight">\(B - A \succeq 0\)</span> means <span class="math notranslate nohighlight">\(\mathbf{z}^T B\mathbf{z} - \mathbf{z}^T A\mathbf{z} \geq 0\)</span> for all <span class="math notranslate nohighlight">\(\mathbf{z} \in \mathbb{R}^{d}\)</span>. Hence, rearranging,</p>
 <div class="math notranslate nohighlight">
 \[
 A \preceq B
-\iff \mathbf{z}^T A\mathbf{z} \leq \mathbf{z}^T B\mathbf{z}, \qquad \forall \mathbf{z} \in \mathbb{R}^{d}.
+\iff \mathbf{z}^T A\,\mathbf{z} \leq \mathbf{z}^T B\,\mathbf{z}, \qquad \forall \mathbf{z} \in \mathbb{R}^{d}.
 \]</div>
 <p>Similarly,</p>
 <div class="math notranslate nohighlight">
 \[
 A \succeq B
-\iff \mathbf{z}^T A\mathbf{z} \geq \mathbf{z}^T B\mathbf{z}, \qquad \forall \mathbf{z} \in \mathbb{R}^{d}.
+\iff \mathbf{z}^T A\,\mathbf{z} \geq \mathbf{z}^T B\,\mathbf{z}, \qquad \forall \mathbf{z} \in \mathbb{R}^{d}.
 \]</div>
 <p><strong>DEFINITION</strong> <strong>(Strongly Convex Function)</strong> Let <span class="math notranslate nohighlight">\(f : \mathbb{R}^d \to \mathbb{R}\)</span> be twice continuously differentiable and let <span class="math notranslate nohighlight">\(m &gt; 0\)</span>. We say that <span class="math notranslate nohighlight">\(f\)</span> is <span class="math notranslate nohighlight">\(m\)</span>-strongly convex if</p>
 <div class="math notranslate nohighlight">
@@ -1244,7 +1290,13 @@ H_f(\mathbf{x}) \succeq m I_{d \times d},
 \mathbf{z}^T H_f(\mathbf{x}) \,\mathbf{z} \geq m \|\mathbf{z}\|^2,
 \quad \forall \mathbf{x}, \mathbf{z} \in \mathbb{R}^d.
 \]</div>
-<p>Combined with <em>Taylor’s Theorem</em>, this gives immediately the following. The proof is left as an exercise (see <em>Exercise 4.18</em>). Also <em>Exercise 4.16</em> gives a practical way to check the strong convexity condition.</p>
+<p>In particular, for a unit vector <span class="math notranslate nohighlight">\(\mathbf{v}\)</span> we get <span class="math notranslate nohighlight">\(\mathbf{v}^T H_f(\mathbf{x}) \,\mathbf{v} \geq m\)</span>. Vice versa, if <span class="math notranslate nohighlight">\(\mathbf{v}^T H_f(\mathbf{x}) \,\mathbf{v} \geq m\)</span> for all <span class="math notranslate nohighlight">\(\mathbf{x} \in \mathbb{R}^d\)</span> and all unit vectors <span class="math notranslate nohighlight">\(\mathbf{v} \in \mathbb{R}^d\)</span>, then it holds that for any nonzero vector <span class="math notranslate nohighlight">\(\mathbf{z} \in \mathbb{R}^d\)</span></p>
+<div class="math notranslate nohighlight">
+\[
+\left(\frac{\mathbf{z}}{\|\mathbf{z}\|}\right)^T H_f(\mathbf{x}) \,\left(\frac{\mathbf{z}}{\|\mathbf{z}\|}\right) \geq m,
+\]</div>
+<p>which after rearranging gives <span class="math notranslate nohighlight">\(\mathbf{z}^T H_f(\mathbf{x}) \,\mathbf{z} \geq m \|\mathbf{z}\|^2\)</span>.</p>
+<p>Combined with <em>Taylor’s Theorem</em>, this gives immediately the following. The proof is left as an exercise.</p>
 <p><strong>LEMMA</strong> <strong>(Quadratic Bound for Strongly Convex Functions)</strong> Let <span class="math notranslate nohighlight">\(f : \mathbb{R}^d \to \mathbb{R}\)</span> be twice continuously differentiable. Then <span class="math notranslate nohighlight">\(f\)</span> is <span class="math notranslate nohighlight">\(m\)</span>-strongly convex if and only if</p>
 <div class="math notranslate nohighlight">
 \[
@@ -1277,7 +1329,7 @@ f(\mathbf{x})
 \[
 H_f(\mathbf{x}) = \frac{1}{2}[P + P^T] = P.
 \]</div>
-<p>So all eigenvalues of <span class="math notranslate nohighlight">\(H_f(\mathbf{x}) = P\)</span> are stricly positive. Let <span class="math notranslate nohighlight">\(\mu &gt; 0\)</span> be the smallest one. Then <span class="math notranslate nohighlight">\(f\)</span> is <span class="math notranslate nohighlight">\(\mu\)</span>-strongly convex.</p>
+<p>The set <span class="math notranslate nohighlight">\(\mathbb{S}^{d-1}\)</span> of unit vectors in <span class="math notranslate nohighlight">\(\mathbb{R}^d\)</span> is closed and bounded. The expression <span class="math notranslate nohighlight">\(\mathbf{v}^T P \,\mathbf{v}\)</span>, viewed as a function of <span class="math notranslate nohighlight">\(\mathbf{x}\)</span> is continuous since it is a polynomial. Hence, by the <em>Extreme Value Theorem</em>, it attains its minimum on <span class="math notranslate nohighlight">\(\mathbb{S}^{d-1}\)</span>. By our assumption that <span class="math notranslate nohighlight">\(P\)</span> is positive definite, that minimum must be strictly positive, say <span class="math notranslate nohighlight">\(\mu &gt; 0\)</span>. Then <span class="math notranslate nohighlight">\(f\)</span> is <span class="math notranslate nohighlight">\(\mu\)</span>-strongly convex.</p>
 <p>The theorem above then indicates that there is a unique global minimizer to the least-squares objective in that case. Using previous calculation, it is obtained by computing <span class="math notranslate nohighlight">\(\mathbf{x}^* = - P^{-1} \mathbf{q}\)</span>. (Why is <span class="math notranslate nohighlight">\(P\)</span> invertible?) <span class="math notranslate nohighlight">\(\lhd\)</span></p>
 <p><strong>EXAMPLE:</strong> Consider the least-squares objective function</p>
 <div class="math notranslate nohighlight">
@@ -1300,7 +1352,7 @@ f(\mathbf{x})
 H_f(\mathbf{x})
 = 2 A^T A.
 \]</div>
-<p>This Hessian is positive definite. Indeed we have proved previously that, for any <span class="math notranslate nohighlight">\(\mathbf{z} \in \mathbf{R}^d\)</span>,</p>
+<p>This Hessian is positive definite. Indeed we have proved previously that, for any <span class="math notranslate nohighlight">\(\mathbf{z} \in \mathbb{R}^d\)</span>,</p>
 <div class="math notranslate nohighlight">
 \[
 \langle \mathbf{z}, 2 A^T A \mathbf{z}\rangle 
@@ -1308,7 +1360,7 @@ H_f(\mathbf{x})
 = 2 \|A \mathbf{z}\|^2 &gt; 0,
 \]</div>
 <p>since <span class="math notranslate nohighlight">\(A \mathbf{z} = \mathbf{0}\)</span> implies <span class="math notranslate nohighlight">\(\mathbf{z} = \mathbf{0}\)</span> by the full column rank assumption.</p>
-<p>So all eigenvalues of <span class="math notranslate nohighlight">\(H_f(\mathbf{x}) = 2 A^T A\)</span> are stricly positive. Let <span class="math notranslate nohighlight">\(\mu &gt; 0\)</span> be the smallest one. Then <span class="math notranslate nohighlight">\(f\)</span> is <span class="math notranslate nohighlight">\(\mu\)</span>-strongly convex (Why?).</p>
+<p>By the previous example, <span class="math notranslate nohighlight">\(f\)</span> is <span class="math notranslate nohighlight">\(\mu\)</span>-strongly convex for some <span class="math notranslate nohighlight">\(\mu &gt; 0\)</span>.</p>
 <p>The theorem above then indicates that there is a unique global minimizer to the least-squares objective in that case. <span class="math notranslate nohighlight">\(\lhd\)</span></p>
 </section>
 <section id="a-data-science-example-ridge-regression">

@@ -493,12 +493,13 @@ f(\mathbf{x})
 <h2><span class="section-number">6.3.1. </span>First-order conditions<a class="headerlink" href="#first-order-conditions" title="Permalink to this headline">#</a></h2>
 <p>Local minimizers can be characterized in terms of the gradient. We first define the concept of directional derivative.</p>
 <p><strong>Directional derivative</strong> Partial derivatives measure the rate of change of a function along the axes. More generally:</p>
-<p><strong>DEFINITION</strong> <strong>(Directional Derivative)</strong> Let <span class="math notranslate nohighlight">\(f : D \to \mathbb{R}\)</span> where <span class="math notranslate nohighlight">\(D \subseteq \mathbb{R}^d\)</span>, let <span class="math notranslate nohighlight">\(\mathbf{x}_0 \in D\)</span> be an interior point of <span class="math notranslate nohighlight">\(D\)</span> and let <span class="math notranslate nohighlight">\(\mathbf{v} \in \mathbb{R}^d\)</span> be a nonzero vector. The directional derivative of <span class="math notranslate nohighlight">\(f\)</span> at <span class="math notranslate nohighlight">\(\mathbf{x}_0\)</span> in the direction <span class="math notranslate nohighlight">\(\mathbf{v}\)</span> is</p>
-<div class="math notranslate nohighlight">
-\[
+<p><strong>DEFINITION</strong> <strong>(Directional Derivative)</strong> Let <span class="math notranslate nohighlight">\(f : D \to \mathbb{R}\)</span> where <span class="math notranslate nohighlight">\(D \subseteq \mathbb{R}^d\)</span>, let <span class="math notranslate nohighlight">\(\mathbf{x}_0 = (x_{0,1},\ldots,x_{0,d}) \in D\)</span> be an interior point of <span class="math notranslate nohighlight">\(D\)</span> and let <span class="math notranslate nohighlight">\(\mathbf{v} = (v_1,\ldots,v_d) \in \mathbb{R}^d\)</span> be a nonzero vector. The directional derivative of <span class="math notranslate nohighlight">\(f\)</span> at <span class="math notranslate nohighlight">\(\mathbf{x}_0\)</span> in the direction <span class="math notranslate nohighlight">\(\mathbf{v}\)</span> is</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
 \frac{\partial f (\mathbf{x}_0)}{\partial \mathbf{v}} 
-= \lim_{h \to 0} \frac{f(\mathbf{x}_0 + h \mathbf{v}) - f(\mathbf{x}_0)}{h}
-\]</div>
+&amp;= \lim_{h \to 0} \frac{f(\mathbf{x}_0 + h \mathbf{v}) - f(\mathbf{x}_0)}{h}\\
+&amp;= \lim_{h \to 0} \frac{f(x_{0,1} + h v_1,\ldots,x_{0,d} + h v_d) - f(x_{0,1},\ldots,x_{0,d})}{h}
+\end{align*}\]</div>
 <p>provided the limit exists. <span class="math notranslate nohighlight">\(\natural\)</span></p>
 <p>Typically, <span class="math notranslate nohighlight">\(\mathbf{v}\)</span> is a unit vector.</p>
 <p>Note that taking <span class="math notranslate nohighlight">\(\mathbf{v} = \mathbf{e}_i\)</span> recovers the <span class="math notranslate nohighlight">\(i\)</span>-th partial derivative</p>
@@ -803,6 +804,48 @@ f(x_1, x_2)
 - 2 x_1 x_2 e^{\xi x_1} \sin(\xi x_2)].
 \]</div>
 <p><span class="math notranslate nohighlight">\(\lhd\)</span></p>
+<p><strong>Second directional derivative</strong> To control the error term in <em>Taylor’s Theorem</em>, it will be convenient to introduce a notion of second directional derivative.</p>
+<p><strong>DEFINITION</strong> <strong>(Second Directional Derivative)</strong> Let <span class="math notranslate nohighlight">\(f : D \to \mathbb{R}\)</span> where <span class="math notranslate nohighlight">\(D \subseteq \mathbb{R}^d\)</span>, let <span class="math notranslate nohighlight">\(\mathbf{x}_0 \in D\)</span> be an interior point of <span class="math notranslate nohighlight">\(D\)</span> and let <span class="math notranslate nohighlight">\(\mathbf{v} \in \mathbb{R}^d\)</span> be a nonzero vector. The second directional derivative of <span class="math notranslate nohighlight">\(f\)</span> at <span class="math notranslate nohighlight">\(\mathbf{x}_0\)</span> in the direction <span class="math notranslate nohighlight">\(\mathbf{v}\)</span> is</p>
+<div class="math notranslate nohighlight">
+\[
+\frac{\partial^2 f (\mathbf{x}_0)}{\partial \mathbf{v}^2} 
+= \lim_{h \to 0} \frac{1}{h} \left[\frac{\partial f(\mathbf{x}_0 + h \mathbf{v})}{\partial \mathbf{v}} - \frac{\partial f(\mathbf{x}_0)}{\partial \mathbf{v}}\right]
+\]</div>
+<p>provided the limit exists. <span class="math notranslate nohighlight">\(\natural\)</span></p>
+<p>Typically, <span class="math notranslate nohighlight">\(\mathbf{v}\)</span> is a unit vector.</p>
+<p><strong>THEOREM</strong> <strong>(Second Directional Derivative from Hessian)</strong> Let <span class="math notranslate nohighlight">\(f : D \to \mathbb{R}\)</span> where <span class="math notranslate nohighlight">\(D \subseteq \mathbb{R}^d\)</span>, let <span class="math notranslate nohighlight">\(\mathbf{x}_0 \in D\)</span> be an interior point of <span class="math notranslate nohighlight">\(D\)</span> and let <span class="math notranslate nohighlight">\(\mathbf{v} \in \mathbb{R}^d\)</span> be a vector. Assume that <span class="math notranslate nohighlight">\(f\)</span> is twice continuously differentiable at <span class="math notranslate nohighlight">\(\mathbf{x}_0\)</span>. Then the second directional derivative of <span class="math notranslate nohighlight">\(f\)</span> at <span class="math notranslate nohighlight">\(\mathbf{x}_0\)</span> in the direction <span class="math notranslate nohighlight">\(\mathbf{v}\)</span> is given by</p>
+<div class="math notranslate nohighlight">
+\[
+\frac{\partial^2 f (\mathbf{x}_0)}{\partial \mathbf{v}^2} 
+= \mathbf{v}^T H_f(\mathbf{x}_0) \,\mathbf{v}.
+\]</div>
+<p><span class="math notranslate nohighlight">\(\sharp\)</span></p>
+<p>Note the similarity to the quadratic term in <em>Taylor’s Theorem</em>.</p>
+<p><em>Proof idea:</em> We use the result for the directional derivative.</p>
+<p><em>Proof:</em> Then, by definition of the derivative,</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+\lim_{h \to 0} \frac{1}{h} \left[\frac{\partial f(\mathbf{x}_0 + h \mathbf{v})}{\partial \mathbf{v}} - \frac{\partial f(\mathbf{x}_0)}{\partial \mathbf{v}}\right]
+&amp;= \lim_{h \to 0} \frac{1}{h} \left[\nabla f(\mathbf{x}_0 + h \mathbf{v})^T \mathbf{v} - \nabla f(\mathbf{x}_0)^T \mathbf{v}\right]\\
+&amp;= \lim_{h \to 0} \frac{1}{h} \sum_{i=1}^n v_i \left[\frac{\partial f(\mathbf{x}_0 + h \mathbf{v})}{\partial v_i} - \frac{\partial f(\mathbf{x}_0)}{\partial v_i} \right]\\
+&amp;= \sum_{i=1}^n v_i \lim_{h \to 0} \frac{1}{h} \left[\frac{\partial f(\mathbf{x}_0 + h \mathbf{v})}{\partial v_i} - \frac{\partial f(\mathbf{x}_0)}{\partial v_i} \right]\\
+&amp;= \sum_{i=1}^n v_i \frac{\partial g_i (\mathbf{x}_0)}{\partial \mathbf{v}},
+\end{align*}\]</div>
+<p>where <span class="math notranslate nohighlight">\(g_i(\mathbf{x}_0) = \frac{\partial f(\mathbf{x}_0)}{\partial v_i}\)</span>. So</p>
+<div class="math notranslate nohighlight">
+\[
+\frac{\partial g_i (\mathbf{x}_0)}{\partial \mathbf{v}} 
+= \nabla g_i(\mathbf{x}_0)^T \mathbf{v}
+= \sum_{j=1}^n v_j \frac{\partial^2 f(\mathbf{x}_0)}{\partial v_i\partial v_j}
+\]</div>
+<p>by the <em>Directional Derivative from Gradient Theorem</em>. Plugging back above we get</p>
+<div class="math notranslate nohighlight">
+\[
+\frac{\partial^2 f (\mathbf{x}_0)}{\partial \mathbf{v}^2} 
+=  \sum_{i=1}^n v_i \sum_{j=1}^n v_j \frac{\partial^2 f(\mathbf{x}_0)}{\partial v_i\partial v_j}
+= \mathbf{v}^T H_f(\mathbf{x}_0) \,\mathbf{v}.
+\]</div>
+<p><span class="math notranslate nohighlight">\(\square\)</span></p>
 <p><strong>Necessary condition</strong> When <span class="math notranslate nohighlight">\(f\)</span> is twice continuously differentiable, we get a necessary condition based on the Hessian.</p>
 <p><strong>THEOREM</strong> <strong>(Second-Order Necessary Condition)</strong> Let <span class="math notranslate nohighlight">\(f : \mathbb{R}^d \to \mathbb{R}\)</span> be twice continuously differentiable on <span class="math notranslate nohighlight">\(\mathbb{R}^d\)</span>. If <span class="math notranslate nohighlight">\(\mathbf{x}_0\)</span> is a local minimizer, then <span class="math notranslate nohighlight">\(\nabla f(\mathbf{x}_0) = \mathbf{0}\)</span> and <span class="math notranslate nohighlight">\(\mathbf{H}_f(\mathbf{x}_0)\)</span> is positive semidefinite. <span class="math notranslate nohighlight">\(\sharp\)</span></p>
 <p><em>Proof idea:</em> By <em>Taylor</em> and the <em>First-Order Necessary Condition</em>,</p>
@@ -815,12 +858,13 @@ f(\mathbf{x}_0 + \alpha \mathbf{v})
 &amp;= f(\mathbf{x}_0) 
 + \frac{1}{2}\alpha^2 \mathbf{v}^T \mathbf{H}_f(\mathbf{x}_0 + \xi_\alpha \alpha \mathbf{v})\,\mathbf{v}.
 \end{align*}\]</div>
-<p>If <span class="math notranslate nohighlight">\(\mathbf{H}_f\)</span> is positive semidefinite in a neighborhood around <span class="math notranslate nohighlight">\(\mathbf{x}_0\)</span>, then the second term on the right-hand side is nonnegative, which is necessary for <span class="math notranslate nohighlight">\(\mathbf{x}_0\)</span> to be a local minimizer. Formally we argue  by contradiction. The proof goes along the same lines as the argument leading to the <em>First-Order Necessary Condition</em>.</p>
+<p>If <span class="math notranslate nohighlight">\(\mathbf{H}_f\)</span> is positive semidefinite in a neighborhood around <span class="math notranslate nohighlight">\(\mathbf{x}_0\)</span>, then the second term on the right-hand side is nonnegative, which is necessary for <span class="math notranslate nohighlight">\(\mathbf{x}_0\)</span> to be a local minimizer. Formally we argue  by contradiction: indeed, if <span class="math notranslate nohighlight">\(\mathbf{H}_f\)</span> is not positive semidefinite, then there must exists a direction in which the second directional derivative is negative; since the gradient is <span class="math notranslate nohighlight">\(\mathbf{0}\)</span> at <span class="math notranslate nohighlight">\(\mathbf{x}_0\)</span>, intuitively the directional derivative must become negative in that direction as well and the function must decrease.</p>
 <p><em>Proof:</em> We argue by contradiction. Suppose that <span class="math notranslate nohighlight">\(\mathbf{H}_f(\mathbf{x}_0)\)</span> is not positive semidefinite. By definition, there must be a unit vector <span class="math notranslate nohighlight">\(\mathbf{v}\)</span> such that</p>
 <div class="math notranslate nohighlight">
 \[
 \langle \mathbf{v}, \mathbf{H}_f(\mathbf{x}_0) \,\mathbf{v} \rangle = - \eta &lt; 0.
 \]</div>
+<p>That is, <span class="math notranslate nohighlight">\(\mathbf{v}\)</span> is a direction in which the second directional derivative is negative.</p>
 <p>For <span class="math notranslate nohighlight">\(\alpha &gt; 0\)</span>, <em>Taylor’s Theorem</em> implies that there is <span class="math notranslate nohighlight">\(\xi_\alpha \in (0,1)\)</span> such that</p>
 <div class="amsmath math notranslate nohighlight">
 \[\begin{align*}
@@ -832,7 +876,7 @@ f(\mathbf{x}_0 + \alpha \mathbf{v})
 + \frac{1}{2} \alpha^2 \mathbf{v}^T \mathbf{H}_f(\mathbf{x}_0 + \xi_\alpha \alpha \mathbf{v})\,\mathbf{v}
 \end{align*}\]</div>
 <p>where we used <span class="math notranslate nohighlight">\(\nabla f(\mathbf{x}_0) = \mathbf{0}\)</span> by the <em>First-Order Necessary Condition</em>. We want to show that the second term on the right-hand side is negative.</p>
-<p>The Hessian is continuous (in the sense that all its entries are continuous functions of <span class="math notranslate nohighlight">\(\mathbf{x}\)</span>). In particular, the function <span class="math notranslate nohighlight">\(\mathbf{v}^T \mathbf{H}_f(\mathbf{x}) \,\mathbf{v}\)</span> is continuous as a linear combination of continuous functions. So, by definition of continuity, for any <span class="math notranslate nohighlight">\(\epsilon &gt; 0\)</span> - say <span class="math notranslate nohighlight">\(\epsilon = \eta/2\)</span> - there is <span class="math notranslate nohighlight">\(\delta &gt; 0\)</span> small enough that</p>
+<p>The Hessian is continuous (in the sense that all its entries are continuous functions of <span class="math notranslate nohighlight">\(\mathbf{x}\)</span>). In particular, the second directional derivative <span class="math notranslate nohighlight">\(\mathbf{v}^T \mathbf{H}_f(\mathbf{x}) \,\mathbf{v}\)</span> is continuous as a linear combination of continuous functions. So, by definition of continuity, for any <span class="math notranslate nohighlight">\(\epsilon &gt; 0\)</span> - say <span class="math notranslate nohighlight">\(\epsilon = \eta/2\)</span> - there is <span class="math notranslate nohighlight">\(\delta &gt; 0\)</span> small enough that</p>
 <div class="amsmath math notranslate nohighlight">
 \[\begin{align*}
 \left| \mathbf{v}^T \mathbf{H}_f(\mathbf{x}) \,\mathbf{v}
@@ -1218,48 +1262,8 @@ P\mathbf{x} = - \mathbf{q}
 <p>is a global minimizer. <span class="math notranslate nohighlight">\(\lhd\)</span></p>
 <p>When <span class="math notranslate nohighlight">\(f\)</span> is strictly convex, the global minimizer is unique (if it exists). (Why?)</p>
 <p>For our purposes, we will need a uniform version of strict convexity, strong convexity, which we define in the next section.</p>
-<p><strong>Strong convexity</strong> With stronger assumptions, we obtain stronger guarantees. One such assumption is strong convexity, which we define next in the special case of twice continuously differentiable functions. It generalizes the single-variable condition of requiring that the second derivative <span class="math notranslate nohighlight">\(f''(x) &gt; m &gt; 0\)</span> for all <span class="math notranslate nohighlight">\(x \in \mathbb{R}\)</span>. Instead we require that the second derivative “in every direction” is bounded from below. For this purpose, it will be convenient to introduce a notion of second directional derivative.</p>
-<p><strong>DEFINITION</strong> <strong>(Second Directional Derivative)</strong> Let <span class="math notranslate nohighlight">\(f : D \to \mathbb{R}\)</span> where <span class="math notranslate nohighlight">\(D \subseteq \mathbb{R}^d\)</span>, let <span class="math notranslate nohighlight">\(\mathbf{x}_0 \in D\)</span> be an interior point of <span class="math notranslate nohighlight">\(D\)</span> and let <span class="math notranslate nohighlight">\(\mathbf{v} \in \mathbb{R}^d\)</span> be a nonzero vector. The second directional derivative of <span class="math notranslate nohighlight">\(f\)</span> at <span class="math notranslate nohighlight">\(\mathbf{x}_0\)</span> in the direction <span class="math notranslate nohighlight">\(\mathbf{v}\)</span> is</p>
-<div class="math notranslate nohighlight">
-\[
-\frac{\partial^2 f (\mathbf{x}_0)}{\partial \mathbf{v}^2} 
-= \lim_{h \to 0} \frac{1}{h} \left[\frac{\partial f(\mathbf{x}_0 + h \mathbf{v})}{\partial \mathbf{v}} - \frac{\partial f(\mathbf{x}_0)}{\partial \mathbf{v}}\right]
-\]</div>
-<p>provided the limit exists. <span class="math notranslate nohighlight">\(\natural\)</span></p>
-<p>Typically, <span class="math notranslate nohighlight">\(\mathbf{v}\)</span> is a unit vector.</p>
-<p><strong>THEOREM</strong> <strong>(Second Directional Derivative from Hessian)</strong> Let <span class="math notranslate nohighlight">\(f : D \to \mathbb{R}\)</span> where <span class="math notranslate nohighlight">\(D \subseteq \mathbb{R}^d\)</span>, let <span class="math notranslate nohighlight">\(\mathbf{x}_0 \in D\)</span> be an interior point of <span class="math notranslate nohighlight">\(D\)</span> and let <span class="math notranslate nohighlight">\(\mathbf{v} \in \mathbb{R}^d\)</span> be a vector. Assume that <span class="math notranslate nohighlight">\(f\)</span> is twice continuously differentiable at <span class="math notranslate nohighlight">\(\mathbf{x}_0\)</span>. Then the second directional derivative of <span class="math notranslate nohighlight">\(f\)</span> at <span class="math notranslate nohighlight">\(\mathbf{x}_0\)</span> in the direction <span class="math notranslate nohighlight">\(\mathbf{v}\)</span> is given by</p>
-<div class="math notranslate nohighlight">
-\[
-\frac{\partial^2 f (\mathbf{x}_0)}{\partial \mathbf{v}^2} 
-= \mathbf{v}^T H_f(\mathbf{x}_0) \,\mathbf{v}.
-\]</div>
-<p><span class="math notranslate nohighlight">\(\sharp\)</span></p>
-<p><em>Proof idea:</em> We use the result for the directional derivative.</p>
-<p><em>Proof:</em> Then, by definition of the derivative,</p>
-<div class="amsmath math notranslate nohighlight">
-\[\begin{align*}
-\lim_{h \to 0} \frac{1}{h} \left[\frac{\partial f(\mathbf{x}_0 + h \mathbf{v})}{\partial \mathbf{v}} - \frac{\partial f(\mathbf{x}_0)}{\partial \mathbf{v}}\right]
-&amp;= \lim_{h \to 0} \frac{1}{h} \left[\nabla f(\mathbf{x}_0 + h \mathbf{v})^T \mathbf{v} - \nabla f(\mathbf{x}_0)^T \mathbf{v}\right]\\
-&amp;= \lim_{h \to 0} \frac{1}{h} \sum_{i=1}^n v_i \left[\frac{\partial f(\mathbf{x}_0 + h \mathbf{v})}{\partial v_i} - \frac{\partial f(\mathbf{x}_0)}{\partial v_i} \right]\\
-&amp;= \sum_{i=1}^n v_i \lim_{h \to 0} \frac{1}{h} \left[\frac{\partial f(\mathbf{x}_0 + h \mathbf{v})}{\partial v_i} - \frac{\partial f(\mathbf{x}_0)}{\partial v_i} \right]\\
-&amp;= \sum_{i=1}^n v_i \frac{\partial g_i (\mathbf{x}_0)}{\partial \mathbf{v}},
-\end{align*}\]</div>
-<p>where <span class="math notranslate nohighlight">\(g_i(\mathbf{x}_0) = \frac{\partial f(\mathbf{x}_0)}{\partial v_i}\)</span>. So</p>
-<div class="math notranslate nohighlight">
-\[
-\frac{\partial g_i (\mathbf{x}_0)}{\partial \mathbf{v}} 
-= \nabla g_i(\mathbf{x}_0)^T \mathbf{v}
-= \sum_{j=1}^n v_j \frac{\partial^2 f(\mathbf{x}_0)}{\partial v_i\partial v_j}
-\]</div>
-<p>by the <em>Directional Derivative from Gradient Theorem</em>. Plugging back above we get</p>
-<div class="math notranslate nohighlight">
-\[
-\frac{\partial^2 f (\mathbf{x}_0)}{\partial \mathbf{v}^2} 
-=  \sum_{i=1}^n v_i \sum_{j=1}^n v_j \frac{\partial^2 f(\mathbf{x}_0)}{\partial v_i\partial v_j}
-= \mathbf{v}^T H_f(\mathbf{x}_0) \,\mathbf{v}.
-\]</div>
-<p><span class="math notranslate nohighlight">\(\square\)</span></p>
-<p>A strongly convex function is one where the second directional derivative along all unit vector directions is uniformly bounded away from <span class="math notranslate nohighlight">\(0\)</span>. That is, there is <span class="math notranslate nohighlight">\(m &gt; 0\)</span> such that</p>
+<p><strong>Strong convexity</strong> With stronger assumptions, we obtain stronger guarantees. One such assumption is strong convexity, which we define next in the special case of twice continuously differentiable functions. It generalizes the single-variable condition of requiring that the second derivative <span class="math notranslate nohighlight">\(f''(x) &gt; m &gt; 0\)</span> for all <span class="math notranslate nohighlight">\(x \in \mathbb{R}\)</span>. Instead we require that the second derivative “in every direction” is bounded from below. For this purpose, we use the second directional derivative.</p>
+<p>A strongly convex function is one where the second directional derivative along all unit vector directions is uniformly bounded below away from <span class="math notranslate nohighlight">\(0\)</span>. That is, there is <span class="math notranslate nohighlight">\(m &gt; 0\)</span> such that</p>
 <div class="math notranslate nohighlight">
 \[
 \frac{\partial^2 f (\mathbf{x})}{\partial \mathbf{v}^2} = \mathbf{v}^T H_f(\mathbf{x}) \,\mathbf{v} \geq m

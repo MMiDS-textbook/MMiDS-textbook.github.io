@@ -9,7 +9,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>6.6. More advanced material: proof of Second-Order Sufficient Condition &#8212; MMiDS Textbook</title>
+    <title>6.6. More advanced material &#8212; MMiDS Textbook</title>
   
   
   
@@ -235,7 +235,7 @@ const thebe_selector_output = ".output, .cell_output"
 <li class="toctree-l2"><a class="reference internal" href="../03_optimality/roch-mmids-opt-optimality.html">6.3. Optimality conditions and convexity</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../04_gd/roch-mmids-opt-gd.html">6.4. Gradient descent and its convergence analysis</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../05_backprop/roch-mmids-opt-backprop.html">6.5. Backpropagation and neural networks</a></li>
-<li class="toctree-l2 current active"><a class="current reference internal" href="#">6.6. More advanced material: proof of Second-Order Sufficient Condition</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">6.6. More advanced material</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../summary_chap06.html">6.7. Other resources</a></li>
 </ul>
 </li>
@@ -433,7 +433,7 @@ document.write(`
               
 
 <div id="jb-print-docs-body" class="onlyprint">
-    <h1>More advanced material: proof of Second-Order Sufficient Condition</h1>
+    <h1>More advanced material</h1>
     <!-- Table of contents -->
     <div id="print-main-content">
         <div id="jb-print-toc">
@@ -444,6 +444,7 @@ document.write(`
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#additional-proofs">6.6.1. Additional proofs</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#proof-of-lagrange-multipliers-first-order-necessary-conditions">6.6.2. Proof of Lagrange Multipliers: First-Order Necessary Conditions</a></li>
 </ul>
             </nav>
         </div>
@@ -455,14 +456,13 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article" role="main">
                   
-  <p><span class="math notranslate nohighlight">\(\newcommand{\bSigma}{\boldsymbol{\Sigma}}\)</span> <span class="math notranslate nohighlight">\(\newcommand{\bmu}{\boldsymbol{\mu}}\)</span></p>
-<section id="more-advanced-material-proof-of-second-order-sufficient-condition">
-<h1><span class="section-number">6.6. </span>More advanced material: proof of Second-Order Sufficient Condition<a class="headerlink" href="#more-advanced-material-proof-of-second-order-sufficient-condition" title="Permalink to this headline">#</a></h1>
+  <p><span class="math notranslate nohighlight">\(\newcommand{\bSigma}{\boldsymbol{\Sigma}}\)</span> <span class="math notranslate nohighlight">\(\newcommand{\bmu}{\boldsymbol{\mu}}\)</span> <span class="math notranslate nohighlight">\(\newcommand{\blambda}{\boldsymbol{\lambda}}\)</span></p>
+<section id="more-advanced-material">
+<h1><span class="section-number">6.6. </span>More advanced material<a class="headerlink" href="#more-advanced-material" title="Permalink to this headline">#</a></h1>
 <p>In this section, we cover some more advanced material.</p>
 <section id="additional-proofs">
 <h2><span class="section-number">6.6.1. </span>Additional proofs<a class="headerlink" href="#additional-proofs" title="Permalink to this headline">#</a></h2>
 <p><strong>Proof of Second-Order Sufficient Condition</strong> We prove the <em>Second-Order Sufficient Condition</em>.</p>
-<p><em>Proof idea:</em> We use <em>Taylor’s Theorem</em> again. This time we use the positive definiteness of the Hessian to bound the value of the function from below.</p>
 <p>We will need a simple lemma.</p>
 <p><strong>LEMMA</strong> Let <span class="math notranslate nohighlight">\(A = (a_{i,j})_{i,j}\)</span> and <span class="math notranslate nohighlight">\(B = (b_{i,j})_{i,j}\)</span> be matrices in <span class="math notranslate nohighlight">\(\mathbb{R}^{n \times m}\)</span>. For any unit vectors <span class="math notranslate nohighlight">\(\mathbf{u} \in \mathbb{R}^n\)</span> and <span class="math notranslate nohighlight">\(\mathbf{v} \in \mathbb{R}^m\)</span></p>
 <div class="math notranslate nohighlight">
@@ -534,6 +534,194 @@ f(\mathbf{x}_0 + \alpha \mathbf{v})
 \end{align*}\]</div>
 <p>Therefore <span class="math notranslate nohighlight">\(\mathbf{x}_0\)</span> is a strict local minimizer. <span class="math notranslate nohighlight">\(\square\)</span></p>
 </section>
+<section id="proof-of-lagrange-multipliers-first-order-necessary-conditions">
+<h2><span class="section-number">6.6.2. </span>Proof of Lagrange Multipliers: First-Order Necessary Conditions<a class="headerlink" href="#proof-of-lagrange-multipliers-first-order-necessary-conditions" title="Permalink to this headline">#</a></h2>
+<p><strong>Proof of Lagrange Multipliers: First-Order Necessary Conditions</strong> We prove the <em>Lagrange Multipliers: First-Order Necessary Conditions</em>. We follow the excellent textbook [<a class="reference external" href="http://www.athenasc.com/nonlinbook.html">Ber</a>, Section 4.1].</p>
+<p><em>Proof:</em> We reduce the problem to an unconstrained optimization problem by penalizing the constraint in the objective function. We also add a regularization term to ensure that <span class="math notranslate nohighlight">\(\mathbf{x}^*\)</span> is the unique local minimizer in a neighborhood. Specifically, for each non-negative integer <span class="math notranslate nohighlight">\(k\)</span>, consider the objective function</p>
+<div class="math notranslate nohighlight">
+\[
+F^k(\mathbf{x})
+= f(\mathbf{x})
++ \frac{k}{2} \|\mathbf{h}(\mathbf{x})\|^2
++ \frac{\alpha}{2} \|\mathbf{x} - \mathbf{x}^*\|^2
+\]</div>
+<p>for some positive constant <span class="math notranslate nohighlight">\(\alpha &gt; 0\)</span>. Note that as <span class="math notranslate nohighlight">\(k\)</span> gets larger, the penalty becomes more significant and, therefore, enforcing the constraint becomes more desirable. The proof proceeds in several steps.</p>
+<p>We first consider a version minimizing <span class="math notranslate nohighlight">\(F^k\)</span> constrained to lie in a neighborhood of <span class="math notranslate nohighlight">\(\mathbf{x}^*\)</span>. Because <span class="math notranslate nohighlight">\(\mathbf{x}^*\)</span> is a local minimizer of <span class="math notranslate nohighlight">\(f\)</span> subject to <span class="math notranslate nohighlight">\(\mathbf{h}(\mathbf{x}) = \mathbf{0}\)</span>, there is <span class="math notranslate nohighlight">\(\delta &gt; 0\)</span> such that <span class="math notranslate nohighlight">\(f(\mathbf{x}^*)\leq f(\mathbf{x})\)</span> for all feasible <span class="math notranslate nohighlight">\(\mathbf{x}\)</span> within</p>
+<div class="math notranslate nohighlight">
+\[
+\mathscr{X}
+=
+B_{\delta}(\mathbf{x}^*)
+= 
+\{\mathbf{x}:\|\mathbf{x} - \mathbf{x}^*\| \leq \delta\}.
+\]</div>
+<p><strong>LEMMA</strong> <strong>(Step I: Solving the Penalized Problem in a Neighborhood of <span class="math notranslate nohighlight">\(\mathbf{x}^*\)</span>)</strong> For <span class="math notranslate nohighlight">\(k \geq 1\)</span>, let <span class="math notranslate nohighlight">\(\mathbf{x}^k\)</span> be a global minimizer of the minimization problem</p>
+<div class="math notranslate nohighlight">
+\[
+\min_{\mathbf{x} \in \mathscr{X}} F^k(\mathbf{x}).
+\]</div>
+<p>a) The sequence <span class="math notranslate nohighlight">\(\{\mathbf{x}^k\}_{k=1}^{+\infty}\)</span> converges to <span class="math notranslate nohighlight">\(\mathbf{x}^*\)</span>.</p>
+<p>b) For <span class="math notranslate nohighlight">\(k\)</span> sufficiently large, <span class="math notranslate nohighlight">\(\mathbf{x}^k\)</span> is a local minimizer of the objective function <span class="math notranslate nohighlight">\(F^k\)</span> <em>without any constraint</em>.</p>
+<p><span class="math notranslate nohighlight">\(\flat\)</span></p>
+<p><em>Proof:</em> The set <span class="math notranslate nohighlight">\(\mathscr{X}\)</span> is closed and bounded, and <span class="math notranslate nohighlight">\(F^k\)</span> is continuous. Hence, the sequence <span class="math notranslate nohighlight">\(\{\mathbf{x}^k\}_{k=1}^{+\infty}\)</span> is well-defined by the <em>Extreme Value Theorem</em>. Let <span class="math notranslate nohighlight">\(\bar{\mathbf{x}}\)</span> be any limit point of <span class="math notranslate nohighlight">\(\{\mathbf{x}^k\}_{k=1}^{+\infty}\)</span>. We show that <span class="math notranslate nohighlight">\(\bar{\mathbf{x}} = \mathbf{x}^*\)</span>. That will imply a). It also implied b) since hen, for large enough <span class="math notranslate nohighlight">\(k\)</span>, <span class="math notranslate nohighlight">\(\mathbf{x}^k\)</span> must be an interior point of <span class="math notranslate nohighlight">\(\mathscr{X}\)</span>.</p>
+<p>Let <span class="math notranslate nohighlight">\(-\infty &lt; m \leq M &lt; + \infty\)</span> be the smallest and largest values of <span class="math notranslate nohighlight">\(f\)</span> on <span class="math notranslate nohighlight">\(\mathscr{X}\)</span>, which exist by the <em>Extreme Value Theorem</em>. Then, for all <span class="math notranslate nohighlight">\(k\)</span>, by definition of <span class="math notranslate nohighlight">\(x^k\)</span> and the fact that <span class="math notranslate nohighlight">\(\mathbf{x}^*\)</span> is feasible</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+(*)
+\qquad 
+f(\mathbf{x}^k)
+&amp;+ \frac{k}{2} \|\mathbf{h}(\mathbf{x}^k)\|^2
++ \frac{\alpha}{2} \|\mathbf{x}^k - \mathbf{x}^*\|^2\\
+&amp;\leq
+f(\mathbf{x}^*)
++ \frac{k}{2} \|\mathbf{h}(\mathbf{x}^*)\|^2
++ \frac{\alpha}{2} \|\mathbf{x}^* - \mathbf{x}^*\|^2
+= f(\mathbf{x}^*).
+\end{align*}\]</div>
+<p>Rearraning gives</p>
+<div class="math notranslate nohighlight">
+\[
+\|\mathbf{h}(\mathbf{x}^k)\|^2
+\leq \frac{2}{k} \left[f(\mathbf{x}^*) - f(\mathbf{x}^k) - \frac{\alpha}{2} \|\mathbf{x}^k - \mathbf{x}^*\|^2\right]
+\leq \frac{2}{k} \left[ f(\mathbf{x}^*) - m\right].
+\]</div>
+<p>So <span class="math notranslate nohighlight">\(\lim_{k \to \infty} \|\mathbf{h}(\mathbf{x}^k)\|^2 = 0\)</span>, which, by the continuity of <span class="math notranslate nohighlight">\(\mathbf{h}\)</span> and of the Frobenius norm, implies that
+<span class="math notranslate nohighlight">\(\|\mathbf{h}(\bar{\mathbf{x}})\|^2 = 0\)</span>, that is, <span class="math notranslate nohighlight">\(\mathbf{h}(\bar{\mathbf{x}}) = \mathbf{0}\)</span>. In other words, any limit point <span class="math notranslate nohighlight">\(\bar{\mathbf{x}}\)</span> is feasible.</p>
+<p>In addition to being feasible, <span class="math notranslate nohighlight">\(\bar{\mathbf{x}} \in \mathscr{X}\)</span> because that constraint set is closed. So, by the choice of <span class="math notranslate nohighlight">\(\mathscr{X}\)</span>, we have <span class="math notranslate nohighlight">\(f(\mathbf{x}^*)
+\leq f(\bar{\mathbf{x}})\)</span>. Furthermore, by <span class="math notranslate nohighlight">\((*)\)</span>, we get</p>
+<div class="math notranslate nohighlight">
+\[
+f(\mathbf{x}^*)
+\leq
+f(\bar{\mathbf{x}}) + \frac{\alpha}{2} \|\bar{\mathbf{x}} - \mathbf{x}^*\|^2
+\leq
+f(\mathbf{x}^*).
+\]</div>
+<p>This is only possible if <span class="math notranslate nohighlight">\(\|\bar{\mathbf{x}} - \mathbf{x}^*\|^2 = 0\)</span> or, put differently, <span class="math notranslate nohighlight">\(\bar{\mathbf{x}} = \mathbf{x}^*\)</span>. That proves the lemma. <span class="math notranslate nohighlight">\(\square\)</span></p>
+<p><strong>LEMMA</strong> <strong>(Step II: Applying the Unconstrained Necessary Conditions)</strong> Let <span class="math notranslate nohighlight">\(\{\mathbf{x}^k\}_{k=1}^{+\infty}\)</span> be the sequence in the previous lemma.</p>
+<p>a) For sufficiently large <span class="math notranslate nohighlight">\(k\)</span>, the vectors <span class="math notranslate nohighlight">\(\nabla h_i(\mathbf{x}^k)\)</span>, <span class="math notranslate nohighlight">\(i=1,\ldots,\ell\)</span>, are linearly independent.</p>
+<p>b) Let <span class="math notranslate nohighlight">\(\mathbf{J}_{\mathbf{h}}(\mathbf{x})\)</span> be the Jacobian matrix of <span class="math notranslate nohighlight">\(\mathbf{h}\)</span>, that is, the matrix whose rows are the (row) vectors <span class="math notranslate nohighlight">\(\nabla h_i(\mathbf{x})^T\)</span>, <span class="math notranslate nohighlight">\(i=1,\ldots,\ell\)</span>. Then</p>
+<div class="math notranslate nohighlight">
+\[
+\nabla f(\mathbf{x}^*)
++ \mathbf{J}_{\mathbf{h}}(\mathbf{x}^*)^T \blambda^*
+= \mathbf{0}
+\]</div>
+<p>where</p>
+<div class="math notranslate nohighlight">
+\[
+\blambda^*
+=
+- (\mathbf{J}_{\mathbf{h}}(\mathbf{x}^*) \, \mathbf{J}_{\mathbf{h}}^T(\mathbf{x}^*))^{-1} \mathbf{J}_{\mathbf{h}}^T(\mathbf{x}^*) \nabla f(\mathbf{x}^*).
+\]</div>
+<p><span class="math notranslate nohighlight">\(\flat\)</span></p>
+<p><em>Proof:</em> By the previous lemma, for <span class="math notranslate nohighlight">\(k\)</span> large enough, <span class="math notranslate nohighlight">\(\mathbf{x}^k\)</span> is an unconstrained local minimizer of <span class="math notranslate nohighlight">\(F^k\)</span>. So by the (unconstrained) <em>First-Order Necessary Conditions</em>, it holds that</p>
+<div class="math notranslate nohighlight">
+\[
+\nabla F^k(\mathbf{x}^k)
+=
+\mathbf{0}.
+\]</div>
+<p>To compute the gradient of <span class="math notranslate nohighlight">\(F^k\)</span> we note that</p>
+<div class="math notranslate nohighlight">
+\[
+\|\mathbf{h}(\mathbf{x})\|^2
+= 
+\sum_{i=1}^\ell
+(h_i(\mathbf{x}))^2.
+\]</div>
+<p>The partial derivatives are</p>
+<div class="math notranslate nohighlight">
+\[
+\frac{\partial}{\partial x_j} \|\mathbf{h}(\mathbf{x})\|^2
+=
+\sum_{i=1}^\ell
+\frac{\partial}{\partial x_j} (h_i(\mathbf{x}))^2
+=
+\sum_{i=1}^\ell
+2  h_i(\mathbf{x}) \frac{\partial h_i(\mathbf{x})}{\partial x_j},
+\]</div>
+<p>by the <em>Chain Rule</em>. So, in vector form,</p>
+<div class="math notranslate nohighlight">
+\[
+\nabla \|\mathbf{h}(\mathbf{x})\|^2
+= 2 \mathbf{J}_{\mathbf{h}}(\mathbf{x})^T \mathbf{h}(\mathbf{x}).
+\]</div>
+<p>The term <span class="math notranslate nohighlight">\(\|\mathbf{x} - \mathbf{x}^*\|^2\)</span> can be rewritten as the quadratic function</p>
+<div class="math notranslate nohighlight">
+\[
+\|\mathbf{x} - \mathbf{x}^*\|^2
+= \frac{1}{2}\mathbf{x}^T (2 I_{d \times d}) \mathbf{x} - 2 (\mathbf{x}^*)^T \mathbf{x} + (\mathbf{x}^*)^T \mathbf{x}^*.
+\]</div>
+<p>Using a previous formula with <span class="math notranslate nohighlight">\(P = 2 I_{d \times d}\)</span> (which is symmetric), <span class="math notranslate nohighlight">\(\mathbf{q} = -2 \mathbf{x}^*\)</span> and <span class="math notranslate nohighlight">\(r = (\mathbf{x}^*)^T \mathbf{x}^*\)</span>, we get</p>
+<div class="math notranslate nohighlight">
+\[
+\nabla \|\mathbf{x} - \mathbf{x}^*\|^2
+= 2\mathbf{x} -2 \mathbf{x}^*.
+\]</div>
+<p>So, putting everything together,</p>
+<div class="math notranslate nohighlight">
+\[
+(**)
+\qquad \mathbf{0}
+=
+\nabla F^k(\mathbf{x}^k)
+=
+\nabla f(\mathbf{x}^k)
++
+\mathbf{J}_{\mathbf{h}}(\mathbf{x}^k)^T (k \mathbf{h}(\mathbf{x}^k))
++ \alpha(\mathbf{x}^k - \mathbf{x}^*).
+\]</div>
+<p>By the previous lemma, <span class="math notranslate nohighlight">\(\mathbf{x}^k \to \mathbf{x}^*\)</span>, <span class="math notranslate nohighlight">\(\nabla f(\mathbf{x}^k) \to \nabla f(\mathbf{x}^*)\)</span>, and <span class="math notranslate nohighlight">\(\mathbf{J}_{\mathbf{h}}(\mathbf{x}^k) \to \mathbf{J}_{\mathbf{h}}(\mathbf{x}^*)\)</span> as <span class="math notranslate nohighlight">\(k \to +\infty\)</span>.</p>
+<p>So it remains to derive the limit of <span class="math notranslate nohighlight">\(k \mathbf{h}(\mathbf{x}^k)\)</span>. By assumption, the columns of <span class="math notranslate nohighlight">\(\mathbf{J}_{\mathbf{h}}(\mathbf{x}^*)^T\)</span> are linearly independent. That implies that for any unit vector <span class="math notranslate nohighlight">\(\mathbf{z} \in \mathbb{R}^\ell\)</span></p>
+<div class="math notranslate nohighlight">
+\[
+\mathbf{z}^T \mathbf{J}_{\mathbf{h}}(\mathbf{x}^*) \,\mathbf{J}_{\mathbf{h}}(\mathbf{x}^*)^T \mathbf{z} = \|\mathbf{J}_{\mathbf{h}}(\mathbf{x}^*)^T \mathbf{z}\|^2 &gt; 0
+\]</div>
+<p>otherwise we would have <span class="math notranslate nohighlight">\(\mathbf{J}_{\mathbf{h}}(\mathbf{x}^*)^T \mathbf{z} = \mathbf{0}\)</span>, contradicting the linear independence assumption. By the <em>Extreme Value Theorem</em>, there is <span class="math notranslate nohighlight">\(\beta &gt; 0\)</span> such that</p>
+<div class="math notranslate nohighlight">
+\[
+\mathbf{z}^T \mathbf{J}_{\mathbf{h}}(\mathbf{x}^*) \,\mathbf{J}_{\mathbf{h}}(\mathbf{x}^*)^T \mathbf{z} \geq \beta
+\]</div>
+<p>for all unit vectors <span class="math notranslate nohighlight">\(\mathbf{z} \in \mathbb{R}^\ell\)</span>. Since <span class="math notranslate nohighlight">\(\mathbf{J}_{\mathbf{h}}(\mathbf{x}^k) \to \mathbf{J}_{\mathbf{h}}(\mathbf{x}^*)\)</span>, it follows from a previous lemma that, for <span class="math notranslate nohighlight">\(k\)</span> large enough and any unit vector <span class="math notranslate nohighlight">\(\mathbf{z} \in \mathbb{R}^\ell\)</span>,</p>
+<div class="math notranslate nohighlight">
+\[
+|\mathbf{z}^T \mathbf{J}_{\mathbf{h}}(\mathbf{x}^*)\, \mathbf{J}_{\mathbf{h}}(\mathbf{x}^*)^T \mathbf{z}
+- 
+\mathbf{z}^T \mathbf{J}_{\mathbf{h}}(\mathbf{x}^k) \,\mathbf{J}_{\mathbf{h}}(\mathbf{x}^k)^T \mathbf{z}|
+\leq 
+\|
+\mathbf{J}_{\mathbf{h}}(\mathbf{x}^*) \,\mathbf{J}_{\mathbf{h}}(\mathbf{x}^*)^T
+-
+\mathbf{J}_{\mathbf{h}}(\mathbf{x}^k) \,\mathbf{J}_{\mathbf{h}}(\mathbf{x}^k)^T
+\|_F
+\leq 
+\frac{\beta}{2}.
+\]</div>
+<p>That implies</p>
+<div class="math notranslate nohighlight">
+\[
+\mathbf{z}^T \mathbf{J}_{\mathbf{h}}(\mathbf{x}^k) \,\mathbf{J}_{\mathbf{h}}(\mathbf{x}^k)^T \mathbf{z} \geq \frac{\beta}{2},
+\]</div>
+<p>so by the same argument as above the columns of <span class="math notranslate nohighlight">\(\mathbf{J}_{\mathbf{h}}(\mathbf{x}^k)^T\)</span> are linearly independent for <span class="math notranslate nohighlight">\(k\)</span> large enough and
+<span class="math notranslate nohighlight">\(\mathbf{J}_{\mathbf{h}}(\mathbf{x}^k) \,\mathbf{J}_{\mathbf{h}}(\mathbf{x}^k)^T\)</span> is invertible. That proves a).</p>
+<p>Going back to <span class="math notranslate nohighlight">\((**)\)</span>, multiplying both sides by <span class="math notranslate nohighlight">\((\mathbf{J}_{\mathbf{h}}(\mathbf{x}^k)\, \mathbf{J}_{\mathbf{h}}(\mathbf{x}^k)^T)^{-1} \mathbf{J}_{\mathbf{h}}(\mathbf{x}^k)\)</span>, and taking a limit <span class="math notranslate nohighlight">\(k \to +\infty\)</span>, we get after rearranging that</p>
+<div class="math notranslate nohighlight">
+\[
+k \mathbf{h}(\mathbf{x}^k)
+\to
+- (\mathbf{J}_{\mathbf{h}}(\mathbf{x}^*) ^T \mathbf{J}_{\mathbf{h}}(\mathbf{x}^*))^{-1} \mathbf{J}_{\mathbf{h}}(\mathbf{x}^*)  \nabla f(\mathbf{x}^*) = \blambda^*.
+\]</div>
+<p>Plugging back we get</p>
+<div class="math notranslate nohighlight">
+\[
+\nabla f(\mathbf{x}^*)
++ \mathbf{J}_{\mathbf{h}}(\mathbf{x}^*)^T \blambda^*
+= \mathbf{0}
+\]</div>
+<p>as claimed. That proved b). <span class="math notranslate nohighlight">\(\square\)</span></p>
+<p>Combining the lemmas established the theorem. <span class="math notranslate nohighlight">\(\square\)</span></p>
+</section>
 </section>
 
     <script type="text/x-thebe-config">
@@ -600,6 +788,7 @@ f(\mathbf{x}_0 + \alpha \mathbf{v})
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#additional-proofs">6.6.1. Additional proofs</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#proof-of-lagrange-multipliers-first-order-necessary-conditions">6.6.2. Proof of Lagrange Multipliers: First-Order Necessary Conditions</a></li>
 </ul>
   </nav></div>
 

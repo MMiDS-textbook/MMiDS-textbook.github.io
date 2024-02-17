@@ -235,7 +235,7 @@ const thebe_selector_output = ".output, .cell_output"
 <li class="toctree-l2 current active"><a class="current reference internal" href="#">6.3. Optimality conditions and convexity</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../04_gd/roch-mmids-opt-gd.html">6.4. Gradient descent and its convergence analysis</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../05_backprop/roch-mmids-opt-backprop.html">6.5. Backpropagation and neural networks</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../06_adv/roch-mmids-opt-adv.html">6.6. More advanced material: proof of Second-Order Sufficient Condition</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../06_adv/roch-mmids-opt-adv.html">6.6. More advanced material</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../summary_chap06.html">6.7. Other resources</a></li>
 </ul>
 </li>
@@ -445,9 +445,10 @@ document.write(`
                 <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#first-order-conditions">6.3.1. First-order conditions</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#second-order-conditions">6.3.2. Second-order conditions</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#convexity">6.3.3. Convexity</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#convexity-and-unconstrained-optimization">6.3.4. Convexity and unconstrained optimization</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#a-data-science-example-ridge-regression">6.3.5. A data science example: ridge regression</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#adding-equality-constraints">6.3.3. Adding equality constraints</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#convexity">6.3.4. Convexity</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#convexity-and-unconstrained-optimization">6.3.5. Convexity and unconstrained optimization</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#a-data-science-example-ridge-regression">6.3.6. A data science example: ridge regression</a></li>
 </ul>
             </nav>
         </div>
@@ -459,7 +460,7 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article" role="main">
                   
-  <p><span class="math notranslate nohighlight">\(\newcommand{\bSigma}{\boldsymbol{\Sigma}}\)</span> <span class="math notranslate nohighlight">\(\newcommand{\bmu}{\boldsymbol{\mu}}\)</span></p>
+  <p><span class="math notranslate nohighlight">\(\newcommand{\bSigma}{\boldsymbol{\Sigma}}\)</span> <span class="math notranslate nohighlight">\(\newcommand{\bmu}{\boldsymbol{\mu}}\)</span> <span class="math notranslate nohighlight">\(\newcommand{\blambda}{\boldsymbol{\lambda}}\)</span></p>
 <section id="optimality-conditions-and-convexity">
 <h1><span class="section-number">6.3. </span>Optimality conditions and convexity<a class="headerlink" href="#optimality-conditions-and-convexity" title="Permalink to this headline">#</a></h1>
 <p>In this section, we derive optimality conditions for unconstrained continuous optimization problems.</p>
@@ -611,7 +612,7 @@ f(\mathbf{x}_0 + \alpha \mathbf{v})
 <p><strong>LEMMA</strong> <strong>(Descent Direction: Multivariable Version)</strong> Let <span class="math notranslate nohighlight">\(f : \mathbb{R}^d \to \mathbb{R}\)</span> be continuously differentiable at <span class="math notranslate nohighlight">\(\mathbf{x}_0\)</span> and assume that <span class="math notranslate nohighlight">\(\nabla f(\mathbf{x}_0) \neq 0\)</span>. Then <span class="math notranslate nohighlight">\(f\)</span> has a descent direction at <span class="math notranslate nohighlight">\(\mathbf{x}_0\)</span>. <span class="math notranslate nohighlight">\(\flat\)</span></p>
 <p><em>Proof:</em> Take <span class="math notranslate nohighlight">\(\mathbf{v} = - \nabla f(\mathbf{x}_0)\)</span>. Then <span class="math notranslate nohighlight">\(\nabla f(\mathbf{x}_0)^T \mathbf{v} = - \|\nabla f(\mathbf{x}_0)\|^2 &lt; 0\)</span> since <span class="math notranslate nohighlight">\(\nabla f(\mathbf{x}_0) \neq \mathbf{0}\)</span>. <span class="math notranslate nohighlight">\(\square\)</span></p>
 <p>This leads to the following fundamental result.</p>
-<p><strong>THEOREM</strong> <strong>(First-Order Necessary Condition)</strong> Let <span class="math notranslate nohighlight">\(f : \mathbb{R}^d \to \mathbb{R}\)</span> be continuously differentiable on <span class="math notranslate nohighlight">\(\mathbb{R}^d\)</span>. If <span class="math notranslate nohighlight">\(\mathbf{x}_0\)</span> is a local minimizer, then <span class="math notranslate nohighlight">\(\nabla f(\mathbf{x}_0) = \mathbf{0}\)</span>. <span class="math notranslate nohighlight">\(\sharp\)</span></p>
+<p><strong>THEOREM</strong> <strong>(First-Order Necessary Conditions)</strong> Let <span class="math notranslate nohighlight">\(f : \mathbb{R}^d \to \mathbb{R}\)</span> be continuously differentiable on <span class="math notranslate nohighlight">\(\mathbb{R}^d\)</span>. If <span class="math notranslate nohighlight">\(\mathbf{x}_0\)</span> is a local minimizer, then <span class="math notranslate nohighlight">\(\nabla f(\mathbf{x}_0) = \mathbf{0}\)</span>. <span class="math notranslate nohighlight">\(\sharp\)</span></p>
 <p><em>Proof idea:</em> In a descent direction, <span class="math notranslate nohighlight">\(f\)</span> decreases hence there cannot be one at a local minimizer.</p>
 <p><em>Proof:</em> We argue by contradiction. Suppose that <span class="math notranslate nohighlight">\(\nabla f(\mathbf{x}_0) \neq 0\)</span>. By the <em>Descent Direction Lemma</em>, there is a descent direction <span class="math notranslate nohighlight">\(\mathbf{v} \in \mathbb{R}^d\)</span> at <span class="math notranslate nohighlight">\(\mathbf{x}_0\)</span>. That implies</p>
 <div class="math notranslate nohighlight">
@@ -620,7 +621,7 @@ f(\mathbf{x}_0 + \alpha \mathbf{v})
 &lt; f(\mathbf{x}_0), \quad \forall \alpha \in (0, \alpha^*) 
 \]</div>
 <p>for some <span class="math notranslate nohighlight">\(\alpha^* &gt; 0\)</span>. So every open ball around <span class="math notranslate nohighlight">\(\mathbf{x}_0\)</span> has a point achieving a smaller value than <span class="math notranslate nohighlight">\(f(\mathbf{x}_0)\)</span>. Thus <span class="math notranslate nohighlight">\(\mathbf{x}_0\)</span> is not a local minimizer, a contradiction. So it must be that <span class="math notranslate nohighlight">\(\nabla f(\mathbf{x}_0) = \mathbf{0}\)</span>. <span class="math notranslate nohighlight">\(\square\)</span></p>
-<p>A point satisfying the first-order necessary condition is called a stationary point.</p>
+<p>A point satisfying the first-order necessary conditions is called a stationary point.</p>
 <p><strong>DEFINITION</strong> <strong>(Stationary Point)</strong> Let <span class="math notranslate nohighlight">\(f : D \to \mathbb{R}\)</span> be continuously differentiable on an open set <span class="math notranslate nohighlight">\(D \subseteq \mathbb{R}^d\)</span>. If <span class="math notranslate nohighlight">\(\nabla f(\mathbf{x}_0) = \mathbf{0}\)</span>, we say that <span class="math notranslate nohighlight">\(\mathbf{x}_0 \in D\)</span> is a stationary point of <span class="math notranslate nohighlight">\(f\)</span>. <span class="math notranslate nohighlight">\(\natural\)</span></p>
 <p><strong>EXAMPLE:</strong> <strong>(Rayleight Quotient)</strong> Let <span class="math notranslate nohighlight">\(A \in \mathbb{R}^{d \times d}\)</span> be a symmetric matrix. The associated Rayleigh quotient is</p>
 <div class="math notranslate nohighlight">
@@ -936,9 +937,249 @@ f(\mathbf{x}_0 + \alpha \mathbf{v})
 <p><span class="math notranslate nohighlight">\(\lhd\)</span></p>
 <p>We give sufficient conditions for a point to be a local minimizer. The proof is relegated to an optional section.</p>
 <p><strong>THEOREM</strong> <strong>(Second-Order Sufficient Condition)</strong> Let <span class="math notranslate nohighlight">\(f : \mathbb{R}^d \to \mathbb{R}\)</span> be twice continuously differentiable on <span class="math notranslate nohighlight">\(\mathbb{R}^d\)</span>. If <span class="math notranslate nohighlight">\(\nabla f(\mathbf{x}_0) = \mathbf{0}\)</span> and <span class="math notranslate nohighlight">\(\mathbf{H}_f(\mathbf{x}_0)\)</span> is positive definite, then <span class="math notranslate nohighlight">\(\mathbf{x}_0\)</span> is a strict local minimizer. <span class="math notranslate nohighlight">\(\sharp\)</span></p>
+<p><em>Proof idea:</em> We use <em>Taylor’s Theorem</em> again. This time we use the positive definiteness of the Hessian to bound the value of the function from below.</p>
+</section>
+<section id="adding-equality-constraints">
+<h2><span class="section-number">6.3.3. </span>Adding equality constraints<a class="headerlink" href="#adding-equality-constraints" title="Permalink to this headline">#</a></h2>
+<p>Until now, we have considered <em>unconstrained</em> optimization problems, that is, the variable <span class="math notranslate nohighlight">\(\mathbf{x}\)</span> can take any value in <span class="math notranslate nohighlight">\(\mathbb{R}^d\)</span>. However, it is common to impose conditions on <span class="math notranslate nohighlight">\(\mathbf{x}\)</span>. Hence, we consider the <em>constrained</em> minimization problem</p>
+<div class="math notranslate nohighlight">
+\[
+\min_{\mathbf{x} \in \mathscr{X}} f(\mathbf{x})
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(\mathscr{X} \subset \mathbb{R}^d\)</span>.</p>
+<p><strong>EXAMPLE:</strong> For instance, the entries of <span class="math notranslate nohighlight">\(\mathbf{x}\)</span> may have to satisfy certain bounds. In that case, we would have</p>
+<div class="math notranslate nohighlight">
+\[
+\mathscr{X} = \{\mathbf{x} = (x_1,\ldots,x_d) \in \mathbb{R}^d:x_i \in [a_i, b_i], \forall i\}
+\]</div>
+<p>for some constants <span class="math notranslate nohighlight">\(a_i &lt; b_i\)</span>, <span class="math notranslate nohighlight">\(i=1,\ldots,d\)</span>. <span class="math notranslate nohighlight">\(\lhd\)</span></p>
+<p>In this more general problem, the notion of global and local minimizer can be adapter straighforwardly. Note that we will assume that <span class="math notranslate nohighlight">\(f\)</span> is defined over all of <span class="math notranslate nohighlight">\(\mathbb{R}^d\)</span>. When <span class="math notranslate nohighlight">\(\mathbf{x} \in \mathscr{X}\)</span>, it is said to be feasible.</p>
+<p><strong>DEFINITION</strong> <strong>(Global minimizer)</strong> Let <span class="math notranslate nohighlight">\(f : \mathbb{R}^d \to \mathbb{R}\)</span>. The point <span class="math notranslate nohighlight">\(\mathbf{x}^* \in \mathscr{X}\)</span> is a global minimizer of <span class="math notranslate nohighlight">\(f\)</span> over <span class="math notranslate nohighlight">\(\mathscr{X}\)</span> if</p>
+<div class="math notranslate nohighlight">
+\[
+f(\mathbf{x}) 
+\geq f(\mathbf{x}^*), \quad \forall \mathbf{x} \in \mathscr{X}. 
+\]</div>
+<p><span class="math notranslate nohighlight">\(\natural\)</span></p>
+<p><strong>DEFINITION</strong> <strong>(Local minimizer)</strong> Let <span class="math notranslate nohighlight">\(f : \mathbb{R}^d \to \mathbb{R}\)</span>. The point <span class="math notranslate nohighlight">\(\mathbf{x}^* \in \mathscr{X}\)</span> is a local minimizer of <span class="math notranslate nohighlight">\(f\)</span> over <span class="math notranslate nohighlight">\(\mathscr{X}\)</span> if there is <span class="math notranslate nohighlight">\(\delta &gt; 0\)</span> such that</p>
+<div class="math notranslate nohighlight">
+\[
+f(\mathbf{x}) 
+\geq f(\mathbf{x}^*), \quad \forall \mathbf{x} \in (B_{\delta}(\mathbf{x}^*) \setminus \{\mathbf{x}^*\}) \cap \mathscr{X}. 
+\]</div>
+<p>If the inequality is strict, we say that <span class="math notranslate nohighlight">\(\mathbf{x}^*\)</span> is a strict local minimizer. <span class="math notranslate nohighlight">\(\natural\)</span></p>
+<p>In this subsection, we restrict ourselves to one important class of constraints: equality constraints. That is, we consider the minimization problem</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+&amp;\text{min} f(\mathbf{x})\\
+&amp;\text{s.t.}\ h_i(\mathbf{x}) = 0,\ \forall i \in [\ell]
+\end{align*}\]</div>
+<p>where s.t. stands for “subject to”. In other words, we only allow those <span class="math notranslate nohighlight">\(\mathbf{x}'s\)</span> such that <span class="math notranslate nohighlight">\(h_i(\mathbf{x}) = 0\)</span> for all <span class="math notranslate nohighlight">\(i\)</span>. Here <span class="math notranslate nohighlight">\(f : \mathbb{R}^d \to \mathbb{R}\)</span> and <span class="math notranslate nohighlight">\(h_i : \mathbb{R}^d \to \mathbb{R}\)</span>, <span class="math notranslate nohighlight">\(i\in [\ell]\)</span>. We will sometimes use the notation <span class="math notranslate nohighlight">\(\mathbf{h} : \mathbb{R}^d \to \mathbb{R}^\ell\)</span>, where <span class="math notranslate nohighlight">\(\mathbf{h}(\mathbf{x}) = (h_1(\mathbf{x}), \ldots, h_\ell(\mathbf{x}))\)</span>.</p>
+<p><strong>EXAMPLE:</strong> If we want to minimize <span class="math notranslate nohighlight">\(2 x_1^2 + 3 x_2^2\)</span> over all two-dimensional unit vectors <span class="math notranslate nohighlight">\(\mathbf{x} = (x_1, x_2)\)</span>, then we can let</p>
+<div class="math notranslate nohighlight">
+\[
+f(\mathbf{x}) = 2 x_1^2 + 3 x_2^2
+\]</div>
+<p>and</p>
+<div class="math notranslate nohighlight">
+\[
+h_1(\mathbf{x}) = 1 - x_1^2 - x_2^2 = 1 - \|\mathbf{x}\|^2.
+\]</div>
+<p>Observe that we could have chosen a different equality constraint to express the same minimization problem. <span class="math notranslate nohighlight">\(\lhd\)</span></p>
+<p>The following theorem generalizes the <em>First-Order Necessary Conditions</em>. The proof is detailed in an optional section.</p>
+<p><strong>THEOREM</strong> <strong>(Lagrange Multipliers: First-Order Necessary Conditions)</strong> Assume <span class="math notranslate nohighlight">\(f : \mathbb{R}^d \to \mathbb{R}\)</span> and <span class="math notranslate nohighlight">\(h_i : \mathbb{R}^d \to \mathbb{R}\)</span>, <span class="math notranslate nohighlight">\(i\in [\ell]\)</span>, are continuously differentiable. Let <span class="math notranslate nohighlight">\(\mathbf{x}^*\)</span> be a local minimizer of <span class="math notranslate nohighlight">\(f\)</span> s.t. <span class="math notranslate nohighlight">\(\mathbf{h}(\mathbf{x}) = \mathbf{0}\)</span>. Assume further that the vectors <span class="math notranslate nohighlight">\(\nabla h_i (\mathbf{x}^*)\)</span>, <span class="math notranslate nohighlight">\(i \in [\ell]\)</span>, are linearly independent. Then there exists a unique vector</p>
+<div class="math notranslate nohighlight">
+\[
+\blambda^* = (\lambda_1^*, \ldots, \lambda_\ell^*)
+\]</div>
+<p>satisfying</p>
+<div class="math notranslate nohighlight">
+\[
+\nabla f(\mathbf{x}^*)
++ \sum_{i=1}^\ell \lambda^*_i \nabla h_i(\mathbf{x}^*)
+= \mathbf{0}.
+\]</div>
+<p><span class="math notranslate nohighlight">\(\sharp\)</span></p>
+<p>The quantities <span class="math notranslate nohighlight">\(\lambda_1^*, \ldots, \lambda_\ell^*\)</span> are called Lagrange multipliers.</p>
+<p><em>Proof idea:</em> We reduce the problem to an unconstrained optimization problem by penalizing the constraint in the objective function. We then apply the unconstrained <em>First-Order Necessary Conditions</em>.</p>
+<p><strong>EXAMPLE:</strong> <strong>(continued)</strong> Returning to the previous example,</p>
+<div class="math notranslate nohighlight">
+\[
+\nabla f(\mathbf{x})
+= \left(
+\frac{\partial f(\mathbf{x})}{\partial x_1},
+\frac{\partial f(\mathbf{x})}{\partial x_2}
+\right)
+= (4 x_1, 6 x_2)
+\]</div>
+<p>and</p>
+<div class="math notranslate nohighlight">
+\[
+\nabla h_1(\mathbf{x})
+= \left(
+\frac{\partial h_1(\mathbf{x})}{\partial x_1},
+\frac{\partial h_1(\mathbf{x})}{\partial x_2}
+\right)
+= (- 2 x_1, - 2 x_2).
+\]</div>
+<p>The conditions in the theorem read</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+&amp;4 x_1 - 2 \lambda_1 x_1  = 0\\
+&amp;6 x_2 - 2 \lambda_1 x_2  = 0.
+\end{align*}\]</div>
+<p>The constraint <span class="math notranslate nohighlight">\(x_1^2 + x_2^2 = 1\)</span> must also be satisfied. Observe that the linear independence condition is automatically satisfied since there is only one constraint.</p>
+<p>There are several cases to consider.</p>
+<p>1- If neither <span class="math notranslate nohighlight">\(x_1\)</span> nor <span class="math notranslate nohighlight">\(x_2\)</span> is <span class="math notranslate nohighlight">\(0\)</span>, then the first equation gives <span class="math notranslate nohighlight">\(\lambda_1 = 2\)</span> while the second one gives <span class="math notranslate nohighlight">\(\lambda_1 = 3\)</span>. So that case cannot happen.</p>
+<p>2- If <span class="math notranslate nohighlight">\(x_1 = 0\)</span>, then <span class="math notranslate nohighlight">\(x_2 = 1\)</span> or <span class="math notranslate nohighlight">\(x_2 = -1\)</span> by the constraint and the second equation gives <span class="math notranslate nohighlight">\(\lambda_1 = 3\)</span> in either case.</p>
+<p>3- If <span class="math notranslate nohighlight">\(x_2 = 0\)</span>, then <span class="math notranslate nohighlight">\(x_1 = 1\)</span> or <span class="math notranslate nohighlight">\(x_1 = -1\)</span> by the constraint and the first equation gives <span class="math notranslate nohighlight">\(\lambda_1 = 2\)</span> in either case.</p>
+<p>Does any of these last four solutions, i.e., <span class="math notranslate nohighlight">\((x_1,x_2,\lambda_1) = (0,1,3)\)</span>, <span class="math notranslate nohighlight">\((x_1,x_2,\lambda_1) = (0,-1,3)\)</span>, <span class="math notranslate nohighlight">\((x_1,x_2,\lambda_1) = (1,0,2)\)</span> and <span class="math notranslate nohighlight">\((x_1,x_2,\lambda_1) = (-1,0,2)\)</span>, actually correspond to a local minimizer?</p>
+<p>This problem can be solved manually. Indeed, replace <span class="math notranslate nohighlight">\(x_2^2 = 1 - x_1^2\)</span> into the objective function to obtain</p>
+<div class="math notranslate nohighlight">
+\[
+2 x_1^2 + 3(1 - x_1^2)
+= -x_1^2 + 3.
+\]</div>
+<p>This is minimized for the largest value that <span class="math notranslate nohighlight">\(x_1^2\)</span> can take, namely when <span class="math notranslate nohighlight">\(x_1 = 1\)</span> or <span class="math notranslate nohighlight">\(x_1 = -1\)</span>. Indeed, we must have <span class="math notranslate nohighlight">\(0 \leq x_1^2 \leq x_1^2 + x_2^2 = 1\)</span>. So both <span class="math notranslate nohighlight">\((x_1, x_2) = (1,0)\)</span> and <span class="math notranslate nohighlight">\((x_1, x_2) = (-1,0)\)</span> are global minimizers. A fortiori, they must be local minimizers.</p>
+<p>What about <span class="math notranslate nohighlight">\((x_1,x_2) = (0,1)\)</span> and <span class="math notranslate nohighlight">\((x_1,x_2) = (0,-1)\)</span>? Arguing as above, they in fact correspond to global <em>maximizers</em> of the objective function. <span class="math notranslate nohighlight">\(\lhd\)</span></p>
+<p>Assume <span class="math notranslate nohighlight">\(\mathbf{x}\)</span> is feasible, that is, <span class="math notranslate nohighlight">\(\mathbf{h}(\mathbf{x}) = \mathbf{0}\)</span>. We let</p>
+<div class="math notranslate nohighlight">
+\[
+\mathscr{F}_{\mathbf{h}}(\mathbf{x})
+= 
+\left\{
+\mathbf{v} \in \mathbb{R}^d
+\,:\,
+\nabla h_i(\mathbf{x})^T \mathbf{v} = \mathbf{0},\ \forall i \in [\ell]
+\right\}
+\]</div>
+<p>be the (linear) subspace of first-order feasible directions at <span class="math notranslate nohighlight">\(\mathbf{x}\)</span>. To explain the name, note that by a first-order Taylor expansion, if <span class="math notranslate nohighlight">\(\mathbf{v} \in \mathscr{F}_{\mathbf{h}}(\mathbf{x})\)</span> then it holds that</p>
+<div class="math notranslate nohighlight">
+\[
+h_i(\mathbf{x} + \delta \mathbf{v})
+\approx
+h_i(\mathbf{x}) + \delta \nabla h_i(\mathbf{x})^T \mathbf{v}
+= \mathbf{0}
+\]</div>
+<p>for all <span class="math notranslate nohighlight">\(i\)</span>.</p>
+<p>The theorem says that, if <span class="math notranslate nohighlight">\(\mathbf{x}^*\)</span> is a local minimizer, then the gradient of <span class="math notranslate nohighlight">\(f\)</span> is orthogonal to the set of first-order feasible directions at <span class="math notranslate nohighlight">\(\mathbf{x}^*\)</span>. Indeed, any <span class="math notranslate nohighlight">\(\mathbf{v} \in \mathscr{F}_{\mathbf{h}}(\mathbf{x})\)</span> satisfies by the theorem that</p>
+<div class="math notranslate nohighlight">
+\[
+\nabla f(\mathbf{x}^*)^T \mathbf{v}
+= \left(- \sum_{i=1}^\ell \lambda^*_i \nabla h_i(\mathbf{x}^*)\right)^T \mathbf{v}
+= - \sum_{i=1}^\ell \lambda^*_i \nabla h_i(\mathbf{x}^*)^T \mathbf{v}
+= 0.
+\]</div>
+<p><strong>EXAMPLE:</strong> <strong>(continued)</strong> Returning to the previous example, the points satisfying <span class="math notranslate nohighlight">\(h_1(\mathbf{x}) = 0\)</span> sit on the circle of radius <span class="math notranslate nohighlight">\(1\)</span> around the origin. We have already seen that</p>
+<div class="math notranslate nohighlight">
+\[
+\nabla h_1(\mathbf{x})
+= \left(
+\frac{\partial h_1(\mathbf{x})}{\partial x_1},
+\frac{\partial h_1(\mathbf{x})}{\partial x_2}
+\right)
+= (- 2 x_1, - 2 x_2).
+\]</div>
+<p>Here is code plotting these (courtesy of ChatGPT 4). It uses <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.meshgrid.html"><code class="docutils literal notranslate"><span class="pre">numpy.meshgrid</span></code></a> to generate a grid of points for <span class="math notranslate nohighlight">\(x_1\)</span> and <span class="math notranslate nohighlight">\(x_2\)</span>, and <a class="reference external" href="https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.contour.html"><code class="docutils literal notranslate"><span class="pre">matplotlib.pyplot.contour</span></code></a> to plot the constraint set as a <a class="reference external" href="https://en.wikipedia.org/wiki/Contour_line">contour line</a> (for the constant value <span class="math notranslate nohighlight">\(0\)</span>) of <span class="math notranslate nohighlight">\(h_1\)</span>. The gradients are plotted with the <a class="reference external" href="https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.quiver.html"><code class="docutils literal notranslate"><span class="pre">matplotlib.pyplot.quiver</span></code></a> function, which is used for plotting vectors as arrows.</p>
+<div class="cell tag_hide-input docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell source</span>
+<span class="expanded">Hide code cell source</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Define the constraint function</span>
+<span class="k">def</span> <span class="nf">h1</span><span class="p">(</span><span class="n">x1</span><span class="p">,</span> <span class="n">x2</span><span class="p">):</span>
+    <span class="k">return</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">x1</span><span class="o">**</span><span class="mi">2</span> <span class="o">-</span> <span class="n">x2</span><span class="o">**</span><span class="mi">2</span>
+
+<span class="c1"># Points on the constraint where the gradients will be plotted</span>
+<span class="n">points</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">(</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span><span class="o">/</span><span class="mi">2</span><span class="p">),</span>
+    <span class="p">(</span><span class="o">-</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span><span class="o">/</span><span class="mi">2</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">0.5</span><span class="p">,</span> <span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span><span class="o">/</span><span class="mi">2</span><span class="p">),</span>
+    <span class="p">(</span><span class="o">-</span><span class="mf">0.5</span><span class="p">,</span> <span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span><span class="o">/</span><span class="mi">2</span><span class="p">),</span>
+    <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
+    <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
+    <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
+    <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+<span class="p">]</span>
+
+<span class="c1"># Generate a grid of points for x1 and x2</span>
+<span class="n">x1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mf">1.5</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">,</span> <span class="mi">400</span><span class="p">)</span>
+<span class="n">x2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mf">1.5</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">,</span> <span class="mi">400</span><span class="p">)</span>
+<span class="n">X1</span><span class="p">,</span> <span class="n">X2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">meshgrid</span><span class="p">(</span><span class="n">x1</span><span class="p">,</span> <span class="n">x2</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</details>
+</div>
+<div class="cell tag_hide-input docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell source</span>
+<span class="expanded">Hide code cell source</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s1">&#39;equal&#39;</span><span class="p">)</span>
+
+<span class="c1"># Plot the constraint set where h1(x1, x2) = 0</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">contour</span><span class="p">(</span><span class="n">X1</span><span class="p">,</span> <span class="n">X2</span><span class="p">,</span> <span class="n">h1</span><span class="p">(</span><span class="n">X1</span><span class="p">,</span> <span class="n">X2</span><span class="p">),</span> <span class="n">levels</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">colors</span><span class="o">=</span><span class="s1">&#39;blue&#39;</span><span class="p">)</span>
+
+<span class="c1"># Plot gradients of h1 (red) at specified points</span>
+<span class="k">for</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="ow">in</span> <span class="n">points</span><span class="p">:</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">quiver</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span><span class="o">*</span><span class="n">x</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span><span class="o">*</span><span class="n">y</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</details>
+<div class="cell_output docutils container">
+<img alt="../../_images/00dda46b68766caed33698994383b87031051607c079c645d829307b4be180ef.png" src="../../_images/00dda46b68766caed33698994383b87031051607c079c645d829307b4be180ef.png" />
+</div>
+</div>
+<p>The directions of first-order feasible directions are orthogonal to the arrows, and therefore are tangent to the constraint set.</p>
+<p>Next we also plot the gradient of <span class="math notranslate nohighlight">\(f\)</span>, which recall is</p>
+<div class="math notranslate nohighlight">
+\[
+\nabla f(\mathbf{x})
+= \left(
+\frac{\partial f(\mathbf{x})}{\partial x_1},
+\frac{\partial f(\mathbf{x})}{\partial x_2}
+\right)
+= (4 x_1, 6 x_2).
+\]</div>
+<p>To keep things contained, we make all gradients into unit vectors.</p>
+<div class="cell tag_hide-input docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell source</span>
+<span class="expanded">Hide code cell source</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s1">&#39;equal&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">contour</span><span class="p">(</span><span class="n">X1</span><span class="p">,</span> <span class="n">X2</span><span class="p">,</span> <span class="n">h1</span><span class="p">(</span><span class="n">X1</span><span class="p">,</span> <span class="n">X2</span><span class="p">),</span> <span class="n">levels</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">colors</span><span class="o">=</span><span class="s1">&#39;blue&#39;</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="ow">in</span> <span class="n">points</span><span class="p">:</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">quiver</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="o">-</span><span class="n">x</span><span class="o">/</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">x</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">y</span><span class="o">**</span><span class="mi">2</span><span class="p">),</span> 
+               <span class="o">-</span><span class="n">y</span><span class="o">/</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">x</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">y</span><span class="o">**</span><span class="mi">2</span><span class="p">),</span> 
+               <span class="n">scale</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">quiver</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="mi">4</span><span class="o">*</span><span class="n">x</span><span class="o">/</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">16</span> <span class="o">*</span> <span class="n">x</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="mi">36</span> <span class="o">*</span> <span class="n">y</span><span class="o">**</span><span class="mi">2</span><span class="p">),</span> 
+               <span class="mi">6</span><span class="o">*</span><span class="n">y</span><span class="o">/</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">16</span> <span class="o">*</span> <span class="n">x</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="mi">36</span> <span class="o">*</span> <span class="n">y</span><span class="o">**</span><span class="mi">2</span><span class="p">),</span> 
+               <span class="n">scale</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;green&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</details>
+<div class="cell_output docutils container">
+<img alt="../../_images/3b22701f958ee1b6152350bb494d95ffef4c9770009472761670e15364abb3cd.png" src="../../_images/3b22701f958ee1b6152350bb494d95ffef4c9770009472761670e15364abb3cd.png" />
+</div>
+</div>
+<p>We see that, at <span class="math notranslate nohighlight">\((-1,0)\)</span> and <span class="math notranslate nohighlight">\((1,0)\)</span>, the gradient is indeed orthogonal to the first-order feasible directions. <span class="math notranslate nohighlight">\(\lhd\)</span></p>
 </section>
 <section id="convexity">
-<h2><span class="section-number">6.3.3. </span>Convexity<a class="headerlink" href="#convexity" title="Permalink to this headline">#</a></h2>
+<h2><span class="section-number">6.3.4. </span>Convexity<a class="headerlink" href="#convexity" title="Permalink to this headline">#</a></h2>
 <p>Our optimality conditions have only concerned local minimizers. Indeed, in the absence of global structure, local information such as gradients and Hessians can only inform us about the immediate neighborhood of points. Here we introduce convexity, a commonly encountered condition under which local minimizers become global minimizers.</p>
 <p><strong>Convex sets</strong> We start with convex sets.</p>
 <p><strong>DEFINITION</strong> <strong>(Convex Set)</strong> A set <span class="math notranslate nohighlight">\(D \subseteq \mathbb{R}^d\)</span> is convex if for all <span class="math notranslate nohighlight">\(\mathbf{x}, \mathbf{y} \in D\)</span> and all <span class="math notranslate nohighlight">\(\alpha \in (0,1)\)</span></p>
@@ -1212,7 +1453,7 @@ f_{\bmu, \bSigma}(\mathbf{x})
 <p>The previous example then implies that the PDF is log-concave if <span class="math notranslate nohighlight">\(\bSigma^{-1}\)</span> is positive semidefinite. Since <span class="math notranslate nohighlight">\(\bSigma\)</span> is positive definite by assumption, <span class="math notranslate nohighlight">\(\bSigma = Q \Lambda Q^T\)</span> has a spectral decomposition where all diagonal entries of <span class="math notranslate nohighlight">\(\Lambda\)</span> are stricly positive. Then <span class="math notranslate nohighlight">\(\bSigma^{-1} = Q \Lambda^{-1} Q^T\)</span> where the diagonal entries of <span class="math notranslate nohighlight">\(\Lambda^{-1}\)</span> are the inverses of those of <span class="math notranslate nohighlight">\(\Lambda\)</span> - and hence strictly positive as well. In particular, <span class="math notranslate nohighlight">\(\bSigma^{-1}\)</span> is positive semidefinite. <span class="math notranslate nohighlight">\(\lhd\)</span></p>
 </section>
 <section id="convexity-and-unconstrained-optimization">
-<h2><span class="section-number">6.3.4. </span>Convexity and unconstrained optimization<a class="headerlink" href="#convexity-and-unconstrained-optimization" title="Permalink to this headline">#</a></h2>
+<h2><span class="section-number">6.3.5. </span>Convexity and unconstrained optimization<a class="headerlink" href="#convexity-and-unconstrained-optimization" title="Permalink to this headline">#</a></h2>
 <p>Now comes the key property of convex functions (at least as far as we are concerned).</p>
 <p><strong>Global minimization in the convex case</strong> In the convex case, global minimization reduces to local minimization.</p>
 <p><strong>THEOREM</strong> <strong>(Global Minimizers of Convex Functions)</strong> Let <span class="math notranslate nohighlight">\(f : \mathbb{R}^d \to \mathbb{R}\)</span> be a convex function. Then any local minimizer of <span class="math notranslate nohighlight">\(f\)</span> is also a global minimizer. <span class="math notranslate nohighlight">\(\sharp\)</span></p>
@@ -1368,7 +1609,7 @@ H_f(\mathbf{x})
 <p>The theorem above then indicates that there is a unique global minimizer to the least-squares objective in that case. <span class="math notranslate nohighlight">\(\lhd\)</span></p>
 </section>
 <section id="a-data-science-example-ridge-regression">
-<h2><span class="section-number">6.3.5. </span>A data science example: ridge regression<a class="headerlink" href="#a-data-science-example-ridge-regression" title="Permalink to this headline">#</a></h2>
+<h2><span class="section-number">6.3.6. </span>A data science example: ridge regression<a class="headerlink" href="#a-data-science-example-ridge-regression" title="Permalink to this headline">#</a></h2>
 <p>The <a class="reference external" href="https://en.wikipedia.org/wiki/Moore%E2%80%93Penrose_inverse">pseudoinverse</a> gives a least norm solution to an underdetermined linear system. A similar idea turns out to be useful in the overdetermined case as well, particularly when the columns of the matrix <span class="math notranslate nohighlight">\(A\)</span> are linearly dependent or close to linearly dependent (which is sometimes referred as <a class="reference external" href="https://en.wikipedia.org/wiki/Multicollinearity">multicollinearity</a> in statistics). This is called ridge regression or Tikhonov regularization. It trades off minimizing the fit to the data versus minimizing the norm of the solution. More precisely, for a parameter <span class="math notranslate nohighlight">\(\lambda &gt; 0\)</span> to be chosen, we solve</p>
 <div class="math notranslate nohighlight">
 \[
@@ -1512,9 +1753,10 @@ A \mathbf{x}^*
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#first-order-conditions">6.3.1. First-order conditions</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#second-order-conditions">6.3.2. Second-order conditions</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#convexity">6.3.3. Convexity</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#convexity-and-unconstrained-optimization">6.3.4. Convexity and unconstrained optimization</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#a-data-science-example-ridge-regression">6.3.5. A data science example: ridge regression</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#adding-equality-constraints">6.3.3. Adding equality constraints</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#convexity">6.3.4. Convexity</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#convexity-and-unconstrained-optimization">6.3.5. Convexity and unconstrained optimization</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#a-data-science-example-ridge-regression">6.3.6. A data science example: ridge regression</a></li>
 </ul>
   </nav></div>
 

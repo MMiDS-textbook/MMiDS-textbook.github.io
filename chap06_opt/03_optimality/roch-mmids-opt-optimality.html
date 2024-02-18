@@ -1091,16 +1091,19 @@ f(\mathbf{x}^*)
 = (- 2 x_1, - 2 x_2).
 \]</div>
 <p>Here is code plotting these (courtesy of ChatGPT 4). It uses <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.meshgrid.html"><code class="docutils literal notranslate"><span class="pre">numpy.meshgrid</span></code></a> to generate a grid of points for <span class="math notranslate nohighlight">\(x_1\)</span> and <span class="math notranslate nohighlight">\(x_2\)</span>, and <a class="reference external" href="https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.contour.html"><code class="docutils literal notranslate"><span class="pre">matplotlib.pyplot.contour</span></code></a> to plot the constraint set as a <a class="reference external" href="https://en.wikipedia.org/wiki/Contour_line">contour line</a> (for the constant value <span class="math notranslate nohighlight">\(0\)</span>) of <span class="math notranslate nohighlight">\(h_1\)</span>. The gradients are plotted with the <a class="reference external" href="https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.quiver.html"><code class="docutils literal notranslate"><span class="pre">matplotlib.pyplot.quiver</span></code></a> function, which is used for plotting vectors as arrows.</p>
-<div class="cell tag_hide-input docutils container">
-<details class="hide above-input">
-<summary aria-label="Toggle hidden content">
-<span class="collapsed">Show code cell source</span>
-<span class="expanded">Hide code cell source</span>
-</summary>
+<div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Define the constraint function</span>
 <span class="k">def</span> <span class="nf">h1</span><span class="p">(</span><span class="n">x1</span><span class="p">,</span> <span class="n">x2</span><span class="p">):</span>
     <span class="k">return</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">x1</span><span class="o">**</span><span class="mi">2</span> <span class="o">-</span> <span class="n">x2</span><span class="o">**</span><span class="mi">2</span>
+
+<span class="c1"># Generate a grid of points for x1 and x2</span>
+<span class="n">x1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mf">1.5</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">,</span> <span class="mi">400</span><span class="p">)</span>
+<span class="n">x2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mf">1.5</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">,</span> <span class="mi">400</span><span class="p">)</span>
+<span class="n">X1</span><span class="p">,</span> <span class="n">X2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">meshgrid</span><span class="p">(</span><span class="n">x1</span><span class="p">,</span> <span class="n">x2</span><span class="p">)</span>
+
+<span class="c1"># Compute constraint function on grid</span>
+<span class="n">H1</span> <span class="o">=</span> <span class="n">h1</span><span class="p">(</span><span class="n">X1</span><span class="p">,</span> <span class="n">X2</span><span class="p">)</span>
 
 <span class="c1"># Points on the constraint where the gradients will be plotted</span>
 <span class="n">points</span> <span class="o">=</span> <span class="p">[</span>
@@ -1113,15 +1116,9 @@ f(\mathbf{x}^*)
     <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
     <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
 <span class="p">]</span>
-
-<span class="c1"># Generate a grid of points for x1 and x2</span>
-<span class="n">x1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mf">1.5</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">,</span> <span class="mi">400</span><span class="p">)</span>
-<span class="n">x2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mf">1.5</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">,</span> <span class="mi">400</span><span class="p">)</span>
-<span class="n">X1</span><span class="p">,</span> <span class="n">X2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">meshgrid</span><span class="p">(</span><span class="n">x1</span><span class="p">,</span> <span class="n">x2</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
-</details>
 </div>
 <div class="cell tag_hide-input docutils container">
 <details class="hide above-input">
@@ -1135,7 +1132,7 @@ f(\mathbf{x}^*)
 <span class="n">plt</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s1">&#39;equal&#39;</span><span class="p">)</span>
 
 <span class="c1"># Plot the constraint set where h1(x1, x2) = 0</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">contour</span><span class="p">(</span><span class="n">X1</span><span class="p">,</span> <span class="n">X2</span><span class="p">,</span> <span class="n">h1</span><span class="p">(</span><span class="n">X1</span><span class="p">,</span> <span class="n">X2</span><span class="p">),</span> <span class="n">levels</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">colors</span><span class="o">=</span><span class="s1">&#39;blue&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">contour</span><span class="p">(</span><span class="n">X1</span><span class="p">,</span> <span class="n">X2</span><span class="p">,</span> <span class="n">H1</span><span class="p">,</span> <span class="n">levels</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">colors</span><span class="o">=</span><span class="s1">&#39;blue&#39;</span><span class="p">)</span>
 
 <span class="c1"># Plot gradients of h1 (red) at specified points</span>
 <span class="k">for</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="ow">in</span> <span class="n">points</span><span class="p">:</span>
@@ -1170,7 +1167,7 @@ f(\mathbf{x}^*)
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s1">&#39;equal&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">contour</span><span class="p">(</span><span class="n">X1</span><span class="p">,</span> <span class="n">X2</span><span class="p">,</span> <span class="n">h1</span><span class="p">(</span><span class="n">X1</span><span class="p">,</span> <span class="n">X2</span><span class="p">),</span> <span class="n">levels</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">colors</span><span class="o">=</span><span class="s1">&#39;blue&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">contour</span><span class="p">(</span><span class="n">X1</span><span class="p">,</span> <span class="n">X2</span><span class="p">,</span> <span class="n">H1</span><span class="p">,</span> <span class="n">levels</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">colors</span><span class="o">=</span><span class="s1">&#39;blue&#39;</span><span class="p">)</span>
 <span class="k">for</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="ow">in</span> <span class="n">points</span><span class="p">:</span>
     <span class="n">plt</span><span class="o">.</span><span class="n">quiver</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="o">-</span><span class="n">x</span><span class="o">/</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">x</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">y</span><span class="o">**</span><span class="mi">2</span><span class="p">),</span> 
                <span class="o">-</span><span class="n">y</span><span class="o">/</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">x</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">y</span><span class="o">**</span><span class="mi">2</span><span class="p">),</span> 
@@ -1187,6 +1184,67 @@ f(\mathbf{x}^*)
 </div>
 </div>
 <p>We see that, at <span class="math notranslate nohighlight">\((-1,0)\)</span> and <span class="math notranslate nohighlight">\((1,0)\)</span>, the gradient is indeed orthogonal to the first-order feasible directions. <span class="math notranslate nohighlight">\(\lhd\)</span></p>
+<p>A feasible vector <span class="math notranslate nohighlight">\(\mathbf{x}\)</span> is said to be regular if the vectors <span class="math notranslate nohighlight">\(\nabla h_i (\mathbf{x}^*)\)</span>, <span class="math notranslate nohighlight">\(i \in [\ell]\)</span>, are linearly independent. We re-formulate the previous theorem in terms of the Lagrangian function, which is defined as</p>
+<div class="math notranslate nohighlight">
+\[
+L(\mathbf{x}, \blambda)
+= f(\mathbf{x}) + \sum_{i=1}^\ell \lambda_i h_i(\mathbf{x}),
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(\blambda = (\lambda_1,\ldots,\lambda_\ell)\)</span>. Then, by the theorem, a regular local minimizer satisfies</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+&amp;\nabla_{\mathbf{x}} L(\mathbf{x}, \blambda) = \mathbf{0}\\
+&amp;\nabla_{\blambda} L(\mathbf{x}, \blambda) = \mathbf{0}.
+\end{align*}\]</div>
+<p>Here the notation <span class="math notranslate nohighlight">\(\nabla_{\mathbf{x}}\)</span> (respectively <span class="math notranslate nohighlight">\(\nabla_{\blambda}\)</span>) indicates that we are taking the vector of partial derivatives with respect to only the variables in <span class="math notranslate nohighlight">\(\mathbf{x}\)</span> (respectively <span class="math notranslate nohighlight">\(\blambda\)</span>).</p>
+<p>To see that these equations hold, note that</p>
+<div class="math notranslate nohighlight">
+\[
+\nabla_{\mathbf{x}} L(\mathbf{x}, \blambda)
+= \nabla f(\mathbf{x}) + \sum_{i=1}^\ell \lambda_i \nabla h_i(\mathbf{x})
+\]</div>
+<p>and</p>
+<div class="math notranslate nohighlight">
+\[
+\nabla_{\blambda} L(\mathbf{x}, \blambda)
+= \mathbf{h}(\mathbf{x}).
+\]</div>
+<p>So <span class="math notranslate nohighlight">\(\nabla_{\mathbf{x}} L(\mathbf{x}, \blambda) = \mathbf{0}\)</span> is a restatement of the Lagrange multipliers condition and <span class="math notranslate nohighlight">\(\nabla_{\blambda} L(\mathbf{x}, \blambda) = \mathbf{0}\)</span> is a restatement of feasibility. Together, they form a system of <span class="math notranslate nohighlight">\(d + \ell\)</span> equations in <span class="math notranslate nohighlight">\(d + \ell\)</span> variables.</p>
+<p><strong>EXAMPLE:</strong> Consider the constrained minimization problem on <span class="math notranslate nohighlight">\(\mathbb{R}^3\)</span> where the objective function is</p>
+<div class="math notranslate nohighlight">
+\[
+f(\mathbf{x})
+= \frac{1}{2}(x_1^2 + x_2^2 + x_3^2)
+\]</div>
+<p>and the only constraint function is</p>
+<div class="math notranslate nohighlight">
+\[
+h_1(\mathbf{x}) = 3 - x_1 - x_2 - x_3.
+\]</div>
+<p>The gradients are</p>
+<div class="math notranslate nohighlight">
+\[
+\nabla f(\mathbf{x})
+= (x_2, x_2, x_3)
+\]</div>
+<p>and</p>
+<div class="math notranslate nohighlight">
+\[
+\nabla h_1(\mathbf{x})
+= (-1, -1, -1).
+\]</div>
+<p>In particular, regularity is always satisfied since there is only one non-zero vector to consider.</p>
+<p>So we are looking for solutions to the system of equations</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+&amp;x_1 - \lambda = 0\\ 
+&amp;x_2 - \lambda = 0\\ 
+&amp;x_3 - \lambda = 0\\ 
+&amp;3 - x_1 - x_2 - x_3 = 0.
+\end{align*}\]</div>
+<p>The first three equations imply that <span class="math notranslate nohighlight">\(x_1 = x_2 = x_3 = \lambda\)</span>. Replacing in the fourth equation gives <span class="math notranslate nohighlight">\(3 - 3 \lambda = 0\)</span> so <span class="math notranslate nohighlight">\(\lambda = 1\)</span>. Hence, <span class="math notranslate nohighlight">\(x_1 = x_2 = x_3 = 1\)</span> and this is the only solution.</p>
+<p>So any local minimizer, if it exists, must be the vector <span class="math notranslate nohighlight">\((1,1,1)\)</span> with Lagrange multiplier <span class="math notranslate nohighlight">\(1\)</span>. How can we know for sure whether this is the case? <span class="math notranslate nohighlight">\(\lhd\)</span></p>
+<p>As in the unconstrained case, we could use a <em>sufficient</em> condition. As in that case, it will involve second-order derivatives.</p>
 </section>
 <section id="convexity">
 <h2><span class="section-number">6.3.4. </span>Convexity<a class="headerlink" href="#convexity" title="Permalink to this headline">#</a></h2>

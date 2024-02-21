@@ -822,31 +822,41 @@ f(x_1, x_2)
 \]</div>
 <p><span class="math notranslate nohighlight">\(\sharp\)</span></p>
 <p>Note the similarity to the quadratic term in <em>Taylor’s Theorem</em>.</p>
-<p><em>Proof idea:</em> We use the result for the directional derivative.</p>
+<p><em>Proof idea:</em> We have already done this calculation in the proof of <em>Taylor’s Theorem</em>.</p>
 <p><em>Proof:</em> Then, by definition of the derivative,</p>
 <div class="amsmath math notranslate nohighlight">
 \[\begin{align*}
 \lim_{h \to 0} \frac{1}{h} \left[\frac{\partial f(\mathbf{x}_0 + h \mathbf{v})}{\partial \mathbf{v}} - \frac{\partial f(\mathbf{x}_0)}{\partial \mathbf{v}}\right]
 &amp;= \lim_{h \to 0} \frac{1}{h} \left[\nabla f(\mathbf{x}_0 + h \mathbf{v})^T \mathbf{v} - \nabla f(\mathbf{x}_0)^T \mathbf{v}\right]\\
-&amp;= \lim_{h \to 0} \frac{1}{h} \sum_{i=1}^n v_i \left[\frac{\partial f(\mathbf{x}_0 + h \mathbf{v})}{\partial v_i} - \frac{\partial f(\mathbf{x}_0)}{\partial v_i} \right]\\
-&amp;= \sum_{i=1}^n v_i \lim_{h \to 0} \frac{1}{h} \left[\frac{\partial f(\mathbf{x}_0 + h \mathbf{v})}{\partial v_i} - \frac{\partial f(\mathbf{x}_0)}{\partial v_i} \right]\\
+&amp;= \lim_{h \to 0} \frac{1}{h} \sum_{i=1}^n v_i \left[\frac{\partial f(\mathbf{x}_0 + h \mathbf{v})}{\partial x_i} - \frac{\partial f(\mathbf{x}_0)}{\partial x_i} \right]\\
+&amp;= \sum_{i=1}^n v_i \lim_{h \to 0} \frac{1}{h} \left[\frac{\partial f(\mathbf{x}_0 + h \mathbf{v})}{\partial x_i} - \frac{\partial f(\mathbf{x}_0)}{\partial x_i} \right]\\
 &amp;= \sum_{i=1}^n v_i \frac{\partial g_i (\mathbf{x}_0)}{\partial \mathbf{v}},
 \end{align*}\]</div>
-<p>where <span class="math notranslate nohighlight">\(g_i(\mathbf{x}_0) = \frac{\partial f(\mathbf{x}_0)}{\partial v_i}\)</span>. So</p>
+<p>where <span class="math notranslate nohighlight">\(g_i(\mathbf{x}_0) = \frac{\partial f(\mathbf{x}_0)}{\partial x_i}\)</span>. So</p>
 <div class="math notranslate nohighlight">
 \[
 \frac{\partial g_i (\mathbf{x}_0)}{\partial \mathbf{v}} 
 = \nabla g_i(\mathbf{x}_0)^T \mathbf{v}
-= \sum_{j=1}^n v_j \frac{\partial^2 f(\mathbf{x}_0)}{\partial v_i\partial v_j}
+= \sum_{j=1}^n v_j \frac{\partial^2 f(\mathbf{x}_0)}{\partial x_i\partial x_j}
 \]</div>
 <p>by the <em>Directional Derivative from Gradient Theorem</em>. Plugging back above we get</p>
 <div class="math notranslate nohighlight">
 \[
 \frac{\partial^2 f (\mathbf{x}_0)}{\partial \mathbf{v}^2} 
-=  \sum_{i=1}^n v_i \sum_{j=1}^n v_j \frac{\partial^2 f(\mathbf{x}_0)}{\partial v_i\partial v_j}
+=  \sum_{i=1}^n v_i \sum_{j=1}^n v_j \frac{\partial^2 f(\mathbf{x}_0)}{\partial x_i\partial x_j}
 = \mathbf{v}^T H_f(\mathbf{x}_0) \,\mathbf{v}.
 \]</div>
 <p><span class="math notranslate nohighlight">\(\square\)</span></p>
+<p>So going back to <em>Taylor’s Theorem</em></p>
+<div class="math notranslate nohighlight">
+\[
+f(\mathbf{x})
+= f(\mathbf{x}_0) + \nabla f(\mathbf{x}_0)^T (\mathbf{x} - \mathbf{x}_0) 
++ \frac{1}{2} (\mathbf{x} - \mathbf{x}_0)^T 
+\,\mathbf{H}_f(\mathbf{x}_0 + \xi (\mathbf{x} - \mathbf{x}_0))
+\,(\mathbf{x} - \mathbf{x}_0),
+\]</div>
+<p>we see that the second term on the right-hand side is the directional derivative at <span class="math notranslate nohighlight">\(\mathbf{x}_0\)</span> in the direction <span class="math notranslate nohighlight">\(\mathbf{x} - \mathbf{x}_0\)</span> and that the third term is half of the second directional derivative at <span class="math notranslate nohighlight">\(\mathbf{x}_0 + \xi (\mathbf{x} - \mathbf{x}_0)\)</span> in the same direction.</p>
 <p><strong>Necessary condition</strong> When <span class="math notranslate nohighlight">\(f\)</span> is twice continuously differentiable, we get a necessary condition based on the Hessian.</p>
 <p><strong>THEOREM</strong> <strong>(Second-Order Necessary Condition)</strong> Let <span class="math notranslate nohighlight">\(f : \mathbb{R}^d \to \mathbb{R}\)</span> be twice continuously differentiable on <span class="math notranslate nohighlight">\(\mathbb{R}^d\)</span>. If <span class="math notranslate nohighlight">\(\mathbf{x}_0\)</span> is a local minimizer, then <span class="math notranslate nohighlight">\(\nabla f(\mathbf{x}_0) = \mathbf{0}\)</span> and <span class="math notranslate nohighlight">\(\mathbf{H}_f(\mathbf{x}_0)\)</span> is positive semidefinite. <span class="math notranslate nohighlight">\(\sharp\)</span></p>
 <p><em>Proof idea:</em> By <em>Taylor</em> and the <em>First-Order Necessary Condition</em>,</p>
@@ -1466,7 +1476,7 @@ f(\mathbf{y})
 <p><img alt="First-order convexity" src="https://i.stack.imgur.com/ehKVz.png" /></p>
 <p><span class="math notranslate nohighlight">\(\bowtie\)</span></p>
 <p><em>Proof (First-Order Convexity Condition):</em> Suppose first that <span class="math notranslate nohighlight">\(f(\mathbf{z}_2)
-\geq f(\mathbf{z}_1) + \nabla f(\mathbf{z}_1)^T (\mathbf{z}_2-\mathbf{z}_1)\)</span> for all <span class="math notranslate nohighlight">\(\mathbf{z}_1, \mathbf{z}_2\)</span>. For any <span class="math notranslate nohighlight">\(\mathbf{x}, \mathbf{y}\)</span> and <span class="math notranslate nohighlight">\(\alpha \in [0,1]\)</span>, let <span class="math notranslate nohighlight">\(\mathbf{w} = (1-\alpha) \mathbf{x} + \alpha \mathbf{y}\)</span>. Then taking <span class="math notranslate nohighlight">\(\mathbf{z}_1 = \mathbf{w}\)</span> and <span class="math notranslate nohighlight">\(\mathbf{z}_2 = \mathbf{x}\)</span> gives</p>
+\geq f(\mathbf{z}_1) + \nabla f(\mathbf{z}_1)^T (\mathbf{z}_2-\mathbf{z}_1)\)</span> for all <span class="math notranslate nohighlight">\(\mathbf{z}_1, \mathbf{z}_2 \in D\)</span>. For any <span class="math notranslate nohighlight">\(\mathbf{x}, \mathbf{y} \in D\)</span> and <span class="math notranslate nohighlight">\(\alpha \in [0,1]\)</span>, let <span class="math notranslate nohighlight">\(\mathbf{w} = (1-\alpha) \mathbf{x} + \alpha \mathbf{y}\)</span> (which is in <span class="math notranslate nohighlight">\(D\)</span> by convexity). Then taking <span class="math notranslate nohighlight">\(\mathbf{z}_1 = \mathbf{w}\)</span> and <span class="math notranslate nohighlight">\(\mathbf{z}_2 = \mathbf{x}\)</span> gives</p>
 <div class="math notranslate nohighlight">
 \[
 f(\mathbf{x})
@@ -1486,7 +1496,7 @@ f(\mathbf{y})
 = f(\mathbf{w})
 \]</div>
 <p>proving convexity.</p>
-<p>For the other direction, assume that <span class="math notranslate nohighlight">\(f\)</span> is convex. For any <span class="math notranslate nohighlight">\(\mathbf{x}, \mathbf{y}\)</span> and <span class="math notranslate nohighlight">\(\alpha \in (0,1)\)</span>, by the <em>Mean Value Theorem</em>, for some <span class="math notranslate nohighlight">\(\xi_\alpha \in (0,1)\)</span> it holds that</p>
+<p>For the other direction, assume that <span class="math notranslate nohighlight">\(f\)</span> is convex over <span class="math notranslate nohighlight">\(D\)</span>. For any <span class="math notranslate nohighlight">\(\mathbf{x}, \mathbf{y} \in D\)</span> and <span class="math notranslate nohighlight">\(\alpha \in (0,1)\)</span>, by the <em>Mean Value Theorem</em>, for some <span class="math notranslate nohighlight">\(\xi_\alpha \in (0,1)\)</span> it holds that</p>
 <div class="math notranslate nohighlight">
 \[
 f(\mathbf{w})
@@ -1506,7 +1516,8 @@ f(\mathbf{w})
 \leq f(\mathbf{y}) - f(\mathbf{x}).
 \]</div>
 <p>Taking <span class="math notranslate nohighlight">\(\alpha \to 0\)</span> gives the claim. <span class="math notranslate nohighlight">\(\square\)</span></p>
-<p><strong>LEMMA</strong> <strong>(Second-Order Convexity Condition)</strong> Let <span class="math notranslate nohighlight">\(f : \mathbb{R}^d \to \mathbb{R}\)</span> be twice continuously differentiable. Then <span class="math notranslate nohighlight">\(f\)</span> is convex if and only if <span class="math notranslate nohighlight">\(H_f(\mathbf{x})\)</span> is positive semidefinite for all <span class="math notranslate nohighlight">\(\mathbf{x} \in \mathbb{R}^d\)</span>. <span class="math notranslate nohighlight">\(\flat\)</span></p>
+<p>We move on to second-order conditions. We start with the case <span class="math notranslate nohighlight">\(D = \mathbb{R}^d\)</span>.</p>
+<p><strong>LEMMA</strong> <strong>(Second-Order Convexity Condition)</strong> Let <span class="math notranslate nohighlight">\(f : \mathbb{R}^d \to \mathbb{R}\)</span> be twice continuously differentiable. Then <span class="math notranslate nohighlight">\(f\)</span> is convex (over <span class="math notranslate nohighlight">\(\mathbb{R}^d\)</span>) if and only if <span class="math notranslate nohighlight">\(H_f(\mathbf{x})\)</span> is positive semidefinite for all <span class="math notranslate nohighlight">\(\mathbf{x} \in \mathbb{R}^d\)</span>. <span class="math notranslate nohighlight">\(\flat\)</span></p>
 <p><em>Proof:</em> Suppose first that <span class="math notranslate nohighlight">\(H_f(\mathbf{z}_1) \succeq 0\)</span> for all <span class="math notranslate nohighlight">\(\mathbf{z}_1\)</span>. For any <span class="math notranslate nohighlight">\(\mathbf{x}, \mathbf{y}\)</span>, by <em>Taylor</em>, there is <span class="math notranslate nohighlight">\(\xi \in (0,1)\)</span> such that</p>
 <div class="amsmath math notranslate nohighlight">
 \[\begin{align*}
@@ -1583,6 +1594,28 @@ f_{\bmu, \bSigma}(\mathbf{x})
 \end{align*}\]</div>
 <p>Let <span class="math notranslate nohighlight">\(P = \bSigma^{-1}\)</span>, <span class="math notranslate nohighlight">\(\mathbf{q} = - \bmu^T \bSigma^{-1}\)</span> and <span class="math notranslate nohighlight">\(r = \frac{1}{2}\bmu^T \bSigma^{-1} \bmu + \log (2\pi)^{d/2} \,|\bSigma|^{1/2}\)</span>.</p>
 <p>The previous example then implies that the PDF is log-concave if <span class="math notranslate nohighlight">\(\bSigma^{-1}\)</span> is positive semidefinite. Since <span class="math notranslate nohighlight">\(\bSigma\)</span> is positive definite by assumption, <span class="math notranslate nohighlight">\(\bSigma = Q \Lambda Q^T\)</span> has a spectral decomposition where all diagonal entries of <span class="math notranslate nohighlight">\(\Lambda\)</span> are stricly positive. Then <span class="math notranslate nohighlight">\(\bSigma^{-1} = Q \Lambda^{-1} Q^T\)</span> where the diagonal entries of <span class="math notranslate nohighlight">\(\Lambda^{-1}\)</span> are the inverses of those of <span class="math notranslate nohighlight">\(\Lambda\)</span> - and hence strictly positive as well. In particular, <span class="math notranslate nohighlight">\(\bSigma^{-1}\)</span> is positive semidefinite. <span class="math notranslate nohighlight">\(\lhd\)</span></p>
+<p>In the more general case over a convex set, we have the following statement. The proof is essentially unchanged.</p>
+<p><strong>LEMMA</strong> <strong>(Second-Order Convexity Condition)</strong> Let <span class="math notranslate nohighlight">\(f : D \to \mathbb{R}\)</span> be twice continuously differentiable, wherere <span class="math notranslate nohighlight">\(D \subseteq \mathbb{R}^d\)</span> is convex. If <span class="math notranslate nohighlight">\(H_f(\mathbf{x})\)</span> is positive semidefinite (respectively positive definite) for all <span class="math notranslate nohighlight">\(\mathbf{x} \in D\)</span>, then <span class="math notranslate nohighlight">\(f\)</span> is convex (respectively strictly convex) over D. <span class="math notranslate nohighlight">\(\flat\)</span></p>
+<p>The following example shows what can go wrong in the other direction.</p>
+<p><strong>EXAMPLE:</strong> Consider the function</p>
+<div class="math notranslate nohighlight">
+\[
+f(\mathbf{x}) = x_1^2 - x_2^2
+\]</div>
+<p>on the convex set</p>
+<div class="math notranslate nohighlight">
+\[
+D = \{\mathbf{x} : x_2 = 0\}.
+\]</div>
+<p>On <span class="math notranslate nohighlight">\(D\)</span>, the function reduces to <span class="math notranslate nohighlight">\(x_1^2\)</span> which is convex. The Hessian is</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+H_f(\mathbf{x}) = \begin{pmatrix}
+1 &amp; 0\\
+0 &amp; -1
+\end{pmatrix}
+\end{split}\]</div>
+<p>which is not positive semidefinite (Why?). <span class="math notranslate nohighlight">\(\lhd\)</span></p>
 </section>
 <section id="convexity-and-unconstrained-optimization">
 <h2><span class="section-number">6.3.5. </span>Convexity and unconstrained optimization<a class="headerlink" href="#convexity-and-unconstrained-optimization" title="Permalink to this headline">#</a></h2>

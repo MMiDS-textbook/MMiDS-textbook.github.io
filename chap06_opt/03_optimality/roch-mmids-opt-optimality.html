@@ -1621,13 +1621,13 @@ H_f(\mathbf{x}) = \begin{pmatrix}
 <h2><span class="section-number">6.3.5. </span>Convexity and unconstrained optimization<a class="headerlink" href="#convexity-and-unconstrained-optimization" title="Permalink to this headline">#</a></h2>
 <p>Now comes the key property of convex functions (at least as far as we are concerned).</p>
 <p><strong>Global minimization in the convex case</strong> In the convex case, global minimization reduces to local minimization.</p>
-<p><strong>THEOREM</strong> <strong>(Global Minimizers of Convex Functions)</strong> Let <span class="math notranslate nohighlight">\(f : \mathbb{R}^d \to \mathbb{R}\)</span> be a convex function. Then any local minimizer of <span class="math notranslate nohighlight">\(f\)</span> is also a global minimizer. <span class="math notranslate nohighlight">\(\sharp\)</span></p>
-<p><em>Proof:</em> By contradiction, suppose <span class="math notranslate nohighlight">\(\mathbf{x}_0\)</span> is a local minimizer, but not a global minimizer. Then there is <span class="math notranslate nohighlight">\(\mathbf{y}\)</span> such that</p>
+<p><strong>THEOREM</strong> <strong>(Global Minimizers of Convex Functions)</strong> Let <span class="math notranslate nohighlight">\(f : D \to \mathbb{R}\)</span> be a convex function, where <span class="math notranslate nohighlight">\(D \subseteq \mathbb{R}^d\)</span> is convex. Then any local minimizer of <span class="math notranslate nohighlight">\(f\)</span> over <span class="math notranslate nohighlight">\(D\)</span> is also a global minimizer over <span class="math notranslate nohighlight">\(D\)</span>. <span class="math notranslate nohighlight">\(\sharp\)</span></p>
+<p><em>Proof:</em> By contradiction, suppose <span class="math notranslate nohighlight">\(\mathbf{x}_0\)</span> is a local minimizer, but not a global minimizer. Then there is <span class="math notranslate nohighlight">\(\mathbf{y} \in D\)</span> such that</p>
 <div class="math notranslate nohighlight">
 \[
 f(\mathbf{y}) &lt; f(\mathbf{x}_0).
 \]</div>
-<p>By convexity, for any <span class="math notranslate nohighlight">\(\alpha \in (0,1)\)</span></p>
+<p>By convexity of <span class="math notranslate nohighlight">\(f\)</span> and <span class="math notranslate nohighlight">\(D\)</span>, for any <span class="math notranslate nohighlight">\(\alpha \in (0,1)\)</span></p>
 <div class="math notranslate nohighlight">
 \[
 f(\mathbf{x}_0 + \alpha (\mathbf{y} - \mathbf{x}_0))
@@ -1635,7 +1635,9 @@ f(\mathbf{x}_0 + \alpha (\mathbf{y} - \mathbf{x}_0))
 &lt; f(\mathbf{x}_0).
 \]</div>
 <p>But that implies that every open ball around <span class="math notranslate nohighlight">\(\mathbf{x}_0\)</span> contains a point taking a smaller value than <span class="math notranslate nohighlight">\(f(\mathbf{x}_0)\)</span>, a contradiction. <span class="math notranslate nohighlight">\(\square\)</span></p>
-<p>In the continuously differentiable case, we get in addition that a vanishing gradient at <span class="math notranslate nohighlight">\(\mathbf{x}_0\)</span> is now a sufficient condition for <span class="math notranslate nohighlight">\(\mathbf{x}_0\)</span> to be a local – and therefore global – minimizer.</p>
+<p>When <span class="math notranslate nohighlight">\(f\)</span> is strictly convex, the global minimizer is unique (if it exists). (Why?)</p>
+<p>For our purposes, we will need a uniform version of strict convexity known as strong convexity which we define in the next subsection.</p>
+<p>In the continuously differentiable case over <span class="math notranslate nohighlight">\(\mathbb{R}^d\)</span>, we get in addition that a vanishing gradient at <span class="math notranslate nohighlight">\(\mathbf{x}_0\)</span> is now a sufficient condition for <span class="math notranslate nohighlight">\(\mathbf{x}_0\)</span> to be a local – and therefore global – minimizer.</p>
 <p><strong>THEOREM</strong> <strong>(First-Order Sufficient Condition for Convex Functions)</strong> Let <span class="math notranslate nohighlight">\(f : \mathbb{R}^d \to \mathbb{R}\)</span> be a continuously differentiable, convex function. If <span class="math notranslate nohighlight">\(\nabla f(\mathbf{x}_0) = \mathbf{0}\)</span> then <span class="math notranslate nohighlight">\(\mathbf{x}_0\)</span> is a global minimizer. <span class="math notranslate nohighlight">\(\sharp\)</span></p>
 <p><em>Proof:</em> Assume <span class="math notranslate nohighlight">\(\nabla f(\mathbf{x}_0) = \mathbf{0}\)</span>. By the <em>First-Order Convexity Condition</em>, for any <span class="math notranslate nohighlight">\(\mathbf{y}\)</span></p>
 <div class="math notranslate nohighlight">
@@ -1666,8 +1668,6 @@ H_f(\mathbf{x}) = \frac{1}{2}[P + P^T] = P
 P\mathbf{x} = - \mathbf{q}
 \]</div>
 <p>is a global minimizer. <span class="math notranslate nohighlight">\(\lhd\)</span></p>
-<p>When <span class="math notranslate nohighlight">\(f\)</span> is strictly convex, the global minimizer is unique (if it exists). (Why?)</p>
-<p>For our purposes, we will need a uniform version of strict convexity, strong convexity, which we define in the next section.</p>
 <p><strong>Strong convexity</strong> With stronger assumptions, we obtain stronger guarantees. One such assumption is strong convexity, which we define next in the special case of twice continuously differentiable functions. It generalizes the single-variable condition of requiring that the second derivative <span class="math notranslate nohighlight">\(f''(x) &gt; m &gt; 0\)</span> for all <span class="math notranslate nohighlight">\(x \in \mathbb{R}\)</span>. Instead we require that the second derivative “in every direction” is bounded from below. For this purpose, we use the second directional derivative.</p>
 <p>A strongly convex function is one where the second directional derivative along all unit vector directions is uniformly bounded below away from <span class="math notranslate nohighlight">\(0\)</span>. That is, there is <span class="math notranslate nohighlight">\(m &gt; 0\)</span> such that</p>
 <div class="math notranslate nohighlight">

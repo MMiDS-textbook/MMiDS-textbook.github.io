@@ -512,17 +512,31 @@ A^T A \mathbf{x} = A^T \mathbf{b}
 \]</div>
 <p><span class="math notranslate nohighlight">\(\flat\)</span></p>
 <p><em>Proof idea:</em> This is an immediate application of <em>Cauchy-Schwarz</em>.</p>
-<p><em>Proof:</em> By <em>Cauchy-Schwarz</em>,</p>
+<p><em>Proof:</em> By <em>Cauchy-Schwarz</em>, since <span class="math notranslate nohighlight">\(\mathbf{v}\)</span> has unit norm,</p>
 <div class="amsmath math notranslate nohighlight">
 \[\begin{align*}
 \left|\frac{\partial f (\mathbf{x}_0)}{\partial \mathbf{v}}\right| 
 &amp;= \left|\nabla f(\mathbf{x}_0)^T \mathbf{v}\right|\\
 &amp;\leq \|\nabla f(\mathbf{x}_0)\| \|\mathbf{v}\|\\
-&amp;= \|\nabla f(\mathbf{x}_0)\|\\
-&amp;= \nabla f(\mathbf{x}_0)^T \left(\frac{\nabla f(\mathbf{x}_0)}{\|\nabla f(\mathbf{x}_0)\|}\right)\\
-&amp;= \left|\frac{\partial f (\mathbf{x}_0)}{\partial \mathbf{v}^*}\right|.
+&amp;= \|\nabla f(\mathbf{x}_0)\|.
 \end{align*}\]</div>
-<p>So <span class="math notranslate nohighlight">\(\frac{\partial f (\mathbf{x}_0)}{\partial \mathbf{v}^*}\)</span> is largest in absolute value. Moreover it is nonnegative. <span class="math notranslate nohighlight">\(\square\)</span></p>
+<p>Or, put differently,</p>
+<div class="math notranslate nohighlight">
+\[
+- \|\nabla f(\mathbf{x}_0)\| \leq
+\frac{\partial f (\mathbf{x}_0)}{\partial \mathbf{v}}
+\leq \|\nabla f(\mathbf{x}_0)\|.
+\]</div>
+<p>On the other hand, by the choice of <span class="math notranslate nohighlight">\(\mathbf{v}^*\)</span>,</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+\frac{\partial f (\mathbf{x}_0)}{\partial \mathbf{v}^*}
+&amp;= \nabla f(\mathbf{x}_0)^T \left(\frac{\nabla f(\mathbf{x}_0)}{\|\nabla f(\mathbf{x}_0)\|}\right)\\
+&amp;= - \left(\frac{\nabla f(\mathbf{x}_0)^T \nabla f(\mathbf{x}_0)}{\|\nabla f(\mathbf{x}_0)\|}\right)\\
+&amp;= - \left(\frac{\|\nabla f(\mathbf{x}_0)\|^2}{\|\nabla f(\mathbf{x}_0)\|}\right)\\
+&amp;= - \|\nabla f(\mathbf{x}_0)\|.
+\end{align*}\]</div>
+<p>The last two displays combined give the result. <span class="math notranslate nohighlight">\(\square\)</span></p>
 <p>At each iteration of gradient descent, we take a step in the direction of the negative of the gradient, that is,</p>
 <div class="math notranslate nohighlight">
 \[
@@ -632,6 +646,7 @@ A^T A \mathbf{x} = A^T \mathbf{b}
 <img alt="../../_images/c62d244a66aaf12c92ac6779e6d2808ab71eb422dfc037e0ec70421686bd56ec.png" src="../../_images/c62d244a66aaf12c92ac6779e6d2808ab71eb422dfc037e0ec70421686bd56ec.png" />
 </div>
 </div>
+<p><strong>CLICK ON TARGET:</strong> If we start gradient descent from <span class="math notranslate nohighlight">\(-2\)</span>, where will it converge? <span class="math notranslate nohighlight">\(\ddagger\)</span></p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">grad_f</span><span class="p">(</span><span class="n">x</span><span class="p">):</span> 
@@ -685,6 +700,7 @@ A^T A \mathbf{x} = A^T \mathbf{b}
 </div>
 </div>
 </div>
+<p><strong>TRY IT!</strong> In this last example, does changing the step size affect the outcome? <span class="math notranslate nohighlight">\(\ddagger\)</span></p>
 <p>In the final example, we end up at a stationary point that is not a local minimizer. Here both the first and second derivatives are zero. This is known as a <a class="reference external" href="https://en.wikipedia.org/wiki/Saddle_point">saddle point</a>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">

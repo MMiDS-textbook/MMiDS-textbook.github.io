@@ -1638,13 +1638,14 @@ f(\mathbf{x}_0 + \alpha (\mathbf{y} - \mathbf{x}_0))
 <p>When <span class="math notranslate nohighlight">\(f\)</span> is strictly convex, the global minimizer is unique (if it exists). (Why?)</p>
 <p>For our purposes, we will need a uniform version of strict convexity known as strong convexity which we define in the next subsection.</p>
 <p>In the continuously differentiable case over <span class="math notranslate nohighlight">\(\mathbb{R}^d\)</span>, we get in addition that a vanishing gradient at <span class="math notranslate nohighlight">\(\mathbf{x}_0\)</span> is now a sufficient condition for <span class="math notranslate nohighlight">\(\mathbf{x}_0\)</span> to be a local – and therefore global – minimizer.</p>
-<p><strong>THEOREM</strong> <strong>(First-Order Sufficient Condition for Convex Functions)</strong> Let <span class="math notranslate nohighlight">\(f : \mathbb{R}^d \to \mathbb{R}\)</span> be a continuously differentiable, convex function. If <span class="math notranslate nohighlight">\(\nabla f(\mathbf{x}_0) = \mathbf{0}\)</span> then <span class="math notranslate nohighlight">\(\mathbf{x}_0\)</span> is a global minimizer. <span class="math notranslate nohighlight">\(\sharp\)</span></p>
+<p><strong>THEOREM</strong> <strong>(First-Order Optimality Condition for Convex Functions on <span class="math notranslate nohighlight">\(\mathbb{R}^d\)</span>)</strong> Let <span class="math notranslate nohighlight">\(f : \mathbb{R}^d \to \mathbb{R}\)</span> be a continuously differentiable, convex function. Then <span class="math notranslate nohighlight">\(\mathbf{x}_0\)</span> is a local minimizer – and therefore a global minimizer – if and only if <span class="math notranslate nohighlight">\(\nabla f(\mathbf{x}_0) = \mathbf{0}\)</span> . <span class="math notranslate nohighlight">\(\sharp\)</span></p>
 <p><em>Proof:</em> Assume <span class="math notranslate nohighlight">\(\nabla f(\mathbf{x}_0) = \mathbf{0}\)</span>. By the <em>First-Order Convexity Condition</em>, for any <span class="math notranslate nohighlight">\(\mathbf{y}\)</span></p>
 <div class="math notranslate nohighlight">
 \[
 f(\mathbf{y}) - f(\mathbf{x}_0) \geq \nabla f(\mathbf{x}_0)^T (\mathbf{y} - \mathbf{x}_0) = 0.
 \]</div>
-<p>That proves the claim. <span class="math notranslate nohighlight">\(\square\)</span></p>
+<p>So <span class="math notranslate nohighlight">\(\mathbf{x}_0\)</span> is a global minimizer.</p>
+<p>The other direction follows immediately from the <em>First-Order Necessary Condition</em>. <span class="math notranslate nohighlight">\(\square\)</span></p>
 <p><strong>EXAMPLE:</strong> <strong>(Quadratic Function)</strong> Consider the quadratic function</p>
 <div class="math notranslate nohighlight">
 \[
@@ -1668,6 +1669,57 @@ H_f(\mathbf{x}) = \frac{1}{2}[P + P^T] = P
 P\mathbf{x} = - \mathbf{q}
 \]</div>
 <p>is a global minimizer. <span class="math notranslate nohighlight">\(\lhd\)</span></p>
+<p>More generally, we have the following.</p>
+<p><strong>THEOREM</strong> <strong>(First-Order Optimality Condition for Convex Functions on Convex Sets)</strong> Let <span class="math notranslate nohighlight">\(f : D \to \mathbb{R}\)</span> be a continuously differentiable, convex function, where <span class="math notranslate nohighlight">\(D \subseteq \mathbb{R}^d\)</span> is convex. Then <span class="math notranslate nohighlight">\(\mathbf{x}_0\)</span> is a local minimizer – and therefore a global minimizer – if and only if for any <span class="math notranslate nohighlight">\(\mathbf{y} \in D\)</span></p>
+<div class="math notranslate nohighlight">
+\[
+\nabla f(\mathbf{x}_0)^T (\mathbf{y} - \mathbf{x}_0) \geq 0.
+\]</div>
+<p><span class="math notranslate nohighlight">\(\sharp\)</span></p>
+<p><em>Proof idea:</em> Put differently the condition above says that, in any direction <span class="math notranslate nohighlight">\(\mathbf{v}\)</span> of the form <span class="math notranslate nohighlight">\(\mathbf{y} - \mathbf{x}_0\)</span> for some <span class="math notranslate nohighlight">\(\mathbf{y} \in D\)</span>, the directional derivative <span class="math notranslate nohighlight">\(\frac{\partial f(\mathbf{x}_0)}{\partial \mathbf{v}}\)</span> is nonnegative. Indeed, otherwise <span class="math notranslate nohighlight">\(\mathbf{v}\)</span> would be a descent direction and we could find points in <span class="math notranslate nohighlight">\(D\)</span> arbitrarily close to <span class="math notranslate nohighlight">\(\mathbf{x}_0\)</span> taking a smaller <span class="math notranslate nohighlight">\(f\)</span> value.</p>
+<p><em>Proof:</em> Assume the condition holds. By the <em>First-Order Convexity Condition</em>, for any <span class="math notranslate nohighlight">\(\mathbf{y} \in D\)</span></p>
+<div class="math notranslate nohighlight">
+\[
+f(\mathbf{y}) - f(\mathbf{x}_0) \geq \nabla f(\mathbf{x}_0)^T (\mathbf{y} - \mathbf{x}_0) \geq 0.
+\]</div>
+<p>So <span class="math notranslate nohighlight">\(\mathbf{x}_0\)</span> is a global minimizer.</p>
+<p>For the other direction, assume that there is <span class="math notranslate nohighlight">\(\mathbf{y} \in D\)</span> such that</p>
+<div class="math notranslate nohighlight">
+\[
+\nabla f(\mathbf{x}_0)^T (\mathbf{y} - \mathbf{x}_0) &lt; 0.
+\]</div>
+<p>For any <span class="math notranslate nohighlight">\(\alpha \in (0,1)\)</span>, by the <em>Mean Value Theorem</em>, for some <span class="math notranslate nohighlight">\(\xi_\alpha \in (0,1)\)</span> it holds that</p>
+<div class="math notranslate nohighlight">
+\[
+f(\mathbf{x}_0 + \alpha (\mathbf{y} - \mathbf{x}_0))
+= f(\mathbf{x}_0) + \alpha (\mathbf{y} - \mathbf{x}_0)^T \nabla f (\mathbf{x}_0 + \xi_\alpha \alpha (\mathbf{y} - \mathbf{x}_0)).
+\]</div>
+<p>By continuity of the gradient, for <span class="math notranslate nohighlight">\(\alpha\)</span> small enough, we have by the assumption above that</p>
+<div class="math notranslate nohighlight">
+\[
+\nabla f (\mathbf{x}_0 + \xi_\alpha \alpha (\mathbf{y} - \mathbf{x}_0)) &lt; 0.
+\]</div>
+<p>Plugging this back above, it follows that for all such <span class="math notranslate nohighlight">\(\alpha\)</span></p>
+<div class="math notranslate nohighlight">
+\[
+f(\mathbf{x}_0 + \alpha (\mathbf{y} - \mathbf{x}_0))
+&lt; f(\mathbf{x}_0),
+\]</div>
+<p>contradicting the fact that <span class="math notranslate nohighlight">\(\mathbf{x}_0\)</span> is a local minimizer. <span class="math notranslate nohighlight">\(\square\)</span></p>
+<p><strong>EXAMPLE:</strong> Consider the function <span class="math notranslate nohighlight">\(f(x) = \frac{1}{2} x^2\)</span> for <span class="math notranslate nohighlight">\(x \in D = \{x : x \geq 1\}\)</span>. The function <span class="math notranslate nohighlight">\(f\)</span> is convex for any <span class="math notranslate nohighlight">\(x\)</span> since <span class="math notranslate nohighlight">\(f''(x) = 1 &gt; 0\)</span>.</p>
+<p>Over <span class="math notranslate nohighlight">\(D\)</span>, the global minimizer is <span class="math notranslate nohighlight">\(x^* = 1\)</span>, yet the derivative is <span class="math notranslate nohighlight">\(f'(1) = 1 \neq 0\)</span>. Indeed, because <span class="math notranslate nohighlight">\(x^*\)</span> is on the boundary of the domain <span class="math notranslate nohighlight">\(D\)</span>, it does not matter that the function decreases when moving to the left from <span class="math notranslate nohighlight">\(x^*\)</span>. We only care about directions that take us into the domain <span class="math notranslate nohighlight">\(D\)</span>, in this case the right direction at <span class="math notranslate nohighlight">\(x^*\)</span>.</p>
+<p>The condition in the theorem reads</p>
+<div class="math notranslate nohighlight">
+\[
+f'(1) (y - 1) \geq 0, \qquad \forall y \geq 1.
+\]</div>
+<p>This is equivalent to <span class="math notranslate nohighlight">\(f'(1) \geq 0\)</span>, which is indeed satisfied here.</p>
+<p>If <span class="math notranslate nohighlight">\(x &gt; 1\)</span>, then the condition is</p>
+<div class="math notranslate nohighlight">
+\[
+f'(x) (y - x) \geq 0.
+\]</div>
+<p>Taking <span class="math notranslate nohighlight">\(y = x+ 1\)</span>, we get <span class="math notranslate nohighlight">\(f'(x) \geq 0\)</span> while taking <span class="math notranslate nohighlight">\(y = \frac{1}{2} (1 + x)\)</span> gives <span class="math notranslate nohighlight">\(f'(x) \frac{1}{2}(1-x) \geq 0\)</span> which implies <span class="math notranslate nohighlight">\(f'(x) \leq 0\)</span> (Why?). Combining the two gives <span class="math notranslate nohighlight">\(f'(x) = 0\)</span>. No <span class="math notranslate nohighlight">\(x &gt; 1\)</span> satisfies this condition. <span class="math notranslate nohighlight">\(\lhd\)</span></p>
 <p><strong>Strong convexity</strong> With stronger assumptions, we obtain stronger guarantees. One such assumption is strong convexity, which we define next in the special case of twice continuously differentiable functions. It generalizes the single-variable condition of requiring that the second derivative <span class="math notranslate nohighlight">\(f''(x) &gt; m &gt; 0\)</span> for all <span class="math notranslate nohighlight">\(x \in \mathbb{R}\)</span>. Instead we require that the second derivative “in every direction” is bounded from below. For this purpose, we use the second directional derivative.</p>
 <p>A strongly convex function is one where the second directional derivative along all unit vector directions is uniformly bounded below away from <span class="math notranslate nohighlight">\(0\)</span>. That is, there is <span class="math notranslate nohighlight">\(m &gt; 0\)</span> such that</p>
 <div class="math notranslate nohighlight">
@@ -1772,6 +1824,28 @@ H_f(\mathbf{x})
 <p>since <span class="math notranslate nohighlight">\(A \mathbf{z} = \mathbf{0}\)</span> implies <span class="math notranslate nohighlight">\(\mathbf{z} = \mathbf{0}\)</span> by the full column rank assumption.</p>
 <p>By the previous example, <span class="math notranslate nohighlight">\(f\)</span> is <span class="math notranslate nohighlight">\(\mu\)</span>-strongly convex for some <span class="math notranslate nohighlight">\(\mu &gt; 0\)</span>.</p>
 <p>The theorem above then indicates that there is a unique global minimizer to the least-squares objective in that case. <span class="math notranslate nohighlight">\(\lhd\)</span></p>
+<p><strong>EXAMPLE:</strong> Let <span class="math notranslate nohighlight">\(D \subseteq \mathbb{R}^d\)</span> be a nonempty, closed, convex set. For <span class="math notranslate nohighlight">\(\mathbf{x}\in\mathbb{R}^d\)</span> we define the projection of <span class="math notranslate nohighlight">\(\mathbf{x}\)</span> onto <span class="math notranslate nohighlight">\(D\)</span> as</p>
+<div class="math notranslate nohighlight">
+\[
+\mathrm{proj}_{D}(\mathbf{x})
+= \arg\min\left\{\|\mathbf{x} - \mathbf{z}\| : \mathbf{z} \in D\right\}.
+\]</div>
+<p>Let <span class="math notranslate nohighlight">\(\mathbf{w} \in D\)</span>. By the <em>Extreme Value Theorem</em> applied to <span class="math notranslate nohighlight">\(\|\mathbf{x} - \mathbf{z}\|\)</span> on the closed, bonded set <span class="math notranslate nohighlight">\(\{\mathbf{z} \in D: \|\mathbf{x} - \mathbf{z}\| \leq \|\mathbf{x} - \mathbf{w}\|\}\)</span>, there is a global minimizer for this problem. Moreover, the problem is equivalent to minimizing the <em>squared</em> norm <span class="math notranslate nohighlight">\(\|\mathbf{x} - \mathbf{z}\|^2\)</span> which is strongly convex as a function of <span class="math notranslate nohighlight">\(\mathbf{z}\)</span> since</p>
+<div class="math notranslate nohighlight">
+\[
+\|\mathbf{x} - \mathbf{z}\|^2
+= \mathbf{z}^T\mathbf{z}
+- 2 \mathbf{x}^T\mathbf{z}
++ \|\mathbf{x}\|^2.
+\]</div>
+<p>As a result, the minimizer is unique.</p>
+<p>We use the <em>First-Order Optimality Conditions for Convex Functions on Convex Sets</em> to characterize it. The gradient of <span class="math notranslate nohighlight">\(\|\mathbf{x} - \mathbf{z}\|^2\)</span> as a function of <span class="math notranslate nohighlight">\(\mathbf{z}\)</span> is <span class="math notranslate nohighlight">\(2\mathbf{z} - 2 \mathbf{x}\)</span> by our previous formula for quadratic functions. So the optimality condition reads (after simplifying the factor of <span class="math notranslate nohighlight">\(2\)</span>)</p>
+<div class="math notranslate nohighlight">
+\[
+(\mathrm{proj}_{D}(\mathbf{x}) - \mathbf{x})^T(\mathbf{y} - \mathrm{proj}_{D}(\mathbf{x})) \geq 0, \qquad \forall \mathbf{y} \in D.
+\]</div>
+<p>This formula generlizes the <em>Orthogonal Projection Theorem</em> beyond the case of linear subspaces. <span class="math notranslate nohighlight">\(\lhd\)</span></p>
+<p><strong>THINK-PAIR-SHARE:</strong> Recover the geometric characterization of the orthogonal projection onto a linear subspace from the previous example. <span class="math notranslate nohighlight">\(\ddagger\)</span></p>
 </section>
 <section id="a-data-science-example-ridge-regression">
 <h2><span class="section-number">6.3.6. </span>A data science example: ridge regression<a class="headerlink" href="#a-data-science-example-ridge-regression" title="Permalink to this headline">#</a></h2>

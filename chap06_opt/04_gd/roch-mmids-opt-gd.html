@@ -1129,17 +1129,17 @@ f(x^1) - f(x^*)
 <h2><span class="section-number">6.4.3. </span>Application to logistic regression<a class="headerlink" href="#application-to-logistic-regression" title="Permalink to this headline">#</a></h2>
 <p>We return to logistic regression, which we alluded to in the motivating example of this chapter.</p>
 <p>The input data is of the form <span class="math notranslate nohighlight">\(\{(\boldsymbol{\alpha}_i, b_i) : i=1,\ldots, n\}\)</span> where <span class="math notranslate nohighlight">\(\boldsymbol{\alpha}_i \in \mathbb{R}^d\)</span> are the features and <span class="math notranslate nohighlight">\(b_i \in \{0,1\}\)</span> is the label. As before we use a matrix representation: <span class="math notranslate nohighlight">\(A \in \mathbb{R}^{n \times d}\)</span> has rows <span class="math notranslate nohighlight">\(\boldsymbol{\alpha}_i^T\)</span>, <span class="math notranslate nohighlight">\(i = 1,\ldots, n\)</span> and <span class="math notranslate nohighlight">\(\mathbf{b} = (b_1, \ldots, b_n) \in \{0,1\}^n\)</span>.</p>
-<p><strong>Logistic model.</strong> We summarize the logistic regression approach. Our goal is to find a function of the features that approximates the probability of the label <span class="math notranslate nohighlight">\(1\)</span>. For this purpose, we model the <a class="reference external" href="https://en.wikipedia.org/wiki/Logit">log-odds</a> (or logit function) of the probability of label <span class="math notranslate nohighlight">\(1\)</span> as a linear function of the features</p>
+<p><strong>Logistic model.</strong> We summarize the logistic regression approach. Our goal is to find a function of the features that approximates the probability of the label <span class="math notranslate nohighlight">\(1\)</span>. For this purpose, we model the <a class="reference external" href="https://en.wikipedia.org/wiki/Logit">log-odds</a> (or logit function) of the probability of label <span class="math notranslate nohighlight">\(1\)</span> as a linear function of the features <span class="math notranslate nohighlight">\(\boldsymbol{\alpha}  \in \mathbb{R}^d\)</span></p>
 <div class="math notranslate nohighlight">
 \[
-\log \frac{p(\mathbf{x}; \boldsymbol{\alpha}_i)}{1-p(\mathbf{x}; \boldsymbol{\alpha}_i)}
-= \boldsymbol{\alpha}_i^T \mathbf{x}
+\log \frac{p(\mathbf{x}; \boldsymbol{\alpha})}{1-p(\mathbf{x}; \boldsymbol{\alpha})}
+= \boldsymbol{\alpha}^T \mathbf{x}
 \]</div>
-<p>where <span class="math notranslate nohighlight">\(\mathbf{x} \in \mathbb{R}^d\)</span>. Inverting this expression gives</p>
+<p>where <span class="math notranslate nohighlight">\(\mathbf{x} \in \mathbb{R}^d\)</span> is the vector of coefficients (i.e., parameters). Inverting this expression gives</p>
 <div class="math notranslate nohighlight">
 \[
-p(\mathbf{x}; \boldsymbol{\alpha}_i)
-= \sigma(\boldsymbol{\alpha}_i^T \mathbf{x})
+p(\mathbf{x}; \boldsymbol{\alpha})
+= \sigma(\boldsymbol{\alpha}^T \mathbf{x})
 \]</div>
 <p>where the <a class="reference external" href="https://en.wikipedia.org/wiki/Logistic_function">sigmoid</a> function is</p>
 <div class="math notranslate nohighlight">
@@ -1189,12 +1189,13 @@ p(\mathbf{x}; \boldsymbol{\alpha}_i)
 = \frac{1}{n} \sum_{i=1}^n \left\{- b_i \log(\sigma(\boldsymbol{\alpha}_i^T \mathbf{x}))
 - (1-b_i) \log(1- \sigma(\boldsymbol{\alpha}_i^T \mathbf{x}))\right\}.
 \]</div>
-<p>That is, we solve</p>
+<p>We used standard properties of the logarithm: for <span class="math notranslate nohighlight">\(x, y &gt; 0\)</span>, <span class="math notranslate nohighlight">\(\log(xy) = \log x + \log y\)</span> and <span class="math notranslate nohighlight">\(\log(x^y) = y \log x\)</span>.</p>
+<p>Hence, we want to solve the minimization problem</p>
 <div class="math notranslate nohighlight">
 \[
 \min_{\mathbf{x} \in \mathbb{R}^d} \ell(\mathbf{x}; A, \mathbf{b}).
 \]</div>
-<p>The fact that the objective function <span class="math notranslate nohighlight">\(\ell\)</span> is an average over the samples will play a role later on.</p>
+<p>We are implicitly using here that the logarithm is a strictly increasing function and therefore does not change the global maximum of a function. Multiplying by <span class="math notranslate nohighlight">\(-1\)</span> changes the global maximum into a global minimum.</p>
 <p>To use gradient descent, we need the gradient of <span class="math notranslate nohighlight">\(\ell\)</span>. We use the <em>Chain Rule</em> and first compute the derivative of <span class="math notranslate nohighlight">\(\sigma\)</span> which is</p>
 <div class="math notranslate nohighlight">
 \[
@@ -1203,19 +1204,31 @@ p(\mathbf{x}; \boldsymbol{\alpha}_i)
 = \frac{1}{1 + e^{-z}}\left(1 - \frac{1}{1 + e^{-z}}\right)
 = \sigma(z) (1 - \sigma(z)).
 \]</div>
-<p>The latter expression is known as the <a class="reference external" href="https://en.wikipedia.org/wiki/Logistic_function#Logistic_differential_equation">logistic differential equation</a>. It arises in a variety of applications, including the modeling of <a class="reference external" href="https://towardsdatascience.com/covid-19-infection-in-italy-mathematical-models-and-predictions-7784b4d7dd8d">population dynamics</a>. Here it will be a convenient way to compute the gradient. Indeed observe that by the <em>Chain Rule</em> (entry-wise)</p>
+<p>The latter expression is known as the <a class="reference external" href="https://en.wikipedia.org/wiki/Logistic_function#Logistic_differential_equation">logistic differential equation</a>. It arises in a variety of applications, including the modeling of <a class="reference external" href="https://towardsdatascience.com/covid-19-infection-in-italy-mathematical-models-and-predictions-7784b4d7dd8d">population dynamics</a>. Here it will be a convenient way to compute the gradient.</p>
+<p>Observe that, for <span class="math notranslate nohighlight">\(\boldsymbol{\alpha} = (\alpha_{1}, \ldots, \alpha_{d})  \in \mathbb{R}^d\)</span>, by the <em>Chain Rule</em></p>
 <div class="math notranslate nohighlight">
 \[
-\frac{\partial}{\partial x_j} \sigma(\boldsymbol{\alpha}_i^T \mathbf{x})
-= \sigma(\boldsymbol{\alpha}_i^T \mathbf{x}) (1 - \sigma(\boldsymbol{\alpha}_i^T \mathbf{x}))\, \alpha_{ij}
-\]</div>
-<p>so that</p>
-<div class="math notranslate nohighlight">
-\[
-\nabla\sigma(\boldsymbol{\alpha}_i^T \mathbf{x})
-= \sigma(\boldsymbol{\alpha}_i^T \mathbf{x}) (1 - \sigma(\boldsymbol{\alpha}_i^T \mathbf{x}))\, \boldsymbol{\alpha}_i
+\nabla\sigma(\boldsymbol{\alpha}^T \mathbf{x})
+= \sigma'(\boldsymbol{\alpha}^T \mathbf{x}) \nabla (\boldsymbol{\alpha}^T \mathbf{x})
+= \sigma'(\boldsymbol{\alpha}^T \mathbf{x}) \boldsymbol{\alpha}
 \]</div>
 <p>where, throughout, the gradient is with respect to <span class="math notranslate nohighlight">\(\mathbf{x}\)</span>.</p>
+<p>Alternatively, we can obtain the same formula by applying the single-variable <em>Chain Rule</em></p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+\frac{\partial}{\partial x_j} \sigma(\boldsymbol{\alpha}^T \mathbf{x})
+&amp;= \sigma'(\boldsymbol{\alpha}^T \mathbf{x}) \frac{\partial}{\partial x_j}(\boldsymbol{\alpha}^T \mathbf{x})\\
+&amp;= \sigma'(\boldsymbol{\alpha}^T \mathbf{x}) \frac{\partial}{\partial x_j}\left(\alpha_{j} x_{j} + \sum_{\ell=1, \ell \neq j}^d \alpha_{\ell} x_{\ell}\right)\\
+&amp;= \sigma(\boldsymbol{\alpha}^T \mathbf{x}) (1 - \sigma(\boldsymbol{\alpha}^T \mathbf{x}))\, \alpha_{j}
+\end{align*}\]</div>
+<p>so that</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+\nabla\sigma(\boldsymbol{\alpha}^T \mathbf{x})
+&amp;= \left(\sigma(\boldsymbol{\alpha}^T \mathbf{x}) (1 - \sigma(\boldsymbol{\alpha}^T \mathbf{x}))\, \alpha_{1}, \ldots, \sigma(\boldsymbol{\alpha}^T \mathbf{x}) (1 - \sigma(\boldsymbol{\alpha}^T \mathbf{x}))\, \alpha_{d}\right)\\
+&amp;= \sigma(\boldsymbol{\alpha}^T \mathbf{x}) (1 - \sigma(\boldsymbol{\alpha}^T \mathbf{x}))\, (\alpha_{1}, \ldots, \alpha_{d})\\
+&amp;= \sigma(\boldsymbol{\alpha}^T \mathbf{x}) (1 - \sigma(\boldsymbol{\alpha}^T \mathbf{x}))\, \boldsymbol{\alpha}.
+\end{align*}\]</div>
 <p>By another application of the <em>Chain Rule</em>, since <span class="math notranslate nohighlight">\(\frac{\mathrm{d}}{\mathrm{d} z} \log z = \frac{1}{z}\)</span>,</p>
 <div class="amsmath math notranslate nohighlight">
 \[\begin{align*}

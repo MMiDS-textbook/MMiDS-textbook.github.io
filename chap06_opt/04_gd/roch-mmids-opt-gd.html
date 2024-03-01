@@ -1128,7 +1128,7 @@ f(x^1) - f(x^*)
 <section id="application-to-logistic-regression">
 <h2><span class="section-number">6.4.3. </span>Application to logistic regression<a class="headerlink" href="#application-to-logistic-regression" title="Permalink to this headline">#</a></h2>
 <p>We return to logistic regression, which we alluded to in the motivating example of this chapter.</p>
-<p>The input data is of the form <span class="math notranslate nohighlight">\(\{(\boldsymbol{\alpha}_i, b_i) : i=1,\ldots, n\}\)</span> where <span class="math notranslate nohighlight">\(\boldsymbol{\alpha}_i \in \mathbb{R}^d\)</span> are the features and <span class="math notranslate nohighlight">\(b_i \in \{0,1\}\)</span> is the label. As before we use a matrix representation: <span class="math notranslate nohighlight">\(A \in \mathbb{R}^{n \times d}\)</span> has rows <span class="math notranslate nohighlight">\(\boldsymbol{\alpha}_i^T\)</span>, <span class="math notranslate nohighlight">\(i = 1,\ldots, n\)</span> and <span class="math notranslate nohighlight">\(\mathbf{b} = (b_1, \ldots, b_n) \in \{0,1\}^n\)</span>.</p>
+<p>The input data is of the form <span class="math notranslate nohighlight">\(\{(\boldsymbol{\alpha}_i, b_i) : i=1,\ldots, n\}\)</span> where <span class="math notranslate nohighlight">\(\boldsymbol{\alpha}_i = (\alpha_{i,1}, \ldots, \alpha_{i,d}) \in \mathbb{R}^d\)</span> are the features and <span class="math notranslate nohighlight">\(b_i \in \{0,1\}\)</span> is the label. As before we use a matrix representation: <span class="math notranslate nohighlight">\(A \in \mathbb{R}^{n \times d}\)</span> has rows <span class="math notranslate nohighlight">\(\boldsymbol{\alpha}_i^T\)</span>, <span class="math notranslate nohighlight">\(i = 1,\ldots, n\)</span> and <span class="math notranslate nohighlight">\(\mathbf{b} = (b_1, \ldots, b_n) \in \{0,1\}^n\)</span>.</p>
 <p><strong>Logistic model.</strong> We summarize the logistic regression approach. Our goal is to find a function of the features that approximates the probability of the label <span class="math notranslate nohighlight">\(1\)</span>. For this purpose, we model the <a class="reference external" href="https://en.wikipedia.org/wiki/Logit">log-odds</a> (or logit function) of the probability of label <span class="math notranslate nohighlight">\(1\)</span> as a linear function of the features <span class="math notranslate nohighlight">\(\boldsymbol{\alpha}  \in \mathbb{R}^d\)</span></p>
 <div class="math notranslate nohighlight">
 \[
@@ -1261,14 +1261,14 @@ b_i - \sigma(\boldsymbol{\alpha}_i^T \mathbf{x})
 ) \,\boldsymbol{\alpha}_i
 = -\frac{1}{n} A^T [\mathbf{b} - \bsigma(A \mathbf{x})].
 \]</div>
-<p>We turn to the Hessian. By symmetry, we can think of the <span class="math notranslate nohighlight">\(j\)</span>-th column of the Hessian as the gradient of the partial derivative with respect to <span class="math notranslate nohighlight">\(x_j\)</span>. We note that</p>
+<p>We turn to the Hessian. By symmetry, we can think of the <span class="math notranslate nohighlight">\(j\)</span>-th column of the Hessian as the gradient of the partial derivative with respect to <span class="math notranslate nohighlight">\(x_j\)</span>. We note that, for <span class="math notranslate nohighlight">\(\boldsymbol{\alpha} = (\alpha_{1}, \ldots, \alpha_{d})  \in \mathbb{R}^d\)</span>,</p>
 <div class="math notranslate nohighlight">
 \[
-\nabla [(b - \sigma(\boldsymbol{\alpha}_i^T \mathbf{x}))\, \alpha_{ij}] 
-= - \nabla [\sigma(\boldsymbol{\alpha}_i^T \mathbf{x})] \, \alpha_{ij} 
-=  - \sigma(\boldsymbol{\alpha}_i^T \mathbf{x}) (1 - \sigma(\boldsymbol{\alpha}_i^T \mathbf{x}))\, \boldsymbol{\alpha}_i\alpha_{ij}.
+\nabla [(b - \sigma(\boldsymbol{\alpha}^T \mathbf{x}))\, \alpha_{j}] 
+= - \nabla [\sigma(\boldsymbol{\alpha}^T \mathbf{x})] \, \alpha_{j} 
+=  - \sigma(\boldsymbol{\alpha}^T \mathbf{x}) (1 - \sigma(\boldsymbol{\alpha}^T \mathbf{x}))\, \boldsymbol{\alpha}\alpha_{j}.
 \]</div>
-<p>Thus, using the fact that <span class="math notranslate nohighlight">\(\boldsymbol{\alpha}_i\alpha_{ij}\)</span> is the <span class="math notranslate nohighlight">\(j\)</span>-th column of the matrix <span class="math notranslate nohighlight">\(\boldsymbol{\alpha}_i \boldsymbol{\alpha}_i^T\)</span>,</p>
+<p>Thus, using the fact that <span class="math notranslate nohighlight">\(\boldsymbol{\alpha} \alpha_{j}\)</span> is the <span class="math notranslate nohighlight">\(j\)</span>-th column of the matrix <span class="math notranslate nohighlight">\(\boldsymbol{\alpha} \boldsymbol{\alpha}^T\)</span>,</p>
 <div class="math notranslate nohighlight">
 \[
 \mathbf{H}_{\ell}(\mathbf{x}; A, \mathbf{b})

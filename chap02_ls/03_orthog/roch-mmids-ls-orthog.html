@@ -9,7 +9,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>2.3. The geometry of least squares &#8212; MMiDS Textbook</title>
+    <title>2.3. The geometry of least squares: the orthogonal projection &#8212; MMiDS Textbook</title>
   
   
   
@@ -191,16 +191,17 @@ const thebe_selector_output = ".output, .cell_output"
 <li class="toctree-l1 current active has-children"><a class="reference internal" href="../00_intro/roch-mmids-ls-intro.html">2. Least squares: geometric, algebraic, and numerical aspects</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="../01_motiv/roch-mmids-ls-motiv.html">2.1. Motivating example: predicting sales</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../02_subspaces/roch-mmids-ls-spaces.html">2.2. Background: review of vector spaces and matrix inverses</a></li>
-<li class="toctree-l2 current active"><a class="current reference internal" href="#">2.3. The geometry of least squares</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">2.3. The geometry of least squares: the orthogonal projection</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../04_qr/roch-mmids-ls-qr.html">2.4. QR decomposition and Householder transformations</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../05_regression/roch-mmids-ls-regression.html">2.5. Application to regression analysis</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../06_adv/roch-mmids-ls-adv.html">2.6. More advanced material: orthogonality in high dimension; linear independence lemma</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../summary_chap02.html">2.7. Other resources</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../summary_chap02.html">2.7. Summary and further resources</a></li>
+
 </ul>
 </li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../chap03_svd/00_intro/roch-mmids-svd-intro.html">3. Singular value decomposition</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-3"><i class="fa-solid fa-chevron-down"></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../chap03_svd/01_motiv/roch-mmids-svd-motiv.html">3.1. Motivating example: visualizing viral genomes</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../chap03_svd/02_spectral/roch-mmids-svd-spectral.html">3.2. Background: further review of linear algebra</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap03_svd/02_spectral/roch-mmids-svd-spectral.html">3.2. Background: matrix rank; review of eigenvalues and eigenvectors</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../chap03_svd/03_svd/roch-mmids-svd-svd.html">3.3. Approximating subspaces and the SVD</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../chap03_svd/04_power/roch-mmids-svd-power.html">3.4. Power iteration</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../chap03_svd/05_pca/roch-mmids-svd-pca.html">3.5. Application to dimensionality reduction</a></li>
@@ -433,7 +434,7 @@ document.write(`
               
 
 <div id="jb-print-docs-body" class="onlyprint">
-    <h1>The geometry of least squares</h1>
+    <h1>The geometry of least squares: the orthogonal projection</h1>
     <!-- Table of contents -->
     <div id="print-main-content">
         <div id="jb-print-toc">
@@ -444,7 +445,8 @@ document.write(`
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#orthogonal-projection">2.3.1. Orthogonal projection</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overdetermined-systems">2.3.2. Overdetermined systems</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#orthogonal-complement">2.3.2. Orthogonal complement</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overdetermined-systems">2.3.3. Overdetermined systems</a></li>
 </ul>
             </nav>
         </div>
@@ -456,8 +458,8 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article" role="main">
                   
-  <section id="the-geometry-of-least-squares">
-<h1><span class="section-number">2.3. </span>The geometry of least squares<a class="headerlink" href="#the-geometry-of-least-squares" title="Permalink to this headline">#</a></h1>
+  <section id="the-geometry-of-least-squares-the-orthogonal-projection">
+<h1><span class="section-number">2.3. </span>The geometry of least squares: the orthogonal projection<a class="headerlink" href="#the-geometry-of-least-squares-the-orthogonal-projection" title="Permalink to this headline">#</a></h1>
 <p>We consider the following problem: we are given <span class="math notranslate nohighlight">\(A \in \mathbb{R}^{n\times m}\)</span> an <span class="math notranslate nohighlight">\(n\times m\)</span> matrix and <span class="math notranslate nohighlight">\(\mathbf{b} \in \mathbb{R}^n\)</span> a vector. We are looking to solve the system</p>
 <div class="math notranslate nohighlight">
 \[
@@ -776,8 +778,111 @@ Q^T Q = Q Q^T = I_{n \times n}
 <p>are called orthogonal matrices.</p>
 <p><strong>DEFINITION</strong> <strong>(Orthogonal Matrix)</strong> A square matrix <span class="math notranslate nohighlight">\(Q \in \mathbb{R}^{m\times m}\)</span> is orthogonal if <span class="math notranslate nohighlight">\(Q^T Q = Q Q^T = I_{m \times m}\)</span>. <span class="math notranslate nohighlight">\(\natural\)</span></p>
 </section>
+<section id="orthogonal-complement">
+<h2><span class="section-number">2.3.2. </span>Orthogonal complement<a class="headerlink" href="#orthogonal-complement" title="Permalink to this headline">#</a></h2>
+<p>Before returning to overdetermined systems, we take a little detour to derive a consequence of the orthogonal projection that will be useful later. The <em>Orthogonal Projection Theorem</em> implies that any <span class="math notranslate nohighlight">\(\mathbf{v} \in \mathbb{R}^n\)</span> can be decomposed into its orthogonal projection onto <span class="math notranslate nohighlight">\(U\)</span> and a vector orthogonal to it.</p>
+<p><strong>DEFINITION</strong> <strong>(Orthogonal Complement)</strong> Let <span class="math notranslate nohighlight">\(U \subseteq \mathbb{R}^n\)</span> be a linear subspace. The orthogonal complement of <span class="math notranslate nohighlight">\(U\)</span>, denoted <span class="math notranslate nohighlight">\(U^\perp\)</span>, is defined as</p>
+<div class="math notranslate nohighlight">
+\[
+U^\perp
+=
+\{\mathbf{w} \in \mathbb{R}^n\,:\, \langle \mathbf{w}, \mathbf{u}\rangle = 0, 
+\forall \mathbf{u} \in U\}.
+\]</div>
+<p><span class="math notranslate nohighlight">\(\natural\)</span></p>
+<p><strong>EXAMPLE:</strong> Continuing a previous example, we compute the orthogonal complement of the linear subspace <span class="math notranslate nohighlight">\(W = \mathrm{span}(\mathbf{w}_1,\mathbf{w}_2,\mathbf{w}_3)\)</span>, where <span class="math notranslate nohighlight">\(\mathbf{w}_1 = (1,0,1)^T\)</span>, <span class="math notranslate nohighlight">\(\mathbf{w}_2 = (0,1,1)^T\)</span>, and <span class="math notranslate nohighlight">\(\mathbf{w}_3 = (1,-1,0)^T\)</span>. One way to proceed is to find all vectors that are orthogonal to the orthonormal basis</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\mathbf{q}_1
+= \frac{1}{\sqrt{2}} \begin{pmatrix}
+1\\
+0\\
+1
+\end{pmatrix},
+\quad
+\mathbf{q}_2
+= \frac{1}{\sqrt{6}} \begin{pmatrix}
+-1\\
+2\\
+1
+\end{pmatrix}.
+\end{split}\]</div>
+<p>We require</p>
+<div class="math notranslate nohighlight">
+\[
+0 = \langle
+\mathbf{u}, \mathbf{q}_1
+\rangle
+= u_1 \left(\frac{1}{\sqrt{2}}\right)
++ u_2 \left(\frac{0}{\sqrt{2}}\right)
++ u_3 \left(\frac{1}{\sqrt{2}}\right)
+= \frac{u_1 + u_3}{\sqrt{2}},
+\]</div>
+<div class="math notranslate nohighlight">
+\[
+0= \langle
+\mathbf{u}, \mathbf{q}_2
+\rangle
+= u_1 \left(-\frac{1}{\sqrt{6}}\right)
++ u_2 \left(\frac{2}{\sqrt{6}}\right)
++ u_3 \left(\frac{1}{\sqrt{6}}\right)
+= \frac{-u_1 + 2 u_2 + u_3}{\sqrt{6}}.
+\]</div>
+<p>The first equation implies <span class="math notranslate nohighlight">\(u_3 = -u_1\)</span>, which after replacing into the second equation and rearranging gives <span class="math notranslate nohighlight">\(u_2 = u_1\)</span>.</p>
+<p>So all vectors of the form <span class="math notranslate nohighlight">\((u_1,u_1,-u_1)^T\)</span> for some <span class="math notranslate nohighlight">\(u_1 \in \mathbb{R}\)</span> are orthogonal to all of <span class="math notranslate nohighlight">\(W\)</span>. This is a one-dimensional linear subspace. We can choose an orthonormal basis by finding a solution to</p>
+<div class="math notranslate nohighlight">
+\[
+1 = (u_1)^2 + (u_1)^2 + (-u_1)^2 = 3 u_1^2, 
+\]</div>
+<p>Take <span class="math notranslate nohighlight">\(u_1 = 1/\sqrt{3}\)</span>, that is, let</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\mathbf{q}_3
+= \frac{1}{\sqrt{3}} \begin{pmatrix}
+1\\
+1\\
+-1
+\end{pmatrix}.
+\end{split}\]</div>
+<p>Then we have</p>
+<div class="math notranslate nohighlight">
+\[
+W^\perp
+= \mathrm{span}(\mathbf{q}_3).
+\]</div>
+<p><span class="math notranslate nohighlight">\(\lhd\)</span></p>
+<p><strong>LEMMA</strong> <strong>(Orthogonal Decomposition)</strong>
+Let <span class="math notranslate nohighlight">\(U \subseteq \mathbb{R}^n\)</span> be a linear subspace and let <span class="math notranslate nohighlight">\(\mathbf{v} \in \mathbb{R}^n\)</span>. Then <span class="math notranslate nohighlight">\(\mathbf{v}\)</span> can be decomposed as <span class="math notranslate nohighlight">\(\mathrm{proj}_U \mathbf{v} + (\mathbf{v} - \mathrm{proj}_U\mathbf{v})\)</span> where <span class="math notranslate nohighlight">\(\mathrm{proj}_U \mathbf{v} \in U\)</span> and <span class="math notranslate nohighlight">\((\mathbf{v} - \mathrm{proj}_U \mathbf{v}) \in U^\perp\)</span>. Moreover, this decomposition is unique in the following sense: if <span class="math notranslate nohighlight">\(\mathbf{v} = \mathbf{u}_1 + \mathbf{u}_2\)</span> with <span class="math notranslate nohighlight">\(\mathbf{u}_1 \in U\)</span> and <span class="math notranslate nohighlight">\(\mathbf{u}_2 \in U^\perp\)</span>, then <span class="math notranslate nohighlight">\(\mathbf{u}_1 = \mathrm{proj}_U \mathbf{v}\)</span> and <span class="math notranslate nohighlight">\(\mathbf{u}_2 = \mathbf{v} - \mathrm{proj}_U \mathbf{v}\)</span>. <span class="math notranslate nohighlight">\(\flat\)</span></p>
+<p><em>Proof:</em> The first part is an immediate consequence of the <em>Orthogonal Projection Theorem</em>. For the second part, assume <span class="math notranslate nohighlight">\(\mathbf{v} = \mathbf{u}_1 + \mathbf{u}_2\)</span> with <span class="math notranslate nohighlight">\(\mathbf{u}_1 \in U\)</span> and <span class="math notranslate nohighlight">\(\mathbf{u}_2 \in U^\perp\)</span>. Subtracting <span class="math notranslate nohighlight">\(\mathbf{v} = \mathrm{proj}_U \mathbf{v} + (\mathbf{v} - \mathrm{proj}_U\mathbf{v})\)</span>, we see that</p>
+<div class="math notranslate nohighlight">
+\[
+(*) \qquad \mathbf{0} = \mathbf{w}_1 + \mathbf{w}_2
+\]</div>
+<p>with</p>
+<div class="math notranslate nohighlight">
+\[
+\mathbf{w}_1 = \mathbf{u}_1 - \mathrm{proj}_U \mathbf{v} \in U,
+\qquad 
+\mathbf{w}_2 = \mathbf{u}_2 - (\mathbf{v} - \mathrm{proj}_U\mathbf{v}) \in U^\perp.
+\]</div>
+<p>If <span class="math notranslate nohighlight">\(\mathbf{w}_1 = \mathbf{w}_2 = \mathbf{0}\)</span>, we are done. Otherwise, they must both be nonzero by <span class="math notranslate nohighlight">\((*)\)</span>. Further, by the <em>Properties of Orthonormal Lists</em>, <span class="math notranslate nohighlight">\(\mathbf{w}_1\)</span> and <span class="math notranslate nohighlight">\(\mathbf{w}_2\)</span> must be linearly independent. But this is contradicted by the fact that <span class="math notranslate nohighlight">\(\mathbf{w}_2 = - \mathbf{w}_1\)</span> by <span class="math notranslate nohighlight">\((*)\)</span>. <span class="math notranslate nohighlight">\(\square\)</span></p>
+<p><strong>Figure:</strong> Orthogonal decomposition (<a class="reference external" href="https://commons.wikimedia.org/wiki/File:Orthogonal_Decomposition_qtl1.svg">Source</a>)</p>
+<p><img alt="Orthogonal decomposition" src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/12/Orthogonal_Decomposition_qtl1.svg/640px-Orthogonal_Decomposition_qtl1.svg.png" /></p>
+<p><span class="math notranslate nohighlight">\(\bowtie\)</span></p>
+<p>Formally, the <em>Orthogonal Decomposition Lemma</em> states that <span class="math notranslate nohighlight">\(\mathbb{R}^n\)</span> is a direct sum of any linear subspace <span class="math notranslate nohighlight">\(U\)</span> and of its orthogonal complement <span class="math notranslate nohighlight">\(U^\perp\)</span>: that is, any vector <span class="math notranslate nohighlight">\(\mathbf{v} \in \mathbb{R}^n\)</span> can be written uniquely as <span class="math notranslate nohighlight">\(\mathbf{v} = \mathbf{u}_1 + \mathbf{u}_2\)</span> with <span class="math notranslate nohighlight">\(\mathbf{u}_1 \in U\)</span> and <span class="math notranslate nohighlight">\(\mathbf{u}_2 \in U^\perp\)</span>. This is denoted <span class="math notranslate nohighlight">\(\mathbb{R}^n = U \oplus U^\perp\)</span>.</p>
+<p>Let <span class="math notranslate nohighlight">\(\mathbf{a}_1,\ldots,\mathbf{a}_\ell\)</span> be an orthonormal basis of <span class="math notranslate nohighlight">\(U\)</span> and <span class="math notranslate nohighlight">\(\mathbf{b}_1,\ldots,\mathbf{b}_k\)</span> be an orthonormal basis of <span class="math notranslate nohighlight">\(U^\perp\)</span>. By definition of the orthogonal complement, the list</p>
+<div class="math notranslate nohighlight">
+\[
+\mathcal{L} = \{\mathbf{a}_1,\ldots,\mathbf{a}_\ell, \mathbf{b}_1,\ldots,\mathbf{b}_k\}
+\]</div>
+<p>is orthonormal, so it forms a basis of its span. Because any vector in <span class="math notranslate nohighlight">\(\mathbb{R}^n\)</span> can be written as a sum of a vector from <span class="math notranslate nohighlight">\(U\)</span> and a vector from <span class="math notranslate nohighlight">\(U^\perp\)</span>, all of <span class="math notranslate nohighlight">\(\mathbb{R}^n\)</span> is in the span of <span class="math notranslate nohighlight">\(\mathcal{L}\)</span>. It follows from the <em>Dimension Theorem</em> that <span class="math notranslate nohighlight">\(n = \ell + k\)</span>, that is,</p>
+<div class="math notranslate nohighlight">
+\[
+\mathrm{dim}(U) + \mathrm{dim}(U^\perp) = n.
+\]</div>
+</section>
 <section id="overdetermined-systems">
-<h2><span class="section-number">2.3.2. </span>Overdetermined systems<a class="headerlink" href="#overdetermined-systems" title="Permalink to this headline">#</a></h2>
+<h2><span class="section-number">2.3.3. </span>Overdetermined systems<a class="headerlink" href="#overdetermined-systems" title="Permalink to this headline">#</a></h2>
 <p>In this section, we discuss the least-squares problem. Let again <span class="math notranslate nohighlight">\(A \in \mathbb{R}^{n\times m}\)</span> be an <span class="math notranslate nohighlight">\(n\times m\)</span> matrix with linearly independent columns and let <span class="math notranslate nohighlight">\(\mathbf{b} \in \mathbb{R}^n\)</span> be a vector. We are looking to solve the system</p>
 <div class="math notranslate nohighlight">
 \[
@@ -973,7 +1078,8 @@ A = \begin{pmatrix}
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#orthogonal-projection">2.3.1. Orthogonal projection</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overdetermined-systems">2.3.2. Overdetermined systems</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#orthogonal-complement">2.3.2. Orthogonal complement</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overdetermined-systems">2.3.3. Overdetermined systems</a></li>
 </ul>
   </nav></div>
 

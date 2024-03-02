@@ -76,7 +76,7 @@ const thebe_selector_output = ".output, .cell_output"
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
     <link rel="next" title="3.4. Power iteration" href="../04_power/roch-mmids-svd-power.html" />
-    <link rel="prev" title="3.2. Background: further review of linear algebra" href="../02_spectral/roch-mmids-svd-spectral.html" />
+    <link rel="prev" title="3.2. Background: matrix rank; review of eigenvalues and eigenvectors" href="../02_spectral/roch-mmids-svd-spectral.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   </head>
@@ -191,16 +191,17 @@ const thebe_selector_output = ".output, .cell_output"
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../chap02_ls/00_intro/roch-mmids-ls-intro.html">2. Least squares: geometric, algebraic, and numerical aspects</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../chap02_ls/01_motiv/roch-mmids-ls-motiv.html">2.1. Motivating example: predicting sales</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../chap02_ls/02_subspaces/roch-mmids-ls-spaces.html">2.2. Background: review of vector spaces and matrix inverses</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../chap02_ls/03_orthog/roch-mmids-ls-orthog.html">2.3. The geometry of least squares</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap02_ls/03_orthog/roch-mmids-ls-orthog.html">2.3. The geometry of least squares: the orthogonal projection</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../chap02_ls/04_qr/roch-mmids-ls-qr.html">2.4. QR decomposition and Householder transformations</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../chap02_ls/05_regression/roch-mmids-ls-regression.html">2.5. Application to regression analysis</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../chap02_ls/06_adv/roch-mmids-ls-adv.html">2.6. More advanced material: orthogonality in high dimension; linear independence lemma</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../chap02_ls/summary_chap02.html">2.7. Other resources</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap02_ls/summary_chap02.html">2.7. Summary and further resources</a></li>
+
 </ul>
 </li>
 <li class="toctree-l1 current active has-children"><a class="reference internal" href="../00_intro/roch-mmids-svd-intro.html">3. Singular value decomposition</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-3"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="../01_motiv/roch-mmids-svd-motiv.html">3.1. Motivating example: visualizing viral genomes</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../02_spectral/roch-mmids-svd-spectral.html">3.2. Background: further review of linear algebra</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../02_spectral/roch-mmids-svd-spectral.html">3.2. Background: matrix rank; review of eigenvalues and eigenvectors</a></li>
 <li class="toctree-l2 current active"><a class="current reference internal" href="#">3.3. Approximating subspaces and the SVD</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../04_power/roch-mmids-svd-power.html">3.4. Power iteration</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../05_pca/roch-mmids-svd-pca.html">3.5. Application to dimensionality reduction</a></li>
@@ -509,7 +510,7 @@ document.write(`
 &amp;= \sum_{i=1}^n \|\boldsymbol{\alpha}_i\|^2 - \max_{\mathcal{Z}} \sum_{i=1}^n \|\mathrm{proj}_{\mathcal{Z}}(\boldsymbol{\alpha}_i)\|^2
 \end{align*}\]</div>
 <p><span class="math notranslate nohighlight">\(\square\)</span></p>
-<p>How do we specify a <span class="math notranslate nohighlight">\(k\)</span>-dimensional linear subspace? Through a basis of it, or - even better - an orthonormal basis. In the latter case, we also have an explicit formula for the orthogonal projection. And the dimension of the linear subspace is captured by the number of elements in the basis, by the <em>Dimension Theorem</em>. In other words, the best approximating subspace can be obtained by solving the problem</p>
+<p>How do we specify a <span class="math notranslate nohighlight">\(k\)</span>-dimensional linear subspace? Through a basis of it, or – even better – an orthonormal basis. In the latter case, we also have an explicit formula for the orthogonal projection. And the dimension of the linear subspace is captured by the number of elements in the basis, by the <em>Dimension Theorem</em>. In other words, the best approximating subspace can be obtained by solving the problem</p>
 <div class="math notranslate nohighlight">
 \[
 \max_{\mathbf{w}_1,\ldots,\mathbf{w}_k} \sum_{i=1}^n \left\|\sum_{j=1}^k \langle \boldsymbol{\alpha}_i, \mathbf{w}_j \rangle \,\mathbf{w}_j\right\|^2
@@ -532,9 +533,9 @@ document.write(`
 <p>where, again, <span class="math notranslate nohighlight">\(A\)</span> is the matrix with rows <span class="math notranslate nohighlight">\(\boldsymbol{\alpha}_i ^T\)</span>, <span class="math notranslate nohighlight">\(i=1,\ldots, n\)</span>. Hence the solution to the one-dimensional problem is</p>
 <div class="math notranslate nohighlight">
 \[
-\mathbf{v}_1 \in \arg\max\{\|A \mathbf{w}_1\|:\|\mathbf{w}_1\| = 1\}.
+\mathbf{v}_1 \in \arg\max\{\|A \mathbf{w}_1\|^2:\|\mathbf{w}_1\| = 1\}.
 \]</div>
-<p>Here <span class="math notranslate nohighlight">\(\arg\max\)</span> means that <span class="math notranslate nohighlight">\(\mathbf{v}_1\)</span> is a vector <span class="math notranslate nohighlight">\(\mathbf{w}_1\)</span> that achieves the maximum. Note that there could be more than one such <span class="math notranslate nohighlight">\(\mathbf{w}_1\)</span>, so the right-hand side is a set containing all such solutions. By the <em>Extreme Value Theorem</em> (proof omitted), there is at least one solution. Here we pick an arbitrary one.</p>
+<p>Here <span class="math notranslate nohighlight">\(\arg\max\)</span> means that <span class="math notranslate nohighlight">\(\mathbf{v}_1\)</span> is a vector <span class="math notranslate nohighlight">\(\mathbf{w}_1\)</span> that achieves the maximum. Note that there could be more than one such <span class="math notranslate nohighlight">\(\mathbf{w}_1\)</span>, so the right-hand side is a set containing all such solutions. By the <em>Extreme Value Theorem</em> (since the set <span class="math notranslate nohighlight">\(\{\mathbf{w}_1 : \|\mathbf{w}_1\| = 1\}\)</span> is closed and bounded, and since furthermore the function <span class="math notranslate nohighlight">\(\|A \mathbf{w}_1\|^2\)</span> is continuous in <span class="math notranslate nohighlight">\(\mathbf{w}_1\)</span>), there is at least one solution. Here we pick an arbitrary one.</p>
 <p><em>Proof:</em> For general <span class="math notranslate nohighlight">\(k\)</span>, we are looking for an orthonormal list <span class="math notranslate nohighlight">\(\mathbf{w}_1,\ldots,\mathbf{w}_k\)</span> of length <span class="math notranslate nohighlight">\(k\)</span> that maximizes</p>
 <div class="amsmath math notranslate nohighlight">
 \[\begin{align*}
@@ -547,7 +548,7 @@ document.write(`
 <p>We show next that a simple algorithm solves this problem.</p>
 <p><strong>A greedy algorithm</strong> Remarkably, the problem admits a greedy solution. Before discussing this solution, we take a small detour and give a classical example. Indeed, <a class="reference external" href="https://en.wikipedia.org/wiki/Greedy_algorithm">greedy approaches</a> are a standard algorithmic tool for optimization problems. This is how Wikipedia describes them:</p>
 <blockquote>
-<div><p>A greedy algorithm is any algorithm that follows the problem-solving heuristic of making the locally optimal choice at each stage.[1] In many problems, a greedy strategy does not produce an optimal solution, but a greedy heuristic can yield locally optimal solutions that approximate a globally optimal solution in a reasonable amount of time.</p>
+<div><p>A greedy algorithm is any algorithm that follows the problem-solving heuristic of making the locally optimal choice at each stage. In many problems, a greedy strategy does not produce an optimal solution, but a greedy heuristic can yield locally optimal solutions that approximate a globally optimal solution in a reasonable amount of time.</p>
 </div></blockquote>
 <p><strong>EXAMPLE:</strong> Suppose you are thief and you broke into an antique shop at night. You cannot steal every item in the store. You have estimated that you can carry 10 lbs worth of merchandise, and still run fast enough to get away. Suppose that there are 4 items of interest with the following weights and values</p>
 <table class="colwidths-auto table">
@@ -576,9 +577,9 @@ document.write(`
 </tr>
 </tbody>
 </table>
-<p>There is exactly one of each item. Which items do you take? The siren is blaring, and you cannot try every combination. A quick scheme is to first pick the item of greatest value, i.e., Item 1. Now your bag has 8 lbs of merchandise in it. Then you consider the remaining items and choose whichever has highest value among those that still fit, i.e., those that are 2 lbs or lighter. That leaves only one choice, Item 4. Then you go - with a total value of 1700.</p>
+<p>There is exactly one of each item. Which items do you take? The siren is blaring, and you cannot try every combination. A quick scheme is to first pick the item of greatest value, i.e., Item 1. Now your bag has 8 lbs of merchandise in it. Then you consider the remaining items and choose whichever has highest value among those that still fit, i.e., those that are 2 lbs or lighter. That leaves only one choice, Item 4. Then you go – with a total value of 1700.</p>
 <p>This is called a greedy or myopic strategy, because you chose the first item to maximize your profit without worrying about the constraints it imposes on future choice. Indeed, in this case, there is a better combination: you could have picked Items 2 and 3 with a total value of 1800.</p>
-<p>Other greedy schemes are possible here. A slightly more clever approach is to choose items of high <em>value per unit weight</em>, rather than considering value alone. But, that would not make a difference in this particular example (try it!). <span class="math notranslate nohighlight">\(\lhd\)</span></p>
+<p>Other greedy schemes are possible here. A slightly more clever approach is to choose items of high <em>value per unit weight</em>, rather than considering value alone. But, that would not make a difference in this particular example (Try it!). <span class="math notranslate nohighlight">\(\lhd\)</span></p>
 <p>Going back to the approximating subspace problem, we derive a greedy solution for it. Recall that we are looking for a solution to</p>
 <div class="math notranslate nohighlight">
 \[
@@ -590,7 +591,7 @@ document.write(`
 \[
 \mathbf{v}_1 \in \arg\max\{\|A \mathbf{w}_1\|^2:\|\mathbf{w}_1\| = 1\}.
 \]</div>
-<p>As indicated before, by the <em>Extreme Value Theorem</em>, it can be shown that such a <span class="math notranslate nohighlight">\(\mathbf{v}_1\)</span> exists, but may not be unique  (proof omitted). Then, fixing <span class="math notranslate nohighlight">\(\mathbf{w}_1 = \mathbf{v}_1\)</span>, we consider all unit vectors <span class="math notranslate nohighlight">\(\mathbf{w}_2\)</span> orthogonal to <span class="math notranslate nohighlight">\(\mathbf{v}_1\)</span> and maximize the contribution of <span class="math notranslate nohighlight">\(\mathbf{w}_2\)</span> to the objective function. That is, we solve</p>
+<p>As indicated before, by the <em>Extreme Value Theorem</em>, such a <span class="math notranslate nohighlight">\(\mathbf{v}_1\)</span> exists, but may not be unique. Then, fixing <span class="math notranslate nohighlight">\(\mathbf{w}_1 = \mathbf{v}_1\)</span>, we consider all unit vectors <span class="math notranslate nohighlight">\(\mathbf{w}_2\)</span> orthogonal to <span class="math notranslate nohighlight">\(\mathbf{v}_1\)</span> and maximize the contribution of <span class="math notranslate nohighlight">\(\mathbf{w}_2\)</span> to the objective function. That is, we solve</p>
 <div class="math notranslate nohighlight">
 \[
 \mathbf{v}_2\in \arg\max
@@ -602,7 +603,7 @@ document.write(`
 \mathbf{v}_i\in \arg\max
 \{\|A \mathbf{w}_i\|^2 :\|\mathbf{w}_i\| = 1, \ \langle \mathbf{w}_i, \mathbf{v}_j \rangle = 0, \forall j \leq i-1\}.
 \]</div>
-<p>While it is clear that, after <span class="math notranslate nohighlight">\(k\)</span> steps, this procedure constructs an orthonormal set of size <span class="math notranslate nohighlight">\(k\)</span>, it is far from obvious that it maximizes <span class="math notranslate nohighlight">\(\sum_{j=1}^k \|A \mathbf{v}_j\|^2\)</span> over all such sets. Remarkably it does. The claim - which requires a proof - is that the best <span class="math notranslate nohighlight">\(k\)</span>-dimensional approximating subspace is obtained by finding the best <span class="math notranslate nohighlight">\(1\)</span>-dimensional subspace, then the best <span class="math notranslate nohighlight">\(1\)</span>-dimensional subspace orthogonal to the first one, and so on.  This follows from the next theorem. (Its proof is in the following (optional) subsection.)</p>
+<p>While it is clear that, after <span class="math notranslate nohighlight">\(k\)</span> steps, this procedure constructs an orthonormal set of size <span class="math notranslate nohighlight">\(k\)</span>, it is far from obvious that it maximizes <span class="math notranslate nohighlight">\(\sum_{j=1}^k \|A \mathbf{v}_j\|^2\)</span> over all such sets. Remarkably it does. The claim – which requires a proof – is that the best <span class="math notranslate nohighlight">\(k\)</span>-dimensional approximating subspace is obtained by finding the best <span class="math notranslate nohighlight">\(1\)</span>-dimensional subspace, then the best <span class="math notranslate nohighlight">\(1\)</span>-dimensional subspace orthogonal to the first one, and so on.  This follows from the next theorem. Its proof is in an optional section.</p>
 <p><strong>THEOREM</strong> <strong>(Greedy Finds Best Subspace)</strong> Let <span class="math notranslate nohighlight">\(A \in \mathbb{R}^{n \times m}\)</span> be a matrix with rows <span class="math notranslate nohighlight">\(\boldsymbol{\alpha}_i^T\)</span>, <span class="math notranslate nohighlight">\(i=1,\ldots,n\)</span>. For any <span class="math notranslate nohighlight">\(k \leq m\)</span>, let <span class="math notranslate nohighlight">\(\mathbf{v}_1,\ldots,\mathbf{v}_k\)</span> be the greedy sequence constructed above. Then <span class="math notranslate nohighlight">\(\mathcal{Z}^* = \mathrm{span}(\mathbf{v}_1,\ldots,\mathbf{v}_k)\)</span> is a solution to the minimization problem</p>
 <div class="math notranslate nohighlight">
 \[
@@ -611,7 +612,7 @@ document.write(`
 \right\}.
 \]</div>
 <p><span class="math notranslate nohighlight">\(\sharp\)</span></p>
-<p>Beyond the potential computational advantages of solving several one-dimensional problems rather one larger one, the greedy sequence has a more subtle property that is powerful. It allows us to solve the problem for all choices <span class="math notranslate nohighlight">\(k\)</span> of target dimension <em>simultaneously</em>. To explain, note that the largest <span class="math notranslate nohighlight">\(k\)</span> value, i.e. <span class="math notranslate nohighlight">\(k=m\)</span>, leads to a trivial problem. Indeed, the data points <span class="math notranslate nohighlight">\(\boldsymbol{\alpha}_i\)</span>, <span class="math notranslate nohighlight">\(i=1,\ldots,n\)</span>, already lie in an <span class="math notranslate nohighlight">\(m\)</span>-dimensional linear subspace, <span class="math notranslate nohighlight">\(\mathbb{R}^m\)</span> itself. So we can take <span class="math notranslate nohighlight">\(\mathcal{Z} = \mathbb{R}^m\)</span>, and we have an objective value of</p>
+<p>Beyond the potential computational advantage of solving several one-dimensional problems rather one larger one, the greedy sequence has a more subtle property that is powerful. It allows us to solve the problem for all choices <span class="math notranslate nohighlight">\(k\)</span> of target dimension <em>simultaneously</em>. To explain, note that the largest <span class="math notranslate nohighlight">\(k\)</span> value, i.e. <span class="math notranslate nohighlight">\(k=m\)</span>, leads to a trivial problem. Indeed, the data points <span class="math notranslate nohighlight">\(\boldsymbol{\alpha}_i\)</span>, <span class="math notranslate nohighlight">\(i=1,\ldots,n\)</span>, already lie in an <span class="math notranslate nohighlight">\(m\)</span>-dimensional linear subspace, <span class="math notranslate nohighlight">\(\mathbb{R}^m\)</span> itself. So we can take <span class="math notranslate nohighlight">\(\mathcal{Z} = \mathbb{R}^m\)</span>, and we have an objective value of</p>
 <div class="math notranslate nohighlight">
 \[
 \sum_{i=1}^n \|\boldsymbol{\alpha}_i - \mathrm{proj}_{\mathcal{Z}}(\boldsymbol{\alpha}_i)\|^2
@@ -625,115 +626,6 @@ document.write(`
 <section id="from-approximating-subspaces-to-the-svd-and-back">
 <h2><span class="section-number">3.3.2. </span>From approximating subspaces to the SVD and back<a class="headerlink" href="#from-approximating-subspaces-to-the-svd-and-back" title="Permalink to this headline">#</a></h2>
 <p>While solving the approximating subspace problem in the previous section, we derived the building blocks of a matrix factorization that has found many applications, the <a class="reference external" href="https://en.wikipedia.org/wiki/Singular_value_decomposition">singular value decomposition (SVD)</a>. In this section, we define the SVD formally. We describe a simple method to compute it in the next section, where we also return to the application to dimensionality reduction.</p>
-<p><strong>Some matrix results</strong> We start with a few useful observations.</p>
-<p><em>Diagonal matrices:</em> First recall that a matrix <span class="math notranslate nohighlight">\(D \in \mathbb{R}^{k \times r}\)</span> is diagonal if its non-diagonal entries are zero. That is, <span class="math notranslate nohighlight">\(i \neq j\)</span> implies that <span class="math notranslate nohighlight">\(D_{ij} =0\)</span>. Note that a diagonal matrix is not necessarily square and that the diagonal elements are allowed to be zero.</p>
-<p>Multiplying a matrix by a diagonal one has a very specific effect. Let <span class="math notranslate nohighlight">\(A \in \mathbb{R}^{n \times k}\)</span> and
-<span class="math notranslate nohighlight">\(B \in \mathbb{R}^{r \times m}\)</span>. We focus here on the case <span class="math notranslate nohighlight">\(k \geq r\)</span>. The matrix product <span class="math notranslate nohighlight">\(A D\)</span> produces a matrix whose columns are linear combinations of the columns of <span class="math notranslate nohighlight">\(A\)</span> where the coefficients are taken from the corresponding column of <span class="math notranslate nohighlight">\(D\)</span>. But the columns of <span class="math notranslate nohighlight">\(D\)</span> have at most one nonzero elements, the diagonal one. So the columns of <span class="math notranslate nohighlight">\(AD\)</span> are in fact multiples of the columns of <span class="math notranslate nohighlight">\(A\)</span></p>
-<div class="math notranslate nohighlight">
-\[\begin{split}
-AD
-= 
-\begin{pmatrix}
-| &amp;  &amp; | \\
-d_{11} \mathbf{a}_1 &amp; \ldots &amp; d_{rr} \mathbf{a}_r \\
-| &amp;  &amp; | 
-\end{pmatrix}
-\end{split}\]</div>
-<p>where <span class="math notranslate nohighlight">\(\mathbf{a}_1,\ldots,\mathbf{a}_k\)</span> are the columns of <span class="math notranslate nohighlight">\(A\)</span> and <span class="math notranslate nohighlight">\(d_{11},\ldots,d_{rr}\)</span> are the diagonal elements of <span class="math notranslate nohighlight">\(D\)</span>.</p>
-<p>Similarly, the rows of <span class="math notranslate nohighlight">\(D B\)</span> are linear combinations of the rows of <span class="math notranslate nohighlight">\(B\)</span> where the coefficients are taken from the corresponding row of <span class="math notranslate nohighlight">\(D\)</span>. The rows of <span class="math notranslate nohighlight">\(D\)</span> have at most one nonzero elements, the diagonal one. In the case, <span class="math notranslate nohighlight">\(k \geq r\)</span>, rows <span class="math notranslate nohighlight">\(r+1,\ldots,k\)</span> necessarily have only zero entries since there is no diagonal entry there. Hence the first <span class="math notranslate nohighlight">\(r\)</span> rows of <span class="math notranslate nohighlight">\(DB\)</span> are multiples of the rows of <span class="math notranslate nohighlight">\(B\)</span> and the next <span class="math notranslate nohighlight">\(k-r\)</span> are <span class="math notranslate nohighlight">\(\mathbf{0}\)</span></p>
-<div class="math notranslate nohighlight">
-\[\begin{split}
-DB
-= 
-\begin{pmatrix}
-\horz &amp; d_{11} \mathbf{b}_1^T &amp; \horz \\
-&amp; \vdots &amp;\\
-\horz &amp; d_{rr} \mathbf{b}_r^T &amp; \horz\\
-\horz &amp; \mathbf{0} &amp; \horz\\
-&amp; \vdots &amp;\\
-\horz &amp; \mathbf{0} &amp; \horz
-\end{pmatrix}
-\end{split}\]</div>
-<p>where <span class="math notranslate nohighlight">\(\mathbf{b}_1^T,\ldots,\mathbf{b}_r^T\)</span> are the rows of <span class="math notranslate nohighlight">\(B\)</span>.</p>
-<p><strong>EXAMPLE:</strong> The following special case will be useful later in this chapter. Suppose <span class="math notranslate nohighlight">\(D, F \in \mathbb{R}^{n \times n}\)</span> are both square diagonal matrices. Then <span class="math notranslate nohighlight">\(D F\)</span> is the matrix whose diagonal elements are <span class="math notranslate nohighlight">\(d_{11} f_{11}, \ldots,d_{nn} f_{nn}\)</span>. <span class="math notranslate nohighlight">\(\lhd\)</span></p>
-<p><em>Rank-one matrices:</em> Let <span class="math notranslate nohighlight">\(\mathbf{u} = (u_1,\ldots,u_n)^T \in \mathbb{R}^n\)</span> and <span class="math notranslate nohighlight">\(\mathbf{v} = (v_1,\ldots,v_m)^T \in \mathbf{R}^m\)</span> be two column (nonzero) vectors. Their outer product is defined as the matrix</p>
-<div class="math notranslate nohighlight">
-\[\begin{split}
-\mathbf{u} \mathbf{v}^T
-= 
-\begin{pmatrix}
-u_1 v_1 &amp; u_1 v_2 &amp; \cdots &amp; u_1 v_m\\
-u_2 v_1 &amp; u_2 v_2 &amp; \cdots &amp; u_2 v_m\\
-\vdots &amp; \vdots &amp; \ddots &amp; \vdots\\
-u_n v_1 &amp; u_n v_2 &amp; \cdots &amp; u_n v_m
-\end{pmatrix}
-= 
-\begin{pmatrix}
-| &amp;  &amp; | \\
-v_{1} \mathbf{u} &amp; \ldots &amp; v_{m} \mathbf{u} \\
-| &amp;  &amp; | 
-\end{pmatrix}.
-\end{split}\]</div>
-<p>This is not to be confused with the inner product <span class="math notranslate nohighlight">\(\mathbf{u}^T \mathbf{v}\)</span>, which requires <span class="math notranslate nohighlight">\(n = m\)</span> and produces a scalar.</p>
-<p>If <span class="math notranslate nohighlight">\(\mathbf{u}\)</span> and <span class="math notranslate nohighlight">\(\mathbf{v}\)</span> are nonzero, the matrix <span class="math notranslate nohighlight">\(\mathbf{u} \mathbf{v}^T\)</span> has rank one. Indeed, its columns are all a multiple of the same vector <span class="math notranslate nohighlight">\(\mathbf{u}\)</span>. So the column space spanned by the columns of <span class="math notranslate nohighlight">\(\mathbf{u} \mathbf{v}^T\)</span> is one-dimensional. Vice versa, any rank-one matrix can be written in this form by definition of the rank.</p>
-<p><em>Matrix-matrix products and outer products:</em> We have seen many different interpretations of matrix-matrix products. Here is yet another one. Let <span class="math notranslate nohighlight">\(A = (a_{ij})_{i,j} \in \mathbb{R}^{n \times k}\)</span> and
-<span class="math notranslate nohighlight">\(B = (b_{ij})_{i,j} \in \mathbb{R}^{k \times m}\)</span>. Denote by <span class="math notranslate nohighlight">\(\mathbf{a}_1,\ldots,\mathbf{a}_k\)</span> the columns of <span class="math notranslate nohighlight">\(A\)</span>
-and denote by <span class="math notranslate nohighlight">\(\mathbf{b}_1^T,\ldots,\mathbf{b}_k^T\)</span> the rows of <span class="math notranslate nohighlight">\(B\)</span>.</p>
-<p>Then</p>
-<div class="amsmath math notranslate nohighlight">
-\[\begin{align*}
-A B
-&amp;=
-\begin{pmatrix}
-\sum_{j=1}^k a_{1j} b_{j1} &amp; \sum_{j=1}^k a_{1j} b_{j2} &amp; \cdots &amp; \sum_{j=1}^k a_{1j} b_{jm}\\
-\sum_{j=1}^k a_{2j} b_{j1} &amp; \sum_{j=1}^k a_{2j} b_{j2} &amp; \cdots &amp; \sum_{j=1}^k a_{2j} b_{jm}\\
-\vdots &amp; \vdots &amp; \ddots &amp; \vdots\\
-\sum_{j=1}^k a_{nj} b_{j1} &amp; \sum_{j=1}^k a_{nj} b_{j2} &amp; \cdots &amp; \sum_{j=1}^k a_{nj} b_{jm}
-\end{pmatrix}\\
-&amp;=
-\sum_{j=1}^k
-\begin{pmatrix}
- a_{1j} b_{j1} &amp; a_{1j} b_{j2} &amp; \cdots &amp; a_{1j} b_{jm}\\
-a_{2j} b_{j1} &amp; a_{2j} b_{j2} &amp; \cdots &amp; a_{2j} b_{jm}\\
-\vdots &amp; \vdots &amp; \ddots &amp; \vdots\\
-a_{nj} b_{j1} &amp; a_{nj} b_{j2} &amp; \cdots &amp; a_{nj} b_{jm}
-\end{pmatrix}\\
-&amp;=
-\sum_{j=1}^k \mathbf{a}_j \mathbf{b}_j^T.
-\end{align*}\]</div>
-<p>In words, the matrix product <span class="math notranslate nohighlight">\(AB\)</span> can be interpreted as a sum of <span class="math notranslate nohighlight">\(k\)</span> rank-one matrices, each of which is the outer product of a column of <span class="math notranslate nohighlight">\(A\)</span> with the corresponding row of <span class="math notranslate nohighlight">\(B\)</span>.</p>
-<p>Because the rank of a sum is at most the sum of the ranks (as shown in a previous example), it follows that the rank of <span class="math notranslate nohighlight">\(AB\)</span> is at most <span class="math notranslate nohighlight">\(k\)</span>. This is consistent with the fact that the rank of a product is at most the minimum of the ranks (also shown in a previous example).</p>
-<p><strong>NUMERICAL CORNER:</strong> In Numpy, the outer product is computed using <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.outer.html"><code class="docutils literal notranslate"><span class="pre">numpy.outer</span></code></a>.</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">u</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.</span><span class="p">,</span> <span class="mf">2.</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.</span><span class="p">])</span>
-<span class="n">v</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">3.</span><span class="p">,</span> <span class="o">-</span><span class="mf">2.</span><span class="p">])</span>
-<span class="n">Z</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">outer</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">Z</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[[ 0. -0.]
- [ 6. -4.]
- [-3.  2.]]
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">LA</span><span class="o">.</span><span class="n">matrix_rank</span><span class="p">(</span><span class="n">Z</span><span class="p">))</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1
-</pre></div>
-</div>
-</div>
-</div>
-<p><span class="math notranslate nohighlight">\(\unlhd\)</span></p>
 <p><strong>Definition and existence of the SVD</strong> We now come to our main definition.</p>
 <p><strong>DEFINITION</strong> <strong>(Singular Value Decomposition)</strong> Let <span class="math notranslate nohighlight">\(A \in \mathbb{R}^{n\times m}\)</span> be a matrix. A singular value decomposition (SVD) of <span class="math notranslate nohighlight">\(A\)</span> is a matrix factorization</p>
 <div class="math notranslate nohighlight">
@@ -1194,7 +1086,7 @@ Z = A V_{(k)} V_{(k)}^T = U_{(k)} \Sigma_{(k)} V_{(k)}^T
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title"><span class="section-number">3.2. </span>Background: further review of linear algebra</p>
+        <p class="prev-next-title"><span class="section-number">3.2. </span>Background: matrix rank; review of eigenvalues and eigenvectors</p>
       </div>
     </a>
     <a class="right-next"

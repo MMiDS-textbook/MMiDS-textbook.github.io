@@ -445,7 +445,7 @@ document.write(`
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#an-objective-an-algorithm-and-a-guarantee">3.3.1. An objective, an algorithm, and a guarantee</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#from-approximating-subspaces-to-the-svd-and-back">3.3.2. From approximating subspaces to the SVD and back</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#from-approximating-subspaces-to-the-svd">3.3.2. From approximating subspaces to the SVD</a></li>
 </ul>
             </nav>
         </div>
@@ -603,7 +603,7 @@ document.write(`
 \mathbf{v}_i\in \arg\max
 \{\|A \mathbf{w}_i\|^2 :\|\mathbf{w}_i\| = 1, \ \langle \mathbf{w}_i, \mathbf{v}_j \rangle = 0, \forall j \leq i-1\}.
 \]</div>
-<p>While it is clear that, after <span class="math notranslate nohighlight">\(k\)</span> steps, this procedure constructs an orthonormal set of size <span class="math notranslate nohighlight">\(k\)</span>, it is far from obvious that it maximizes <span class="math notranslate nohighlight">\(\sum_{j=1}^k \|A \mathbf{v}_j\|^2\)</span> over all such sets. Remarkably it does. The claim – which requires a proof – is that the best <span class="math notranslate nohighlight">\(k\)</span>-dimensional approximating subspace is obtained by finding the best <span class="math notranslate nohighlight">\(1\)</span>-dimensional subspace, then the best <span class="math notranslate nohighlight">\(1\)</span>-dimensional subspace orthogonal to the first one, and so on.  This follows from the next theorem. Its proof is in an optional section.</p>
+<p>While it is clear that, after <span class="math notranslate nohighlight">\(k\)</span> steps, this procedure constructs an orthonormal set of size <span class="math notranslate nohighlight">\(k\)</span>, it is far from obvious that it maximizes <span class="math notranslate nohighlight">\(\sum_{j=1}^k \|A \mathbf{v}_j\|^2\)</span> over all such sets. Remarkably it does. The claim – which requires a proof – is that the best <span class="math notranslate nohighlight">\(k\)</span>-dimensional approximating subspace is obtained by finding the best <span class="math notranslate nohighlight">\(1\)</span>-dimensional subspace, then the best <span class="math notranslate nohighlight">\(1\)</span>-dimensional subspace orthogonal to the first one, and so on.  This follows from the next theorem.</p>
 <p><strong>THEOREM</strong> <strong>(Greedy Finds Best Subspace)</strong> Let <span class="math notranslate nohighlight">\(A \in \mathbb{R}^{n \times m}\)</span> be a matrix with rows <span class="math notranslate nohighlight">\(\boldsymbol{\alpha}_i^T\)</span>, <span class="math notranslate nohighlight">\(i=1,\ldots,n\)</span>. For any <span class="math notranslate nohighlight">\(k \leq m\)</span>, let <span class="math notranslate nohighlight">\(\mathbf{v}_1,\ldots,\mathbf{v}_k\)</span> be the greedy sequence constructed above. Then <span class="math notranslate nohighlight">\(\mathcal{Z}^* = \mathrm{span}(\mathbf{v}_1,\ldots,\mathbf{v}_k)\)</span> is a solution to the minimization problem</p>
 <div class="math notranslate nohighlight">
 \[
@@ -621,10 +621,110 @@ document.write(`
 \]</div>
 <p>which clearly cannot be improved. So any orthonormal basis of <span class="math notranslate nohighlight">\(\mathbb{R}^m\)</span> will do. Say <span class="math notranslate nohighlight">\(\mathbf{e}_1,\ldots,\mathbf{e}_m\)</span>.</p>
 <p>On the other hand, the greedy sequence <span class="math notranslate nohighlight">\(\mathbf{v}_1,\ldots,\mathbf{v}_m\)</span> has a very special property. For any <span class="math notranslate nohighlight">\(k \leq m\)</span>, the <em>truncation</em> <span class="math notranslate nohighlight">\(\mathbf{v}_1,\ldots,\mathbf{v}_k\)</span> solves the approximating subspace problem in <span class="math notranslate nohighlight">\(k\)</span> dimensions. That follows immediately from the <em>Greedy Finds Best Subspace Theorem</em>. The basis <span class="math notranslate nohighlight">\(\mathbf{e}_1,\ldots,\mathbf{e}_m\)</span> (or any old basis of <span class="math notranslate nohighlight">\(\mathbb{R}^m\)</span> for that matter) does <em>not</em> have this property. The idea of truncation is very useful and plays an important role in many data science applications; we will come back to it later in this section and the next one.</p>
-<p>Note that we have not entirely solved the best approximating subspace problem from a computational point of view, as we have not given an explicit procedure to construct a solution to the <span class="math notranslate nohighlight">\(1\)</span>-dimensional subproblems. We’ve only shown that the solutions exist and have the right properties. We will take care of computational issues in a section below.</p>
+<p>The full proof of <em>Greedy Finds Best Subspace</em> is in an optional section. Here we sketch the proof of a weaker claim via the <em>Spectral Theorem</em>, an approach which reveals additional structure in the solution.</p>
+<p>We re-write the objective function as</p>
+<div class="math notranslate nohighlight">
+\[
+\sum_{j=1}^k \|A \mathbf{w}_j\|^2
+= \sum_{j=1}^k \mathbf{w}_j^T A^T A \mathbf{w}_j
+\]</div>
+<p>and we observe that <span class="math notranslate nohighlight">\(A^T A \in \mathbb{R}^{m \times m}\)</span> is a square, symmetric matrix (Why?). It is also positive, semidefinite (Why?). Hence, by the <em>Spectral Theorem</em>, the matrix <span class="math notranslate nohighlight">\(A^T A\)</span> has <span class="math notranslate nohighlight">\(m\)</span> orthonormal eigenvectors <span class="math notranslate nohighlight">\(\mathbf{q}_1, \ldots, \mathbf{q}_m \in \mathbb{R}^m\)</span> with corresponding real eigenvalues <span class="math notranslate nohighlight">\(\lambda_1 \geq \lambda_2 \geq \cdots \geq \lambda_m \geq 0\)</span>. This ordering of the eigenvalues will play a critical role. Moreover</p>
+<div class="math notranslate nohighlight">
+\[
+A^T A 
+= \sum_{i=1}^m \lambda_i \mathbf{q}_i \mathbf{q}_i^T.
+\]</div>
+<p>Plugging this in the objective we get</p>
+<div class="math notranslate nohighlight">
+\[
+\sum_{j=1}^k \|A \mathbf{w}_j\|^2
+= \sum_{j=1}^k \mathbf{w}_j^T \left(\sum_{i=1}^m \lambda_i \mathbf{q}_i \mathbf{q}_i^T\right) \mathbf{w}_j
+= \sum_{j=1}^k \sum_{i=1}^m \lambda_i (\mathbf{w}_j^T\mathbf{q}_i)^2.
+\]</div>
+<p>Here is the claim. While the greedy sequence <span class="math notranslate nohighlight">\(\mathbf{v}_1,\ldots,\mathbf{v}_k\)</span> is not in general unique, one can always choose <span class="math notranslate nohighlight">\(\mathbf{v}_i = \mathbf{q}_i\)</span> for all <span class="math notranslate nohighlight">\(i\)</span>. Moreover that particular choice indeed solves the <span class="math notranslate nohighlight">\(k\)</span>-dimensional best approximating subspace problem. We start with the case <span class="math notranslate nohighlight">\(k = 2\)</span>.</p>
+<p><em><strong>Eigenvectors form a greedy sequence:</strong></em> Recall that <span class="math notranslate nohighlight">\(\mathbf{v}_1\)</span> maximizes <span class="math notranslate nohighlight">\(\|A \mathbf{w}_1\|\)</span> over all unit vectors <span class="math notranslate nohighlight">\(\mathbf{w}_1\)</span>. Now note that, expanding over the eigenvectors (which form an orthonormal basis), we have</p>
+<div class="math notranslate nohighlight">
+\[
+\|A \mathbf{w}_1\|^2
+= \sum_{i=1}^m \lambda_i (\mathbf{w}_1^T\mathbf{q}_i)^2
+\]</div>
+<p>and</p>
+<div class="math notranslate nohighlight">
+\[
+\|\mathbf{w}_1\|^2
+= \sum_{i=1}^m (\mathbf{w}_1^T\mathbf{q}_i)^2
+= 1.
+\]</div>
+<p>Writing <span class="math notranslate nohighlight">\(x_i = (\mathbf{w}_1^T\mathbf{q}_i)^2\)</span>, this is equivalent to maximizing
+<span class="math notranslate nohighlight">\(\sum_{i=1}^m \lambda_i x_i\)</span> subject to the constraints <span class="math notranslate nohighlight">\(\sum_{i=1}^m x_i = 1\)</span> and <span class="math notranslate nohighlight">\(x_i \geq 0\)</span> for all <span class="math notranslate nohighlight">\(i\)</span>. But, under the constraints and the assumption on the ordering of the eigenvalues,</p>
+<div class="math notranslate nohighlight">
+\[
+\sum_{i=1}^m \lambda_i x_i
+\leq \lambda_1 \sum_{i=1}^m x_i
+= \lambda_1,
+\]</div>
+<p>which is achieved by taking <span class="math notranslate nohighlight">\(\mathbf{x} = (x_1,\ldots,x_m) = \mathbf{e}_1\)</span>, corresponding to the choice <span class="math notranslate nohighlight">\(\mathbf{v}_1 = \mathbf{w}_1 = \mathbf{q}_1\)</span>.</p>
+<p>Given that choice, the vector <span class="math notranslate nohighlight">\(\mathbf{v}_2\)</span> maximizes <span class="math notranslate nohighlight">\(\|A \mathbf{w}_2\|\)</span> over all unit vectors <span class="math notranslate nohighlight">\(\mathbf{w}_2\)</span> such that further <span class="math notranslate nohighlight">\(\mathbf{w}_2^T\mathbf{v}_1 = \mathbf{w}_2^T\mathbf{q}_1 = 0\)</span>, where this time</p>
+<div class="math notranslate nohighlight">
+\[
+\|A \mathbf{w}_2\|^2
+= \sum_{i=1}^m \lambda_i (\mathbf{w}_2^T\mathbf{q}_i)^2
+= \sum_{i=2}^m \lambda_i (\mathbf{w}_2^T\mathbf{q}_i)^2
+\]</div>
+<p>and</p>
+<div class="math notranslate nohighlight">
+\[
+\|\mathbf{w}_2\|^2
+= \sum_{i=1}^m (\mathbf{w}_2^T\mathbf{q}_i)^2
+= \sum_{i=2}^m (\mathbf{w}_2^T\mathbf{q}_i)^2
+= 1.
+\]</div>
+<p>Above, we used the orthogonality constraint. This reduces to the previous problem without the term depending on <span class="math notranslate nohighlight">\(\mathbf{q}_1\)</span>. The solution is otherwise the same, i.e., the optimal objective is <span class="math notranslate nohighlight">\(\lambda_2\)</span> and is achieved by taking <span class="math notranslate nohighlight">\(\mathbf{v}_2 = \mathbf{w}_2 = \mathbf{q}_2\)</span>.</p>
+<p><em><strong>Eigenvectors solve the approximating subspace problem:</strong></em> The approximating subspace problem involves maximizing</p>
+<div class="math notranslate nohighlight">
+\[
+\|A \mathbf{w}_1\|^2 + \|A \mathbf{w}_2\|^2
+= \sum_{i=1}^m \lambda_i (\mathbf{w}_1^T\mathbf{q}_i)^2
++ \sum_{i=1}^m \lambda_i (\mathbf{w}_2^T\mathbf{q}_i)^2
+\]</div>
+<p>over orthonormal lists <span class="math notranslate nohighlight">\(\mathbf{w}_1, \mathbf{w}_2\)</span>. In particular, we require</p>
+<div class="math notranslate nohighlight">
+\[
+\|\mathbf{w}_1\|^2
+= \sum_{i=1}^m (\mathbf{w}_1^T\mathbf{q}_i)^2
+= 1.
+\]</div>
+<p>and</p>
+<div class="math notranslate nohighlight">
+\[
+\|\mathbf{w}_2\|^2
+= \sum_{i=1}^m (\mathbf{w}_2^T\mathbf{q}_i)^2
+= 1.
+\]</div>
+<p>Moreover, for each <span class="math notranslate nohighlight">\(i\)</span>, by definition of the orthogonal projection on the subspace <span class="math notranslate nohighlight">\(\mathcal{W} = \mathrm{span}(\mathbf{w}_1, \mathbf{w}_2)\)</span> and the <em>Properties of Orhtonormal Lists</em></p>
+<div class="math notranslate nohighlight">
+\[
+(\mathbf{w}_1^T\mathbf{q}_i)^2 + (\mathbf{w}_2^T\mathbf{q}_i)^2
+= \|\mathrm{proj}_{\mathcal{W}} \mathbf{q}_i\|^2
+\leq \|\mathbf{q}_i\|^2 = 1.
+\]</div>
+<p>The inequality was proved in an exercise. Write <span class="math notranslate nohighlight">\(x_i = (\mathbf{w}_1^T\mathbf{q}_i)^2\)</span> and <span class="math notranslate nohighlight">\(y_i = (\mathbf{w}_2^T\mathbf{q}_i)^2\)</span>. The objective function can be written as <span class="math notranslate nohighlight">\(\sum_{i=1}^m \lambda_i (x_i + y_i)\)</span> and the constraints we have derived are <span class="math notranslate nohighlight">\(\sum_{i=1}^m x_i = \sum_{i=1}^m y_i = 1\)</span> and <span class="math notranslate nohighlight">\(x_i + y_i \leq 1\)</span> for all <span class="math notranslate nohighlight">\(i\)</span>. ALso clearly <span class="math notranslate nohighlight">\(x_i, y_i \geq 0\)</span> for all <span class="math notranslate nohighlight">\(i\)</span>. So</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+\sum_{i=1}^m \lambda_i (x_i + y_i)
+&amp;= \lambda_1 (x_1 + y_1) + \lambda_2 (x_2 + y_2) + \sum_{i=3}^m \lambda_i (x_i + y_i)\\
+&amp;\leq  \lambda_1 (x_1 + y_1) + \lambda_2 (x_2 + y_2) + \lambda_2 \sum_{i=3}^m  (x_i + y_i)\\
+&amp;= \lambda_1 (x_1 + y_1) + \lambda_2 (x_2 + y_2) + \lambda_2 \left([1 - x_1 - x_2] + [1 - y_1 - y_2]\right)\\
+&amp;= (\lambda_1 - \lambda_2) (x_1 + y_1) + (\lambda_2 - \lambda_2) (x_2 + y_2) + 2 \lambda_2\\
+&amp;\leq \lambda_1 - \lambda_2 + 2 \lambda_2\\
+&amp;= \lambda_1 + \lambda_2.
+\end{align*}\]</div>
+<p>That is achieved by taking <span class="math notranslate nohighlight">\(\mathbf{w}_1 = \mathbf{q}_1\)</span> and <span class="math notranslate nohighlight">\(\mathbf{w}_2 = \mathbf{q}_2\)</span>, proving the claim.</p>
+<p><strong>THINK-PAIR-SHARE:</strong> Proceed by induction to show that the claim holds for any <span class="math notranslate nohighlight">\(k\)</span>. <span class="math notranslate nohighlight">\(\ddagger\)</span></p>
+<p>Note that we have not entirely solved the best approximating subspace problem from a computational point of view, as we have not given an explicit procedure to construct a solution to the <span class="math notranslate nohighlight">\(1\)</span>-dimensional subproblems, i.e., the eigenvectors. We have only shown that the solutions exist and have the right properties. We will take care of computational issues in a section below.</p>
 </section>
-<section id="from-approximating-subspaces-to-the-svd-and-back">
-<h2><span class="section-number">3.3.2. </span>From approximating subspaces to the SVD and back<a class="headerlink" href="#from-approximating-subspaces-to-the-svd-and-back" title="Permalink to this headline">#</a></h2>
+<section id="from-approximating-subspaces-to-the-svd">
+<h2><span class="section-number">3.3.2. </span>From approximating subspaces to the SVD<a class="headerlink" href="#from-approximating-subspaces-to-the-svd" title="Permalink to this headline">#</a></h2>
 <p>While solving the approximating subspace problem in the previous section, we derived the building blocks of a matrix factorization that has found many applications, the <a class="reference external" href="https://en.wikipedia.org/wiki/Singular_value_decomposition">singular value decomposition (SVD)</a>. In this section, we define the SVD formally. We describe a simple method to compute it in the next section, where we also return to the application to dimensionality reduction.</p>
 <p><strong>Definition and existence of the SVD</strong> We now come to our main definition.</p>
 <p><strong>DEFINITION</strong> <strong>(Singular Value Decomposition)</strong> Let <span class="math notranslate nohighlight">\(A \in \mathbb{R}^{n\times m}\)</span> be a matrix. A singular value decomposition (SVD) of <span class="math notranslate nohighlight">\(A\)</span> is a matrix factorization</p>
@@ -641,70 +741,64 @@ A = U \Sigma V^T = \sum_{j=1}^r \sigma_j \mathbf{u}_j \mathbf{v}_j^T
 <p>To see where the equality <span class="math notranslate nohighlight">\(U \Sigma V^T = \sum_{j=1}^r \sigma_j \mathbf{u}_j \mathbf{v}_j^T\)</span> comes from,
 we break it up into two steps.</p>
 <ol class="arabic simple">
-<li><p>First note that, by the previous subsection, the matrix product <span class="math notranslate nohighlight">\(U \Sigma\)</span> has columns <span class="math notranslate nohighlight">\(\sigma_1 \mathbf{u}_1,\ldots,\sigma_r \mathbf{u}_r\)</span>.</p></li>
-<li><p>The rows of <span class="math notranslate nohighlight">\(V^T\)</span> are the columns of <span class="math notranslate nohighlight">\(V\)</span> transposed.</p></li>
+<li><p>First note that the matrix product <span class="math notranslate nohighlight">\(U \Sigma\)</span> has columns <span class="math notranslate nohighlight">\(\sigma_1 \mathbf{u}_1,\ldots,\sigma_r \mathbf{u}_r\)</span>.</p></li>
+<li><p>The rows of <span class="math notranslate nohighlight">\(V^T\)</span> are the columns of <span class="math notranslate nohighlight">\(V\)</span> as row vectors.</p></li>
 <li><p>In terms of outer products, the matrix product <span class="math notranslate nohighlight">\(U \Sigma V^T = (U \Sigma) V^T\)</span> is the sum of the outer products of the columns of <span class="math notranslate nohighlight">\(U \Sigma\)</span> and of the rows of <span class="math notranslate nohighlight">\(V^T\)</span> (i.e., the columns of <span class="math notranslate nohighlight">\(V\)</span> as row vectors).</p></li>
 </ol>
 <p>That proves the equality.</p>
 <p>Remarkably, any matrix has an SVD.</p>
 <p><strong>THEOREM</strong> <strong>(Existence of SVD)</strong> Any matrix <span class="math notranslate nohighlight">\(A \in \mathbb{R}^{n\times m}\)</span> has a singular value decomposition. <span class="math notranslate nohighlight">\(\sharp\)</span></p>
-<p><em>Proof idea:</em> We have already done most of the work. The proof works as follows:</p>
-<p>(1) Compute the greedy sequence <span class="math notranslate nohighlight">\(\mathbf{v}_1,\ldots,\mathbf{v}_r\)</span> from the <em>Greedy Finds Best Subspace Theorem</em> until the largest <span class="math notranslate nohighlight">\(r\)</span> such that</p>
+<p>We give a proof via the <em>Spectral Theorem</em>. An alternative proof is provided in an optional section.</p>
+<p><em>The construction:</em> Let <span class="math notranslate nohighlight">\(A \in \mathbb{R}^{n \times m}\)</span> and recall that <span class="math notranslate nohighlight">\(A^T A\)</span> is symmetric and positive semidefinite. Hence the latter has a spectral decomposition</p>
 <div class="math notranslate nohighlight">
 \[
-\|A \mathbf{v}_r\|^2 &gt; 0
+A^T A = Q \Lambda Q^T.
 \]</div>
-<p>or, otherwise, until <span class="math notranslate nohighlight">\(r=m\)</span>. The <span class="math notranslate nohighlight">\(\mathbf{v}_j\)</span>’s are orthonormal by construction.</p>
-<p>(2) For <span class="math notranslate nohighlight">\(j=1,\ldots,r\)</span>, let</p>
+<p>Order the eigenvalues in decreasing order of absolute value <span class="math notranslate nohighlight">\(\lambda_1 \geq \cdots \geq \lambda_m \geq 0\)</span>. In particular, assume that the eigenvalues <span class="math notranslate nohighlight">\(\lambda_1,\ldots,\lambda_r\)</span> are nonzero while <span class="math notranslate nohighlight">\(\lambda_{r+1} = \cdots = \lambda_m = 0\)</span>. Let <span class="math notranslate nohighlight">\(\mathbf{q}_1,\ldots,\mathbf{q}_n\)</span> be the corresponding eigenvectors. Let <span class="math notranslate nohighlight">\(Q_1 \in \mathbb{R}^{m \times r}\)</span> be the matrix whose columns are <span class="math notranslate nohighlight">\(\mathbf{q}_1,\ldots,\mathbf{q}_r\)</span> and <span class="math notranslate nohighlight">\(\Lambda_1 \in \mathbb{R}^{r \times r}\)</span> be the diagonal matrix with <span class="math notranslate nohighlight">\(\lambda_1,\ldots,\lambda_r\)</span> on its diagonal. Similarly, let <span class="math notranslate nohighlight">\(Q_2 \in \mathbb{R}^{m \times (m-r)}\)</span> be the matrix whose columns are <span class="math notranslate nohighlight">\(\mathbf{q}_{r+1},\ldots,\mathbf{q}_m\)</span> and <span class="math notranslate nohighlight">\(\Lambda_2 = \mathbf{0} \in \mathbb{R}^{(m-r) \times (m-r)}\)</span>. We are now ready for our main claim.</p>
+<p><strong>THEOREM</strong> <strong>(SVD via Spectral Decomposition)</strong> Let <span class="math notranslate nohighlight">\(A \in \mathbb{R}^{n \times m}\)</span> and let <span class="math notranslate nohighlight">\(Q_1, \Lambda_1\)</span> be as above. Define</p>
 <div class="math notranslate nohighlight">
 \[
-\sigma_j = \|A \mathbf{v}_j\| \quad\text{and}\quad 
-\mathbf{u}_j = \frac{1}{\sigma_j} A \mathbf{v}_j.
+U = A Q_1 \Lambda_1^{-1/2} \quad \text{and} \quad \Sigma = \Lambda_1^{1/2} \quad \text{and} \quad V = Q_1.
 \]</div>
-<p>Observe that, by our choice of <span class="math notranslate nohighlight">\(r\)</span>, the <span class="math notranslate nohighlight">\(\sigma_j\)</span>’s are <span class="math notranslate nohighlight">\(&gt; 0\)</span>. They are also non-increasing: by definition of the greedy sequence,</p>
+<p>Then <span class="math notranslate nohighlight">\(A = U \Sigma V^T\)</span> is a singular value decomposition of <span class="math notranslate nohighlight">\(A\)</span>. <span class="math notranslate nohighlight">\(\sharp\)</span></p>
+<p><em>Proof idea:</em> Check by hand that all properties of the SVD are satisfied by the construction above.</p>
+<p><em>Proof:</em> The matrix <span class="math notranslate nohighlight">\(\Sigma\)</span> is diagonal and, by construction, the columns of <span class="math notranslate nohighlight">\(V\)</span> are orthonormal. Because <span class="math notranslate nohighlight">\(A^T A\)</span> is positive semidefinite, the eignevalues are non-negative. So it remains to prove two things: that <span class="math notranslate nohighlight">\(A = U \Sigma V^T\)</span> and that the columns of <span class="math notranslate nohighlight">\(U\)</span> are orthonormal.</p>
+<p><strong>LEMMA</strong> <strong>(Step 1)</strong> It holds that <span class="math notranslate nohighlight">\(A = U \Sigma V^T\)</span>. <span class="math notranslate nohighlight">\(\flat\)</span></p>
+<p><em>Proof:</em> By direct computation, we have</p>
 <div class="math notranslate nohighlight">
 \[
-\sigma_i^2 = \max
-\{\|A \mathbf{w}_i\|^2 :\|\mathbf{w}_i\| = 1, \ \langle \mathbf{w}_i, \mathbf{v}_j \rangle = 0, \forall j \leq i-1\},
+U \Sigma V^T
+= A Q_1 \Lambda_1^{-1/2} \Lambda_1^{1/2} Q_1^T
+= A Q_1 Q_1^T.
 \]</div>
-<p>where the set of orthogonality constraints gets larger as <span class="math notranslate nohighlight">\(i\)</span> increases. Hence, the <span class="math notranslate nohighlight">\(\mathbf{u}_j\)</span>’s have unit norm by definition. We show in an (optional) subsection below that they are also orthogonal. (An easier proof is relegated to a later section on the connection between SVD and a certain eigenvector decomposition.)</p>
-<p>(3) Let <span class="math notranslate nohighlight">\(\mathbf{z} \in \mathbb{R}^m\)</span> be any vector. To show that our construction is correct, we prove that <span class="math notranslate nohighlight">\(A \mathbf{z} = \left(U \Sigma V^T\right)\mathbf{z}\)</span>. Let <span class="math notranslate nohighlight">\(\mathcal{V} = \mathrm{span}(\mathbf{v}_1,\ldots,\mathbf{v}_r)\)</span> and decompose <span class="math notranslate nohighlight">\(\mathbf{z}\)</span> into orthogonal components</p>
+<p>The matrix <span class="math notranslate nohighlight">\(Q_1 Q_1^T\)</span> is an orthogonal projection on the subspace spanned by the vectors <span class="math notranslate nohighlight">\(\mathbf{q}_1,\ldots,\mathbf{q}_r\)</span>. Similarly, the matrix <span class="math notranslate nohighlight">\(Q_2 Q_2^T\)</span> is an orthogonal projection on the orthogonal complement (spanned by <span class="math notranslate nohighlight">\(\mathbf{q}_{r+1},\ldots,\mathbf{q}_m\)</span>). Hence <span class="math notranslate nohighlight">\(Q_1 Q_1^T + Q_2 Q_2^T = I_{m \times m}\)</span>. Replacing above we get</p>
 <div class="math notranslate nohighlight">
 \[
-\mathbf{z}
-= \mathrm{proj}_{\mathcal{V}}(\mathbf{z}) + (\mathbf{z} - \mathrm{proj}_{\mathcal{V}}(\mathbf{z}))
-= \sum_{j=1}^r \langle \mathbf{z}, \mathbf{v}_j\rangle \,\mathbf{v}_j
-+ (\mathbf{z} - \mathrm{proj}_{\mathcal{V}}(\mathbf{z})).
+U \Sigma V^T
+= A (I_{n \times n} - Q_2 Q_2^T)
+= A - A Q_2 Q_2^T.
 \]</div>
-<p>Applying <span class="math notranslate nohighlight">\(A\)</span> and using linearity, we get</p>
-<div class="amsmath math notranslate nohighlight">
-\[\begin{align*}
-A \mathbf{z}
-&amp;= \sum_{j=1}^r \langle \mathbf{z}, \mathbf{v}_j\rangle \, A\mathbf{v}_j
-+ A (\mathbf{z} - \mathrm{proj}_{\mathcal{V}}(\mathbf{z})).
-\end{align*}\]</div>
-<p>We claim that <span class="math notranslate nohighlight">\(A (\mathbf{z} - \mathrm{proj}_{\mathcal{V}}(\mathbf{z})) = \mathbf{0}\)</span>. If <span class="math notranslate nohighlight">\(\mathbf{z} - \mathrm{proj}_{\mathcal{V}}(\mathbf{z}) = \mathbf{0}\)</span>, that’s certainly the case. If not, let</p>
+<p>Now note that for any <span class="math notranslate nohighlight">\(\mathbf{q}_i\)</span>, <span class="math notranslate nohighlight">\(i=r+1,\ldots,m\)</span>, we have <span class="math notranslate nohighlight">\(A^T A \mathbf{q}_i = \mathbf{0}\)</span>, so that <span class="math notranslate nohighlight">\(\mathbf{q}_i^T A^T A \mathbf{q}_i = \|A \mathbf{q}_i\|^2 = 0\)</span>. That implies that <span class="math notranslate nohighlight">\(A \mathbf{q}_i = \mathbf{0}\)</span> and further <span class="math notranslate nohighlight">\(A Q_2 = \mathbf{0}\)</span>. Substituting above concludes the proof. <span class="math notranslate nohighlight">\(\square\)</span></p>
+<p><strong>LEMMA</strong> <strong>(Step 2)</strong> The columns of <span class="math notranslate nohighlight">\(U\)</span> are orthonormal. <span class="math notranslate nohighlight">\(\flat\)</span></p>
+<p><em>Proof:</em> By direct computation,</p>
 <div class="math notranslate nohighlight">
 \[
-\mathbf{w} = \frac{\mathbf{z} - \mathrm{proj}_{\mathcal{V}}(\mathbf{z})}{\|\mathbf{z} - \mathrm{proj}_{\mathcal{V}}(\mathbf{z})\|}.
+U^T U 
+= (A Q_1 \Lambda_1^{-1/2})^T A Q_1 \Lambda_1^{-1/2}
+= \Lambda_1^{-1/2} Q_1^T A^T A Q_1 \Lambda_1^{-1/2}.
 \]</div>
-<p>By definition of <span class="math notranslate nohighlight">\(r\)</span>,</p>
+<p>Because the columns of <span class="math notranslate nohighlight">\(Q_1\)</span> are eigenvectors of <span class="math notranslate nohighlight">\(A^T A\)</span>, we have that <span class="math notranslate nohighlight">\(A^T A Q_1 = Q_1 \Lambda_1\)</span>. Further those eigenvectors are orthonormal so that <span class="math notranslate nohighlight">\(Q_1^T Q_1 = I_{r \times r}\)</span>. Plugging above and simplifying gives</p>
 <div class="math notranslate nohighlight">
 \[
-0 = \max
-\{\|A \mathbf{w}_{r+1}\|^2 :\|\mathbf{w}_{r+1}\| = 1, \ \langle \mathbf{w}_{r+1}, \mathbf{v}_j \rangle = 0, \forall j \leq r\}.
+\Lambda_1^{-1/2} Q_1^T A^T A Q_1 \Lambda_1^{-1/2}
+= \Lambda_1^{-1/2} Q_1^T Q_1 \Lambda_1 \Lambda_1^{-1/2}
+= \Lambda_1^{-1/2} I_{r \times r} \Lambda_1 \Lambda_1^{-1/2}
+= I_{r \times r},
 \]</div>
-<p>Put differently, <span class="math notranslate nohighlight">\(\|A \mathbf{w}_{r+1}\|^2  = 0\)</span> (i.e. <span class="math notranslate nohighlight">\(A \mathbf{w}_{r+1} = \mathbf{0}\)</span>), for any unit vector <span class="math notranslate nohighlight">\(\mathbf{w}_{r+1}\)</span> orthogonal to <span class="math notranslate nohighlight">\(\mathbf{v}_1,\ldots,\mathbf{v}_r\)</span>. That applied in particular to <span class="math notranslate nohighlight">\(\mathbf{w}_{r+1} = \mathbf{w}\)</span> by the <em>Orthogonal Projection Theorem</em>.</p>
-<p>Hence, using the definition of <span class="math notranslate nohighlight">\(\mathbf{u}_j\)</span> and <span class="math notranslate nohighlight">\(\sigma_j\)</span>, we get</p>
-<div class="amsmath math notranslate nohighlight">
-\[\begin{align*}
-A \mathbf{z}
-&amp;= \sum_{j=1}^r \langle \mathbf{z}, \mathbf{v}_j\rangle \, \sigma_j \mathbf{u}_j\\
-&amp;= \sum_{j=1}^r \sigma_j \mathbf{u}_j \mathbf{v}_j^T \mathbf{z}\\
-&amp;=\left(\sum_{j=1}^r \sigma_j \mathbf{u}_j \mathbf{v}_j^T\right)\mathbf{z}\\
-&amp;= \left(U \Sigma V^T\right)\mathbf{z}.
-\end{align*}\]</div>
-<p>That proves the existence of the SVD.</p>
+<p>as claimed. <span class="math notranslate nohighlight">\(\square\)</span></p>
+<p>That concludes the proof of the theorem. <span class="math notranslate nohighlight">\(\square\)</span></p>
+<p>One might hope that the SVD of a symmetric matrix generates identical left and right singular vectors. However that is not the case.</p>
+<p><strong>EXAMPLE:</strong> It can be shown that an SVD of <span class="math notranslate nohighlight">\(A = (-1)\)</span> is <span class="math notranslate nohighlight">\(A = (1)\,(1)\,(-1)\)</span>. That is, <span class="math notranslate nohighlight">\(\mathbf{u}_1 = (1)\)</span> and <span class="math notranslate nohighlight">\(\mathbf{v} = (-1)\)</span>. <span class="math notranslate nohighlight">\(\lhd\)</span></p>
 <p>We record the following important consequence.</p>
 <p><strong>LEMMA</strong> <strong>(SVD and Rank)</strong> Let <span class="math notranslate nohighlight">\(A \in \mathbb{R}^{n\times m}\)</span> have singular value decomposition <span class="math notranslate nohighlight">\(A = U \Sigma V^T\)</span> with <span class="math notranslate nohighlight">\(U \in \mathbb{R}^{n \times r}\)</span> and <span class="math notranslate nohighlight">\(V \in \mathbb{R}^{m \times r}\)</span>. Then the columns of <span class="math notranslate nohighlight">\(U\)</span> form an orthonormal basis of <span class="math notranslate nohighlight">\(\mathrm{col}(A)\)</span> and the columns of <span class="math notranslate nohighlight">\(V\)</span> form an orthonormal basis of <span class="math notranslate nohighlight">\(\mathrm{row}(A)\)</span>. In particular, the rank of <span class="math notranslate nohighlight">\(A\)</span> is <span class="math notranslate nohighlight">\(r\)</span>. <span class="math notranslate nohighlight">\(\flat\)</span></p>
 <p><em>Proof idea:</em> We use the SVD to show that the span of the columns of <span class="math notranslate nohighlight">\(U\)</span> is <span class="math notranslate nohighlight">\(\mathrm{col}(A)\)</span>, and similarly for <span class="math notranslate nohighlight">\(V\)</span>.</p>
@@ -769,8 +863,7 @@ A = \sigma_1 \mathbf{u}_1 \mathbf{v}_1^T
 \sigma_1 = \sqrt{2}.
 \end{split}\]</div>
 <p>Observe that <span class="math notranslate nohighlight">\(\mathbf{u}_1\)</span> is indeed an orthonormal basis of the column space of <span class="math notranslate nohighlight">\(A\)</span>. <span class="math notranslate nohighlight">\(\lhd\)</span></p>
-<p>We collect in the next lemma some relationships between the singular vectors and singular values that will be used repeatedly. The proof essentially follows previous calculations and is left as an exercise.</p>
-<p>The second claim below will be the basis for a connection between the SVD and a certain eigenvector decomposition. We will come back to this useful connection in the next chapter.</p>
+<p>We collect in the next lemma some relationships between the singular vectors and singular values that will be used repeatedly. The proof is left as an exercise.</p>
 <p><strong>LEMMA</strong> <strong>(SVD Relations)</strong> Let
 <span class="math notranslate nohighlight">\(A = \sum_{j=1}^r \sigma_j \mathbf{u}_j \mathbf{v}_j^T\)</span>
 be an SVD of <span class="math notranslate nohighlight">\(A \in \mathbb{R}^{n \times m}\)</span> with <span class="math notranslate nohighlight">\(\sigma_1 \geq \sigma_2 \geq \cdots \geq \sigma_r &gt; 0\)</span>. Then, for <span class="math notranslate nohighlight">\(i=1,\ldots,r\)</span>,</p>
@@ -908,92 +1001,7 @@ V
 \end{pmatrix}.
 \end{split}\]</div>
 <p>Indeed, <span class="math notranslate nohighlight">\(A = U \Sigma V^T\)</span> (check it!). <span class="math notranslate nohighlight">\(\lhd\)</span></p>
-<p><strong>SVD and Approximating Subspace</strong> In constructing the SVD of <span class="math notranslate nohighlight">\(A\)</span>, we used the greedy sequence for the best approximating subspace. Vice versa, given an SVD of <span class="math notranslate nohighlight">\(A\)</span>, we can read off the solution to the approximating subspace problem. In other words, there was nothing special about the specific construction we used to prove existence of the SVD. While a matrix may have many SVDs, they all give a solution to the approximating subspace problems.</p>
-<p>Further, this perspective gives what is known as a variational characterization of the singular values. We will have more to say about variational characterizations and their uses in the next chapter.</p>
-<p><em>SVD and greedy sequence</em> Indeed, let</p>
-<div class="math notranslate nohighlight">
-\[
-A = \sum_{j=1}^r \sigma_j \mathbf{u}_j \mathbf{v}_j^T
-\]</div>
-<p>be an SVD of <span class="math notranslate nohighlight">\(A\)</span> with</p>
-<div class="math notranslate nohighlight">
-\[
-\sigma_1 \geq \sigma_2 \geq \cdots \geq \sigma_r &gt; 0.
-\]</div>
-<p>We show that the <span class="math notranslate nohighlight">\(\mathbf{v}_j\)</span>’s form a greedy sequence for the approximating subspace problem. Complete <span class="math notranslate nohighlight">\(\mathbf{v}_1,\ldots,\mathbf{v}_r\)</span> into an orthonormal basis of <span class="math notranslate nohighlight">\(\mathbb{R}^m\)</span> by adding appropriate vectors <span class="math notranslate nohighlight">\(\mathbf{v}_{j+1},\ldots,\mathbf{v}_m\)</span>. By construction, <span class="math notranslate nohighlight">\(A\mathbf{v}_{i} = \mathbf{0}\)</span> for all <span class="math notranslate nohighlight">\(i=j+1,\ldots,m\)</span>.</p>
-<p>We start with the case <span class="math notranslate nohighlight">\(j=1\)</span>. For any unit vector <span class="math notranslate nohighlight">\(\mathbf{w} \in \mathbb{R}^m\)</span>, we expand it as <span class="math notranslate nohighlight">\(\mathbf{w} = \sum_{i=1}^m \langle \mathbf{w}, \mathbf{v}_i\rangle \,\mathbf{v}_i\)</span>. By the <em>Properties of Orthonormal Lists</em>,</p>
-<div class="amsmath math notranslate nohighlight">
-\[\begin{align*}
-\|A \mathbf{w}\|^2
-&amp;=
-\left\|
-A \left(
-\sum_{i=1}^m \langle \mathbf{w}, \mathbf{v}_i\rangle \,\mathbf{v}_i
-\right)
-\right\|^2\\
-&amp;= 
-\left\|
-\sum_{i=1}^m \langle \mathbf{w}, \mathbf{v}_i\rangle \,A \mathbf{v}_i
-\right\|^2\\
-&amp;= 
-\left\|
-\sum_{i=1}^r \langle \mathbf{w}, \mathbf{v}_i\rangle \,\sigma_i \mathbf{u}_i
-\right\|^2\\
-&amp;= \sum_{i=1}^r \sigma_i^2 \langle \mathbf{w}, \mathbf{v}_i\rangle^2,
-\end{align*}\]</div>
-<p>where we used the orthonormality of the <span class="math notranslate nohighlight">\(\mathbf{u}_i\)</span>’s and the fact that <span class="math notranslate nohighlight">\(\mathbf{v}_{j+1},\ldots,\mathbf{v}_m\)</span> are in the null space of <span class="math notranslate nohighlight">\(A\)</span>. Because the <span class="math notranslate nohighlight">\(\sigma_i\)</span>’s are non-increasing, this last sum is maximized by taking <span class="math notranslate nohighlight">\(\mathbf{w} = \mathbf{v}_1\)</span>. So we have shown that <span class="math notranslate nohighlight">\(\mathbf{v}_1 \in \arg\max\{\|A \mathbf{w}\|^2:\|\mathbf{w}\| = 1\}\)</span>.</p>
-<p>By the <em>Properties of Orthonormal Lists</em>,</p>
-<div class="math notranslate nohighlight">
-\[
-\sum_{i=1}^m \langle \mathbf{w}, \mathbf{v}_i\rangle^2
-= \left\|\sum_{i=1}^m \langle \mathbf{w}, \mathbf{v}_i\rangle \mathbf{v}_i \right\|^2
-= \|\mathbf{w}\|^2 
-= 1.
-\]</div>
-<p>Hence,
-because the <span class="math notranslate nohighlight">\(\sigma_i\)</span>’s are non-increasing, the sum</p>
-<div class="math notranslate nohighlight">
-\[
-\|A \mathbf{w}\|^2
-= \sum_{i=1}^r \sigma_i^2 \langle \mathbf{w}, \mathbf{v}_i\rangle^2
-\leq \sigma_1^2.
-\]</div>
-<p>This upper bound is achieved by taking <span class="math notranslate nohighlight">\(\mathbf{w} = \mathbf{v}_1\)</span>. So we have shown that <span class="math notranslate nohighlight">\(\mathbf{v}_1 \in \arg\max\{\|A \mathbf{w}\|^2:\|\mathbf{w}\| = 1\}\)</span>.</p>
-<p>More generally, for any unit vector <span class="math notranslate nohighlight">\(\mathbf{w} \in \mathbb{R}^m\)</span> that is orthogonal to <span class="math notranslate nohighlight">\(\mathbf{v}_1,\ldots,\mathbf{v}_{j-1}\)</span>, we expand it as <span class="math notranslate nohighlight">\(\mathbf{w} = \sum_{i=j}^m \langle \mathbf{w}, \mathbf{v}_i\rangle \,\mathbf{v}_i\)</span>.
-Then, as long as <span class="math notranslate nohighlight">\(j\leq r\)</span>,</p>
-<div class="amsmath math notranslate nohighlight">
-\[\begin{align*}
-\|A \mathbf{w}\|^2
-&amp;= 
-\left\|
-\sum_{i=j}^m \langle \mathbf{w}, \mathbf{v}_i\rangle \,A \mathbf{v}_i
-\right\|^2\\
-&amp;= 
-\left\|
-\sum_{i=j}^r \langle \mathbf{w}, \mathbf{v}_i\rangle \,\sigma_i \mathbf{u}_i
-\right\|^2\\
-&amp;= \sum_{i=j}^r \sigma_i^2 \langle \mathbf{w}, \mathbf{v}_i\rangle^2\\
-&amp;\leq \sigma_j^2.
-\end{align*}\]</div>
-<p>where again we used that the <span class="math notranslate nohighlight">\(\sigma_i\)</span>’s are non-increasing and <span class="math notranslate nohighlight">\(\sum_{i=1}^m \langle \mathbf{w}, \mathbf{v}_i\rangle^2 = 1\)</span>. This last bound is achieved by taking <span class="math notranslate nohighlight">\(\mathbf{w} = \mathbf{v}_j\)</span>.</p>
-<p>So we have shown the following.</p>
-<p><strong>THEOREM</strong> <strong>(Variational Characterization of Singular Values)</strong> Let
-<span class="math notranslate nohighlight">\(A = \sum_{j=1}^r \sigma_j \mathbf{u}_j \mathbf{v}_j^T\)</span> be an SVD of <span class="math notranslate nohighlight">\(A\)</span> with
-<span class="math notranslate nohighlight">\(\sigma_1 \geq \sigma_2 \geq \cdots \geq \sigma_r &gt; 0\)</span>.
-Then</p>
-<div class="math notranslate nohighlight">
-\[
-\sigma_j^2 = \max
-\{\|A \mathbf{w}\|^2:\|\mathbf{w}\| = 1, \ \langle \mathbf{w}, \mathbf{v}_i \rangle = 0, \forall i \leq j-1\},
-\]</div>
-<p>and</p>
-<div class="math notranslate nohighlight">
-\[
-\mathbf{v}_j\in \arg\max
-\{\|A \mathbf{w}\|^2:\|\mathbf{w}\| = 1, \ \langle \mathbf{w}, \mathbf{v}_i \rangle = 0, \forall i \leq j-1\}.
-\]</div>
-<p><span class="math notranslate nohighlight">\(\sharp\)</span></p>
-<p><em>Solving the approximating subspace problem via SVD</em> Think of the rows <span class="math notranslate nohighlight">\(\boldsymbol{\alpha}_i^T\)</span> of a matrix <span class="math notranslate nohighlight">\(A \in \mathbb{R}^{n \times m}\)</span> as a collection of <span class="math notranslate nohighlight">\(n\)</span> data points in <span class="math notranslate nohighlight">\(\mathbb{R}^m\)</span>. Let</p>
+<p><strong>Solving the approximating subspace problem via the SVD</strong> Think of the rows <span class="math notranslate nohighlight">\(\boldsymbol{\alpha}_i^T\)</span> of a matrix <span class="math notranslate nohighlight">\(A \in \mathbb{R}^{n \times m}\)</span> as a collection of <span class="math notranslate nohighlight">\(n\)</span> data points in <span class="math notranslate nohighlight">\(\mathbb{R}^m\)</span>. Let</p>
 <div class="math notranslate nohighlight">
 \[
 A = \sum_{j=1}^r \sigma_j \mathbf{u}_j \mathbf{v}_j^T
@@ -1114,7 +1122,7 @@ Z = A V_{(k)} V_{(k)}^T = U_{(k)} \Sigma_{(k)} V_{(k)}^T
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#an-objective-an-algorithm-and-a-guarantee">3.3.1. An objective, an algorithm, and a guarantee</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#from-approximating-subspaces-to-the-svd-and-back">3.3.2. From approximating subspaces to the SVD and back</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#from-approximating-subspaces-to-the-svd">3.3.2. From approximating subspaces to the SVD</a></li>
 </ul>
   </nav></div>
 

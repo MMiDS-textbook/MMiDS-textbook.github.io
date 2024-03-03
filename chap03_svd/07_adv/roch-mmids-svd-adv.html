@@ -635,8 +635,8 @@ A = \sum_{j=1}^r \sigma_j \mathbf{u}_j \mathbf{v}_j^T
 <div><p>[…] let’s understand the central advantage of doing the projection to [the top <span class="math notranslate nohighlight">\(k\)</span> right singular vectors]. It is simply that for any reasonable (unknown) clustering of data points, the projection brings data points closer to their cluster centers.</p>
 </div></blockquote>
 <p>To elaborate, suppose we have <span class="math notranslate nohighlight">\(n\)</span> data points in <span class="math notranslate nohighlight">\(d\)</span> dimensions in the form of the rows <span class="math notranslate nohighlight">\(\mathbf{a}_i^T\)</span>, <span class="math notranslate nohighlight">\(i=1\ldots, n\)</span>, of matrix <span class="math notranslate nohighlight">\(A \in \mathbb{A}^{n \times d}\)</span>, where we assume that <span class="math notranslate nohighlight">\(n &gt; d\)</span> and that <span class="math notranslate nohighlight">\(A\)</span> has full column rank. Imagine these data points come from an unknown ground-truth <span class="math notranslate nohighlight">\(k\)</span>-clustering assignment <span class="math notranslate nohighlight">\(g(i) \in [k]\)</span>, <span class="math notranslate nohighlight">\(i = 1,\ldots, n\)</span>, with corresponding unknown centers <span class="math notranslate nohighlight">\(\mathbf{c}_j\)</span>, <span class="math notranslate nohighlight">\(j = 1,\ldots, k\)</span>, for <span class="math notranslate nohighlight">\(g(i) = j\)</span>. Let <span class="math notranslate nohighlight">\(C \in \mathbb{R}^{n \times d}\)</span> be the corresponding matrix, that is, row <span class="math notranslate nohighlight">\(i\)</span> of <span class="math notranslate nohighlight">\(C\)</span> is <span class="math notranslate nohighlight">\(\mathbf{c}_j^T\)</span> if <span class="math notranslate nohighlight">\(g(i) = j\)</span>. The <span class="math notranslate nohighlight">\(k\)</span>-means objective of the true clustering is then</p>
-<div class="amsmath math notranslate nohighlight" id="equation-f3baae82-205a-440b-b204-eb1b6f8d25fa">
-<span class="eqno">(3.1)<a class="headerlink" href="#equation-f3baae82-205a-440b-b204-eb1b6f8d25fa" title="Permalink to this equation">#</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-c567e2aa-3c5d-45c6-9917-aab3eee1ce67">
+<span class="eqno">(3.1)<a class="headerlink" href="#equation-c567e2aa-3c5d-45c6-9917-aab3eee1ce67" title="Permalink to this equation">#</a></span>\[\begin{align}
 \sum_{j\in [k]} \sum_{i:g(i)=j} \|\mathbf{a}_i - \mathbf{c}_{j}\|^2
 &amp;= \sum_{j\in [k]} \sum_{i:g(i)=j} \sum_{\ell=1}^d (a_{i,\ell} - c_{j,\ell})^2\\
 &amp;= \sum_{i=1}^n \sum_{\ell=1}^d (a_{i,\ell} - c_{g(i),\ell})^2\\
@@ -796,7 +796,27 @@ and let <span class="math notranslate nohighlight">\(A_k\)</span> be the truncat
 <section id="additional-proofs">
 <h2><span class="section-number">3.7.3. </span>Additional proofs<a class="headerlink" href="#additional-proofs" title="Permalink to this headline">#</a></h2>
 <p>In this section, we give several proofs that were left out in this chapter.</p>
-<p><strong>Proof of Greedy Finds Best Subspace</strong> In this section, we prove the <em>Greedy Finds Best Subspace Theorem</em>.</p>
+<p><strong>Proof of the <em>Number of Eigenvalues</em> Lemma</strong> We start with a proof that distinct eigenvalues correspond to linearly independent eigenvectors.</p>
+<p><em>Proof:</em> <em>(Number of Eigenvalues)</em> Assume by contradiction that <span class="math notranslate nohighlight">\(\mathbf{x}_1, \ldots, \mathbf{x}_m\)</span> are linearly dependent. By the <em>Linear Dependence Lemma</em>, there is <span class="math notranslate nohighlight">\(k \leq m\)</span> such that</p>
+<div class="math notranslate nohighlight">
+\[
+\mathbf{x}_k \in \mathrm{span}(\mathbf{x}_1, \ldots, \mathbf{x}_{k-1})
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(\mathbf{x}_1, \ldots, \mathbf{x}_{k-1}\)</span> are linearly independent. In particular, there are <span class="math notranslate nohighlight">\(a_1, \ldots, a_{k-1}\)</span> such that</p>
+<div class="math notranslate nohighlight">
+\[
+\mathbf{x}_k = a_1 \mathbf{x}_1 + \cdots + a_{k-1} \mathbf{x}_{k-1}.
+\]</div>
+<p>Transform the equation above in two ways: (1) multiply both sides by <span class="math notranslate nohighlight">\(\lambda_k\)</span> and (2) apply <span class="math notranslate nohighlight">\(A\)</span>. Then subtract the resulting equations. That leads to</p>
+<div class="math notranslate nohighlight">
+\[
+\mathbf{0}
+= a_1 (\lambda_k - \lambda_1) \mathbf{x}_1 + \cdots
++ a_{k-1} (\lambda_k - \lambda_{k-1}) \mathbf{x}_{k-1}. 
+\]</div>
+<p>Because the <span class="math notranslate nohighlight">\(\lambda_i\)</span>’s are distinct and <span class="math notranslate nohighlight">\(\mathbf{x}_1, \ldots, \mathbf{x}_{k-1}\)</span> are linearly independent, we must have <span class="math notranslate nohighlight">\(a_1 = \cdots = a_{k-1} = 0\)</span>. But that implies that <span class="math notranslate nohighlight">\(\mathbf{x}_k = \mathbf{0}\)</span>, a contradiction.</p>
+<p>For the second claim, if there were more than <span class="math notranslate nohighlight">\(d\)</span> distinct eigenvalues, then there would be more than <span class="math notranslate nohighlight">\(d\)</span> corresponding linearly independent eigenvectors by the first claim, a contradiction. <span class="math notranslate nohighlight">\(\square\)</span></p>
+<p><strong>Proof of Greedy Finds Best Subspace</strong> In this section, we prove the <em>Greedy Finds Best Subspace Theorem</em> without the use of the <em>Spectral Theorem</em>.</p>
 <p><em>Proof idea:</em> We proceed by induction. For an arbitrary orthonormal list <span class="math notranslate nohighlight">\(\mathbf{w}_1,\ldots,\mathbf{w}_k\)</span>, we find an orthonormal basis of their span containing an element orthogonal to <span class="math notranslate nohighlight">\(\mathbf{v}_1,\ldots,\mathbf{v}_{k-1}\)</span>. Then we use the defintion of <span class="math notranslate nohighlight">\(\mathbf{v}_k\)</span> to conclude.</p>
 <p><em>Proof:</em> As we explained in the previous subsection, we reformulate the problem as a maximization</p>
 <div class="math notranslate nohighlight">
@@ -813,7 +833,7 @@ and let <span class="math notranslate nohighlight">\(A_k\)</span> be the truncat
 \]</div>
 <p>Now consider any orthonormal list <span class="math notranslate nohighlight">\(\{\mathbf{w}_1,\ldots,\mathbf{w}_k\}\)</span> and let its span be <span class="math notranslate nohighlight">\(\mathcal{W} = \mathrm{span}(\mathbf{w}_1,\ldots,\mathbf{w}_k)\)</span>.</p>
 <p><em><strong>Step 1:</strong></em> For <span class="math notranslate nohighlight">\(j=1,\ldots,k-1\)</span>, let <span class="math notranslate nohighlight">\(\mathbf{v}_j'\)</span> be the orthogonal projection of
-<span class="math notranslate nohighlight">\(\mathbf{v}_j\)</span> onto <span class="math notranslate nohighlight">\(\mathcal{W}\)</span> and let <span class="math notranslate nohighlight">\(\mathcal{V}' = \mathrm{span}(\mathbf{v}'_1,\ldots,\mathbf{v}'_{k-1})\)</span>. Because <span class="math notranslate nohighlight">\(\mathcal{V}' \subseteq \mathcal{W}\)</span> has dimension at most <span class="math notranslate nohighlight">\(k-1\)</span> while <span class="math notranslate nohighlight">\(\mathcal{W}\)</span> itself has dimension <span class="math notranslate nohighlight">\(k\)</span>, by <em>Exercises 2.33</em> and <em>2.34</em> we can find an orthonormal basis <span class="math notranslate nohighlight">\(\mathbf{w}'_1,\ldots,\mathbf{w}'_{k}\)</span> of <span class="math notranslate nohighlight">\(\mathcal{W}\)</span> such that <span class="math notranslate nohighlight">\(\mathbf{w}'_k\)</span> is orthogonal to <span class="math notranslate nohighlight">\(\mathcal{V}'\)</span>. Then, for any <span class="math notranslate nohighlight">\(j=1,\ldots,k-1\)</span>, we have the decomposition <span class="math notranslate nohighlight">\(\mathbf{v}_j = \mathbf{v}'_j + (\mathbf{v}_j - \mathbf{v}'_j)\)</span> where <span class="math notranslate nohighlight">\(\mathbf{v}'_j \in \mathcal{V}'\)</span> is orthogonal to <span class="math notranslate nohighlight">\(\mathbf{w}'_k\)</span> and <span class="math notranslate nohighlight">\(\mathbf{v}_j - \mathbf{v}'_j\)</span> is also orthogonal to <span class="math notranslate nohighlight">\(\mathbf{w}'_k \in \mathcal{W}\)</span> by the properties of the orthogonal projection onto <span class="math notranslate nohighlight">\(\mathcal{W}\)</span>. Hence</p>
+<span class="math notranslate nohighlight">\(\mathbf{v}_j\)</span> onto <span class="math notranslate nohighlight">\(\mathcal{W}\)</span> and let <span class="math notranslate nohighlight">\(\mathcal{V}' = \mathrm{span}(\mathbf{v}'_1,\ldots,\mathbf{v}'_{k-1})\)</span>. Because <span class="math notranslate nohighlight">\(\mathcal{V}' \subseteq \mathcal{W}\)</span> has dimension at most <span class="math notranslate nohighlight">\(k-1\)</span> while <span class="math notranslate nohighlight">\(\mathcal{W}\)</span> itself has dimension <span class="math notranslate nohighlight">\(k\)</span>, we can find an orthonormal basis <span class="math notranslate nohighlight">\(\mathbf{w}'_1,\ldots,\mathbf{w}'_{k}\)</span> of <span class="math notranslate nohighlight">\(\mathcal{W}\)</span> such that <span class="math notranslate nohighlight">\(\mathbf{w}'_k\)</span> is orthogonal to <span class="math notranslate nohighlight">\(\mathcal{V}'\)</span> (Why?). Then, for any <span class="math notranslate nohighlight">\(j=1,\ldots,k-1\)</span>, we have the decomposition <span class="math notranslate nohighlight">\(\mathbf{v}_j = \mathbf{v}'_j + (\mathbf{v}_j - \mathbf{v}'_j)\)</span> where <span class="math notranslate nohighlight">\(\mathbf{v}'_j \in \mathcal{V}'\)</span> is orthogonal to <span class="math notranslate nohighlight">\(\mathbf{w}'_k\)</span> and <span class="math notranslate nohighlight">\(\mathbf{v}_j - \mathbf{v}'_j\)</span> is also orthogonal to <span class="math notranslate nohighlight">\(\mathbf{w}'_k \in \mathcal{W}\)</span> by the properties of the orthogonal projection onto <span class="math notranslate nohighlight">\(\mathcal{W}\)</span>. Hence</p>
 <div class="amsmath math notranslate nohighlight">
 \[\begin{align*}
 \left\langle \sum_{j=1}^{k-1}\beta_j \mathbf{v}_j, \mathbf{w}'_k \right\rangle
@@ -859,7 +879,66 @@ and let <span class="math notranslate nohighlight">\(A_k\)</span> be the truncat
 &amp;= \sum_{j=1}^{k} \|A \mathbf{v}_j\|^2\\
 \end{align*}\]</div>
 <p>which proves the claim. <span class="math notranslate nohighlight">\(\square\)</span></p>
-<p><strong>Proof of Existence of the SVD</strong> We return to the proof of the <em>Existence of SVD Theorem</em>. Recall the construction of left and right singular vectors detailed above. All that is left to prove is the orthogonality of the <span class="math notranslate nohighlight">\(\mathbf{u}_j\)</span>’s.</p>
+<p><strong>Proof of Existence of the SVD</strong> We return to the proof of the <em>Existence of SVD Theorem</em>. We give an alternative proof that does not rely on the <em>Spectral Theorem</em>.</p>
+<p><em>Proof:</em> We have already done most of the work. The proof works as follows:</p>
+<p>(1) Compute the greedy sequence <span class="math notranslate nohighlight">\(\mathbf{v}_1,\ldots,\mathbf{v}_r\)</span> from the <em>Greedy Finds Best Subspace Theorem</em> until the largest <span class="math notranslate nohighlight">\(r\)</span> such that</p>
+<div class="math notranslate nohighlight">
+\[
+\|A \mathbf{v}_r\|^2 &gt; 0
+\]</div>
+<p>or, otherwise, until <span class="math notranslate nohighlight">\(r=m\)</span>. The <span class="math notranslate nohighlight">\(\mathbf{v}_j\)</span>’s are orthonormal by construction.</p>
+<p>(2) For <span class="math notranslate nohighlight">\(j=1,\ldots,r\)</span>, let</p>
+<div class="math notranslate nohighlight">
+\[
+\sigma_j = \|A \mathbf{v}_j\| \quad\text{and}\quad 
+\mathbf{u}_j = \frac{1}{\sigma_j} A \mathbf{v}_j.
+\]</div>
+<p>Observe that, by our choice of <span class="math notranslate nohighlight">\(r\)</span>, the <span class="math notranslate nohighlight">\(\sigma_j\)</span>’s are <span class="math notranslate nohighlight">\(&gt; 0\)</span>. They are also non-increasing: by definition of the greedy sequence,</p>
+<div class="math notranslate nohighlight">
+\[
+\sigma_i^2 = \max
+\{\|A \mathbf{w}_i\|^2 :\|\mathbf{w}_i\| = 1, \ \langle \mathbf{w}_i, \mathbf{v}_j \rangle = 0, \forall j \leq i-1\},
+\]</div>
+<p>where the set of orthogonality constraints gets larger as <span class="math notranslate nohighlight">\(i\)</span> increases. Hence, the <span class="math notranslate nohighlight">\(\mathbf{u}_j\)</span>’s have unit norm by definition.</p>
+<p>We show below that they are also orthogonal.</p>
+<p>(3) Let <span class="math notranslate nohighlight">\(\mathbf{z} \in \mathbb{R}^m\)</span> be any vector. To show that our construction is correct, we prove that <span class="math notranslate nohighlight">\(A \mathbf{z} = \left(U \Sigma V^T\right)\mathbf{z}\)</span>. Let <span class="math notranslate nohighlight">\(\mathcal{V} = \mathrm{span}(\mathbf{v}_1,\ldots,\mathbf{v}_r)\)</span> and decompose <span class="math notranslate nohighlight">\(\mathbf{z}\)</span> into orthogonal components</p>
+<div class="math notranslate nohighlight">
+\[
+\mathbf{z}
+= \mathrm{proj}_{\mathcal{V}}(\mathbf{z}) + (\mathbf{z} - \mathrm{proj}_{\mathcal{V}}(\mathbf{z}))
+= \sum_{j=1}^r \langle \mathbf{z}, \mathbf{v}_j\rangle \,\mathbf{v}_j
++ (\mathbf{z} - \mathrm{proj}_{\mathcal{V}}(\mathbf{z})).
+\]</div>
+<p>Applying <span class="math notranslate nohighlight">\(A\)</span> and using linearity, we get</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+A \mathbf{z}
+&amp;= \sum_{j=1}^r \langle \mathbf{z}, \mathbf{v}_j\rangle \, A\mathbf{v}_j
++ A (\mathbf{z} - \mathrm{proj}_{\mathcal{V}}(\mathbf{z})).
+\end{align*}\]</div>
+<p>We claim that <span class="math notranslate nohighlight">\(A (\mathbf{z} - \mathrm{proj}_{\mathcal{V}}(\mathbf{z})) = \mathbf{0}\)</span>. If <span class="math notranslate nohighlight">\(\mathbf{z} - \mathrm{proj}_{\mathcal{V}}(\mathbf{z}) = \mathbf{0}\)</span>, that is certainly the case. If not, let</p>
+<div class="math notranslate nohighlight">
+\[
+\mathbf{w} = \frac{\mathbf{z} - \mathrm{proj}_{\mathcal{V}}(\mathbf{z})}{\|\mathbf{z} - \mathrm{proj}_{\mathcal{V}}(\mathbf{z})\|}.
+\]</div>
+<p>By definition of <span class="math notranslate nohighlight">\(r\)</span>,</p>
+<div class="math notranslate nohighlight">
+\[
+0 = \max
+\{\|A \mathbf{w}_{r+1}\|^2 :\|\mathbf{w}_{r+1}\| = 1, \ \langle \mathbf{w}_{r+1}, \mathbf{v}_j \rangle = 0, \forall j \leq r\}.
+\]</div>
+<p>Put differently, <span class="math notranslate nohighlight">\(\|A \mathbf{w}_{r+1}\|^2  = 0\)</span> (i.e. <span class="math notranslate nohighlight">\(A \mathbf{w}_{r+1} = \mathbf{0}\)</span>), for any unit vector <span class="math notranslate nohighlight">\(\mathbf{w}_{r+1}\)</span> orthogonal to <span class="math notranslate nohighlight">\(\mathbf{v}_1,\ldots,\mathbf{v}_r\)</span>. That applies in particular to <span class="math notranslate nohighlight">\(\mathbf{w}_{r+1} = \mathbf{w}\)</span> by the <em>Orthogonal Projection Theorem</em>.</p>
+<p>Hence, using the definition of <span class="math notranslate nohighlight">\(\mathbf{u}_j\)</span> and <span class="math notranslate nohighlight">\(\sigma_j\)</span>, we get</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+A \mathbf{z}
+&amp;= \sum_{j=1}^r \langle \mathbf{z}, \mathbf{v}_j\rangle \, \sigma_j \mathbf{u}_j\\
+&amp;= \sum_{j=1}^r \sigma_j \mathbf{u}_j \mathbf{v}_j^T \mathbf{z}\\
+&amp;=\left(\sum_{j=1}^r \sigma_j \mathbf{u}_j \mathbf{v}_j^T\right)\mathbf{z}\\
+&amp;= \left(U \Sigma V^T\right)\mathbf{z}.
+\end{align*}\]</div>
+<p>That proves the existence of the SVD.</p>
+<p>All that is left to prove is the orthogonality of the <span class="math notranslate nohighlight">\(\mathbf{u}_j\)</span>’s.</p>
 <p><strong>LEMMA</strong> <strong>(Left Singular Vectors are Orthogonal)</strong> For all <span class="math notranslate nohighlight">\(1 \leq i \neq j \leq r\)</span>, <span class="math notranslate nohighlight">\(\langle \mathbf{u}_i, \mathbf{u}_j \rangle = 0\)</span>. <span class="math notranslate nohighlight">\(\flat\)</span></p>
 <p><em>Proof idea:</em> Quoting [BHK, Section 3.6]:</p>
 <blockquote>
@@ -908,26 +987,91 @@ from a <a class="reference external" href="https://en.wikipedia.org/wiki/Taylor_
 &amp;&gt; \sigma_i
 \end{align*}\]</div>
 <p>for <span class="math notranslate nohighlight">\(\varepsilon\)</span>  small enough, contradicting the inequality above. <span class="math notranslate nohighlight">\(\square\)</span></p>
-<p><strong>Proof of the <em>Number of Eigenvalues</em> Lemma</strong> We start with a proof that distinct eigenvalues correspond to linearly independent eigenvectors.</p>
-<p><em>Proof:</em> <em>(Number of Eigenvalues)</em> Assume by contradiction that <span class="math notranslate nohighlight">\(\mathbf{x}_1, \ldots, \mathbf{x}_m\)</span> are linearly dependent. By the <em>Linear Dependence Lemma</em>, there is <span class="math notranslate nohighlight">\(k \leq m\)</span> such that</p>
+<p><strong>SVD and Approximating Subspace</strong> In constructing the SVD of <span class="math notranslate nohighlight">\(A\)</span>, we used the greedy sequence for the best approximating subspace. Vice versa, given an SVD of <span class="math notranslate nohighlight">\(A\)</span>, we can read off the solution to the approximating subspace problem. In other words, there was nothing special about the specific construction we used to prove existence of the SVD. While a matrix may have many SVDs, they all give a solution to the approximating subspace problems.</p>
+<p>Further, this perspective gives what is known as a variational characterization of the singular values. We will have more to say about variational characterizations and their uses in the next chapter.</p>
+<p><em>SVD and greedy sequence</em> Indeed, let</p>
 <div class="math notranslate nohighlight">
 \[
-\mathbf{x}_k \in \mathrm{span}(\mathbf{x}_1, \ldots, \mathbf{x}_{k-1})
+A = \sum_{j=1}^r \sigma_j \mathbf{u}_j \mathbf{v}_j^T
 \]</div>
-<p>where <span class="math notranslate nohighlight">\(\mathbf{x}_1, \ldots, \mathbf{x}_{k-1}\)</span> are linearly independent. In particular, there are <span class="math notranslate nohighlight">\(a_1, \ldots, a_{k-1}\)</span> such that</p>
+<p>be an SVD of <span class="math notranslate nohighlight">\(A\)</span> with</p>
 <div class="math notranslate nohighlight">
 \[
-\mathbf{x}_k = a_1 \mathbf{x}_1 + \cdots + a_{k-1} \mathbf{x}_{k-1}.
+\sigma_1 \geq \sigma_2 \geq \cdots \geq \sigma_r &gt; 0.
 \]</div>
-<p>Transform the equation above in two ways: (1) multiply both sides by <span class="math notranslate nohighlight">\(\lambda_k\)</span> and (2) apply <span class="math notranslate nohighlight">\(A\)</span>. Then subtract the resulting equations. That leads to</p>
+<p>We show that the <span class="math notranslate nohighlight">\(\mathbf{v}_j\)</span>’s form a greedy sequence for the approximating subspace problem. Complete <span class="math notranslate nohighlight">\(\mathbf{v}_1,\ldots,\mathbf{v}_r\)</span> into an orthonormal basis of <span class="math notranslate nohighlight">\(\mathbb{R}^m\)</span> by adding appropriate vectors <span class="math notranslate nohighlight">\(\mathbf{v}_{j+1},\ldots,\mathbf{v}_m\)</span>. By construction, <span class="math notranslate nohighlight">\(A\mathbf{v}_{i} = \mathbf{0}\)</span> for all <span class="math notranslate nohighlight">\(i=j+1,\ldots,m\)</span>.</p>
+<p>We start with the case <span class="math notranslate nohighlight">\(j=1\)</span>. For any unit vector <span class="math notranslate nohighlight">\(\mathbf{w} \in \mathbb{R}^m\)</span>, we expand it as <span class="math notranslate nohighlight">\(\mathbf{w} = \sum_{i=1}^m \langle \mathbf{w}, \mathbf{v}_i\rangle \,\mathbf{v}_i\)</span>. By the <em>Properties of Orthonormal Lists</em>,</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+\|A \mathbf{w}\|^2
+&amp;=
+\left\|
+A \left(
+\sum_{i=1}^m \langle \mathbf{w}, \mathbf{v}_i\rangle \,\mathbf{v}_i
+\right)
+\right\|^2\\
+&amp;= 
+\left\|
+\sum_{i=1}^m \langle \mathbf{w}, \mathbf{v}_i\rangle \,A \mathbf{v}_i
+\right\|^2\\
+&amp;= 
+\left\|
+\sum_{i=1}^r \langle \mathbf{w}, \mathbf{v}_i\rangle \,\sigma_i \mathbf{u}_i
+\right\|^2\\
+&amp;= \sum_{i=1}^r \sigma_i^2 \langle \mathbf{w}, \mathbf{v}_i\rangle^2,
+\end{align*}\]</div>
+<p>where we used the orthonormality of the <span class="math notranslate nohighlight">\(\mathbf{u}_i\)</span>’s and the fact that <span class="math notranslate nohighlight">\(\mathbf{v}_{j+1},\ldots,\mathbf{v}_m\)</span> are in the null space of <span class="math notranslate nohighlight">\(A\)</span>. Because the <span class="math notranslate nohighlight">\(\sigma_i\)</span>’s are non-increasing, this last sum is maximized by taking <span class="math notranslate nohighlight">\(\mathbf{w} = \mathbf{v}_1\)</span>. So we have shown that <span class="math notranslate nohighlight">\(\mathbf{v}_1 \in \arg\max\{\|A \mathbf{w}\|^2:\|\mathbf{w}\| = 1\}\)</span>.</p>
+<p>By the <em>Properties of Orthonormal Lists</em>,</p>
 <div class="math notranslate nohighlight">
 \[
-\mathbf{0}
-= a_1 (\lambda_k - \lambda_1) \mathbf{x}_1 + \cdots
-+ a_{k-1} (\lambda_k - \lambda_{k-1}) \mathbf{x}_{k-1}. 
+\sum_{i=1}^m \langle \mathbf{w}, \mathbf{v}_i\rangle^2
+= \left\|\sum_{i=1}^m \langle \mathbf{w}, \mathbf{v}_i\rangle \mathbf{v}_i \right\|^2
+= \|\mathbf{w}\|^2 
+= 1.
 \]</div>
-<p>Because the <span class="math notranslate nohighlight">\(\lambda_i\)</span>’s are distinct and <span class="math notranslate nohighlight">\(\mathbf{x}_1, \ldots, \mathbf{x}_{k-1}\)</span> are linearly independent, we must have <span class="math notranslate nohighlight">\(a_1 = \cdots = a_{k-1} = 0\)</span>. But that implies that <span class="math notranslate nohighlight">\(\mathbf{x}_k = \mathbf{0}\)</span>, a contradiction.</p>
-<p>For the second claim, if there were more than <span class="math notranslate nohighlight">\(d\)</span> distinct eigenvalues, then there would be more than <span class="math notranslate nohighlight">\(d\)</span> corresponding linearly independent eigenvectors by the first claim, a contradiction. <span class="math notranslate nohighlight">\(\square\)</span></p>
+<p>Hence,
+because the <span class="math notranslate nohighlight">\(\sigma_i\)</span>’s are non-increasing, the sum</p>
+<div class="math notranslate nohighlight">
+\[
+\|A \mathbf{w}\|^2
+= \sum_{i=1}^r \sigma_i^2 \langle \mathbf{w}, \mathbf{v}_i\rangle^2
+\leq \sigma_1^2.
+\]</div>
+<p>This upper bound is achieved by taking <span class="math notranslate nohighlight">\(\mathbf{w} = \mathbf{v}_1\)</span>. So we have shown that <span class="math notranslate nohighlight">\(\mathbf{v}_1 \in \arg\max\{\|A \mathbf{w}\|^2:\|\mathbf{w}\| = 1\}\)</span>.</p>
+<p>More generally, for any unit vector <span class="math notranslate nohighlight">\(\mathbf{w} \in \mathbb{R}^m\)</span> that is orthogonal to <span class="math notranslate nohighlight">\(\mathbf{v}_1,\ldots,\mathbf{v}_{j-1}\)</span>, we expand it as <span class="math notranslate nohighlight">\(\mathbf{w} = \sum_{i=j}^m \langle \mathbf{w}, \mathbf{v}_i\rangle \,\mathbf{v}_i\)</span>.
+Then, as long as <span class="math notranslate nohighlight">\(j\leq r\)</span>,</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+\|A \mathbf{w}\|^2
+&amp;= 
+\left\|
+\sum_{i=j}^m \langle \mathbf{w}, \mathbf{v}_i\rangle \,A \mathbf{v}_i
+\right\|^2\\
+&amp;= 
+\left\|
+\sum_{i=j}^r \langle \mathbf{w}, \mathbf{v}_i\rangle \,\sigma_i \mathbf{u}_i
+\right\|^2\\
+&amp;= \sum_{i=j}^r \sigma_i^2 \langle \mathbf{w}, \mathbf{v}_i\rangle^2\\
+&amp;\leq \sigma_j^2.
+\end{align*}\]</div>
+<p>where again we used that the <span class="math notranslate nohighlight">\(\sigma_i\)</span>’s are non-increasing and <span class="math notranslate nohighlight">\(\sum_{i=1}^m \langle \mathbf{w}, \mathbf{v}_i\rangle^2 = 1\)</span>. This last bound is achieved by taking <span class="math notranslate nohighlight">\(\mathbf{w} = \mathbf{v}_j\)</span>.</p>
+<p>So we have shown the following.</p>
+<p><strong>THEOREM</strong> <strong>(Variational Characterization of Singular Values)</strong> Let
+<span class="math notranslate nohighlight">\(A = \sum_{j=1}^r \sigma_j \mathbf{u}_j \mathbf{v}_j^T\)</span> be an SVD of <span class="math notranslate nohighlight">\(A\)</span> with
+<span class="math notranslate nohighlight">\(\sigma_1 \geq \sigma_2 \geq \cdots \geq \sigma_r &gt; 0\)</span>.
+Then</p>
+<div class="math notranslate nohighlight">
+\[
+\sigma_j^2 = \max
+\{\|A \mathbf{w}\|^2:\|\mathbf{w}\| = 1, \ \langle \mathbf{w}, \mathbf{v}_i \rangle = 0, \forall i \leq j-1\},
+\]</div>
+<p>and</p>
+<div class="math notranslate nohighlight">
+\[
+\mathbf{v}_j\in \arg\max
+\{\|A \mathbf{w}\|^2:\|\mathbf{w}\| = 1, \ \langle \mathbf{w}, \mathbf{v}_i \rangle = 0, \forall i \leq j-1\}.
+\]</div>
+<p><span class="math notranslate nohighlight">\(\sharp\)</span></p>
 </section>
 </section>
 

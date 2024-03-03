@@ -444,10 +444,9 @@ document.write(`
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#connection-between-the-spectral-decomposition-and-the-singular-value-decomposition">3.4.1. Connection between the spectral decomposition and the singular value decomposition</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#power-iteration-lemma">3.4.2. Power iteration lemma</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#computing-the-top-singular-vector">3.4.3. Computing the top singular vector</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#computing-more-singular-vectors">3.4.4. Computing more singular vectors</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#key-lemma">3.4.1. Key lemma</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#computing-the-top-singular-vector">3.4.2. Computing the top singular vector</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#computing-more-singular-vectors">3.4.3. Computing more singular vectors</a></li>
 </ul>
             </nav>
         </div>
@@ -463,64 +462,10 @@ document.write(`
 <section id="power-iteration">
 <h1><span class="section-number">3.4. </span>Power iteration<a class="headerlink" href="#power-iteration" title="Permalink to this headline">#</a></h1>
 <p>There is in general <a class="reference external" href="https://math.stackexchange.com/questions/2582300/what-does-the-author-mean-by-no-method-exists-for-exactly-computing-the-eigenva">no exact method</a> for computing SVDs. Instead we must rely on iterative methods, that is, methods that progressively approach the solution. We describe in this section the power iteration method. This method is behind an effective numerical approach for computing SVDs.</p>
-<p>The focus here is on numerical methods and we will not spend much time computing SVDs by hand. But we start with a connection between SVDs and a certain eigendecomposition which can be used for this purpose on small examples.</p>
-<section id="connection-between-the-spectral-decomposition-and-the-singular-value-decomposition">
-<h2><span class="section-number">3.4.1. </span>Connection between the spectral decomposition and the singular value decomposition<a class="headerlink" href="#connection-between-the-spectral-decomposition-and-the-singular-value-decomposition" title="Permalink to this headline">#</a></h2>
-<p>In previous sections, we saw that the proof of the spectral theorem tracks closely that of the existence of the SVD. Here we make the connection between the two explicit by showing how to compute the SVD using an appropriate spectral decomposition.</p>
-<p>One might hope that the SVD of a symmetric matrix generates identical left and right singular vectors. However that is not the case.</p>
-<p><strong>EXAMPLE:</strong> It can be shown that an SVD of <span class="math notranslate nohighlight">\(A = (-1)\)</span> is <span class="math notranslate nohighlight">\(A = (1)\,(1)\,(-1)\)</span>. That is, <span class="math notranslate nohighlight">\(\mathbf{u}_1 = (1)\)</span> and <span class="math notranslate nohighlight">\(\mathbf{v} = (-1)\)</span>. <span class="math notranslate nohighlight">\(\lhd\)</span></p>
-<p><em>The construction:</em> Let <span class="math notranslate nohighlight">\(A \in \mathbb{R}^{m \times n}\)</span> and note that <span class="math notranslate nohighlight">\(A^T A\)</span> is symmetric. Hence the latter has a spectral decomposition</p>
-<div class="math notranslate nohighlight">
-\[
-A^T A = Q \Lambda Q^T.
-\]</div>
-<p>Order the eigenvalues in decreasing order of absolute value <span class="math notranslate nohighlight">\(\lambda_1, \ldots, \lambda_n\)</span> with <span class="math notranslate nohighlight">\(|\lambda_1| \geq \cdots \geq |\lambda_n|\)</span>. In particular, assume that the eigenvalues <span class="math notranslate nohighlight">\(\lambda_1,\ldots,\lambda_r\)</span> are nonzero while <span class="math notranslate nohighlight">\(\lambda_{r+1} = \cdots = \lambda_n = 0\)</span>. Let <span class="math notranslate nohighlight">\(\mathbf{q}_1,\ldots,\mathbf{q}_n\)</span> be the corresponding eigenvectors. Let <span class="math notranslate nohighlight">\(Q_1 \in \mathbb{R}^{n \times r}\)</span> be the matrix whose columns are <span class="math notranslate nohighlight">\(\mathbf{q}_1,\ldots,\mathbf{q}_r\)</span> and <span class="math notranslate nohighlight">\(\Lambda_1 \in \mathbb{R}^{r \times r}\)</span> be the diagonal matrix with <span class="math notranslate nohighlight">\(\lambda_1,\ldots,\lambda_r\)</span> on its diagonal. Similarly, let <span class="math notranslate nohighlight">\(Q_2 \in \mathbb{R}^{n \times (n-r)}\)</span> be the matrix whose columns are <span class="math notranslate nohighlight">\(\mathbf{q}_{r+1},\ldots,\mathbf{q}_n\)</span> and <span class="math notranslate nohighlight">\(\Lambda_2 = \mathbf{0} \in \mathbb{R}^{(n-r) \times (n-r)}\)</span>. We are now ready for our main claim.</p>
-<p><strong>THEOREM</strong> <strong>(SVD via Spectral Decomposition)</strong> Let <span class="math notranslate nohighlight">\(A \in \mathbb{R}^{m \times n}\)</span> and let <span class="math notranslate nohighlight">\(Q_1, \Lambda_1\)</span> be as above. Define</p>
-<div class="math notranslate nohighlight">
-\[
-U = A Q_1 \Lambda_1^{-1/2} \quad \text{and} \quad \Sigma = \Lambda_1^{1/2} \quad \text{and} \quad V = Q_1.
-\]</div>
-<p>Then <span class="math notranslate nohighlight">\(A = U \Sigma V^T\)</span> is a singular value decomposition of <span class="math notranslate nohighlight">\(A\)</span>. <span class="math notranslate nohighlight">\(\sharp\)</span></p>
-<p><em>Proof idea:</em> Check by hand that all properties of the SVD are satisfied by the construction above.</p>
-<p><em>Proof:</em> The matrix <span class="math notranslate nohighlight">\(\Sigma\)</span> is diagonal and, by construction, the columns of <span class="math notranslate nohighlight">\(V\)</span> are orthonormal. Because <span class="math notranslate nohighlight">\(A^T A\)</span> is positive semidefinite, the eignevalues are non-negative. So it remains to prove two things: that <span class="math notranslate nohighlight">\(A = U \Sigma V^T\)</span> and that the columns of <span class="math notranslate nohighlight">\(U\)</span> are orthonormal.</p>
-<p><strong>LEMMA</strong> <strong>(Step 1)</strong> It holds that <span class="math notranslate nohighlight">\(A = U \Sigma V^T\)</span>. <span class="math notranslate nohighlight">\(\flat\)</span></p>
-<p><em>Proof:</em> By direct computation, we have</p>
-<div class="math notranslate nohighlight">
-\[
-U \Sigma V^T
-= A Q_1 \Lambda_1^{-1/2} \Lambda_1^{1/2} Q_1^T
-= A Q_1 Q_1^T.
-\]</div>
-<p>The matrix <span class="math notranslate nohighlight">\(Q_1 Q_1^T\)</span> is an orthogonal projection on the subspace spanned by the vectors <span class="math notranslate nohighlight">\(\mathbf{q}_1,\ldots,\mathbf{q}_r\)</span>. Similarly, the matrix <span class="math notranslate nohighlight">\(Q_2 Q_2^T\)</span> is an orthogonal projection on the orthogonal complement (spanned by <span class="math notranslate nohighlight">\(\mathbf{q}_{r+1},\ldots,\mathbf{q}_n\)</span>). Hence <span class="math notranslate nohighlight">\(Q_1 Q_1^T + Q_2 Q_2^T = I_{n \times n}\)</span>. Replacing above we get</p>
-<div class="math notranslate nohighlight">
-\[
-U \Sigma V^T
-= A (I_{n \times n} - Q_2 Q_2^T)
-= A - A Q_2 Q_2^T.
-\]</div>
-<p>Now note that for any <span class="math notranslate nohighlight">\(\mathbf{q}_i\)</span>, <span class="math notranslate nohighlight">\(i=r+1,\ldots,n\)</span>, we have <span class="math notranslate nohighlight">\(A^T A \mathbf{q}_i = \mathbf{0}\)</span>, so that <span class="math notranslate nohighlight">\(\mathbf{q}_i^T A^T A \mathbf{q}_i = \|A \mathbf{q}_i\|^2 = 0\)</span>. That implies that <span class="math notranslate nohighlight">\(A \mathbf{q}_i = \mathbf{0}\)</span> and further <span class="math notranslate nohighlight">\(A Q_2 = \mathbf{0}\)</span>. Substituting above concludes the proof. <span class="math notranslate nohighlight">\(\square\)</span></p>
-<p><strong>LEMMA</strong> <strong>(Step 2)</strong> The columns of <span class="math notranslate nohighlight">\(U\)</span> are orthonormal. <span class="math notranslate nohighlight">\(\flat\)</span></p>
-<p><em>Proof:</em> By direct computation,</p>
-<div class="math notranslate nohighlight">
-\[
-U^T U 
-= (A Q_1 \Lambda_1^{-1/2})^T A Q_1 \Lambda_1^{-1/2}
-= \Lambda_1^{-1/2} Q_1^T A^T A Q_1 \Lambda_1^{-1/2}.
-\]</div>
-<p>Because the columns of <span class="math notranslate nohighlight">\(Q_1\)</span> are eigenvectors of <span class="math notranslate nohighlight">\(A^T A\)</span>, we have that <span class="math notranslate nohighlight">\(A^T A Q_1 = Q_1 \Lambda_1\)</span>. Further those eigenvectors are orthonormal so that <span class="math notranslate nohighlight">\(Q_1^T Q_1 = I_{r \times r}\)</span>. Plugging above and simplifying gives</p>
-<div class="math notranslate nohighlight">
-\[
-\Lambda_1^{-1/2} Q_1^T A^T A Q_1 \Lambda_1^{-1/2}
-= \Lambda_1^{-1/2} Q_1^T Q_1 \Lambda_1 \Lambda_1^{-1/2}
-= \Lambda_1^{-1/2} I_{r \times r} \Lambda_1 \Lambda_1^{-1/2}
-= I_{r \times r},
-\]</div>
-<p>as claimed. <span class="math notranslate nohighlight">\(\square\)</span></p>
-<p>That concludes the proof of the theorem. <span class="math notranslate nohighlight">\(\square\)</span></p>
-</section>
-<section id="power-iteration-lemma">
-<h2><span class="section-number">3.4.2. </span>Power iteration lemma<a class="headerlink" href="#power-iteration-lemma" title="Permalink to this headline">#</a></h2>
-<p>We now derive the main idea behind an algorithm to compute eigenvectors and singular vectors.</p>
+<p>The focus here is on numerical methods and we will not spend much time computing SVDs by hand. But note that the connection between the SVD and the spectral decomposition of <span class="math notranslate nohighlight">\(A^T A\)</span> can be used for this purpose on small examples.</p>
+<section id="key-lemma">
+<h2><span class="section-number">3.4.1. </span>Key lemma<a class="headerlink" href="#key-lemma" title="Permalink to this headline">#</a></h2>
+<p>We now derive the main idea behind an algorithm to compute singular vectors.</p>
 <p><strong>Eigenvectors in semidefinite case</strong> We start with eigenvectors. For our purposes, it will suffice to (1) restrict ourselves to positive semidefinite matrices and (2) focus on the largest eigenvalue.</p>
 <p>Let <span class="math notranslate nohighlight">\(A\)</span> be a symmetric, positive semindefinite matrix in <span class="math notranslate nohighlight">\(\mathbb{R}^{d \times d}\)</span>. By the <em>Spectral Theorem</em>, it has an eigenvector decomposition</p>
 <div class="math notranslate nohighlight">
@@ -688,7 +633,7 @@ j = 2,\ldots,r.
 1,
 \end{align*}\]</div>
 <p>since <span class="math notranslate nohighlight">\(\sigma_j &lt; \sigma_1\)</span> for all <span class="math notranslate nohighlight">\(j =2,\ldots,r\)</span>. That implies the first part of the claim by taking a square root and using <span class="math notranslate nohighlight">\(\langle \mathbf{v}_1, \mathbf{x} \rangle &gt; 0\)</span>. The second part of the claim follows essentially from the same argument. <span class="math notranslate nohighlight">\(\square\)</span> <span class="math notranslate nohighlight">\(\square\)</span></p>
-<p><strong>EXAMPLE:</strong> Let’s revisit the example</p>
+<p><strong>EXAMPLE:</strong> We revisit the example</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}
 A = \begin{pmatrix}
@@ -748,7 +693,7 @@ B^k \mathbf{x}
 <p>as <span class="math notranslate nohighlight">\(k \to +\infty\)</span>. In fact, in this case, converges occurs after one step. <span class="math notranslate nohighlight">\(\lhd\)</span></p>
 </section>
 <section id="computing-the-top-singular-vector">
-<h2><span class="section-number">3.4.3. </span>Computing the top singular vector<a class="headerlink" href="#computing-the-top-singular-vector" title="Permalink to this headline">#</a></h2>
+<h2><span class="section-number">3.4.2. </span>Computing the top singular vector<a class="headerlink" href="#computing-the-top-singular-vector" title="Permalink to this headline">#</a></h2>
 <p>Power iteration gives us a way to compute <span class="math notranslate nohighlight">\(\mathbf{v}_1\)</span> – at least approximately if we use a large enough <span class="math notranslate nohighlight">\(k\)</span>. But how do we find an appropriate vector <span class="math notranslate nohighlight">\(\mathbf{x}\)</span>, as required by the <em>Power Iteration Lemma</em>? It turns out that a random vector will do. For instance, let <span class="math notranslate nohighlight">\(\mathbf{X}\)</span> be an <span class="math notranslate nohighlight">\(m\)</span>-dimensional spherical Gaussian with mean <span class="math notranslate nohighlight">\(0\)</span> and variance <span class="math notranslate nohighlight">\(1\)</span>. Then, <span class="math notranslate nohighlight">\(\mathbb{P}[\langle \mathbf{v}_1, \mathbf{X} \rangle = 0] = 0\)</span>. We will show this when we discuss multivariate Gaussians. Note that, if <span class="math notranslate nohighlight">\(\langle \mathbf{v}_1, \mathbf{X} \rangle &lt; 0\)</span>, we will instead converge to <span class="math notranslate nohighlight">\(-\mathbf{v}_1\)</span> which is also a right singular vector.</p>
 <p><strong>NUMERICAL CORNER:</strong> We implement the algorithm suggested by the <em>Power Iteration Lemma</em>. That is, we compute <span class="math notranslate nohighlight">\(B^{k} \mathbf{x}\)</span>, then normalize it. To obtain the corresponding singular value and left singular vector, we use that <span class="math notranslate nohighlight">\(\sigma_1 = \|A \mathbf{v}_1\|\)</span> and <span class="math notranslate nohighlight">\(\mathbf{u}_1 = A \mathbf{v}_1/\sigma_1\)</span>.</p>
 <div class="cell docutils container">
@@ -868,10 +813,10 @@ B^k \mathbf{x}
 200716.59990277822
 200716.59990277822
 200716.59990277822
+200716.59990277822
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>200716.59990277822
-200716.59990277822
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>200716.59990277822
@@ -921,7 +866,7 @@ B^k \mathbf{x}
 <img alt="../../_images/1f8399cb066b5ac6a5ef547fb7efd2e301f2b487b53bb8313ee6e9081294ba5c.png" src="../../_images/1f8399cb066b5ac6a5ef547fb7efd2e301f2b487b53bb8313ee6e9081294ba5c.png" />
 </div>
 </div>
-<p>There is a small - yet noticeable - gap around 0.</p>
+<p>There is a small – yet noticeable – gap around 0.</p>
 <p>A histogram of the first component of <code class="docutils literal notranslate"><span class="pre">Xproj</span></code> gives a better sense of the density of points.</p>
 <div class="cell tag_hide-input docutils container">
 <details class="hide above-input">
@@ -1002,7 +947,7 @@ B^k \mathbf{x}
 <p><span class="math notranslate nohighlight">\(\unlhd\)</span></p>
 </section>
 <section id="computing-more-singular-vectors">
-<h2><span class="section-number">3.4.4. </span>Computing more singular vectors<a class="headerlink" href="#computing-more-singular-vectors" title="Permalink to this headline">#</a></h2>
+<h2><span class="section-number">3.4.3. </span>Computing more singular vectors<a class="headerlink" href="#computing-more-singular-vectors" title="Permalink to this headline">#</a></h2>
 <p>We have shown how to compute the first singular vector. How do we compute more singular vectors? One approach is to first compute <span class="math notranslate nohighlight">\(\mathbf{v}_1\)</span> (or <span class="math notranslate nohighlight">\(-\mathbf{v}_1\)</span>), then find a vector <span class="math notranslate nohighlight">\(\mathbf{y}\)</span> orthogonal to it, and proceed as above. And then we repeat until we have all <span class="math notranslate nohighlight">\(m\)</span> right singular vectors.</p>
 <p>We are often interested only in the top, say <span class="math notranslate nohighlight">\(\ell &lt; m\)</span>, singular vectors. An alternative approach in that case is to start with <span class="math notranslate nohighlight">\(\ell\)</span> random vectors and, first, find an orthonormal basis for the space they span. Then to quote [BHK, Section 3.7.1]:</p>
 <blockquote>
@@ -1166,10 +1111,9 @@ B^k \mathbf{x}
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#connection-between-the-spectral-decomposition-and-the-singular-value-decomposition">3.4.1. Connection between the spectral decomposition and the singular value decomposition</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#power-iteration-lemma">3.4.2. Power iteration lemma</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#computing-the-top-singular-vector">3.4.3. Computing the top singular vector</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#computing-more-singular-vectors">3.4.4. Computing more singular vectors</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#key-lemma">3.4.1. Key lemma</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#computing-the-top-singular-vector">3.4.2. Computing the top singular vector</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#computing-more-singular-vectors">3.4.3. Computing more singular vectors</a></li>
 </ul>
   </nav></div>
 

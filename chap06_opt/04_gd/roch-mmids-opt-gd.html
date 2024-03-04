@@ -1269,7 +1269,7 @@ b_i - \sigma(\boldsymbol{\alpha}_i^T \mathbf{x})
 = - \nabla [\sigma(\boldsymbol{\alpha}^T \mathbf{x})] \, \alpha_{j} 
 =  - \sigma(\boldsymbol{\alpha}^T \mathbf{x}) (1 - \sigma(\boldsymbol{\alpha}^T \mathbf{x}))\, \boldsymbol{\alpha}\alpha_{j}.
 \]</div>
-<p>Thus, using the fact that <span class="math notranslate nohighlight">\(\boldsymbol{\alpha} \alpha_{j}\)</span> is the <span class="math notranslate nohighlight">\(j\)</span>-th column of the matrix <span class="math notranslate nohighlight">\(\boldsymbol{\alpha} \boldsymbol{\alpha}^T\)</span>,</p>
+<p>Thus, using the fact that <span class="math notranslate nohighlight">\(\boldsymbol{\alpha} \alpha_{j}\)</span> is the <span class="math notranslate nohighlight">\(j\)</span>-th column of the matrix <span class="math notranslate nohighlight">\(\boldsymbol{\alpha} \boldsymbol{\alpha}^T\)</span>, we get</p>
 <div class="math notranslate nohighlight">
 \[
 \mathbf{H}_{\ell}(\mathbf{x}; A, \mathbf{b})
@@ -1297,7 +1297,7 @@ b_i - \sigma(\boldsymbol{\alpha}_i^T \mathbf{x})
 <p>Furthermore, the function <span class="math notranslate nohighlight">\(\ell(\mathbf{x}; A, \mathbf{b})\)</span> is <span class="math notranslate nohighlight">\(L\)</span>-smooth for</p>
 <div class="math notranslate nohighlight">
 \[
-L= \frac{1}{n} \sum_{i=1}^n \|\boldsymbol{\alpha}_i\|^2.
+L= \frac{1}{n} \sum_{i=1}^n \|\boldsymbol{\alpha}_i\|^2 = \frac{1}{n} \|A\|_F^2.
 \]</div>
 <p><span class="math notranslate nohighlight">\(\flat\)</span></p>
 <p><em>Proof:</em> We use convexity. Moreover, since <span class="math notranslate nohighlight">\(\sigma(t) \in [0,1]\)</span> for all <span class="math notranslate nohighlight">\(t\)</span>, for any unit vector <span class="math notranslate nohighlight">\(\mathbf{z} \in \mathbb{R}^d\)</span>,</p>
@@ -1317,7 +1317,7 @@ L= \frac{1}{n} \sum_{i=1}^n \|\boldsymbol{\alpha}_i\|^2.
 b_i - \sigma(\boldsymbol{\alpha}_i^T \mathbf{x}^t) 
 ) \,\boldsymbol{\alpha}_i.
 \]</div>
-<p><strong>NUMERICAL CORNER:</strong> We return to our proof of convergence for smooth functions using a special case of logistic regression. We illustrate it on a random dataset. The functions <span class="math notranslate nohighlight">\(\hat{f}\)</span>, <span class="math notranslate nohighlight">\(\mathcal{L}\)</span> and <span class="math notranslate nohighlight">\(\frac{\partial}{\partial x}\mathcal{L}\)</span> are defined next.</p>
+<p><strong>NUMERICAL CORNER:</strong> Before implementing GD for logistic regression, we return to our proof of convergence for smooth functions using a special case. We illustrate it on a random dataset. The functions <span class="math notranslate nohighlight">\(\hat{f}\)</span>, <span class="math notranslate nohighlight">\(\mathcal{L}\)</span> and <span class="math notranslate nohighlight">\(\frac{\partial}{\partial x}\mathcal{L}\)</span> are defined next.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">fhat</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">a</span><span class="p">):</span>
@@ -1370,7 +1370,7 @@ b_i - \sigma(\boldsymbol{\alpha}_i^T \mathbf{x}^t)
 <img alt="../../_images/2e3d92fd7ae1220bc257797da60a7f8b8bc9bdab2974d38f384f4677ab824975.png" src="../../_images/2e3d92fd7ae1220bc257797da60a7f8b8bc9bdab2974d38f384f4677ab824975.png" />
 </div>
 </div>
-<p>We plot next the upper and lower bounds in the <em>Quadratic Bound for Smooth Functions</em> around <span class="math notranslate nohighlight">\(x = x_0\)</span>. It turns out we can take <span class="math notranslate nohighlight">\(L=1\)</span>. Observe that minimizing the upper quadratic bound leads to a decrease in <span class="math notranslate nohighlight">\(\mathcal{L}\)</span>.</p>
+<p>We plot next the upper and lower bounds in the <em>Quadratic Bound for Smooth Functions</em> around <span class="math notranslate nohighlight">\(x = x_0\)</span>. It turns out we can take <span class="math notranslate nohighlight">\(L=1\)</span> because all features are uniformly random between <span class="math notranslate nohighlight">\(-1\)</span> and <span class="math notranslate nohighlight">\(1\)</span>. Observe that minimizing the upper quadratic bound leads to a decrease in <span class="math notranslate nohighlight">\(\mathcal{L}\)</span>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">x0</span> <span class="o">=</span> <span class="o">-</span><span class="mf">0.3</span>
@@ -1402,23 +1402,78 @@ b_i - \sigma(\boldsymbol{\alpha}_i^T \mathbf{x}^t)
 </div>
 </div>
 <p><span class="math notranslate nohighlight">\(\unlhd\)</span></p>
-<p>In <a class="reference external" href="https://en.wikipedia.org/wiki/Stochastic_gradient_descent">stochastic gradient descent</a> (SGD), a variant of gradient descent, we pick a sample <span class="math notranslate nohighlight">\(I_t\)</span> uniformly at random in <span class="math notranslate nohighlight">\(\{1,\ldots,n\}\)</span> and update as follows</p>
+<p>We modify our implementation of gradient descent to take a dataset as input. (That will also be useful to generalize to so-called stochastic gradient descent; see below.) Recall that to run gradient descent, we first implement a function computing a descent update. It takes as input a function <code class="docutils literal notranslate"><span class="pre">grad_fn</span></code> computing the gradient itself, as well as a current iterate and a step size. We now also feed a dataset as additional input.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">desc_update_for_logreg</span><span class="p">(</span><span class="n">grad_fn</span><span class="p">,</span> <span class="n">A</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">curr_x</span><span class="p">,</span> <span class="n">beta</span><span class="p">):</span>
+    <span class="n">gradient</span> <span class="o">=</span> <span class="n">grad_fn</span><span class="p">(</span><span class="n">curr_x</span><span class="p">,</span> <span class="n">A</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">curr_x</span> <span class="o">-</span> <span class="n">beta</span><span class="o">*</span><span class="n">gradient</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>We are ready to implement GD. Our function takes as input a function <code class="docutils literal notranslate"><span class="pre">loss_fn</span></code> computing the objective, a function <code class="docutils literal notranslate"><span class="pre">grad_fn</span></code> computing the gradient, the dataset <code class="docutils literal notranslate"><span class="pre">A</span></code> and <code class="docutils literal notranslate"><span class="pre">b</span></code>, and an initial guess <code class="docutils literal notranslate"><span class="pre">init_x</span></code>. Optional parameters are the step size and the number of iterations.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">gd_for_logreg</span><span class="p">(</span><span class="n">loss_fn</span><span class="p">,</span> <span class="n">grad_fn</span><span class="p">,</span> <span class="n">A</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">init_x</span><span class="p">,</span> <span class="n">beta</span><span class="o">=</span><span class="mf">1e-3</span><span class="p">,</span> <span class="n">niters</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="mf">1e5</span><span class="p">)):</span>
+    
+    <span class="c1"># initialization</span>
+    <span class="n">curr_x</span> <span class="o">=</span> <span class="n">init_x</span>
+    
+    <span class="c1"># until the maximum number of iterations</span>
+    <span class="k">for</span> <span class="nb">iter</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">niters</span><span class="p">):</span>
+        <span class="n">curr_x</span> <span class="o">=</span> <span class="n">desc_update_for_logreg</span><span class="p">(</span><span class="n">grad_fn</span><span class="p">,</span> <span class="n">A</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">curr_x</span><span class="p">,</span> <span class="n">beta</span><span class="p">)</span>
+    
+    <span class="k">return</span> <span class="n">curr_x</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>To implement <code class="docutils literal notranslate"><span class="pre">loss_fn</span></code> and <code class="docutils literal notranslate"><span class="pre">grad_fn</span></code>, we define the sigmoid as above. Below, <code class="docutils literal notranslate"><span class="pre">pred_fn</span></code> is <span class="math notranslate nohighlight">\(\bsigma(A \mathbf{x})\)</span>. Here we write the loss function as</p>
 <div class="math notranslate nohighlight">
-\[
-\mathbf{x}^{t+1}
-= \mathbf{x}^{t} +\beta \, (
-b_{I_t} - \sigma(\boldsymbol{\alpha}_{I_t}^T \mathbf{x}^t) 
-) \, \boldsymbol{\alpha}_{I_t}.
-\]</div>
-<p>For the mini-batch version of SGD, we pick a random sub-sample <span class="math notranslate nohighlight">\(\mathcal{B}_t \subseteq \{1,\ldots,n\}\)</span> of size <span class="math notranslate nohighlight">\(B\)</span></p>
-<div class="math notranslate nohighlight">
-\[
-\mathbf{x}^{t+1}
-= \mathbf{x}^{t} +\beta \frac{1}{B} \sum_{i\in \mathcal{B}_t} (
-b_i - \sigma(\boldsymbol{\alpha}_i^T \mathbf{x}^t) 
-) \,\boldsymbol{\alpha}_i.
-\]</div>
-<p>The key observation about the two stochastic updates above is that, in expectation, they perform a step of gradient descent. That turns out to be enough and it has computational advantages.</p>
+\[\begin{split}
+\begin{align*}
+\ell(\mathbf{x}; A, \mathbf{b})
+&amp;= \frac{1}{n} \sum_{i=1}^n \left\{- b_i \log(\sigma(\boldsymbol{\alpha_i}^T \mathbf{x}))
+- (1-b_i) \log(1- \sigma(\boldsymbol{\alpha_i}^T \mathbf{x}))\right\}\\
+&amp;= \mathrm{mean}\left(-\mathbf{b} \odot \mathbf{log}(\bsigma(A \mathbf{x})) - (\mathbf{1} - \mathbf{b}) \odot \mathbf{log}(\mathbf{1} - \bsigma(A \mathbf{x}))\right),
+\end{align*}
+\end{split}\]</div>
+<p>where <span class="math notranslate nohighlight">\(\odot\)</span> is the Hadamard product, or element-wise product (for example <span class="math notranslate nohighlight">\(\mathbf{u} \odot \mathbf{v} = (u_1 v_1, \ldots,u_n v_n)^T\)</span>), the logarithm (denoted in bold) is applied element-wise and <span class="math notranslate nohighlight">\(\mathrm{mean}(\mathbf{z})\)</span> is the mean of the entries of <span class="math notranslate nohighlight">\(\mathbf{z}\)</span> (i.e., <span class="math notranslate nohighlight">\(\mathrm{mean}(\mathbf{z}) = n^{-1} \sum_{i=1}^n z_i\)</span>).</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">pred_fn</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">A</span><span class="p">):</span> 
+    <span class="k">return</span> <span class="n">sigmoid</span><span class="p">(</span><span class="n">A</span> <span class="o">@</span> <span class="n">x</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">loss_fn</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">A</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span> 
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="o">-</span><span class="n">b</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">pred_fn</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">A</span><span class="p">))</span> <span class="o">-</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">b</span><span class="p">)</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">pred_fn</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">A</span><span class="p">)))</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">grad_fn</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">A</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
+    <span class="k">return</span> <span class="o">-</span><span class="n">A</span><span class="o">.</span><span class="n">T</span> <span class="o">@</span> <span class="p">(</span><span class="n">b</span> <span class="o">-</span> <span class="n">pred_fn</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">A</span><span class="p">))</span><span class="o">/</span><span class="nb">len</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>We can choosed a step size based on the smoothness of the objective as above. Recall that <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.linalg.norm.html"><code class="docutils literal notranslate"><span class="pre">numpy.linalg.norm</span></code></a> computes the Frobenius norm by default.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">stepsize_for_logreg</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
+    <span class="n">L</span> <span class="o">=</span> <span class="n">LA</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">A</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span> <span class="o">/</span><span class="nb">len</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
+    <span class="k">return</span> <span class="mi">1</span><span class="o">/</span><span class="n">L</span>
+</pre></div>
+</div>
+</div>
+</div>
 <p><strong>Lebron James 2017 NBA Playoffs dataset</strong> We start with a simple dataset from UC Berkeley’s <a class="reference external" href="http://www.ds100.org">DS100</a> course. The file <code class="docutils literal notranslate"><span class="pre">lebron.csv</span></code> is available <a class="reference external" href="https://github.com/MMiDS-textbook/MMiDS-textbook.github.io/tree/main/utils/datasets">here</a>. Quoting a previous version of the course’s textbook:</p>
 <blockquote>
 <div><p>In basketball, players score by shooting a ball through a hoop. One such player, LeBron James, is widely considered one of the best basketball players ever for his incredible ability to score. LeBron plays in the National Basketball Association (NBA), the United States’s premier basketball league. We’ve collected a dataset of all of LeBron’s attempts in the 2017 NBA Playoff Games using the NBA statistics website (<a class="reference external" href="https://stats.nba.com/">https://stats.nba.com/</a>).</p>
@@ -1657,33 +1712,6 @@ b_i - \sigma(\boldsymbol{\alpha}_i^T \mathbf{x}^t)
 <img alt="../../_images/896c7d0be6bb27870c356d64b67f8ca8a650e26cd48dd72a23f2ed52ad9b5b6f.png" src="../../_images/896c7d0be6bb27870c356d64b67f8ca8a650e26cd48dd72a23f2ed52ad9b5b6f.png" />
 </div>
 </div>
-<p>We modify our implementation of gradient descent to take a dataset as input. That will also be useful to generalize to stochastic gradient descent. Recall that to run gradient descent, we first implement a function computing a descent update. It takes as input a function <code class="docutils literal notranslate"><span class="pre">grad_fn</span></code> computing the gradient itself, as well as a current iterate and a step size. We now also feed a dataset as additional input.</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">desc_update_for_logreg</span><span class="p">(</span><span class="n">grad_fn</span><span class="p">,</span> <span class="n">A</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">curr_x</span><span class="p">,</span> <span class="n">beta</span><span class="p">):</span>
-    <span class="n">gradient</span> <span class="o">=</span> <span class="n">grad_fn</span><span class="p">(</span><span class="n">curr_x</span><span class="p">,</span> <span class="n">A</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">curr_x</span> <span class="o">-</span> <span class="n">beta</span><span class="o">*</span><span class="n">gradient</span>
-</pre></div>
-</div>
-</div>
-</div>
-<p>We are ready to implement GD. Our function takes as input a function <code class="docutils literal notranslate"><span class="pre">loss_fn</span></code> computing the objective, a function <code class="docutils literal notranslate"><span class="pre">grad_fn</span></code> computing the gradient, the dataset <code class="docutils literal notranslate"><span class="pre">A</span></code> and <code class="docutils literal notranslate"><span class="pre">b</span></code>, and an initial guess <code class="docutils literal notranslate"><span class="pre">init_x</span></code>. Optional parameters are the step size and the number of iterations.</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">gd_for_logreg</span><span class="p">(</span><span class="n">loss_fn</span><span class="p">,</span> <span class="n">grad_fn</span><span class="p">,</span> <span class="n">A</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">init_x</span><span class="p">,</span> <span class="n">beta</span><span class="o">=</span><span class="mf">1e-3</span><span class="p">,</span> <span class="n">niters</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="mf">1e5</span><span class="p">)):</span>
-    
-    <span class="c1"># initialization</span>
-    <span class="n">curr_x</span> <span class="o">=</span> <span class="n">init_x</span>
-    
-    <span class="c1"># until the maximum number of iterations</span>
-    <span class="k">for</span> <span class="nb">iter</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">niters</span><span class="p">):</span>
-        <span class="n">curr_x</span> <span class="o">=</span> <span class="n">desc_update_for_logreg</span><span class="p">(</span><span class="n">grad_fn</span><span class="p">,</span> <span class="n">A</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">curr_x</span><span class="p">,</span> <span class="n">beta</span><span class="p">)</span>
-    
-    <span class="k">return</span> <span class="n">curr_x</span>
-</pre></div>
-</div>
-</div>
-</div>
 <p>We apply GD to logistic regression. We first construct the data matrices <span class="math notranslate nohighlight">\(A\)</span> and <span class="math notranslate nohighlight">\(\mathbf{b}\)</span>. To allow an affine function of the features, we add a column of <span class="math notranslate nohighlight">\(1\)</span>’s as we have done before.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1693,46 +1721,10 @@ b_i - \sigma(\boldsymbol{\alpha}_i^T \mathbf{x}^t)
 </div>
 </div>
 </div>
-<p>To implement <code class="docutils literal notranslate"><span class="pre">loss_fn</span></code> and <code class="docutils literal notranslate"><span class="pre">grad_fn</span></code>, we define the sigmoid as above. Below, <code class="docutils literal notranslate"><span class="pre">pred_fn</span></code> is <span class="math notranslate nohighlight">\(\bsigma(A \mathbf{x})\)</span>. Here we write the loss function as</p>
-<div class="math notranslate nohighlight">
-\[\begin{split}
-\begin{align*}
-\ell(\mathbf{x}; A, \mathbf{b})
-&amp;= \frac{1}{n} \sum_{i=1}^n \left\{- b_i \log(\sigma(\boldsymbol{\alpha_i}^T \mathbf{x}))
-- (1-b_i) \log(1- \sigma(\boldsymbol{\alpha_i}^T \mathbf{x}))\right\}\\
-&amp;= \mathrm{mean}\left(-\mathbf{b} \odot \mathbf{log}(\bsigma(A \mathbf{x})) - (\mathbf{1} - \mathbf{b}) \odot \mathbf{log}(\mathbf{1} - \bsigma(A \mathbf{x}))\right),
-\end{align*}
-\end{split}\]</div>
-<p>where <span class="math notranslate nohighlight">\(\odot\)</span> is the Hadamard product, or element-wise product (for example <span class="math notranslate nohighlight">\(\mathbf{u} \odot \mathbf{v} = (u_1 v_1, \ldots,u_n v_n)^T\)</span>), the logarithm (denoted in bold) is applied element-wise and <span class="math notranslate nohighlight">\(\mathrm{mean}(\mathbf{z})\)</span> is the mean of the entries of <span class="math notranslate nohighlight">\(\mathbf{z}\)</span> (i.e., <span class="math notranslate nohighlight">\(\mathrm{mean}(\mathbf{z}) = n^{-1} \sum_{i=1}^n z_i\)</span>).</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">pred_fn</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">A</span><span class="p">):</span> 
-    <span class="k">return</span> <span class="n">sigmoid</span><span class="p">(</span><span class="n">A</span> <span class="o">@</span> <span class="n">x</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">loss_fn</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">A</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span> 
-    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="o">-</span><span class="n">b</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">pred_fn</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">A</span><span class="p">))</span> <span class="o">-</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">b</span><span class="p">)</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">pred_fn</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">A</span><span class="p">)))</span>
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">grad_fn</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">A</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
-    <span class="k">return</span> <span class="o">-</span><span class="n">A</span><span class="o">.</span><span class="n">T</span> <span class="o">@</span> <span class="p">(</span><span class="n">b</span> <span class="o">-</span> <span class="n">pred_fn</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">A</span><span class="p">))</span><span class="o">/</span><span class="nb">len</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
 <p>We run GD starting from <span class="math notranslate nohighlight">\((0,0)\)</span> with a step size computed from the smoothness of the objective as above.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">L</span> <span class="o">=</span> <span class="n">LA</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">A</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span> <span class="o">/</span><span class="nb">len</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
-<span class="n">stepsize</span> <span class="o">=</span> <span class="mi">1</span><span class="o">/</span><span class="n">L</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">stepsize</span> <span class="o">=</span> <span class="n">stepsize_for_logreg</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">stepsize</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -1783,6 +1775,43 @@ b_i - \sigma(\boldsymbol{\alpha}_i^T \mathbf{x}^t)
 </details>
 <div class="cell_output docutils container">
 <img alt="../../_images/c5d38efebb59f70fa33f1624498dc9e57f56ae9b8452f0ac06da5296c7510b52.png" src="../../_images/c5d38efebb59f70fa33f1624498dc9e57f56ae9b8452f0ac06da5296c7510b52.png" />
+</div>
+</div>
+<p><strong>Stochastic gradient descent</strong> In <a class="reference external" href="https://en.wikipedia.org/wiki/Stochastic_gradient_descent">stochastic gradient descent</a> (SGD), a variant of gradient descent, we pick a sample <span class="math notranslate nohighlight">\(I_t\)</span> uniformly at random in <span class="math notranslate nohighlight">\(\{1,\ldots,n\}\)</span> and update as follows</p>
+<div class="math notranslate nohighlight">
+\[
+\mathbf{x}^{t+1}
+= \mathbf{x}^{t} +\beta \, (
+b_{I_t} - \sigma(\boldsymbol{\alpha}_{I_t}^T \mathbf{x}^t) 
+) \, \boldsymbol{\alpha}_{I_t}.
+\]</div>
+<p>For the mini-batch version of SGD, we pick a random sub-sample <span class="math notranslate nohighlight">\(\mathcal{B}_t \subseteq \{1,\ldots,n\}\)</span> of size <span class="math notranslate nohighlight">\(B\)</span></p>
+<div class="math notranslate nohighlight">
+\[
+\mathbf{x}^{t+1}
+= \mathbf{x}^{t} +\beta \frac{1}{B} \sum_{i\in \mathcal{B}_t} (
+b_i - \sigma(\boldsymbol{\alpha}_i^T \mathbf{x}^t) 
+) \,\boldsymbol{\alpha}_i.
+\]</div>
+<p>The key observation about the two stochastic updates above is that, in expectation, they perform a step of gradient descent. That turns out to be enough and it has computational advantages.</p>
+<p>The only modification needed to the code is to pick a random mini-batch which can be fed to the descent update sub-routine as dataset.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">sgd_for_logreg</span><span class="p">(</span><span class="n">loss_fn</span><span class="p">,</span> <span class="n">grad_fn</span><span class="p">,</span> <span class="n">A</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> 
+                   <span class="n">init_x</span><span class="p">,</span> <span class="n">beta</span><span class="o">=</span><span class="mf">1e-3</span><span class="p">,</span> <span class="n">niters</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="mf">1e5</span><span class="p">),</span> <span class="n">batch</span><span class="o">=</span><span class="mi">40</span><span class="p">):</span>
+    
+    <span class="c1"># initialization</span>
+    <span class="n">curr_x</span> <span class="o">=</span> <span class="n">init_x</span>
+    
+    <span class="c1"># until the maximum number of iterations</span>
+    <span class="n">nsamples</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">niters</span><span class="p">):</span>
+        <span class="n">I</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">integers</span><span class="p">(</span><span class="n">nsamples</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">batch</span><span class="p">)</span>
+        <span class="n">curr_x</span> <span class="o">=</span> <span class="n">desc_update_for_logreg</span><span class="p">(</span><span class="n">grad_fn</span><span class="p">,</span> <span class="n">A</span><span class="p">[</span><span class="n">I</span><span class="p">,:],</span> <span class="n">b</span><span class="p">[</span><span class="n">I</span><span class="p">],</span> <span class="n">curr_x</span><span class="p">,</span> <span class="n">beta</span><span class="p">)</span>
+    
+    <span class="k">return</span> <span class="n">curr_x</span>
+</pre></div>
+</div>
 </div>
 </div>
 <p><strong>South African Heart Disease dataset</strong> We analyze a dataset from [<a class="reference external" href="https://web.stanford.edu/~hastie/ElemStatLearn/">ESL</a>], which can be downloaded <a class="reference external" href="https://web.stanford.edu/~hastie/ElemStatLearn/data.html">here</a>. Quoting [<a class="reference external" href="https://web.stanford.edu/~hastie/ElemStatLearn/">ESL</a>, Section 4.4.2]</p>
@@ -2083,7 +2112,7 @@ b_i - \sigma(\boldsymbol{\alpha}_i^T \mathbf{x}^t)
 </div>
 </div>
 </div>
-<p>We re-use the functions <code class="docutils literal notranslate"><span class="pre">loss_fn</span></code> and <code class="docutils literal notranslate"><span class="pre">grad_fn</span></code>, which were written for general logistic regression problems.</p>
+<p>We use the same functions <code class="docutils literal notranslate"><span class="pre">loss_fn</span></code> and <code class="docutils literal notranslate"><span class="pre">grad_fn</span></code>, which were written for general logistic regression problems.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">init_x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">A</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
@@ -2093,8 +2122,7 @@ b_i - \sigma(\boldsymbol{\alpha}_i^T \mathbf{x}^t)
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">L</span> <span class="o">=</span> <span class="n">LA</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">A</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span> <span class="o">/</span><span class="nb">len</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
-<span class="n">stepsize</span> <span class="o">=</span> <span class="mi">1</span><span class="o">/</span><span class="n">L</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">stepsize</span> <span class="o">=</span> <span class="n">stepsize_for_logreg</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">stepsize</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -2107,7 +2135,8 @@ b_i - \sigma(\boldsymbol{\alpha}_i^T \mathbf{x}^t)
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">best_x</span> <span class="o">=</span> <span class="n">gd_for_logreg</span><span class="p">(</span><span class="n">loss_fn</span><span class="p">,</span> <span class="n">grad_fn</span><span class="p">,</span> <span class="n">A</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">init_x</span><span class="p">,</span> <span class="n">beta</span><span class="o">=</span><span class="n">stepsize</span><span class="p">,</span> <span class="n">niters</span><span class="o">=</span><span class="mi">1000000</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">best_x</span> <span class="o">=</span> <span class="n">gd_for_logreg</span><span class="p">(</span><span class="n">loss_fn</span><span class="p">,</span> <span class="n">grad_fn</span><span class="p">,</span> <span class="n">A</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> 
+                       <span class="n">init_x</span><span class="p">,</span> <span class="n">beta</span><span class="o">=</span><span class="n">stepsize</span><span class="p">,</span> <span class="n">niters</span><span class="o">=</span><span class="mi">1000000</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -2145,33 +2174,7 @@ b_i - \sigma(\boldsymbol{\alpha}_i^T \mathbf{x}^t)
 </div>
 </div>
 </div>
-<p>We also try mini-batch stochastic gradient descent (SGD). Recall that we pick a random sub-sample <span class="math notranslate nohighlight">\(\mathcal{B} \subseteq \{1,\ldots,n\}\)</span> of size <span class="math notranslate nohighlight">\(B\)</span> and then the update is</p>
-<div class="math notranslate nohighlight">
-\[
-\mathbf{x}^{k+1}
-= \mathbf{x}^{k} +\beta \frac{1}{B} \sum_{i\in \mathcal{B}} (
-b_i - \sigma(\boldsymbol{\alpha}_i^T \mathbf{x}^k) 
-) \,\boldsymbol{\alpha}_i.
-\]</div>
-<p>Hence, the only modification needed to the code is to pick a random mini-batch which can be fed to the descent update sub-routine as dataset.</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">sgd_for_logreg</span><span class="p">(</span><span class="n">loss_fn</span><span class="p">,</span> <span class="n">grad_fn</span><span class="p">,</span> <span class="n">A</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">init_x</span><span class="p">,</span> <span class="n">beta</span><span class="o">=</span><span class="mf">1e-3</span><span class="p">,</span> <span class="n">niters</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="mf">1e5</span><span class="p">),</span> <span class="n">batch</span><span class="o">=</span><span class="mi">40</span><span class="p">):</span>
-    
-    <span class="c1"># initialization</span>
-    <span class="n">curr_x</span> <span class="o">=</span> <span class="n">init_x</span>
-    
-    <span class="c1"># until the maximum number of iterations</span>
-    <span class="n">nsamples</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
-    <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">niters</span><span class="p">):</span>
-        <span class="n">I</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">integers</span><span class="p">(</span><span class="n">nsamples</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">batch</span><span class="p">)</span>
-        <span class="n">curr_x</span> <span class="o">=</span> <span class="n">desc_update_for_logreg</span><span class="p">(</span><span class="n">grad_fn</span><span class="p">,</span> <span class="n">A</span><span class="p">[</span><span class="n">I</span><span class="p">,:],</span> <span class="n">b</span><span class="p">[</span><span class="n">I</span><span class="p">],</span> <span class="n">curr_x</span><span class="p">,</span> <span class="n">beta</span><span class="p">)</span>
-    
-    <span class="k">return</span> <span class="n">curr_x</span>
-</pre></div>
-</div>
-</div>
-</div>
+<p>We also try mini-batch stochastic gradient descent (SGD).</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">init_x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">A</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
@@ -2181,7 +2184,8 @@ b_i - \sigma(\boldsymbol{\alpha}_i^T \mathbf{x}^k)
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">best_x</span> <span class="o">=</span> <span class="n">sgd_for_logreg</span><span class="p">(</span><span class="n">loss_fn</span><span class="p">,</span> <span class="n">grad_fn</span><span class="p">,</span> <span class="n">A</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">init_x</span><span class="p">,</span> <span class="n">beta</span><span class="o">=</span><span class="n">stepsize</span><span class="p">,</span> <span class="n">niters</span><span class="o">=</span><span class="mi">1000000</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">best_x</span> <span class="o">=</span> <span class="n">sgd_for_logreg</span><span class="p">(</span><span class="n">loss_fn</span><span class="p">,</span> <span class="n">grad_fn</span><span class="p">,</span> <span class="n">A</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> 
+                        <span class="n">init_x</span><span class="p">,</span> <span class="n">beta</span><span class="o">=</span><span class="n">stepsize</span><span class="p">,</span> <span class="n">niters</span><span class="o">=</span><span class="mi">1000000</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>

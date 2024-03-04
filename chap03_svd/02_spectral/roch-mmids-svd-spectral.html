@@ -856,7 +856,7 @@ A \mathbf{p}_i
 = \lambda_i \mathbf{p}_i.
 \]</div>
 <p><span class="math notranslate nohighlight">\(\lhd\)</span></p>
-<p><strong>NUMERICAL CORNER:</strong> In Python, the eigenvalues and eigenvectors of a matrix can be computed using <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.linalg.eig.html"><code class="docutils literal notranslate"><span class="pre">numpy.linalg.eig</span></code></a>.</p>
+<p><strong>NUMERICAL CORNER:</strong> In Numpy, the eigenvalues and eigenvectors of a matrix can be computed using <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.linalg.eig.html"><code class="docutils literal notranslate"><span class="pre">numpy.linalg.eig</span></code></a>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">A</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mf">2.5</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.5</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">2.5</span><span class="p">]])</span>
@@ -880,6 +880,7 @@ A \mathbf{p}_i
 </div>
 </div>
 </div>
+<p>Above, <code class="docutils literal notranslate"><span class="pre">w</span></code> are the eigenvalues in an array, whereas the columns of <code class="docutils literal notranslate"><span class="pre">v</span></code> are the corresponding eigenvectors.</p>
 <p><span class="math notranslate nohighlight">\(\unlhd\)</span></p>
 <p><strong>Some matrix algebra</strong> We will need a few useful observations about matrices.</p>
 <p>First recall that a matrix <span class="math notranslate nohighlight">\(D \in \mathbb{R}^{k \times r}\)</span> is diagonal if its non-diagonal entries are zero. That is, <span class="math notranslate nohighlight">\(i \neq j\)</span> implies that <span class="math notranslate nohighlight">\(D_{ij} =0\)</span>. Note that a diagonal matrix is not necessarily square and that the diagonal elements are allowed to be zero.</p>
@@ -952,6 +953,49 @@ A \mathbf{q}_j
 <p>which is necessarily nonnegative. <span class="math notranslate nohighlight">\(\square\)</span></p>
 <p>Similarly, a symmetric matrix is positive definite if and only if all its eigenvalues are strictly positive. The proof is essentially the same.</p>
 <p><strong>THINK-PAIR-SHARE:</strong> Prove this last claim by modifying the proof above. <span class="math notranslate nohighlight">\(\ddagger\)</span></p>
+<p><strong>NUMERICAL CORNER:</strong> Hence, we can check whether a matrix is positive semidefinite by computing its eigenvalues using <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.linalg.eig.html"><code class="docutils literal notranslate"><span class="pre">numpy.linalg.eig</span></code></a>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">A</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]])</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">w</span><span class="p">,</span> <span class="n">v</span> <span class="o">=</span> <span class="n">LA</span><span class="o">.</span><span class="n">eig</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">w</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[2. 0.]
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">B</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">]])</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">z</span><span class="p">,</span> <span class="n">u</span> <span class="o">=</span> <span class="n">LA</span><span class="o">.</span><span class="n">eig</span><span class="p">(</span><span class="n">B</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">z</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[ 3. -1.]
+</pre></div>
+</div>
+</div>
+</div>
+<p>So the matrix <code class="docutils literal notranslate"><span class="pre">A</span></code> is indeed postive semidefinite, the matrix <code class="docutils literal notranslate"><span class="pre">B</span></code> is not.</p>
+<p><span class="math notranslate nohighlight">\(\unlhd\)</span></p>
 </section>
 </section>
 

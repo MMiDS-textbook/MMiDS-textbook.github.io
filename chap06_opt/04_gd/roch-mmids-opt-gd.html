@@ -196,7 +196,6 @@ const thebe_selector_output = ".output, .cell_output"
 <li class="toctree-l2"><a class="reference internal" href="../../chap02_ls/05_regression/roch-mmids-ls-regression.html">2.5. Application to regression analysis</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../chap02_ls/06_adv/roch-mmids-ls-adv.html">2.6. More advanced material: orthogonality in high dimension; linear independence lemma</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../chap02_ls/summary_chap02.html">2.7. Summary and further resources</a></li>
-
 </ul>
 </li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../chap03_svd/00_intro/roch-mmids-svd-intro.html">3. Singular value decomposition</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-3"><i class="fa-solid fa-chevron-down"></i></label><ul>
@@ -237,7 +236,7 @@ const thebe_selector_output = ".output, .cell_output"
 <li class="toctree-l2 current active"><a class="current reference internal" href="#">6.4. Gradient descent and its convergence analysis</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../05_backprop/roch-mmids-opt-backprop.html">6.5. Backpropagation and neural networks</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../06_adv/roch-mmids-opt-adv.html">6.6. More advanced material</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../summary_chap06.html">6.7. Other resources</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../summary_chap06.html">6.7. Summary and further resources</a></li>
 </ul>
 </li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../chap07_prob/00_intro/roch-mmids-prob-intro.html">7. Probabilistic models: from simple to complex</a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-7"><i class="fa-solid fa-chevron-down"></i></label><ul>
@@ -1253,7 +1252,7 @@ b_i (1 - \sigma(\boldsymbol{\alpha}_i^T \mathbf{x})) - (1-b_i)\sigma(\boldsymbol
 b_i - \sigma(\boldsymbol{\alpha}_i^T \mathbf{x}) 
 ) \,\boldsymbol{\alpha}_i.
 \end{align*}\]</div>
-<p>To implement this formula below, it will be useful to re-write it in terms of the matrix representation <span class="math notranslate nohighlight">\(A \in \mathbb{R}^{n \times d}\)</span> (which has rows <span class="math notranslate nohighlight">\(\boldsymbol{\alpha}_i^T\)</span>, <span class="math notranslate nohighlight">\(i = 1,\ldots, n\)</span>) and <span class="math notranslate nohighlight">\(\mathbf{b} = (b_1, \ldots, b_n) \in \{0,1\}^n\)</span>. Let <span class="math notranslate nohighlight">\(\bsigma : \mathbb{R}^n \to \mathbb{R}\)</span> be the vector-valued function that applies the sigmoid <span class="math notranslate nohighlight">\(\sigma\)</span> entry-wise, i.e., <span class="math notranslate nohighlight">\(\bsigma(\mathbf{z}) = (\sigma(z_1),\ldots,\sigma(z_n))\)</span> where <span class="math notranslate nohighlight">\(\mathbf{z} = (z_1,\ldots,z_n)\)</span>. Thinking of <span class="math notranslate nohighlight">\(\sum_{i=1}^n (b_i - \sigma(\boldsymbol{\alpha}_i^T \mathbf{x})\,\boldsymbol{\alpha}_i\)</span> as a linear combination of the columns of <span class="math notranslate nohighlight">\(A\)</span> with coefficients being the entries of the vector <span class="math notranslate nohighlight">\(\mathbf{b} - \bsigma(A \mathbf{x})\)</span>, we that</p>
+<p>To implement this formula below, it will be useful to re-write it in terms of the matrix representation <span class="math notranslate nohighlight">\(A \in \mathbb{R}^{n \times d}\)</span> (which has rows <span class="math notranslate nohighlight">\(\boldsymbol{\alpha}_i^T\)</span>, <span class="math notranslate nohighlight">\(i = 1,\ldots, n\)</span>) and <span class="math notranslate nohighlight">\(\mathbf{b} = (b_1, \ldots, b_n) \in \{0,1\}^n\)</span>. Let <span class="math notranslate nohighlight">\(\bsigma : \mathbb{R}^n \to \mathbb{R}\)</span> be the vector-valued function that applies the sigmoid <span class="math notranslate nohighlight">\(\sigma\)</span> entry-wise, i.e., <span class="math notranslate nohighlight">\(\bsigma(\mathbf{z}) = (\sigma(z_1),\ldots,\sigma(z_n))\)</span> where <span class="math notranslate nohighlight">\(\mathbf{z} = (z_1,\ldots,z_n)\)</span>. Thinking of <span class="math notranslate nohighlight">\(\sum_{i=1}^n (b_i - \sigma(\boldsymbol{\alpha}_i^T \mathbf{x})\,\boldsymbol{\alpha}_i\)</span> as a linear combination of the columns of <span class="math notranslate nohighlight">\(A^T\)</span> with coefficients being the entries of the vector <span class="math notranslate nohighlight">\(\mathbf{b} - \bsigma(A \mathbf{x})\)</span>, we that</p>
 <div class="math notranslate nohighlight">
 \[
 \nabla\ell(\mathbf{x}; A, \mathbf{b})
@@ -1262,7 +1261,7 @@ b_i - \sigma(\boldsymbol{\alpha}_i^T \mathbf{x})
 ) \,\boldsymbol{\alpha}_i
 = -\frac{1}{n} A^T [\mathbf{b} - \bsigma(A \mathbf{x})].
 \]</div>
-<p>We turn to the Hessian. By symmetry, we can think of the <span class="math notranslate nohighlight">\(j\)</span>-th column of the Hessian as the gradient of the partial derivative with respect to <span class="math notranslate nohighlight">\(x_j\)</span>. We note that, for <span class="math notranslate nohighlight">\(\boldsymbol{\alpha} = (\alpha_{1}, \ldots, \alpha_{d})  \in \mathbb{R}^d\)</span>,</p>
+<p>We turn to the Hessian. By symmetry, we can think of the <span class="math notranslate nohighlight">\(j\)</span>-th column of the Hessian as the gradient of the partial derivative with respect to <span class="math notranslate nohighlight">\(x_j\)</span>. Hence we start by computing the gradient of the <span class="math notranslate nohighlight">\(j\)</span>-th entry of the summands in the gradient of <span class="math notranslate nohighlight">\(\ell\)</span>. We note that, for <span class="math notranslate nohighlight">\(\boldsymbol{\alpha} = (\alpha_{1}, \ldots, \alpha_{d})  \in \mathbb{R}^d\)</span>,</p>
 <div class="math notranslate nohighlight">
 \[
 \nabla [(b - \sigma(\boldsymbol{\alpha}^T \mathbf{x}))\, \alpha_{j}] 

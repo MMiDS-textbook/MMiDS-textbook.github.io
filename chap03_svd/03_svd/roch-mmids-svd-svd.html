@@ -472,6 +472,13 @@ document.write(`
 \sum_{i=1}^n \|\boldsymbol{\alpha}_i - \mathrm{proj}_\mathcal{Z}(\boldsymbol{\alpha}_i)\|^2 
 \]</div>
 <p>over all linear subspaces of <span class="math notranslate nohighlight">\(\mathbb{R}^m\)</span> of dimension <span class="math notranslate nohighlight">\(k\)</span>. To solve this problem, which we refer to as the best approximating subspace problem, we make a series of observations.</p>
+<p><strong>MULTIPLE CHOICE:</strong> Consider the data points <span class="math notranslate nohighlight">\(\boldsymbol{\alpha}_1 = (-1,1)\)</span> and <span class="math notranslate nohighlight">\(\boldsymbol{\alpha}_2 = (1,-1)\)</span>. For <span class="math notranslate nohighlight">\(k=1\)</span>, what is the solution of the best approximating subspace?</p>
+<p>a) <span class="math notranslate nohighlight">\(\mathcal{Z} = \{(x,y) \in \mathbb{R}^2 : y = x\}\)</span></p>
+<p>b) <span class="math notranslate nohighlight">\(\mathcal{Z} = \{(x,y) \in \mathbb{R}^2 : y = -x\}\)</span></p>
+<p>c) <span class="math notranslate nohighlight">\(\mathcal{Z} = \{(x,y) \in \mathbb{R}^2 : y = x + 1\}\)</span></p>
+<p>d) <span class="math notranslate nohighlight">\(\mathcal{Z} = \{(x,y) \in \mathbb{R}^2 : y = x - 1\}\)</span></p>
+<p>e) None of the above</p>
+<p><span class="math notranslate nohighlight">\(\ddagger\)</span></p>
 <p>The first observation gives a related, useful characterization of the optimal solution.</p>
 <p><strong>LEMMA</strong> <strong>(Best Subspace as Maximimization)</strong> Let <span class="math notranslate nohighlight">\(\boldsymbol{\alpha}_i\)</span>, <span class="math notranslate nohighlight">\(i =1\ldots,n\)</span>, be vectors in <span class="math notranslate nohighlight">\(\mathbb{R}^m\)</span>. A linear subspace <span class="math notranslate nohighlight">\(\mathcal{Z}\)</span> of <span class="math notranslate nohighlight">\(\mathbb{R}^m\)</span> that minimizes</p>
 <div class="math notranslate nohighlight">
@@ -582,7 +589,7 @@ document.write(`
 <p>Going back to the approximating subspace problem, we derive a greedy solution for it. Recall that we are looking for a solution to</p>
 <div class="math notranslate nohighlight">
 \[
-\max_{\mathbf{w}_1,\ldots,\mathbf{w}_k} \|A \mathbf{w}_1\|^2 + \|A \mathbf{w}_2\|^2 + \cdots + \|A \mathbf{w}_1\|^2
+\max_{\mathbf{w}_1,\ldots,\mathbf{w}_k} \|A \mathbf{w}_1\|^2 + \|A \mathbf{w}_2\|^2 + \cdots + \|A \mathbf{w}_k\|^2
 \]</div>
 <p>over all orthonormal lists <span class="math notranslate nohighlight">\(\mathbf{w}_1,\ldots,\mathbf{w}_k\)</span> of length <span class="math notranslate nohighlight">\(k\)</span>.</p>
 <p>In a greedy approach, we first solve for <span class="math notranslate nohighlight">\(\mathbf{w}_1\)</span> by itself, without worrying about constraints it will impose on the next steps. That is, we compute</p>
@@ -602,6 +609,12 @@ document.write(`
 \mathbf{v}_i\in \arg\max
 \{\|A \mathbf{w}_i\|^2 :\|\mathbf{w}_i\| = 1, \ \langle \mathbf{w}_i, \mathbf{v}_j \rangle = 0, \forall j \leq i-1\}.
 \]</div>
+<p>A different way to write the constraint is</p>
+<div class="math notranslate nohighlight">
+\[
+\mathbf{v}_i\in \arg\max
+\{\|A \mathbf{w}_i\|^2 :\|\mathbf{w}_i\| = 1, \mathbf{w}_i \in \mathrm{span}(\mathbf{v}_1,\ldots,\mathrm{v}_{i-1})^\perp\}.
+\]</div>
 <p>While it is clear that, after <span class="math notranslate nohighlight">\(k\)</span> steps, this procedure constructs an orthonormal set of size <span class="math notranslate nohighlight">\(k\)</span>, it is far from obvious that it maximizes <span class="math notranslate nohighlight">\(\sum_{j=1}^k \|A \mathbf{v}_j\|^2\)</span> over all such sets. Remarkably it does. The claim – which requires a proof – is that the best <span class="math notranslate nohighlight">\(k\)</span>-dimensional approximating subspace is obtained by finding the best <span class="math notranslate nohighlight">\(1\)</span>-dimensional subspace, then the best <span class="math notranslate nohighlight">\(1\)</span>-dimensional subspace orthogonal to the first one, and so on.  This follows from the next theorem.</p>
 <p><strong>THEOREM</strong> <strong>(Greedy Finds Best Subspace)</strong> Let <span class="math notranslate nohighlight">\(A \in \mathbb{R}^{n \times m}\)</span> be a matrix with rows <span class="math notranslate nohighlight">\(\boldsymbol{\alpha}_i^T\)</span>, <span class="math notranslate nohighlight">\(i=1,\ldots,n\)</span>. For any <span class="math notranslate nohighlight">\(k \leq m\)</span>, let <span class="math notranslate nohighlight">\(\mathbf{v}_1,\ldots,\mathbf{v}_k\)</span> be the greedy sequence constructed above. Then <span class="math notranslate nohighlight">\(\mathcal{Z}^* = \mathrm{span}(\mathbf{v}_1,\ldots,\mathbf{v}_k)\)</span> is a solution to the minimization problem</p>
 <div class="math notranslate nohighlight">
@@ -611,7 +624,7 @@ document.write(`
 \right\}.
 \]</div>
 <p><span class="math notranslate nohighlight">\(\sharp\)</span></p>
-<p>Beyond the potential computational advantage of solving several one-dimensional problems rather one larger one, the greedy sequence has a more subtle property that is powerful. It allows us to solve the problem for all choices <span class="math notranslate nohighlight">\(k\)</span> of target dimension <em>simultaneously</em>. To explain, note that the largest <span class="math notranslate nohighlight">\(k\)</span> value, i.e. <span class="math notranslate nohighlight">\(k=m\)</span>, leads to a trivial problem. Indeed, the data points <span class="math notranslate nohighlight">\(\boldsymbol{\alpha}_i\)</span>, <span class="math notranslate nohighlight">\(i=1,\ldots,n\)</span>, already lie in an <span class="math notranslate nohighlight">\(m\)</span>-dimensional linear subspace, <span class="math notranslate nohighlight">\(\mathbb{R}^m\)</span> itself. So we can take <span class="math notranslate nohighlight">\(\mathcal{Z} = \mathbb{R}^m\)</span>, and we have an objective value of</p>
+<p>Beyond the potential computational advantage of solving several lower-dimensional problems rather one larger-dimensional one, the greedy sequence has a more subtle property that is powerful. It allows us to solve the problem for all choices <span class="math notranslate nohighlight">\(k\)</span> of target dimension <em>simultaneously</em>. To explain, note that the largest <span class="math notranslate nohighlight">\(k\)</span> value, i.e. <span class="math notranslate nohighlight">\(k=m\)</span>, leads to a trivial problem. Indeed, the data points <span class="math notranslate nohighlight">\(\boldsymbol{\alpha}_i\)</span>, <span class="math notranslate nohighlight">\(i=1,\ldots,n\)</span>, already lie in an <span class="math notranslate nohighlight">\(m\)</span>-dimensional linear subspace, <span class="math notranslate nohighlight">\(\mathbb{R}^m\)</span> itself. So we can take <span class="math notranslate nohighlight">\(\mathcal{Z} = \mathbb{R}^m\)</span>, and we have an objective value of</p>
 <div class="math notranslate nohighlight">
 \[
 \sum_{i=1}^n \|\boldsymbol{\alpha}_i - \mathrm{proj}_{\mathcal{Z}}(\boldsymbol{\alpha}_i)\|^2
@@ -654,7 +667,7 @@ A^T A
 = \sum_{i=1}^m (\mathbf{w}_1^T\mathbf{q}_i)^2
 = 1.
 \]</div>
-<p>Writing <span class="math notranslate nohighlight">\(x_i = (\mathbf{w}_1^T\mathbf{q}_i)^2\)</span>, this is equivalent to maximizing
+<p>Writing <span class="math notranslate nohighlight">\(x_i = (\mathbf{w}_1^T\mathbf{q}_i)^2\)</span>, this boils down to maximizing
 <span class="math notranslate nohighlight">\(\sum_{i=1}^m \lambda_i x_i\)</span> subject to the constraints <span class="math notranslate nohighlight">\(\sum_{i=1}^m x_i = 1\)</span> and <span class="math notranslate nohighlight">\(x_i \geq 0\)</span> for all <span class="math notranslate nohighlight">\(i\)</span>. But, under the constraints and the assumption on the ordering of the eigenvalues,</p>
 <div class="math notranslate nohighlight">
 \[
@@ -679,7 +692,7 @@ A^T A
 = 1.
 \]</div>
 <p>Above, we used the orthogonality constraint. This reduces to the previous problem without the term depending on <span class="math notranslate nohighlight">\(\mathbf{q}_1\)</span>. The solution is otherwise the same, i.e., the optimal objective is <span class="math notranslate nohighlight">\(\lambda_2\)</span> and is achieved by taking <span class="math notranslate nohighlight">\(\mathbf{v}_2 = \mathbf{w}_2 = \mathbf{q}_2\)</span>.</p>
-<p><em><strong>Eigenvectors solve the approximating subspace problem:</strong></em> The approximating subspace problem involves maximizing</p>
+<p><em><strong>Eigenvectors solve the approximating subspace problem:</strong></em> The approximating subspace problem for <span class="math notranslate nohighlight">\(k = 2\)</span> involves maximizing</p>
 <div class="math notranslate nohighlight">
 \[
 \|A \mathbf{w}_1\|^2 + \|A \mathbf{w}_2\|^2
@@ -707,7 +720,7 @@ A^T A
 = \|\mathrm{proj}_{\mathcal{W}} \mathbf{q}_i\|^2
 \leq \|\mathbf{q}_i\|^2 = 1.
 \]</div>
-<p>The inequality was proved in an exercise. Write <span class="math notranslate nohighlight">\(x_i = (\mathbf{w}_1^T\mathbf{q}_i)^2\)</span> and <span class="math notranslate nohighlight">\(y_i = (\mathbf{w}_2^T\mathbf{q}_i)^2\)</span>. The objective function can be written as <span class="math notranslate nohighlight">\(\sum_{i=1}^m \lambda_i (x_i + y_i)\)</span> and the constraints we have derived are <span class="math notranslate nohighlight">\(\sum_{i=1}^m x_i = \sum_{i=1}^m y_i = 1\)</span> and <span class="math notranslate nohighlight">\(x_i + y_i \leq 1\)</span> for all <span class="math notranslate nohighlight">\(i\)</span>. ALso clearly <span class="math notranslate nohighlight">\(x_i, y_i \geq 0\)</span> for all <span class="math notranslate nohighlight">\(i\)</span>. So</p>
+<p>The inequality was proved in an exercise. Write <span class="math notranslate nohighlight">\(x_i = (\mathbf{w}_1^T\mathbf{q}_i)^2\)</span> and <span class="math notranslate nohighlight">\(y_i = (\mathbf{w}_2^T\mathbf{q}_i)^2\)</span>. The objective function can be written as <span class="math notranslate nohighlight">\(\sum_{i=1}^m \lambda_i (x_i + y_i)\)</span> and the constraints we have derived are <span class="math notranslate nohighlight">\(\sum_{i=1}^m x_i = \sum_{i=1}^m y_i = 1\)</span> and <span class="math notranslate nohighlight">\(x_i + y_i \leq 1\)</span> for all <span class="math notranslate nohighlight">\(i\)</span>. Also clearly <span class="math notranslate nohighlight">\(x_i, y_i \geq 0\)</span> for all <span class="math notranslate nohighlight">\(i\)</span>. So</p>
 <div class="amsmath math notranslate nohighlight">
 \[\begin{align*}
 \sum_{i=1}^m \lambda_i (x_i + y_i)
@@ -720,7 +733,7 @@ A^T A
 \end{align*}\]</div>
 <p>That is achieved by taking <span class="math notranslate nohighlight">\(\mathbf{w}_1 = \mathbf{q}_1\)</span> and <span class="math notranslate nohighlight">\(\mathbf{w}_2 = \mathbf{q}_2\)</span>, proving the claim.</p>
 <p><strong>THINK-PAIR-SHARE:</strong> Proceed by induction to show that the claim holds for any <span class="math notranslate nohighlight">\(k\)</span>. <span class="math notranslate nohighlight">\(\ddagger\)</span></p>
-<p>Note that we have not entirely solved the best approximating subspace problem from a computational point of view, as we have not given an explicit procedure to construct a solution to the <span class="math notranslate nohighlight">\(1\)</span>-dimensional subproblems, i.e., the eigenvectors. We have only shown that the solutions exist and have the right properties. We will take care of computational issues in a section below.</p>
+<p>Note that we have not entirely solved the best approximating subspace problem from a computational point of view, as we have not given an explicit procedure to construct a solution to the lower-dimensional subproblems, i.e., construct the eigenvectors. We have only shown that the solutions exist and have the right properties. We will take care of computational issues in a section below.</p>
 </section>
 <section id="from-approximating-subspaces-to-the-svd">
 <h2><span class="section-number">3.3.2. </span>From approximating subspaces to the SVD<a class="headerlink" href="#from-approximating-subspaces-to-the-svd" title="Permalink to this headline">#</a></h2>

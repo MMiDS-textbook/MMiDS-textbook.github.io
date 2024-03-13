@@ -673,9 +673,9 @@ A^T A
 \[
 \sum_{i=1}^m \lambda_i x_i
 \leq \lambda_1 \sum_{i=1}^m x_i
-= \lambda_1,
+= \lambda_1.
 \]</div>
-<p>which is achieved by taking <span class="math notranslate nohighlight">\(\mathbf{x} = (x_1,\ldots,x_m) = \mathbf{e}_1\)</span>, corresponding to the choice <span class="math notranslate nohighlight">\(\mathbf{v}_1 = \mathbf{w}_1 = \mathbf{q}_1\)</span>.</p>
+<p>Formally, we have shown that <span class="math notranslate nohighlight">\(\|A \mathbf{w}_1\|^2 \leq \lambda_1\)</span>, for any unit vector <span class="math notranslate nohighlight">\(\mathbf{w}_1\)</span>. Now, note that this upper bound is actually achieved by taking <span class="math notranslate nohighlight">\(\mathbf{v}_1 = \mathbf{w}_1 = \mathbf{q}_1\)</span>, which corresponds to <span class="math notranslate nohighlight">\(\mathbf{x} = (x_1,\ldots,x_m) = \mathbf{e}_1\)</span>.</p>
 <p>Given that choice, the vector <span class="math notranslate nohighlight">\(\mathbf{v}_2\)</span> maximizes <span class="math notranslate nohighlight">\(\|A \mathbf{w}_2\|\)</span> over all unit vectors <span class="math notranslate nohighlight">\(\mathbf{w}_2\)</span> such that further <span class="math notranslate nohighlight">\(\mathbf{w}_2^T\mathbf{v}_1 = \mathbf{w}_2^T\mathbf{q}_1 = 0\)</span>, where this time</p>
 <div class="math notranslate nohighlight">
 \[
@@ -691,7 +691,7 @@ A^T A
 = \sum_{i=2}^m (\mathbf{w}_2^T\mathbf{q}_i)^2
 = 1.
 \]</div>
-<p>Above, we used the orthogonality constraint. This reduces to the previous problem without the term depending on <span class="math notranslate nohighlight">\(\mathbf{q}_1\)</span>. The solution is otherwise the same, i.e., the optimal objective is <span class="math notranslate nohighlight">\(\lambda_2\)</span> and is achieved by taking <span class="math notranslate nohighlight">\(\mathbf{v}_2 = \mathbf{w}_2 = \mathbf{q}_2\)</span>.</p>
+<p>In both equations above, we used the orthogonality constraint. This reduces to the previous problem without the term depending on <span class="math notranslate nohighlight">\(\mathbf{q}_1\)</span>. The solution is otherwise the same, i.e., the optimal objective is <span class="math notranslate nohighlight">\(\lambda_2\)</span> and is achieved by taking <span class="math notranslate nohighlight">\(\mathbf{v}_2 = \mathbf{w}_2 = \mathbf{q}_2\)</span>.</p>
 <p><em><strong>Eigenvectors solve the approximating subspace problem:</strong></em> The approximating subspace problem for <span class="math notranslate nohighlight">\(k = 2\)</span> involves maximizing</p>
 <div class="math notranslate nohighlight">
 \[
@@ -731,7 +731,7 @@ A^T A
 &amp;\leq \lambda_1 - \lambda_2 + 2 \lambda_2\\
 &amp;= \lambda_1 + \lambda_2.
 \end{align*}\]</div>
-<p>That is achieved by taking <span class="math notranslate nohighlight">\(\mathbf{w}_1 = \mathbf{q}_1\)</span> and <span class="math notranslate nohighlight">\(\mathbf{w}_2 = \mathbf{q}_2\)</span>, proving the claim.</p>
+<p>Formally, we have shown that <span class="math notranslate nohighlight">\(\|A \mathbf{w}_1\|^2 + \|A \mathbf{w}_2\|^2 \leq \lambda_1 + \lambda_2\)</span> for any orthonormal list <span class="math notranslate nohighlight">\(\mathbf{w}_1, \mathbf{w}_2\)</span>. That upper bound is achieved by taking <span class="math notranslate nohighlight">\(\mathbf{w}_1 = \mathbf{q}_1\)</span> and <span class="math notranslate nohighlight">\(\mathbf{w}_2 = \mathbf{q}_2\)</span>, proving the claim.</p>
 <p><strong>THINK-PAIR-SHARE:</strong> Proceed by induction to show that the claim holds for any <span class="math notranslate nohighlight">\(k\)</span>. <span class="math notranslate nohighlight">\(\ddagger\)</span></p>
 <p>Note that we have not entirely solved the best approximating subspace problem from a computational point of view, as we have not given an explicit procedure to construct a solution to the lower-dimensional subproblems, i.e., construct the eigenvectors. We have only shown that the solutions exist and have the right properties. We will take care of computational issues in a section below.</p>
 </section>
@@ -758,6 +758,18 @@ we break it up into two steps.</p>
 <li><p>In terms of outer products, the matrix product <span class="math notranslate nohighlight">\(U \Sigma V^T = (U \Sigma) V^T\)</span> is the sum of the outer products of the columns of <span class="math notranslate nohighlight">\(U \Sigma\)</span> and of the rows of <span class="math notranslate nohighlight">\(V^T\)</span> (i.e., the columns of <span class="math notranslate nohighlight">\(V\)</span> as row vectors).</p></li>
 </ol>
 <p>That proves the equality.</p>
+<p><strong>MULTIPLE CHOICE:</strong> Let <span class="math notranslate nohighlight">\(A \in \mathbb{R}^{n\times m}\)</span> be a matrix with SVD</p>
+<div class="math notranslate nohighlight">
+\[
+A = U \Sigma V^T = \sum_{j=1}^r \sigma_j \mathbf{u}_j \mathbf{v}_j^T.
+\]</div>
+<p>Which statement is true in general?</p>
+<p>a) <span class="math notranslate nohighlight">\(\mathrm{col}(A) = \mathrm{col}(V)\)</span></p>
+<p>b) <span class="math notranslate nohighlight">\(\mathrm{col}(A) = \mathrm{col}(V^T)\)</span></p>
+<p>c) <span class="math notranslate nohighlight">\(\mathrm{col}(A) = \mathrm{col}(U)\)</span></p>
+<p>d) <span class="math notranslate nohighlight">\(\mathrm{col}(A) = \mathrm{col}(U^T)\)</span></p>
+<p>e) <span class="math notranslate nohighlight">\(\mathrm{col}(A) = \mathrm{col}(\Sigma)\)</span></p>
+<p><span class="math notranslate nohighlight">\(\ddagger\)</span></p>
 <p>Remarkably, any matrix has an SVD.</p>
 <p><strong>THEOREM</strong> <strong>(Existence of SVD)</strong> Any matrix <span class="math notranslate nohighlight">\(A \in \mathbb{R}^{n\times m}\)</span> has a singular value decomposition. <span class="math notranslate nohighlight">\(\sharp\)</span></p>
 <p>We give a proof via the <em>Spectral Theorem</em>. An alternative proof is provided in an optional section.</p>
@@ -766,7 +778,7 @@ we break it up into two steps.</p>
 \[
 A^T A = Q \Lambda Q^T.
 \]</div>
-<p>Order the eigenvalues in decreasing order of absolute value <span class="math notranslate nohighlight">\(\lambda_1 \geq \cdots \geq \lambda_m \geq 0\)</span>. In particular, assume that the eigenvalues <span class="math notranslate nohighlight">\(\lambda_1,\ldots,\lambda_r\)</span> are nonzero while <span class="math notranslate nohighlight">\(\lambda_{r+1} = \cdots = \lambda_m = 0\)</span>. Let <span class="math notranslate nohighlight">\(\mathbf{q}_1,\ldots,\mathbf{q}_n\)</span> be the corresponding eigenvectors. Let <span class="math notranslate nohighlight">\(Q_1 \in \mathbb{R}^{m \times r}\)</span> be the matrix whose columns are <span class="math notranslate nohighlight">\(\mathbf{q}_1,\ldots,\mathbf{q}_r\)</span> and <span class="math notranslate nohighlight">\(\Lambda_1 \in \mathbb{R}^{r \times r}\)</span> be the diagonal matrix with <span class="math notranslate nohighlight">\(\lambda_1,\ldots,\lambda_r\)</span> on its diagonal. Similarly, let <span class="math notranslate nohighlight">\(Q_2 \in \mathbb{R}^{m \times (m-r)}\)</span> be the matrix whose columns are <span class="math notranslate nohighlight">\(\mathbf{q}_{r+1},\ldots,\mathbf{q}_m\)</span> and <span class="math notranslate nohighlight">\(\Lambda_2 = \mathbf{0} \in \mathbb{R}^{(m-r) \times (m-r)}\)</span>. We are now ready for our main claim.</p>
+<p>Order the eigenvalues in decreasing order of absolute value <span class="math notranslate nohighlight">\(\lambda_1 \geq \cdots \geq \lambda_m \geq 0\)</span>. Assume that the eigenvalues <span class="math notranslate nohighlight">\(\lambda_1,\ldots,\lambda_r\)</span> are nonzero while <span class="math notranslate nohighlight">\(\lambda_{r+1} = \cdots = \lambda_m = 0\)</span>. Let <span class="math notranslate nohighlight">\(\mathbf{q}_1,\ldots,\mathbf{q}_n\)</span> be the corresponding eigenvectors. Let <span class="math notranslate nohighlight">\(Q_1 \in \mathbb{R}^{m \times r}\)</span> be the matrix whose columns are <span class="math notranslate nohighlight">\(\mathbf{q}_1,\ldots,\mathbf{q}_r\)</span> and <span class="math notranslate nohighlight">\(\Lambda_1 \in \mathbb{R}^{r \times r}\)</span> be the diagonal matrix with <span class="math notranslate nohighlight">\(\lambda_1,\ldots,\lambda_r\)</span> on its diagonal. Similarly, let <span class="math notranslate nohighlight">\(Q_2 \in \mathbb{R}^{m \times (m-r)}\)</span> be the matrix whose columns are <span class="math notranslate nohighlight">\(\mathbf{q}_{r+1},\ldots,\mathbf{q}_m\)</span> and <span class="math notranslate nohighlight">\(\Lambda_2 = \mathbf{0} \in \mathbb{R}^{(m-r) \times (m-r)}\)</span>. We are now ready for our main claim.</p>
 <p><strong>THEOREM</strong> <strong>(SVD via Spectral Decomposition)</strong> Let <span class="math notranslate nohighlight">\(A \in \mathbb{R}^{n \times m}\)</span> and let <span class="math notranslate nohighlight">\(Q_1, \Lambda_1\)</span> be as above. Define</p>
 <div class="math notranslate nohighlight">
 \[
@@ -774,6 +786,7 @@ U = A Q_1 \Lambda_1^{-1/2} \quad \text{and} \quad \Sigma = \Lambda_1^{1/2} \quad
 \]</div>
 <p>Then <span class="math notranslate nohighlight">\(A = U \Sigma V^T\)</span> is a singular value decomposition of <span class="math notranslate nohighlight">\(A\)</span>. <span class="math notranslate nohighlight">\(\sharp\)</span></p>
 <p><em>Proof idea:</em> Check by hand that all properties of the SVD are satisfied by the construction above.</p>
+<p><strong>THINK-PAIR-SHARE:</strong> Prove that <span class="math notranslate nohighlight">\(Q_1 Q_1^T + Q_2 Q_2^T = I_{m \times m}\)</span>. <span class="math notranslate nohighlight">\(\ddagger\)</span></p>
 <p><em>Proof:</em> The matrix <span class="math notranslate nohighlight">\(\Sigma\)</span> is diagonal and, by construction, the columns of <span class="math notranslate nohighlight">\(V\)</span> are orthonormal. Because <span class="math notranslate nohighlight">\(A^T A\)</span> is positive semidefinite, the eigenvalues are non-negative. So it remains to prove two things: that <span class="math notranslate nohighlight">\(A = U \Sigma V^T\)</span> and that the columns of <span class="math notranslate nohighlight">\(U\)</span> are orthonormal.</p>
 <p><strong>LEMMA</strong> <strong>(Step 1)</strong> It holds that <span class="math notranslate nohighlight">\(A = U \Sigma V^T\)</span>. <span class="math notranslate nohighlight">\(\flat\)</span></p>
 <p><em>Proof:</em> By direct computation, we have</p>

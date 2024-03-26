@@ -1,13 +1,12 @@
 
-
 <!DOCTYPE html>
 
 
-<html data-content_root="" >
+<html lang="en" data-content_root="../../" >
 
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <title>6.4. Gradient descent and its convergence analysis &#8212; MMiDS Textbook</title>
   
@@ -19,66 +18,69 @@
   </script>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="../../_static/styles/theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
-<link href="../../_static/styles/bootstrap.css?digest=5b4479735964841361fd" rel="stylesheet" />
-<link href="../../_static/styles/pydata-sphinx-theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+  <link href="../../_static/styles/theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
 
   
-  <link href="../../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=5b4479735964841361fd" rel="stylesheet" />
-  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+  <link href="../../_static/vendor/fontawesome/6.5.1/css/all.min.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.1/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.1/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.1/webfonts/fa-regular-400.woff2" />
 
-    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
-    <link rel="stylesheet" href="../../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b76e3c8a" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=384b581d" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css?v=be8a1c11" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../../_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css?v=0a3b3ea7" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=5b4479735964841361fd" />
-<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd" />
-  <script src="../../_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=5b4479735964841361fd"></script>
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae" />
+  <script src="../../_static/vendor/fontawesome/6.5.1/js/all.min.js?digest=8d27b9dea8ad943066ae"></script>
 
-    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
-    <script src="../../_static/jquery.js"></script>
-    <script src="../../_static/underscore.js"></script>
-    <script src="../../_static/doctools.js"></script>
-    <script src="../../_static/clipboard.min.js"></script>
-    <script src="../../_static/copybutton.js"></script>
-    <script src="../../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script src="../../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?v=efea14e4"></script>
     <script>let toggleHintShow = 'Click to show';</script>
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
-    <script src="../../_static/togglebutton.js"></script>
+    <script src="../../_static/togglebutton.js?v=4a39c7ea"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
-    <script src="../../_static/design-tabs.js"></script>
-    <script loading_method="async" src="https://www.googletagmanager.com/gtag/js?id=G-P5E8DW088F"></script>
+    <script src="../../_static/design-tabs.js?v=36754332"></script>
+    <script async="async" src="https://www.googletagmanager.com/gtag/js?id=G-P5E8DW088F"></script>
     <script>
                 window.dataLayer = window.dataLayer || [];
                 function gtag(){ dataLayer.push(arguments); }
                 gtag('js', new Date());
                 gtag('config', 'G-P5E8DW088F');
             </script>
-    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
-const thebe_selector = ".thebe,.cell"
-const thebe_selector_input = "pre"
-const thebe_selector_output = ".output, .cell_output"
-</script>
-    <script async="async" src="../../_static/sphinx-thebe.js"></script>
-    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){ dataLayer.push(arguments); }
+                gtag('js', new Date());
+                gtag('config', 'G-P5E8DW088F');
+            </script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
     <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'chap06_opt/04_gd/roch-mmids-opt-gd';</script>
     <link rel="canonical" href="https://mmids-textbook.github.io/chap06_opt/04_gd/roch-mmids-opt-gd.html" />
-    <link rel="shortcut icon" href="https://mmids-textbook.github.io/favicon-32x32.png"/>
+    <link rel="icon" href="https://mmids-textbook.github.io/favicon-32x32.png"/>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
     <link rel="next" title="6.5. Backpropagation and neural networks" href="../05_backprop/roch-mmids-opt-backprop.html" />
     <link rel="prev" title="6.3. Optimality conditions and convexity" href="../03_optimality/roch-mmids-opt-optimality.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
-  <meta name="docsearch:language" content="None"/>
+  <meta name="docsearch:language" content="en"/>
   </head>
   
   
@@ -86,10 +88,9 @@ const thebe_selector_output = ".output, .cell_output"
 
   
   
-  <a class="skip-link" href="#main-content">Skip to main content</a>
+  <a id="pst-skip-link" class="skip-link" href="#main-content">Skip to main content</a>
   
   <div id="pst-scroll-pixel-helper"></div>
-
   
   <button type="button" class="btn rounded-pill" id="pst-back-to-top">
     <i class="fa-solid fa-arrow-up"></i>
@@ -130,11 +131,14 @@ const thebe_selector_output = ".output, .cell_output"
 </form></div>
   </div>
   
-    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
-    </nav>
+    <header class="bd-header navbar navbar-expand-lg bd-navbar">
+    </header>
   
+
   <div class="bd-container">
     <div class="bd-container__inner bd-page-width">
+      
+      
       
       <div class="bd-sidebar-primary bd-sidebar">
         
@@ -168,7 +172,18 @@ const thebe_selector_output = ".output, .cell_output"
   
   
 </a></div>
-        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
     <div class="bd-toc-item navbar-nav active">
         
         <ul class="nav bd-sidenav bd-sidenav__home-link">
@@ -456,11 +471,11 @@ document.write(`
               
                 
 <div id="searchbox"></div>
-                <article class="bd-article" role="main">
+                <article class="bd-article">
                   
   <p><span class="math notranslate nohighlight">\(\newcommand{\bSigma}{\boldsymbol{\Sigma}}\)</span> <span class="math notranslate nohighlight">\(\newcommand{\bmu}{\boldsymbol{\mu}}\)</span> <span class="math notranslate nohighlight">\(\newcommand{\bsigma}{\boldsymbol{\sigma}}\)</span></p>
 <section id="gradient-descent-and-its-convergence-analysis">
-<h1><span class="section-number">6.4. </span>Gradient descent and its convergence analysis<a class="headerlink" href="#gradient-descent-and-its-convergence-analysis" title="Permalink to this headline">#</a></h1>
+<h1><span class="section-number">6.4. </span>Gradient descent and its convergence analysis<a class="headerlink" href="#gradient-descent-and-its-convergence-analysis" title="Link to this heading">#</a></h1>
 <p>We consider a natural approach for solving optimization problems numerically: a class of algorithms known as descent methods.</p>
 <p>Let <span class="math notranslate nohighlight">\(f : \mathbb{R}^d \to \mathbb{R}\)</span> be continuously differentiable. We restrict ourselves to unconstrained minimization problems of the form</p>
 <div class="math notranslate nohighlight">
@@ -495,7 +510,7 @@ A^T A \mathbf{x} = A^T \mathbf{b}
 <p>which you may recognize as the normal equations for the least-squares problem. <span class="math notranslate nohighlight">\(\lhd\)</span></p>
 <p>Unfortunately, identifying stationary points often leads to systems of nonlinear equations that do not have explicit solutions. Hence we resort to a different approach.</p>
 <section id="gradient-descent">
-<h2><span class="section-number">6.4.1. </span>Gradient descent<a class="headerlink" href="#gradient-descent" title="Permalink to this headline">#</a></h2>
+<h2><span class="section-number">6.4.1. </span>Gradient descent<a class="headerlink" href="#gradient-descent" title="Link to this heading">#</a></h2>
 <p>In gradient descent, we attempt to find smaller values of <span class="math notranslate nohighlight">\(f\)</span> by successively following directions in which <span class="math notranslate nohighlight">\(f\)</span> decreases locally. As we have seen in the proof of the <em>First-Order Necessary Condition</em>, <span class="math notranslate nohighlight">\(- \nabla f\)</span> provides such a direction. In fact, it is the direction of steepest descent in the following sense.</p>
 <p>Recall from the <em>Descent Direction and Directional Derivative Lemma</em> that <span class="math notranslate nohighlight">\(\mathbf{v}\)</span> is a descent direction at <span class="math notranslate nohighlight">\(\mathbf{x}_0\)</span> if the directional derivative of <span class="math notranslate nohighlight">\(f\)</span> at <span class="math notranslate nohighlight">\(\mathbf{x}_0\)</span> in the direction <span class="math notranslate nohighlight">\(\mathbf{v}\)</span> is negative.</p>
 <p><strong>LEMMA</strong> <strong>(Steepest Descent)</strong> Let <span class="math notranslate nohighlight">\(f : \mathbb{R}^d \to \mathbb{R}\)</span> be continuously differentiable at <span class="math notranslate nohighlight">\(\mathbf{x}_0\)</span>. For any unit vector <span class="math notranslate nohighlight">\(\mathbf{v} \in \mathbb{R}^d\)</span>,</p>
@@ -592,9 +607,6 @@ A^T A \mathbf{x} = A^T \mathbf{b}
 </div>
 </div>
 </details>
-<div class="cell_output docutils container">
-<img alt="../../_images/c8253c94ff9d68921ffefee956a249935907a11e2d8153b800fdfbcde41fbf30.png" src="../../_images/c8253c94ff9d68921ffefee956a249935907a11e2d8153b800fdfbcde41fbf30.png" />
-</div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -607,11 +619,6 @@ A^T A \mathbf{x} = A^T \mathbf{b}
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">gd</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">grad_f</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(0.9999999999999722, 10.0)
 </pre></div>
 </div>
 </div>
@@ -642,9 +649,6 @@ A^T A \mathbf{x} = A^T \mathbf{b}
 </div>
 </div>
 </details>
-<div class="cell_output docutils container">
-<img alt="../../_images/c62d244a66aaf12c92ac6779e6d2808ab71eb422dfc037e0ec70421686bd56ec.png" src="../../_images/c62d244a66aaf12c92ac6779e6d2808ab71eb422dfc037e0ec70421686bd56ec.png" />
-</div>
 </div>
 <p><strong>CLICK ON TARGET:</strong> If we start gradient descent from <span class="math notranslate nohighlight">\(-2\)</span>, where will it converge? <span class="math notranslate nohighlight">\(\ddagger\)</span></p>
 <div class="cell docutils container">
@@ -672,9 +676,6 @@ A^T A \mathbf{x} = A^T \mathbf{b}
 </div>
 </div>
 </details>
-<div class="cell_output docutils container">
-<img alt="../../_images/c3eefb3e0948832d4d89ccb65335d410ecfe7c2bd36c2b0277f9c6ddff6e046b.png" src="../../_images/c3eefb3e0948832d4d89ccb65335d410ecfe7c2bd36c2b0277f9c6ddff6e046b.png" />
-</div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -682,20 +683,10 @@ A^T A \mathbf{x} = A^T \mathbf{b}
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(1.057453770738375, -0.0590145651028224)
-</pre></div>
-</div>
-</div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">gd</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">grad_f</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(-0.9304029265558538, 3.933005966859003)
 </pre></div>
 </div>
 </div>
@@ -726,9 +717,6 @@ A^T A \mathbf{x} = A^T \mathbf{b}
 </div>
 </div>
 </details>
-<div class="cell_output docutils container">
-<img alt="../../_images/cbf18d50a283cbb0751f62883f6c2e3641b9426348945cb53b851e6c9b0a2ec8.png" src="../../_images/cbf18d50a283cbb0751f62883f6c2e3641b9426348945cb53b851e6c9b0a2ec8.png" />
-</div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -755,18 +743,10 @@ A^T A \mathbf{x} = A^T \mathbf{b}
 </div>
 </div>
 </details>
-<div class="cell_output docutils container">
-<img alt="../../_images/2508fc460fb80cfdd456302a4bc73b98cdeae41b2279e049d219a6e9bb7d049a.png" src="../../_images/2508fc460fb80cfdd456302a4bc73b98cdeae41b2279e049d219a6e9bb7d049a.png" />
-</div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">gd</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">grad_f</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(0.00033327488712690107, 3.701755838398568e-11)
 </pre></div>
 </div>
 </div>
@@ -777,16 +757,11 @@ A^T A \mathbf{x} = A^T \mathbf{b}
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(-4.93350410883896, -120.0788396909241)
-</pre></div>
-</div>
-</div>
 </div>
 <p><span class="math notranslate nohighlight">\(\unlhd\)</span></p>
 </section>
 <section id="convergence-analysis">
-<h2><span class="section-number">6.4.2. </span>Convergence analysis<a class="headerlink" href="#convergence-analysis" title="Permalink to this headline">#</a></h2>
+<h2><span class="section-number">6.4.2. </span>Convergence analysis<a class="headerlink" href="#convergence-analysis" title="Link to this heading">#</a></h2>
 <p>In this section, we prove some results about the convergence of gradient descent. We start with the smooth case.</p>
 <p><strong>Smooth case</strong> Informally, a function is smooth if its gradient does not change too fast. The formal definition we will use here follows. We restrict ourselves to the twice continuously differentiable case.</p>
 <p><strong>DEFINITION</strong> <strong>(Smooth Function)</strong> Let <span class="math notranslate nohighlight">\(f : \mathbb{R}^d \to \mathbb{R}\)</span> be twice continuously differentiable. We say that <span class="math notranslate nohighlight">\(f\)</span> is <span class="math notranslate nohighlight">\(L\)</span>-smooth if</p>
@@ -1076,9 +1051,6 @@ f(\mathbf{x}^{t+1}) - f(\mathbf{x}^*)
 </div>
 </div>
 </details>
-<div class="cell_output docutils container">
-<img alt="../../_images/c8253c94ff9d68921ffefee956a249935907a11e2d8153b800fdfbcde41fbf30.png" src="../../_images/c8253c94ff9d68921ffefee956a249935907a11e2d8153b800fdfbcde41fbf30.png" />
-</div>
 </div>
 <p>Recall that the first derivative is:</p>
 <div class="cell docutils container">
@@ -1104,11 +1076,6 @@ f(x^1) - f(x^*)
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(1.0, 10.0)
-</pre></div>
-</div>
-</div>
 </div>
 <p>Let’s try a different starting point.</p>
 <div class="cell docutils container">
@@ -1117,16 +1084,11 @@ f(x^1) - f(x^*)
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(1.0, 10.0)
-</pre></div>
-</div>
-</div>
 </div>
 <p><span class="math notranslate nohighlight">\(\unlhd\)</span></p>
 </section>
 <section id="application-to-logistic-regression">
-<h2><span class="section-number">6.4.3. </span>Application to logistic regression<a class="headerlink" href="#application-to-logistic-regression" title="Permalink to this headline">#</a></h2>
+<h2><span class="section-number">6.4.3. </span>Application to logistic regression<a class="headerlink" href="#application-to-logistic-regression" title="Link to this heading">#</a></h2>
 <p>We return to logistic regression, which we alluded to in the motivating example of this chapter.</p>
 <p>The input data is of the form <span class="math notranslate nohighlight">\(\{(\boldsymbol{\alpha}_i, b_i) : i=1,\ldots, n\}\)</span> where <span class="math notranslate nohighlight">\(\boldsymbol{\alpha}_i = (\alpha_{i,1}, \ldots, \alpha_{i,d}) \in \mathbb{R}^d\)</span> are the features and <span class="math notranslate nohighlight">\(b_i \in \{0,1\}\)</span> is the label. As before we use a matrix representation: <span class="math notranslate nohighlight">\(A \in \mathbb{R}^{n \times d}\)</span> has rows <span class="math notranslate nohighlight">\(\boldsymbol{\alpha}_i^T\)</span>, <span class="math notranslate nohighlight">\(i = 1,\ldots, n\)</span> and <span class="math notranslate nohighlight">\(\mathbf{b} = (b_1, \ldots, b_n) \in \{0,1\}^n\)</span>.</p>
 <p><strong>Logistic model.</strong> We summarize the logistic regression approach. Our goal is to find a function of the features that approximates the probability of the label <span class="math notranslate nohighlight">\(1\)</span>. For this purpose, we model the <a class="reference external" href="https://en.wikipedia.org/wiki/Logit">log-odds</a> (or logit function) of the probability of label <span class="math notranslate nohighlight">\(1\)</span> as a linear function of the features <span class="math notranslate nohighlight">\(\boldsymbol{\alpha}  \in \mathbb{R}^d\)</span></p>
@@ -1171,9 +1133,6 @@ p(\mathbf{x}; \boldsymbol{\alpha})
 </div>
 </div>
 </details>
-<div class="cell_output docutils container">
-<img alt="../../_images/3a41178260e7745bb28b0c3801aeb9940f113981f9150c5b339ec0156890d8a4.png" src="../../_images/3a41178260e7745bb28b0c3801aeb9940f113981f9150c5b339ec0156890d8a4.png" />
-</div>
 </div>
 <p>We seek to maximize the probability of observing the data (also known as <a class="reference external" href="https://en.wikipedia.org/wiki/Likelihood_function">likelihood function</a>) assuming the labels are independent given the features, which is given by</p>
 <div class="math notranslate nohighlight">
@@ -1365,9 +1324,6 @@ b_i - \sigma(\boldsymbol{\alpha}_i^T \mathbf{x}^t)
 </div>
 </div>
 </details>
-<div class="cell_output docutils container">
-<img alt="../../_images/2e3d92fd7ae1220bc257797da60a7f8b8bc9bdab2974d38f384f4677ab824975.png" src="../../_images/2e3d92fd7ae1220bc257797da60a7f8b8bc9bdab2974d38f384f4677ab824975.png" />
-</div>
 </div>
 <p>We plot next the upper and lower bounds in the <em>Quadratic Bound for Smooth Functions</em> around <span class="math notranslate nohighlight">\(x = x_0\)</span>. It turns out we can take <span class="math notranslate nohighlight">\(L=1\)</span> because all features are uniformly random between <span class="math notranslate nohighlight">\(-1\)</span> and <span class="math notranslate nohighlight">\(1\)</span>. Observe that minimizing the upper quadratic bound leads to a decrease in <span class="math notranslate nohighlight">\(\mathcal{L}\)</span>.</p>
 <div class="cell docutils container">
@@ -1396,9 +1352,6 @@ b_i - \sigma(\boldsymbol{\alpha}_i^T \mathbf{x}^t)
 </div>
 </div>
 </details>
-<div class="cell_output docutils container">
-<img alt="../../_images/41c2fd06fe0a6d2427d317bb3ba44d214c47220911031719defe586e91fb612c.png" src="../../_images/41c2fd06fe0a6d2427d317bb3ba44d214c47220911031719defe586e91fb612c.png" />
-</div>
 </div>
 <p><span class="math notranslate nohighlight">\(\unlhd\)</span></p>
 <p>We modify our implementation of gradient descent to take a dataset as input. (That will also be useful to generalize to so-called stochastic gradient descent; see below.) Recall that to run gradient descent, we first implement a function computing a descent update. It takes as input a function <code class="docutils literal notranslate"><span class="pre">grad_fn</span></code> computing the gradient itself, as well as a current iterate and a step size. We now also feed a dataset as additional input.</p>
@@ -1485,88 +1438,6 @@ b_i - \sigma(\boldsymbol{\alpha}_i^T \mathbf{x}^t)
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output text_html"><div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>game_date</th>
-      <th>minute</th>
-      <th>opponent</th>
-      <th>action_type</th>
-      <th>shot_type</th>
-      <th>shot_distance</th>
-      <th>shot_made</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>0</th>
-      <td>20170415</td>
-      <td>10</td>
-      <td>IND</td>
-      <td>Driving Layup Shot</td>
-      <td>2PT Field Goal</td>
-      <td>0</td>
-      <td>0</td>
-    </tr>
-    <tr>
-      <th>1</th>
-      <td>20170415</td>
-      <td>11</td>
-      <td>IND</td>
-      <td>Driving Layup Shot</td>
-      <td>2PT Field Goal</td>
-      <td>0</td>
-      <td>1</td>
-    </tr>
-    <tr>
-      <th>2</th>
-      <td>20170415</td>
-      <td>14</td>
-      <td>IND</td>
-      <td>Layup Shot</td>
-      <td>2PT Field Goal</td>
-      <td>0</td>
-      <td>1</td>
-    </tr>
-    <tr>
-      <th>3</th>
-      <td>20170415</td>
-      <td>15</td>
-      <td>IND</td>
-      <td>Driving Layup Shot</td>
-      <td>2PT Field Goal</td>
-      <td>0</td>
-      <td>1</td>
-    </tr>
-    <tr>
-      <th>4</th>
-      <td>20170415</td>
-      <td>18</td>
-      <td>IND</td>
-      <td>Alley Oop Dunk Shot</td>
-      <td>2PT Field Goal</td>
-      <td>0</td>
-      <td>1</td>
-    </tr>
-  </tbody>
-</table>
-</div></div></div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1574,91 +1445,6 @@ b_i - \sigma(\boldsymbol{\alpha}_i^T \mathbf{x}^t)
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output text_html"><div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>game_date</th>
-      <th>minute</th>
-      <th>shot_distance</th>
-      <th>shot_made</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>count</th>
-      <td>3.840000e+02</td>
-      <td>384.00000</td>
-      <td>384.000000</td>
-      <td>384.000000</td>
-    </tr>
-    <tr>
-      <th>mean</th>
-      <td>2.017052e+07</td>
-      <td>24.40625</td>
-      <td>10.695312</td>
-      <td>0.565104</td>
-    </tr>
-    <tr>
-      <th>std</th>
-      <td>6.948501e+01</td>
-      <td>13.67304</td>
-      <td>10.547586</td>
-      <td>0.496390</td>
-    </tr>
-    <tr>
-      <th>min</th>
-      <td>2.017042e+07</td>
-      <td>1.00000</td>
-      <td>0.000000</td>
-      <td>0.000000</td>
-    </tr>
-    <tr>
-      <th>25%</th>
-      <td>2.017050e+07</td>
-      <td>13.00000</td>
-      <td>1.000000</td>
-      <td>0.000000</td>
-    </tr>
-    <tr>
-      <th>50%</th>
-      <td>2.017052e+07</td>
-      <td>25.00000</td>
-      <td>6.500000</td>
-      <td>1.000000</td>
-    </tr>
-    <tr>
-      <th>75%</th>
-      <td>2.017060e+07</td>
-      <td>35.00000</td>
-      <td>23.000000</td>
-      <td>1.000000</td>
-    </tr>
-    <tr>
-      <th>max</th>
-      <td>2.017061e+07</td>
-      <td>48.00000</td>
-      <td>31.000000</td>
-      <td>1.000000</td>
-    </tr>
-  </tbody>
-</table>
-</div></div></div>
 </div>
 <p>The two columns we will be interested in are <code class="docutils literal notranslate"><span class="pre">shot_distance</span></code> (LeBron’s distance from the basket when the shot was attempted (ft)) and <code class="docutils literal notranslate"><span class="pre">shot_made</span></code> (0 if the shot missed, 1 if the shot went in). As the summary table above indicates, the average distance was <code class="docutils literal notranslate"><span class="pre">10.6953</span></code> and the frequency of shots made was <code class="docutils literal notranslate"><span class="pre">0.565104</span></code>. We extract those two columns and display them on a scatter plot.</p>
 <div class="cell docutils container">
@@ -1682,9 +1468,6 @@ b_i - \sigma(\boldsymbol{\alpha}_i^T \mathbf{x}^t)
 </div>
 </div>
 </details>
-<div class="cell_output docutils container">
-<img alt="../../_images/b2192bc870da96b5ac1261d1146eaf75854774e7c3ccdbe6d6cc66248236923d.png" src="../../_images/b2192bc870da96b5ac1261d1146eaf75854774e7c3ccdbe6d6cc66248236923d.png" />
-</div>
 </div>
 <p>As you can see, this kind of data is hard to vizualize because of the superposition of points with the same <span class="math notranslate nohighlight">\(x\)</span> and <span class="math notranslate nohighlight">\(y\)</span>-values. One trick is to jiggle the <span class="math notranslate nohighlight">\(y\)</span>’s a little bit by adding Gaussian noise. We do this next and plot again.</p>
 <div class="cell docutils container">
@@ -1707,9 +1490,6 @@ b_i - \sigma(\boldsymbol{\alpha}_i^T \mathbf{x}^t)
 </div>
 </div>
 </details>
-<div class="cell_output docutils container">
-<img alt="../../_images/896c7d0be6bb27870c356d64b67f8ca8a650e26cd48dd72a23f2ed52ad9b5b6f.png" src="../../_images/896c7d0be6bb27870c356d64b67f8ca8a650e26cd48dd72a23f2ed52ad9b5b6f.png" />
-</div>
 </div>
 <p>We apply GD to logistic regression. We first construct the data matrices <span class="math notranslate nohighlight">\(A\)</span> and <span class="math notranslate nohighlight">\(\mathbf{b}\)</span>. To allow an affine function of the features, we add a column of <span class="math notranslate nohighlight">\(1\)</span>’s as we have done before.</p>
 <div class="cell docutils container">
@@ -1728,22 +1508,12 @@ b_i - \sigma(\boldsymbol{\alpha}_i^T \mathbf{x}^t)
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.0044179063265799194
-</pre></div>
-</div>
-</div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">init_x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">A</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
 <span class="n">best_x</span> <span class="o">=</span> <span class="n">gd_for_logreg</span><span class="p">(</span><span class="n">loss_fn</span><span class="p">,</span> <span class="n">grad_fn</span><span class="p">,</span> <span class="n">A</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">init_x</span><span class="p">,</span> <span class="n">beta</span><span class="o">=</span><span class="n">stepsize</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">best_x</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[ 0.90959003 -0.05890828]
 </pre></div>
 </div>
 </div>
@@ -1772,9 +1542,6 @@ b_i - \sigma(\boldsymbol{\alpha}_i^T \mathbf{x}^t)
 </div>
 </div>
 </details>
-<div class="cell_output docutils container">
-<img alt="../../_images/c5d38efebb59f70fa33f1624498dc9e57f56ae9b8452f0ac06da5296c7510b52.png" src="../../_images/c5d38efebb59f70fa33f1624498dc9e57f56ae9b8452f0ac06da5296c7510b52.png" />
-</div>
 </div>
 <p><strong>Stochastic gradient descent</strong> In <a class="reference external" href="https://en.wikipedia.org/wiki/Stochastic_gradient_descent">stochastic gradient descent</a> (SGD), a variant of gradient descent, we pick a sample <span class="math notranslate nohighlight">\(I_t\)</span> uniformly at random in <span class="math notranslate nohighlight">\(\{1,\ldots,n\}\)</span> and update as follows</p>
 <div class="math notranslate nohighlight">
@@ -1825,100 +1592,6 @@ b_i - \sigma(\boldsymbol{\alpha}_i^T \mathbf{x}^t)
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output text_html"><div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>sbp</th>
-      <th>tobacco</th>
-      <th>ldl</th>
-      <th>adiposity</th>
-      <th>typea</th>
-      <th>obesity</th>
-      <th>alcohol</th>
-      <th>age</th>
-      <th>chd</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>0</th>
-      <td>160.0</td>
-      <td>12.00</td>
-      <td>5.73</td>
-      <td>23.11</td>
-      <td>49.0</td>
-      <td>25.30</td>
-      <td>97.20</td>
-      <td>52.0</td>
-      <td>1.0</td>
-    </tr>
-    <tr>
-      <th>1</th>
-      <td>144.0</td>
-      <td>0.01</td>
-      <td>4.41</td>
-      <td>28.61</td>
-      <td>55.0</td>
-      <td>28.87</td>
-      <td>2.06</td>
-      <td>63.0</td>
-      <td>1.0</td>
-    </tr>
-    <tr>
-      <th>2</th>
-      <td>118.0</td>
-      <td>0.08</td>
-      <td>3.48</td>
-      <td>32.28</td>
-      <td>52.0</td>
-      <td>29.14</td>
-      <td>3.81</td>
-      <td>46.0</td>
-      <td>0.0</td>
-    </tr>
-    <tr>
-      <th>3</th>
-      <td>170.0</td>
-      <td>7.50</td>
-      <td>6.41</td>
-      <td>38.03</td>
-      <td>51.0</td>
-      <td>31.99</td>
-      <td>24.26</td>
-      <td>58.0</td>
-      <td>1.0</td>
-    </tr>
-    <tr>
-      <th>4</th>
-      <td>134.0</td>
-      <td>13.60</td>
-      <td>3.50</td>
-      <td>27.78</td>
-      <td>60.0</td>
-      <td>25.99</td>
-      <td>57.34</td>
-      <td>49.0</td>
-      <td>1.0</td>
-    </tr>
-  </tbody>
-</table>
-</div></div></div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1926,136 +1599,6 @@ b_i - \sigma(\boldsymbol{\alpha}_i^T \mathbf{x}^t)
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output text_html"><div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>sbp</th>
-      <th>tobacco</th>
-      <th>ldl</th>
-      <th>adiposity</th>
-      <th>typea</th>
-      <th>obesity</th>
-      <th>alcohol</th>
-      <th>age</th>
-      <th>chd</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>count</th>
-      <td>462.000000</td>
-      <td>462.000000</td>
-      <td>462.000000</td>
-      <td>462.000000</td>
-      <td>462.000000</td>
-      <td>462.000000</td>
-      <td>462.000000</td>
-      <td>462.000000</td>
-      <td>462.000000</td>
-    </tr>
-    <tr>
-      <th>mean</th>
-      <td>138.326840</td>
-      <td>3.635649</td>
-      <td>4.740325</td>
-      <td>25.406732</td>
-      <td>53.103896</td>
-      <td>26.044113</td>
-      <td>17.044394</td>
-      <td>42.816017</td>
-      <td>0.346320</td>
-    </tr>
-    <tr>
-      <th>std</th>
-      <td>20.496317</td>
-      <td>4.593024</td>
-      <td>2.070909</td>
-      <td>7.780699</td>
-      <td>9.817534</td>
-      <td>4.213680</td>
-      <td>24.481059</td>
-      <td>14.608956</td>
-      <td>0.476313</td>
-    </tr>
-    <tr>
-      <th>min</th>
-      <td>101.000000</td>
-      <td>0.000000</td>
-      <td>0.980000</td>
-      <td>6.740000</td>
-      <td>13.000000</td>
-      <td>14.700000</td>
-      <td>0.000000</td>
-      <td>15.000000</td>
-      <td>0.000000</td>
-    </tr>
-    <tr>
-      <th>25%</th>
-      <td>124.000000</td>
-      <td>0.052500</td>
-      <td>3.282500</td>
-      <td>19.775000</td>
-      <td>47.000000</td>
-      <td>22.985000</td>
-      <td>0.510000</td>
-      <td>31.000000</td>
-      <td>0.000000</td>
-    </tr>
-    <tr>
-      <th>50%</th>
-      <td>134.000000</td>
-      <td>2.000000</td>
-      <td>4.340000</td>
-      <td>26.115000</td>
-      <td>53.000000</td>
-      <td>25.805000</td>
-      <td>7.510000</td>
-      <td>45.000000</td>
-      <td>0.000000</td>
-    </tr>
-    <tr>
-      <th>75%</th>
-      <td>148.000000</td>
-      <td>5.500000</td>
-      <td>5.790000</td>
-      <td>31.227500</td>
-      <td>60.000000</td>
-      <td>28.497500</td>
-      <td>23.892500</td>
-      <td>55.000000</td>
-      <td>1.000000</td>
-    </tr>
-    <tr>
-      <th>max</th>
-      <td>218.000000</td>
-      <td>31.200000</td>
-      <td>15.330000</td>
-      <td>42.490000</td>
-      <td>78.000000</td>
-      <td>46.580000</td>
-      <td>147.190000</td>
-      <td>64.000000</td>
-      <td>1.000000</td>
-    </tr>
-  </tbody>
-</table>
-</div></div></div>
 </div>
 <p>Our goal to predict <code class="docutils literal notranslate"><span class="pre">chd</span></code>, which stands for coronary heart disease, based on the other variables (which are briefly described <a class="reference external" href="https://web.stanford.edu/~hastie/ElemStatLearn/datasets/SAheart.info.txt">here</a>). We use logistic regression again.</p>
 <p>We first construct the data matrices. We only use three of the predictors, as the convergence is quite slow. Try it for yourself!</p>
@@ -2063,17 +1606,6 @@ b_i - \sigma(\boldsymbol{\alpha}_i^T \mathbf{x}^t)
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">feature</span> <span class="o">=</span> <span class="n">df</span><span class="p">[[</span><span class="s1">&#39;tobacco&#39;</span><span class="p">,</span> <span class="s1">&#39;ldl&#39;</span><span class="p">,</span> <span class="s1">&#39;age&#39;</span><span class="p">]]</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">()</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">feature</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[[1.200e+01 5.730e+00 5.200e+01]
- [1.000e-02 4.410e+00 6.300e+01]
- [8.000e-02 3.480e+00 4.600e+01]
- ...
- [3.000e+00 1.590e+00 5.500e+01]
- [5.400e+00 1.161e+01 4.000e+01]
- [0.000e+00 4.820e+00 4.600e+01]]
 </pre></div>
 </div>
 </div>
@@ -2089,17 +1621,6 @@ b_i - \sigma(\boldsymbol{\alpha}_i^T \mathbf{x}^t)
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">A</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="n">label</span><span class="p">),</span><span class="mi">1</span><span class="p">)),</span><span class="n">feature</span><span class="p">),</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[[1.000e+00 1.200e+01 5.730e+00 5.200e+01]
- [1.000e+00 1.000e-02 4.410e+00 6.300e+01]
- [1.000e+00 8.000e-02 3.480e+00 4.600e+01]
- ...
- [1.000e+00 3.000e+00 1.590e+00 5.500e+01]
- [1.000e+00 5.400e+00 1.161e+01 4.000e+01]
- [1.000e+00 0.000e+00 4.820e+00 4.600e+01]]
 </pre></div>
 </div>
 </div>
@@ -2126,11 +1647,6 @@ b_i - \sigma(\boldsymbol{\alpha}_i^T \mathbf{x}^t)
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.00047434072581205094
-</pre></div>
-</div>
-</div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -2143,11 +1659,6 @@ b_i - \sigma(\boldsymbol{\alpha}_i^T \mathbf{x}^t)
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">best_x</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[-4.01602283  0.07651133  0.1856912   0.04802978]
 </pre></div>
 </div>
 </div>
@@ -2164,11 +1675,6 @@ b_i - \sigma(\boldsymbol{\alpha}_i^T \mathbf{x}^t)
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">logis_acc</span><span class="p">(</span><span class="n">best_x</span><span class="p">,</span> <span class="n">A</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.7251082251082251
 </pre></div>
 </div>
 </div>
@@ -2195,11 +1701,6 @@ b_i - \sigma(\boldsymbol{\alpha}_i^T \mathbf{x}^t)
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[-4.02241376  0.07713229  0.18654377  0.04636768]
-</pre></div>
-</div>
-</div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -2207,15 +1708,10 @@ b_i - \sigma(\boldsymbol{\alpha}_i^T \mathbf{x}^t)
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.7186147186147186
-</pre></div>
-</div>
-</div>
 </div>
 </section>
 <section id="implementing-gradient-descent-in-pytorch">
-<h2><span class="section-number">6.4.4. </span>Implementing gradient descent in PyTorch<a class="headerlink" href="#implementing-gradient-descent-in-pytorch" title="Permalink to this headline">#</a></h2>
+<h2><span class="section-number">6.4.4. </span>Implementing gradient descent in PyTorch<a class="headerlink" href="#implementing-gradient-descent-in-pytorch" title="Link to this heading">#</a></h2>
 <p>Rather than explicitly specifying the gradient function, we could use PyTorch to compute it automatically. This is done next. Note that the descent update is done within <a class="reference external" href="https://pytorch.org/docs/stable/generated/torch.no_grad.html"><code class="docutils literal notranslate"><span class="pre">with</span> <span class="pre">torch.no_grad()</span></code></a>, which ensures that the update operation itself is not tracked for gradient computation. Here the input <code class="docutils literal notranslate"><span class="pre">x0</span></code> as well as the output <code class="docutils literal notranslate"><span class="pre">xk.numpy(force=True)</span></code> are Numpy arrays. The function <a class="reference external" href="https://pytorch.org/docs/stable/generated/torch.Tensor.numpy.html"><code class="docutils literal notranslate"><span class="pre">numpy()</span></code></a> converts a PyTorch tensor to a Numpy array (see the documentation for an explanation of the <code class="docutils literal notranslate"><span class="pre">force=True</span></code> option).</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -2266,9 +1762,6 @@ b_i - \sigma(\boldsymbol{\alpha}_i^T \mathbf{x}^t)
 </div>
 </div>
 </details>
-<div class="cell_output docutils container">
-<img alt="../../_images/cbf18d50a283cbb0751f62883f6c2e3641b9426348945cb53b851e6c9b0a2ec8.png" src="../../_images/cbf18d50a283cbb0751f62883f6c2e3641b9426348945cb53b851e6c9b0a2ec8.png" />
-</div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -2276,20 +1769,10 @@ b_i - \sigma(\boldsymbol{\alpha}_i^T \mathbf{x}^t)
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array(0.03277362, dtype=float32), 3.5202472645323724e-05)
-</pre></div>
-</div>
-</div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">gd_with_ad</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="n">niters</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array(-4.9335055, dtype=float32), -120.07894897460938)
 </pre></div>
 </div>
 </div>
@@ -2355,6 +1838,7 @@ b_i - \sigma(\boldsymbol{\alpha}_i^T \mathbf{x}^t)
               
                 <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
 
+
   <div class="sidebar-secondary-item">
   <div class="page-toc tocsection onthispage">
     <i class="fa-solid fa-list"></i> Contents
@@ -2413,8 +1897,8 @@ By Sebastien Roch
   </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script src="../../_static/scripts/bootstrap.js?digest=5b4479735964841361fd"></script>
-<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd"></script>
+  <script src="../../_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae"></script>
 
   <footer class="bd-footer">
   </footer>

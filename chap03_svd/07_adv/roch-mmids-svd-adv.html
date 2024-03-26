@@ -1,13 +1,12 @@
 
-
 <!DOCTYPE html>
 
 
-<html data-content_root="" >
+<html lang="en" data-content_root="../../" >
 
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <title>3.7. More advanced material: low-rank approximation; why project; additional proofs &#8212; MMiDS Textbook</title>
   
@@ -19,66 +18,69 @@
   </script>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="../../_static/styles/theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
-<link href="../../_static/styles/bootstrap.css?digest=5b4479735964841361fd" rel="stylesheet" />
-<link href="../../_static/styles/pydata-sphinx-theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+  <link href="../../_static/styles/theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
 
   
-  <link href="../../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=5b4479735964841361fd" rel="stylesheet" />
-  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+  <link href="../../_static/vendor/fontawesome/6.5.1/css/all.min.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.1/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.1/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.1/webfonts/fa-regular-400.woff2" />
 
-    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
-    <link rel="stylesheet" href="../../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b76e3c8a" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=384b581d" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css?v=be8a1c11" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../../_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css?v=0a3b3ea7" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=5b4479735964841361fd" />
-<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd" />
-  <script src="../../_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=5b4479735964841361fd"></script>
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae" />
+  <script src="../../_static/vendor/fontawesome/6.5.1/js/all.min.js?digest=8d27b9dea8ad943066ae"></script>
 
-    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
-    <script src="../../_static/jquery.js"></script>
-    <script src="../../_static/underscore.js"></script>
-    <script src="../../_static/doctools.js"></script>
-    <script src="../../_static/clipboard.min.js"></script>
-    <script src="../../_static/copybutton.js"></script>
-    <script src="../../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script src="../../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?v=efea14e4"></script>
     <script>let toggleHintShow = 'Click to show';</script>
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
-    <script src="../../_static/togglebutton.js"></script>
+    <script src="../../_static/togglebutton.js?v=4a39c7ea"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
-    <script src="../../_static/design-tabs.js"></script>
-    <script loading_method="async" src="https://www.googletagmanager.com/gtag/js?id=G-P5E8DW088F"></script>
+    <script src="../../_static/design-tabs.js?v=36754332"></script>
+    <script async="async" src="https://www.googletagmanager.com/gtag/js?id=G-P5E8DW088F"></script>
     <script>
                 window.dataLayer = window.dataLayer || [];
                 function gtag(){ dataLayer.push(arguments); }
                 gtag('js', new Date());
                 gtag('config', 'G-P5E8DW088F');
             </script>
-    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
-const thebe_selector = ".thebe,.cell"
-const thebe_selector_input = "pre"
-const thebe_selector_output = ".output, .cell_output"
-</script>
-    <script async="async" src="../../_static/sphinx-thebe.js"></script>
-    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){ dataLayer.push(arguments); }
+                gtag('js', new Date());
+                gtag('config', 'G-P5E8DW088F');
+            </script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
     <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'chap03_svd/07_adv/roch-mmids-svd-adv';</script>
     <link rel="canonical" href="https://mmids-textbook.github.io/chap03_svd/07_adv/roch-mmids-svd-adv.html" />
-    <link rel="shortcut icon" href="https://mmids-textbook.github.io/favicon-32x32.png"/>
+    <link rel="icon" href="https://mmids-textbook.github.io/favicon-32x32.png"/>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
     <link rel="next" title="3.8. Other resources" href="../summary_chap03.html" />
     <link rel="prev" title="3.6. Further applications of the SVD" href="../06_further/roch-mmids-svd-further.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
-  <meta name="docsearch:language" content="None"/>
+  <meta name="docsearch:language" content="en"/>
   </head>
   
   
@@ -86,10 +88,9 @@ const thebe_selector_output = ".output, .cell_output"
 
   
   
-  <a class="skip-link" href="#main-content">Skip to main content</a>
+  <a id="pst-skip-link" class="skip-link" href="#main-content">Skip to main content</a>
   
   <div id="pst-scroll-pixel-helper"></div>
-
   
   <button type="button" class="btn rounded-pill" id="pst-back-to-top">
     <i class="fa-solid fa-arrow-up"></i>
@@ -130,11 +131,14 @@ const thebe_selector_output = ".output, .cell_output"
 </form></div>
   </div>
   
-    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
-    </nav>
+    <header class="bd-header navbar navbar-expand-lg bd-navbar">
+    </header>
   
+
   <div class="bd-container">
     <div class="bd-container__inner bd-page-width">
+      
+      
       
       <div class="bd-sidebar-primary bd-sidebar">
         
@@ -168,7 +172,18 @@ const thebe_selector_output = ".output, .cell_output"
   
   
 </a></div>
-        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
     <div class="bd-toc-item navbar-nav active">
         
         <ul class="nav bd-sidenav bd-sidenav__home-link">
@@ -455,14 +470,14 @@ document.write(`
               
                 
 <div id="searchbox"></div>
-                <article class="bd-article" role="main">
+                <article class="bd-article">
                   
   <p><span class="math notranslate nohighlight">\(\newcommand{\horz}{\rule[.5ex]{2.5ex}{0.5pt}}\)</span></p>
 <section id="more-advanced-material-low-rank-approximation-why-project-additional-proofs">
-<h1><span class="section-number">3.7. </span>More advanced material: low-rank approximation; why project; additional proofs<a class="headerlink" href="#more-advanced-material-low-rank-approximation-why-project-additional-proofs" title="Permalink to this headline">#</a></h1>
+<h1><span class="section-number">3.7. </span>More advanced material: low-rank approximation; why project; additional proofs<a class="headerlink" href="#more-advanced-material-low-rank-approximation-why-project-additional-proofs" title="Link to this heading">#</a></h1>
 <p>We cover various advanced topics.</p>
 <section id="low-rank-approximation">
-<h2><span class="section-number">3.7.1. </span>Low-rank approximation<a class="headerlink" href="#low-rank-approximation" title="Permalink to this headline">#</a></h2>
+<h2><span class="section-number">3.7.1. </span>Low-rank approximation<a class="headerlink" href="#low-rank-approximation" title="Link to this heading">#</a></h2>
 <p>Now that we have defined a notion of distance between matrices, we will consider the problem of finding a good approximation to a matrix <span class="math notranslate nohighlight">\(A\)</span> among all matrices of rank at most <span class="math notranslate nohighlight">\(k\)</span>. We will start with the Frobenius norm, which is easier to work with, and we will show later on that the solution is the same under the induced norm.</p>
 <p>The solution to this problem will be familiar. In essence, we will re-interpret our solution to the best approximating subspace as a low-rank approximation.</p>
 <p><strong>Low-rank approximation in the Frobenius norm</strong> From the proof of the <em>Row Rank Equals Column Rank Lemma</em>, it follows that a rank-<span class="math notranslate nohighlight">\(r\)</span> matrix <span class="math notranslate nohighlight">\(A\)</span> can be written as a sum of <span class="math notranslate nohighlight">\(r\)</span> rank-<span class="math notranslate nohighlight">\(1\)</span> matrices</p>
@@ -628,14 +643,14 @@ A = \sum_{j=1}^r \sigma_j \mathbf{u}_j \mathbf{v}_j^T
 <p>By the <em>Matrix Norms and Singular Values Lemma</em>, <span class="math notranslate nohighlight">\(\sigma_{k+1}^2 = \|A - A_k\|_2\)</span> and we are done. <span class="math notranslate nohighlight">\(\square\)</span></p>
 </section>
 <section id="why-project">
-<h2><span class="section-number">3.7.2. </span>Why project?<a class="headerlink" href="#why-project" title="Permalink to this headline">#</a></h2>
+<h2><span class="section-number">3.7.2. </span>Why project?<a class="headerlink" href="#why-project" title="Link to this heading">#</a></h2>
 <p>We return to <span class="math notranslate nohighlight">\(k\)</span>-means clustering and why projecting to a lower-dimensional subspace can produce better results. We prove a simple inequality that provides some insight. Quoting [BHK, Section 7.5.1]:</p>
 <blockquote>
 <div><p>[…] let’s understand the central advantage of doing the projection to [the top <span class="math notranslate nohighlight">\(k\)</span> right singular vectors]. It is simply that for any reasonable (unknown) clustering of data points, the projection brings data points closer to their cluster centers.</p>
 </div></blockquote>
 <p>To elaborate, suppose we have <span class="math notranslate nohighlight">\(n\)</span> data points in <span class="math notranslate nohighlight">\(d\)</span> dimensions in the form of the rows <span class="math notranslate nohighlight">\(\mathbf{a}_i^T\)</span>, <span class="math notranslate nohighlight">\(i=1\ldots, n\)</span>, of matrix <span class="math notranslate nohighlight">\(A \in \mathbb{A}^{n \times d}\)</span>, where we assume that <span class="math notranslate nohighlight">\(n &gt; d\)</span> and that <span class="math notranslate nohighlight">\(A\)</span> has full column rank. Imagine these data points come from an unknown ground-truth <span class="math notranslate nohighlight">\(k\)</span>-clustering assignment <span class="math notranslate nohighlight">\(g(i) \in [k]\)</span>, <span class="math notranslate nohighlight">\(i = 1,\ldots, n\)</span>, with corresponding unknown centers <span class="math notranslate nohighlight">\(\mathbf{c}_j\)</span>, <span class="math notranslate nohighlight">\(j = 1,\ldots, k\)</span>, for <span class="math notranslate nohighlight">\(g(i) = j\)</span>. Let <span class="math notranslate nohighlight">\(C \in \mathbb{R}^{n \times d}\)</span> be the corresponding matrix, that is, row <span class="math notranslate nohighlight">\(i\)</span> of <span class="math notranslate nohighlight">\(C\)</span> is <span class="math notranslate nohighlight">\(\mathbf{c}_j^T\)</span> if <span class="math notranslate nohighlight">\(g(i) = j\)</span>. The <span class="math notranslate nohighlight">\(k\)</span>-means objective of the true clustering is then</p>
-<div class="amsmath math notranslate nohighlight" id="equation-8236c893-011d-451a-8198-1fe22b4525fd">
-<span class="eqno">(3.1)<a class="headerlink" href="#equation-8236c893-011d-451a-8198-1fe22b4525fd" title="Permalink to this equation">#</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-6c9db09e-6c38-434f-b135-52b2187e67c2">
+<span class="eqno">(3.1)<a class="headerlink" href="#equation-6c9db09e-6c38-434f-b135-52b2187e67c2" title="Permalink to this equation">#</a></span>\[\begin{align}
 \sum_{j\in [k]} \sum_{i:g(i)=j} \|\mathbf{a}_i - \mathbf{c}_{j}\|^2
 &amp;= \sum_{j\in [k]} \sum_{i:g(i)=j} \sum_{\ell=1}^d (a_{i,\ell} - c_{j,\ell})^2\\
 &amp;= \sum_{i=1}^n \sum_{\ell=1}^d (a_{i,\ell} - c_{g(i),\ell})^2\\
@@ -744,7 +759,7 @@ and let <span class="math notranslate nohighlight">\(A_k\)</span> be the truncat
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/1dc71dbadd1355e5dc583207856a80f13b87efd177d684c68eca3fd584795ca7.png" src="../../_images/1dc71dbadd1355e5dc583207856a80f13b87efd177d684c68eca3fd584795ca7.png" />
+<img alt="../../_images/52595586d2ecb6e9794a69eba7bde52ad47a34c3ebdfbf368b35205d7f7f8912.png" src="../../_images/52595586d2ecb6e9794a69eba7bde52ad47a34c3ebdfbf368b35205d7f7f8912.png" />
 </div>
 </div>
 <p>The <span class="math notranslate nohighlight">\(k\)</span>-means objective with respect to the true centers under the full-dimensional data is:</p>
@@ -756,7 +771,7 @@ and let <span class="math notranslate nohighlight">\(A_k\)</span> be the truncat
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>200925.6690681811
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>200925.66906818107
 </pre></div>
 </div>
 </div>
@@ -770,7 +785,7 @@ and let <span class="math notranslate nohighlight">\(A_k\)</span> be the truncat
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2095.357155856165
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2095.357155856172
 </pre></div>
 </div>
 </div>
@@ -785,7 +800,7 @@ and let <span class="math notranslate nohighlight">\(A_k\)</span> be the truncat
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1525.437425631981
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1525.437425631977
 </pre></div>
 </div>
 </div>
@@ -793,7 +808,7 @@ and let <span class="math notranslate nohighlight">\(A_k\)</span> be the truncat
 <p><span class="math notranslate nohighlight">\(\unlhd\)</span></p>
 </section>
 <section id="additional-proofs">
-<h2><span class="section-number">3.7.3. </span>Additional proofs<a class="headerlink" href="#additional-proofs" title="Permalink to this headline">#</a></h2>
+<h2><span class="section-number">3.7.3. </span>Additional proofs<a class="headerlink" href="#additional-proofs" title="Link to this heading">#</a></h2>
 <p>In this section, we give several proofs that were left out in this chapter.</p>
 <p><strong>Proof of the <em>Number of Eigenvalues</em> Lemma</strong> We start with a proof that distinct eigenvalues correspond to linearly independent eigenvectors.</p>
 <p><em>Proof:</em> <em>(Number of Eigenvalues)</em> Assume by contradiction that <span class="math notranslate nohighlight">\(\mathbf{x}_1, \ldots, \mathbf{x}_m\)</span> are linearly dependent. By the <em>Linear Dependence Lemma</em>, there is <span class="math notranslate nohighlight">\(k \leq m\)</span> such that</p>
@@ -1131,6 +1146,7 @@ Then</p>
               
                 <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
 
+
   <div class="sidebar-secondary-item">
   <div class="page-toc tocsection onthispage">
     <i class="fa-solid fa-list"></i> Contents
@@ -1188,8 +1204,8 @@ By Sebastien Roch
   </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script src="../../_static/scripts/bootstrap.js?digest=5b4479735964841361fd"></script>
-<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd"></script>
+  <script src="../../_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae"></script>
 
   <footer class="bd-footer">
   </footer>

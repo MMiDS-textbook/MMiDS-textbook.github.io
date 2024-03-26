@@ -1,13 +1,12 @@
 
-
 <!DOCTYPE html>
 
 
-<html data-content_root="" >
+<html lang="en" data-content_root="../../" >
 
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <title>7.4. Linear-Gaussian models and Kalman filtering (under construction) &#8212; MMiDS Textbook</title>
   
@@ -19,66 +18,69 @@
   </script>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="../../_static/styles/theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
-<link href="../../_static/styles/bootstrap.css?digest=5b4479735964841361fd" rel="stylesheet" />
-<link href="../../_static/styles/pydata-sphinx-theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+  <link href="../../_static/styles/theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
 
   
-  <link href="../../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=5b4479735964841361fd" rel="stylesheet" />
-  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+  <link href="../../_static/vendor/fontawesome/6.5.1/css/all.min.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.1/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.1/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.1/webfonts/fa-regular-400.woff2" />
 
-    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
-    <link rel="stylesheet" href="../../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b76e3c8a" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=384b581d" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css?v=be8a1c11" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../../_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css?v=0a3b3ea7" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=5b4479735964841361fd" />
-<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd" />
-  <script src="../../_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=5b4479735964841361fd"></script>
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae" />
+  <script src="../../_static/vendor/fontawesome/6.5.1/js/all.min.js?digest=8d27b9dea8ad943066ae"></script>
 
-    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
-    <script src="../../_static/jquery.js"></script>
-    <script src="../../_static/underscore.js"></script>
-    <script src="../../_static/doctools.js"></script>
-    <script src="../../_static/clipboard.min.js"></script>
-    <script src="../../_static/copybutton.js"></script>
-    <script src="../../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script src="../../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?v=efea14e4"></script>
     <script>let toggleHintShow = 'Click to show';</script>
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
-    <script src="../../_static/togglebutton.js"></script>
+    <script src="../../_static/togglebutton.js?v=4a39c7ea"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
-    <script src="../../_static/design-tabs.js"></script>
-    <script loading_method="async" src="https://www.googletagmanager.com/gtag/js?id=G-P5E8DW088F"></script>
+    <script src="../../_static/design-tabs.js?v=36754332"></script>
+    <script async="async" src="https://www.googletagmanager.com/gtag/js?id=G-P5E8DW088F"></script>
     <script>
                 window.dataLayer = window.dataLayer || [];
                 function gtag(){ dataLayer.push(arguments); }
                 gtag('js', new Date());
                 gtag('config', 'G-P5E8DW088F');
             </script>
-    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
-const thebe_selector = ".thebe,.cell"
-const thebe_selector_input = "pre"
-const thebe_selector_output = ".output, .cell_output"
-</script>
-    <script async="async" src="../../_static/sphinx-thebe.js"></script>
-    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){ dataLayer.push(arguments); }
+                gtag('js', new Date());
+                gtag('config', 'G-P5E8DW088F');
+            </script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
     <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'chap07_prob/04_kalman/roch-mmids-prob-kalman';</script>
     <link rel="canonical" href="https://mmids-textbook.github.io/chap07_prob/04_kalman/roch-mmids-prob-kalman.html" />
-    <link rel="shortcut icon" href="https://mmids-textbook.github.io/favicon-32x32.png"/>
+    <link rel="icon" href="https://mmids-textbook.github.io/favicon-32x32.png"/>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
     <link rel="next" title="7.5. Gibbs sampling with application to generating images" href="../05_gibbs/roch-mmids-prob-gibbs.html" />
     <link rel="prev" title="7.3. Modeling correlated random variables" href="../03_joint/roch-mmids-prob-joint.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
-  <meta name="docsearch:language" content="None"/>
+  <meta name="docsearch:language" content="en"/>
   </head>
   
   
@@ -86,10 +88,9 @@ const thebe_selector_output = ".output, .cell_output"
 
   
   
-  <a class="skip-link" href="#main-content">Skip to main content</a>
+  <a id="pst-skip-link" class="skip-link" href="#main-content">Skip to main content</a>
   
   <div id="pst-scroll-pixel-helper"></div>
-
   
   <button type="button" class="btn rounded-pill" id="pst-back-to-top">
     <i class="fa-solid fa-arrow-up"></i>
@@ -130,11 +131,14 @@ const thebe_selector_output = ".output, .cell_output"
 </form></div>
   </div>
   
-    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
-    </nav>
+    <header class="bd-header navbar navbar-expand-lg bd-navbar">
+    </header>
   
+
   <div class="bd-container">
     <div class="bd-container__inner bd-page-width">
+      
+      
       
       <div class="bd-sidebar-primary bd-sidebar">
         
@@ -168,7 +172,18 @@ const thebe_selector_output = ".output, .cell_output"
   
   
 </a></div>
-        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
     <div class="bd-toc-item navbar-nav active">
         
         <ul class="nav bd-sidenav bd-sidenav__home-link">
@@ -454,14 +469,14 @@ document.write(`
               
                 
 <div id="searchbox"></div>
-                <article class="bd-article" role="main">
+                <article class="bd-article">
                   
   <p><span class="math notranslate nohighlight">\(\newcommand{\P}{\mathbb{P}}\)</span> <span class="math notranslate nohighlight">\(\newcommand{\E}{\mathbb{E}}\)</span> <span class="math notranslate nohighlight">\(\newcommand{\S}{\mathcal{S}}\)</span> <span class="math notranslate nohighlight">\(\newcommand{\var}{\mathrm{Var}}\)</span> <span class="math notranslate nohighlight">\(\newcommand{\bmu}{\boldsymbol{\mu}}\)</span> <span class="math notranslate nohighlight">\(\newcommand{\bSigma}{\boldsymbol{\Sigma}}\)</span> <span class="math notranslate nohighlight">\(\newcommand{\btheta}{\boldsymbol{\theta}}\)</span> <span class="math notranslate nohighlight">\(\newcommand{\bpi}{\boldsymbol{\pi}}\)</span> <span class="math notranslate nohighlight">\(\newcommand{\indep}{\perp\!\!\!\perp}\)</span> <span class="math notranslate nohighlight">\(\newcommand{\bp}{\mathbf{p}}\)</span> <span class="math notranslate nohighlight">\(\newcommand{\bx}{\mathbf{x}}\)</span> <span class="math notranslate nohighlight">\(\newcommand{\bX}{\mathbf{X}}\)</span> <span class="math notranslate nohighlight">\(\newcommand{\by}{\mathbf{y}}\)</span> <span class="math notranslate nohighlight">\(\newcommand{\bY}{\mathbf{Y}}\)</span> <span class="math notranslate nohighlight">\(\newcommand{\bz}{\mathbf{z}}\)</span> <span class="math notranslate nohighlight">\(\newcommand{\bZ}{\mathbf{Z}}\)</span> <span class="math notranslate nohighlight">\(\newcommand{\bw}{\mathbf{w}}\)</span> <span class="math notranslate nohighlight">\(\newcommand{\bW}{\mathbf{W}}\)</span> <span class="math notranslate nohighlight">\(\newcommand{\bv}{\mathbf{v}}\)</span> <span class="math notranslate nohighlight">\(\newcommand{\bV}{\mathbf{V}}\)</span></p>
 <section id="linear-gaussian-models-and-kalman-filtering-under-construction">
-<h1><span class="section-number">7.4. </span>Linear-Gaussian models and Kalman filtering <em>(under construction)</em><a class="headerlink" href="#linear-gaussian-models-and-kalman-filtering-under-construction" title="Permalink to this headline">#</a></h1>
+<h1><span class="section-number">7.4. </span>Linear-Gaussian models and Kalman filtering <em>(under construction)</em><a class="headerlink" href="#linear-gaussian-models-and-kalman-filtering-under-construction" title="Link to this heading">#</a></h1>
 <p>In this notebook, we illustrate the use of linear-Gaussian models for object tracking. We first give some background.</p>
 <section id="kalman-filter">
-<h2><span class="section-number">7.4.1. </span>Kalman filter<a class="headerlink" href="#kalman-filter" title="Permalink to this headline">#</a></h2>
+<h2><span class="section-number">7.4.1. </span>Kalman filter<a class="headerlink" href="#kalman-filter" title="Link to this heading">#</a></h2>
 <p><em>The model:</em> We consider a Markov process <span class="math notranslate nohighlight">\(\{\bX_t\}_{t=0}^T\)</span> with state space <span class="math notranslate nohighlight">\(\S = \mathbb{R}^{d_0}\)</span> of the following form</p>
 <div class="math notranslate nohighlight">
 \[
@@ -526,7 +541,7 @@ K_t
 <p>This last matrix is known as the Kalman gain matrix. The solution above is known as Kalman filtering.</p>
 </section>
 <section id="location-tracking">
-<h2><span class="section-number">7.4.2. </span>Location tracking<a class="headerlink" href="#location-tracking" title="Permalink to this headline">#</a></h2>
+<h2><span class="section-number">7.4.2. </span>Location tracking<a class="headerlink" href="#location-tracking" title="Link to this heading">#</a></h2>
 <p>We apply Kalman filtering to location tracking. Returning to our cyborg corgi example, we imagine that we get noisy observations about the successive its positions in a park. (Think of GPS measurements.) We seek to get a better estimate of its location using the method above. See for example this <a class="reference external" href="https://towardsdatascience.com/optimal-estimation-algorithms-kalman-and-particle-filters-be62dcb5e83">blog post</a> on location tracking.</p>
 <p><strong>Figure:</strong> Cyborg corgi (<em>Credit:</em> Made with <a class="reference external" href="https://www.midjourney.com/">Midjourney</a>)</p>
 <p><img alt="Cyborg corgi" src="../../_images/robot_corgi_in_a_park-small.png" /></p>
@@ -619,9 +634,6 @@ H = \begin{pmatrix}
 </div>
 </div>
 </details>
-<div class="cell_output docutils container">
-<img alt="../../_images/cb0f9155510343d9400ce357e44a221899621596120da4c09aff01712f02ac3d.png" src="../../_images/cb0f9155510343d9400ce357e44a221899621596120da4c09aff01712f02ac3d.png" />
-</div>
 </div>
 <div class="cell tag_hide-input docutils container">
 <details class="hide above-input">
@@ -639,9 +651,6 @@ H = \begin{pmatrix}
 </div>
 </div>
 </details>
-<div class="cell_output docutils container">
-<img alt="../../_images/bb293f3bdc25449ddd85dcdf984b57f69e4323cbdbb83dc91c0244580f9ef950.png" src="../../_images/bb293f3bdc25449ddd85dcdf984b57f69e4323cbdbb83dc91c0244580f9ef950.png" />
-</div>
 </div>
 <p>The following function implements the Kalman filter. Here <span class="math notranslate nohighlight">\(A\)</span> is <span class="math notranslate nohighlight">\(F\)</span> and <span class="math notranslate nohighlight">\(C\)</span> is <span class="math notranslate nohighlight">\(H\)</span>. The full recursion is broken up into several steps.</p>
 <div class="cell docutils container">
@@ -703,9 +712,6 @@ H = \begin{pmatrix}
 </div>
 </div>
 </details>
-<div class="cell_output docutils container">
-<img alt="../../_images/61b607ce1ea45f536f48965f733e693c0db0f138fbb95143523f5d3abf81a932.png" src="../../_images/61b607ce1ea45f536f48965f733e693c0db0f138fbb95143523f5d3abf81a932.png" />
-</div>
 </div>
 <p>To quantify the improvement in the inference compared to the observations, we compute the mean squared error in both cases.</p>
 <div class="cell docutils container">
@@ -716,22 +722,12 @@ H = \begin{pmatrix}
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>17.51262217939869
-</pre></div>
-</div>
-</div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">dfilt</span> <span class="o">=</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">1</span><span class="p">,:]</span> <span class="o">-</span> <span class="n">mu</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">1</span><span class="p">,:]</span>
 <span class="n">mse_filt</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">dfilt</span><span class="o">**</span><span class="mi">2</span><span class="p">))</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">mse_filt</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>9.779550591333333
 </pre></div>
 </div>
 </div>
@@ -780,9 +776,6 @@ H = \begin{pmatrix}
 </div>
 </div>
 </details>
-<div class="cell_output docutils container">
-<img alt="../../_images/940cfcfd3a71e11e989c4b7124148ff07571289735fb4474b1fa831c9b44560c.png" src="../../_images/940cfcfd3a71e11e989c4b7124148ff07571289735fb4474b1fa831c9b44560c.png" />
-</div>
 </div>
 <p>We modify the recursion accordingly.</p>
 <div class="cell docutils container">
@@ -830,9 +823,6 @@ H = \begin{pmatrix}
 </div>
 </div>
 </details>
-<div class="cell_output docutils container">
-<img alt="../../_images/6fb0e300bac0bca4936cd487d85389d1eb5f9484b1247a3e7669c703d9e2f9f2.png" src="../../_images/6fb0e300bac0bca4936cd487d85389d1eb5f9484b1247a3e7669c703d9e2f9f2.png" />
-</div>
 </div>
 </section>
 </section>
@@ -894,6 +884,7 @@ H = \begin{pmatrix}
               
                 <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
 
+
   <div class="sidebar-secondary-item">
   <div class="page-toc tocsection onthispage">
     <i class="fa-solid fa-list"></i> Contents
@@ -950,8 +941,8 @@ By Sebastien Roch
   </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script src="../../_static/scripts/bootstrap.js?digest=5b4479735964841361fd"></script>
-<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd"></script>
+  <script src="../../_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae"></script>
 
   <footer class="bd-footer">
   </footer>

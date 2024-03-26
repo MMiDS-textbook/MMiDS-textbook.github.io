@@ -1,13 +1,12 @@
 
-
 <!DOCTYPE html>
 
 
-<html data-content_root="" >
+<html lang="en" data-content_root="../../" >
 
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <title>6.2. Background: review of differentiable functions of several variables and introduction to automatic differentiation &#8212; MMiDS Textbook</title>
   
@@ -19,66 +18,69 @@
   </script>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="../../_static/styles/theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
-<link href="../../_static/styles/bootstrap.css?digest=5b4479735964841361fd" rel="stylesheet" />
-<link href="../../_static/styles/pydata-sphinx-theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+  <link href="../../_static/styles/theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
 
   
-  <link href="../../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=5b4479735964841361fd" rel="stylesheet" />
-  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+  <link href="../../_static/vendor/fontawesome/6.5.1/css/all.min.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.1/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.1/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.1/webfonts/fa-regular-400.woff2" />
 
-    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
-    <link rel="stylesheet" href="../../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b76e3c8a" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=384b581d" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css?v=be8a1c11" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../../_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css?v=0a3b3ea7" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=5b4479735964841361fd" />
-<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd" />
-  <script src="../../_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=5b4479735964841361fd"></script>
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae" />
+  <script src="../../_static/vendor/fontawesome/6.5.1/js/all.min.js?digest=8d27b9dea8ad943066ae"></script>
 
-    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
-    <script src="../../_static/jquery.js"></script>
-    <script src="../../_static/underscore.js"></script>
-    <script src="../../_static/doctools.js"></script>
-    <script src="../../_static/clipboard.min.js"></script>
-    <script src="../../_static/copybutton.js"></script>
-    <script src="../../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script src="../../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?v=efea14e4"></script>
     <script>let toggleHintShow = 'Click to show';</script>
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
-    <script src="../../_static/togglebutton.js"></script>
+    <script src="../../_static/togglebutton.js?v=4a39c7ea"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
-    <script src="../../_static/design-tabs.js"></script>
-    <script loading_method="async" src="https://www.googletagmanager.com/gtag/js?id=G-P5E8DW088F"></script>
+    <script src="../../_static/design-tabs.js?v=36754332"></script>
+    <script async="async" src="https://www.googletagmanager.com/gtag/js?id=G-P5E8DW088F"></script>
     <script>
                 window.dataLayer = window.dataLayer || [];
                 function gtag(){ dataLayer.push(arguments); }
                 gtag('js', new Date());
                 gtag('config', 'G-P5E8DW088F');
             </script>
-    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
-const thebe_selector = ".thebe,.cell"
-const thebe_selector_input = "pre"
-const thebe_selector_output = ".output, .cell_output"
-</script>
-    <script async="async" src="../../_static/sphinx-thebe.js"></script>
-    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){ dataLayer.push(arguments); }
+                gtag('js', new Date());
+                gtag('config', 'G-P5E8DW088F');
+            </script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
     <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'chap06_opt/02_several/roch-mmids-opt-several';</script>
     <link rel="canonical" href="https://mmids-textbook.github.io/chap06_opt/02_several/roch-mmids-opt-several.html" />
-    <link rel="shortcut icon" href="https://mmids-textbook.github.io/favicon-32x32.png"/>
+    <link rel="icon" href="https://mmids-textbook.github.io/favicon-32x32.png"/>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
     <link rel="next" title="6.3. Optimality conditions and convexity" href="../03_optimality/roch-mmids-opt-optimality.html" />
     <link rel="prev" title="6.1. Motivating example: deciphering handwriting" href="../01_motiv/roch-mmids-opt-motiv.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
-  <meta name="docsearch:language" content="None"/>
+  <meta name="docsearch:language" content="en"/>
   </head>
   
   
@@ -86,10 +88,9 @@ const thebe_selector_output = ".output, .cell_output"
 
   
   
-  <a class="skip-link" href="#main-content">Skip to main content</a>
+  <a id="pst-skip-link" class="skip-link" href="#main-content">Skip to main content</a>
   
   <div id="pst-scroll-pixel-helper"></div>
-
   
   <button type="button" class="btn rounded-pill" id="pst-back-to-top">
     <i class="fa-solid fa-arrow-up"></i>
@@ -130,11 +131,14 @@ const thebe_selector_output = ".output, .cell_output"
 </form></div>
   </div>
   
-    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
-    </nav>
+    <header class="bd-header navbar navbar-expand-lg bd-navbar">
+    </header>
   
+
   <div class="bd-container">
     <div class="bd-container__inner bd-page-width">
+      
+      
       
       <div class="bd-sidebar-primary bd-sidebar">
         
@@ -168,7 +172,18 @@ const thebe_selector_output = ".output, .cell_output"
   
   
 </a></div>
-        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
     <div class="bd-toc-item navbar-nav active">
         
         <ul class="nav bd-sidenav bd-sidenav__home-link">
@@ -456,13 +471,13 @@ document.write(`
               
                 
 <div id="searchbox"></div>
-                <article class="bd-article" role="main">
+                <article class="bd-article">
                   
   <section id="background-review-of-differentiable-functions-of-several-variables-and-introduction-to-automatic-differentiation">
-<h1><span class="section-number">6.2. </span>Background: review of differentiable functions of several variables and introduction to automatic differentiation<a class="headerlink" href="#background-review-of-differentiable-functions-of-several-variables-and-introduction-to-automatic-differentiation" title="Permalink to this headline">#</a></h1>
+<h1><span class="section-number">6.2. </span>Background: review of differentiable functions of several variables and introduction to automatic differentiation<a class="headerlink" href="#background-review-of-differentiable-functions-of-several-variables-and-introduction-to-automatic-differentiation" title="Link to this heading">#</a></h1>
 <p>We review the differential calculus of several variables. We highlight a few key results that will play an important role: the <em>Chain Rule</em> and the <em>Mean Value Theorem</em>. We also give a brief introduction to automatic differentiation.</p>
 <section id="gradient">
-<h2><span class="section-number">6.2.1. </span>Gradient<a class="headerlink" href="#gradient" title="Permalink to this headline">#</a></h2>
+<h2><span class="section-number">6.2.1. </span>Gradient<a class="headerlink" href="#gradient" title="Link to this heading">#</a></h2>
 <p>Recall that a point <span class="math notranslate nohighlight">\(\mathbf{x} \in \mathbb{R}^d\)</span> is an interior point of a set <span class="math notranslate nohighlight">\(A \subseteq \mathbb{R}^d\)</span> if there exists an <span class="math notranslate nohighlight">\(r &gt; 0\)</span> such that <span class="math notranslate nohighlight">\(B_r(\mathbf{x}) \subseteq A\)</span>, where the open <span class="math notranslate nohighlight">\(r\)</span>-ball around <span class="math notranslate nohighlight">\(\mathbf{x} \in \mathbb{R}^d\)</span> is the set of points within Euclidean distance <span class="math notranslate nohighlight">\(r\)</span> of <span class="math notranslate nohighlight">\(\mathbf{x}\)</span>, that is,</p>
 <div class="math notranslate nohighlight">
 \[
@@ -705,7 +720,7 @@ f(\mathbf{x})
 <p>for some <span class="math notranslate nohighlight">\(\xi \in (0,t)\)</span>. Plugging in the expressions for <span class="math notranslate nohighlight">\(\phi(0)\)</span> and <span class="math notranslate nohighlight">\(\phi'(\xi)\)</span> and taking <span class="math notranslate nohighlight">\(t=1\)</span> gives the claim. <span class="math notranslate nohighlight">\(\square\)</span></p>
 </section>
 <section id="second-order-derivatives">
-<h2><span class="section-number">6.2.2. </span>Second-order derivatives<a class="headerlink" href="#second-order-derivatives" title="Permalink to this headline">#</a></h2>
+<h2><span class="section-number">6.2.2. </span>Second-order derivatives<a class="headerlink" href="#second-order-derivatives" title="Link to this heading">#</a></h2>
 <p>One can also define higher-order derivatives. We start with the single-variable case, where <span class="math notranslate nohighlight">\(f : D \to \mathbb{R}\)</span> with <span class="math notranslate nohighlight">\(D \subseteq \mathbb{R}\)</span> and <span class="math notranslate nohighlight">\(x_0 \in D\)</span> is an interior point of <span class="math notranslate nohighlight">\(D\)</span>. Note that, if <span class="math notranslate nohighlight">\(f'\)</span> exists in <span class="math notranslate nohighlight">\(D\)</span>, then it is itself a function of <span class="math notranslate nohighlight">\(x\)</span>. Then the second derivative at <span class="math notranslate nohighlight">\(x_0\)</span> is</p>
 <div class="math notranslate nohighlight">
 \[
@@ -822,7 +837,7 @@ f(\mathbf{x})
 <p>Observe that this is indeed a symmetric matrix. <span class="math notranslate nohighlight">\(\lhd\)</span></p>
 </section>
 <section id="jacobian-and-chain-rule">
-<h2><span class="section-number">6.2.3. </span>Jacobian and chain rule<a class="headerlink" href="#jacobian-and-chain-rule" title="Permalink to this headline">#</a></h2>
+<h2><span class="section-number">6.2.3. </span>Jacobian and chain rule<a class="headerlink" href="#jacobian-and-chain-rule" title="Link to this heading">#</a></h2>
 <p>Recall that the derivative of a function of a real variable is the rate of change of the function with respect to the change in the variable.</p>
 <p><strong>DEFINITION</strong> <strong>(Derivative)</strong> Let <span class="math notranslate nohighlight">\(f : D \to \mathbb{R}\)</span> where <span class="math notranslate nohighlight">\(D \subseteq \mathbb{R}\)</span> and let <span class="math notranslate nohighlight">\(x_0 \in D\)</span> be an interior point of <span class="math notranslate nohighlight">\(D\)</span>. The derivative of <span class="math notranslate nohighlight">\(f\)</span> at <span class="math notranslate nohighlight">\(x_0\)</span> is</p>
 <div class="math notranslate nohighlight">
@@ -1042,7 +1057,7 @@ J_{\mathbf{g} \circ \mathbf{f}}(\mathbf{x})
 <p><span class="math notranslate nohighlight">\(\lhd\)</span></p>
 </section>
 <section id="brief-introduction-to-automatic-differentiation">
-<h2><span class="section-number">6.2.4. </span>Brief introduction to automatic differentiation<a class="headerlink" href="#brief-introduction-to-automatic-differentiation" title="Permalink to this headline">#</a></h2>
+<h2><span class="section-number">6.2.4. </span>Brief introduction to automatic differentiation<a class="headerlink" href="#brief-introduction-to-automatic-differentiation" title="Link to this heading">#</a></h2>
 <p>We illustrate the use of <a class="reference external" href="https://en.wikipedia.org/wiki/Automatic_differentiation">automatic differentiation</a> to compute gradients.</p>
 <p>Quoting <a class="reference external" href="https://en.wikipedia.org/wiki/Automatic_differentiation">Wikipedia</a>:</p>
 <blockquote>
@@ -1076,12 +1091,6 @@ J_{\mathbf{g} \circ \mathbf{f}}(\mathbf{x})
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>tensor(8.7183)
-tensor(1.)
-</pre></div>
-</div>
-</div>
 </div>
 <p>The input parameters can also be vectors, which allows to consider function of large numbers of variables.</p>
 <div class="cell docutils container">
@@ -1105,11 +1114,6 @@ tensor(1.)
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Print gradient</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">z</span><span class="o">.</span><span class="n">grad</span><span class="p">)</span>  <span class="c1"># gradient is (2 z_1, 2 z_2, 2 z_3)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>tensor([2., 4., 6.])
 </pre></div>
 </div>
 </div>
@@ -1139,12 +1143,6 @@ tensor(1.)
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Print gradient</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">theta</span><span class="o">.</span><span class="n">grad</span><span class="p">)</span>  <span class="c1"># gradient of loss</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>tensor([[29.6579],
-        [34.2042]])
 </pre></div>
 </div>
 </div>
@@ -1210,6 +1208,7 @@ tensor(1.)
               
                 <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
 
+
   <div class="sidebar-secondary-item">
   <div class="page-toc tocsection onthispage">
     <i class="fa-solid fa-list"></i> Contents
@@ -1268,8 +1267,8 @@ By Sebastien Roch
   </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script src="../../_static/scripts/bootstrap.js?digest=5b4479735964841361fd"></script>
-<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd"></script>
+  <script src="../../_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae"></script>
 
   <footer class="bd-footer">
   </footer>

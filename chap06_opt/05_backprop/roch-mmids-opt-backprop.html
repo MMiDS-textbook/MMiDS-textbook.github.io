@@ -1,13 +1,12 @@
 
-
 <!DOCTYPE html>
 
 
-<html data-content_root="" >
+<html lang="en" data-content_root="../../" >
 
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <title>6.5. Backpropagation and neural networks &#8212; MMiDS Textbook</title>
   
@@ -19,66 +18,69 @@
   </script>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="../../_static/styles/theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
-<link href="../../_static/styles/bootstrap.css?digest=5b4479735964841361fd" rel="stylesheet" />
-<link href="../../_static/styles/pydata-sphinx-theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+  <link href="../../_static/styles/theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
 
   
-  <link href="../../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=5b4479735964841361fd" rel="stylesheet" />
-  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+  <link href="../../_static/vendor/fontawesome/6.5.1/css/all.min.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.1/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.1/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.1/webfonts/fa-regular-400.woff2" />
 
-    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
-    <link rel="stylesheet" href="../../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b76e3c8a" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=384b581d" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css?v=be8a1c11" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../../_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css?v=0a3b3ea7" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=5b4479735964841361fd" />
-<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd" />
-  <script src="../../_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=5b4479735964841361fd"></script>
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae" />
+  <script src="../../_static/vendor/fontawesome/6.5.1/js/all.min.js?digest=8d27b9dea8ad943066ae"></script>
 
-    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
-    <script src="../../_static/jquery.js"></script>
-    <script src="../../_static/underscore.js"></script>
-    <script src="../../_static/doctools.js"></script>
-    <script src="../../_static/clipboard.min.js"></script>
-    <script src="../../_static/copybutton.js"></script>
-    <script src="../../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script src="../../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?v=efea14e4"></script>
     <script>let toggleHintShow = 'Click to show';</script>
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
-    <script src="../../_static/togglebutton.js"></script>
+    <script src="../../_static/togglebutton.js?v=4a39c7ea"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
-    <script src="../../_static/design-tabs.js"></script>
-    <script loading_method="async" src="https://www.googletagmanager.com/gtag/js?id=G-P5E8DW088F"></script>
+    <script src="../../_static/design-tabs.js?v=36754332"></script>
+    <script async="async" src="https://www.googletagmanager.com/gtag/js?id=G-P5E8DW088F"></script>
     <script>
                 window.dataLayer = window.dataLayer || [];
                 function gtag(){ dataLayer.push(arguments); }
                 gtag('js', new Date());
                 gtag('config', 'G-P5E8DW088F');
             </script>
-    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
-const thebe_selector = ".thebe,.cell"
-const thebe_selector_input = "pre"
-const thebe_selector_output = ".output, .cell_output"
-</script>
-    <script async="async" src="../../_static/sphinx-thebe.js"></script>
-    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){ dataLayer.push(arguments); }
+                gtag('js', new Date());
+                gtag('config', 'G-P5E8DW088F');
+            </script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
     <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'chap06_opt/05_backprop/roch-mmids-opt-backprop';</script>
     <link rel="canonical" href="https://mmids-textbook.github.io/chap06_opt/05_backprop/roch-mmids-opt-backprop.html" />
-    <link rel="shortcut icon" href="https://mmids-textbook.github.io/favicon-32x32.png"/>
+    <link rel="icon" href="https://mmids-textbook.github.io/favicon-32x32.png"/>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
     <link rel="next" title="6.6. More advanced material" href="../06_adv/roch-mmids-opt-adv.html" />
     <link rel="prev" title="6.4. Gradient descent and its convergence analysis" href="../04_gd/roch-mmids-opt-gd.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
-  <meta name="docsearch:language" content="None"/>
+  <meta name="docsearch:language" content="en"/>
   </head>
   
   
@@ -86,10 +88,9 @@ const thebe_selector_output = ".output, .cell_output"
 
   
   
-  <a class="skip-link" href="#main-content">Skip to main content</a>
+  <a id="pst-skip-link" class="skip-link" href="#main-content">Skip to main content</a>
   
   <div id="pst-scroll-pixel-helper"></div>
-
   
   <button type="button" class="btn rounded-pill" id="pst-back-to-top">
     <i class="fa-solid fa-arrow-up"></i>
@@ -130,11 +131,14 @@ const thebe_selector_output = ".output, .cell_output"
 </form></div>
   </div>
   
-    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
-    </nav>
+    <header class="bd-header navbar navbar-expand-lg bd-navbar">
+    </header>
   
+
   <div class="bd-container">
     <div class="bd-container__inner bd-page-width">
+      
+      
       
       <div class="bd-sidebar-primary bd-sidebar">
         
@@ -168,7 +172,18 @@ const thebe_selector_output = ".output, .cell_output"
   
   
 </a></div>
-        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
     <div class="bd-toc-item navbar-nav active">
         
         <ul class="nav bd-sidenav bd-sidenav__home-link">
@@ -458,14 +473,14 @@ document.write(`
               
                 
 <div id="searchbox"></div>
-                <article class="bd-article" role="main">
+                <article class="bd-article">
                   
   <p><span class="math notranslate nohighlight">\(\newcommand{\bfg}{\mathbf{g}}\)</span> <span class="math notranslate nohighlight">\(\newcommand{\bfh}{\mathbf{h}}\)</span> <span class="math notranslate nohighlight">\(\newcommand{\bgamma}{\boldsymbol{\gamma}}\)</span> <span class="math notranslate nohighlight">\(\newcommand{\bsigma}{\boldsymbol{\sigma}}\)</span></p>
 <section id="backpropagation-and-neural-networks">
-<h1><span class="section-number">6.5. </span>Backpropagation and neural networks<a class="headerlink" href="#backpropagation-and-neural-networks" title="Permalink to this headline">#</a></h1>
+<h1><span class="section-number">6.5. </span>Backpropagation and neural networks<a class="headerlink" href="#backpropagation-and-neural-networks" title="Link to this heading">#</a></h1>
 <p>We develop the basic mathematical foundations of automatic differentiation. We restrict ourselves to a special setting: multi-layer progressive functions. Many important classifiers take the form of a sequence of compositions where parameters are specific to each layer of composition. We show how to systematically apply the <em>Chain Rule</em> to such functions. We give examples in the next section.</p>
 <section id="progressive-functions">
-<h2><span class="section-number">6.5.1. </span>Progressive functions<a class="headerlink" href="#progressive-functions" title="Permalink to this headline">#</a></h2>
+<h2><span class="section-number">6.5.1. </span>Progressive functions<a class="headerlink" href="#progressive-functions" title="Link to this heading">#</a></h2>
 <p>We start with two important remarks:</p>
 <ol class="arabic simple">
 <li><p>A classifier <span class="math notranslate nohighlight">\(h\)</span> takes an input in <span class="math notranslate nohighlight">\(\mathbb{R}^d\)</span> and predicts one of <span class="math notranslate nohighlight">\(K\)</span> possible labels. It will be convenient for reasons that will become clear below to use <a class="reference external" href="https://en.wikipedia.org/wiki/One-hot">one-hot encoding</a> of the labels. That is, we encode label <span class="math notranslate nohighlight">\(i\)</span> as the <span class="math notranslate nohighlight">\(K\)</span>-dimensional vector <span class="math notranslate nohighlight">\(\mathbf{e}_i\)</span>. Here, as usual, <span class="math notranslate nohighlight">\(\mathbf{e}_i\)</span> the canonical basis of <span class="math notranslate nohighlight">\(\mathbb{R}^K\)</span>, i.e., the vector with a <span class="math notranslate nohighlight">\(1\)</span> in entry <span class="math notranslate nohighlight">\(i\)</span> and a <span class="math notranslate nohighlight">\(0\)</span> elsewhere. Furthermore, we allow the output of the classifier to be a probability distribution over the labels <span class="math notranslate nohighlight">\(\{1,\ldots,K\}\)</span>, that is, a vector in</p></li>
@@ -535,7 +550,7 @@ f_{\mathbf{x},\mathbf{y}}(\mathbf{w})
 <p>We seek to compute the gradient of <span class="math notranslate nohighlight">\(f_{\mathbf{x},\mathbf{y}}(\mathbf{w})\)</span> with respect to the parameters <span class="math notranslate nohighlight">\(\mathbf{w}\)</span> in order to apply a gradient descent method.</p>
 </section>
 <section id="applying-the-chain-rule">
-<h2><span class="section-number">6.5.2. </span>Applying the chain rule<a class="headerlink" href="#applying-the-chain-rule" title="Permalink to this headline">#</a></h2>
+<h2><span class="section-number">6.5.2. </span>Applying the chain rule<a class="headerlink" href="#applying-the-chain-rule" title="Link to this heading">#</a></h2>
 <p>Recall that the key insight from the <em>Chain Rule</em> is that to compute the gradient of a composition such as <span class="math notranslate nohighlight">\(h_{\mathbf{x}}(\mathbf{w})\)</span> - no matter how complex - it suffices to <em>separately</em> compute the Jacobians of the intervening functions and then take <em>matrix products</em>. In this section, we compute the necessary Jacobians in the progressive case. To simplify the notation, we drop the <span class="math notranslate nohighlight">\(\mathbf{x}\)</span> from <span class="math notranslate nohighlight">\(\mathcal{O}_{i,\mathbf{x}}\)</span> and <span class="math notranslate nohighlight">\(\mathcal{I}_{i,\mathbf{x}}\)</span>.</p>
 <p>The basic composition step is</p>
 <div class="math notranslate nohighlight">
@@ -639,7 +654,7 @@ I_{r_1 \times r_1}
 \end{align*}\]</div>
 </section>
 <section id="forward-and-backward-propagation">
-<h2><span class="section-number">6.5.3. </span>Forward and backward propagation<a class="headerlink" href="#forward-and-backward-propagation" title="Permalink to this headline">#</a></h2>
+<h2><span class="section-number">6.5.3. </span>Forward and backward propagation<a class="headerlink" href="#forward-and-backward-propagation" title="Link to this heading">#</a></h2>
 <p>We take advantage of the recursion above to compute the gradient of <span class="math notranslate nohighlight">\(h_{\mathbf{x}}\)</span>. There are two ways of doing this. Applying the recursion directly is one of them, but it requires many matrix-matrix products. The first few steps are</p>
 <div class="math notranslate nohighlight">
 \[
@@ -814,7 +829,7 @@ A_i &amp; B_i
 <p>Note that we do not in fact need to compute <span class="math notranslate nohighlight">\(A_1\)</span> and <span class="math notranslate nohighlight">\(\mathbf{p}_1\)</span>.</p>
 </section>
 <section id="a-simple-example-linear-regression">
-<h2><span class="section-number">6.5.4. </span>A simple example: linear regression<a class="headerlink" href="#a-simple-example-linear-regression" title="Permalink to this headline">#</a></h2>
+<h2><span class="section-number">6.5.4. </span>A simple example: linear regression<a class="headerlink" href="#a-simple-example-linear-regression" title="Link to this heading">#</a></h2>
 <p>We will give several concrete examples of progressive functions and of the application of the algorithmic differentiation method in this section and the next ones. We begin with a straighforward example: linear regression.</p>
 <p><strong>Computing the gradient</strong> While we have motivated the framework introduced in the previous section from the point of view of classification, it also immediately applies to the regression setting. Both classification and regression are instances of supervised learning.</p>
 <p>We first compute the gradient of a single sample. Here <span class="math notranslate nohighlight">\(\mathbf{x} \in \mathbb{R}^d\)</span> again, but <span class="math notranslate nohighlight">\(y\)</span> is a real-valued outcome variable. We revisit the case of linear regression where the loss function is</p>
@@ -915,86 +930,11 @@ p_2
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output text_html"><div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>Unnamed: 0</th>
-      <th>TV</th>
-      <th>radio</th>
-      <th>newspaper</th>
-      <th>sales</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>0</th>
-      <td>1</td>
-      <td>230.1</td>
-      <td>37.8</td>
-      <td>69.2</td>
-      <td>22.1</td>
-    </tr>
-    <tr>
-      <th>1</th>
-      <td>2</td>
-      <td>44.5</td>
-      <td>39.3</td>
-      <td>45.1</td>
-      <td>10.4</td>
-    </tr>
-    <tr>
-      <th>2</th>
-      <td>3</td>
-      <td>17.2</td>
-      <td>45.9</td>
-      <td>69.3</td>
-      <td>9.3</td>
-    </tr>
-    <tr>
-      <th>3</th>
-      <td>4</td>
-      <td>151.5</td>
-      <td>41.3</td>
-      <td>58.5</td>
-      <td>18.5</td>
-    </tr>
-    <tr>
-      <th>4</th>
-      <td>5</td>
-      <td>180.8</td>
-      <td>10.8</td>
-      <td>58.4</td>
-      <td>12.9</td>
-    </tr>
-  </tbody>
-</table>
-</div></div></div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">index</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>200
 </pre></div>
 </div>
 </div>
@@ -1019,21 +959,11 @@ p_2
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[ 2.93888937e+00  4.57646455e-02  1.88530017e-01 -1.03749304e-03]
-</pre></div>
-</div>
-</div>
 </div>
 <p>The MSE is:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">((</span><span class="n">A</span> <span class="o">@</span> <span class="n">coeff</span> <span class="o">-</span> <span class="n">sales</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2.784126314510936
 </pre></div>
 </div>
 </div>
@@ -1116,12 +1046,6 @@ p_2
 </div>
 </div>
 </details>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Weights: [[0.05266694 0.07949791 0.0914312 ]]
-Bias: [0.01747592]
-</pre></div>
-</div>
-</div>
 </div>
 <div class="cell tag_hide-input docutils container">
 <details class="hide above-input">
@@ -1139,20 +1063,15 @@ Bias: [0.01747592]
         <span class="n">loss</span> <span class="o">=</span> <span class="n">criterion</span><span class="p">(</span><span class="n">outputs</span><span class="p">,</span> <span class="n">targets</span><span class="p">)</span>
         <span class="n">total_loss</span> <span class="o">+=</span> <span class="n">loss</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
         
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Mean Squared Error on Training Set: </span><span class="si">{</span><span class="n">total_loss</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">train_loader</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Mean Squared Error on Training Set: </span><span class="si">{</span><span class="n">total_loss</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="nb">len</span><span class="p">(</span><span class="n">train_loader</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 </details>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Mean Squared Error on Training Set: 11.91701352596283
-</pre></div>
-</div>
-</div>
 </div>
 </section>
 <section id="a-detailed-example-multinomial-logistic-regression">
-<h2><span class="section-number">6.5.5. </span>A detailed example: multinomial logistic regression<a class="headerlink" href="#a-detailed-example-multinomial-logistic-regression" title="Permalink to this headline">#</a></h2>
+<h2><span class="section-number">6.5.5. </span>A detailed example: multinomial logistic regression<a class="headerlink" href="#a-detailed-example-multinomial-logistic-regression" title="Link to this heading">#</a></h2>
 <p>We give a second concrete example of progressive functions and of the application of the algorithmic differentiation method.</p>
 <p><strong>Kronecker product</strong> It will be convenient to introduce one more piece of matrix notation, the Kronecker product.</p>
 <p>Let <span class="math notranslate nohighlight">\(A = (a_{i,j})_{i \in [n], j \in [m]} \in \mathbb{R}^{n \times m}\)</span> and <span class="math notranslate nohighlight">\(B = (b_{i,j})_{i \in [p], j \in [q]} \in \mathbb{R}^{p \times q}\)</span> be arbitrary matrices. Their Kronecker product, denoted <span class="math notranslate nohighlight">\(A \otimes B\)</span>, is the following matrix in block form</p>
@@ -1643,11 +1562,6 @@ A_2
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Using device: cpu
-</pre></div>
-</div>
-</div>
 </div>
 <p>In PyTorch, composition of functions can be achieved with <a class="reference external" href="https://pytorch.org/docs/stable/generated/torch.nn.Sequential.html"><code class="docutils literal notranslate"><span class="pre">torch.nn.Sequential</span></code></a>. Our model is:</p>
 <div class="cell docutils container">
@@ -1736,11 +1650,6 @@ A_2
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Test error: 92.5% accuracy
-</pre></div>
-</div>
-</div>
 </div>
 <p>To make a prediction, we take a <a class="reference external" href="https://pytorch.org/docs/stable/generated/torch.nn.functional.softmax.html"><code class="docutils literal notranslate"><span class="pre">torch.nn.functional.softmax</span></code></a> of the output of our model. It transforms the output into a probability for each label. It is implicitly included in the cross-entropy loss, but is not actually part of the trained model. (Note that the softmax itself has no parameter.)</p>
 <p>As an illustration, we do this for each test image. We use <a class="reference external" href="https://pytorch.org/docs/stable/generated/torch.cat.html"><code class="docutils literal notranslate"><span class="pre">torch.cat</span></code></a> to concatenate a sequence of tensors into a single tensor.</p>
@@ -1772,21 +1681,10 @@ A_2
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[9.2074597e-06 5.1604848e-10 2.1939772e-05 3.1433867e-03 9.7864802e-07
- 3.5322639e-05 3.6109660e-09 9.9630898e-01 3.0729636e-05 4.4943468e-04]
-</pre></div>
-</div>
-</div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">predictions</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>7
 </pre></div>
 </div>
 </div>
@@ -1798,11 +1696,6 @@ A_2
 <span class="n">images</span> <span class="o">=</span> <span class="n">images</span><span class="o">.</span><span class="n">squeeze</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span>
 <span class="n">labels</span> <span class="o">=</span> <span class="n">labels</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span>
 <span class="n">labels</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>7
 </pre></div>
 </div>
 </div>
@@ -1872,9 +1765,6 @@ A_2
 </div>
 </div>
 </details>
-<div class="cell_output docutils container">
-<img alt="../../_images/fcfd343cd6f8e122079bf5307f34730fb41c3b7de0c3be2c62257a68db4ab476.png" src="../../_images/fcfd343cd6f8e122079bf5307f34730fb41c3b7de0c3be2c62257a68db4ab476.png" />
-</div>
 </div>
 <p>This one is a little less clear.</p>
 <div class="cell tag_hide-input docutils container">
@@ -1896,9 +1786,6 @@ A_2
 </div>
 </div>
 </details>
-<div class="cell_output docutils container">
-<img alt="../../_images/9db4900aad6b169153be76575dfb99e97b3fe164d9b0fc5a3d52f5457f88de05.png" src="../../_images/9db4900aad6b169153be76575dfb99e97b3fe164d9b0fc5a3d52f5457f88de05.png" />
-</div>
 </div>
 <p>This one is wrong.</p>
 <div class="cell tag_hide-input docutils container">
@@ -1920,13 +1807,10 @@ A_2
 </div>
 </div>
 </details>
-<div class="cell_output docutils container">
-<img alt="../../_images/5d0fd45c472e04d2a56955d5a056d1f4b87f0af0f1b1fa0d0706f42a757e089f.png" src="../../_images/5d0fd45c472e04d2a56955d5a056d1f4b87f0af0f1b1fa0d0706f42a757e089f.png" />
-</div>
 </div>
 </section>
 <section id="neural-networks">
-<h2><span class="section-number">6.5.6. </span>Neural networks<a class="headerlink" href="#neural-networks" title="Permalink to this headline">#</a></h2>
+<h2><span class="section-number">6.5.6. </span>Neural networks<a class="headerlink" href="#neural-networks" title="Link to this heading">#</a></h2>
 <blockquote class="twitter-tweet"><p lang="en" dir="ltr">Today&#39;s paper shows that it is possible to implement John Von Neumann&#39;s claim: &quot;With 4 parameters I can ﬁt an elephant, and with 5 I can make him wiggle his trunk&quot;<br><br>Paper here: <a href="https://t.co/SvVrLuRFNy">https://t.co/SvVrLuRFNy</a> <a href="https://t.co/VG37439vE7">pic.twitter.com/VG37439vE7</a></p>&mdash; Fermat&#39;s Library (@fermatslibrary) <a href="https://twitter.com/fermatslibrary/status/965971333422120962?ref_src=twsrc%5Etfw">February 20, 2018</a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script><p><strong>Figure:</strong> Feedforward neural networks generalize the previous progressive examples with the addition of an arbitrary number of layers (<a class="reference external" href="https://towardsdatascience.com/machine-learning-fundamentals-ii-neural-networks-f1e7b2cb3eef">Source</a>)</p>
 <p><img alt="Feedforward neural network" src="https://miro.medium.com/max/1166/1*DW0Ccmj1hZ0OvSXi7Kz5MQ.jpeg" /></p>
 <p><span class="math notranslate nohighlight">\(\bowtie\)</span></p>
@@ -2214,11 +2098,6 @@ A_{L+1}
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Test error: 94.2% accuracy
-</pre></div>
-</div>
-</div>
 </div>
 <p>This is a significantly more accurate model than what we obtained using multinomial logistic regression. One can do even better using a neural network tailored for images, known as <a class="reference external" href="https://cs231n.github.io/convolutional-networks/">convolutional neural networks</a>.</p>
 </section>
@@ -2281,6 +2160,7 @@ A_{L+1}
               
                 <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
 
+
   <div class="sidebar-secondary-item">
   <div class="page-toc tocsection onthispage">
     <i class="fa-solid fa-list"></i> Contents
@@ -2341,8 +2221,8 @@ By Sebastien Roch
   </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script src="../../_static/scripts/bootstrap.js?digest=5b4479735964841361fd"></script>
-<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd"></script>
+  <script src="../../_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae"></script>
 
   <footer class="bd-footer">
   </footer>

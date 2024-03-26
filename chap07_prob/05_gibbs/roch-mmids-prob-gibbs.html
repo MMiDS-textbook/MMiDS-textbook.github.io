@@ -1,13 +1,12 @@
 
-
 <!DOCTYPE html>
 
 
-<html data-content_root="" >
+<html lang="en" data-content_root="../../" >
 
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <title>7.5. Gibbs sampling with application to generating images &#8212; MMiDS Textbook</title>
   
@@ -19,66 +18,69 @@
   </script>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="../../_static/styles/theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
-<link href="../../_static/styles/bootstrap.css?digest=5b4479735964841361fd" rel="stylesheet" />
-<link href="../../_static/styles/pydata-sphinx-theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+  <link href="../../_static/styles/theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
 
   
-  <link href="../../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=5b4479735964841361fd" rel="stylesheet" />
-  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+  <link href="../../_static/vendor/fontawesome/6.5.1/css/all.min.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.1/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.1/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.1/webfonts/fa-regular-400.woff2" />
 
-    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
-    <link rel="stylesheet" href="../../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b76e3c8a" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=384b581d" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css?v=be8a1c11" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../../_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css?v=0a3b3ea7" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=5b4479735964841361fd" />
-<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd" />
-  <script src="../../_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=5b4479735964841361fd"></script>
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae" />
+  <script src="../../_static/vendor/fontawesome/6.5.1/js/all.min.js?digest=8d27b9dea8ad943066ae"></script>
 
-    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
-    <script src="../../_static/jquery.js"></script>
-    <script src="../../_static/underscore.js"></script>
-    <script src="../../_static/doctools.js"></script>
-    <script src="../../_static/clipboard.min.js"></script>
-    <script src="../../_static/copybutton.js"></script>
-    <script src="../../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script src="../../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?v=efea14e4"></script>
     <script>let toggleHintShow = 'Click to show';</script>
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
-    <script src="../../_static/togglebutton.js"></script>
+    <script src="../../_static/togglebutton.js?v=4a39c7ea"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
-    <script src="../../_static/design-tabs.js"></script>
-    <script loading_method="async" src="https://www.googletagmanager.com/gtag/js?id=G-P5E8DW088F"></script>
+    <script src="../../_static/design-tabs.js?v=36754332"></script>
+    <script async="async" src="https://www.googletagmanager.com/gtag/js?id=G-P5E8DW088F"></script>
     <script>
                 window.dataLayer = window.dataLayer || [];
                 function gtag(){ dataLayer.push(arguments); }
                 gtag('js', new Date());
                 gtag('config', 'G-P5E8DW088F');
             </script>
-    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
-const thebe_selector = ".thebe,.cell"
-const thebe_selector_input = "pre"
-const thebe_selector_output = ".output, .cell_output"
-</script>
-    <script async="async" src="../../_static/sphinx-thebe.js"></script>
-    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){ dataLayer.push(arguments); }
+                gtag('js', new Date());
+                gtag('config', 'G-P5E8DW088F');
+            </script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
     <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'chap07_prob/05_gibbs/roch-mmids-prob-gibbs';</script>
     <link rel="canonical" href="https://mmids-textbook.github.io/chap07_prob/05_gibbs/roch-mmids-prob-gibbs.html" />
-    <link rel="shortcut icon" href="https://mmids-textbook.github.io/favicon-32x32.png"/>
+    <link rel="icon" href="https://mmids-textbook.github.io/favicon-32x32.png"/>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
     <link rel="next" title="7.6. Other resources" href="../summary_chap07.html" />
     <link rel="prev" title="7.4. Linear-Gaussian models and Kalman filtering (under construction)" href="../04_kalman/roch-mmids-prob-kalman.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
-  <meta name="docsearch:language" content="None"/>
+  <meta name="docsearch:language" content="en"/>
   </head>
   
   
@@ -86,10 +88,9 @@ const thebe_selector_output = ".output, .cell_output"
 
   
   
-  <a class="skip-link" href="#main-content">Skip to main content</a>
+  <a id="pst-skip-link" class="skip-link" href="#main-content">Skip to main content</a>
   
   <div id="pst-scroll-pixel-helper"></div>
-
   
   <button type="button" class="btn rounded-pill" id="pst-back-to-top">
     <i class="fa-solid fa-arrow-up"></i>
@@ -130,11 +131,14 @@ const thebe_selector_output = ".output, .cell_output"
 </form></div>
   </div>
   
-    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
-    </nav>
+    <header class="bd-header navbar navbar-expand-lg bd-navbar">
+    </header>
   
+
   <div class="bd-container">
     <div class="bd-container__inner bd-page-width">
+      
+      
       
       <div class="bd-sidebar-primary bd-sidebar">
         
@@ -168,7 +172,18 @@ const thebe_selector_output = ".output, .cell_output"
   
   
 </a></div>
-        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
     <div class="bd-toc-item navbar-nav active">
         
         <ul class="nav bd-sidenav bd-sidenav__home-link">
@@ -455,14 +470,14 @@ document.write(`
               
                 
 <div id="searchbox"></div>
-                <article class="bd-article" role="main">
+                <article class="bd-article">
                   
   <p><span class="math notranslate nohighlight">\(\newcommand{\P}{\mathbb{P}}\)</span> <span class="math notranslate nohighlight">\(\newcommand{\E}{\mathbb{E}}\)</span> <span class="math notranslate nohighlight">\(\newcommand{\S}{\mathcal{S}}\)</span> <span class="math notranslate nohighlight">\(\newcommand{\var}{\mathrm{Var}}\)</span> <span class="math notranslate nohighlight">\(\newcommand{\bmu}{\boldsymbol{\mu}}\)</span> <span class="math notranslate nohighlight">\(\newcommand{\bSigma}{\boldsymbol{\Sigma}}\)</span> <span class="math notranslate nohighlight">\(\newcommand{\btheta}{\boldsymbol{\theta}}\)</span> <span class="math notranslate nohighlight">\(\newcommand{\bpi}{\boldsymbol{\pi}}\)</span> <span class="math notranslate nohighlight">\(\newcommand{\indep}{\perp\!\!\!\perp}\)</span> <span class="math notranslate nohighlight">\(\newcommand{\bp}{\mathbf{p}}\)</span> <span class="math notranslate nohighlight">\(\newcommand{\bx}{\mathbf{x}}\)</span> <span class="math notranslate nohighlight">\(\newcommand{\bX}{\mathbf{X}}\)</span> <span class="math notranslate nohighlight">\(\newcommand{\by}{\mathbf{y}}\)</span> <span class="math notranslate nohighlight">\(\newcommand{\bY}{\mathbf{Y}}\)</span> <span class="math notranslate nohighlight">\(\newcommand{\bz}{\mathbf{z}}\)</span> <span class="math notranslate nohighlight">\(\newcommand{\bZ}{\mathbf{Z}}\)</span> <span class="math notranslate nohighlight">\(\newcommand{\bw}{\mathbf{w}}\)</span> <span class="math notranslate nohighlight">\(\newcommand{\bW}{\mathbf{W}}\)</span> <span class="math notranslate nohighlight">\(\newcommand{\bv}{\mathbf{v}}\)</span> <span class="math notranslate nohighlight">\(\newcommand{\bV}{\mathbf{V}}\)</span> <span class="math notranslate nohighlight">\(\newcommand{\Z}{\mathcal{Z}}\)</span> <span class="math notranslate nohighlight">\(\newcommand{\bh}{\mathbf{h}}\)</span> <span class="math notranslate nohighlight">\(\newcommand{\bb}{\mathbf{b}}\)</span> <span class="math notranslate nohighlight">\(\newcommand{\bc}{\mathbf{c}}\)</span> <span class="math notranslate nohighlight">\(\newcommand{\cE}{\mathcal{E}}\)</span> <span class="math notranslate nohighlight">\(\newcommand{\cP}{\mathcal{P}}\)</span></p>
 <section id="gibbs-sampling-with-application-to-generating-images">
-<h1><span class="section-number">7.5. </span>Gibbs sampling with application to generating images<a class="headerlink" href="#gibbs-sampling-with-application-to-generating-images" title="Permalink to this headline">#</a></h1>
+<h1><span class="section-number">7.5. </span>Gibbs sampling with application to generating images<a class="headerlink" href="#gibbs-sampling-with-application-to-generating-images" title="Link to this heading">#</a></h1>
 <p>In this section, we derive an important application of Markov chains known as Markov Chain Monte Carlo (MCMC). We specialize it to Gibbs sampling and apply it to the generation of handwritten digits using a Restricted Boltzmann Machine (RBM).</p>
 <section id="markov-chain-monte-carlo-mcmc">
-<h2><span class="section-number">7.5.1. </span>Markov chain Monte Carlo (MCMC)<a class="headerlink" href="#markov-chain-monte-carlo-mcmc" title="Permalink to this headline">#</a></h2>
+<h2><span class="section-number">7.5.1. </span>Markov chain Monte Carlo (MCMC)<a class="headerlink" href="#markov-chain-monte-carlo-mcmc" title="Link to this heading">#</a></h2>
 <p>Suppose we are interested in generating samples from a target distribution <span class="math notranslate nohighlight">\(\bpi = (\pi_i)_{i \in \S}\)</span> over a set <span class="math notranslate nohighlight">\(\S\)</span>. We have done this before. For instance, we generated samples from a mixture of Gaussians to test <span class="math notranslate nohighlight">\(k\)</span>-means clustering in different dimensions. There are many more applications. A canonical one is to estimate the mean of a function <span class="math notranslate nohighlight">\(f\)</span> under <span class="math notranslate nohighlight">\(\bpi\)</span>: generate <span class="math notranslate nohighlight">\(n\)</span> independent samples <span class="math notranslate nohighlight">\(Z_1,\ldots,Z_n\)</span>, all distributed according to <span class="math notranslate nohighlight">\(\pi\)</span>, then compute</p>
 <div class="math notranslate nohighlight">
 \[
@@ -504,9 +519,6 @@ document.write(`
 </div>
 </div>
 </details>
-<div class="cell_output docutils container">
-<img alt="../../_images/eccae8a4a92a1a46a2add7c5da111c32c5ba76d3aaeb20ca5a51a5fdfa64f48d.png" src="../../_images/eccae8a4a92a1a46a2add7c5da111c32c5ba76d3aaeb20ca5a51a5fdfa64f48d.png" />
-</div>
 </div>
 <p>Computing the mean of each component we get:</p>
 <div class="cell docutils container">
@@ -515,20 +527,10 @@ document.write(`
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>-0.035322561120667575
-</pre></div>
-</div>
-</div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">y</span><span class="p">))</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>-0.009499619370100139
 </pre></div>
 </div>
 </div>
@@ -543,12 +545,6 @@ document.write(`
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>-0.0076273930440971215
--0.008874190869155479
-</pre></div>
-</div>
-</div>
 </div>
 <p><span class="math notranslate nohighlight">\(\unlhd\)</span></p>
 <p>Sampling from an arbitrary distribution on a finite set is also straightforward – as long as the set is not too big. This can be done using <a class="reference external" href="https://numpy.org/doc/stable/reference/random/generated/numpy.random.Generator.choice.html"><code class="docutils literal notranslate"><span class="pre">numpy.random.Generator.choice</span></code></a>. Borrowing the example from the documentation, the following:</p>
@@ -556,11 +552,6 @@ document.write(`
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">aa_milne_arr</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;pooh&#39;</span><span class="p">,</span> <span class="s1">&#39;rabbit&#39;</span><span class="p">,</span> <span class="s1">&#39;piglet&#39;</span><span class="p">,</span> <span class="s1">&#39;christopher&#39;</span><span class="p">]</span>
 <span class="n">rng</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">aa_milne_arr</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="n">p</span><span class="o">=</span><span class="p">[</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">])</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([&#39;pooh&#39;, &#39;pooh&#39;, &#39;piglet&#39;, &#39;christopher&#39;, &#39;piglet&#39;], dtype=&#39;&lt;U11&#39;)
 </pre></div>
 </div>
 </div>
@@ -616,20 +607,12 @@ document.write(`
 </div>
 </div>
 </details>
-<div class="cell_output docutils container">
-<img alt="../../_images/dafde0d5cc31c81ac3ea07e143e73e685808031febd46b8647841491e10cc3ce.png" src="../../_images/dafde0d5cc31c81ac3ea07e143e73e685808031febd46b8647841491e10cc3ce.png" />
-</div>
 </div>
 <p>It is <span class="math notranslate nohighlight">\(28 \times 28\)</span>, so the total number of pixels is <span class="math notranslate nohighlight">\(784\)</span>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">nx_pixels</span><span class="p">,</span> <span class="n">ny_pixels</span> <span class="o">=</span> <span class="n">imgs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span>
 <span class="n">nx_pixels</span><span class="p">,</span> <span class="n">ny_pixels</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(28, 28)
 </pre></div>
 </div>
 </div>
@@ -641,11 +624,6 @@ document.write(`
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>784
-</pre></div>
-</div>
-</div>
 </div>
 <p>To specify the a distribution over all possible black and white images of this size, we need in principle to assign a probability to a very large number of states. Our space here is <span class="math notranslate nohighlight">\(\S = \{0,1\}^{784}\)</span>, imagining that <span class="math notranslate nohighlight">\(0\)</span> encodes white and <span class="math notranslate nohighlight">\(1\)</span> encodes black and that we have ordered the pixels in some arbitrary way. How big is this space?</p>
 <p>Answer: <span class="math notranslate nohighlight">\(2^{784}\)</span>.</p>
@@ -653,11 +631,6 @@ document.write(`
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="mi">784</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>236.00751660056122
 </pre></div>
 </div>
 </div>
@@ -778,16 +751,6 @@ Similarly, it can be checked (try it!) that a move to <span class="math notransl
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[[0.75       0.25       0.         0.         0.         0.        ]
- [0.5        0.33333333 0.16666667 0.         0.         0.        ]
- [0.         0.5        0.375      0.125      0.         0.        ]
- [0.         0.         0.5        0.4        0.1        0.        ]
- [0.         0.         0.         0.5        0.41666667 0.08333333]
- [0.         0.         0.         0.         0.5        0.5       ]]
-</pre></div>
-</div>
-</div>
 </div>
 <p>We use our simulator from a previous chapter. We start from the uniform distribution and take <span class="math notranslate nohighlight">\(100\)</span> steps.</p>
 <div class="cell docutils container">
@@ -803,11 +766,6 @@ Similarly, it can be checked (try it!) that a move to <span class="math notransl
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">X</span><span class="p">[</span><span class="n">T</span><span class="p">]</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1.0
 </pre></div>
 </div>
 </div>
@@ -840,9 +798,6 @@ Similarly, it can be checked (try it!) that a move to <span class="math notransl
 </div>
 </div>
 </details>
-<div class="cell_output docutils container">
-<img alt="../../_images/3b02fae4f1a8dae6f7f3ef913bf7c18c78abcd4f2332dd9ff47934bf17357af1.png" src="../../_images/3b02fae4f1a8dae6f7f3ef913bf7c18c78abcd4f2332dd9ff47934bf17357af1.png" />
-</div>
 </div>
 <p>If we increase the parameter <span class="math notranslate nohighlight">\(\lambda\)</span> (which is not quite the mean; why?), we expect the sampled distribution to shift to the right. We must recompute the transition matrix first.</p>
 <div class="cell docutils container">
@@ -878,9 +833,6 @@ Similarly, it can be checked (try it!) that a move to <span class="math notransl
 </div>
 </div>
 </details>
-<div class="cell_output docutils container">
-<img alt="../../_images/0ffaef73823e6ec765a43037ca26b2af54b7a3ba76eda3be6e643c9587e09239.png" src="../../_images/0ffaef73823e6ec765a43037ca26b2af54b7a3ba76eda3be6e643c9587e09239.png" />
-</div>
 </div>
 <p><strong>TRY IT!</strong> Redo the simulations, but this time implement a general Metropolis-Hastings algorithm rather than specifying the transition matrix directly. That is, implement the algorithm for an arbitrary <span class="math notranslate nohighlight">\(\bpi\)</span> and <span class="math notranslate nohighlight">\(Q\)</span>. Assume the state space is <span class="math notranslate nohighlight">\([n]\)</span>. (<a class="reference external" href="https://colab.research.google.com/github/MMiDS-textbook/MMiDS-textbook.github.io/blob/main/just_the_code/roch_mmids_chap_prob_notebook.ipynb">Open in Colab</a>)</p>
 <p><span class="math notranslate nohighlight">\(\lhd\)</span></p>
@@ -925,7 +877,7 @@ P(y, x)
 <p>where we used the symmetry of <span class="math notranslate nohighlight">\(Q\)</span> to obtain the second equality. That establishes the reversibility of <span class="math notranslate nohighlight">\(P\)</span> and concludes the proof. <span class="math notranslate nohighlight">\(\square\)</span></p>
 </section>
 <section id="gibbs-sampling">
-<h2><span class="section-number">7.5.2. </span>Gibbs sampling<a class="headerlink" href="#gibbs-sampling" title="Permalink to this headline">#</a></h2>
+<h2><span class="section-number">7.5.2. </span>Gibbs sampling<a class="headerlink" href="#gibbs-sampling" title="Link to this heading">#</a></h2>
 <p>We have seen that one challenge of the Metropolis-Hastings approach is to choose a good proposal chain. Gibbs sampling is a canonical way of addressing this issue that has many applications. It applies in cases where the states are vectors, typically with a large number of coordinates, and where the target distribution has the kind of conditional independence properties we have encountered previously in this chapter.</p>
 <p><strong>General setting</strong> Here we will assume that <span class="math notranslate nohighlight">\(\S = \Z^d\)</span> where <span class="math notranslate nohighlight">\(\Z\)</span> is a finite set and <span class="math notranslate nohighlight">\(d\)</span> is the dimension. To emphasise that states are vectors, we will boldface letters, e.g., <span class="math notranslate nohighlight">\(\bx = (x_i)_{i=1}^d\)</span>, <span class="math notranslate nohighlight">\(\by = (y_i)_{i=1}^d\)</span>, etc., to denote them.</p>
 <p>We will need the following special notation. For a vector <span class="math notranslate nohighlight">\(\bx \in \Z^d\)</span> and an index <span class="math notranslate nohighlight">\(i \in [d]\)</span>, we write</p>
@@ -1043,9 +995,6 @@ have the <em>same denominator</em>. Their respective numerators on the other han
 </div>
 </div>
 </details>
-<div class="cell_output docutils container">
-<img alt="../../_images/3a41178260e7745bb28b0c3801aeb9940f113981f9150c5b339ec0156890d8a4.png" src="../../_images/3a41178260e7745bb28b0c3801aeb9940f113981f9150c5b339ec0156890d8a4.png" />
-</div>
 </div>
 <p>Fix a visible unit <span class="math notranslate nohighlight">\(i \in [m]\)</span>. For a pair <span class="math notranslate nohighlight">\((\bv, \bh)\)</span>, we denote by <span class="math notranslate nohighlight">\((\bv_{[i]}, \bh)\)</span> the same pair where coordinate <span class="math notranslate nohighlight">\(i\)</span> of <span class="math notranslate nohighlight">\(\bv\)</span> is flipped. Given every other variable, i.e., <span class="math notranslate nohighlight">\((\bv_{-i},\bh)\)</span>, and using a superscript <span class="math notranslate nohighlight">\(\text{v}\)</span> to indicate the probability of a visible unit, the conditional probability of <span class="math notranslate nohighlight">\(v_i\)</span> is</p>
 <div class="amsmath math notranslate nohighlight">
@@ -1153,7 +1102,7 @@ have the <em>same denominator</em>. Their respective numerators on the other han
 <p><span class="math notranslate nohighlight">\(\unlhd\)</span></p>
 </section>
 <section id="sampling-handwritten-digits-with-an-rbm">
-<h2><span class="section-number">7.5.3. </span>Sampling handwritten digits with an RBM<a class="headerlink" href="#sampling-handwritten-digits-with-an-rbm" title="Permalink to this headline">#</a></h2>
+<h2><span class="section-number">7.5.3. </span>Sampling handwritten digits with an RBM<a class="headerlink" href="#sampling-handwritten-digits-with-an-rbm" title="Link to this heading">#</a></h2>
 <p>We apply our Gibbs sampler to generating images. As mentioned previously, we use the MNIST dataset to learn a “realistic” distribution of handwritten digit images. Here the images are encoded by the visible units of an RBM. Then we sample from this model.</p>
 <p><strong>Trainging the model</strong> We first need to train the model on the data. We will not show how this is done here, but instead use <a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.neural_network.BernoulliRBM.html"><code class="docutils literal notranslate"><span class="pre">sklearn.neural_network.BernoulliRBM</span></code></a>. (Some details of how this training is done is provided <a class="reference external" href="https://scikit-learn.org/stable/modules/neural_networks_unsupervised.html#stochastic-maximum-likelihood-learning">here</a>.)</p>
 <div class="cell docutils container">
@@ -1200,12 +1149,6 @@ have the <em>same denominator</em>. Their respective numerators on the other han
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>BernoulliRBM(batch_size=50, learning_rate=0.02, n_components=100, n_iter=20,
-             random_state=535)
-</pre></div>
-</div>
-</div>
 </div>
 <p>We plot the learned weight matrix using a script <a class="reference external" href="https://scikit-learn.org/stable/auto_examples/neural_networks/plot_rbm_logistic_classification.html">adapted from here</a>. Each image shows the weights associated to all visible units by on hidden unit.</p>
 <div class="cell docutils container">
@@ -1238,20 +1181,12 @@ have the <em>same denominator</em>. Their respective numerators on the other han
 </div>
 </div>
 </details>
-<div class="cell_output docutils container">
-<img alt="../../_images/27cd0c01d3afb9747af2fc2255be6f94d88d9b5b129ee64eee9df8541e45840f.png" src="../../_images/27cd0c01d3afb9747af2fc2255be6f94d88d9b5b129ee64eee9df8541e45840f.png" />
-</div>
 </div>
 <p><strong>Back to Gibbs sampling</strong> We are ready to sample from the trained RBM. We extract the learned parameters from <code class="docutils literal notranslate"><span class="pre">rbm</span></code>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">W</span> <span class="o">=</span> <span class="n">rbm</span><span class="o">.</span><span class="n">components_</span>
 <span class="n">W</span><span class="o">.</span><span class="n">shape</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(100, 784)
 </pre></div>
 </div>
 </div>
@@ -1263,21 +1198,11 @@ have the <em>same denominator</em>. Their respective numerators on the other han
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(784,)
-</pre></div>
-</div>
-</div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">c</span> <span class="o">=</span> <span class="n">rbm</span><span class="o">.</span><span class="n">intercept_hidden_</span>
 <span class="n">c</span><span class="o">.</span><span class="n">shape</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(100,)
 </pre></div>
 </div>
 </div>
@@ -1303,9 +1228,6 @@ have the <em>same denominator</em>. Their respective numerators on the other han
 </div>
 </div>
 </details>
-<div class="cell_output docutils container">
-<img alt="../../_images/c56b4888129b9ff3fe8d68314f5af96d99f1ac565ad2cc41eeacd06c40ff5362.png" src="../../_images/c56b4888129b9ff3fe8d68314f5af96d99f1ac565ad2cc41eeacd06c40ff5362.png" />
-</div>
 </div>
 <p>To process all samples simultaneously, we make a small change to the code. We <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.reshape.html"><code class="docutils literal notranslate"><span class="pre">numpy.reshape</span></code></a>
 to make the offsets into column vectors, which are then automatically added to all columns of the resulting weighted sum.
@@ -1347,9 +1269,6 @@ to make the offsets into column vectors, which are then automatically added to a
 </div>
 </div>
 </details>
-<div class="cell_output docutils container">
-<img alt="../../_images/ac1c574fd066fd52b54fce688b61982f7a00d8a1c7d8cce82fd600b4aa50373b.png" src="../../_images/ac1c574fd066fd52b54fce688b61982f7a00d8a1c7d8cce82fd600b4aa50373b.png" />
-</div>
 </div>
 <p>After <span class="math notranslate nohighlight">\(10\)</span> steps, we already see shadows of digits appearing.</p>
 <div class="cell docutils container">
@@ -1372,9 +1291,6 @@ to make the offsets into column vectors, which are then automatically added to a
 </div>
 </div>
 </details>
-<div class="cell_output docutils container">
-<img alt="../../_images/1b18bbff6eb9a9da5dcabba7f3cc61287d7b4307427f31b0b151a3a2910e5858.png" src="../../_images/1b18bbff6eb9a9da5dcabba7f3cc61287d7b4307427f31b0b151a3a2910e5858.png" />
-</div>
 </div>
 <p>After <span class="math notranslate nohighlight">\(100\)</span> steps, the outcome is quite realistic.</p>
 <div class="cell docutils container">
@@ -1397,9 +1313,6 @@ to make the offsets into column vectors, which are then automatically added to a
 </div>
 </div>
 </details>
-<div class="cell_output docutils container">
-<img alt="../../_images/b2220ba1a596d4a402cce90eaa5e0f9a4b075c39bd834bf7e6b12dc57c88518f.png" src="../../_images/b2220ba1a596d4a402cce90eaa5e0f9a4b075c39bd834bf7e6b12dc57c88518f.png" />
-</div>
 </div>
 <p>RBMs can be stacked into <a class="reference external" href="https://en.wikipedia.org/wiki/Boltzmann_machine#Deep_Boltzmann_machine">deep probabilistic models</a>, similarly to what we encountered with neural networks.</p>
 </section>
@@ -1462,6 +1375,7 @@ to make the offsets into column vectors, which are then automatically added to a
               
                 <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
 
+
   <div class="sidebar-secondary-item">
   <div class="page-toc tocsection onthispage">
     <i class="fa-solid fa-list"></i> Contents
@@ -1519,8 +1433,8 @@ By Sebastien Roch
   </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script src="../../_static/scripts/bootstrap.js?digest=5b4479735964841361fd"></script>
-<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd"></script>
+  <script src="../../_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae"></script>
 
   <footer class="bd-footer">
   </footer>

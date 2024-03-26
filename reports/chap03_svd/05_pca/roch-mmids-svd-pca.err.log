@@ -1,0 +1,73 @@
+Traceback (most recent call last):
+  File "/opt/anaconda3/lib/python3.11/site-packages/jupyter_cache/executors/utils.py", line 58, in single_nb_execution
+    executenb(
+  File "/opt/anaconda3/lib/python3.11/site-packages/nbclient/client.py", line 1305, in execute
+    return NotebookClient(nb=nb, resources=resources, km=km, **kwargs).execute()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.11/site-packages/jupyter_core/utils/__init__.py", line 173, in wrapped
+    return loop.run_until_complete(inner)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.11/asyncio/base_events.py", line 653, in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.11/site-packages/nbclient/client.py", line 705, in async_execute
+    await self.async_execute_cell(
+  File "/opt/anaconda3/lib/python3.11/site-packages/nbclient/client.py", line 1058, in async_execute_cell
+    await self._check_raise_for_error(cell, cell_index, exec_reply)
+  File "/opt/anaconda3/lib/python3.11/site-packages/nbclient/client.py", line 914, in _check_raise_for_error
+    raise CellExecutionError.from_cell_and_msg(cell, exec_reply_content)
+nbclient.exceptions.CellExecutionError: An error occurred while executing the following cell:
+------------------
+fig, ax = plt.subplots()
+
+for i in range(n_clusters):
+    unique, counts = np.unique(year[assign == i], return_counts=True)
+    ax.bar(unique, counts, label=i)
+
+ax.set(xlim=(2001, 2007), xticks=np.arange(2002, 2007))
+ax.legend()
+plt.show()
+------------------
+
+
+[0;31m---------------------------------------------------------------------------[0m
+[0;31mAttributeError[0m                            Traceback (most recent call last)
+Cell [0;32mIn[20], line 8[0m
+[1;32m      5[0m     ax[38;5;241m.[39mbar(unique, counts, label[38;5;241m=[39mi)
+[1;32m      7[0m ax[38;5;241m.[39mset(xlim[38;5;241m=[39m([38;5;241m2001[39m, [38;5;241m2007[39m), xticks[38;5;241m=[39mnp[38;5;241m.[39marange([38;5;241m2002[39m, [38;5;241m2007[39m))
+[0;32m----> 8[0m ax[38;5;241m.[39mlegend()
+[1;32m      9[0m plt[38;5;241m.[39mshow()
+
+File [0;32m/opt/anaconda3/lib/python3.11/site-packages/matplotlib/axes/_axes.py:322[0m, in [0;36mAxes.legend[0;34m(self, *args, **kwargs)[0m
+[1;32m    204[0m [38;5;129m@_docstring[39m[38;5;241m.[39mdedent_interpd
+[1;32m    205[0m [38;5;28;01mdef[39;00m [38;5;21mlegend[39m([38;5;28mself[39m, [38;5;241m*[39margs, [38;5;241m*[39m[38;5;241m*[39mkwargs):
+[1;32m    206[0m [38;5;250m    [39m[38;5;124;03m"""[39;00m
+[1;32m    207[0m [38;5;124;03m    Place a legend on the Axes.[39;00m
+[1;32m    208[0m 
+[0;32m   (...)[0m
+[1;32m    320[0m [38;5;124;03m    .. plot:: gallery/text_labels_and_annotations/legend.py[39;00m
+[1;32m    321[0m [38;5;124;03m    """[39;00m
+[0;32m--> 322[0m     handles, labels, kwargs [38;5;241m=[39m mlegend[38;5;241m.[39m_parse_legend_args([[38;5;28mself[39m], [38;5;241m*[39margs, [38;5;241m*[39m[38;5;241m*[39mkwargs)
+[1;32m    323[0m     [38;5;28mself[39m[38;5;241m.[39mlegend_ [38;5;241m=[39m mlegend[38;5;241m.[39mLegend([38;5;28mself[39m, handles, labels, [38;5;241m*[39m[38;5;241m*[39mkwargs)
+[1;32m    324[0m     [38;5;28mself[39m[38;5;241m.[39mlegend_[38;5;241m.[39m_remove_method [38;5;241m=[39m [38;5;28mself[39m[38;5;241m.[39m_remove_legend
+
+File [0;32m/opt/anaconda3/lib/python3.11/site-packages/matplotlib/legend.py:1361[0m, in [0;36m_parse_legend_args[0;34m(axs, handles, labels, *args, **kwargs)[0m
+[1;32m   1357[0m     handles [38;5;241m=[39m [handle [38;5;28;01mfor[39;00m handle, label
+[1;32m   1358[0m                [38;5;129;01min[39;00m [38;5;28mzip[39m(_get_legend_handles(axs, handlers), labels)]
+[1;32m   1360[0m [38;5;28;01melif[39;00m [38;5;28mlen[39m(args) [38;5;241m==[39m [38;5;241m0[39m:  [38;5;66;03m# 0 args: automatically detect labels and handles.[39;00m
+[0;32m-> 1361[0m     handles, labels [38;5;241m=[39m _get_legend_handles_labels(axs, handlers)
+[1;32m   1362[0m     [38;5;28;01mif[39;00m [38;5;129;01mnot[39;00m handles:
+[1;32m   1363[0m         log[38;5;241m.[39mwarning(
+[1;32m   1364[0m             [38;5;124m"[39m[38;5;124mNo artists with labels found to put in legend.  Note that [39m[38;5;124m"[39m
+[1;32m   1365[0m             [38;5;124m"[39m[38;5;124martists whose label start with an underscore are ignored [39m[38;5;124m"[39m
+[1;32m   1366[0m             [38;5;124m"[39m[38;5;124mwhen legend() is called with no argument.[39m[38;5;124m"[39m)
+
+File [0;32m/opt/anaconda3/lib/python3.11/site-packages/matplotlib/legend.py:1291[0m, in [0;36m_get_legend_handles_labels[0;34m(axs, legend_handler_map)[0m
+[1;32m   1289[0m [38;5;28;01mfor[39;00m handle [38;5;129;01min[39;00m _get_legend_handles(axs, legend_handler_map):
+[1;32m   1290[0m     label [38;5;241m=[39m handle[38;5;241m.[39mget_label()
+[0;32m-> 1291[0m     [38;5;28;01mif[39;00m label [38;5;129;01mand[39;00m [38;5;129;01mnot[39;00m label[38;5;241m.[39mstartswith([38;5;124m'[39m[38;5;124m_[39m[38;5;124m'[39m):
+[1;32m   1292[0m         handles[38;5;241m.[39mappend(handle)
+[1;32m   1293[0m         labels[38;5;241m.[39mappend(label)
+
+[0;31mAttributeError[0m: 'int' object has no attribute 'startswith'
+

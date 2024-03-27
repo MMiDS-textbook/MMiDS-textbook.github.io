@@ -375,16 +375,15 @@ def spherical_gaussian(d, n, mu, sig):
     Parameters:
     - d (int): The dimensionality of the samples.
     - n (int): The number of samples to generate.
-    - mu (float or array-like): The mean of the distribution.
-    - sig (float or array-like): The standard deviation of the distribution.
+    - mu (float): The mean of the distribution.
+    - sig (float): The standard deviation of the distribution.
 
     Returns:
     - X (ndarray): An array of shape (n, d) containing the generated samples.
     """
-    rng = np.random.default_rng()
-    X = np.stack(
-        [mu + (sig ** 2) * rng.normal(0, 1, d) for _ in range(n)]
-    )
+
+    X = mu + sig * rng.normal(0,1,(n,d))
+    
     return X
 
 

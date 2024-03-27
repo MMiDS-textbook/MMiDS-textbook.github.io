@@ -483,14 +483,15 @@ document.write(`
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">two_mixed_clusters</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">w</span><span class="p">):</span>
     
     <span class="c1"># set parameters</span>
+    <span class="n">phi0</span> <span class="o">=</span> <span class="mf">0.5</span>
     <span class="n">phi1</span> <span class="o">=</span> <span class="mf">0.5</span>
-    <span class="n">phi2</span> <span class="o">=</span> <span class="mf">0.5</span>
-    <span class="n">mu1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(([</span><span class="n">w</span><span class="p">],</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">d</span><span class="o">-</span><span class="mi">1</span><span class="p">)))</span>
-    <span class="n">mu2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(([</span><span class="o">-</span><span class="n">w</span><span class="p">],</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">d</span><span class="o">-</span><span class="mi">1</span><span class="p">)))</span>
-    <span class="n">sigma1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">identity</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
-    <span class="n">sigma2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">identity</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
+    <span class="n">mu0</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(([</span><span class="n">w</span><span class="p">],</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">d</span><span class="o">-</span><span class="mi">1</span><span class="p">)))</span>
+    <span class="n">mu1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(([</span><span class="o">-</span><span class="n">w</span><span class="p">],</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">d</span><span class="o">-</span><span class="mi">1</span><span class="p">)))</span>
+    <span class="n">sig0</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="n">sig1</span> <span class="o">=</span> <span class="mi">1</span>
     
-    <span class="k">return</span> <span class="n">mmids</span><span class="o">.</span><span class="n">gmm2</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">phi1</span><span class="p">,</span> <span class="n">phi2</span><span class="p">,</span> <span class="n">mu1</span><span class="p">,</span> <span class="n">sigma1</span><span class="p">,</span> <span class="n">mu2</span><span class="p">,</span> <span class="n">sigma2</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">mmids</span><span class="o">.</span><span class="n">gmm2spherical</span><span class="p">(</span>
+        <span class="n">d</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">phi0</span><span class="p">,</span> <span class="n">phi1</span><span class="p">,</span> <span class="n">mu0</span><span class="p">,</span> <span class="n">sig0</span><span class="p">,</span> <span class="n">mu1</span><span class="p">,</span> <span class="n">sig1</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -514,14 +515,14 @@ document.write(`
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
 <span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">111</span><span class="p">,</span><span class="n">aspect</span><span class="o">=</span><span class="s1">&#39;equal&#39;</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">X</span><span class="p">[:,</span><span class="mi">0</span><span class="p">],</span> <span class="n">X</span><span class="p">[:,</span><span class="mi">1</span><span class="p">],</span> <span class="n">s</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">X</span><span class="p">[:,</span><span class="mi">0</span><span class="p">],</span> <span class="n">X</span><span class="p">[:,</span><span class="mi">1</span><span class="p">],</span> <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;x&#39;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
 </details>
 <div class="cell_output docutils container">
-<img alt="../../_images/da3f89d32f132ffc12106902e52e209041dd48a43d60c6305f9b0ed1a90488d7.png" src="../../_images/da3f89d32f132ffc12106902e52e209041dd48a43d60c6305f9b0ed1a90488d7.png" />
+<img alt="../../_images/3ef21bb6ff6ef76bc688cf891350de3f4db6dae04ef68512ce2097f6569a81af.png" src="../../_images/3ef21bb6ff6ef76bc688cf891350de3f4db6dae04ef68512ce2097f6569a81af.png" />
 </div>
 </div>
 <p>Let’s run <span class="math notranslate nohighlight">\(k\)</span>-means on this dataset using <span class="math notranslate nohighlight">\(k=2\)</span>. We use <code class="docutils literal notranslate"><span class="pre">kmeans()</span></code> from the <code class="docutils literal notranslate"><span class="pre">mmids.py</span></code> file.</p>
@@ -532,16 +533,16 @@ document.write(`
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1044.8267883490312
-208.5284166285488
-204.02397716710018
-204.02397716710018
-204.02397716710018
-204.02397716710018
-204.02397716710018
-204.02397716710018
-204.02397716710018
-204.02397716710018
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>668.8953106974277
+197.5013590808661
+197.5013590808661
+197.5013590808661
+197.5013590808661
+197.5013590808661
+197.5013590808661
+197.5013590808661
+197.5013590808661
+197.5013590808661
 </pre></div>
 </div>
 </div>
@@ -556,14 +557,14 @@ document.write(`
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
 <span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">111</span><span class="p">,</span><span class="n">aspect</span><span class="o">=</span><span class="s1">&#39;equal&#39;</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">X</span><span class="p">[:,</span><span class="mi">0</span><span class="p">],</span> <span class="n">X</span><span class="p">[:,</span><span class="mi">1</span><span class="p">],</span> <span class="n">c</span><span class="o">=</span><span class="n">assign</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">X</span><span class="p">[:,</span><span class="mi">0</span><span class="p">],</span> <span class="n">X</span><span class="p">[:,</span><span class="mi">1</span><span class="p">],</span> <span class="n">c</span><span class="o">=</span><span class="n">assign</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
 </details>
 <div class="cell_output docutils container">
-<img alt="../../_images/2e24150a4535101555ec6bb044b43d51d2f12cfd2488a0098aa5f838027a8642.png" src="../../_images/2e24150a4535101555ec6bb044b43d51d2f12cfd2488a0098aa5f838027a8642.png" />
+<img alt="../../_images/1e0c5741d24dfb21d03beac82ef725c95d676be5278083526aa39ad9f0539327.png" src="../../_images/1e0c5741d24dfb21d03beac82ef725c95d676be5278083526aa39ad9f0539327.png" />
 </div>
 </div>
 <p><strong>General dimension</strong> Let’s see what happens in higher dimension. We repeat our experiment with <span class="math notranslate nohighlight">\(d=1000\)</span>.</p>
@@ -585,14 +586,14 @@ document.write(`
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
 <span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">111</span><span class="p">,</span><span class="n">aspect</span><span class="o">=</span><span class="s1">&#39;equal&#39;</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">X</span><span class="p">[:,</span><span class="mi">0</span><span class="p">],</span> <span class="n">X</span><span class="p">[:,</span><span class="mi">1</span><span class="p">],</span> <span class="n">s</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">X</span><span class="p">[:,</span><span class="mi">0</span><span class="p">],</span> <span class="n">X</span><span class="p">[:,</span><span class="mi">1</span><span class="p">],</span> <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;x&#39;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
 </details>
 <div class="cell_output docutils container">
-<img alt="../../_images/d3d8acb864c1c549075fa351c93e51f01b6745dca7493a1acedf38f16cf9944f.png" src="../../_images/d3d8acb864c1c549075fa351c93e51f01b6745dca7493a1acedf38f16cf9944f.png" />
+<img alt="../../_images/f594c0ebc86244d7dda795d1826c7aaee776b6a10c569fff531018246134a531.png" src="../../_images/f594c0ebc86244d7dda795d1826c7aaee776b6a10c569fff531018246134a531.png" />
 </div>
 </div>
 <p>This dataset is in <span class="math notranslate nohighlight">\(1000\)</span> dimensions, but we’ve plotted the data in only the first two dimensions. If we plot in any two dimensions not including the first one instead, we see only one cluster.</p>
@@ -605,14 +606,14 @@ document.write(`
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
 <span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">111</span><span class="p">,</span><span class="n">aspect</span><span class="o">=</span><span class="s1">&#39;equal&#39;</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">X</span><span class="p">[:,</span><span class="mi">1</span><span class="p">],</span> <span class="n">X</span><span class="p">[:,</span><span class="mi">2</span><span class="p">],</span> <span class="n">s</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">X</span><span class="p">[:,</span><span class="mi">1</span><span class="p">],</span> <span class="n">X</span><span class="p">[:,</span><span class="mi">2</span><span class="p">],</span> <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;x&#39;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
 </details>
 <div class="cell_output docutils container">
-<img alt="../../_images/6fc577961eb437b3d2d4ec00b1c0594579f0fd9342c09ad8d704522ab0baaa54.png" src="../../_images/6fc577961eb437b3d2d4ec00b1c0594579f0fd9342c09ad8d704522ab0baaa54.png" />
+<img alt="../../_images/f9e50ab411a4a8e749e8335368e0713dcf6259ee6a836c9ecb10623822b0eb96.png" src="../../_images/f9e50ab411a4a8e749e8335368e0713dcf6259ee6a836c9ecb10623822b0eb96.png" />
 </div>
 </div>
 <p>Let’s see how <span class="math notranslate nohighlight">\(k\)</span>-means fares on this dataset.</p>
@@ -623,16 +624,16 @@ document.write(`
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>99518.03165136592
-99518.03165136592
-99518.03165136592
-99518.03165136592
-99518.03165136592
-99518.03165136592
-99518.03165136592
-99518.03165136592
-99518.03165136592
-99518.03165136592
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>98418.5301532705
+98374.72182396038
+98374.72182396038
+98374.72182396038
+98374.72182396038
+98374.72182396038
+98374.72182396038
+98374.72182396038
+98374.72182396038
+98374.72182396038
 </pre></div>
 </div>
 </div>
@@ -647,30 +648,33 @@ document.write(`
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
 <span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">111</span><span class="p">,</span><span class="n">aspect</span><span class="o">=</span><span class="s1">&#39;equal&#39;</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">X</span><span class="p">[:,</span><span class="mi">0</span><span class="p">],</span> <span class="n">X</span><span class="p">[:,</span><span class="mi">1</span><span class="p">],</span> <span class="n">c</span><span class="o">=</span><span class="n">assign</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">X</span><span class="p">[:,</span><span class="mi">0</span><span class="p">],</span> <span class="n">X</span><span class="p">[:,</span><span class="mi">1</span><span class="p">],</span> <span class="n">c</span><span class="o">=</span><span class="n">assign</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
 </details>
 <div class="cell_output docutils container">
-<img alt="../../_images/16b45015c9f8b119d29b31114bbdc8ac87ccc5e07068625074f2f0e710f33954.png" src="../../_images/16b45015c9f8b119d29b31114bbdc8ac87ccc5e07068625074f2f0e710f33954.png" />
+<img alt="../../_images/a7803e7d3fed474c53d7912fc505042d3fee5392c20e9c7f626fbdbd299a2155.png" src="../../_images/a7803e7d3fed474c53d7912fc505042d3fee5392c20e9c7f626fbdbd299a2155.png" />
 </div>
 </div>
 <p>Our attempt at clustering does not appear to have been successful. What happened? While these clusters are easy to tease apart <em>if we know to look at the first coordinate only</em>, in the full space the within-cluster and between-cluster distances become harder to distinguish: the noise overwhelms the signal.</p>
 <p>The function below plots the histograms of within-cluster and between-cluster distances for a sample of size <span class="math notranslate nohighlight">\(n\)</span> in <span class="math notranslate nohighlight">\(d\)</span> dimensions with a given offset. As <span class="math notranslate nohighlight">\(d\)</span> increases, the two distributions become increasingly indistinguishable. Later in the course, we will develop dimension-reduction techniques that help deal with this issue. This time, we need labeled data points, i.e., we need to know the component from which each data point comes from. For this purpose, we implement a variant of our previous mixture simulator. This one generates – separately – each Gaussian and concatenates the data. So the first <code class="docutils literal notranslate"><span class="pre">n</span></code> samples are from one component and the next <code class="docutils literal notranslate"><span class="pre">n</span></code> samples are from the other.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">one_cluster</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">w</span><span class="p">):</span>
-    <span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">stack</span><span class="p">(</span>
-        <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(([</span><span class="n">w</span><span class="p">],</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">d</span><span class="o">-</span><span class="mi">1</span><span class="p">)))</span> <span class="o">+</span> <span class="n">rng</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="n">d</span><span class="p">)</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">)]</span>
-    <span class="p">)</span>
-    <span class="k">return</span> <span class="n">X</span>
-
-<span class="k">def</span> <span class="nf">two_clusters</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">w</span><span class="p">):</span>
-    <span class="n">X1</span> <span class="o">=</span> <span class="n">one_cluster</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="o">-</span><span class="n">w</span><span class="p">)</span>
-    <span class="n">X2</span> <span class="o">=</span> <span class="n">one_cluster</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">w</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">X1</span><span class="p">,</span> <span class="n">X2</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">two_separated_clusters</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">w</span><span class="p">):</span>
+    
+    <span class="c1"># set parameters</span>
+    <span class="n">mu0</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(([</span><span class="n">w</span><span class="p">],</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">d</span><span class="o">-</span><span class="mi">1</span><span class="p">)))</span>
+    <span class="n">mu1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(([</span><span class="o">-</span><span class="n">w</span><span class="p">],</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">d</span><span class="o">-</span><span class="mi">1</span><span class="p">)))</span>
+    <span class="n">sig0</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="n">sig1</span> <span class="o">=</span> <span class="mi">1</span>
+    
+    <span class="c1"># generate samples</span>
+    <span class="n">X0</span> <span class="o">=</span> <span class="n">mmids</span><span class="o">.</span><span class="n">spherical_gaussian</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">mu0</span><span class="p">,</span> <span class="n">sig0</span><span class="p">)</span>
+    <span class="n">X1</span> <span class="o">=</span> <span class="n">mmids</span><span class="o">.</span><span class="n">spherical_gaussian</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">mu1</span><span class="p">,</span> <span class="n">sig1</span><span class="p">)</span>
+    
+    <span class="k">return</span> <span class="n">X0</span><span class="p">,</span> <span class="n">X1</span>
 </pre></div>
 </div>
 </div>
@@ -679,18 +683,18 @@ document.write(`
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">highdim_2clusters</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">w</span><span class="p">):</span>
     <span class="c1"># generate datasets</span>
-    <span class="n">X1</span><span class="p">,</span> <span class="n">X2</span> <span class="o">=</span> <span class="n">two_clusters</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">w</span><span class="p">)</span>
+    <span class="n">X0</span><span class="p">,</span> <span class="n">X1</span> <span class="o">=</span> <span class="n">two_separated_clusters</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">w</span><span class="p">)</span>
     
     <span class="c1"># within-cluster distances for X1</span>
     <span class="n">intra</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">stack</span><span class="p">(</span>
-        <span class="p">[</span><span class="n">LA</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">X1</span><span class="p">[</span><span class="n">i</span><span class="p">,:]</span> <span class="o">-</span> <span class="n">X1</span><span class="p">[</span><span class="n">j</span><span class="p">,:])</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">)</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">)</span> <span class="k">if</span> <span class="n">j</span><span class="o">&gt;</span><span class="n">i</span><span class="p">]</span>
+        <span class="p">[</span><span class="n">LA</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">X0</span><span class="p">[</span><span class="n">i</span><span class="p">,:]</span> <span class="o">-</span> <span class="n">X0</span><span class="p">[</span><span class="n">j</span><span class="p">,:])</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">)</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">)</span> <span class="k">if</span> <span class="n">j</span><span class="o">&gt;</span><span class="n">i</span><span class="p">]</span>
     <span class="p">)</span>
     <span class="n">plt</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">intra</span><span class="p">,</span> <span class="n">density</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;within-cluster&#39;</span><span class="p">)</span>
     <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;dim=</span><span class="si">{</span><span class="n">d</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
  
     <span class="c1"># between-cluster distances</span>
     <span class="n">inter</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">stack</span><span class="p">(</span>
-        <span class="p">[</span><span class="n">LA</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">X1</span><span class="p">[</span><span class="n">i</span><span class="p">,:]</span> <span class="o">-</span> <span class="n">X2</span><span class="p">[</span><span class="n">j</span><span class="p">,:])</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">)</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">)]</span>
+        <span class="p">[</span><span class="n">LA</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">X0</span><span class="p">[</span><span class="n">i</span><span class="p">,:]</span> <span class="o">-</span> <span class="n">X1</span><span class="p">[</span><span class="n">j</span><span class="p">,:])</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">)</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">)]</span>
     <span class="p">)</span>
     <span class="n">plt</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">inter</span><span class="p">,</span> <span class="n">density</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.75</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;between-cluster&#39;</span><span class="p">)</span>
 
@@ -714,7 +718,7 @@ document.write(`
 </div>
 </details>
 <div class="cell_output docutils container">
-<img alt="../../_images/ab8f5d05d6210a9d0a599594f170817d99cdd2416fc3ee47a612ff427b3c2c67.png" src="../../_images/ab8f5d05d6210a9d0a599594f170817d99cdd2416fc3ee47a612ff427b3c2c67.png" />
+<img alt="../../_images/2c2ec62f5ebfede744eee5afe86235a5d4b114f3be6082ae85f88a7fef3c97f8.png" src="../../_images/2c2ec62f5ebfede744eee5afe86235a5d4b114f3be6082ae85f88a7fef3c97f8.png" />
 </div>
 </div>
 <div class="cell tag_hide-input docutils container">
@@ -730,7 +734,7 @@ document.write(`
 </div>
 </details>
 <div class="cell_output docutils container">
-<img alt="../../_images/9c80901e691bdb76de01543bb83b277aaf6deae60116a150b3a1eadfdd3cd1dc.png" src="../../_images/9c80901e691bdb76de01543bb83b277aaf6deae60116a150b3a1eadfdd3cd1dc.png" />
+<img alt="../../_images/a5753fbbbdfc93643d48508fc0630f590973c9a151699e1238cee5b98fb939cd.png" src="../../_images/a5753fbbbdfc93643d48508fc0630f590973c9a151699e1238cee5b98fb939cd.png" />
 </div>
 </div>
 <div class="cell tag_hide-input docutils container">
@@ -746,7 +750,7 @@ document.write(`
 </div>
 </details>
 <div class="cell_output docutils container">
-<img alt="../../_images/92a3a5cbc9e19614b07c6ebd6a1a0345c9a0c47e06433e35626da4c88da878d2.png" src="../../_images/92a3a5cbc9e19614b07c6ebd6a1a0345c9a0c47e06433e35626da4c88da878d2.png" />
+<img alt="../../_images/cf818281ed093d3a4462dc4e3e61a6389ca5a518e14ef7863c0f5edc7f54d271.png" src="../../_images/cf818281ed093d3a4462dc4e3e61a6389ca5a518e14ef7863c0f5edc7f54d271.png" />
 </div>
 </div>
 <p>As the dimension increases, the distributions of intra-cluster and inter-cluster distances overlap significantly and become more or less indistinguishable. That provides some insights into why clustering may fail here. Note that we used the same offset for all simulations. On the other hand, if the separation between the clusters is sufficiently large, one would expect clustering to work even in high dimension.</p>
@@ -901,7 +905,7 @@ document.write(`
 </div>
 </details>
 <div class="cell_output docutils container">
-<img alt="../../_images/61c35952716dfd4d20174b823ba2a859a35df653cb30424311ac539ae7e43d73.png" src="../../_images/61c35952716dfd4d20174b823ba2a859a35df653cb30424311ac539ae7e43d73.png" />
+<img alt="../../_images/502219fb5f24e784b8b3a42e35f7c50b4cdf748701c437101cfd596cd393c976.png" src="../../_images/502219fb5f24e784b8b3a42e35f7c50b4cdf748701c437101cfd596cd393c976.png" />
 </div>
 </div>
 <p><span class="math notranslate nohighlight">\(\unlhd\)</span></p>
@@ -975,7 +979,7 @@ d(1-\varepsilon),d(1+\varepsilon)
 </div>
 </details>
 <div class="cell_output docutils container">
-<img alt="../../_images/4ad8acc45ebf00df5abb893f8fa95a16c172804e95e5197ce737c96ee2182d4b.png" src="../../_images/4ad8acc45ebf00df5abb893f8fa95a16c172804e95e5197ce737c96ee2182d4b.png" />
+<img alt="../../_images/ce081330a755ab8e24f42abd4d7e1c81100bc31de36f58ff8e02db83db59e72c.png" src="../../_images/ce081330a755ab8e24f42abd4d7e1c81100bc31de36f58ff8e02db83db59e72c.png" />
 </div>
 </div>
 <p>In higher dimension:</p>
@@ -992,7 +996,7 @@ d(1-\varepsilon),d(1+\varepsilon)
 </div>
 </details>
 <div class="cell_output docutils container">
-<img alt="../../_images/ef0e6920a8a699f687a0f2691d5c7b3e5b037e7708797748e466853978f8315a.png" src="../../_images/ef0e6920a8a699f687a0f2691d5c7b3e5b037e7708797748e466853978f8315a.png" />
+<img alt="../../_images/d6dc083b35d7de539c2b9ec0685b1cfa7aabca54f843a2aa57bd070e5f4407c5.png" src="../../_images/d6dc083b35d7de539c2b9ec0685b1cfa7aabca54f843a2aa57bd070e5f4407c5.png" />
 </div>
 </div>
 <p><span class="math notranslate nohighlight">\(\unlhd\)</span></p>

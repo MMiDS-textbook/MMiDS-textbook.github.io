@@ -1823,77 +1823,32 @@ let <span class="math notranslate nohighlight">\(\bmu \in \mathbb{R}^d\)</span> 
 </div>
 </div>
 <p><span class="math notranslate nohighlight">\(\unlhd\)</span></p>
-<p>A more general scaling produces a multivariate Gaussian.</p>
-<p><strong>DEFINITION</strong> <strong>(Multivariate Gaussian)</strong> Let <span class="math notranslate nohighlight">\(\mathbf{Z}\)</span> be a standard Normal <span class="math notranslate nohighlight">\(d\)</span>-vector,
-let <span class="math notranslate nohighlight">\(\bmu \in \mathbb{R}^d\)</span> and let <span class="math notranslate nohighlight">\(\bSigma \in \mathbb{R}^{d \times d}\)</span> be positive definite. Then we will refer to the transformed random variable <span class="math notranslate nohighlight">\(\mathbf{X} = \bmu + \bSigma \mathbf{Z}\)</span> as a multivariate Gaussian with mean <span class="math notranslate nohighlight">\(\bmu\)</span> and covariance matrix <span class="math notranslate nohighlight">\(\bSigma\)</span>. We use the notation <span class="math notranslate nohighlight">\(\mathbf{Z} \sim N_d(\bmu, \bSigma)\)</span>. <span class="math notranslate nohighlight">\(\natural\)</span></p>
-<p>Such random vectors can be simulated using <a class="reference external" href="https://numpy.org/doc/stable/reference/random/generated/numpy.random.Generator.multivariate_normal.html"><code class="docutils literal notranslate"><span class="pre">numpy.random.Generator.multivariate_normal</span></code></a>.</p>
-<p>To simulate datasets with an interesting structure, it will be useful to consider <a class="reference external" href="https://en.wikipedia.org/wiki/Mixture_model">mixtures</a> of multivariate Gaussians, also known as a Gaussian Mixture Model (GMM). To keep things simple, we will restrict ourselves to mixtures of <span class="math notranslate nohighlight">\(2\)</span> Gaussians, but this can easily be generalized.</p>
-<p>This model has a number of parameters. For <span class="math notranslate nohighlight">\(i=0,1\)</span>, we have a mean <span class="math notranslate nohighlight">\(\bmu_i \in \mathbb{R}^d\)</span> and a positive definite covariance matrix <span class="math notranslate nohighlight">\(\bSigma_i \in \mathbb{R}^{d \times d}\)</span>. We also have mixture weights <span class="math notranslate nohighlight">\(\phi_0, \phi_1 \in (0,1)\)</span> such that <span class="math notranslate nohighlight">\(\phi_0 + \phi_1 = 1\)</span>. Suppose we want to generate a total of <span class="math notranslate nohighlight">\(n\)</span> samples.</p>
+<p>More generally, we consider mixtures of spherical Gaussians, a special case of the Gaussian Mixture Model (GMM). To keep things simple, we will restrict ourselves to mixtures of <span class="math notranslate nohighlight">\(2\)</span> Gaussians, but this can easily be generalized.</p>
+<p>This model has a number of parameters. For <span class="math notranslate nohighlight">\(i=0,1\)</span>, we have a mean <span class="math notranslate nohighlight">\(\bmu_i \in \mathbb{R}^d\)</span> and a positive variance <span class="math notranslate nohighlight">\(\sigma_i \in \mathbb{R}^{d \times d}\)</span>. We also have mixture weights <span class="math notranslate nohighlight">\(\phi_0, \phi_1 \in (0,1)\)</span> such that <span class="math notranslate nohighlight">\(\phi_0 + \phi_1 = 1\)</span>. Suppose we want to generate a total of <span class="math notranslate nohighlight">\(n\)</span> samples.</p>
 <p>For each sample <span class="math notranslate nohighlight">\(j=1,\ldots, n\)</span>, independently from everything else:</p>
 <ol class="arabic simple">
 <li><p>We first pick a component <span class="math notranslate nohighlight">\(i \in \{0,1\}\)</span> at random according to the mixture weights, that is, <span class="math notranslate nohighlight">\(i=0\)</span> is chosen with probability <span class="math notranslate nohighlight">\(\phi_0\)</span> and <span class="math notranslate nohighlight">\(i=1\)</span> is chosen with probability <span class="math notranslate nohighlight">\(\phi_1\)</span>.</p></li>
-<li><p>We generate a sample <span class="math notranslate nohighlight">\(\bX_j = (X_{j,1},\ldots,X_{j,d})\)</span> according to a multivariate Gaussian with mean <span class="math notranslate nohighlight">\(\bmu_i\)</span> and covariance <span class="math notranslate nohighlight">\(\bSigma_i\)</span>.</p></li>
+<li><p>We generate a sample <span class="math notranslate nohighlight">\(\bX_j = (X_{j,1},\ldots,X_{j,d})\)</span> according to a spherical Gaussian with mean <span class="math notranslate nohighlight">\(\bmu_i\)</span> and variance <span class="math notranslate nohighlight">\(\sigma_i^2\)</span>.</p></li>
 </ol>
-<p><strong>NUMERICAL CORNER:</strong> This is straightforward to implement by using <a class="reference external" href="https://numpy.org/doc/stable/reference/random/generated/numpy.random.Generator.choice.html"><code class="docutils literal notranslate"><span class="pre">numpy.random.Generator.choice</span></code></a> to choose the component of each sample. For convenience, we will stack the means and covariances into one array with a new dimension. So, for instance, the covariance matrices will now be in a 3d-array, that is, an array with <span class="math notranslate nohighlight">\(3\)</span> indices. The first index corresponds to the component (here <span class="math notranslate nohighlight">\(0\)</span> or <span class="math notranslate nohighlight">\(1\)</span>). Here is an example (where we use <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.identity.html"><code class="docutils literal notranslate"><span class="pre">numpy.identity</span></code></a> to produce an identity matrix):</p>
+<p><strong>NUMERICAL CORNER:</strong> This is straightforward to implement by using <a class="reference external" href="https://numpy.org/doc/stable/reference/random/generated/numpy.random.Generator.choice.html"><code class="docutils literal notranslate"><span class="pre">numpy.random.Generator.choice</span></code></a> to choose the component of each sample.</p>
+<p>The code is the following. It returns an <code class="docutils literal notranslate"><span class="pre">d</span></code> by <code class="docutils literal notranslate"><span class="pre">n</span></code> array <code class="docutils literal notranslate"><span class="pre">X</span></code>, where each row is a sample from a 2-component spherical Gaussian mixture.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sigma1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">identity</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
-<span class="n">sigma2</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">identity</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
-<span class="n">sigma</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">stack</span><span class="p">((</span><span class="n">sigma1</span><span class="p">,</span><span class="n">sigma2</span><span class="p">))</span>
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">sigma</span><span class="p">[</span><span class="mi">0</span><span class="p">,:,:])</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[[1. 0.]
- [0. 1.]]
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">sigma</span><span class="p">[</span><span class="mi">1</span><span class="p">,:,:])</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[[0.5 0. ]
- [0.  0.5]]
-</pre></div>
-</div>
-</div>
-</div>
-<p>Here is a visualization borrowed from the <a class="reference external" href="https://www.tensorflow.org/guide/tensor#basics">TensorFlow tutorial</a>.</p>
-<p><strong>Figure:</strong> Three matrices (<a class="reference external" href="https://www.tensorflow.org/guide/tensor#basics">Source</a>)</p>
-<p><img alt="Three matrices" src="https://www.tensorflow.org/static/guide/images/tensor/3-axis_numpy.png" /></p>
-<p><span class="math notranslate nohighlight">\(\bowtie\)</span></p>
-<p><strong>Figure:</strong> Three matrices stacked into a 3d-array (<a class="reference external" href="https://www.tensorflow.org/guide/tensor#basics">Source</a>)</p>
-<p><img alt="Three matrices stacked into a tensor" src="https://www.tensorflow.org/static/guide/images/tensor/3-axis_front.png" /></p>
-<p><span class="math notranslate nohighlight">\(\bowtie\)</span></p>
-<p>The code is the following. It returns an <code class="docutils literal notranslate"><span class="pre">d</span></code> by <code class="docutils literal notranslate"><span class="pre">n</span></code> array <code class="docutils literal notranslate"><span class="pre">X</span></code>, where each row is a sample from a 2-component Gaussian mixture.</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">gmm2</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">phi1</span><span class="p">,</span> <span class="n">phi2</span><span class="p">,</span> <span class="n">mu1</span><span class="p">,</span> <span class="n">sigma1</span><span class="p">,</span> <span class="n">mu2</span><span class="p">,</span> <span class="n">sigma2</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">gmm2spherical</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">phi0</span><span class="p">,</span> <span class="n">phi1</span><span class="p">,</span> <span class="n">mu0</span><span class="p">,</span> <span class="n">sig0</span><span class="p">,</span> <span class="n">mu1</span><span class="p">,</span> <span class="n">sig1</span><span class="p">):</span>
     
-    <span class="c1"># merge components into tensors</span>
-    <span class="n">phi</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">stack</span><span class="p">((</span><span class="n">phi1</span><span class="p">,</span> <span class="n">phi2</span><span class="p">))</span>
-    <span class="n">mu</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">stack</span><span class="p">((</span><span class="n">mu1</span><span class="p">,</span> <span class="n">mu2</span><span class="p">))</span>
-    <span class="n">sigma</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">stack</span><span class="p">((</span><span class="n">sigma1</span><span class="p">,</span><span class="n">sigma2</span><span class="p">))</span>
+    <span class="c1"># merge components into matrices</span>
+    <span class="n">phi</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">stack</span><span class="p">((</span><span class="n">phi0</span><span class="p">,</span> <span class="n">phi1</span><span class="p">))</span>
+    <span class="n">mu</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">stack</span><span class="p">((</span><span class="n">mu0</span><span class="p">,</span> <span class="n">mu1</span><span class="p">))</span>
+    <span class="n">sig</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">stack</span><span class="p">((</span><span class="n">sig0</span><span class="p">,</span><span class="n">sig1</span><span class="p">))</span>
+    
+    <span class="c1"># initialization</span>
     <span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">n</span><span class="p">,</span><span class="n">d</span><span class="p">))</span>
     
     <span class="c1"># choose components of each data point, then generate samples</span>
-    <span class="n">component</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">n</span><span class="p">,</span> <span class="n">p</span><span class="o">=</span><span class="p">[</span><span class="n">phi1</span><span class="p">,</span> <span class="n">phi2</span><span class="p">])</span>
+    <span class="n">component</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">n</span><span class="p">,</span> <span class="n">p</span><span class="o">=</span><span class="n">phi</span><span class="p">)</span>
     <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
-        <span class="n">X</span><span class="p">[</span><span class="n">i</span><span class="p">,:]</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">multivariate_normal</span><span class="p">(</span>
-            <span class="n">mu</span><span class="p">[</span><span class="n">component</span><span class="p">[</span><span class="n">i</span><span class="p">],:],</span>
-            <span class="n">sigma</span><span class="p">[</span><span class="n">component</span><span class="p">[</span><span class="n">i</span><span class="p">],:,:])</span>
+        <span class="n">X</span><span class="p">[</span><span class="n">i</span><span class="p">,:]</span> <span class="o">=</span> <span class="n">spherical_gaussian</span><span class="p">(</span>
+            <span class="n">d</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">mu</span><span class="p">[</span><span class="n">component</span><span class="p">[</span><span class="n">i</span><span class="p">],:],</span> <span class="n">sig</span><span class="p">[</span><span class="n">component</span><span class="p">[</span><span class="n">i</span><span class="p">]])</span>
     
     <span class="k">return</span> <span class="n">X</span>
 </pre></div>
@@ -1904,19 +1859,19 @@ let <span class="math notranslate nohighlight">\(\bmu \in \mathbb{R}^d\)</span> 
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">d</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">w</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1000</span><span class="p">,</span> <span class="mf">3.</span>
+<span class="n">phi0</span> <span class="o">=</span> <span class="mf">0.1</span>
 <span class="n">phi1</span> <span class="o">=</span> <span class="mf">0.9</span>
-<span class="n">phi2</span> <span class="o">=</span> <span class="mf">0.1</span>
-<span class="n">mu1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(([</span><span class="n">w</span><span class="p">],</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">d</span><span class="o">-</span><span class="mi">1</span><span class="p">)))</span>
-<span class="n">mu2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(([</span><span class="o">-</span><span class="n">w</span><span class="p">],</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">d</span><span class="o">-</span><span class="mi">1</span><span class="p">)))</span>
-<span class="n">sigma1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">identity</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
-<span class="n">sigma2</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">identity</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
+<span class="n">mu0</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(([</span><span class="n">w</span><span class="p">],</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">d</span><span class="o">-</span><span class="mi">1</span><span class="p">)))</span>
+<span class="n">mu1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(([</span><span class="o">-</span><span class="n">w</span><span class="p">],</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">d</span><span class="o">-</span><span class="mi">1</span><span class="p">)))</span>
+<span class="n">sig0</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="n">sig1</span> <span class="o">=</span> <span class="mf">0.5</span>
 </pre></div>
 </div>
 </div>
 </div>
 <div class="cell tag_colab-keep docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">X</span> <span class="o">=</span> <span class="n">gmm2</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">phi1</span><span class="p">,</span> <span class="n">phi2</span><span class="p">,</span> <span class="n">mu1</span><span class="p">,</span> <span class="n">sigma1</span><span class="p">,</span> <span class="n">mu2</span><span class="p">,</span> <span class="n">sigma2</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">X</span> <span class="o">=</span> <span class="n">gmm2spherical</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">phi0</span><span class="p">,</span> <span class="n">phi1</span><span class="p">,</span> <span class="n">mu0</span><span class="p">,</span> <span class="n">sig0</span><span class="p">,</span> <span class="n">mu1</span><span class="p">,</span> <span class="n">sig1</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -1936,10 +1891,10 @@ let <span class="math notranslate nohighlight">\(\bmu \in \mathbb{R}^d\)</span> 
 </div>
 </details>
 <div class="cell_output docutils container">
-<img alt="../../_images/0b54d52af35a86c90dfe1e72edb74200a5f5c1e62baa3ad3587a038813bc884d.png" src="../../_images/0b54d52af35a86c90dfe1e72edb74200a5f5c1e62baa3ad3587a038813bc884d.png" />
+<img alt="../../_images/1ce50be75cce9c55d33ecd31e8cbec119ec910114b9b81737708fcda400ec216.png" src="../../_images/1ce50be75cce9c55d33ecd31e8cbec119ec910114b9b81737708fcda400ec216.png" />
 </div>
 </div>
-<p>As expected, we observe two clusters. The one on the right (component <span class="math notranslate nohighlight">\(0\)</span>) is denser (i.e., it contains more data points) since <code class="docutils literal notranslate"><span class="pre">phi0</span></code> is much larger than <code class="docutils literal notranslate"><span class="pre">phi1</span></code>. It is also larger as its variances (i.e., the diagonal entries of its covariance matrix) are larger.</p>
+<p>As expected, we observe two clusters. The one on the right (component <span class="math notranslate nohighlight">\(0\)</span>) is sparser (i.e., it contains fewer data points) since <code class="docutils literal notranslate"><span class="pre">phi0</span></code> is much smaller than <code class="docutils literal notranslate"><span class="pre">phi1</span></code>. It is also larger as its variance is larger.</p>
 <p><span class="math notranslate nohighlight">\(\unlhd\)</span></p>
 </section>
 </section>

@@ -964,7 +964,10 @@ DB
 = 0.
 \]</div>
 <p>That is, <span class="math notranslate nohighlight">\(\mathbf{v}_i\)</span> and <span class="math notranslate nohighlight">\(\mathbf{v}_j\)</span> are necessarily orthogonal.</p>
+<p>We proved:</p>
 <p><strong>LEMMA</strong> Let <span class="math notranslate nohighlight">\(A \in \mathbb{R}^{d \times d}\)</span> be symmetric. Suppose that <span class="math notranslate nohighlight">\(\mathbf{v}_i\)</span> and <span class="math notranslate nohighlight">\(\mathbf{v}_j\)</span> are eigenvectors corresponding to distinct eigenvalues. Then <span class="math notranslate nohighlight">\(\mathbf{v}_i\)</span> and <span class="math notranslate nohighlight">\(\mathbf{v}_j\)</span> are orthogonal. <span class="math notranslate nohighlight">\(\flat\)</span></p>
+<p>This lemma gives a different proof – in the symmetric case – that the number of eigenvalues is at most <span class="math notranslate nohighlight">\(d\)</span> since a list of pairwise orthogonal vectors are linearly independent.</p>
+<p>In fact:</p>
 <p><strong>THEOREM</strong> <strong>(Spectral Theorem)</strong> Let <span class="math notranslate nohighlight">\(A \in \mathbb{R}^{d \times d}\)</span> be a symmetric matrix, that is, <span class="math notranslate nohighlight">\(A^T = A\)</span>. Then <span class="math notranslate nohighlight">\(A\)</span> has <span class="math notranslate nohighlight">\(d\)</span> orthonormal eigenvectors <span class="math notranslate nohighlight">\(\mathbf{q}_1, \ldots, \mathbf{q}_d\)</span> with corresponding (not necessarily distinct) real eigenvalues <span class="math notranslate nohighlight">\(\lambda_1 \geq \lambda_2 \geq \cdots \geq \lambda_d\)</span>. Moreover, <span class="math notranslate nohighlight">\(A\)</span> can be written as the matrix factorization</p>
 <div class="math notranslate nohighlight">
 \[
@@ -982,7 +985,30 @@ A \mathbf{q}_j
 = \lambda_j \mathbf{q}_j, 
 \]</div>
 <p>where we used that, by orthonormality, <span class="math notranslate nohighlight">\(\mathbf{q}_i^T \mathbf{q}_j = 0\)</span> if <span class="math notranslate nohighlight">\(i \neq j\)</span> and <span class="math notranslate nohighlight">\(\mathbf{q}_i^T \mathbf{q}_j = 1\)</span> if <span class="math notranslate nohighlight">\(i = j\)</span>. The equation above says precisely that <span class="math notranslate nohighlight">\(\mathbf{q}_j\)</span> is an eigenvector of <span class="math notranslate nohighlight">\(A\)</span> with corresponding eigenvalue <span class="math notranslate nohighlight">\(\lambda_j\)</span>. Since we have found <span class="math notranslate nohighlight">\(d\)</span> eigenvalues (possibly with repetition), we have found all of them.</p>
-<p>It can be shown that the sequence of eigenvalues in the <em>Spectral Theorem</em> is unique, but that the eigenvectors are not. This will not play a role in our applications.</p>
+<p>Let <span class="math notranslate nohighlight">\(\lambda_1, \lambda_2, \ldots, \lambda_d\)</span> be the eigenvalues whose existence is guaranteed by the <em>Spectral Theorem</em>. We first argue that there is no other eigenvalue. Indeed, assume <span class="math notranslate nohighlight">\(\mu \neq \lambda_1, \lambda_2, \ldots, \lambda_d\)</span> is an eigenvalue with corresponding eigenvector <span class="math notranslate nohighlight">\(\mathbf{p}\)</span>. We have seen that <span class="math notranslate nohighlight">\(\mathbf{p}\)</span> is orthogonal to the eigenvectors <span class="math notranslate nohighlight">\(\mathbf{q}_1, \ldots, \mathbf{q}_d\)</span>. Since the latter list forms an orthonormal basis of <span class="math notranslate nohighlight">\(\mathbb{R}^d\)</span>, this cannot be the case and we have a contradiction.</p>
+<p>Some of the eigenvalues <span class="math notranslate nohighlight">\(\lambda_1, \lambda_2, \ldots, \lambda_d\)</span> can be repeated however, that is, there can be <span class="math notranslate nohighlight">\(i, j\)</span> such that <span class="math notranslate nohighlight">\(\lambda_{i} = \lambda_{j}\)</span>. For instance, if <span class="math notranslate nohighlight">\(A = I_{d \times d}\)</span> is the identity matrix, then the eigenvalues are <span class="math notranslate nohighlight">\(\lambda_i = 1\)</span> for all <span class="math notranslate nohighlight">\(i \in [d]\)</span>.</p>
+<p>For a fixed eigenvalue <span class="math notranslate nohighlight">\(\lambda\)</span> of <span class="math notranslate nohighlight">\(A\)</span>, the set of eigenvectors with eigenvalue <span class="math notranslate nohighlight">\(\lambda\)</span> satisfy</p>
+<div class="math notranslate nohighlight">
+\[
+A \mathbf{v} = \lambda \mathbf{v} = \lambda I_{d \times d} \mathbf{v}
+\]</div>
+<p>or, rearranging,</p>
+<div class="math notranslate nohighlight">
+\[
+(A - \lambda I_{d \times d})\mathbf{v} = \mathbf{0}.
+\]</div>
+<p>Put differently, it is the set <span class="math notranslate nohighlight">\(\mathrm{null}(A - \lambda I_{d \times d})\)</span>.</p>
+<p>The eigenvectors in the <em>Spectral Theorem</em> corresponding the same eigenvalue <span class="math notranslate nohighlight">\(\lambda\)</span> can be replaced by any orthonormal basis of the subspace <span class="math notranslate nohighlight">\(\mathrm{null}(A - \lambda I_{d \times d})\)</span>. But, beyond this freedom, we have the following characterization: let <span class="math notranslate nohighlight">\(\mu_1,\ldots,\mu_f\)</span> be the unique values in <span class="math notranslate nohighlight">\(\lambda_1, \lambda_2, \ldots, \lambda_d\)</span></p>
+<div class="math notranslate nohighlight">
+\[
+\mathbb{R}^d 
+= \mathrm{null}(A - \mu_1 I_{d \times d})
+\oplus \mathrm{null}(A - \mu_2 I_{d \times d})
+\oplus \cdots \oplus
+\mathrm{null}(A - \mu_f I_{d \times d}),
+\]</div>
+<p>where we used the fact that for any <span class="math notranslate nohighlight">\(\mathbf{u} \in \mathrm{null}(A - \mu_i I_{d \times d})\)</span> and <span class="math notranslate nohighlight">\(\mathbf{v} \in \mathrm{null}(A - \mu_j I_{d \times d})\)</span> with <span class="math notranslate nohighlight">\(i \neq j\)</span>, we have that <span class="math notranslate nohighlight">\(\mathbf{u}\)</span> is orthogonal to <span class="math notranslate nohighlight">\(\mathbf{v}\)</span>.</p>
+<p>We have shown in particular that the sequence of eigenvalues in the <em>Spectral Theorem</em> is unique (counting repeats).</p>
 <p><strong>The case of positive semidefinite matrices</strong> The eigenvalues of a symmetric matrix – while real – may be negative. There is however an important special case where the eigenvalues are nonnegative, positive semidefinite matrices.</p>
 <p><strong>THEOREM</strong> <strong>(Characterization of Positive Semidefiniteness)</strong> Let <span class="math notranslate nohighlight">\(A \in \mathbb{R}^{d \times d}\)</span> be a symmetric matrix and let <span class="math notranslate nohighlight">\(A = Q \Lambda Q^T\)</span> be a spectral decomposition of <span class="math notranslate nohighlight">\(A\)</span> with <span class="math notranslate nohighlight">\(\Lambda = \mathrm{diag}(\lambda_1, \ldots, \lambda_d)\)</span>. Then <span class="math notranslate nohighlight">\(A \succeq 0\)</span> if and only if its eigenvalues <span class="math notranslate nohighlight">\(\lambda_1, \ldots, \lambda_d\)</span> are nonnegative. <span class="math notranslate nohighlight">\(\sharp\)</span></p>
 <p><em>Proof:</em> Assume <span class="math notranslate nohighlight">\(A \succeq 0\)</span>. Let <span class="math notranslate nohighlight">\(\mathbf{q}_i\)</span> be an eigenvector of <span class="math notranslate nohighlight">\(A\)</span> with corresponding eigenvalue <span class="math notranslate nohighlight">\(\lambda_i\)</span>. Then</p>

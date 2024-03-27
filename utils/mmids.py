@@ -327,6 +327,8 @@ def pca(X, l, maxiter=100):
 
 def one_cluster(d, n, w):
     """
+    DEPRECATED: See spherical_gaussian
+    
     Generate a single cluster of data points.
 
     Parameters:
@@ -345,6 +347,8 @@ def one_cluster(d, n, w):
 
 def two_clusters(d, n, w):
     """
+    DEPRECATED: See two_separated_clusters
+    
     Generate two clusters of data points.
 
     Parameters:
@@ -363,38 +367,100 @@ def two_clusters(d, n, w):
 
 
 
-def gmm2(d, n, phi1, phi2, mu1, sigma1, mu2, sigma2):
+
+def spherical_gaussian(d, n, mu, sig):
     """
-    Generate samples from a Gaussian Mixture Model (GMM) with two components.
+    Generate samples from a spherical Gaussian distribution.
 
     Parameters:
     - d (int): The dimensionality of the samples.
     - n (int): The number of samples to generate.
-    - phi1 (float): The weight of the first component.
-    - phi2 (float): The weight of the second component.
-    - mu1 (array-like): The mean vector of the first component.
-    - sigma1 (array-like): The covariance matrix of the first component.
-    - mu2 (array-like): The mean vector of the second component.
-    - sigma2 (array-like): The covariance matrix of the second component.
+    - mu (float or array-like): The mean of the distribution.
+    - sig (float or array-like): The standard deviation of the distribution.
 
     Returns:
     - X (ndarray): An array of shape (n, d) containing the generated samples.
     """
+    rng = np.random.default_rng()
+    X = np.stack(
+        [mu + (sig ** 2) * rng.normal(0, 1, d) for _ in range(n)]
+    )
+    return X
 
-    # merge components into tensors
-    phi = np.stack((phi1, phi2))
-    mu = np.stack((mu1, mu2))
-    sigma = np.stack((sigma1, sigma2))
-    X = np.zeros((n, d))
 
+
+
+def gmm2spherical(d, n, phi0, phi1, mu0, sig0, mu1, sig1):
+    """
+    Generate samples from a Gaussian Mixture Model (GMM) with spherical Gaussian components.
+    
+    Parameters:
+    - d (int): The dimensionality of the samples.
+    - n (int): The number of samples to generate.
+    - phi0 (float): The weight of the first component.
+    - phi1 (float): The weight of the second component.
+    - mu0 (ndarray): The mean vector of the first component.
+    - sig0 (float): The standard deviation of the first component.
+    - mu1 (ndarray): The mean vector of the second component.
+    - sig1 (float): The standard deviation of the second component.
+    
+    Returns:
+    - X (ndarray): The generated samples, with shape (n, d).
+    """
+    
+    # merge components into matrices
+    phi = np.stack((phi0, phi1))
+    mu = np.stack((mu0, mu1))
+    sig = np.stack((sig0,sig1))
+    
+    # initialization
+    X = np.zeros((n,d))
+    
     # choose components of each data point, then generate samples
-    component = rng.choice(2, size=n, p=[phi1, phi2])
+    component = rng.choice(2, size=n, p=phi)
     for i in range(n):
-        X[i, :] = rng.multivariate_normal(
-            mu[component[i], :],
-            sigma[component[i], :, :]
-        )
+        X[i,:] = spherical_gaussian(
+            d, 1, mu[component[i],:], sig[component[i]])
+    
+    return X
 
+
+
+
+
+def gmm2(d, n, phi0, phi1, mu0, sigma0, mu1, sigma1):
+    """
+    Generate samples from a Gaussian Mixture Model (GMM) with 2 components.
+    
+    Parameters:
+    - d (int): The dimensionality of the samples.
+    - n (int): The number of samples to generate.
+    - phi0 (float): The mixing coefficient for component 0.
+    - phi1 (float): The mixing coefficient for component 1.
+    - mu0 (ndarray): The mean vector for component 0.
+    - sigma0 (ndarray): The covariance matrix for component 0.
+    - mu1 (ndarray): The mean vector for component 1.
+    - sigma1 (ndarray): The covariance matrix for component 1.
+    
+    Returns:
+    - X (ndarray): The generated samples, with shape (n, d).
+    """
+    
+    # merge components into tensors
+    phi = np.stack((phi0, phi1))
+    mu = np.stack((mu0, mu1))
+    sigma = np.stack((sigma0,sigma1))
+    
+    # initialization
+    X = np.zeros((n,d))
+    
+    # choose components of each data point, then generate samples
+    component = rng.choice(2, size=n, p=phi)
+    for i in range(n):
+        X[i,:] = rng.multivariate_normal(
+            mu[component[i],:],
+            sigma[component[i],:,:])
+    
     return X
 
 
@@ -404,23 +470,53 @@ def two_mixed_clusters(d, n, w):
     Generate a dataset with two mixed clusters.
 
     Parameters:
-    - d (int): The dimensionality of the data.
+    - d (int): The dimensionality of the dataset.
     - n (int): The number of data points to generate.
-    - w (float): The distance between the means of the two clusters.
+    - w (float): The separation between the two clusters.
 
     Returns:
-    - data (numpy.ndarray): The generated dataset with shape (n, d).
+    - ndarray: The generated dataset with shape (n, d).
     """
-
-    # set parameters
-    phi1 = 0.5
-    phi2 = 0.5
-    mu1 = np.concatenate(([w], np.zeros(d-1)))
-    mu2 = np.concatenate(([-w], np.zeros(d-1)))
-    sigma1 = np.identity(d)
-    sigma2 = np.identity(d)
     
-    return gmm2(d, n, phi1, phi2, mu1, sigma1, mu2, sigma2)
+    # set parameters
+    phi0 = 0.5
+    phi1 = 0.5
+    mu0 = np.concatenate(([w], np.zeros(d-1)))
+    mu1 = np.concatenate(([-w], np.zeros(d-1)))
+    sig0 = 1
+    sig1 = 1
+    
+    return gmm2spherical(
+        d, n, phi0, phi1, mu0, sig0, mu1, sig1)
+
+
+
+
+def two_separated_clusters(d, n, w):
+    """
+    Generate two separated clusters of samples in d-dimensional space.
+    
+    Parameters:
+        d (int): The dimensionality of the samples.
+        n (int): The number of samples to generate for each cluster.
+        w (float): The separation between the two clusters.
+        
+    Returns:
+        tuple: A tuple containing two arrays, X0 and X1, representing the samples
+               from the first and second clusters respectively.
+    """
+    
+    # set parameters
+    mu0 = np.concatenate(([w], np.zeros(d-1)))
+    mu1 = np.concatenate(([-w], np.zeros(d-1)))
+    sig0 = 1
+    sig1 = 1
+    
+    # generate samples
+    X0 = spherical_gaussian(d, n, mu0, sig0)
+    X1 = spherical_gaussian(d, n, mu1, sig1)
+    
+    return X0, X1
 
 
 

@@ -649,8 +649,8 @@ A = \sum_{j=1}^r \sigma_j \mathbf{u}_j \mathbf{v}_j^T
 <div><p>[…] let’s understand the central advantage of doing the projection to [the top <span class="math notranslate nohighlight">\(k\)</span> right singular vectors]. It is simply that for any reasonable (unknown) clustering of data points, the projection brings data points closer to their cluster centers.</p>
 </div></blockquote>
 <p>To elaborate, suppose we have <span class="math notranslate nohighlight">\(n\)</span> data points in <span class="math notranslate nohighlight">\(d\)</span> dimensions in the form of the rows <span class="math notranslate nohighlight">\(\mathbf{a}_i^T\)</span>, <span class="math notranslate nohighlight">\(i=1\ldots, n\)</span>, of matrix <span class="math notranslate nohighlight">\(A \in \mathbb{A}^{n \times d}\)</span>, where we assume that <span class="math notranslate nohighlight">\(n &gt; d\)</span> and that <span class="math notranslate nohighlight">\(A\)</span> has full column rank. Imagine these data points come from an unknown ground-truth <span class="math notranslate nohighlight">\(k\)</span>-clustering assignment <span class="math notranslate nohighlight">\(g(i) \in [k]\)</span>, <span class="math notranslate nohighlight">\(i = 1,\ldots, n\)</span>, with corresponding unknown centers <span class="math notranslate nohighlight">\(\mathbf{c}_j\)</span>, <span class="math notranslate nohighlight">\(j = 1,\ldots, k\)</span>, for <span class="math notranslate nohighlight">\(g(i) = j\)</span>. Let <span class="math notranslate nohighlight">\(C \in \mathbb{R}^{n \times d}\)</span> be the corresponding matrix, that is, row <span class="math notranslate nohighlight">\(i\)</span> of <span class="math notranslate nohighlight">\(C\)</span> is <span class="math notranslate nohighlight">\(\mathbf{c}_j^T\)</span> if <span class="math notranslate nohighlight">\(g(i) = j\)</span>. The <span class="math notranslate nohighlight">\(k\)</span>-means objective of the true clustering is then</p>
-<div class="amsmath math notranslate nohighlight" id="equation-6c9db09e-6c38-434f-b135-52b2187e67c2">
-<span class="eqno">(3.1)<a class="headerlink" href="#equation-6c9db09e-6c38-434f-b135-52b2187e67c2" title="Permalink to this equation">#</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-4c9ae595-ecb7-48bd-9e36-f736fe8353b7">
+<span class="eqno">()<a class="headerlink" href="#equation-4c9ae595-ecb7-48bd-9e36-f736fe8353b7" title="Permalink to this equation">#</a></span>\[\begin{align}
 \sum_{j\in [k]} \sum_{i:g(i)=j} \|\mathbf{a}_i - \mathbf{c}_{j}\|^2
 &amp;= \sum_{j\in [k]} \sum_{i:g(i)=j} \sum_{\ell=1}^d (a_{i,\ell} - c_{j,\ell})^2\\
 &amp;= \sum_{i=1}^n \sum_{\ell=1}^d (a_{i,\ell} - c_{g(i),\ell})^2\\
@@ -729,11 +729,11 @@ and let <span class="math notranslate nohighlight">\(A_k\)</span> be the truncat
 = 8k \|A - C\|_2^2. 
 \]</div>
 <p><span class="math notranslate nohighlight">\(\square\)</span></p>
-<p><strong>NUMERICAL CORNER:</strong> We return to our example with the two Gaussian clusters.</p>
+<p><strong>NUMERICAL CORNER:</strong> We return to our example with the two Gaussian clusters. We use again the function producing to separate clusters.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">d</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">w</span> <span class="o">=</span> <span class="mi">1000</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mf">3.</span>
-<span class="n">X1</span><span class="p">,</span> <span class="n">X2</span> <span class="o">=</span> <span class="n">mmids</span><span class="o">.</span><span class="n">two_clusters</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">w</span><span class="p">)</span>
+<span class="n">X1</span><span class="p">,</span> <span class="n">X2</span> <span class="o">=</span> <span class="n">mmids</span><span class="o">.</span><span class="n">two_separated_clusters</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">w</span><span class="p">)</span>
 <span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">X1</span><span class="p">,</span> <span class="n">X2</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -759,7 +759,7 @@ and let <span class="math notranslate nohighlight">\(A_k\)</span> be the truncat
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/52595586d2ecb6e9794a69eba7bde52ad47a34c3ebdfbf368b35205d7f7f8912.png" src="../../_images/52595586d2ecb6e9794a69eba7bde52ad47a34c3ebdfbf368b35205d7f7f8912.png" />
+<img alt="../../_images/1b58d5bf5661f5f58809e3c81a3e541d725c2a9eb629e8b47dc843192a4fa2c9.png" src="../../_images/1b58d5bf5661f5f58809e3c81a3e541d725c2a9eb629e8b47dc843192a4fa2c9.png" />
 </div>
 </div>
 <p>The <span class="math notranslate nohighlight">\(k\)</span>-means objective with respect to the true centers under the full-dimensional data is:</p>
@@ -771,7 +771,7 @@ and let <span class="math notranslate nohighlight">\(A_k\)</span> be the truncat
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>200925.66906818107
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>207858.78295079892
 </pre></div>
 </div>
 </div>
@@ -785,7 +785,7 @@ and let <span class="math notranslate nohighlight">\(A_k\)</span> be the truncat
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2095.357155856172
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>8451.57848715394
 </pre></div>
 </div>
 </div>
@@ -800,7 +800,7 @@ and let <span class="math notranslate nohighlight">\(A_k\)</span> be the truncat
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1525.437425631977
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>8355.199229386128
 </pre></div>
 </div>
 </div>

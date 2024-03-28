@@ -541,15 +541,41 @@ Z(\theta)
 \]</div>
 <p>and we can take <span class="math notranslate nohighlight">\(h(\mathbf{x}) = \frac{n!}{x_1!\cdots x_K!}\)</span>, <span class="math notranslate nohighlight">\(\btheta = (\log \pi_i)_{i=1}^K\)</span>, <span class="math notranslate nohighlight">\(\bphi(\mathbf{x}) = (x_i)_{i=1}^K\)</span> and <span class="math notranslate nohighlight">\(Z(\btheta) = 1\)</span>. This is an exponential family if we think of <span class="math notranslate nohighlight">\(n\)</span> as fixed.</p>
 <p>We use the notation <span class="math notranslate nohighlight">\(X \sim \mathrm{Mult}(n, \bpi)\)</span>. <span class="math notranslate nohighlight">\(\lhd\)</span></p>
-<p>While we have focused so far on discrete distributions, one can adapt the definitions above by replacing mass functions with density functions. We give two important examples. Recall that the <a class="reference external" href="https://en.wikipedia.org/wiki/Trace_(linear_algebra)">trace</a> of a square matrix <span class="math notranslate nohighlight">\(A\)</span>, denoted <span class="math notranslate nohighlight">\(\mathrm{tr}(A)\)</span>, is the sum of its diagonal entries.</p>
+<p>While we have focused so far on discrete distributions, one can adapt the definitions above by replacing mass functions with density functions. We give two important examples.</p>
+<p>We need some definitions for our first example.</p>
+<p>The <a class="reference external" href="https://en.wikipedia.org/wiki/Trace_(linear_algebra)">trace</a> of a square matrix <span class="math notranslate nohighlight">\(A \in \mathbb{R}^{d \times d}\)</span>, denoted <span class="math notranslate nohighlight">\(\mathrm{tr}(A)\)</span>, is the sum of its diagonal entries. We will need the following trace identity whose proof we leave as an exercise: <span class="math notranslate nohighlight">\(\mathrm{tr}(ABC) = \mathrm{tr}(CAB) = \mathrm{tr}(BCA)\)</span> for any matrices <span class="math notranslate nohighlight">\(A, B, C\)</span> for which <span class="math notranslate nohighlight">\(AB\)</span>, <span class="math notranslate nohighlight">\(BC\)</span> and <span class="math notranslate nohighlight">\(CA\)</span> are well-defined.</p>
+<p>The <a class="reference external" href="https://en.wikipedia.org/wiki/Determinant">determinant</a> of a square matrix <span class="math notranslate nohighlight">\(A\)</span> is denoted by <span class="math notranslate nohighlight">\(|A|\)</span>. For our purposes, it will be enough to consider symmetric, positive semidefinite matrices for which the determinant is the product of the eigenvalues. Recall that we proved that the sequence of eigenvalues (with repeats) of a symmetric matrix is unique (in the sense that any two spectral decomposition have the same sequence of eigenvalues).</p>
+<p>A symmetric, positive definite matrix <span class="math notranslate nohighlight">\(A \in \mathbb{R}^{d \times d}\)</span> is necessarily invertible. Indeed, it has a spectral decomposition</p>
+<div class="math notranslate nohighlight">
+\[
+A 
+= Q \Lambda Q^T
+= \sum_{i=1}^d \lambda_i \mathbf{q}_i \mathbf{q}_i^T
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(\lambda_1 \geq \cdots \geq \lambda_d &gt; 0\)</span> and <span class="math notranslate nohighlight">\(\mathbf{q}_1, \ldots, \mathbf{q}_d\)</span> are orthonormal. Then</p>
+<div class="math notranslate nohighlight">
+\[
+A^{-1} 
+= Q \Lambda^{-1} Q^T.
+\]</div>
+<p>To see this, note that</p>
+<div class="math notranslate nohighlight">
+\[
+A A^{-1}
+= Q \Lambda Q^T
+Q \Lambda^{-1} Q^T
+= Q Q^T
+= I_{d \times d}.
+\]</div>
+<p>The last equality follows from the fact that <span class="math notranslate nohighlight">\(Q Q^T\)</span> is the orthogonal projection on the orthonormal basis <span class="math notranslate nohighlight">\(\mathbf{q}_1,\ldots,\mathbf{q}_d\)</span>. Similarly, <span class="math notranslate nohighlight">\(A^{-1} A = I_{d \times d}\)</span>.</p>
 <p><strong>EXAMPLE:</strong> <strong>(Multivariate Gaussian)</strong> A multivariate Gaussian vector <span class="math notranslate nohighlight">\(\mathbf{X}\)</span> on <span class="math notranslate nohighlight">\(\mathbb{R}^d\)</span> with mean <span class="math notranslate nohighlight">\(\bmu \in \mathbb{R}^d\)</span> and positive definite covariance matrix <span class="math notranslate nohighlight">\(\bSigma \in \mathbb{R}^{d \times d}\)</span> has probability density function</p>
 <div class="math notranslate nohighlight">
 \[
 f_{\bmu, \bSigma}(\mathbf{x})
 = \frac{1}{(2\pi)^{d/2} \,|\bSigma|^{1/2}}
-\exp\left(-\frac{1}{2}(\mathbf{x} - \bmu)^T \bSigma^{-1} (\mathbf{x} - \bmu)\right)
+\exp\left(-\frac{1}{2}(\mathbf{x} - \bmu)^T \bSigma^{-1} (\mathbf{x} - \bmu)\right).
 \]</div>
-<p>where <span class="math notranslate nohighlight">\(|A|\)</span> is the <a class="reference external" href="https://en.wikipedia.org/wiki/Determinant">determinant</a> of <span class="math notranslate nohighlight">\(A\)</span>. We use the notation <span class="math notranslate nohighlight">\(\mathbf{X} \sim \mathcal{N}(\bmu, \bSigma)\)</span>.</p>
+<p>We use the notation <span class="math notranslate nohighlight">\(\mathbf{X} \sim N_d(\bmu, \bSigma)\)</span>.</p>
 <p><strong>Figure:</strong> Multivariate normal distribution (<a class="reference external" href="https://commons.wikimedia.org/wiki/File:Multivariate_Gaussian.png">Source</a>)</p>
 <p><img alt="Multivariate normal distribution" src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/57/Multivariate_Gaussian.png/640px-Multivariate_Gaussian.png" /></p>
 <p><span class="math notranslate nohighlight">\(\bowtie\)</span></p>
@@ -561,12 +587,10 @@ f_{\bmu, \bSigma}(\mathbf{x})
 \exp\left(- \mathbf{x}^T \bSigma^{-1}\bmu 
 - \frac{1}{2} \mathrm{tr}\left(\mathbf{x} \mathbf{x}^T \bSigma^{-1}\right)\right)
 \]</div>
-<p>where we used the symmetric of <span class="math notranslate nohighlight">\(\bSigma^{-1}\)</span> in the first term of the exponential and trace identity of the previous exercise in the second term. The expression in parentheses is linear in the entries of <span class="math notranslate nohighlight">\(\mathbf{x}\)</span> and <span class="math notranslate nohighlight">\(\mathbf{x} \mathbf{x}^T\)</span>, which can then be taken as  sufficient statistics (formally, using <a class="reference external" href="https://en.wikipedia.org/wiki/Vectorization_(mathematics)">vectorization</a>). This shows that the multivariate normal is an exponential family.</p>
-<p>Alternatively:</p>
-<p><strong>DEFINITION</strong> <strong>(Multivariate Gaussian)</strong> Let <span class="math notranslate nohighlight">\(\mathbf{Z}\)</span> be a standard Normal <span class="math notranslate nohighlight">\(d\)</span>-vector,
-let <span class="math notranslate nohighlight">\(\bmu \in \mathbb{R}^d\)</span> and let <span class="math notranslate nohighlight">\(\bSigma \in \mathbb{R}^{d \times d}\)</span> be positive definite. Then we will refer to the transformed random variable <span class="math notranslate nohighlight">\(\mathbf{X} = \bmu + \bSigma \mathbf{Z}\)</span> as a multivariate Gaussian with mean <span class="math notranslate nohighlight">\(\bmu\)</span> and covariance matrix <span class="math notranslate nohighlight">\(\bSigma\)</span>. We use the notation <span class="math notranslate nohighlight">\(\mathbf{Z} \sim N_d(\bmu, \bSigma)\)</span>. <span class="math notranslate nohighlight">\(\natural\)</span></p>
-<p><span class="math notranslate nohighlight">\(\lhd\)</span></p>
-<p>The <a class="reference external" href="https://en.wikipedia.org/wiki/Dirichlet_distribution">Dirichlet distribution</a>, which we describe next, is a natural probability distribution over probability distributions. In particular, it is used in <a class="reference external" href="https://en.wikipedia.org/wiki/Bayesian_statistics">Bayesian data analysis</a> as a prior on the parameters of categorical and multinomial distribution, largely because of a property known as <a class="reference external" href="https://en.wikipedia.org/wiki/Conjugate_prior">conjuguacy</a>.</p>
+<p>where we used the symmetric nature of <span class="math notranslate nohighlight">\(\bSigma^{-1}\)</span> in the first term of the exponential and the previous trace identity in the second term. The expression in parentheses is linear in the entries of <span class="math notranslate nohighlight">\(\mathbf{x}\)</span> and <span class="math notranslate nohighlight">\(\mathbf{x} \mathbf{x}^T\)</span>, which can then be taken as  sufficient statistics (formally, using <a class="reference external" href="https://en.wikipedia.org/wiki/Vectorization_(mathematics)">vectorization</a>). This shows that the multivariate normal is an exponential family.</p>
+<p>Alternatively, let <span class="math notranslate nohighlight">\(\mathbf{Z}\)</span> be a standard Normal <span class="math notranslate nohighlight">\(d\)</span>-vector,
+let <span class="math notranslate nohighlight">\(\bmu \in \mathbb{R}^d\)</span> and let <span class="math notranslate nohighlight">\(\bSigma \in \mathbb{R}^{d \times d}\)</span> be positive definite. Then the transformed random variable <span class="math notranslate nohighlight">\(\mathbf{X} = \bmu + \bSigma \mathbf{Z}\)</span> is a multivariate Gaussian with mean <span class="math notranslate nohighlight">\(\bmu\)</span> and covariance matrix <span class="math notranslate nohighlight">\(\bSigma\)</span>. This can be proved using the <a class="reference external" href="https://en.wikipedia.org/wiki/Probability_density_function#Function_of_random_variables_and_change_of_variables_in_the_probability_density_function">change of variables formula</a> (try it!). <span class="math notranslate nohighlight">\(\lhd\)</span></p>
+<p>The <a class="reference external" href="https://en.wikipedia.org/wiki/Dirichlet_distribution">Dirichlet distribution</a>, which we describe next, is a natural probability distribution over probability distributions. In particular, it is used in <a class="reference external" href="https://en.wikipedia.org/wiki/Bayesian_statistics">Bayesian data analysis</a> as a <a class="reference external" href="https://en.wikipedia.org/wiki/Prior_probability">prior</a> on the parameters of categorical and multinomial distribution, largely because of a property known as <a class="reference external" href="https://en.wikipedia.org/wiki/Conjugate_prior">conjuguacy</a>. We will not describe Bayesian approaches here.</p>
 <p><strong>EXAMPLE:</strong> <strong>(Dirichlet)</strong> The Dirichlet distribution is a distribution over the <span class="math notranslate nohighlight">\((K-1)\)</span>-simplex</p>
 <div class="math notranslate nohighlight">
 \[
@@ -590,7 +614,7 @@ f_{\balpha}(\mathbf{x})
 \]</div>
 <p>shows that this is an exponential family with the canonical parameters <span class="math notranslate nohighlight">\(\balpha\)</span> and sufficient statistics <span class="math notranslate nohighlight">\((\log x_i)_{i=1}^K\)</span>. <span class="math notranslate nohighlight">\(\lhd\)</span></p>
 <p>See <a class="reference external" href="https://en.wikipedia.org/wiki/Exponential_family#Table_of_distributions">here</a> for many more examples. Observe, in particular, that the same distribution can have several representations as an exponential family.</p>
-<p><strong>NUMERICAL CORNER</strong> In Numpy, the module <a class="reference external" href="https://numpy.org/doc/stable/reference/random/index.html">numpy.random</a> provides a way to sample from a variety of standard distributions. We first initialize the <a class="reference external" href="https://en.wikipedia.org/wiki/Pseudorandom_number_generator">pseudorandom number generator</a> with a <a class="reference external" href="https://en.wikipedia.org/wiki/Random_seed">random seed</a>. In particular it allows the results to be reproducible: using the same seed produces the same results again.</p>
+<p><strong>NUMERICAL CORNER</strong> In Numpy, as we have seen before, the module <a class="reference external" href="https://numpy.org/doc/stable/reference/random/index.html">numpy.random</a> provides a way to sample from a variety of standard distributions. We first initialize the <a class="reference external" href="https://en.wikipedia.org/wiki/Pseudorandom_number_generator">pseudorandom number generator</a> with a <a class="reference external" href="https://en.wikipedia.org/wiki/Random_seed">random seed</a>. Recall that it allows the results to be reproducible: using the same seed produces the same results again.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">seed</span> <span class="o">=</span> <span class="mi">535</span>
@@ -599,12 +623,17 @@ f_{\balpha}(\mathbf{x})
 </div>
 </div>
 </div>
-<p>We then set the distribution and its parameters. Here’s are lists of available <a class="reference external" href="https://numpy.org/doc/stable/reference/random/generator.html#distributions">probability distributions</a>.</p>
+<p>Here’s are lists of available <a class="reference external" href="https://numpy.org/doc/stable/reference/random/generator.html#distributions">probability distributions</a>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">p</span> <span class="o">=</span> <span class="mf">0.1</span> <span class="c1"># probability of success</span>
 <span class="n">N</span> <span class="o">=</span> <span class="mi">5</span> <span class="c1"># number of samples</span>
-<span class="n">rng</span><span class="o">.</span><span class="n">binomial</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">p</span><span class="p">,</span><span class="n">size</span><span class="o">=</span><span class="n">N</span><span class="p">)</span> <span class="c1"># Bernoulli is special case of binomial with 1 trial</span>
+<span class="n">rng</span><span class="o">.</span><span class="n">binomial</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">N</span><span class="p">)</span> <span class="c1"># Bernoulli is special case of binomial with 1 trial</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([1, 0, 0, 0, 0])
 </pre></div>
 </div>
 </div>
@@ -614,7 +643,16 @@ f_{\balpha}(\mathbf{x})
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">p</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.7</span><span class="p">]</span>
 <span class="n">n</span> <span class="o">=</span> <span class="mi">100</span>
-<span class="n">rng</span><span class="o">.</span><span class="n">multinomial</span><span class="p">(</span><span class="n">n</span><span class="p">,</span><span class="n">p</span><span class="p">,</span><span class="n">size</span><span class="o">=</span><span class="n">N</span><span class="p">)</span>
+<span class="n">rng</span><span class="o">.</span><span class="n">multinomial</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">N</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([[ 9, 12, 79],
+       [ 5, 20, 75],
+       [13, 18, 69],
+       [ 8, 18, 74],
+       [ 8, 24, 68]])
 </pre></div>
 </div>
 </div>
@@ -623,7 +661,16 @@ f_{\balpha}(\mathbf{x})
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">mu</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.1</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.3</span><span class="p">])</span>
 <span class="n">sig</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mf">2.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">],[</span><span class="mf">0.</span><span class="p">,</span> <span class="mf">3.</span><span class="p">]])</span>
-<span class="n">rng</span><span class="o">.</span><span class="n">multivariate_normal</span><span class="p">(</span><span class="n">mu</span><span class="p">,</span><span class="n">sig</span><span class="p">,</span><span class="n">size</span><span class="o">=</span><span class="n">N</span><span class="p">)</span>
+<span class="n">rng</span><span class="o">.</span><span class="n">multivariate_normal</span><span class="p">(</span><span class="n">mu</span><span class="p">,</span> <span class="n">sig</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">N</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([[-0.7275232 ,  2.66555155],
+       [ 0.45641186, -2.65834344],
+       [ 1.13188325,  0.43920735],
+       [ 0.69846716,  2.49891659],
+       [ 0.91725117,  1.89618733]])
 </pre></div>
 </div>
 </div>

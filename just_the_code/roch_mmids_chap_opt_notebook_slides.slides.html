@@ -14389,7 +14389,7 @@ div.jp-OutputPrompt {
 <p><em>Course:</em> <a href="https://people.math.wisc.edu/~roch/mmids/">Math 535</a> - Mathematical Methods in Data Science (MMiDS)<br>
 <em>Chapter:</em> 6-Optimization theory and algorithms<br>
 <em>Author:</em> <a href="https://people.math.wisc.edu/~roch/">Sebastien Roch</a>, Department of Mathematics, University of Wisconsin-Madison<br>
-<em>Updated:</em> March 4, 2024<br>
+<em>Updated:</em> April 12, 2024<br>
 <em>Copyright:</em> &copy; 2024 Sebastien Roch</p>
 <hr>
 
@@ -15094,8 +15094,8 @@ tensor(1.)
 
 
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
-<pre>tensor([[16.2794],
-        [26.0920]])
+<pre>tensor([[ 2.1983],
+        [40.7574]])
 </pre>
 </div>
 </div>
@@ -16447,7 +16447,7 @@ b_i - \sigma(\boldsymbol{\alpha}_i^T \mathbf{x})
 </div></div></section></section><section><section>
 <div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput  celltag_colab-keep" data-mime-type="text/markdown">
-<p>To implement this formula below, it will be useful to re-write it in terms of the matrix representation $A \in \mathbb{R}^{n \times d}$ (which has rows $\boldsymbol{\alpha}_i^T$, $i = 1,\ldots, n$) and $\mathbf{b} = (b_1, \ldots, b_n) \in \{0,1\}^n$. Let $\bsigma : \mathbb{R}^n \to \mathbb{R}$ be the vector-valued function that applies the sigmoid $\sigma$ entry-wise, i.e., $\bsigma(\mathbf{z}) = (\sigma(z_1),\ldots,\sigma(z_n))$ where $\mathbf{z} = (z_1,\ldots,z_n)$. Thinking of $\sum_{i=1}^n (b_i - \sigma(\boldsymbol{\alpha}_i^T \mathbf{x})\,\boldsymbol{\alpha}_i$ as a linear combination of the columns of $A$ with coefficients being the entries of the vector $\mathbf{b} - \bsigma(A \mathbf{x})$, we that</p>
+<p>To implement this formula below, it will be useful to re-write it in terms of the matrix representation $A \in \mathbb{R}^{n \times d}$ (which has rows $\boldsymbol{\alpha}_i^T$, $i = 1,\ldots, n$) and $\mathbf{b} = (b_1, \ldots, b_n) \in \{0,1\}^n$. Let $\bsigma : \mathbb{R}^n \to \mathbb{R}$ be the vector-valued function that applies the sigmoid $\sigma$ entry-wise, i.e., $\bsigma(\mathbf{z}) = (\sigma(z_1),\ldots,\sigma(z_n))$ where $\mathbf{z} = (z_1,\ldots,z_n)$. Thinking of $\sum_{i=1}^n (b_i - \sigma(\boldsymbol{\alpha}_i^T \mathbf{x})\,\boldsymbol{\alpha}_i$ as a linear combination of the columns of $A^T$ with coefficients being the entries of the vector $\mathbf{b} - \bsigma(A \mathbf{x})$, we that</p>
 $$
 \nabla\ell(\mathbf{x}; A, \mathbf{b})
 = - \frac{1}{n} \sum_{i=1}^n (
@@ -16459,12 +16459,12 @@ $$
 </div></section></section><section><section>
 <div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput  celltag_colab-keep" data-mime-type="text/markdown">
-<p>We turn to the Hessian. By symmetry, we can think of the $j$-th column of the Hessian as the gradient of the partial derivative with respect to $x_j$. We note that, for $\boldsymbol{\alpha} = (\alpha_{1}, \ldots, \alpha_{d})  \in \mathbb{R}^d$,</p>
+<p>We turn to the Hessian. By symmetry, we can think of the $j$-th column of the Hessian as the gradient of the partial derivative with respect to $x_j$. Hence we start by computing the gradient of the $j$-th entry of the summands in the gradient of $\ell$. We note that, for $\boldsymbol{\alpha} = (\alpha_{1}, \ldots, \alpha_{d})  \in \mathbb{R}^d$,</p>
 $$
 \nabla [(b - \sigma(\boldsymbol{\alpha}^T \mathbf{x}))\, \alpha_{j}] 
 = - \nabla [\sigma(\boldsymbol{\alpha}^T \mathbf{x})] \, \alpha_{j} 
 =  - \sigma(\boldsymbol{\alpha}^T \mathbf{x}) (1 - \sigma(\boldsymbol{\alpha}^T \mathbf{x}))\, \boldsymbol{\alpha}\alpha_{j}.
-$$<p>Thus, using the fact that $\boldsymbol{\alpha} \alpha_{j}$ is the $j$-th column of the matrix $\boldsymbol{\alpha} \boldsymbol{\alpha}^T$,</p>
+$$<p>Thus, using the fact that $\boldsymbol{\alpha} \alpha_{j}$ is the $j$-th column of the matrix $\boldsymbol{\alpha} \boldsymbol{\alpha}^T$, we get</p>
 $$
 \mathbf{H}_{\ell}(\mathbf{x}; A, \mathbf{b})
 = \frac{1}{n} \sum_{i=1}^n \sigma(\boldsymbol{\alpha}_i^T \mathbf{x}) (1 - \sigma(\boldsymbol{\alpha}_i^T \mathbf{x}))\, \boldsymbol{\alpha}_i \boldsymbol{\alpha}_i^T
@@ -16485,7 +16485,7 @@ $$
 </div></section></section><section><section>
 <div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput  celltag_colab-keep" data-mime-type="text/markdown">
-<p><strong>NUMERICAL CORNER:</strong> We return to our proof of convergence for smooth functions using a special case of logistic regression. We illustrate it on a random dataset. The functions $\hat{f}$, $\mathcal{L}$ and $\frac{\partial}{\partial x}\mathcal{L}$ are defined next.</p>
+<p><strong>NUMERICAL CORNER:</strong> Before implementing GD for logistic regression, we return to our proof of convergence for smooth functions using a special case. We illustrate it on a random dataset. The functions $\hat{f}$, $\mathcal{L}$ and $\frac{\partial}{\partial x}\mathcal{L}$ are defined next.</p>
 
 </div>
 </div><div class="fragment"><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
@@ -16594,7 +16594,7 @@ $$
 </div></div></section></section><section><section>
 <div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput  celltag_colab-keep" data-mime-type="text/markdown">
-<p>We plot next the upper and lower bounds in the <em>Quadratic Bound for Smooth Functions</em> around $x = x_0$. It turns out we can take $L=1$. Observe that minimizing the upper quadratic bound leads to a decrease in $\mathcal{L}$.</p>
+<p>We plot next the upper and lower bounds in the <em>Quadratic Bound for Smooth Functions</em> around $x = x_0$. It turns out we can take $L=1$ because all features are uniformly random between $-1$ and $1$. Observe that minimizing the upper quadratic bound leads to a decrease in $\mathcal{L}$.</p>
 
 </div>
 </div><div class="fragment"><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
@@ -16657,24 +16657,138 @@ $$
 
 </div>
 
-</div></div><div class="fragment">
+</div></div></section></section><section><section>
 <div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput  celltag_colab-keep" data-mime-type="text/markdown">
-<p>In <a href="https://en.wikipedia.org/wiki/Stochastic_gradient_descent">stochastic gradient descent</a> (SGD), a variant of gradient descent, we pick a sample $I_t$ uniformly at random in $\{1,\ldots,n\}$ and update as follows</p>
-$$
-\mathbf{x}^{t+1}
-= \mathbf{x}^{t} +\beta \, (
-b_{I_t} - \sigma(\boldsymbol{\alpha}_{I_t}^T \mathbf{x}^t) 
-) \, \boldsymbol{\alpha}_{I_t}.
-$$<p>For the mini-batch version of SGD, we pick a random sub-sample $\mathcal{B}_t \subseteq \{1,\ldots,n\}$ of size $B$</p>
-$$
-\mathbf{x}^{t+1}
-= \mathbf{x}^{t} +\beta \frac{1}{B} \sum_{i\in \mathcal{B}_t} (
-b_i - \sigma(\boldsymbol{\alpha}_i^T \mathbf{x}^t) 
-) \,\boldsymbol{\alpha}_i.
-$$<p>The key observation about the two stochastic updates above is that, in expectation, they perform a step of gradient descent. That turns out to be enough and it has computational advantages.</p>
+<p>We modify our implementation of gradient descent to take a dataset as input. (That will also be useful to generalize to so-called stochastic gradient descent; see below.) Recall that to run gradient descent, we first implement a function computing a descent update. It takes as input a function <code>grad_fn</code> computing the gradient itself, as well as a current iterate and a step size. We now also feed a dataset as additional input.</p>
 
 </div>
+</div><div class="fragment"><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[63]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">desc_update_for_logreg</span><span class="p">(</span><span class="n">grad_fn</span><span class="p">,</span> <span class="n">A</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">curr_x</span><span class="p">,</span> <span class="n">beta</span><span class="p">):</span>
+    <span class="n">gradient</span> <span class="o">=</span> <span class="n">grad_fn</span><span class="p">(</span><span class="n">curr_x</span><span class="p">,</span> <span class="n">A</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">curr_x</span> <span class="o">-</span> <span class="n">beta</span><span class="o">*</span><span class="n">gradient</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+</div></div></section></section><section><section>
+<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput  celltag_colab-keep" data-mime-type="text/markdown">
+<p>We are ready to implement GD. Our function takes as input a function <code>loss_fn</code> computing the objective, a function <code>grad_fn</code> computing the gradient, the dataset <code>A</code> and <code>b</code>, and an initial guess <code>init_x</code>. Optional parameters are the step size and the number of iterations.</p>
+
+</div>
+</div><div class="fragment"><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[64]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">gd_for_logreg</span><span class="p">(</span><span class="n">loss_fn</span><span class="p">,</span> <span class="n">grad_fn</span><span class="p">,</span> <span class="n">A</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">init_x</span><span class="p">,</span> <span class="n">beta</span><span class="o">=</span><span class="mf">1e-3</span><span class="p">,</span> <span class="n">niters</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="mf">1e5</span><span class="p">)):</span>
+    
+    <span class="c1"># initialization</span>
+    <span class="n">curr_x</span> <span class="o">=</span> <span class="n">init_x</span>
+    
+    <span class="c1"># until the maximum number of iterations</span>
+    <span class="k">for</span> <span class="nb">iter</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">niters</span><span class="p">):</span>
+        <span class="n">curr_x</span> <span class="o">=</span> <span class="n">desc_update_for_logreg</span><span class="p">(</span><span class="n">grad_fn</span><span class="p">,</span> <span class="n">A</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">curr_x</span><span class="p">,</span> <span class="n">beta</span><span class="p">)</span>
+    
+    <span class="k">return</span> <span class="n">curr_x</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+</div></div></section></section><section><section>
+<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput  celltag_colab-keep" data-mime-type="text/markdown">
+<p>To implement <code>loss_fn</code> and <code>grad_fn</code>, we define the sigmoid as above. Below, <code>pred_fn</code> is $\bsigma(A \mathbf{x})$. Here we write the loss function as</p>
+$$
+\begin{align*}
+\ell(\mathbf{x}; A, \mathbf{b})
+&amp;= \frac{1}{n} \sum_{i=1}^n \left\{- b_i \log(\sigma(\boldsymbol{\alpha_i}^T \mathbf{x}))
+- (1-b_i) \log(1- \sigma(\boldsymbol{\alpha_i}^T \mathbf{x}))\right\}\\
+&amp;= \mathrm{mean}\left(-\mathbf{b} \odot \mathbf{log}(\bsigma(A \mathbf{x})) - (\mathbf{1} - \mathbf{b}) \odot \mathbf{log}(\mathbf{1} - \bsigma(A \mathbf{x}))\right),
+\end{align*}
+$$<p>where $\odot$ is the Hadamard product, or element-wise product (for example $\mathbf{u} \odot \mathbf{v} = (u_1 v_1, \ldots,u_n v_n)^T$), the logarithm (denoted in bold) is applied element-wise and $\mathrm{mean}(\mathbf{z})$ is the mean of the entries of $\mathbf{z}$ (i.e., $\mathrm{mean}(\mathbf{z}) = n^{-1} \sum_{i=1}^n z_i$).</p>
+
+</div>
+</div><div class="fragment"><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[65]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">pred_fn</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">A</span><span class="p">):</span> 
+    <span class="k">return</span> <span class="n">sigmoid</span><span class="p">(</span><span class="n">A</span> <span class="o">@</span> <span class="n">x</span><span class="p">)</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+</div></div><div class="fragment"><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[66]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">loss_fn</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">A</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span> 
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="o">-</span><span class="n">b</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">pred_fn</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">A</span><span class="p">))</span> <span class="o">-</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">b</span><span class="p">)</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">pred_fn</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">A</span><span class="p">)))</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+</div></div><div class="fragment"><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[67]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">grad_fn</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">A</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
+    <span class="k">return</span> <span class="o">-</span><span class="n">A</span><span class="o">.</span><span class="n">T</span> <span class="o">@</span> <span class="p">(</span><span class="n">b</span> <span class="o">-</span> <span class="n">pred_fn</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">A</span><span class="p">))</span><span class="o">/</span><span class="nb">len</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+</div></div></section></section><section><section>
+<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput  celltag_colab-keep" data-mime-type="text/markdown">
+<p>We can choosed a step size based on the smoothness of the objective as above. Recall that <a href="https://numpy.org/doc/stable/reference/generated/numpy.linalg.norm.html"><code>numpy.linalg.norm</code></a> computes the Frobenius norm by default.</p>
+
+</div>
+</div><div class="fragment"><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[68]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">stepsize_for_logreg</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
+    <span class="n">L</span> <span class="o">=</span> <span class="n">LA</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">A</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span> <span class="o">/</span><span class="nb">len</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
+    <span class="k">return</span> <span class="mi">1</span><span class="o">/</span><span class="n">L</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
 </div></div></section></section><section><section>
 <div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput  celltag_colab-keep" data-mime-type="text/markdown">
@@ -16687,7 +16801,7 @@ $$<p>The key observation about the two stochastic updates above is that, in expe
 </div><div class="fragment"><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[63]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[69]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;lebron.csv&#39;</span><span class="p">)</span>
@@ -16707,7 +16821,7 @@ $$<p>The key observation about the two stochastic updates above is that, in expe
 <div class="jp-OutputArea-child">
 
     
-    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[63]:</div>
+    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[69]:</div>
 
 
 
@@ -16804,7 +16918,7 @@ $$<p>The key observation about the two stochastic updates above is that, in expe
 </div></div></section></section><section><section><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[64]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[70]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">describe</span><span class="p">()</span>
@@ -16823,7 +16937,7 @@ $$<p>The key observation about the two stochastic updates above is that, in expe
 <div class="jp-OutputArea-child">
 
     
-    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[64]:</div>
+    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[70]:</div>
 
 
 
@@ -16929,7 +17043,7 @@ $$<p>The key observation about the two stochastic updates above is that, in expe
 </div></div></section></section><section><section><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[65]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[71]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">feature</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;shot_distance&#39;</span><span class="p">]</span>
@@ -16944,7 +17058,7 @@ $$<p>The key observation about the two stochastic updates above is that, in expe
 </div><div class="fragment"><div class="jp-Cell jp-CodeCell jp-Notebook-cell    celltag_hide-input">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[66]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[72]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">feature</span><span class="p">,</span> <span class="n">label</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.2</span><span class="p">)</span>
@@ -16990,7 +17104,7 @@ $$<p>The key observation about the two stochastic updates above is that, in expe
 </div></div></section></section><section><section><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[67]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[73]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">label_jitter</span> <span class="o">=</span> <span class="n">label</span> <span class="o">+</span> <span class="mf">0.05</span><span class="o">*</span><span class="n">rng</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="n">label</span><span class="p">))</span>
@@ -17004,7 +17118,7 @@ $$<p>The key observation about the two stochastic updates above is that, in expe
 </div><div class="fragment"><div class="jp-Cell jp-CodeCell jp-Notebook-cell    celltag_hide-input">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[68]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[74]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">feature</span><span class="p">,</span> <span class="n">label_jitter</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.2</span><span class="p">)</span>
@@ -17044,127 +17158,17 @@ $$<p>The key observation about the two stochastic updates above is that, in expe
 </div></div></section></section><section><section>
 <div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput  celltag_colab-keep" data-mime-type="text/markdown">
-<p>We modify our implementation of gradient descent to take a dataset as input. That will also be useful to generalize to stochastic gradient descent. Recall that to run gradient descent, we first implement a function computing a descent update. It takes as input a function <code>grad_fn</code> computing the gradient itself, as well as a current iterate and a step size. We now also feed a dataset as additional input.</p>
-
-</div>
-</div><div class="fragment"><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[69]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">desc_update_for_logreg</span><span class="p">(</span><span class="n">grad_fn</span><span class="p">,</span> <span class="n">A</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">curr_x</span><span class="p">,</span> <span class="n">beta</span><span class="p">):</span>
-    <span class="n">gradient</span> <span class="o">=</span> <span class="n">grad_fn</span><span class="p">(</span><span class="n">curr_x</span><span class="p">,</span> <span class="n">A</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">curr_x</span> <span class="o">-</span> <span class="n">beta</span><span class="o">*</span><span class="n">gradient</span>
-</pre></div>
-
-     </div>
-</div>
-</div>
-</div>
-
-</div></div></section></section><section><section>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput  celltag_colab-keep" data-mime-type="text/markdown">
-<p>We are ready to implement GD. Our function takes as input a function <code>loss_fn</code> computing the objective, a function <code>grad_fn</code> computing the gradient, the dataset <code>A</code> and <code>b</code>, and an initial guess <code>init_x</code>. Optional parameters are the step size and the number of iterations.</p>
-
-</div>
-</div><div class="fragment"><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[70]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">gd_for_logreg</span><span class="p">(</span><span class="n">loss_fn</span><span class="p">,</span> <span class="n">grad_fn</span><span class="p">,</span> <span class="n">A</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">init_x</span><span class="p">,</span> <span class="n">beta</span><span class="o">=</span><span class="mf">1e-3</span><span class="p">,</span> <span class="n">niters</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="mf">1e5</span><span class="p">)):</span>
-    
-    <span class="c1"># initialization</span>
-    <span class="n">curr_x</span> <span class="o">=</span> <span class="n">init_x</span>
-    
-    <span class="c1"># until the maximum number of iterations</span>
-    <span class="k">for</span> <span class="nb">iter</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">niters</span><span class="p">):</span>
-        <span class="n">curr_x</span> <span class="o">=</span> <span class="n">desc_update_for_logreg</span><span class="p">(</span><span class="n">grad_fn</span><span class="p">,</span> <span class="n">A</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">curr_x</span><span class="p">,</span> <span class="n">beta</span><span class="p">)</span>
-    
-    <span class="k">return</span> <span class="n">curr_x</span>
-</pre></div>
-
-     </div>
-</div>
-</div>
-</div>
-
-</div></div></section></section><section><section>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput  celltag_colab-keep" data-mime-type="text/markdown">
 <p>We apply GD to logistic regression. We first construct the data matrices $A$ and $\mathbf{b}$. To allow an affine function of the features, we add a column of $1$'s as we have done before.</p>
 
 </div>
 </div><div class="fragment"><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[71]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[75]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">A</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">stack</span><span class="p">((</span><span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">label</span><span class="p">)),</span><span class="n">feature</span><span class="p">),</span><span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
 <span class="n">b</span> <span class="o">=</span> <span class="n">label</span>
-</pre></div>
-
-     </div>
-</div>
-</div>
-</div>
-
-</div></div></section></section><section><section>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput  celltag_colab-keep" data-mime-type="text/markdown">
-<p>To implement <code>loss_fn</code> and <code>grad_fn</code>, we define the sigmoid as above. Below, <code>pred_fn</code> is $\bsigma(A \mathbf{x})$. Here we write the loss function as</p>
-$$
-\begin{align*}
-\ell(\mathbf{x}; A, \mathbf{b})
-&amp;= \frac{1}{n} \sum_{i=1}^n \left\{- b_i \log(\sigma(\boldsymbol{\alpha_i}^T \mathbf{x}))
-- (1-b_i) \log(1- \sigma(\boldsymbol{\alpha_i}^T \mathbf{x}))\right\}\\
-&amp;= \mathrm{mean}\left(-\mathbf{b} \odot \mathbf{log}(\bsigma(A \mathbf{x})) - (\mathbf{1} - \mathbf{b}) \odot \mathbf{log}(\mathbf{1} - \bsigma(A \mathbf{x}))\right),
-\end{align*}
-$$<p>where $\odot$ is the Hadamard product, or element-wise product (for example $\mathbf{u} \odot \mathbf{v} = (u_1 v_1, \ldots,u_n v_n)^T$), the logarithm (denoted in bold) is applied element-wise and $\mathrm{mean}(\mathbf{z})$ is the mean of the entries of $\mathbf{z}$ (i.e., $\mathrm{mean}(\mathbf{z}) = n^{-1} \sum_{i=1}^n z_i$).</p>
-
-</div>
-</div><div class="fragment"><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[72]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">pred_fn</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">A</span><span class="p">):</span> 
-    <span class="k">return</span> <span class="n">sigmoid</span><span class="p">(</span><span class="n">A</span> <span class="o">@</span> <span class="n">x</span><span class="p">)</span>
-</pre></div>
-
-     </div>
-</div>
-</div>
-</div>
-
-</div></div><div class="fragment"><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[73]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">loss_fn</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">A</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span> 
-    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="o">-</span><span class="n">b</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">pred_fn</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">A</span><span class="p">))</span> <span class="o">-</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">b</span><span class="p">)</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">pred_fn</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">A</span><span class="p">)))</span>
-</pre></div>
-
-     </div>
-</div>
-</div>
-</div>
-
-</div></div><div class="fragment"><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[74]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">grad_fn</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">A</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
-    <span class="k">return</span> <span class="o">-</span><span class="n">A</span><span class="o">.</span><span class="n">T</span> <span class="o">@</span> <span class="p">(</span><span class="n">b</span> <span class="o">-</span> <span class="n">pred_fn</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">A</span><span class="p">))</span><span class="o">/</span><span class="nb">len</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
 </pre></div>
 
      </div>
@@ -17181,11 +17185,10 @@ $$<p>where $\odot$ is the Hadamard product, or element-wise product (for example
 </div><div class="fragment"><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[75]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[76]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">L</span> <span class="o">=</span> <span class="n">LA</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">A</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span> <span class="o">/</span><span class="nb">len</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
-<span class="n">stepsize</span> <span class="o">=</span> <span class="mi">1</span><span class="o">/</span><span class="n">L</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">stepsize</span> <span class="o">=</span> <span class="n">stepsize_for_logreg</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">stepsize</span><span class="p">)</span>
 </pre></div>
 
@@ -17218,7 +17221,7 @@ $$<p>where $\odot$ is the Hadamard product, or element-wise product (for example
 </div></div><div class="fragment"><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[76]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[77]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">init_x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">A</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
@@ -17261,7 +17264,7 @@ $$<p>where $\odot$ is the Hadamard product, or element-wise product (for example
 </div><div class="fragment"><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[77]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[78]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">grid</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">feature</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">feature</span><span class="p">),</span> <span class="mi">100</span><span class="p">)</span>
@@ -17277,7 +17280,7 @@ $$<p>where $\odot$ is the Hadamard product, or element-wise product (for example
 </div></div><div class="fragment"><div class="jp-Cell jp-CodeCell jp-Notebook-cell    celltag_hide-input">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[78]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[79]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">feature</span><span class="p">,</span> <span class="n">label_jitter</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.2</span><span class="p">)</span>
@@ -17318,6 +17321,51 @@ $$<p>where $\odot$ is the Hadamard product, or element-wise product (for example
 </div></div></section></section><section><section>
 <div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput  celltag_colab-keep" data-mime-type="text/markdown">
+<p><strong>Stochastic gradient descent</strong> In <a href="https://en.wikipedia.org/wiki/Stochastic_gradient_descent">stochastic gradient descent</a> (SGD), a variant of gradient descent, we pick a sample $I_t$ uniformly at random in $\{1,\ldots,n\}$ and update as follows</p>
+$$
+\mathbf{x}^{t+1}
+= \mathbf{x}^{t} +\beta \, (
+b_{I_t} - \sigma(\boldsymbol{\alpha}_{I_t}^T \mathbf{x}^t) 
+) \, \boldsymbol{\alpha}_{I_t}.
+$$<p>For the mini-batch version of SGD, we pick a random sub-sample $\mathcal{B}_t \subseteq \{1,\ldots,n\}$ of size $B$</p>
+$$
+\mathbf{x}^{t+1}
+= \mathbf{x}^{t} +\beta \frac{1}{B} \sum_{i\in \mathcal{B}_t} (
+b_i - \sigma(\boldsymbol{\alpha}_i^T \mathbf{x}^t) 
+) \,\boldsymbol{\alpha}_i.
+$$<p>The key observation about the two stochastic updates above is that, in expectation, they perform a step of gradient descent. That turns out to be enough and it has computational advantages.</p>
+<p>The only modification needed to the code is to pick a random mini-batch which can be fed to the descent update sub-routine as dataset.</p>
+
+</div>
+</div><div class="fragment"><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[80]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">sgd_for_logreg</span><span class="p">(</span><span class="n">loss_fn</span><span class="p">,</span> <span class="n">grad_fn</span><span class="p">,</span> <span class="n">A</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> 
+                   <span class="n">init_x</span><span class="p">,</span> <span class="n">beta</span><span class="o">=</span><span class="mf">1e-3</span><span class="p">,</span> <span class="n">niters</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="mf">1e5</span><span class="p">),</span> <span class="n">batch</span><span class="o">=</span><span class="mi">40</span><span class="p">):</span>
+    
+    <span class="c1"># initialization</span>
+    <span class="n">curr_x</span> <span class="o">=</span> <span class="n">init_x</span>
+    
+    <span class="c1"># until the maximum number of iterations</span>
+    <span class="n">nsamples</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">niters</span><span class="p">):</span>
+        <span class="n">I</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">integers</span><span class="p">(</span><span class="n">nsamples</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">batch</span><span class="p">)</span>
+        <span class="n">curr_x</span> <span class="o">=</span> <span class="n">desc_update_for_logreg</span><span class="p">(</span><span class="n">grad_fn</span><span class="p">,</span> <span class="n">A</span><span class="p">[</span><span class="n">I</span><span class="p">,:],</span> <span class="n">b</span><span class="p">[</span><span class="n">I</span><span class="p">],</span> <span class="n">curr_x</span><span class="p">,</span> <span class="n">beta</span><span class="p">)</span>
+    
+    <span class="k">return</span> <span class="n">curr_x</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+</div></div></section></section><section><section>
+<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput  celltag_colab-keep" data-mime-type="text/markdown">
 <p><strong>South African Heart Disease dataset</strong> We analyze a dataset from [<a href="https://web.stanford.edu/~hastie/ElemStatLearn/">ESL</a>], which can be downloaded <a href="https://web.stanford.edu/~hastie/ElemStatLearn/data.html">here</a>. Quoting [<a href="https://web.stanford.edu/~hastie/ElemStatLearn/">ESL</a>, Section 4.4.2]</p>
 <blockquote><p>The data [...] are a subset of the Coronary Risk-Factor Study (CORIS) baseline survey, carried out in three rural areas of the Western Cape, South Africa (Rousseauw et al., 1983). The aim of the study was to establish the intensity of ischemic heart disease risk factors in that high-incidence region. The data represent white males between 15 and 64, and the response variable is the presence or absence of myocardial infarction (MI) at the time of the survey (the overall prevalence of MI was 5.1% in this region). There are 160 cases in our data set, and a sample of 302 controls. These data are described in more detail in Hastie and Tibshirani (1987).</p>
 </blockquote>
@@ -17327,7 +17375,7 @@ $$<p>where $\odot$ is the Hadamard product, or element-wise product (for example
 </div><div class="fragment"><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[79]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[81]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;SAHeart.csv&#39;</span><span class="p">)</span>
@@ -17347,7 +17395,7 @@ $$<p>where $\odot$ is the Hadamard product, or element-wise product (for example
 <div class="jp-OutputArea-child">
 
     
-    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[79]:</div>
+    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[81]:</div>
 
 
 
@@ -17456,7 +17504,7 @@ $$<p>where $\odot$ is the Hadamard product, or element-wise product (for example
 </div></div></section></section><section><section><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[80]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[82]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">describe</span><span class="p">()</span>
@@ -17475,7 +17523,7 @@ $$<p>where $\odot$ is the Hadamard product, or element-wise product (for example
 <div class="jp-OutputArea-child">
 
     
-    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[80]:</div>
+    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[82]:</div>
 
 
 
@@ -17632,7 +17680,7 @@ $$<p>where $\odot$ is the Hadamard product, or element-wise product (for example
 </div><div class="fragment"><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[81]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[83]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">feature</span> <span class="o">=</span> <span class="n">df</span><span class="p">[[</span><span class="s1">&#39;tobacco&#39;</span><span class="p">,</span> <span class="s1">&#39;ldl&#39;</span><span class="p">,</span> <span class="s1">&#39;age&#39;</span><span class="p">]]</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">()</span>
@@ -17674,7 +17722,7 @@ $$<p>where $\odot$ is the Hadamard product, or element-wise product (for example
 </div></div><div class="fragment"><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[82]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[84]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">label</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;chd&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">()</span>
@@ -17688,7 +17736,7 @@ $$<p>where $\odot$ is the Hadamard product, or element-wise product (for example
 </div></div></section></section><section><section><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[83]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[85]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">A</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="n">label</span><span class="p">),</span><span class="mi">1</span><span class="p">)),</span><span class="n">feature</span><span class="p">),</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
@@ -17730,7 +17778,7 @@ $$<p>where $\odot$ is the Hadamard product, or element-wise product (for example
 </div><div class="fragment"><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[84]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[86]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">b</span> <span class="o">=</span> <span class="n">label</span>
@@ -17744,13 +17792,13 @@ $$<p>where $\odot$ is the Hadamard product, or element-wise product (for example
 </div></div></section></section><section><section>
 <div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput  celltag_colab-keep" data-mime-type="text/markdown">
-<p>We re-use the functions <code>loss_fn</code> and <code>grad_fn</code>, which were written for general logistic regression problems.</p>
+<p>We use the same functions <code>loss_fn</code> and <code>grad_fn</code>, which were written for general logistic regression problems.</p>
 
 </div>
 </div><div class="fragment"><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[85]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[87]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">init_x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">A</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
@@ -17764,11 +17812,10 @@ $$<p>where $\odot$ is the Hadamard product, or element-wise product (for example
 </div></div><div class="fragment"><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[86]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[88]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">L</span> <span class="o">=</span> <span class="n">LA</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">A</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span> <span class="o">/</span><span class="nb">len</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
-<span class="n">stepsize</span> <span class="o">=</span> <span class="mi">1</span><span class="o">/</span><span class="n">L</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">stepsize</span> <span class="o">=</span> <span class="n">stepsize_for_logreg</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">stepsize</span><span class="p">)</span>
 </pre></div>
 
@@ -17801,10 +17848,11 @@ $$<p>where $\odot$ is the Hadamard product, or element-wise product (for example
 </div></div><div class="fragment"><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[87]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[89]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">best_x</span> <span class="o">=</span> <span class="n">gd_for_logreg</span><span class="p">(</span><span class="n">loss_fn</span><span class="p">,</span> <span class="n">grad_fn</span><span class="p">,</span> <span class="n">A</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">init_x</span><span class="p">,</span> <span class="n">beta</span><span class="o">=</span><span class="n">stepsize</span><span class="p">,</span> <span class="n">niters</span><span class="o">=</span><span class="mi">1000000</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">best_x</span> <span class="o">=</span> <span class="n">gd_for_logreg</span><span class="p">(</span><span class="n">loss_fn</span><span class="p">,</span> <span class="n">grad_fn</span><span class="p">,</span> <span class="n">A</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> 
+                       <span class="n">init_x</span><span class="p">,</span> <span class="n">beta</span><span class="o">=</span><span class="n">stepsize</span><span class="p">,</span> <span class="n">niters</span><span class="o">=</span><span class="mi">1000000</span><span class="p">)</span>
 </pre></div>
 
      </div>
@@ -17815,7 +17863,7 @@ $$<p>where $\odot$ is the Hadamard product, or element-wise product (for example
 </div></div><div class="fragment"><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[88]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[90]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">best_x</span><span class="p">)</span>
@@ -17856,7 +17904,7 @@ $$<p>where $\odot$ is the Hadamard product, or element-wise product (for example
 </div><div class="fragment"><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[89]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[91]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">logis_acc</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">A</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
@@ -17871,7 +17919,7 @@ $$<p>where $\odot$ is the Hadamard product, or element-wise product (for example
 </div></div><div class="fragment"><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[90]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[92]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">logis_acc</span><span class="p">(</span><span class="n">best_x</span><span class="p">,</span> <span class="n">A</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>
@@ -17890,7 +17938,7 @@ $$<p>where $\odot$ is the Hadamard product, or element-wise product (for example
 <div class="jp-OutputArea-child">
 
     
-    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[90]:</div>
+    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[92]:</div>
 
 
 
@@ -17908,44 +17956,13 @@ $$<p>where $\odot$ is the Hadamard product, or element-wise product (for example
 </div></div></section></section><section><section>
 <div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput  celltag_colab-keep" data-mime-type="text/markdown">
-<p>We also try mini-batch stochastic gradient descent (SGD). Recall that we pick a random sub-sample $\mathcal{B} \subseteq \{1,\ldots,n\}$ of size $B$ and then the update is</p>
-$$
-\mathbf{x}^{k+1}
-= \mathbf{x}^{k} +\beta \frac{1}{B} \sum_{i\in \mathcal{B}} (
-b_i - \sigma(\boldsymbol{\alpha}_i^T \mathbf{x}^k) 
-) \,\boldsymbol{\alpha}_i.
-$$<p>Hence, the only modification needed to the code is to pick a random mini-batch which can be fed to the descent update sub-routine as dataset.</p>
+<p>We also try mini-batch stochastic gradient descent (SGD).</p>
 
 </div>
-</div><div class="fragment"><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
+</div></section></section><section><section><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[91]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">sgd_for_logreg</span><span class="p">(</span><span class="n">loss_fn</span><span class="p">,</span> <span class="n">grad_fn</span><span class="p">,</span> <span class="n">A</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">init_x</span><span class="p">,</span> <span class="n">beta</span><span class="o">=</span><span class="mf">1e-3</span><span class="p">,</span> <span class="n">niters</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="mf">1e5</span><span class="p">),</span> <span class="n">batch</span><span class="o">=</span><span class="mi">40</span><span class="p">):</span>
-    
-    <span class="c1"># initialization</span>
-    <span class="n">curr_x</span> <span class="o">=</span> <span class="n">init_x</span>
-    
-    <span class="c1"># until the maximum number of iterations</span>
-    <span class="n">nsamples</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
-    <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">niters</span><span class="p">):</span>
-        <span class="n">I</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">integers</span><span class="p">(</span><span class="n">nsamples</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">batch</span><span class="p">)</span>
-        <span class="n">curr_x</span> <span class="o">=</span> <span class="n">desc_update_for_logreg</span><span class="p">(</span><span class="n">grad_fn</span><span class="p">,</span> <span class="n">A</span><span class="p">[</span><span class="n">I</span><span class="p">,:],</span> <span class="n">b</span><span class="p">[</span><span class="n">I</span><span class="p">],</span> <span class="n">curr_x</span><span class="p">,</span> <span class="n">beta</span><span class="p">)</span>
-    
-    <span class="k">return</span> <span class="n">curr_x</span>
-</pre></div>
-
-     </div>
-</div>
-</div>
-</div>
-
-</div></div></section></section><section><section><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[92]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[93]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">init_x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">A</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
@@ -17959,10 +17976,11 @@ $$<p>Hence, the only modification needed to the code is to pick a random mini-ba
 </div><div class="fragment"><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[93]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[94]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">best_x</span> <span class="o">=</span> <span class="n">sgd_for_logreg</span><span class="p">(</span><span class="n">loss_fn</span><span class="p">,</span> <span class="n">grad_fn</span><span class="p">,</span> <span class="n">A</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">init_x</span><span class="p">,</span> <span class="n">beta</span><span class="o">=</span><span class="n">stepsize</span><span class="p">,</span> <span class="n">niters</span><span class="o">=</span><span class="mi">1000000</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">best_x</span> <span class="o">=</span> <span class="n">sgd_for_logreg</span><span class="p">(</span><span class="n">loss_fn</span><span class="p">,</span> <span class="n">grad_fn</span><span class="p">,</span> <span class="n">A</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> 
+                        <span class="n">init_x</span><span class="p">,</span> <span class="n">beta</span><span class="o">=</span><span class="n">stepsize</span><span class="p">,</span> <span class="n">niters</span><span class="o">=</span><span class="mi">1000000</span><span class="p">)</span>
 </pre></div>
 
      </div>
@@ -17973,7 +17991,7 @@ $$<p>Hence, the only modification needed to the code is to pick a random mini-ba
 </div></div><div class="fragment"><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[94]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[95]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">best_x</span><span class="p">)</span>
@@ -18008,7 +18026,7 @@ $$<p>Hence, the only modification needed to the code is to pick a random mini-ba
 </div></div><div class="fragment"><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[95]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[96]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">logis_acc</span><span class="p">(</span><span class="n">best_x</span><span class="p">,</span> <span class="n">A</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>
@@ -18027,7 +18045,7 @@ $$<p>Hence, the only modification needed to the code is to pick a random mini-ba
 <div class="jp-OutputArea-child">
 
     
-    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[95]:</div>
+    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[96]:</div>
 
 
 
@@ -18056,7 +18074,7 @@ $$<p>Hence, the only modification needed to the code is to pick a random mini-ba
 </div><div class="fragment"><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[96]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[97]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">gd_with_ad</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">x0</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">1e-3</span><span class="p">,</span> <span class="n">niters</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="mf">1e6</span><span class="p">)):</span>
@@ -18093,7 +18111,7 @@ $$<p>Hence, the only modification needed to the code is to pick a random mini-ba
 </div><div class="fragment"><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[97]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[98]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">f</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
@@ -18108,7 +18126,7 @@ $$<p>Hence, the only modification needed to the code is to pick a random mini-ba
 </div></div><div class="fragment"><div class="jp-Cell jp-CodeCell jp-Notebook-cell    celltag_hide-input">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[98]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[99]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">xgrid</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">100</span><span class="p">)</span>
@@ -18151,7 +18169,7 @@ $$<p>Hence, the only modification needed to the code is to pick a random mini-ba
 </div></div></section></section><section><section><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[99]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[100]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">gd_with_ad</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">niters</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="mf">1e4</span><span class="p">))</span>
@@ -18170,7 +18188,7 @@ $$<p>Hence, the only modification needed to the code is to pick a random mini-ba
 <div class="jp-OutputArea-child">
 
     
-    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[99]:</div>
+    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[100]:</div>
 
 
 
@@ -18188,7 +18206,7 @@ $$<p>Hence, the only modification needed to the code is to pick a random mini-ba
 </div><div class="fragment"><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[100]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[101]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">gd_with_ad</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="n">niters</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
@@ -18207,7 +18225,7 @@ $$<p>Hence, the only modification needed to the code is to pick a random mini-ba
 <div class="jp-OutputArea-child">
 
     
-    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[100]:</div>
+    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[101]:</div>
 
 
 
@@ -18236,7 +18254,7 @@ $$<p>Hence, the only modification needed to the code is to pick a random mini-ba
 </div><div class="fragment"><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[101]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[102]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;advertising.csv&#39;</span><span class="p">)</span>
@@ -18256,7 +18274,7 @@ $$<p>Hence, the only modification needed to the code is to pick a random mini-ba
 <div class="jp-OutputArea-child">
 
     
-    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[101]:</div>
+    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[102]:</div>
 
 
 
@@ -18341,7 +18359,7 @@ $$<p>Hence, the only modification needed to the code is to pick a random mini-ba
 </div><div class="fragment"><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[103]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[104]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">TV</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;TV&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">()</span>
@@ -18360,7 +18378,7 @@ $$<p>Hence, the only modification needed to the code is to pick a random mini-ba
 </div></div><div class="fragment"><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[104]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[105]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">coeff</span> <span class="o">=</span> <span class="n">mmids</span><span class="o">.</span><span class="n">ls_by_qr</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">sales</span><span class="p">)</span>
@@ -18396,7 +18414,7 @@ $$<p>Hence, the only modification needed to the code is to pick a random mini-ba
 </div></div><div class="fragment"><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[105]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[106]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">((</span><span class="n">A</span> <span class="o">@</span> <span class="n">coeff</span> <span class="o">-</span> <span class="n">sales</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
@@ -18415,7 +18433,7 @@ $$<p>Hence, the only modification needed to the code is to pick a random mini-ba
 <div class="jp-OutputArea-child">
 
     
-    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[105]:</div>
+    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[106]:</div>
 
 
 
@@ -18439,7 +18457,7 @@ $$<p>Hence, the only modification needed to the code is to pick a random mini-ba
 </div><div class="fragment"><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[106]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[107]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Convert data to PyTorch tensors</span>
@@ -18457,7 +18475,7 @@ $$<p>Hence, the only modification needed to the code is to pick a random mini-ba
 </div></div><div class="fragment"><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[107]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[108]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Create a dataset and dataloader for training</span>
@@ -18480,7 +18498,7 @@ $$<p>Hence, the only modification needed to the code is to pick a random mini-ba
 </div><div class="fragment"><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[108]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[109]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Define the model using nn.Sequential</span>
@@ -18504,7 +18522,7 @@ $$<p>Hence, the only modification needed to the code is to pick a random mini-ba
 </div><div class="fragment"><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[109]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[110]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Compile the model: define loss function and optimizer</span>
@@ -18520,7 +18538,7 @@ $$<p>Hence, the only modification needed to the code is to pick a random mini-ba
 </div></div></section></section><section><section><div class="jp-Cell jp-CodeCell jp-Notebook-cell    celltag_remove-output">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[110]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[111]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Train the model</span>
@@ -18553,16 +18571,16 @@ $$<p>Hence, the only modification needed to the code is to pick a random mini-ba
 
 
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
-<pre>Epoch 10/100, Loss: 29.189598083496094
-Epoch 20/100, Loss: 25.331600189208984
-Epoch 30/100, Loss: 11.881465911865234
-Epoch 40/100, Loss: 3.4387545585632324
-Epoch 50/100, Loss: 5.974513053894043
-Epoch 60/100, Loss: 3.8846800327301025
-Epoch 70/100, Loss: 4.843210697174072
-Epoch 80/100, Loss: 7.464485168457031
-Epoch 90/100, Loss: 4.99113655090332
-Epoch 100/100, Loss: 3.91914963722229
+<pre>Epoch 10/100, Loss: 61.717803955078125
+Epoch 20/100, Loss: 74.88373565673828
+Epoch 30/100, Loss: 3.718038558959961
+Epoch 40/100, Loss: 7.307799816131592
+Epoch 50/100, Loss: 13.322959899902344
+Epoch 60/100, Loss: 4.912189960479736
+Epoch 70/100, Loss: 4.8989787101745605
+Epoch 80/100, Loss: 8.02322769165039
+Epoch 90/100, Loss: 5.188374042510986
+Epoch 100/100, Loss: 2.5458970069885254
 </pre>
 </div>
 </div>
@@ -18580,7 +18598,7 @@ Epoch 100/100, Loss: 3.91914963722229
 </div><div class="fragment"><div class="jp-Cell jp-CodeCell jp-Notebook-cell    celltag_hide-input">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[111]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[112]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Get and print the model weights and bias</span>
@@ -18607,8 +18625,8 @@ Epoch 100/100, Loss: 3.91914963722229
 
 
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
-<pre>Weights: [[0.05406454 0.21025085 0.03052599]]
-Bias: [-0.46949634]
+<pre>Weights: [[ 0.04833269  0.27859896 -0.01787573]]
+Bias: [0.03412555]
 </pre>
 </div>
 </div>
@@ -18620,7 +18638,7 @@ Bias: [-0.46949634]
 </div></div></section></section><section><section><div class="jp-Cell jp-CodeCell jp-Notebook-cell    celltag_hide-input">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[112]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[113]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Evaluate the model</span>
@@ -18652,7 +18670,7 @@ Bias: [-0.46949634]
 
 
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
-<pre>Mean Squared Error on Training Set: 4.382448613643646
+<pre>Mean Squared Error on Training Set: 4.78020042181015
 </pre>
 </div>
 </div>
@@ -18684,7 +18702,7 @@ Bias: [-0.46949634]
 </div></section></section><section><section><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[113]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[114]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Load and normalize the MNIST dataset</span>
@@ -18707,7 +18725,7 @@ Bias: [-0.46949634]
 </div><div class="fragment"><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[114]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[115]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">BATCH_SIZE</span> <span class="o">=</span> <span class="mi">32</span>
@@ -18734,7 +18752,7 @@ Bias: [-0.46949634]
 </div><div class="fragment"><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[115]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[116]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Check for GPU availability</span>
@@ -18777,7 +18795,7 @@ Bias: [-0.46949634]
 </div></div><div class="fragment"><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[116]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[117]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Define the model using nn.Sequential and move it to the device (GPU if available)</span>
@@ -18807,7 +18825,7 @@ Bias: [-0.46949634]
 </div><div class="fragment"><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[117]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[118]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Compile the model: define loss function and optimizer</span>
@@ -18829,7 +18847,7 @@ Bias: [-0.46949634]
 </div><div class="fragment"><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs   celltag_hide-output">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[118]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[119]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Training function</span>
@@ -18857,7 +18875,7 @@ Bias: [-0.46949634]
 </div></div></section></section><section><section><div class="jp-Cell jp-CodeCell jp-Notebook-cell    celltag_remove-output">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[119]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[120]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Training loop</span>
@@ -18906,7 +18924,7 @@ Epoch 3/3
 </div><div class="fragment"><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[120]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[121]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Evaluation function</span>
@@ -18934,7 +18952,7 @@ Epoch 3/3
 </div></div></section></section><section><section><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[121]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[122]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Evaluate the model</span>
@@ -18958,7 +18976,7 @@ Epoch 3/3
 
 
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
-<pre>Test error: 92.6% accuracy
+<pre>Test error: 92.3% accuracy
 </pre>
 </div>
 </div>
@@ -18977,7 +18995,7 @@ Epoch 3/3
 </div></section></section><section><section><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[122]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[123]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">predict_softmax</span><span class="p">(</span><span class="n">dataloader</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span> <span class="n">device</span><span class="p">):</span>
@@ -19011,7 +19029,7 @@ Epoch 3/3
 </div><div class="fragment"><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[123]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[124]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">predictions</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
@@ -19034,8 +19052,8 @@ Epoch 3/3
 
 
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
-<pre>[2.1821877e-05 1.0629444e-09 6.1097111e-05 8.3031515e-03 1.6774080e-06
- 5.4884527e-05 5.4052478e-09 9.9058306e-01 7.2116360e-05 9.0223330e-04]
+<pre>[2.7029557e-05 8.4270707e-10 5.6631994e-05 6.4428351e-03 1.7773822e-06
+ 3.7374924e-05 5.0613664e-09 9.9277437e-01 5.0100676e-05 6.0985261e-04]
 </pre>
 </div>
 </div>
@@ -19047,56 +19065,10 @@ Epoch 3/3
 </div></div><div class="fragment"><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[124]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">predictions</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
-</pre></div>
-
-     </div>
-</div>
-</div>
-</div>
-
-<div class="jp-Cell-outputWrapper">
-
-
-<div class="jp-OutputArea jp-Cell-outputArea">
-
-<div class="jp-OutputArea-child">
-
-    
-    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[124]:</div>
-
-
-
-
-<div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain">
-<pre>7</pre>
-</div>
-
-</div>
-
-</div>
-
-</div>
-
-</div></div></section></section><section><section>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput  celltag_colab-keep" data-mime-type="text/markdown">
-<p>The truth is:</p>
-
-</div>
-</div><div class="fragment"><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
 <div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[125]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">images</span><span class="p">,</span> <span class="n">labels</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="nb">iter</span><span class="p">(</span><span class="n">test_loader</span><span class="p">))</span>
-<span class="n">images</span> <span class="o">=</span> <span class="n">images</span><span class="o">.</span><span class="n">squeeze</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span>
-<span class="n">labels</span> <span class="o">=</span> <span class="n">labels</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span>
-<span class="n">labels</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">predictions</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
 </pre></div>
 
      </div>
@@ -19127,6 +19099,52 @@ Epoch 3/3
 
 </div>
 
+</div></div></section></section><section><section>
+<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput  celltag_colab-keep" data-mime-type="text/markdown">
+<p>The truth is:</p>
+
+</div>
+</div><div class="fragment"><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[126]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">images</span><span class="p">,</span> <span class="n">labels</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="nb">iter</span><span class="p">(</span><span class="n">test_loader</span><span class="p">))</span>
+<span class="n">images</span> <span class="o">=</span> <span class="n">images</span><span class="o">.</span><span class="n">squeeze</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span>
+<span class="n">labels</span> <span class="o">=</span> <span class="n">labels</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span>
+<span class="n">labels</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+<div class="jp-Cell-outputWrapper">
+
+
+<div class="jp-OutputArea jp-Cell-outputArea">
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[126]:</div>
+
+
+
+
+<div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain">
+<pre>7</pre>
+</div>
+
+</div>
+
+</div>
+
+</div>
+
 </div></div><div class="fragment">
 <div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput  celltag_colab-keep" data-mime-type="text/markdown">
@@ -19142,7 +19160,7 @@ Epoch 3/3
 </div><div class="fragment"><div class="jp-Cell jp-CodeCell jp-Notebook-cell    celltag_hide-input">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[127]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[128]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Visualization code for individual image</span>
@@ -19174,7 +19192,7 @@ Epoch 3/3
 
 
 <div class="jp-RenderedImage jp-OutputArea-output ">
-<img src="data:image/png;base64,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
+<img src="data:image/png;base64,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
 "
 >
 </div>
@@ -19194,7 +19212,7 @@ Epoch 3/3
 </div><div class="fragment"><div class="jp-Cell jp-CodeCell jp-Notebook-cell    celltag_hide-input">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[128]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[129]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Visualization code for individual and multiple images</span>
@@ -19226,7 +19244,7 @@ Epoch 3/3
 
 
 <div class="jp-RenderedImage jp-OutputArea-output ">
-<img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAWAAAADCCAYAAAB3whgdAAAAOXRFWHRTb2Z0d2FyZQBNYXRwbG90bGliIHZlcnNpb24zLjMuNCwgaHR0cHM6Ly9tYXRwbG90bGliLm9yZy8QVMy6AAAACXBIWXMAAAsTAAALEwEAmpwYAAAOrElEQVR4nO3df5BV5X3H8fdXcaMYLCloRUnBjKJ0aK1gMwx2bAzWmmqJP2pGY3U0Uhm1TiNOW5NK7ChjbcyYqJ1RENIxrQkao7bFFGPGpjEjUoX1V2tiSaKEiChTrRIbBfvtH/eSWTnnsmdZdh/c+37N7LD3e5/nnucifvbZc7733shMJEnDb4/SC5CkbmUAS1IhBrAkFWIAS1IhBrAkFWIAS1Iho0ovQCpt/PjxOXny5NLL0Ai1evXqTZm5f919BrC63uTJk3n88cdLL0MjVES80Ok+T0FIUiEGsCQVYgBLUiEDOgfsxQoNpeeff55NmzZF6XVIw2VAAezFCg2lo48+uvQSpGHlKQhJKsQAlqRCDGBJKsQAlqRCDGBJKsQAlqRCDGBJKsQAlqRCDGBJKsQAlqRCDGBJKsQAlqRCDGBJKsSPJGp76623KrVZs2bVju3t7a3U5syZU6ndd999g16XpJHLHbAkFWIAS1IhBrAkFWIAS1IhBrAkFdJ1XRB13Q4Al112WaX2xBNP1I6NqH5u5IwZMwa1Lkndxx2wJBViAEtSIQawJBViAEtSIV13Ee6mm26qrS9atKhSmz17du3Yq6++ulKbOXPm4BYmqeu4A5akQgxgSSrEAJakQgxgSSrEAJY0rA48ECKafR14YOnVDq2u64LYsGFD47HHH398bd2OB2nnbdw4NGPfi9wBS1IhBrAkFWIAS1IhBrAkFdJ1F+E2b95cW+/p6anUOl2Ek6RdwR2wJBViAEtSIQawJBViAEtSIQawJBUyorsgXnzxxUptyZIltWNnzZpVqU2fPn2Xr0mStnEHLEmFGMCSVIgBLEmFGMCSVMiIvgi3cOHC0ksYEitXrqytr1+/vvFjHHnkkZXalClTdnpNkgbOHbAkFWIAS1IhBrAkFWIAS1IhBrAkFTKiuyDuv//+xmPnzp07hCvp30UXXVRbr3sOr776au3YN998s/Hx9ttvv0pt/vz5tWMXLFjQ+HElNecOWJIKMYAlqRADWJIKMYAlqZARcRGu08WnLVu2VGoTJ06sHXveeecNag1bt26t1NasWVM79pRTTqnUXnrppdqxmVmp7b///rVj6z7FudMa1q1bV6ktWrSoduy5555bqU2aNKl2rKTm3AFLUiEGsCQVYgBLUiEGsCQVYgBLUiEjogui0ycdb9y4sVKbN2/eoI9X92nLixcvrtSuueaaxo958MEH19bPOeecSu3iiy+uHdupw6POnDlzKrVOL93esGFDpWYXhDR47oAlqRADWJIKMYAlqRADWJIKGREX4Xp7exuPPeywwwZ9vLpPW7711lsrtYionT979uxK7YYbbqgdO23atAGurplDDz10SB5XUnPugCWpEANYkgoxgCWpEANYkgoZERfh6l6Ztis899xztfVly5Y1mn/hhRfW1m+88cZKraenp/nChsiMGTNq69OnTx/mlUjdwR2wJBViAEtSIQawJBViAEtSIQawJBUyIrogXn/99dp63ScK19U6ufnmm2vrr732WqV29tlnV2q33HJL42MNt82bN1dqo0bV/3PYHTo0pJHIHbAkFWIAS1IhBrAkFWIAS1IhI+IiXKf33a2rdxpbp9NLnOseY6heDj1YndZV90Gmp59++lAvR1If7oAlqRADWJIKMYAlqRADWJIKMYAlqZAR0QUxVBYvXlxbf+SRRxrVrr322tr58+bNq9TGjRs3wNU1c9ppp9XWR48eXaldfvnlQ7IGSfXcAUtSIQawJBViAEtSIQawJBXynrsIV/fS2g0bNgzJsTpdGFuzZk2lNmfOnEptwYIFtfMfeOCBSm358uW1Y8eMGdN47MKFCyu13t7e2rFXXnllpTZz5szasZKGhjtgSSrEAJakQgxgSSrEAJakQgxgSSrkPdcFcdBBB1VqU6ZMqR37wgsvVGoPPfRQ7di6lwfXvVwXYMKECZXaY489Vql16laYOnVqpVb3SctQ//LgujdTh/r11nU7QOcODUnDxx2wJBViAEtSIQawJBViAEtSIe+5i3B1li5dWls/6aSTKrX777+/duwJJ5xQqc2fP792bN1FuDqrVq2qrde9T3CnsZlZqR1++OGNH/fUU0/d0RIlFeQOWJIKMYAlqRADWJIKMYAlqRADWJIKGRFdEBMnTqytr1ixolI77rjjaseuXLmyUjvjjDMar6GuWyEiGs/v5Pzzz6/UPv/5z9eOHapPVpY0NNwBS1IhBrAk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
+<img src="data:image/png;base64,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
 "
 >
 </div>
@@ -19246,7 +19264,7 @@ Epoch 3/3
 </div><div class="fragment"><div class="jp-Cell jp-CodeCell jp-Notebook-cell    celltag_hide-input">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[129]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[130]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Visualization code for individual and multiple images</span>
@@ -19278,7 +19296,7 @@ Epoch 3/3
 
 
 <div class="jp-RenderedImage jp-OutputArea-output ">
-<img src="data:image/png;base64,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
+<img src="data:image/png;base64,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
 "
 >
 </div>
@@ -19304,7 +19322,7 @@ Epoch 3/3
 </div></div><div class="fragment"><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[130]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[131]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Define the model using nn.Sequential</span>
@@ -19330,7 +19348,7 @@ Epoch 3/3
 </div><div class="fragment"><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[131]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[132]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Define the loss function and the optimizer</span>
@@ -19352,7 +19370,7 @@ Epoch 3/3
 </div></section></section><section><section><div class="jp-Cell jp-CodeCell jp-Notebook-cell    celltag_remove-output">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[132]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[133]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Training loop</span>
@@ -19401,7 +19419,7 @@ Epoch 3/3
 </div><div class="fragment"><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[133]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[134]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Evaluate the model</span>
@@ -19425,7 +19443,7 @@ Epoch 3/3
 
 
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
-<pre>Test error: 94.4% accuracy
+<pre>Test error: 94.3% accuracy
 </pre>
 </div>
 </div>

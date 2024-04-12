@@ -9,6 +9,7 @@ import matplotlib.pyplot as plt
 import networkx as nx
 seed = 535
 rng = np.random.default_rng(seed)
+from scipy.stats import multivariate_normal
 
 
 # k-means clustering
@@ -751,120 +752,79 @@ def ppr(A, mu, alpha=0.85, max_iter=100):
     return v
 
 
-    
-
-
-
-
-
-
-
-
-# Linear Gaussian models
-
-
-def lgSamplePath(ss, os, F, H, Q, R, init_mu, init_Sig, T):
-    """
-    Generate a sample path from a linear Gaussian state-space model.
-
-    Parameters:
-    ss (int): The number of state variables.
-    os (int): The number of observation variables.
-    F (ndarray): The state transition matrix of shape (ss, ss).
-    H (ndarray): The observation matrix of shape (os, ss).
-    Q (ndarray): The state noise covariance matrix of shape (ss, ss).
-    R (ndarray): The observation noise covariance matrix of shape (os, os).
-    init_mu (ndarray): The initial state mean vector of shape (ss,).
-    init_Sig (ndarray): The initial state covariance matrix of shape (ss, ss).
-    T (int): The number of time steps.
-
-    Returns:
-    x (ndarray): The generated state path of shape (ss, T).
-    y (ndarray): The generated observation path of shape (os, T).
-    """
-    x = np.zeros((ss, T)) 
-    y = np.zeros((os, T))
-
-    x[:, 0] = np.random.multivariate_normal(init_mu, init_Sig)
-    for t in range(1, T):
-        x[:, t] = np.random.multivariate_normal(F @ x[:, t-1], Q)  # noise on x_t
-        y[:, t] = np.random.multivariate_normal(H @ x[:, t], R)  # noise on y_t
-    
-    return x, y
-
-
-
-def kalmanUpdate(ss, A, C, Q, R, y_t, mu_prev, Sig_prev):
-    """
-    Performs the Kalman update step.
-
-    Args:
-        ss (int): State size.
-        A (ndarray): State transition matrix.
-        C (ndarray): Observation matrix.
-        Q (ndarray): Process noise covariance matrix.
-        R (ndarray): Measurement noise covariance matrix.
-        y_t (ndarray): Measurement vector at time t.
-        mu_prev (ndarray): Previous state estimate.
-        Sig_prev (ndarray): Previous state covariance matrix.
-
-    Returns:
-        tuple: Updated state estimate (mu_new) and state covariance matrix (Sig_new).
-    """
-    mu_pred = A @ mu_prev
-    Sig_pred = A @ Sig_prev @ A.T + Q
-    if np.isnan(y_t[0]) or np.isnan(y_t[1]):
-        return mu_pred, Sig_pred
-    else:
-        e_t = y_t - C @ mu_pred # error at time t
-        S = C @ Sig_pred @ C.T + R
-        Sinv = LA.inv(S)
-        K = Sig_pred @ C.T @ Sinv # Kalman gain matrix
-        mu_new = mu_pred + K @ e_t
-        Sig_new = (np.diag(np.ones(ss)) - K @ C) @ Sig_pred
-        return mu_new, Sig_new
-
-
-    
-
-
-def kalmanFilter(ss, os, y, A, C, Q, R, init_mu, init_Sig, T):
-    """
-    Applies the Kalman filter algorithm to estimate the hidden states of a linear dynamical system.
-
-    Parameters:
-    ss (int): The number of hidden states.
-    os (int): The number of observed states.
-    y (ndarray): The observed states at each time step, shape (os, T).
-    A (ndarray): The state transition matrix, shape (ss, ss).
-    C (ndarray): The observation matrix, shape (os, ss).
-    Q (ndarray): The process noise covariance matrix, shape (ss, ss).
-    R (ndarray): The observation noise covariance matrix, shape (os, os).
-    init_mu (ndarray): The initial mean of the hidden states, shape (ss,).
-    init_Sig (ndarray): The initial covariance matrix of the hidden states, shape (ss, ss).
-    T (int): The number of time steps.
-
-    Returns:
-    mu (ndarray): The estimated means of the hidden states at each time step, shape (ss, T).
-    Sig (ndarray): The estimated covariance matrices of the hidden states at each time step, shape (ss, ss, T).
-    """
-    mu = np.zeros((ss, T))
-    Sig = np.zeros((ss, ss, T))
-    mu[:,0] = init_mu
-    Sig[:,:,0] = init_Sig
-
-    for t in range(1,T):
-        mu[:,t], Sig[:,:,t] = kalmanUpdate(ss, A, C, Q, R, 
-                                           y[:,t], mu[:,t-1], 
-                                           Sig[:,:,t-1])
-
-    return mu, Sig
-
 
 
 
 
 # Probabilistic models
+
+
+def gaussian_pdf(X, Y, mean, cov):
+    """
+    Compute the probability density function (PDF) of a 2D Gaussian distribution.
+
+    Parameters:
+        X (ndarray): X-coordinates of the grid points.
+        Y (ndarray): Y-coordinates of the grid points.
+        mean (ndarray): Mean vector of the Gaussian distribution.
+        cov (ndarray): Covariance matrix of the Gaussian distribution.
+
+    Returns:
+        ndarray: The PDF values evaluated at the given grid points.
+
+    """
+    xy = np.stack([X.flatten(), Y.flatten()], axis=-1)
+    return multivariate_normal.pdf(xy, mean=mean, cov=cov).reshape(X.shape)
+
+
+
+def gmm2_pdf(X, Y, mean1, cov1, pi1, mean2, cov2, pi2):
+    """
+    Calculate the probability density function (PDF) of a Gaussian Mixture Model (GMM) with two components.
+
+    Parameters:
+    X (ndarray): Input array of X coordinates.
+    Y (ndarray): Input array of Y coordinates.
+    mean1 (ndarray): Mean vector of the first Gaussian component.
+    cov1 (ndarray): Covariance matrix of the first Gaussian component.
+    pi1 (float): Mixing coefficient of the first Gaussian component.
+    mean2 (ndarray): Mean vector of the second Gaussian component.
+    cov2 (ndarray): Covariance matrix of the second Gaussian component.
+    pi2 (float): Mixing coefficient of the second Gaussian component.
+
+    Returns:
+    ndarray: The PDF values evaluated at each (X, Y) coordinate.
+
+    """
+    xy = np.stack([X.flatten(), Y.flatten()], axis=-1)
+    Z1 = multivariate_normal.pdf(
+        xy, mean=mean1, cov=cov1).reshape(X.shape) 
+    Z2 = multivariate_normal.pdf(
+        xy, mean=mean2, cov=cov2).reshape(X.shape) 
+    return pi1 * Z1 + pi2 * Z2
+
+
+
+def make_surface_plot(X, Y, Z):
+    """
+    Create a surface plot using the given X, Y, and Z data.
+
+    Parameters:
+    X (array-like): The X-coordinates of the data points.
+    Y (array-like): The Y-coordinates of the data points.
+    Z (array-like): The Z-coordinates of the data points.
+
+    Returns:
+    None
+    """
+    fig = plt.figure()
+    ax = fig.add_subplot(111, projection='3d')
+    surf = ax.plot_surface(
+        X, Y, Z, cmap=plt.cm.viridis, antialiased=False)
+    plt.show()
+
+
+
 
 def nb_fit_table(N_km, alpha=1., beta=1.):
     """
@@ -1116,6 +1076,112 @@ def hard_em_bern(X, K, pi_0, p_0, maxiters=10, alpha=0., beta=0.):
         pi_k, p_km = update_parameters(eta_km, eta_k, eta, alpha, beta)
         
     return pi_k, p_km
+
+
+
+
+
+
+
+# Linear Gaussian models
+
+
+def lgSamplePath(ss, os, F, H, Q, R, init_mu, init_Sig, T):
+    """
+    Generate a sample path from a linear Gaussian state-space model.
+
+    Parameters:
+    ss (int): The number of state variables.
+    os (int): The number of observation variables.
+    F (ndarray): The state transition matrix of shape (ss, ss).
+    H (ndarray): The observation matrix of shape (os, ss).
+    Q (ndarray): The state noise covariance matrix of shape (ss, ss).
+    R (ndarray): The observation noise covariance matrix of shape (os, os).
+    init_mu (ndarray): The initial state mean vector of shape (ss,).
+    init_Sig (ndarray): The initial state covariance matrix of shape (ss, ss).
+    T (int): The number of time steps.
+
+    Returns:
+    x (ndarray): The generated state path of shape (ss, T).
+    y (ndarray): The generated observation path of shape (os, T).
+    """
+    x = np.zeros((ss, T)) 
+    y = np.zeros((os, T))
+
+    x[:, 0] = np.random.multivariate_normal(init_mu, init_Sig)
+    for t in range(1, T):
+        x[:, t] = np.random.multivariate_normal(F @ x[:, t-1], Q)  # noise on x_t
+        y[:, t] = np.random.multivariate_normal(H @ x[:, t], R)  # noise on y_t
+    
+    return x, y
+
+
+
+def kalmanUpdate(ss, A, C, Q, R, y_t, mu_prev, Sig_prev):
+    """
+    Performs the Kalman update step.
+
+    Args:
+        ss (int): State size.
+        A (ndarray): State transition matrix.
+        C (ndarray): Observation matrix.
+        Q (ndarray): Process noise covariance matrix.
+        R (ndarray): Measurement noise covariance matrix.
+        y_t (ndarray): Measurement vector at time t.
+        mu_prev (ndarray): Previous state estimate.
+        Sig_prev (ndarray): Previous state covariance matrix.
+
+    Returns:
+        tuple: Updated state estimate (mu_new) and state covariance matrix (Sig_new).
+    """
+    mu_pred = A @ mu_prev
+    Sig_pred = A @ Sig_prev @ A.T + Q
+    if np.isnan(y_t[0]) or np.isnan(y_t[1]):
+        return mu_pred, Sig_pred
+    else:
+        e_t = y_t - C @ mu_pred # error at time t
+        S = C @ Sig_pred @ C.T + R
+        Sinv = LA.inv(S)
+        K = Sig_pred @ C.T @ Sinv # Kalman gain matrix
+        mu_new = mu_pred + K @ e_t
+        Sig_new = (np.diag(np.ones(ss)) - K @ C) @ Sig_pred
+        return mu_new, Sig_new
+
+
+    
+
+
+def kalmanFilter(ss, os, y, A, C, Q, R, init_mu, init_Sig, T):
+    """
+    Applies the Kalman filter algorithm to estimate the hidden states of a linear dynamical system.
+
+    Parameters:
+    ss (int): The number of hidden states.
+    os (int): The number of observed states.
+    y (ndarray): The observed states at each time step, shape (os, T).
+    A (ndarray): The state transition matrix, shape (ss, ss).
+    C (ndarray): The observation matrix, shape (os, ss).
+    Q (ndarray): The process noise covariance matrix, shape (ss, ss).
+    R (ndarray): The observation noise covariance matrix, shape (os, os).
+    init_mu (ndarray): The initial mean of the hidden states, shape (ss,).
+    init_Sig (ndarray): The initial covariance matrix of the hidden states, shape (ss, ss).
+    T (int): The number of time steps.
+
+    Returns:
+    mu (ndarray): The estimated means of the hidden states at each time step, shape (ss, T).
+    Sig (ndarray): The estimated covariance matrices of the hidden states at each time step, shape (ss, ss, T).
+    """
+    mu = np.zeros((ss, T))
+    Sig = np.zeros((ss, ss, T))
+    mu[:,0] = init_mu
+    Sig[:,:,0] = init_Sig
+
+    for t in range(1,T):
+        mu[:,t], Sig[:,:,t] = kalmanUpdate(ss, A, C, Q, R, 
+                                           y[:,t], mu[:,t-1], 
+                                           Sig[:,:,t-1])
+
+    return mu, Sig
 
 
 

@@ -10,6 +10,7 @@ import networkx as nx
 seed = 535
 rng = np.random.default_rng(seed)
 from scipy.stats import multivariate_normal
+import torch
 
 
 # k-means clustering
@@ -1303,5 +1304,86 @@ def plot_imgs(z, n_imgs, nx_pixels, ny_pixels):
         plt.xticks([])
         plt.yticks([])
     plt.show()
+
+
+
+# PyTorch and neural networks
+
+
+def train(dataloader, model, loss_fn, optimizer, device):
+    """
+    Trains the model using the given dataloader, loss function, optimizer, and device.
+
+    Args:
+        dataloader (torch.utils.data.DataLoader): The dataloader containing the training data.
+        model (torch.nn.Module): The model to be trained.
+        loss_fn (torch.nn.Module): The loss function used to compute the prediction error.
+        optimizer (torch.optim.Optimizer): The optimizer used for backpropagation.
+        device (torch.device): The device on which the training will be performed.
+
+    Returns:
+        None
+    """
+    size = len(dataloader.dataset)
+    model.train()
+    for batch, (X, y) in enumerate(dataloader):
+        X, y = X.to(device), y.to(device)
+        
+        # Compute prediction error
+        pred = model(X)
+        loss = loss_fn(pred, y)
+        
+        # Backpropagation
+        optimizer.zero_grad()
+        loss.backward()
+        optimizer.step()
+
+
+
+def training_loop(train_loader, model, loss_fn, optimizer, device, epochs=3):
+    """
+    Function to perform the training loop for a given number of epochs.
+
+    Args:
+        train_loader (torch.utils.data.DataLoader): The data loader for the training dataset.
+        model (torch.nn.Module): The model to be trained.
+        loss_fn (torch.nn.Module): The loss function to be used.
+        optimizer (torch.optim.Optimizer): The optimizer to be used for updating the model parameters.
+        device (torch.device): The device on which the training will be performed.
+        epochs (int, optional): The number of epochs to train for. Defaults to 3.
+    """
+    for epoch in range(epochs):
+        train(train_loader, model, loss_fn, optimizer, device)
+        
+        if (epoch+1) % 1 == 0:
+            print(f"Epoch {epoch+1}/{epochs}")
+
+
+
+def test(dataloader, model, loss_fn, device):
+    """
+    Function to evaluate the performance of a model on a test dataset.
+
+    Args:
+        dataloader (torch.utils.data.DataLoader): The data loader for the test dataset.
+        model (torch.nn.Module): The model to be evaluated.
+        device (torch.device): The device on which the model and data should be loaded.
+
+    Returns:
+        None
+    """
+    size = len(dataloader.dataset)
+    num_batches = len(dataloader)
+    model.eval()
+    test_loss, correct = 0, 0
+    with torch.no_grad():
+        for X, y in dataloader:
+            X, y = X.to(device), y.to(device)
+            pred = model(X)
+            test_loss += loss_fn(pred, y).item()
+            correct += (pred.argmax(dim=1) == y).type(torch.float).sum().item()
+    test_loss /= num_batches
+    accuracy = correct / size
+    print(f"Test error: {(100*accuracy):>0.1f}% accuracy")
 
 

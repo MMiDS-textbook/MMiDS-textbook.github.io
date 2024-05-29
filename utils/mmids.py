@@ -576,7 +576,7 @@ def spectral_cut2(A):
     return order[0:imin+1], order[imin+1:n]
 
 
-def viz_cut(G, s, layout):
+def viz_cut(G, s, pos):
     """
     Visualizes a graph with a highlighted cut.
 
@@ -585,8 +585,8 @@ def viz_cut(G, s, layout):
         The graph to be visualized.
     - s: int
         The index of the node to be highlighted.
-    - layout: function
-        A function that computes the layout of the graph.
+    - pos: dict
+        A dictionary with node positions as keys and their coordinates as values.
 
     Returns:
     None
@@ -594,7 +594,8 @@ def viz_cut(G, s, layout):
     n = G.number_of_nodes()
     assign = np.ones(n)
     assign[s] = 2
-    nx.draw_networkx(G, node_color=assign, pos=layout(G), with_labels=False)
+    nx.draw_networkx(G, node_color=assign, pos=pos, with_labels=False)
+
 
 
 

@@ -539,10 +539,13 @@ def cut_ratio(A, order, k):
     """
     n = A.shape[0] # number of vertices
     edge_boundary = 0 # initialize size of edge boundary 
+
     for i in range(k+1): # for all vertices before cut
         for j in range(k+1,n): # for all vertices after cut
             edge_boundary += A[order[i],order[j]] # add one if {i,j} in E
+    
     denominator = np.minimum(k+1, n-k-1)
+
     return edge_boundary/denominator
 
 
@@ -573,6 +576,7 @@ def spectral_cut2(A):
     for k in range(n-1):
         phi[k] = cut_ratio(A, order, k)
     imin = np.argmin(phi) # find best cut ratio
+
     return order[0:imin+1], order[imin+1:n]
 
 
@@ -594,7 +598,8 @@ def viz_cut(G, s, pos):
     n = G.number_of_nodes()
     assign = np.ones(n)
     assign[s] = 2
-    nx.draw_networkx(G, node_color=assign, pos=pos, with_labels=False)
+    nx.draw(G, node_color=assign, pos=pos, with_labels=False, cmap=plt.cm.brg,
+            node_size=200, font_size=10, font_color='white')
 
 
 

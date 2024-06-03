@@ -29,14 +29,7 @@ import matplotlib.pyplot as plt
 import pandas as pd
 import networkx as nx
 import torch
-from torchvision import datasets, transforms
-from torch.utils.data import DataLoader, TensorDataset
-import torch.nn as nn
-import torch.optim as optim
-import torch.nn.functional as F
 import mmids
-seed = 535
-rng = np.random.default_rng(seed)
 ```
 
 The file `mmids.py` is [here](https://raw.githubusercontent.com/MMiDS-textbook/MMiDS-textbook.github.io/main/utils/mmids.py).

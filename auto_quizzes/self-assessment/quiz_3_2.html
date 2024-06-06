@@ -1,32 +1,121 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-    <title>Self-Assessment Questions for Section 3.2</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MMiDS 3.2: Self-Assessment Quiz</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600&family=Open+Sans&display=swap"
+        rel="stylesheet">
     <style>
-        .question {
-            margin-bottom: 20px;
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f5f5f5;
+            color: #333;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
         }
+
+        #quiz-container {
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+            max-width: 800px;
+            width: 100%;
+            margin: 20px;
+        }
+
+        h1 {
+            font-family: 'Montserrat', sans-serif;
+            color: #673ab7;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .question {
+            background-color: #f5f0ff;
+            border: 1px solid #d1c4e9;
+            border-radius: 5px;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .question p {
+            margin: 0 0 15px;
+            font-weight: bold;
+        }
+
         .options {
             list-style-type: none;
             padding: 0;
         }
+
         .options li {
-            margin-bottom: 10px;
+            margin-bottom: 0px;
         }
+
+        .options li label {
+            display: block;
+            padding: 12px;
+            background-color: #f5f0ff;
+            color: #333;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .options li label:hover {
+            background-color: #e0d6ff;
+        }
+
         .feedback {
-            margin-top: 10px;
-            font-weight: bold;
+            margin-top: 15px;
+            display: none;
+            padding: 12px;
+            border-radius: 5px;
+        }
+
+        .feedback.correct {
+            background-color: #e0f0e5;
+            color: #155724;
+            display: block;
+        }
+
+        .feedback.incorrect {
+            background-color: #f8e1e3;
+            color: #721c24;
+            display: block;
+        }
+
+        @media (max-width: 600px) {
+            #quiz-container {
+                padding: 20px;
+            }
+
+            h1 {
+                font-size: 24px;
+                margin-bottom: 20px;
+            }
+
+            .question {
+                padding: 15px;
+                margin-bottom: 20px;
+            }
         }
     </style>
     <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
     <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 </head>
+
 <body>
-    <h1>Self-Assessment Questions for Section 3.2</h1>
-
-    <p>Before moving on, you may wish to quickly test your knowledge by going over the following review questions.</p>
-
     <div id="quiz-container">
+        <h1>MMiDS 3.2: Self-Assessment Quiz</h1>
         <div class="question">
             <p>What does it mean for a function \( f \) to be continuously differentiable at \( x_0 \)?</p>
             <ul class="options">
@@ -182,12 +271,15 @@
 
                 if (selectedOption === correctOptions[index]) {
                     feedbackText = "Excellent! " + getCorrectFeedback(index);
+                    feedbackDiv.classList.add('correct');
+                    feedbackDiv.classList.remove('incorrect');
                 } else {
                     feedbackText = "Try again.";
+                    feedbackDiv.classList.add('incorrect');
+                    feedbackDiv.classList.remove('correct');
                 }
 
                 feedbackDiv.innerHTML = feedbackText;
-                feedbackDiv.style.color = selectedOption === correctOptions[index] ? 'green' : 'red';
 
                 MathJax.typesetPromise([feedbackDiv]);
             });

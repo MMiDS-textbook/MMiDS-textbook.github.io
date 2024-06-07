@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MMiDS 4.6: Self-Assessment Quiz</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600&family=Open+Sans&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f5f5f5;
+            color: #333;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        #quiz-container {
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+            max-width: 800px;
+            width: 100%;
+            margin: 20px;
+        }
+
+        h1 {
+            font-family: 'Montserrat', sans-serif;
+            color: #673ab7;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .question {
+            background-color: #f5f0ff;
+            border: 1px solid #d1c4e9;
+            border-radius: 5px;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .question p {
+            margin: 0 0 15px;
+            font-weight: bold;
+        }
+
+        .options {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .options li {
+            margin-bottom: 0px;
+        }
+
+        .options li label {
+            display: block;
+            padding: 12px;
+            background-color: #f5f0ff;
+            color: #333;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .options li label:hover {
+            background-color: #e0d6ff;
+        }
+
+        .options li input[type="radio"] {
+            accent-color: #673ab7;
+        }
+        
+        .feedback {
+            margin-top: 15px;
+            display: none;
+            padding: 12px;
+            border-radius: 5px;
+        }
+
+        .feedback.correct {
+            background-color: #e0f0e5;
+            color: #155724;
+            display: block;
+        }
+
+        .feedback.incorrect {
+            background-color: #f8e1e3;
+            color: #721c24;
+            display: block;
+        }
+
+        @media (max-width: 600px) {
+            #quiz-container {
+                padding: 20px;
+                margin: 20px 10px;
+            }
+
+            h1 {
+                font-size: 24px;
+                margin-bottom: 20px;
+            }
+
+            .question {
+                padding: 15px;
+                margin-bottom: 20px;
+            }
+        }
+    </style>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+
+<body>
+    <div id="quiz-container">
+        <h1>MMiDS 4.6: Self-Assessment Quiz</h1>
+
+        <div class="question">
+            <p>Which of the following is NOT a property of the induced 2-norm of a matrix \(A\)?</p>
+            <ul class="options">
+                <li><label><input type="radio" name="q0" value="0"> a) \(\|A\|_2 \ge 0\)</label></li>
+                <li><label><input type="radio" name="q0" value="1"> b) \(\|A\|_2 = 0\) if and only if \(A = 0\)</label></li>
+                <li><label><input type="radio" name="q0" value="2"> c) \(\|\alpha A\|_2 = |\alpha| \|A\|_2\) for all \(\alpha \in \mathbb{R}\)</label></li>
+                <li><label><input type="radio" name="q0" value="3"> d) \(\|A + B\|_2 = \|A\|_2 + \|B\|_2\) for all matrices \(A\) and \(B\) of the same dimensions</label></li>
+            </ul>
+            <div class="feedback" id="feedback0"></div>
+        </div>
+
+        <div class="question">
+            <p>Which of the following best describes the Frobenius norm of a matrix \(A \in \mathbb{R}^{n \times m}\)?</p>
+            <ul class="options">
+                <li><label><input type="radio" name="q1" value="0"> a) The maximum singular value of \(A\).</label></li>
+                <li><label><input type="radio" name="q1" value="1"> b) The square root of the sum of the squares of all entries in \(A\).</label></li>
+                <li><label><input type="radio" name="q1" value="2"> c) The maximum absolute row sum of \(A\).</label></li>
+                <li><label><input type="radio" name="q1" value="3"> d) The maximum absolute column sum of \(A\).</label></li>
+            </ul>
+            <div class="feedback" id="feedback1"></div>
+        </div>
+
+        <div class="question">
+            <p>Let \(A \in \mathbb{R}^{n \times m}\) be a matrix with compact SVD \(A = \sum_{j=1}^r \sigma_j \mathbf{u}_j \mathbf{v}_j^T\), where \(\sigma_1 \geq \sigma_2 \geq \cdots \sigma_r > 0\). Which of the following is true about the induced 2-norm of \(A\)?</p>
+            <ul class="options">
+                <li><label><input type="radio" name="q2" value="0"> a) \(\|A\|_2^2 = \sum_{j=1}^r \sigma_j^2\)</label></li>
+                <li><label><input type="radio" name="q2" value="1"> b) \(\|A\|_2^2 = \sigma_1^2\)</label></li>
+                <li><label><input type="radio" name="q2" value="2"> c) \(\|A\|_2^2 = \sigma_r^2\)</label></li>
+                <li><label><input type="radio" name="q2" value="3"> d) \(\|A\|_2^2 = \prod_{j=1}^r \sigma_j^2\)</label></li>
+            </ul>
+            <div class="feedback" id="feedback2"></div>
+        </div>
+
+        <div class="question">
+            <p>*Let \(A \in \mathbb{R}^{n \times m}\) with \(m \leq n\) and let \(B \in \mathbb{R}^{n \times m}\) be a matrix of rank \(k \leq \min\{n,m\}\). Let \(B_{\perp} \in \mathbb{R}^{n \times m}\) be the matrix obtained by projecting each row of \(A\) onto the row space of \(B\). Which of the following is true?</p>
+            <ul class="options">
+                <li><label><input type="radio" name="q3" value="0"> a) \(\|A - B_{\perp}\|_F \geq \|A - B\|_F\)</label></li>
+                <li><label><input type="radio" name="q3" value="1"> b) \(\|A - B_{\perp}\|_F \leq \|A - B\|_F\)</label></li>
+                <li><label><input type="radio" name="q3" value="2"> c) \(\|A - B_{\perp}\|_F = \|A - B\|_F\)</label></li>
+                <li><label><input type="radio" name="q3" value="3"> d) The relationship between \(\|A - B_{\perp}\|_F\) and \(\|A - B\|_F\) cannot be determined.</label></li>
+            </ul>
+            <div class="feedback" id="feedback3"></div>
+        </div>
+
+        <div class="question">
+            <p>Let \(A \in \mathbb{R}^{n \times m}\) be a matrix with SVD \(A = \sum_{j=1}^r \sigma_j \mathbf{u}_j \mathbf{v}_j^T\) and let \(A_k = \sum_{j=1}^k \sigma_j \mathbf{u}_j \mathbf{v}_j^T\) be the truncated SVD with \(k < r\). Which of the following is true about the Frobenius norm of \(A - A_k\)?</p>
+            <ul class="options">
+                <li><label><input type="radio" name="q4" value="0"> a) \(\|A - A_k\|_F^2 = \sum_{j=1}^k \sigma_j^2\)</label></li>
+                <li><label><input type="radio" name="q4" value="1"> b) \(\|A - A_k\|_F^2 = \sum_{j=k+1}^r \sigma_j^2\)</label></li>
+                <li><label><input type="radio" name="q4" value="2"> c) \(\|A - A_k\|_F^2 = \sigma_k^2\)</label></li>
+                <li><label><input type="radio" name="q4" value="3"> d) \(\|A - A_k\|_F^2 = \sigma_{k+1}^2\)</label></li>
+            </ul>
+            <div class="feedback" id="feedback4"></div>
+        </div>
+
+        <div class="question">
+            <p>Let \(A \in \mathbb{R}^{n \times m}\) be a matrix with SVD \(A = \sum_{j=1}^r \sigma_j \mathbf{u}_j \mathbf{v}_j^T\) and let \(A_k = \sum_{j=1}^k \sigma_j \mathbf{u}_j \mathbf{v}_j^T\) be the truncated SVD with \(k < r\). Which of the following is true about the induced 2-norm of \(A - A_k\)?</p>
+            <ul class="options">
+                <li><label><input type="radio" name="q5" value="0"> a) \(\|A - A_k\|_2^2 = \sum_{j=1}^k \sigma_j^2\)</label></li>
+                <li><label><input type="radio" name="q5" value="1"> b) \(\|A - A_k\|_2^2 = \sum_{j=k+1}^r \sigma_j^2\)</label></li>
+                <li><label><input type="radio" name="q5" value="2"> c) \(\|A - A_k\|_2^2 = \sigma_k^2\)</label></li>
+                <li><label><input type="radio" name="q5" value="3"> d) \(\|A - A_k\|_2^2 = \sigma_{k+1}^2\)</label></li>
+            </ul>
+            <div class="feedback" id="feedback5"></div>
+        </div>
+
+        <div class="question">
+            <p>What is the pseudoinverse of an \(n \times m\) matrix \(A\) with compact SVD \(A = \sum_{l=1}^r \sigma_l u_l v_l^T\)?</p>
+            <ul class="options">
+                <li><label><input type="radio" name="q6" value="0"> a) \(A^+ = \sum_{l=1}^r \sigma_l^{-1} u_l v_l^T\)</label></li>
+                <li><label><input type="radio" name="q6" value="1"> b) \(A^+ = \sum_{l=1}^r \sigma_l u_l v_l^T\)</label></li>
+                <li><label><input type="radio" name="q6" value="2"> c) \(A^+ = \sum_{l=1}^r \sigma_l^{-1} v_l u_l^T\)</label></li>
+                <li><label><input type="radio" name="q6" value="3"> d) \(A^+ = \sum_{l=1}^r \sigma_l v_l u_l^T\)</label></li>
+            </ul>
+            <div class="feedback" id="feedback6"></div>
+        </div>
+
+        <div class="question">
+            <p>Let \(A\) be an \(n \times m\) matrix with \(m \le n\). Which of the following is true about the pseudoinverse \(A^+\)?</p>
+            <ul class="options">
+                <li><label><input type="radio" name="q7" value="0"> a) \(AA^+ = I_{n \times n}\) if \(A\) has full column rank.</label></li>
+                <li><label><input type="radio" name="q7" value="1"> b) \(A^+A = I_{m \times m}\) if \(A\) has full row rank.</label></li>
+                <li><label><input type="radio" name="q7" value="2"> c) \(A^+ = A^{-1}\) if \(A\) is a square, nonsingular matrix.</label></li>
+                <li><label><input type="radio" name="q7" value="3"> d) All of the above.</label></li>
+            </ul>
+            <div class="feedback" id="feedback7"></div>
+        </div>
+
+        <div class="question">
+            <p>Let \(A \in \mathbb{R}^{n \times m}\) with \(m \leq n\) and assume that \(A\) has full column rank \(m\). Which of the following is true about the pseudoinverse \(A^+\)?</p>
+            <ul class="options">
+                <li><label><input type="radio" name="q8" value="0"> a) \(A^+ = (A^T A)^{-1} A^T\)</label></li>
+                <li><label><input type="radio" name="q8" value="1"> b) \(A^+ = A^T (A A^T)^{-1}\)</label></li>
+                <li><label><input type="radio" name="q8" value="2"> c) \(A^+ = (A A^T)^{-1} A^T\)</label></li>
+                <li><label><input type="radio" name="q8" value="3"> d) \(A^+ = A^T (A^T A)^{-1}\)</label></li>
+            </ul>
+            <div class="feedback" id="feedback8"></div>
+        </div>
+
+        <div class="question">
+            <p>Let \(A \in \mathbb{R}^{n \times m}\) with \(m > n\) and assume that \(A\) has full row rank \(n\). Which of the following is true about the pseudoinverse \(A^+\)?</p>
+            <ul class="options">
+                <li><label><input type="radio" name="q9" value="0"> a) \(A^+ = (A^T A)^{-1} A^T\)</label></li>
+                <li><label><input type="radio" name="q9" value="1"> b) \(A^+ = A^T (A A^T)^{-1}\)</label></li>
+                <li><label><input type="radio" name="q9" value="2"> c) \(A^+ = (A A^T)^{-1} A^T\)</label></li>
+                <li><label><input type="radio" name="q9" value="3"> d) \(A^+ = A^T (A^T A)^{-1}\)</label></li>
+            </ul>
+            <div class="feedback" id="feedback9"></div>
+        </div>
+
+        <div class="question">
+            <p>Let \(A\) be an \(n \times m\) matrix with \(m > n\) and full row rank. Which of the following is true about the solution \(x^* = A^+b\) to the system \(Ax = b\)?</p>
+            <ul class="options">
+                <li><label><input type="radio" name="q10" value="0"> a) It is the unique solution.</label></li>
+                <li><label><input type="radio" name="q10" value="1"> b) It is the solution with the smallest 2-norm.</label></li>
+                <li><label><input type="radio" name="q10" value="2"> c) It is the solution with the largest 2-norm.</label></li>
+                <li><label><input type="radio" name="q10" value="3"> d) None of the above.</label></li>
+            </ul>
+            <div class="feedback" id="feedback10"></div>
+        </div>
+
+        <div class="question">
+            <p>What is the purpose of ridge regression?</p>
+            <ul class="options">
+                <li><label><input type="radio" name="q11" value="0"> a) To find the best low-rank approximation of a matrix.</label></li>
+                <li><label><input type="radio" name="q11" value="1"> b) To compute the pseudoinverse of a matrix.</label></li>
+                <li><label><input type="radio" name="q11" value="2"> c) To address multicollinearity in overdetermined linear systems.</label></li>
+                <li><label><input type="radio" name="q11" value="3"> d) To solve underdetermined linear systems.</label></li>
+            </ul>
+            <div class="feedback" id="feedback11"></div>
+        </div>
+
+        <div class="question">
+            <p>The ridge regression problem is formulated as \(\min_{x \in \mathbb{R}^m} \|Ax - b\|_2^2 + \lambda \|x\|_2^2\). What is the role of the parameter \(\lambda\)?</p>
+            <ul class="options">
+                <li><label><input type="radio" name="q12" value="0"> a) It controls the trade-off between fitting the data and minimizing the norm of the solution.</label></li>
+                <li><label><input type="radio" name="q12" value="1"> b) It determines the rank of the matrix \(A\).</label></li>
+                <li><label><input type="radio" name="q12" value="2"> c) It is the smallest singular value of \(A\).</label></li>
+                <li><label><input type="radio" name="q12" value="3"> d) It is the largest singular value of \(A\).</label></li>
+            </ul>
+            <div class="feedback" id="feedback12"></div>
+        </div>
+
+        <div class="question">
+            <p>Let \(A\) be an \(n \times m\) matrix with compact SVD \(A = \sum_{j=1}^r \sigma_j u_j v_j^T\). How does the ridge regression solution \(x^{**}\) compare to the least squares solution \(x^*\)?</p>
+            <ul class="options">
+                <li><label><input type="radio" name="q13" value="0"> a) \(x^{**}\) has larger components along the left singular vectors corresponding to small singular values.</label></li>
+                <li><label><input type="radio" name="q13" value="1"> b) \(x^{**}\) has smaller components along the left singular vectors corresponding to small singular values.</label></li>
+                <li><label><input type="radio" name="q13" value="2"> c) \(x^{**}\) is identical to \(x^*\).</label></li>
+                <li><label><input type="radio" name="q13" value="3"> d) None of the above.</label></li>
+            </ul>
+            <div class="feedback" id="feedback13"></div>
+        </div>
+
+        <div class="question">
+            <p>Let \(A \in \mathbb{R}^{n \times m}\) with \(n \geq m\) and \(\mathbf{b} \in \mathbb{R}^n\). Consider the ridge regression problem</p>
+            <p>\[
+                \min_{\mathbf{x} \in \mathbb{R}^m} \|A \mathbf{x} - \mathbf{b}\|_2^2 + \lambda \|\mathbf{x}\|_2^2,
+            \]</p>
+            <p>where \(\lambda > 0\). Which of the following is the solution to this problem?</p>
+            <ul class="options">
+                <li><label><input type="radio" name="q14" value="0"> a) \(\mathbf{x}^{**} = (A^T A)^{-1} A^T \mathbf{b}\)</label></li>
+                <li><label><input type="radio" name="q14" value="1"> b) \(\mathbf{x}^{**} = (A^T A + \lambda I_{m \times m})^{-1} A^T \mathbf{b}\)</label></li>
+                <li><label><input type="radio" name="q14" value="2"> c) \(\mathbf{x}^{**} = (A A^T + \lambda I_{n \times n})^{-1} A^T \mathbf{b}\)</label></li>
+                <li><label><input type="radio" name="q14" value="3"> d) \(\mathbf{x}^{**} = (A A^T)^{-1} A^T \mathbf{b}\)</label></li>
+            </ul>
+            <div class="feedback" id="feedback14"></div>
+        </div>
+
+        <div class="question">
+            <p>Let \(A \in \mathbb{R}^{n \times n}\) be a square nonsingular matrix with compact SVD \(A = \sum_{j=1}^n \sigma_j \mathbf{u}_j \mathbf{v}_j^T\). Which of the following is true about the induced 2-norm of the inverse \(A^{-1}\)?</p>
+            <ul class="options">
+                <li><label><input type="radio" name="q15" value="0"> a) \(\|A^{-1}\|_2 = \sigma_1\)</label></li>
+                <li><label><input type="radio" name="q15" value="1"> b) \(\|A^{-1}\|_2 = \sigma_n\)</label></li>
+                <li><label><input type="radio" name="q15" value="2"> c) \(\|A^{-1}\|_2 = \sigma_1^{-1}\)</label></li>
+                <li><label><input type="radio" name="q15" value="3"> d) \(\|A^{-1}\|_2 = \sigma_n^{-1}\)</label></li>
+            </ul>
+            <div class="feedback" id="feedback15"></div>
+        </div>
+
+    </div>
+
+    <script>
+        document.querySelectorAll('.options').forEach((optionsList, index) => {
+            const correctOptions = [3, 1, 1, 1, 1, 3, 2, 3, 0, 1, 1, 2, 0, 1, 1, 3];
+
+            optionsList.addEventListener('change', (event) => {
+                const selectedOption = parseInt(event.target.value);
+                const feedbackDiv = document.getElementById('feedback' + index);
+                let feedbackText = '';
+
+                if (selectedOption === correctOptions[index]) {
+                    feedbackText = "Excellent! " + getCorrectFeedback(index);
+                    feedbackDiv.classList.add('correct');
+                    feedbackDiv.classList.remove('incorrect');
+                } else {
+                    feedbackText = "Try again.";
+                    feedbackDiv.classList.add('incorrect');
+                    feedbackDiv.classList.remove('correct');
+                }
+
+                feedbackDiv.innerHTML = feedbackText;
+
+                MathJax.typesetPromise([feedbackDiv]);
+            });
+        });
+
+        function getCorrectFeedback(index) {
+            switch (index) {
+                case 0:
+                    return "The triangle inequality holds for the induced 2-norm, i.e., \\(\\|A + B\\|_2 \\le \\|A\\|_2 + \\|B\\|_2\\).";
+                case 1:
+                    return "The text defines the Frobenius norm of an \\(n \\times m\\) matrix \\(A\\) as \\(\\|A\\|_F = \\sqrt{\\sum_{i=1}^{n} \\sum_{j=1}^{m} a_{ij}^2}\\).";
+                case 2:
+                    return "The text proves that \\(\\|A\\|_2^2 = \\sigma_1^2\\), where \\(\\sigma_1\\) is the largest singular value of \\(A\\).";
+                case 3:
+                    return "The text proves the Projection and Rank-$k$ Approximation Lemma, which states that \\(\\|A - B_{\\perp}\\|_F \\leq \\|A - B\\|_F\\) for any matrix \\(B\\) of rank at most \\(k\\).";
+                case 4:
+                    return "The text proves that \\(\\|A - A_k\\|_F^2 = \\sum_{j=k+1}^r \\sigma_j^2\\) in the Matrix Norms and Singular Values: Truncation Lemma.";
+                case 5:
+                    return "The text proves that \\(\\|A - A_k\\|_2^2 = \\sigma_{k+1}^2\\) in the Matrix Norms and Singular Values: Truncation Lemma.";
+                case 6:
+                    return "The text defines the pseudoinverse as \\(A^+ = V \\Sigma^{-1} U^T = \\sum_{l=1}^r \\sigma_l^{-1} v_l u_l^T\\).";
+                case 7:
+                    return "All of the statements are true and are discussed in the text as observations about the pseudoinverse.";
+                case 8:
+                    return "The text proves in the Pseudoinverse and Least Squares Lemma that if \\(A\\) has full column rank \\(m\\), then \\(A^+ = (A^T A)^{-1} A^T\\).";
+                case 9:
+                    return "The text proves in the Pseudoinverse and Underdetermined Systems Lemma that if \\(A\\) has full row rank \\(n\\), then \\(A^+ = A^T (A A^T)^{-1}\\).";
+                case 10:
+                    return "The text states that \\(x^* = A^+b\\) is the least-norm solution to the underdetermined system \\(Ax = b\\).";
+                case 11:
+                    return "The text introduces ridge regression as a method to address multicollinearity in overdetermined systems.";
+                case 12:
+                    return "The text explains that ridge regression 'trades off minimizing the fit to the data versus minimizing the norm of the solution,' and \\(\\lambda\\) is the parameter that controls this trade-off.";
+                case 13:
+                    return "The text notes that the ridge regression solution 'reduces the contributions from the left singular vectors corresponding to small singular values.'";
+                case 14:
+                    return "The text derives the solution to the ridge regression problem as \\(\\mathbf{x}^{**} = (A^T A + \\lambda I_{m \\times m})^{-1} A^T \\mathbf{b}\\).";
+                case 15:
+                    return "The text shows in an example that for a square nonsingular matrix \\(A\\), \\(\\|A^{-1}\\|_2 = \\sigma_n^{-1}\\), where \\(\\sigma_n\\) is the smallest singular value of \\(A\\).";
+                default:
+                    return "";
+            }
+        }
+    </script>
+
+</body>
+
+</html>

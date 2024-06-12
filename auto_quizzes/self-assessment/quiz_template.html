@@ -77,7 +77,7 @@
         .options li input[type="radio"] {
             accent-color: #673ab7;
         }
-        
+
         .feedback {
             margin-top: 15px;
             display: none;
@@ -97,6 +97,15 @@
             display: block;
         }
 
+        img.graph-image {
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+            width: 50%;
+            margin-bottom: 20px;
+            margin-top: 20px;
+        }
+
         @media (max-width: 600px) {
             #quiz-container {
                 padding: 20px;
@@ -111,6 +120,12 @@
             .question {
                 padding: 15px;
                 margin-bottom: 20px;
+            }
+
+            img.graph-image {
+                width: 70%;
+                margin-bottom: 15px;
+                margin-top: 15px;
             }
         }
     </style>
@@ -170,11 +185,28 @@
             <div class="feedback" id="feedback2"></div>
         </div>
 
+        <div class="question">
+            <p>Consider the following graph:</p>
+            <img src="quiz-3_3-graph1.png" alt="Graph" class="graph-image">
+            <p>What is the adjacency matrix of this graph?</p>
+            <ul class="options">
+                <li><label><input type="radio" name="q5" value="0"> a) \( \begin{bmatrix} 0 & 1 & 1 \\ 1 & 0 & 1 \\ 1 &
+                        1 & 0 \end{bmatrix} \)</label></li>
+                <li><label><input type="radio" name="q5" value="1"> b) \( \begin{bmatrix} 1 & 0 & 0 \\ 0 & 1 & 0 \\ 0 &
+                        0 & 1 \end{bmatrix} \)</label></li>
+                <li><label><input type="radio" name="q5" value="2"> c) \( \begin{bmatrix} 0 & 1 & 0 \\ 1 & 0 & 1 \\ 0 &
+                        1 & 0 \end{bmatrix} \)</label></li>
+                <li><label><input type="radio" name="q5" value="3"> d) \( \begin{bmatrix} 1 & 1 & 1 \\ 1 & 1 & 1 \\ 1 &
+                        1 & 1 \end{bmatrix} \)</label></li>
+            </ul>
+            <div class="feedback" id="feedback3"></div>
+        </div>
+
     </div>
 
     <script>
         document.querySelectorAll('.options').forEach((optionsList, index) => {
-            const correctOptions = [1, 2, 2];
+            const correctOptions = [1, 2, 2, 0];
 
             optionsList.addEventListener('change', (event) => {
                 const selectedOption = parseInt(event.target.value);
@@ -205,6 +237,8 @@
                     return "The text defines a descent direction as a vector \\( v \\) such that there exists \\( \\alpha^* > 0 \\) where \\( f(x_0 + \\alpha v) < f(x_0) \\) for all \\( \\alpha \\in (0, \\alpha^*) \\). This implies that \\( f \\) decreases in the direction \\( v \\).";
                 case 2:
                     return "The text defines a local minimizer as follows: 'The point \\( x^* \\) is a local minimizer of \\( f \\) over \\( \\mathbb{R}^d \\) if there is \\( \\delta > 0 \\) such that \\( f(x) \\geq f(x^*) \\) for all \\( x \\in B_\\delta(x^*) \\setminus \\{x^*\\} \\).'";
+                case 3:
+                    return "The adjacency matrix \\( A \\) of a graph is defined as \\( A_{xy} = 1 \\) if \\( \\{x, y\\} \\in E \\) and \\( 0 \\) otherwise.";
                 default:
                     return "";
             }

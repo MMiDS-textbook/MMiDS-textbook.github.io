@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MMiDS 6.3: Self-Assessment Quiz</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600&family=Open+Sans&display=swap"
+        rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f5f5f5;
+            color: #333;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        #quiz-container {
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+            max-width: 800px;
+            width: 100%;
+            margin: 20px;
+        }
+
+        h1 {
+            font-family: 'Montserrat', sans-serif;
+            color: #673ab7;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .question {
+            background-color: #f5f0ff;
+            border: 1px solid #d1c4e9;
+            border-radius: 5px;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .question p {
+            margin: 0 0 15px;
+            font-weight: bold;
+        }
+
+        .options {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .options li {
+            margin-bottom: 0px;
+        }
+
+        .options li label {
+            display: block;
+            padding: 12px;
+            background-color: #f5f0ff;
+            color: #333;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .options li label:hover {
+            background-color: #e0d6ff;
+        }
+
+        .options li input[type="radio"] {
+            accent-color: #673ab7;
+        }
+
+        .feedback {
+            margin-top: 15px;
+            display: none;
+            padding: 12px;
+            border-radius: 5px;
+        }
+
+        .feedback.correct {
+            background-color: #e0f0e5;
+            color: #155724;
+            display: block;
+        }
+
+        .feedback.incorrect {
+            background-color: #f8e1e3;
+            color: #721c24;
+            display: block;
+        }
+
+        img.graph-image {
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+            width: 50%;
+            margin-bottom: 20px;
+            margin-top: 20px;
+        }
+
+        @media (max-width: 600px) {
+            #quiz-container {
+                padding: 20px;
+                margin: 20px 10px;
+            }
+
+            h1 {
+                font-size: 24px;
+                margin-bottom: 20px;
+            }
+
+            .question {
+                padding: 15px;
+                margin-bottom: 20px;
+            }
+
+            img.graph-image {
+                width: 70%;
+                margin-bottom: 15px;
+                margin-top: 15px;
+            }
+        }
+    </style>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+
+<body>
+    <div id="quiz-container">
+        <h1>MMiDS 6.3: Self-Assessment Quiz</h1>
+
+        <div class="question">
+            <p>Which of the following statements is <strong>not</strong> true about conditional probability?</p>
+            <ul class="options">
+                <li><label><input type="radio" name="q0" value="0"> a) \(P[A|B] = \frac{P[A \cap B]}{P[B]}\) for events
+                        \(A\) and \(B\) with \(P[B] > 0\).</label></li>
+                <li><label><input type="radio" name="q0" value="1"> b) If \(A\) and \(B\) are independent, then \(P[A|B]
+                        = P[A]\).</label></li>
+                <li><label><input type="radio" name="q0" value="2"> c) Conditional probabilities can be used to express
+                        the multiplication rule and the law of total probability.</label></li>
+                <li><label><input type="radio" name="q0" value="3"> d) \(P[A|B] = P[B|A]\) for any events \(A\) and
+                        \(B\).</label></li>
+            </ul>
+            <div class="feedback" id="feedback0"></div>
+        </div>
+
+        <div class="question">
+            <p>Let \(X\) and \(Y\) be discrete random variables. Which expression defines the conditional expectation of
+                \(X\) given \(Y = y\)?</p>
+            <ul class="options">
+                <li><label><input type="radio" name="q1" value="0"> a) \(\mathbb{E}[X|Y = y] = \sum_{x \in S_X} x
+                        p_{X,Y}(x,y)\)</label></li>
+                <li><label><input type="radio" name="q1" value="1"> b) \(\mathbb{E}[X|Y = y] = \sum_{x \in S_X} x
+                        p_X(x)\)</label></li>
+                <li><label><input type="radio" name="q1" value="2"> c) \(\mathbb{E}[X|Y = y] = \sum_{x \in S_X} x
+                        p_{X|Y}(x|y)\)</label></li>
+                <li><label><input type="radio" name="q1" value="3"> d) \(\mathbb{E}[X|Y = y] = \sum_{y \in S_Y} y
+                        p_{Y|X}(y|x)\)</label></li>
+            </ul>
+            <div class="feedback" id="feedback1"></div>
+        </div>
+
+        <div class="question">
+            <p>Which of the following is a valid expression for the joint probability \(P[X=x, Y=y, Z=z]\) using the
+                chain rule of probability?</p>
+            <ul class="options">
+                <li><label><input type="radio" name="q2" value="0"> a) \(P[X=x]P[Y=y]P[Z=z]\)</label></li>
+                <li><label><input type="radio" name="q2" value="1"> b) \(P[X=x]P[Y=y|X=x]P[Z=z|X=x,Y=y]\)</label></li>
+                <li><label><input type="radio" name="q2" value="2"> c) \(P[X=x|Y=y]P[Y=y|Z=z]P[Z=z]\)</label></li>
+                <li><label><input type="radio" name="q2" value="3"> d) \(P[X=x|Z=z]P[Y=y|Z=z]P[Z=z]\)</label></li>
+            </ul>
+            <div class="feedback" id="feedback2"></div>
+        </div>
+
+        <div class="question">
+            <p>Which of the following is the correct mathematical expression for the conditional independence of events
+                \(A\) and \(B\) given event \(C\), denoted as \(A \perp\!\!\!\perp B \mid C\)?</p>
+            <ul class="options">
+                <li><label><input type="radio" name="q3" value="0"> a) \(P[A \cap B \mid C] = P[A \mid C] + P[B \mid
+                        C]\)</label></li>
+                <li><label><input type="radio" name="q3" value="1"> b) \(P[A \cup B \mid C] = P[A \mid C] P[B \mid
+                        C]\)</label></li>
+                <li><label><input type="radio" name="q3" value="2"> c) \(P[A \cap B \mid C] = P[A \mid C] P[B \mid
+                        C]\)</label></li>
+                <li><label><input type="radio" name="q3" value="3"> d) \(P[A \mid B \cap C] = P[A \mid C]\)</label></li>
+            </ul>
+            <div class="feedback" id="feedback3"></div>
+        </div>
+
+        <div class="question">
+            <p>In the fork configuration \(Y \leftarrow X \rightarrow Z\), which of the following conditional
+                independence relations always holds?</p>
+            <ul class="options">
+                <li><label><input type="radio" name="q4" value="0"> a) \(X \perp\!\!\!\perp Y \mid Z\)</label></li>
+                <li><label><input type="radio" name="q4" value="1"> b) \(Y \perp\!\!\!\perp Z \mid X\)</label></li>
+                <li><label><input type="radio" name="q4" value="2"> c) \(X \perp\!\!\!\perp Z \mid Y\)</label></li>
+                <li><label><input type="radio" name="q4" value="3"> d) \(Y \perp\!\!\!\perp Z\)</label></li>
+            </ul>
+            <div class="feedback" id="feedback4"></div>
+        </div>
+
+        <div class="question">
+            <p>In the chain configuration \(X \rightarrow Y \rightarrow Z\), which of the following conditional
+                independence relations always holds?</p>
+            <ul class="options">
+                <li><label><input type="radio" name="q5" value="0"> a) \(X \perp\!\!\!\perp Y \mid Z\)</label></li>
+                <li><label><input type="radio" name="q5" value="1"> b) \(Y \perp\!\!\!\perp Z \mid X\)</label></li>
+                <li><label><input type="radio" name="q5" value="2"> c) \(X \perp\!\!\!\perp Z \mid Y\)</label></li>
+                <li><label><input type="radio" name="q5" value="3"> d) \(X \perp\!\!\!\perp Z\)</label></li>
+            </ul>
+            <div class="feedback" id="feedback5"></div>
+        </div>
+
+        <div class="question">
+            <p>In the collider configuration \(X \rightarrow Z \leftarrow Y\), which of the following conditional
+                independence relations always holds?</p>
+            <ul class="options">
+                <li><label><input type="radio" name="q6" value="0"> a) \(X \perp\!\!\!\perp Y \mid Z\)</label></li>
+                <li><label><input type="radio" name="q6" value="1"> b) \(Y \perp\!\!\!\perp Z \mid X\)</label></li>
+                <li><label><input type="radio" name="q6" value="2"> c) \(X \perp\!\!\!\perp Z \mid Y\)</label></li>
+                <li><label><input type="radio" name="q6" value="3"> d) \(X \perp\!\!\!\perp Y\)</label></li>
+            </ul>
+            <div class="feedback" id="feedback6"></div>
+        </div>
+
+        <div class="question">
+            <p>What is the key conditional independence assumption in the Naive Bayes model for document classification?
+            </p>
+            <ul class="options">
+                <li><label><input type="radio" name="q7" value="0"> a) The words in a document are conditionally
+                        independent given the document's length.</label></li>
+                <li><label><input type="radio" name="q7" value="1"> b) The words in a document are conditionally
+                        independent given the document's topic.</label></li>
+                <li><label><input type="radio" name="q7" value="2"> c) The topics of documents are conditionally
+                        independent given the words in the documents.</label></li>
+                <li><label><input type="radio" name="q7" value="3"> d) The topics of documents are conditionally
+                        independent given the document lengths.</label></li>
+            </ul>
+            <div class="feedback" id="feedback7"></div>
+        </div>
+
+        <div class="question">
+            <p>In the Naive Bayes model for document classification, what does the variable \(X_m\) represent?</p>
+            <ul class="options">
+                <li><label><input type="radio" name="q8" value="0"> a) The presence or absence of the \(m\)-th word in
+                        the vocabulary in a document.</label></li>
+                <li><label><input type="radio" name="q8" value="1"> b) The frequency of the \(m\)-th word in the
+                        vocabulary in a document.</label></li>
+                <li><label><input type="radio" name="q8" value="2"> c) The topic of the \(m\)-th document in the
+                        dataset.</label></li>
+                <li><label><input type="radio" name="q8" value="3"> d) The length of the \(m\)-th document in the
+                        dataset.</label></li>
+            </ul>
+            <div class="feedback" id="feedback8"></div>
+        </div>
+
+        <div class="question">
+            <p>Which of the following best describes the graphical representation of the Naive Bayes model for document
+                classification?</p>
+            <ul class="options">
+                <li><label><input type="radio" name="q9" value="0"> a) A chain with the topic variable at the center and
+                        word variables as the links.</label></li>
+                <li><label><input type="radio" name="q9" value="1"> b) A collider with the topic variable at the center
+                        and word variables as the parents.</label></li>
+                <li><label><input type="radio" name="q9" value="2"> c) A fork with the topic variable at the center and
+                        word variables as the prongs.</label></li>
+                <li><label><input type="radio" name="q9" value="3"> d) A complete graph with edges between all pairs of
+                        variables.</label></li>
+            </ul>
+            <div class="feedback" id="feedback9"></div>
+        </div>
+
+        <div class="question">
+            <p>In the sentiment analysis example, what does the variable \(X\) represent after the following code is
+                executed?</p>
+            <pre><code>X = (count > 0).astype(int)</code></pre>
+            <ul class="options">
+                <li><label><input type="radio" name="q10" value="0"> a) The document-term matrix with word
+                        frequencies.</label></li>
+                <li><label><input type="radio" name="q10" value="1"> b) The document-term matrix with binary indicators
+                        for word presence.</label></li>
+                <li><label><input type="radio" name="q10" value="2"> c) The term-document matrix with word
+                        frequencies.</label></li>
+                <li><label><input type="radio" name="q10" value="3"> d) The term-document matrix with binary indicators
+                        for word presence.</label></li>
+            </ul>
+            <div class="feedback" id="feedback10"></div>
+        </div>
+
+        <div class="question">
+            <p>In the sentiment analysis example, what does the variable \(N_{km}\) represent?</p>
+            <ul class="options">
+                <li><label><input type="radio" name="q11" value="0"> a) The number of documents in the training set with
+                        topic \(k\) and word \(m\) present.</label></li>
+                <li><label><input type="radio" name="q11" value="1"> b) The number of words in the vocabulary that are
+                        present in at least one document with topic \(k\).</label></li>
+                <li><label><input type="radio" name="q11" value="2"> c) The probability of word \(m\) being present in a
+                        document given that the document has topic \(k\).</label></li>
+                <li><label><input type="radio" name="q11" value="3"> d) The probability of a document having topic \(k\)
+                        given that word \(m\) is present in the document.</label></li>
+            </ul>
+            <div class="feedback" id="feedback11"></div>
+        </div>
+
+    </div>
+
+    <script>
+        document.querySelectorAll('.options').forEach((optionsList, index) => {
+            const correctOptions = [3, 2, 1, 2, 1, 2, 3, 1, 0, 2, 1, 0];
+
+            optionsList.addEventListener('change', (event) => {
+                const selectedOption = parseInt(event.target.value);
+                const feedbackDiv = document.getElementById('feedback' + index);
+                let feedbackText = '';
+
+                if (selectedOption === correctOptions[index]) {
+                    feedbackText = "Excellent! " + getCorrectFeedback(index);
+                    feedbackDiv.classList.add('correct');
+                    feedbackDiv.classList.remove('incorrect');
+                } else {
+                    feedbackText = "Try again.";
+                    feedbackDiv.classList.add('incorrect');
+                    feedbackDiv.classList.remove('correct');
+                }
+
+                feedbackDiv.innerHTML = feedbackText;
+
+                MathJax.typesetPromise([feedbackDiv]);
+            });
+        });
+
+        function getCorrectFeedback(index) {
+            switch (index) {
+                case 0:
+                    return "In general, \\(P[A|B] \\neq P[B|A]\\). Bayes' rule provides the correct relationship between these two conditional probabilities.";
+                case 1:
+                    return "The conditional expectation is defined as the expectation over the conditional probability mass function \\(p_{X|Y}(x|y)\\).";
+                case 2:
+                    return "This is the general form of the chain rule of probability, which is used to decompose a joint probability into a product of conditional probabilities.";
+                case 3:
+                    return "The text states, 'Then \\(A\\) and \\(B\\) are conditionally independent given \\(C\\), denoted \\(A \\perp\\!\\!\\!\\perp B \\mid C\\), if \\(P[A \\cap B \\mid C] = P[A \\mid C] P[B \\mid C]\\).'";
+                case 4:
+                    return "The text states, 'Removing the edge from \\(Y\\) to \\(Z\\) gives the following graph, known as a fork. We denote this configuration as \\(Y \\leftarrow X \\rightarrow Z\\). [...] The corresponding conditional independence relation is \\(Z \\perp\\!\\!\\!\\perp Y \\mid X\\).'";
+                case 5:
+                    return "The text states, 'Removing the edge from \\(X\\) to \\(Z\\) gives the following graph, known as a chain (or pipe). We denote this configuration as \\(X \\rightarrow Y \\rightarrow Z\\). [...] The corresponding conditional independence relation is \\(Z \\perp\\!\\!\\!\\perp X \\mid Y\\).'";
+                case 6:
+                    return "The text states, 'Removing the edge from \\(X\\) to \\(Y\\) gives the following graph, known as a collider. We denote this configuration as \\(X \\rightarrow Z \\leftarrow Y\\). [...] This time we have \\(X \\perp\\!\\!\\!\\perp Y\\).'";
+                case 7:
+                    return "The text states, 'The conditional independence assumption comes next: we assume that, given a topic \\(C\\), the word occurrences are independent.'";
+                case 8:
+                    return "The text states, 'There is a vocabulary of size \\(M\\) and we record the presence or absence of a word \\(m\\) in the document with a Bernoulli variable \\(X_m \\in \\{0, 1\\}\\).'";
+                case 9:
+                    return "The text states, 'Graphically, this is similar to a fork with \\(C\\) at its center and \\(M\\) prongs for the \\(X_m\\)s.'";
+                case 10:
+                    return "The text states, 'Because of our use of the multivariate Bernoulli naive Bayes model, it will be more convenient to work with a variant of the document-term matrix where each word is either present or absent.'";
+                case 11:
+                    return "The text shows the following code to compute \\(N_{km}\\):\n<pre><code>N_km = np.zeros((len(label_set), len(terms)))\nfor i, k in enumerate(label_set):\n    k_rows = (y_train == k)\n    N_km[i, :] = np.sum(X_train[k_rows, :] > 0, axis=0)\n</code></pre>\nThis code counts the number of documents in the training set with topic \\(k\\) (i.e., <code>y_train == k</code>) and word \\(m\\) present (i.e., <code>X_train[k_rows, :] > 0</code>).";
+                default:
+                    return "";
+            }
+        }
+
+
+    </script>
+
+</body>
+
+</html>

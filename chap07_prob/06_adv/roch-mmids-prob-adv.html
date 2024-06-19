@@ -1,0 +1,1086 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>6.6. Advanced material &#8212; MMiDS Textbook</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.5.1/css/all.min.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.1/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.1/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.1/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b76e3c8a" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=384b581d" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css?v=be8a1c11" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=87e54e7c" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae" />
+  <script src="../../_static/vendor/fontawesome/6.5.1/js/all.min.js?digest=8d27b9dea8ad943066ae"></script>
+
+    <script src="../../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?v=efea14e4"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../_static/design-tabs.js?v=36754332"></script>
+    <script async="async" src="https://www.googletagmanager.com/gtag/js?id=G-P5E8DW088F"></script>
+    <script>
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){ dataLayer.push(arguments); }
+                gtag('js', new Date());
+                gtag('config', 'G-P5E8DW088F');
+            </script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){ dataLayer.push(arguments); }
+                gtag('js', new Date());
+                gtag('config', 'G-P5E8DW088F');
+            </script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'chap07_prob/06_adv/roch-mmids-prob-adv';</script>
+    <link rel="canonical" href="https://mmids-textbook.github.io/chap07_prob/06_adv/roch-mmids-prob-adv.html" />
+    <link rel="icon" href="https://mmids-textbook.github.io/favicon-32x32.png"/>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="6.7. Exercises" href="../exercises/roch-mmids-prob-exercises.html" />
+    <link rel="prev" title="6.5. Application: linear-Gaussian models and Kalman filtering" href="../04_kalman/roch-mmids-prob-kalman.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a id="pst-skip-link" class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+
+<a class="navbar-brand logo" href="../../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/mmids-cover-small.jpg" class="logo__image only-light" alt="MMiDS Textbook - Home"/>
+    <script>document.write(`<img src="../../_static/mmids-cover-small.jpg" class="logo__image only-dark" alt="MMiDS Textbook - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../index.html">
+                    <b>MATHEMATICAL METHODS in DATA SCIENCE (with Python)</b>
+                </a>
+            </li>
+        </ul>
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../chap01_intro/00_intro/roch-mmids-intro-intro.html">1. Introduction: a first data science problem</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../chap01_intro/01_motiv/roch-mmids-intro-motiv.html">1.1. Motivating example: identifying penguin species</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap01_intro/02_review/roch-mmids-intro-review.html">1.2. Background: quick refresher of matrix algebra, differential calculus, and elementary probability</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap01_intro/03_clustering/roch-mmids-intro-clustering.html">1.3. Clustering: an objective, an algorithm and a guarantee</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap01_intro/04_highdim/roch-mmids-intro-highdim.html">1.4. Some observations about high-dimensional data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap01_intro/05_adv/roch-mmids-intro-adv.html">1.5. Advanced material</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap01_intro/exercises/roch-mmids-intro-exercises.html">1.6. Exercises</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../chap02_ls/00_intro/roch-mmids-ls-intro.html">2. Least squares: geometric, algebraic, and numerical aspects</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../chap02_ls/01_motiv/roch-mmids-ls-motiv.html">2.1. Motivating example: predicting sales</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap02_ls/02_subspaces/roch-mmids-ls-spaces.html">2.2. Background: review of vector spaces and matrix inverses</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap02_ls/03_orthog/roch-mmids-ls-orthog.html">2.3. Geometry of least squares: the orthogonal projection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap02_ls/04_qr/roch-mmids-ls-qr.html">2.4. QR decomposition and Householder transformations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap02_ls/05_regression/roch-mmids-ls-regression.html">2.5. Application: regression analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap02_ls/06_adv/roch-mmids-ls-adv.html">2.6. Advanced material</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap02_ls/exercises/roch-mmids-ls-exercises.html">2.7. Exercises</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../chap06_opt/00_intro/roch-mmids-opt-intro.html">3. Optimization theory and algorithms</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-3"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../chap06_opt/01_motiv/roch-mmids-opt-motiv.html">3.1. Motivating example:  analyzing customer satisfaction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap06_opt/02_several/roch-mmids-opt-several.html">3.2. Background: review of differentiable functions of several variables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap06_opt/03_optimality/roch-mmids-opt-optimality.html">3.3. Optimality conditions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap06_opt/03part2_convexity/roch-mmids-opt-convexity.html">3.4. Convexity</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap06_opt/04_gd/roch-mmids-opt-gd.html">3.5. Gradient descent and its convergence analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap06_opt/04part2_logistic/roch-mmids-opt-logistic.html">3.6. Application: logistic regression</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap06_opt/06_adv/roch-mmids-opt-adv.html">3.7. Advanced material</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap06_opt/exercises/roch-mmids-opt-exercises.html">3.8. Exercises</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../chap03_svd/00_intro/roch-mmids-svd-intro.html">4. Singular value decomposition</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-4"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../chap03_svd/01_motiv/roch-mmids-svd-motiv.html">4.1. Motivating example: visualizing viral evolution</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap03_svd/02_spectral/roch-mmids-svd-spectral.html">4.2. Background: matrix rank; review of eigenvalues and eigenvectors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap03_svd/03_svd/roch-mmids-svd-svd.html">4.3. Approximating subspaces and the SVD</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap03_svd/04_power/roch-mmids-svd-power.html">4.4. Power iteration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap03_svd/05_pca/roch-mmids-svd-pca.html">4.5. Application: principal components analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap03_svd/06_further/roch-mmids-svd-further.html">4.6. Further applications of the SVD: low-rank approximation; pseudoinverse; ridge regression</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap03_svd/07_adv/roch-mmids-svd-adv.html">4.7. Advanced material</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap03_svd/exercises/roch-mmids-svd-exercises.html">4.8. Exercises</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../chap04_specgraph/00_intro/roch-mmids-specgraph-intro.html">5. Spectral graph theory</a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-5"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../chap04_specgraph/01_motiv/roch-mmids-specgraph-motiv.html">5.1. Motivating example: uncovering social groups</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap04_specgraph/02_graph/roch-mmids-specgraph-graph.html">5.2. Background: basic concepts in graph theory</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap04_specgraph/03_extremal/roch-mmids-specgraph-extremal.html">5.3. Variational characterization of eigenvalues</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap04_specgraph/04_laplacian/roch-mmids-specgraph-laplacian.html">5.4. Spectral properties of the Laplacian matrix</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap04_specgraph/05_partitioning/roch-mmids-specgraph-partitioning.html">5.5. Application: graph partitioning via spectral clustering</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap04_specgraph/05part2_sbm/roch-mmids-specgraph-sbm.html">5.6. Erdős-Rényi random graph and stochastic blockmodel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap04_specgraph/06_adv/roch-mmids-specgraph-adv.html">5.7. Advanced material</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap04_specgraph/exercises/roch-mmids-specgraph-exercises.html">5.8. Exercises</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="../00_intro/roch-mmids-prob-intro.html">6. Probabilistic models: from simple to complex</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-6"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../01_motiv/roch-mmids-prob-motiv.html">6.1. Motivating example: tracking location</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../02_parametric/roch-mmids-prob-parametric.html">6.2. Background: introduction to parametric families and maximum likelihood estimation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../03_joint/roch-mmids-prob-joint.html">6.3. Modeling more complex dependencies 1: using conditional independence</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../03part2_em/roch-mmids-prob-em.html">6.4. Modeling more complex dependencies 2: marginalizing out an unobserved variable</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../04_kalman/roch-mmids-prob-kalman.html">6.5. Application: linear-Gaussian models and Kalman filtering</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">6.6. Advanced material</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../exercises/roch-mmids-prob-exercises.html">6.7. Exercises</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../chap05_rwmc/00_intro/roch-mmids-rwmc-intro.html">7. Random walks on graphs and Markov chains</a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-7"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../chap05_rwmc/01_motiv/roch-mmids-rwmc-motiv.html">7.1. Motivating example: discovering mathematical topics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap05_rwmc/03_mcdefs/roch-mmids-rwmc-mcdefs.html">7.2. Background: elements of finite Markov chains</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap05_rwmc/04_stat/roch-mmids-rwmc-stat.html">7.3. Limit behavior 1: stationary distributions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap05_rwmc/04part2_mclimit/roch-mmids-rwmc-mclimit.html">7.4. Limit behavior 2: convergence to equilibrium</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap05_rwmc/05_pagerank/roch-mmids-rwmc-pagerank.html">7.5. Application: random walks on graphs and PageRank</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap05_rwmc/05part2_gibbs/roch-mmids-rwmc-gibbs.html">7.6. Further applications: Gibbs sampling and generating images</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap05_rwmc/06_adv/roch-mmids-rwmc-adv.html">7.7. Advanced material</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap05_rwmc/exercises/roch-mmids-rwmc-exercises.html">7.8. Exercises</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../chap08_nn/00_intro/roch-mmids-nn-intro.html">8. Neural networks, backpropagation and stochastic gradient descent</a><input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-8"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../chap08_nn/01_motiv/roch-mmids-nn-motiv.html">8.1. Motivating example:  classifying natural images</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap08_nn/02_chain/roch-mmids-nn-chain.html">8.2. Background: Jacobian and Chain Rule; introduction to automatic differentiation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap08_nn/03_backprop/roch-mmids-nn-backprop.html">8.3. Building blocks of AI 1: backpropagation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap08_nn/04_sgd/roch-mmids-nn-sgd.html">8.4. Building blocks of AI 2: stochastic gradient descent</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap08_nn/05_nn/roch-mmids-nn-nn.html">8.5. Building blocks of AI 3: neural networks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap08_nn/06_adv/roch-mmids-nn-adv.html">8.6. Advanced material</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap08_nn/exercises/roch-mmids-nn-exercises.html">8.7. Exercises</a></li>
+</ul>
+</li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/MMiDS-textbook/MMiDS-textbook.github.io" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/MMiDS-textbook/MMiDS-textbook.github.io/issues/new?title=Issue%20on%20page%20%2Fchap07_prob/06_adv/roch-mmids-prob-adv.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/chap07_prob/06_adv/roch-mmids-prob-adv.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Advanced material</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#cholesky-decomposition">6.6.1. Cholesky decomposition</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <p><span class="math notranslate nohighlight">\(\newcommand{\P}{\mathbb{P}}\)</span> <span class="math notranslate nohighlight">\(\newcommand{\E}{\mathbb{E}}\)</span> <span class="math notranslate nohighlight">\(\newcommand{\S}{\mathcal{S}}\)</span> <span class="math notranslate nohighlight">\(\newcommand{\var}{\mathrm{Var}}\)</span> <span class="math notranslate nohighlight">\(\newcommand{\bmu}{\boldsymbol{\mu}}\)</span> <span class="math notranslate nohighlight">\(\newcommand{\bSigma}{\boldsymbol{\Sigma}}\)</span> <span class="math notranslate nohighlight">\(\newcommand{\btheta}{\boldsymbol{\theta}}\)</span> <span class="math notranslate nohighlight">\(\newcommand{\bpi}{\boldsymbol{\pi}}\)</span> <span class="math notranslate nohighlight">\(\newcommand{\indep}{\perp\!\!\!\perp}\)</span> <span class="math notranslate nohighlight">\(\newcommand{\bp}{\mathbf{p}}\)</span> <span class="math notranslate nohighlight">\(\newcommand{\bx}{\mathbf{x}}\)</span> <span class="math notranslate nohighlight">\(\newcommand{\bX}{\mathbf{X}}\)</span> <span class="math notranslate nohighlight">\(\newcommand{\by}{\mathbf{y}}\)</span> <span class="math notranslate nohighlight">\(\newcommand{\bY}{\mathbf{Y}}\)</span> <span class="math notranslate nohighlight">\(\newcommand{\bz}{\mathbf{z}}\)</span> <span class="math notranslate nohighlight">\(\newcommand{\bZ}{\mathbf{Z}}\)</span> <span class="math notranslate nohighlight">\(\newcommand{\bw}{\mathbf{w}}\)</span> <span class="math notranslate nohighlight">\(\newcommand{\bW}{\mathbf{W}}\)</span> <span class="math notranslate nohighlight">\(\newcommand{\bv}{\mathbf{v}}\)</span> <span class="math notranslate nohighlight">\(\newcommand{\bV}{\mathbf{V}}\)</span> <span class="math notranslate nohighlight">\(\newcommand{\bfbeta}{\boldsymbol{\beta}}\)</span> <span class="math notranslate nohighlight">\(\newcommand{\bflambda}{\boldsymbol{\lambda}}\)</span> <span class="math notranslate nohighlight">\(\newcommand{\cov}{\mathrm{Cov}}\)</span></p>
+<section id="advanced-material">
+<h1><span class="section-number">6.6. </span>Advanced material<a class="headerlink" href="#advanced-material" title="Link to this heading">#</a></h1>
+<p>In this section, we cover some more advanced material.</p>
+<section id="cholesky-decomposition">
+<h2><span class="section-number">6.6.1. </span>Cholesky decomposition<a class="headerlink" href="#cholesky-decomposition" title="Link to this heading">#</a></h2>
+<p>In  this section, we derive an important matrix factorization and apply it to generating multivariate Gaussians. We also revisit the least-squares problem. We begin with the motivation.</p>
+<p><strong>Generating multivariate Gaussians</strong> Suppose we want to generate samples from a multivariate Gaussian <span class="math notranslate nohighlight">\(\bX \sim N_d(\bmu, \bSigma)\)</span> with given mean vector <span class="math notranslate nohighlight">\(\bmu \in \mathbb{R}^d\)</span> and positive definite covariance matrix <span class="math notranslate nohighlight">\(\bSigma  \in \mathbb{R}^{d \times d}\)</span>. Of course, in Numpy, we could use <a class="reference external" href="https://numpy.org/doc/stable/reference/random/generated/numpy.random.Generator.multivariate_normal.html"><code class="docutils literal notranslate"><span class="pre">numpy.random.Generator.multivariate_normal</span></code></a>. But what is behind it? More precisely, suppose we have access to unlimited samples <span class="math notranslate nohighlight">\(U_1, U_2, U_3, etc.\)</span> from uniform random variables in <span class="math notranslate nohighlight">\([0,1]\)</span>. How do we transform them to obtain samples from <span class="math notranslate nohighlight">\(N_d(\bmu, \bSigma)\)</span>.</p>
+<p>We start with the simplest case: <span class="math notranslate nohighlight">\(d=1\)</span>, <span class="math notranslate nohighlight">\(\mu = 0\)</span>, and <span class="math notranslate nohighlight">\(\sigma^2 = 1\)</span>. That is, we first generate a univariate standard Normal. We have seen a recipe for doing this before, the inverse transform sampling method. Specifically, recall that the cumulative distribution function (CDF) of a random variable <span class="math notranslate nohighlight">\(Z\)</span> is defined as</p>
+<div class="math notranslate nohighlight">
+\[
+F_Z(z) = \mathbb{P}[Z \leq z], \qquad \forall z \in \mathbb{R}.
+\]</div>
+<p>Let <span class="math notranslate nohighlight">\(\mathcal{Z}\)</span> be the interval where <span class="math notranslate nohighlight">\(F_Z(z) \in (0,1)\)</span> and assume that <span class="math notranslate nohighlight">\(F_X\)</span> is strictly increasing on <span class="math notranslate nohighlight">\(\mathcal{Z}\)</span>. Let <span class="math notranslate nohighlight">\(U \sim \mathrm{U}[0,1]\)</span>. Then it can be shown that</p>
+<div class="math notranslate nohighlight">
+\[
+\mathbb{P}[F_X^{-1}(U) \leq z] = F_X(z).
+\]</div>
+<p>So take <span class="math notranslate nohighlight">\(F_Z = \Phi\)</span>, the CDF of the standard Normal. Then <span class="math notranslate nohighlight">\(Z = \Phi^{-1}(U)\)</span> is <span class="math notranslate nohighlight">\(N(0,1)\)</span>.</p>
+<p>How do we generate a <span class="math notranslate nohighlight">\(N(\mu, \sigma^2)\)</span> variable, for arbitrary <span class="math notranslate nohighlight">\(\mu \in \mathbb{R}\)</span> and <span class="math notranslate nohighlight">\(\sigma^2 &gt; 0\)</span>? We use the fact that the linear transformation of Gaussian is still Gaussian. In particular, if <span class="math notranslate nohighlight">\(Z \sim N(0,1)\)</span>, then</p>
+<div class="math notranslate nohighlight">
+\[
+X = \mu + \sigma Z
+\]</div>
+<p>is <span class="math notranslate nohighlight">\(N(\mu, \sigma^2)\)</span>.</p>
+<p><strong>NUMERICAL CORNER:</strong> In Python, <span class="math notranslate nohighlight">\(\Phi^{-1}\)</span> can be accessed using <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.norm.html"><code class="docutils literal notranslate"><span class="pre">scipy.stats.norm.ppf</span></code></a>. We implement this next.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">seed</span> <span class="o">=</span> <span class="mi">535</span>
+<span class="n">rng</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">(</span><span class="n">seed</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">scipy.stats</span> <span class="kn">import</span> <span class="n">norm</span>
+
+<span class="k">def</span> <span class="nf">generate_standard_normal_samples_using_inverse_cdf</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">mu</span><span class="p">,</span> <span class="n">sigma2</span><span class="p">):</span>
+    <span class="c1"># Step 1: Generate uniform [0,1] random variables</span>
+    <span class="n">U</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
+    
+    <span class="c1"># Step 2: Apply the inverse CDF (ppf) of the standard normal distribution</span>
+    <span class="n">Z</span> <span class="o">=</span> <span class="n">norm</span><span class="o">.</span><span class="n">ppf</span><span class="p">(</span><span class="n">U</span><span class="p">)</span>
+    
+    <span class="k">return</span> <span class="n">mu</span> <span class="o">+</span> <span class="n">sigma2</span> <span class="o">*</span> <span class="n">Z</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>We generate 1000 samples and plot the empirical distribution.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Generate 1000 standard normal samples</span>
+<span class="n">samples</span> <span class="o">=</span> <span class="n">generate_standard_normal_samples_using_inverse_cdf</span><span class="p">(</span><span class="mi">1000</span><span class="p">,</span> <span class="mi">0</span> <span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell tag_hide-input docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell source</span>
+<span class="expanded">Hide code cell source</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Plot the empirical PDF</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+
+<span class="c1"># Plot histogram of the samples with density=True to normalize the histogram</span>
+<span class="n">count</span><span class="p">,</span> <span class="n">bins</span><span class="p">,</span> <span class="n">ignored</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">samples</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span> <span class="n">density</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.6</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;g&#39;</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">)</span>
+
+<span class="c1"># Plot the theoretical standard normal PDF for comparison</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">1000</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">norm</span><span class="o">.</span><span class="n">pdf</span><span class="p">(</span><span class="n">x</span><span class="p">),</span> <span class="s1">&#39;k&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Empirical PDF of Generated Samples&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Value&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Density&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</details>
+<div class="cell_output docutils container">
+<img alt="../../_images/12372b3561d9541b1ae7295af992116b7bbb9c34bd98c0576930a72719c246de.png" src="../../_images/12372b3561d9541b1ae7295af992116b7bbb9c34bd98c0576930a72719c246de.png" />
+</div>
+</div>
+<p><span class="math notranslate nohighlight">\(\unlhd\)</span></p>
+<p><strong>CHAT &amp; LEARN</strong> It turns out there is a neat trick to generate <em>two</em> independent samples from <span class="math notranslate nohighlight">\(N(0,1)\)</span> that does not rely on access to <span class="math notranslate nohighlight">\(\Phi^{-1}\)</span>. It is called the Box-Muller transform. Ask your favorite AI chatbot about it. Modify our code above to implement it. <span class="math notranslate nohighlight">\(\ddagger\)</span></p>
+<p>We move on to the multivariate case. We proceed similarly as before. First, how do we generate a <span class="math notranslate nohighlight">\(d\)</span>-dimensional Gaussian with mean vector <span class="math notranslate nohighlight">\(\bmu = \mathbf{0}\)</span> and identity covariance matrix <span class="math notranslate nohighlight">\(\bSigma = I_{d \times d}\)</span>? Easy – it has <span class="math notranslate nohighlight">\(d\)</span> independent components, each of which is standard Normal. So letting <span class="math notranslate nohighlight">\(U_1, \ldots, U_d\)</span> be independent uniform <span class="math notranslate nohighlight">\([0,1]\)</span> variables, then</p>
+<div class="math notranslate nohighlight">
+\[
+\mathbf{Z}
+= (\Phi^{-1}(U_1),\ldots,\Phi^{-1}(U_d))
+\]</div>
+<p>is <span class="math notranslate nohighlight">\(N(\mathbf{0}, I_{d \times d})\)</span>.</p>
+<p>We now seek to generate a multivariate Gaussian with arbitrary mean vector <span class="math notranslate nohighlight">\(\bmu\)</span> and positive definite covariance matrix <span class="math notranslate nohighlight">\(\bSigma\)</span>. Again, we use a linear transformation</p>
+<div class="math notranslate nohighlight">
+\[
+\mathbf{X}
+= \mathbf{a} + A \mathbf{Z}.
+\]</div>
+<p>What are the right choices for <span class="math notranslate nohighlight">\(a \in \mathbb{R}^d\)</span> and <span class="math notranslate nohighlight">\(A \in \mathbb{R}^{d \times d}\)</span>? We need to match the obtained and desired mean and covariance. We start with the mean. By linearity of expectation,</p>
+<div class="math notranslate nohighlight">
+\[
+\E[\mathbf{X}]
+= \E[\mathbf{a} + A \mathbf{Z}]
+= \mathbf{a} + A \,\E[\mathbf{Z}]
+= \mathbf{a}.
+\]</div>
+<p>Hence we pick <span class="math notranslate nohighlight">\(\mathbf{a} := \bmu\)</span>.</p>
+<p>As for the covariance, using the <em>Covariance of a Linear Transformation</em>, we get</p>
+<div class="math notranslate nohighlight">
+\[
+\cov[\mathbf{X}]
+= A \,\cov[\mathbf{Z}] A^T
+= A A^T.
+\]</div>
+<p>Now we have a problem: what is a matrix <span class="math notranslate nohighlight">\(A\)</span> such that</p>
+<div class="math notranslate nohighlight">
+\[
+A A^T = \bSigma?
+\]</div>
+<p>In some sense, we are looking for a sort of “square root” of the covariance matrix. There are several ways of doing this. The Cholesky decomposition is one of them. We return to generating samples from <span class="math notranslate nohighlight">\(N(\bmu, \bSigma)\)</span> after introducing it.</p>
+<p><strong>A matrix factorization</strong> Our key linear-algebraic result of this section is the following. The matrix factorization in the next theorem is called a Cholesky decomposition. It has many <a class="reference external" href="https://en.wikipedia.org/wiki/Cholesky_decomposition#Applications">applications</a>.</p>
+<p><strong>THEOREM</strong> <strong>(Cholesky Decomposition)</strong> Any positive definite matrix <span class="math notranslate nohighlight">\(B \in \mathbb{R}^{n \times n}\)</span> can be factorized uniquely as</p>
+<div class="math notranslate nohighlight">
+\[
+B = L L^T
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(L \in \mathbb{R}^{n \times n}\)</span> is a lower triangular matrix with positive entries on the diagonal. <span class="math notranslate nohighlight">\(\sharp\)</span></p>
+<p>The proof is provided below. It is based on deriving an algorithm for computing the Cholesky decomposition: we grow <span class="math notranslate nohighlight">\(L\)</span> starting from its top-left corner by successively computing its next row based on the previously constructed submatrix. Note that, because <span class="math notranslate nohighlight">\(L\)</span> is lower triangular, it suffices to compute its elements on and below the diagonal. We first give the algorithm, then establish that it is well-defined.</p>
+<p><strong>Figure:</strong> Access pattern (<a class="reference external" href="https://en.wikipedia.org/wiki/File:Chol.gif">Source</a>)</p>
+<p><img alt="Access pattern" src="https://upload.wikimedia.org/wikipedia/commons/b/be/Chol.gif" /></p>
+<p><span class="math notranslate nohighlight">\(\bowtie\)</span></p>
+<p><strong>EXAMPLE:</strong> Before proceeeding with the general method, we give a small example to provide some intuition as to how it operates. We need a positive definite matrix. Consider the matrix</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+A 
+= 
+\begin{pmatrix}
+1 &amp; 2 &amp; 1\\
+0 &amp; -2 &amp; 1\\
+0 &amp; 0 &amp; 1\\
+0 &amp; 0 &amp; 0
+\end{pmatrix}.
+\end{split}\]</div>
+<p>It has full column rank (why?). Recall that, in that case, the <span class="math notranslate nohighlight">\(B = A^T A\)</span> is positive definite.</p>
+<p>That is, the matrix</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+B 
+=
+A^T A 
+= 
+\begin{pmatrix}
+1 &amp; 2 &amp; 1\\
+2 &amp; 8 &amp; 0\\
+1 &amp; 0 &amp; 3
+\end{pmatrix}
+\end{split}\]</div>
+<p>is positive definite.</p>
+<p>Let <span class="math notranslate nohighlight">\(L = (\ell_{i,j})_{i,j=1}^3\)</span> be lower triangular. We seek to solve <span class="math notranslate nohighlight">\(L L^T = B\)</span> for the nonzero entries of <span class="math notranslate nohighlight">\(L\)</span>. Observe that</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{pmatrix}
+\ell_{1,1} &amp; 0 &amp; 0\\
+\ell_{2,1} &amp; \ell_{2,2} &amp; 0\\
+\ell_{3,1} &amp; \ell_{3,2} &amp; \ell_{3,3}
+\end{pmatrix}
+\begin{pmatrix}
+\ell_{1,1} &amp; \ell_{2,1} &amp; \ell_{3,1}\\
+0 &amp; \ell_{2,2} &amp; \ell_{3,2}\\
+0 &amp; 0 &amp; \ell_{3,3}
+\end{pmatrix}
+=
+\begin{pmatrix}
+\ell_{1,1}^2 &amp; \ell_{1,1}\ell_{2,1} &amp; \ell_{1,1}\ell_{3,1}\\
+\ell_{1,1}\ell_{2,1} &amp; \ell_{2,1}^2 + \ell_{2,2}^2 &amp; \ell_{2,1}\ell_{3,1} + \ell_{2,2}\ell_{3,2}\\
+\ell_{1,1}\ell_{3,1} &amp; \ell_{2,1}\ell_{3,1} + \ell_{2,2}\ell_{3,2} &amp; \ell_{3,1}^2 + \ell_{3,2}^2 + \ell_{3,3}
+\end{pmatrix}.
+\end{split}\]</div>
+<p>The system</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{pmatrix}
+\ell_{1,1}^2 &amp; \ell_{1,1}\ell_{2,1} &amp; \ell_{1,1}\ell_{3,1}\\
+\ell_{1,1}\ell_{2,1} &amp; \ell_{2,1}^2 + \ell_{2,2}^2 &amp; \ell_{2,1}\ell_{3,1} + \ell_{2,2}\ell_{3,2}\\
+\ell_{1,1}\ell_{3,1} &amp; \ell_{2,1}\ell_{3,1} + \ell_{2,2}\ell_{3,2} &amp; \ell_{3,1}^2 + \ell_{3,2}^2 + \ell_{3,3}^2
+\end{pmatrix}
+=
+\begin{pmatrix}
+1 &amp; 2 &amp; 1\\
+2 &amp; 8 &amp; 0\\
+1 &amp; 0 &amp; 3
+\end{pmatrix}
+\end{split}\]</div>
+<p>turns out to be fairly simple to solve.</p>
+<ol class="arabic simple">
+<li><p>From the first entry, we get <span class="math notranslate nohighlight">\(\ell_{1,1} = 1\)</span> (where we took the positive solution to <span class="math notranslate nohighlight">\(\ell_{1,1}^2 = 1\)</span>).</p></li>
+<li><p>Given that <span class="math notranslate nohighlight">\(\ell_{1,1}\)</span> is known, entry <span class="math notranslate nohighlight">\(\ell_{2,1}\)</span> is determined from <span class="math notranslate nohighlight">\(\ell_{1,1}\ell_{2,1} =2\)</span> in the first entry of the second row. That is, <span class="math notranslate nohighlight">\(\ell_{2,1} =2\)</span>. Then the second entry of the second row gives <span class="math notranslate nohighlight">\(\ell_{2,2}\)</span> through <span class="math notranslate nohighlight">\(\ell_{2,1}^2 + \ell_{2,2}^2  = 8\)</span>. So <span class="math notranslate nohighlight">\(\ell_{2,2} = 2\)</span> (again we take the positive solution).</p></li>
+<li><p>We move to the third row. The first entry gives <span class="math notranslate nohighlight">\(\ell_{3,1} = 1\)</span>, the second entry gives <span class="math notranslate nohighlight">\(\ell_{3,2} = -1\)</span> and finally the third entry leads to <span class="math notranslate nohighlight">\(\ell_{3,3} = 1\)</span>.</p></li>
+</ol>
+<p>Hence we have</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+L
+=
+\begin{pmatrix}
+\ell_{1,1} &amp; 0 &amp; 0\\
+\ell_{2,1} &amp; \ell_{2,2} &amp; 0\\
+\ell_{3,1} &amp; \ell_{3,2} &amp; \ell_{3,3}
+\end{pmatrix}
+=
+\begin{pmatrix}
+1 &amp; 0 &amp; 0\\
+2 &amp; 2 &amp; 0\\
+1 &amp; -1 &amp; 1
+\end{pmatrix}.
+\end{split}\]</div>
+<p><span class="math notranslate nohighlight">\(\lhd\)</span></p>
+<p>To detail the computation of the Cholesky decomposition <span class="math notranslate nohighlight">\(L L^T\)</span> of <span class="math notranslate nohighlight">\(B\)</span>, we will need some notation. Write <span class="math notranslate nohighlight">\(B = (b_{i,j})_{i,j=1}^n\)</span> and <span class="math notranslate nohighlight">\(L = (\ell_{i,j})_{i,j=1}^n\)</span>. Let <span class="math notranslate nohighlight">\(L_{(k)} = (\ell_{i,j})_{i,j=1}^k\)</span> be the first <span class="math notranslate nohighlight">\(k\)</span> rows and columns of <span class="math notranslate nohighlight">\(L\)</span>, let <span class="math notranslate nohighlight">\(\bflambda_{(k)}^T = (\ell_{k,1},\ldots,\ell_{k,k-1})\)</span> be the row vector corresponding to the first <span class="math notranslate nohighlight">\(k-1\)</span> entries of row <span class="math notranslate nohighlight">\(k\)</span> of <span class="math notranslate nohighlight">\(L\)</span>, and let <span class="math notranslate nohighlight">\(\bfbeta_{(k)}^T = (b_{k,1},\ldots,b_{k,k-1})\)</span> be the row vector corresponding to the first <span class="math notranslate nohighlight">\(k-1\)</span> entries of row <span class="math notranslate nohighlight">\(k\)</span> of <span class="math notranslate nohighlight">\(B\)</span>.</p>
+<p>The strategy is to compute <span class="math notranslate nohighlight">\(L_{(1)}\)</span>, then <span class="math notranslate nohighlight">\(L_{(2)}\)</span>, then <span class="math notranslate nohighlight">\(L_{(3)}\)</span> and so on. With the notation above, <span class="math notranslate nohighlight">\(L_{(j)}\)</span> can be written in block form as</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+L_{(j)}
+=
+\begin{pmatrix}
+L_{(j-1)} &amp; \mathbf{0}\\
+\bflambda_{(j)}^T &amp; \ell_{j,j}.
+\end{pmatrix}
+\end{split}\]</div>
+<p>Hence, once <span class="math notranslate nohighlight">\(L_{(j-1)}\)</span> is known, in order to compute <span class="math notranslate nohighlight">\(L_{(j)}\)</span> one only needs <span class="math notranslate nohighlight">\(\bflambda_{(j)}\)</span> and <span class="math notranslate nohighlight">\(\ell_{j,j}\)</span>. We show next that they satisfy easily solvable systems of equations.</p>
+<p>We first note that the <span class="math notranslate nohighlight">\((1,1)\)</span> entry of the matrix equation <span class="math notranslate nohighlight">\(L L^T = B\)</span> implies that</p>
+<div class="math notranslate nohighlight">
+\[
+\ell_{1,1}^2 = b_{1,1}.
+\]</div>
+<p>So we set</p>
+<div class="math notranslate nohighlight">
+\[
+L_{(1)}
+= \ell_{1,1}
+= \sqrt{b_{1,1}}.
+\]</div>
+<p>For this step to be well-defined, it needs to be the case that <span class="math notranslate nohighlight">\(b_{1,1} &gt; 0\)</span>. It is easy to see that it follows from the positive definiteness of <span class="math notranslate nohighlight">\(B\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[
+0 &lt; \langle \mathbf{e}_1, B \mathbf{e}_1\rangle = \mathbf{e}_1^T B_{\cdot,1} = b_{1,1}.
+\]</div>
+<p>Proceeding by induction, assume <span class="math notranslate nohighlight">\(L_{(j-1)}\)</span> has been constructed. The first <span class="math notranslate nohighlight">\(j-1\)</span> elements of the <span class="math notranslate nohighlight">\(j\)</span>-th row of the matrix equation <span class="math notranslate nohighlight">\(L L^T = B\)</span> translate into</p>
+<div class="math notranslate nohighlight">
+\[
+L_{j,\cdot} (L^T)_{\cdot,1:j-1} = \bflambda_{(j)}^T L_{(j-1)}^T = \bfbeta_{(j)}^T,
+\]</div>
+<p>where <span class="math notranslate nohighlight">\((L^T)_{\cdot,1:j-1}\)</span> denotes the first <span class="math notranslate nohighlight">\(j-1\)</span> columns of <span class="math notranslate nohighlight">\(L^T\)</span>. In the first equality above, we used the fact that <span class="math notranslate nohighlight">\(L^T\)</span> is upper triangular. Taking a transpose, the resulting linear system of equations</p>
+<div class="math notranslate nohighlight">
+\[
+L_{(j-1)} \bflambda_{(j)} = \bfbeta_{(j)}
+\]</div>
+<p>can be solved by forward substitution (since <span class="math notranslate nohighlight">\(\bfbeta_{(j)}\)</span> is part of the input and <span class="math notranslate nohighlight">\(L_{(j-1)}\)</span> was previously computed). The fact that this system has a unique solution (more specifically, that the diagonal entries of <span class="math notranslate nohighlight">\(L_{(j-1)}\)</span> are strictly positive) is established in the proof of the <em>Cholesky Decomposition Theorem</em>.</p>
+<p>The <span class="math notranslate nohighlight">\((j,j)\)</span>-th entry of the matrix equation <span class="math notranslate nohighlight">\(L L^T = B\)</span> translates into</p>
+<div class="math notranslate nohighlight">
+\[
+L_{j,\cdot} (L^T)_{\cdot,j} = \sum_{k=1}^j \ell_{j,k}^2 = b_{j,j},
+\]</div>
+<p>where again we used the fact that <span class="math notranslate nohighlight">\(L^T\)</span> is upper triangular. Since <span class="math notranslate nohighlight">\(\ell_{j,1}, \ldots, \ell_{j,j-1}\)</span> are the elements of <span class="math notranslate nohighlight">\(\bflambda_{(j)}\)</span>, they have already been determined. So we can set</p>
+<div class="math notranslate nohighlight">
+\[
+\ell_{j,j}
+= \sqrt{b_{j,j} - \sum_{k=1}^{j-1} \ell_{j,k}^2}.
+\]</div>
+<p>The fact that we are taking the square root of a positive quantity is established in the proof of the <em>Cholesky Decomposition Theorem</em>. Finally, from <span class="math notranslate nohighlight">\(L_{(j-1)}\)</span>, <span class="math notranslate nohighlight">\(\bflambda_{(j)}\)</span>, and <span class="math notranslate nohighlight">\(\ell_{j,j}\)</span>, we construct <span class="math notranslate nohighlight">\(L_{(j)}\)</span>.</p>
+<p><strong>NUMERICAL CORNER:</strong> We implement the algorithm above. In our naive implementation, we assume that <span class="math notranslate nohighlight">\(B\)</span> is positive definite, and therefore that all steps are well-defined.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">cholesky</span><span class="p">(</span><span class="n">B</span><span class="p">):</span>
+    <span class="n">n</span> <span class="o">=</span> <span class="n">B</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> 
+    <span class="n">L</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">n</span><span class="p">,</span> <span class="n">n</span><span class="p">))</span>
+    <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+        <span class="n">L</span><span class="p">[</span><span class="n">j</span><span class="p">,</span><span class="mi">0</span><span class="p">:</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">mmids</span><span class="o">.</span><span class="n">forwardsubs</span><span class="p">(</span><span class="n">L</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="n">j</span><span class="p">,</span><span class="mi">0</span><span class="p">:</span><span class="n">j</span><span class="p">],</span><span class="n">B</span><span class="p">[</span><span class="n">j</span><span class="p">,</span><span class="mi">0</span><span class="p">:</span><span class="n">j</span><span class="p">])</span>
+        <span class="n">L</span><span class="p">[</span><span class="n">j</span><span class="p">,</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">B</span><span class="p">[</span><span class="n">j</span><span class="p">,</span><span class="n">j</span><span class="p">]</span> <span class="o">-</span> <span class="n">LA</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">L</span><span class="p">[</span><span class="n">j</span><span class="p">,</span><span class="mi">0</span><span class="p">:</span><span class="n">j</span><span class="p">])</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">L</span> 
+</pre></div>
+</div>
+</div>
+</div>
+<p>Here is a simple example.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">B</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mf">2.</span><span class="p">,</span> <span class="mf">1.</span><span class="p">],[</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">2.</span><span class="p">]])</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">B</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[[2. 1.]
+ [1. 2.]]
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">L</span> <span class="o">=</span> <span class="n">cholesky</span><span class="p">(</span><span class="n">B</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">L</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[[1.41421356 0.        ]
+ [0.70710678 1.22474487]]
+</pre></div>
+</div>
+</div>
+</div>
+<p>We can check that it produces the right factorization.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">L</span> <span class="o">@</span> <span class="n">L</span><span class="o">.</span><span class="n">T</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[[2. 1.]
+ [1. 2.]]
+</pre></div>
+</div>
+</div>
+</div>
+<p><span class="math notranslate nohighlight">\(\unlhd\)</span></p>
+<p><strong>Proof of Cholesky decomposition theorem</strong> We give a proof of the <em>Cholesky Decomposition Theorem</em>.</p>
+<p><em>Proof idea:</em> Assuming by induction that the upper-left corner of the matrix <span class="math notranslate nohighlight">\(B\)</span> has a Cholesky decomposition, one finds equations for the remaining row that can be solved uniquely by the properties established in the previous subsection.</p>
+<p><em>Proof:</em> If <span class="math notranslate nohighlight">\(n=1\)</span>, we have shown previously that <span class="math notranslate nohighlight">\(b_{1,1} &gt; 0\)</span>, and hence we can take <span class="math notranslate nohighlight">\(L = [\ell_{1,1}]\)</span> where <span class="math notranslate nohighlight">\(\ell_{1,1} = \sqrt{b_{1,1}}\)</span>. Assuming the result holds for positive definite matrices in <span class="math notranslate nohighlight">\(\mathbb{R}^{(n-1) \times (n-1)}\)</span>, we first re-write <span class="math notranslate nohighlight">\(B = L L^T\)</span> in block form</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{pmatrix}
+B_{11} &amp; \bfbeta_{12}\\
+\bfbeta_{12}^T &amp; \beta_{22}
+\end{pmatrix}
+= 
+\begin{pmatrix}
+\Lambda_{11} &amp; \mathbf{0}\\
+\bflambda_{12}^T &amp; \lambda_{22}
+\end{pmatrix}
+\begin{pmatrix}
+\Lambda_{11}^T &amp; \bflambda_{12}\\
+\mathbf{0}^T &amp; \lambda_{22}
+\end{pmatrix}
+\end{split}\]</div>
+<p>where <span class="math notranslate nohighlight">\(B_{11}, \Lambda_{11} \in \mathbb{R}^{n-1 \times n-1}\)</span>, <span class="math notranslate nohighlight">\(\bfbeta_{12}, \bflambda_{12} \in \mathbb{R}^{n-1}\)</span> and <span class="math notranslate nohighlight">\(\beta_{22}, \lambda_{22} \in \mathbb{R}\)</span>. By block matrix algebra, we get the system</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+B_{11} = \Lambda_{11} \Lambda_{11}^T\\
+\bfbeta_{12} = \Lambda_{11} \bflambda_{12}\\
+\beta_{22} = \bflambda_{12}^T \bflambda_{12} + \lambda_{22}^2.
+\end{split}\]</div>
+<p>By the <em>Principal Submatrices Lemma</em>, the principal submatrix <span class="math notranslate nohighlight">\(B_{11}\)</span> is positive definite. Hence, by induction, there is a unique lower-triangular matrix <span class="math notranslate nohighlight">\(\Lambda_{11}\)</span> with positive diagonal elements satisfying the first equation. We can then obtain <span class="math notranslate nohighlight">\(\bfbeta_{12}\)</span> from the second equation by forward substitution. And finally we get</p>
+<div class="math notranslate nohighlight">
+\[
+\lambda_{22}
+= \sqrt{\beta_{22} - \bflambda_{12}^T \bflambda_{12}}.
+\]</div>
+<p>We do have to check that the square root above exists. That is, we need to argue that the expression inside the square root is non-negative. In fact, for the claim to go through, we need it to be strictly positive. We notice that the expression inside the square root is in fact the Schur complement of the block <span class="math notranslate nohighlight">\(B_{11}\)</span>:</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+\beta_{22} - \bflambda_{12}^T \bflambda_{12}
+&amp;= \beta_{22} - (\Lambda_{11}^{-1} \bfbeta_{12})^T (\Lambda_{11}^{-1} \bfbeta_{12})\\
+&amp;= \beta_{22} - \bfbeta_{12}^T (\Lambda_{11}^{-1})^T \Lambda_{11}^{-1} \bfbeta_{12}\\
+&amp;= \beta_{22} - \bfbeta_{12}^T (\Lambda_{11} \Lambda_{11}^T)^{-1} \bfbeta_{12}\\
+&amp;= \beta_{22} - \bfbeta_{12}^T (B_{11})^{-1} \bfbeta_{12}
+\end{align*}\]</div>
+<p>where we used the equation <span class="math notranslate nohighlight">\(\bfbeta_{12} = \Lambda_{11} \bflambda_{12}\)</span> on the first line, the identities <span class="math notranslate nohighlight">\((Q W)^{-1} = W^{-1} Q^{-1}\)</span> and <span class="math notranslate nohighlight">\((Q^T)^{-1} = (Q^{-1})^T\)</span> (see the exercise below) on the third line and the equation <span class="math notranslate nohighlight">\(B_{11} = \Lambda_{11} \Lambda_{11}^T\)</span> on the fourth line. By the <em>Schur Complement Lemma</em>, the Schur complement is positive definite. Because it is a scalar in this case, it is strictly positive (prove it!), which concludes the proof. <span class="math notranslate nohighlight">\(\square\)</span></p>
+<p><strong>Back to multivariate Gaussians</strong> Returning to our motivation, we can generate samples from a <span class="math notranslate nohighlight">\(N(\bmu, \bSigma)\)</span> by first generating</p>
+<div class="math notranslate nohighlight">
+\[
+\mathbf{Z}
+= (\Phi^{-1}(U_1),\ldots,\Phi^{-1}(U_d))
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(U_1, \ldots, U_d\)</span> are independent uniform <span class="math notranslate nohighlight">\([0,1]\)</span> variables, then setting</p>
+<div class="math notranslate nohighlight">
+\[
+\mathbf{X}
+= \bmu + L \mathbf{Z},
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(\bSigma = L L^T\)</span> is a Cholesky decomposition of <span class="math notranslate nohighlight">\(\bSigma\)</span>.</p>
+<p><strong>NUMERICAL CORNER:</strong> We implement this method.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">generate_multivariate_normal_samples_using_cholesky</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="n">mu</span><span class="p">,</span> <span class="n">Sig</span><span class="p">):</span>
+
+    <span class="c1"># Compute Cholesky decomposition</span>
+    <span class="n">L</span> <span class="o">=</span> <span class="n">cholesky</span><span class="p">(</span><span class="n">Sig</span><span class="p">)</span>
+    
+    <span class="c1"># Initialization</span>
+    <span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">n</span><span class="p">,</span><span class="n">d</span><span class="p">))</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+        
+            <span class="c1"># Generate standard normal vector</span>
+            <span class="n">Z</span> <span class="o">=</span> <span class="n">generate_standard_normal_samples_using_inverse_cdf</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="mi">0</span> <span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+            
+            <span class="c1"># Apply the inverse CDF (ppf) of the standard normal distribution</span>
+            <span class="n">X</span><span class="p">[</span><span class="n">i</span><span class="p">,:]</span> <span class="o">=</span> <span class="n">mu</span> <span class="o">+</span> <span class="n">L</span> <span class="o">@</span> <span class="n">Z</span> 
+    
+    <span class="k">return</span> <span class="n">X</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>We generate some samples as an example.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">mu</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="o">-</span><span class="mf">1.</span><span class="p">,</span><span class="mf">0.</span><span class="p">,</span><span class="mf">1.</span><span class="p">])</span>
+<span class="n">Sig</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">2.</span><span class="p">,</span> <span class="mf">1.</span><span class="p">],[</span><span class="mf">2.</span><span class="p">,</span> <span class="mf">8.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">],[</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="mf">3.</span><span class="p">]])</span>
+<span class="n">X</span> <span class="o">=</span> <span class="n">generate_multivariate_normal_samples_using_cholesky</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">mu</span><span class="p">,</span> <span class="n">Sig</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell tag_hide-input docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell source</span>
+<span class="expanded">Hide code cell source</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</details>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[[-2.0715134   1.59638654 -1.18431323]
+ [ 0.44288658  1.56365261  4.43268646]
+ [-1.48137254 -0.6452615  -0.11927515]
+ [-2.33290134 -3.76057703 -0.57228759]
+ [-1.6742889   1.66422512 -0.32898175]
+ [-1.67162964 -2.16883843  0.22082612]
+ [-1.52099187  0.78308042 -0.55104767]
+ [ 0.07645602  3.07623737  1.16756088]
+ [-0.71168758 -1.67245247  1.47902975]
+ [-1.38686243  0.32966149 -0.35370619]]
+</pre></div>
+</div>
+</div>
+</div>
+<p><span class="math notranslate nohighlight">\(\unlhd\)</span></p>
+<p><strong>Using a Cholesky decomposition to solve the least squares problem</strong> Another application of the Cholesky decomposition is to solving the least squares problem. In this section, we restrict ourselves to the case where <span class="math notranslate nohighlight">\(A \in \mathbb{R}^{n\times m}\)</span> has full column rank. By the <em>Least Squares and Positive Semidefiniteness Lemma</em>, we then have that <span class="math notranslate nohighlight">\(A^T A\)</span> is positive definite. By the <em>Cholesky Decomposition Theorem</em>, we can factorize this matrix as <span class="math notranslate nohighlight">\(A^T A = L L^T\)</span> where <span class="math notranslate nohighlight">\(L\)</span> is lower triangular with positive diagonal elements. The normal equations then reduce to</p>
+<div class="math notranslate nohighlight">
+\[
+L L^T \mathbf{x} = A^T \mathbf{b}.
+\]</div>
+<p>This system can be solved in two steps. We first obtain the solution to</p>
+<div class="math notranslate nohighlight">
+\[
+L \mathbf{z} = A^T \mathbf{b}
+\]</div>
+<p>by forward substitution. Then we obtain the solution to</p>
+<div class="math notranslate nohighlight">
+\[
+L^T \mathbf{x} = \mathbf{z}
+\]</div>
+<p>by back-substitution. Note that <span class="math notranslate nohighlight">\(L^T\)</span> is indeed an upper triangular matrix.</p>
+<p><strong>NUMERICAL CORNER:</strong> We implement this algorithm below. In our naive implementation, we assume that <span class="math notranslate nohighlight">\(A\)</span> has full column rank, and therefore that all steps are well-defined.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">ls_by_chol</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
+    <span class="n">L</span> <span class="o">=</span> <span class="n">cholesky</span><span class="p">(</span><span class="n">A</span><span class="o">.</span><span class="n">T</span> <span class="o">@</span> <span class="n">A</span><span class="p">)</span>
+    <span class="n">z</span> <span class="o">=</span> <span class="n">mmids</span><span class="o">.</span><span class="n">forwardsubs</span><span class="p">(</span><span class="n">L</span><span class="p">,</span> <span class="n">A</span><span class="o">.</span><span class="n">T</span> <span class="o">@</span> <span class="n">b</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">mmids</span><span class="o">.</span><span class="n">backsubs</span><span class="p">(</span><span class="n">L</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">z</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p><span class="math notranslate nohighlight">\(\unlhd\)</span></p>
+<p>Other applications of the Cholesky decomposition are briefly described <a class="reference external" href="https://en.wikipedia.org/wiki/Cholesky_decomposition#Applications">here</a>.</p>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./chap07_prob/06_adv"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="../04_kalman/roch-mmids-prob-kalman.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title"><span class="section-number">6.5. </span>Application: linear-Gaussian models and Kalman filtering</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="../exercises/roch-mmids-prob-exercises.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title"><span class="section-number">6.7. </span>Exercises</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#cholesky-decomposition">6.6.1. Cholesky decomposition</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Sebastien Roch
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2024.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

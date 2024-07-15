@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MMiDS 6.2: Self-Assessment Quiz</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600&family=Open+Sans&display=swap"
+        rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f5f5f5;
+            color: #333;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        #quiz-container {
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+            max-width: 800px;
+            width: 100%;
+            margin: 20px;
+        }
+
+        h1 {
+            font-family: 'Montserrat', sans-serif;
+            color: #673ab7;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .question {
+            background-color: #f5f0ff;
+            border: 1px solid #d1c4e9;
+            border-radius: 5px;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .question p {
+            margin: 0 0 15px;
+            font-weight: bold;
+        }
+
+        .options {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .options li {
+            margin-bottom: 0px;
+        }
+
+        .options li label {
+            display: block;
+            padding: 12px;
+            background-color: #f5f0ff;
+            color: #333;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .options li label:hover {
+            background-color: #e0d6ff;
+        }
+
+        .options li input[type="radio"] {
+            accent-color: #673ab7;
+        }
+
+        .feedback {
+            margin-top: 15px;
+            display: none;
+            padding: 12px;
+            border-radius: 5px;
+        }
+
+        .feedback.correct {
+            background-color: #e0f0e5;
+            color: #155724;
+            display: block;
+        }
+
+        .feedback.incorrect {
+            background-color: #f8e1e3;
+            color: #721c24;
+            display: block;
+        }
+
+        img.graph-image {
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+            width: 50%;
+            margin-bottom: 20px;
+            margin-top: 20px;
+        }
+
+        @media (max-width: 600px) {
+            #quiz-container {
+                padding: 20px;
+                margin: 20px 10px;
+            }
+
+            h1 {
+                font-size: 24px;
+                margin-bottom: 20px;
+            }
+
+            .question {
+                padding: 15px;
+                margin-bottom: 20px;
+            }
+
+            img.graph-image {
+                width: 70%;
+                margin-bottom: 15px;
+                margin-top: 15px;
+            }
+        }
+    </style>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+
+<body>
+    <div id="quiz-container">
+        <h1>MMiDS 6.2: Self-Assessment Quiz</h1>
+
+        <div class="question">
+            <p>Which of the following is NOT an example of an exponential family of distributions?</p>
+            <ul class="options">
+                <li><label><input type="radio" name="q0" value="0"> a) Bernoulli</label></li>
+                <li><label><input type="radio" name="q0" value="1"> b) Categorical</label></li>
+                <li><label><input type="radio" name="q0" value="2"> c) Uniform</label></li>
+                <li><label><input type="radio" name="q0" value="3"> d) Multivariate Gaussian</label></li>
+            </ul>
+            <div class="feedback" id="feedback0"></div>
+        </div>
+
+        <div class="question">
+            <p>In the exponential family form \(p_\theta(x) = h(x) \exp(\theta^T \phi(x) - A(\theta))\), what does
+                \(A(\theta)\) represent?</p>
+            <ul class="options">
+                <li><label><input type="radio" name="q1" value="0"> a) The sufficient statistic</label></li>
+                <li><label><input type="radio" name="q1" value="1"> b) The log-partition function</label></li>
+                <li><label><input type="radio" name="q1" value="2"> c) The canonical parameter</label></li>
+                <li><label><input type="radio" name="q1" value="3"> d) The base measure</label></li>
+            </ul>
+            <div class="feedback" id="feedback1"></div>
+        </div>
+
+        <div class="question">
+            <p>Given \(n\) independent samples \(X_1, \ldots, X_n\) from a parametric family \(p_{\theta^*}\) with
+                unknown \(\theta^* \in \Theta\), the maximum likelihood estimator \(\hat{\theta}_{\mathrm{MLE}}\) is
+                defined as:</p>
+            <ul class="options">
+                <li><label><input type="radio" name="q2" value="0"> a) \(\hat{\theta}_{\mathrm{MLE}} \in \arg\max
+                        \left\{ \prod_{i=1}^n p_\theta(X_i) : \theta \in \Theta \right\}\)</label></li>
+                <li><label><input type="radio" name="q2" value="1"> b) \(\hat{\theta}_{\mathrm{MLE}} \in \arg\min
+                        \left\{ \prod_{i=1}^n p_\theta(X_i) : \theta \in \Theta \right\}\)</label></li>
+                <li><label><input type="radio" name="q2" value="2"> c) \(\hat{\theta}_{\mathrm{MLE}} \in \arg\max
+                        \left\{ \sum_{i=1}^n p_\theta(X_i) : \theta \in \Theta \right\}\)</label></li>
+                <li><label><input type="radio" name="q2" value="3"> d) \(\hat{\theta}_{\mathrm{MLE}} \in \arg\min
+                        \left\{ \sum_{i=1}^n p_\theta(X_i) : \theta \in \Theta \right\}\)</label></li>
+            </ul>
+            <div class="feedback" id="feedback2"></div>
+        </div>
+
+        <div class="question">
+            <p>What is the Kullback-Leibler divergence \(\mathrm{KL}(p \parallel q)\) between two probability
+                distributions \(p\) and \(q\)?</p>
+            <ul class="options">
+                <li><label><input type="radio" name="q3" value="0"> a) \(\sum_{i} p_i \log(p_i / q_i)\)</label></li>
+                <li><label><input type="radio" name="q3" value="1"> b) \(\sum_{i} q_i \log(q_i / p_i)\)</label></li>
+                <li><label><input type="radio" name="q3" value="2"> c) \(\sum_{i} (p_i - q_i)^2\)</label></li>
+                <li><label><input type="radio" name="q3" value="3"> d) \(\sum_{i} \left| p_i - q_i \right|\)</label>
+                </li>
+            </ul>
+            <div class="feedback" id="feedback3"></div>
+        </div>
+
+        <div class="question">
+            <p>What is the relationship between the maximum likelihood estimator and the Kullback-Leibler divergence?
+            </p>
+            <ul class="options">
+                <li><label><input type="radio" name="q4" value="0"> a) The MLE minimizes the KL divergence between the
+                        true and estimated distributions</label></li>
+                <li><label><input type="radio" name="q4" value="1"> b) The MLE maximizes the KL divergence between the
+                        true and estimated distributions</label></li>
+                <li><label><input type="radio" name="q4" value="2"> c) The MLE is unrelated to the KL divergence</label>
+                </li>
+                <li><label><input type="radio" name="q4" value="3"> d) The MLE minimizes the KL divergence between the
+                        estimated and true distributions</label></li>
+            </ul>
+            <div class="feedback" id="feedback4"></div>
+        </div>
+
+        <div class="question">
+            <p>Under certain conditions, the maximum likelihood estimator is guaranteed to converge to the true
+                parameter as the number of samples grows. This property is known as:</p>
+            <ul class="options">
+                <li><label><input type="radio" name="q5" value="0"> a) Statistical efficiency</label></li>
+                <li><label><input type="radio" name="q5" value="1"> b) Statistical sufficiency</label></li>
+                <li><label><input type="radio" name="q5" value="2"> c) Statistical consistency</label></li>
+                <li><label><input type="radio" name="q5" value="3"> d) Statistical unbiasedness</label></li>
+            </ul>
+            <div class="feedback" id="feedback5"></div>
+        </div>
+
+        <div class="question">
+            <p>For exponential families, the maximum likelihood estimator (if it exists) solves which of the following
+                equations?</p>
+            <ul class="options">
+                <li><label><input type="radio" name="q6" value="0"> a) \(\nabla A(\theta) = 0\)</label></li>
+                <li><label><input type="radio" name="q6" value="1"> b) \(\nabla Z(\theta) = 0\)</label></li>
+                <li><label><input type="radio" name="q6" value="2"> c) \(\mathbb{E}[\phi(X)] = \frac{1}{n} \sum_{i=1}^n
+                        \phi(X_i)\)</label></li>
+                <li><label><input type="radio" name="q6" value="3"> d) \(\mathrm{Var}[\phi(X)] = \frac{1}{n}
+                        \sum_{i=1}^n (\phi(X_i) - \mathbb{E}[\phi(X)])^2\)</label></li>
+            </ul>
+            <div class="feedback" id="feedback6"></div>
+        </div>
+
+        <div class="question">
+            <p>What is the sufficient statistic for a multivariate Gaussian distribution in the context of exponential
+                families?</p>
+            <ul class="options">
+                <li><label><input type="radio" name="q7" value="0"> a) \(\bphi(x) = (\bx, \bx^T \bx)\)</label></li>
+                <li><label><input type="radio" name="q7" value="1"> b) \(\bphi(x) = (\bx, \bx \bx^T)\)</label></li>
+                <li><label><input type="radio" name="q7" value="2"> c) \(\bphi(x) = (\bx^2, \bx^T \bx)\)</label></li>
+                <li><label><input type="radio" name="q7" value="3"> d) \(\bphi(x) = (\bx, \log \bx)\)</label></li>
+            </ul>
+            <div class="feedback" id="feedback7"></div>
+        </div>
+
+        <div class="question">
+            <p>In a generalized linear model, the maximum likelihood estimator \(\hat{w}_{\mathrm{MLE}}\) solves the
+                equation:</p>
+            <ul class="options">
+                <li><label><input type="radio" name="q8" value="0"> a) \(\sum_{i=1}^n x_i \mu(w; x_i) = \sum_{i=1}^n x_i
+                        \phi(y_i)\)</label></li>
+                <li><label><input type="radio" name="q8" value="1"> b) \(\sum_{i=1}^n x_i \mu(w; x_i) = \sum_{i=1}^n y_i
+                        \phi(x_i)\)</label></li>
+                <li><label><input type="radio" name="q8" value="2"> c) \(\sum_{i=1}^n \mu(w; x_i) = \sum_{i=1}^n
+                        \phi(y_i)\)</label></li>
+                <li><label><input type="radio" name="q8" value="3"> d) \(\sum_{i=1}^n \mu(w; x_i) = \sum_{i=1}^n
+                        y_i\)</label></li>
+            </ul>
+            <div class="feedback" id="feedback8"></div>
+        </div>
+
+        <div class="question">
+            <p>In logistic regression, which distribution is used for the outcome variable?</p>
+            <ul class="options">
+                <li><label><input type="radio" name="q9" value="0"> a) Normal distribution</label></li>
+                <li><label><input type="radio" name="q9" value="1"> b) Poisson distribution</label></li>
+                <li><label><input type="radio" name="q9" value="2"> c) Bernoulli distribution</label></li>
+                <li><label><input type="radio" name="q9" value="3"> d) Exponential distribution</label></li>
+            </ul>
+            <div class="feedback" id="feedback9"></div>
+        </div>
+
+        <div class="question">
+            <p>In logistic regression, the log-likelihood is:</p>
+            <ul class="options">
+                <li><label><input type="radio" name="q10" value="0"> a) Convex in the parameters</label></li>
+                <li><label><input type="radio" name="q10" value="1"> b) Concave in the parameters</label></li>
+                <li><label><input type="radio" name="q10" value="2"> c) Non-convex in the parameters</label></li>
+                <li><label><input type="radio" name="q10" value="3"> d) Independent of the parameters</label></li>
+            </ul>
+            <div class="feedback" id="feedback10"></div>
+        </div>
+
+    </div>
+
+    <script>
+        document.querySelectorAll('.options').forEach((optionsList, index) => {
+            const correctOptions = [2, 1, 0, 0, 0, 2, 2, 1, 0, 2, 0];
+
+            optionsList.addEventListener('change', (event) => {
+                const selectedOption = parseInt(event.target.value);
+                const feedbackDiv = document.getElementById('feedback' + index);
+                let feedbackText = '';
+
+                if (selectedOption === correctOptions[index]) {
+                    feedbackText = "Excellent! " + getCorrectFeedback(index);
+                    feedbackDiv.classList.add('correct');
+                    feedbackDiv.classList.remove('incorrect');
+                } else {
+                    feedbackText = "Try again.";
+                    feedbackDiv.classList.add('incorrect');
+                    feedbackDiv.classList.remove('correct');
+                }
+
+                feedbackDiv.innerHTML = feedbackText;
+
+                MathJax.typesetPromise([feedbackDiv]);
+            });
+        });
+
+        function getCorrectFeedback(index) {
+            switch (index) {
+                case 0:
+                    return "The text provides examples of Bernoulli, categorical, and multivariate Gaussian distributions as members of the exponential family. The uniform distribution, however, does not fit the exponential family form.";
+                case 1:
+                    return "The text states that \\(A(\\theta) = \\log Z(\\theta)\\), where \\(Z(\\theta)\\) is referred to as the partition function.";
+                case 2:
+                    return "The text provides the definition of the maximum likelihood estimator as \\(\\hat{\\theta}_{\\mathrm{MLE}} \\in \\arg\\max \\left\\{ \\prod_{i=1}^n p_\\theta(X_i) : \\theta \\in \\Theta \\right\\}\\).";
+                case 3:
+                    return "The text defines the Kullback-Leibler divergence between two probability distributions \\(p\\) and \\(q\\) as \\(\\mathrm{KL}(p \\parallel q) = \\sum_{i} p_i \\log(p_i / q_i)\\).";
+                case 4:
+                    return "The text states that 'the maximum likelihood estimator chooses the parametric distribution that is closest to \\(\\hat{\\mu}_n\\) in Kullback-Liebler divergence,' where \\(\\hat{\\mu}_n\\) is the empirical frequency of the sample.";
+                case 5:
+                    return "The text states that 'the maximum likelihood estimator is guaranteed to converge to the true parameter when the number of samples grows. This fundamental property is known as statistical consistency.'";
+                case 6:
+                    return "The text states that for exponential families, the MLE solves the moment-matching equation \\(\\mathbb{E}[\\phi(X)] = \\frac{1}{n} \\sum_{i=1}^n \\phi(X_i)\\).";
+                case 7:
+                    return "The text states that for the multivariate Gaussian distribution, the sufficient statistics are \\(\\varphi(x) = (x, x x^T)\\).";
+                case 8:
+                    return "The text derives the equation \\(\\sum_{i=1}^n x_i \\mu(w; x_i) = \\sum_{i=1}^n x_i \\phi(y_i)\\) as the one that the maximum likelihood estimator solves in a generalized linear model.";
+                case 9:
+                    return "The text describes logistic regression as a GLM where the outcome variable is assumed to follow a Bernoulli distribution.";
+                case 10:
+                    return "The text shows that the negative log-likelihood for logistic regression is convex in the parameters, as it can be minimized using gradient descent. Specifically, it states that 'minimizing \\(L_n(w; \\{(x_i, y_i)\\}_{i=1}^n)\\) is equivalent to logistic regression.'";
+                default:
+                    return "";
+            }
+        }
+
+    </script>
+
+</body>
+
+</html>

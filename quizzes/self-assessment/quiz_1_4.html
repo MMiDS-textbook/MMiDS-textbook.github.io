@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MMiDS 1.4: Self-Assessment Quiz</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600&family=Open+Sans&display=swap"
+        rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f5f5f5;
+            color: #333;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        #quiz-container {
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+            max-width: 800px;
+            width: 100%;
+            margin: 20px;
+        }
+
+        h1 {
+            font-family: 'Montserrat', sans-serif;
+            color: #673ab7;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .question {
+            background-color: #f5f0ff;
+            border: 1px solid #d1c4e9;
+            border-radius: 5px;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .question p {
+            margin: 0 0 15px;
+            font-weight: bold;
+        }
+
+        .options {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .options li {
+            margin-bottom: 0px;
+        }
+
+        .options li label {
+            display: block;
+            padding: 12px;
+            background-color: #f5f0ff;
+            color: #333;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .options li label:hover {
+            background-color: #e0d6ff;
+        }
+
+        .options li input[type="radio"] {
+            accent-color: #673ab7;
+        }
+
+        .feedback {
+            margin-top: 15px;
+            display: none;
+            padding: 12px;
+            border-radius: 5px;
+        }
+
+        .feedback.correct {
+            background-color: #e0f0e5;
+            color: #155724;
+            display: block;
+        }
+
+        .feedback.incorrect {
+            background-color: #f8e1e3;
+            color: #721c24;
+            display: block;
+        }
+
+        @media (max-width: 600px) {
+            #quiz-container {
+                padding: 20px;
+                margin: 20px 10px;
+            }
+
+            h1 {
+                font-size: 24px;
+                margin-bottom: 20px;
+            }
+
+            .question {
+                padding: 15px;
+                margin-bottom: 20px;
+            }
+        }
+    </style>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+
+<body>
+    <div id="quiz-container">
+        <h1>MMiDS 1.4: Self-Assessment Quiz</h1>
+
+        <div class="question">
+            <p>The volume of the \(d\)-dimensional cube \(C = [-1/2, 1/2]^d\) is:</p>
+            <ul class="options">
+                <li><label><input type="radio" name="q0" value="0"> a) \(1/d\)</label></li>
+                <li><label><input type="radio" name="q0" value="1"> b) \(1/2^d\)</label></li>
+                <li><label><input type="radio" name="q0" value="2"> c) 1</label></li>
+                <li><label><input type="radio" name="q0" value="3"> d) \(2^d\)</label></li>
+            </ul>
+            <div class="feedback" id="feedback0"></div>
+        </div>
+
+        <div class="question">
+            <p>In a high-dimensional cube \(C = [-1/2, 1/2]^d\), as the dimension \(d\) increases, the probability that
+                a randomly chosen point lies within the inscribed sphere \(B = \{x \in \mathbb{R}^d : \|x\| \le 1/2\}\):
+            </p>
+            <ul class="options">
+                <li><label><input type="radio" name="q1" value="0"> a) Approaches 1</label></li>
+                <li><label><input type="radio" name="q1" value="1"> b) Approaches 1/2</label></li>
+                <li><label><input type="radio" name="q1" value="2"> c) Approaches 0</label></li>
+                <li><label><input type="radio" name="q1" value="3"> d) Remains constant</label></li>
+            </ul>
+            <div class="feedback" id="feedback1"></div>
+        </div>
+
+        <div class="question">
+            <p>Which of the following best describes the appearance of a high-dimensional cube?</p>
+            <ul class="options">
+                <li><label><input type="radio" name="q2" value="0"> a) A smooth, round ball</label></li>
+                <li><label><input type="radio" name="q2" value="1"> b) A spiky ball with most of its volume concentrated
+                        in the corners</label></li>
+                <li><label><input type="radio" name="q2" value="2"> c) A perfect sphere with uniform volume
+                        distribution</label></li>
+                <li><label><input type="radio" name="q2" value="3"> d) A flat, pancake-like shape</label></li>
+            </ul>
+            <div class="feedback" id="feedback2"></div>
+        </div>
+
+        <div class="question">
+            <p>In high dimensions, a standard Normal \(d\)-vector \(X\) is most likely to have a norm \(\|X\|\) close
+                to:</p>
+            <ul class="options">
+                <li><label><input type="radio" name="q3" value="0"> a) 0</label></li>
+                <li><label><input type="radio" name="q3" value="1"> b) 1</label></li>
+                <li><label><input type="radio" name="q3" value="2"> c) \(\sqrt{d}\)</label></li>
+                <li><label><input type="radio" name="q3" value="3"> d) \(d\)</label></li>
+            </ul>
+            <div class="feedback" id="feedback3"></div>
+        </div>
+
+        <div class="question">
+            <p>In the context of high-dimensional Gaussians, which of the following statements is true?</p>
+            <ul class="options">
+                <li><label><input type="radio" name="q4" value="0"> a) The joint PDF is maximized at the origin for all
+                        dimensions.</label></li>
+                <li><label><input type="radio" name="q4" value="1"> b) There are many ways to obtain a norm of
+                        0.</label></li>
+                <li><label><input type="radio" name="q4" value="2"> c) There is only one way to obtain a norm of
+                        0.</label></li>
+                <li><label><input type="radio" name="q4" value="3"> d) The joint PDF is minimized at the origin for all
+                        dimensions.</label></li>
+            </ul>
+            <div class="feedback" id="feedback4"></div>
+        </div>
+
+        <div class="question">
+            <p>In the proof of the theorem about high-dimensional Gaussians, which property of the squared norm
+                \(\|X\|^2\) is used?</p>
+            <ul class="options">
+                <li><label><input type="radio" name="q5" value="0"> a) It is a sum of dependent random
+                        variables.</label></li>
+                <li><label><input type="radio" name="q5" value="1"> b) It is a sum of independent random
+                        variables.</label></li>
+                <li><label><input type="radio" name="q5" value="2"> c) It is a product of independent random
+                        variables.</label></li>
+                <li><label><input type="radio" name="q5" value="3"> d) It is a product of dependent random
+                        variables.</label></li>
+            </ul>
+            <div class="feedback" id="feedback5"></div>
+        </div>
+
+        <div class="question">
+            <p>Which inequality is used to prove the theorems about high-dimensional cubes and Gaussians?</p>
+            <ul class="options">
+                <li><label><input type="radio" name="q6" value="0"> a) Cauchy-Schwarz inequality</label></li>
+                <li><label><input type="radio" name="q6" value="1"> b) Triangle inequality</label></li>
+                <li><label><input type="radio" name="q6" value="2"> c) Markov's inequality</label></li>
+                <li><label><input type="radio" name="q6" value="3"> d) Chebyshev's inequality</label></li>
+            </ul>
+            <div class="feedback" id="feedback6"></div>
+        </div>
+
+    </div>
+
+    <script>
+        document.querySelectorAll('.options').forEach((optionsList, index) => {
+            const correctOptions = [2, 2, 1, 2, 0, 1, 3];
+
+            optionsList.addEventListener('change', (event) => {
+                const selectedOption = parseInt(event.target.value);
+                const feedbackDiv = document.getElementById('feedback' + index);
+                let feedbackText = '';
+
+                if (selectedOption === correctOptions[index]) {
+                    feedbackText = "Excellent! " + getCorrectFeedback(index);
+                    feedbackDiv.classList.add('correct');
+                    feedbackDiv.classList.remove('incorrect');
+                } else {
+                    feedbackText = "Try again.";
+                    feedbackDiv.classList.add('incorrect');
+                    feedbackDiv.classList.remove('correct');
+                }
+
+                feedbackDiv.innerHTML = feedbackText;
+
+                MathJax.typesetPromise([feedbackDiv]);
+            });
+        });
+
+        function getCorrectFeedback(index) {
+            switch (index) {
+                case 0:
+                    return "Justification: The side length of the cube is 1, and the volume of a \\(d\\)-dimensional cube is the side length raised to the power \\(d\\).";
+                case 1:
+                    return "Justification: This is the statement of the theorem 'High-dimensional Cube' in the text.";
+                case 2:
+                    return "Justification: The text mentions, 'A geometric interpretation is that a high-dimensional cube is a bit like a spiky ball.'";
+                case 3:
+                    return "Justification: This is the statement of the theorem 'High-dimensional Gaussians' in the text.";
+                case 4:
+                    return "Justification: The text mentions, 'This is unexpected because the joint PDF is maximized at \\(x=0\\) for all \\(d\\) (including as \\(d=1\\), as can be seen in the figure above).'";
+                case 5:
+                    return "Justification: The proof states, 'Let \\(Z=\\|X\\|^2=\\sum_{i=1}^d X_i^2\\) and notice that, by definition, it is a sum of independent random variables.'";
+                case 6:
+                    return "Justification: The text explicitly states that Chebyshev's inequality is used in both proofs.";
+                default:
+                    return "";
+            }
+        }
+
+    </script>
+
+</body>
+
+</html>

@@ -7,8 +7,8 @@ import numpy as np
 from numpy import linalg as LA
 import matplotlib.pyplot as plt
 import networkx as nx
-seed = 535
-rng = np.random.default_rng(seed)
+#seed = 535
+#rng = np.random.default_rng(seed)
 from scipy.stats import multivariate_normal
 import torch
 
@@ -59,17 +59,19 @@ def opt_clust(X, k, reps):
     print(G) # Print current objective to monitor progress
     return assign
 
-def kmeans(X, k, maxiter=10):
+def kmeans(rng, X, k, maxiter=5):
     """
     Perform k-means clustering on the given data.
 
     Parameters:
+    - rng: numpy.random.Generator
+        The random number generator used for initialization.
     - X: numpy.ndarray
         The input data array of shape (n, d), where n is the number of data points and d is the number of dimensions.
     - k: int
         The number of clusters to create.
     - maxiter: int, optional
-        The maximum number of iterations to perform. Default is 10.
+        The maximum number of iterations to perform. Default is 5.
 
     Returns:
     - assign: numpy.ndarray
@@ -80,9 +82,7 @@ def kmeans(X, k, maxiter=10):
     assign = rng.integers(0,k,n)
     reps = np.zeros((k, d), dtype=int)
     for iter in range(maxiter):
-        # Step 1: Optimal representatives for fixed clusters
         reps = opt_reps(X, k, assign) 
-        # Step 2: Optimal clusters for fixed representatives
         assign = opt_clust(X, k, reps) 
     return assign
 
@@ -255,11 +255,12 @@ def ls_by_qr(A, b):
 
 # Spectral and SVD methods
 
-def topsing(A, maxiter=10):
+def topsing(rng, A, maxiter=10):
     """
     Compute the top singular triplets of a matrix A.
 
     Parameters:
+    rng (numpy.random.Generator): Random number generator.
     A (ndarray): Input matrix.
     maxiter (int): Maximum number of iterations for power iteration method. Default is 10.
 
@@ -268,7 +269,7 @@ def topsing(A, maxiter=10):
     s (float): Largest singular value.
     v (ndarray): Right singular vector corresponding to the largest singular value.
     """
-    x = np.random.normal(0, 1, np.shape(A)[1])
+    x = rng.normal(0,1,np.shape(A)[1])
     B = A.T @ A
     for _ in range(maxiter):
         x = B @ x
@@ -278,7 +279,7 @@ def topsing(A, maxiter=10):
     return u, s, v
 
 
-def svd(A, l, maxiter=100):
+def svd(rng, A, l, maxiter=100):
     """
     Perform Singular Value Decomposition (SVD) on a matrix A.
 
@@ -303,7 +304,7 @@ def svd(A, l, maxiter=100):
     return U, S, V
 
 
-def pca(X, l, maxiter=100):
+def pca(X, l):
     """
     Perform Principal Component Analysis (PCA) on the input data.
 
@@ -316,10 +317,10 @@ def pca(X, l, maxiter=100):
     numpy.ndarray: Transformed data matrix of shape (n_samples, l), where l is the number of principal components.
 
     """
-    mean = np.mean(X, axis=0)  # Compute mean of each column
-    Y = X - mean # Mean center each column
-    U, S, V = svd(Y, l, maxiter=maxiter)
-    return U[:,:l] @ np.diag(S[:l])
+    mean = np.mean(X, axis=0)
+    Y = X - mean
+    U, S, Vt = LA.svd(Y, full_matrices=False)
+    return U[:, :l] @ np.diag(S[:l])
 
 
 
@@ -327,7 +328,7 @@ def pca(X, l, maxiter=100):
 
 # Data simulation
 
-def one_cluster(d, n, w):
+def one_cluster(rng, d, n, w):
     """
     DEPRECATED: See spherical_gaussian
     
@@ -370,11 +371,12 @@ def two_clusters(d, n, w):
 
 
 
-def spherical_gaussian(d, n, mu, sig):
+def spherical_gaussian(rng, d, n, mu, sig):
     """
     Generate samples from a spherical Gaussian distribution.
 
     Parameters:
+    - rng (numpy.random.Generator): The random number generator.
     - d (int): The dimensionality of the samples.
     - n (int): The number of samples to generate.
     - mu (float): The mean of the distribution.
@@ -391,11 +393,12 @@ def spherical_gaussian(d, n, mu, sig):
 
 
 
-def gmm2spherical(d, n, phi0, phi1, mu0, sig0, mu1, sig1):
+def gmm2spherical(rng, d, n, phi0, phi1, mu0, sig0, mu1, sig1):
     """
     Generate samples from a Gaussian Mixture Model (GMM) with spherical Gaussian components.
     
     Parameters:
+    - rng (numpy.random.Generator): The random number generator.
     - d (int): The dimensionality of the samples.
     - n (int): The number of samples to generate.
     - phi0 (float): The weight of the first component.
@@ -420,8 +423,7 @@ def gmm2spherical(d, n, phi0, phi1, mu0, sig0, mu1, sig1):
     # choose components of each data point, then generate samples
     component = rng.choice(2, size=n, p=phi)
     for i in range(n):
-        X[i,:] = spherical_gaussian(
-            d, 1, mu[component[i],:], sig[component[i]])
+        X[i,:] = spherical_gaussian(rng, d, 1, mu[component[i],:], sig[component[i]])
     
     return X
 
@@ -429,11 +431,12 @@ def gmm2spherical(d, n, phi0, phi1, mu0, sig0, mu1, sig1):
 
 
 
-def gmm2(d, n, phi0, phi1, mu0, sigma0, mu1, sigma1):
+def gmm2(rng, d, n, phi0, phi1, mu0, sigma0, mu1, sigma1):
     """
     Generate samples from a Gaussian Mixture Model (GMM) with 2 components.
     
     Parameters:
+    - rng (numpy.random.Generator): The random number generator.
     - d (int): The dimensionality of the samples.
     - n (int): The number of samples to generate.
     - phi0 (float): The mixing coefficient for component 0.
@@ -466,11 +469,12 @@ def gmm2(d, n, phi0, phi1, mu0, sigma0, mu1, sigma1):
 
 
 
-def two_mixed_clusters(d, n, w):
+def two_mixed_clusters(rng, d, n, w):
     """
     Generate a dataset with two mixed clusters.
 
     Parameters:
+    - rng (numpy.random.Generator): The random number generator.
     - d (int): The dimensionality of the dataset.
     - n (int): The number of data points to generate.
     - w (float): The separation between the two clusters.
@@ -479,25 +483,19 @@ def two_mixed_clusters(d, n, w):
     - ndarray: The generated dataset with shape (n, d).
     """
     
-    # set parameters
-    phi0 = 0.5
-    phi1 = 0.5
-    mu0 = np.concatenate(([w], np.zeros(d-1)))
-    mu1 = np.concatenate(([-w], np.zeros(d-1)))
-    sig0 = 1
-    sig1 = 1
-    
-    return gmm2spherical(
-        d, n, phi0, phi1, mu0, sig0, mu1, sig1)
+    mu0 = np.hstack(([w], np.zeros(d-1)))
+    mu1 = np.hstack(([-w], np.zeros(d-1)))
+    return gmm2spherical(rng, d, n, 0.5, 0.5, mu0, 1, mu1, 1)
 
 
 
 
-def two_separated_clusters(d, n, w):
+def two_separate_clusters(rng, d, n, w):
     """
-    Generate two separated clusters of samples in d-dimensional space.
+    Generate two separate clusters of samples in d-dimensional space.
     
     Parameters:
+        rng (numpy.random.Generator): The random number generator to use.
         d (int): The dimensionality of the samples.
         n (int): The number of samples to generate for each cluster.
         w (float): The separation between the two clusters.
@@ -507,16 +505,12 @@ def two_separated_clusters(d, n, w):
                from the first and second clusters respectively.
     """
     
-    # set parameters
     mu0 = np.concatenate(([w], np.zeros(d-1)))
     mu1 = np.concatenate(([-w], np.zeros(d-1)))
-    sig0 = 1
-    sig1 = 1
     
-    # generate samples
-    X0 = spherical_gaussian(d, n, mu0, sig0)
-    X1 = spherical_gaussian(d, n, mu1, sig1)
-    
+    X0 = spherical_gaussian(rng, d, n, mu0, 1)
+    X1 = spherical_gaussian(rng, d, n, mu1, 1)
+   
     return X0, X1
 
 
@@ -580,29 +574,55 @@ def spectral_cut2(A):
     return order[0:imin+1], order[imin+1:n]
 
 
-def viz_cut(G, s, pos):
+def viz_cut(G, s, pos, node_size=100, with_labels=False):
     """
-    Visualizes a graph with a highlighted cut.
+    Visualizes a cut in a graph.
 
     Parameters:
     - G: NetworkX graph object
-        The graph to be visualized.
+        The graph to visualize.
     - s: int
-        The index of the node to be highlighted.
+        The source node for the cut.
     - pos: dict
-        A dictionary with node positions as keys and their coordinates as values.
+        A dictionary with node positions as values.
+    - node_size: int, optional
+        The size of the nodes in the visualization. Default is 100.
+    - with_labels: bool, optional
+        Whether to show labels for the nodes. Default is False.
 
     Returns:
     None
     """
     n = G.number_of_nodes()
-    assign = np.ones(n)
-    assign[s] = 2
-    nx.draw(G, node_color=assign, pos=pos, with_labels=False, cmap=plt.cm.brg,
-            node_size=200, font_size=10, font_color='white')
+    assign = np.zeros(n)
+    assign[s] = 1
+    nx.draw(G, node_color=assign, pos=pos, with_labels=with_labels, 
+            cmap='spring', node_size=node_size, font_color='k')
+    plt.show()
 
 
 
+def inhomogeneous_er_random_graph(rng, n, M):
+    """
+    Generates an inhomogeneous Erdős-Rényi random graph.
+
+    Parameters:
+    - rng (numpy.random.Generator): A random number generator.
+    - n (int): The number of nodes in the graph.
+    - M (numpy.ndarray): An n x n matrix representing the edge probabilities between nodes.
+
+    Returns:
+    - G (networkx.Graph): The generated random graph.
+
+    """
+    G = nx.Graph()
+    G.add_nodes_from(range(n))
+    for i in range(n):
+        for j in range(i + 1, n):
+            if rng.random() < M[i, j]:
+                G.add_edge(i, j)
+
+    return G
 
 
 # Optimization algorithms
@@ -648,11 +668,12 @@ def gd(f, grad_f, x0, alpha=1e-3, niters=int(1e6)):
 
 # Markov chains algorithms
 
-def SamplePath(mu, P, T):
+def SamplePath(rng, mu, P, T):
     """
     Generate a sample path from a Markov chain.
 
     Parameters:
+    rng (numpy.random.Generator): The random number generator.
     mu (numpy.ndarray): The initial distribution of the Markov chain.
     P (numpy.ndarray): The transition matrix of the Markov chain.
     T (int): The length of the sample path.
@@ -661,13 +682,14 @@ def SamplePath(mu, P, T):
     numpy.ndarray: The generated sample path.
 
     """
-    n = mu.shape[0] # size of state space
-    X = np.zeros(T+1) # initialization of sample path
+    n = mu.shape[0]
+    X = np.zeros(T+1)
     for i in range(T+1):
-        if i == 0: # initial distribution
-            X[i] = np.random.choice(a=np.arange(start=1,stop=n+1),p=mu)
-        else: # next state is chosen from current state row
-            X[i] = np.random.choice(a=np.arange(start=1,stop=n+1),p=P[int(X[i-1]-1),:])
+        if i == 0:
+            X[i] = rng.choice(a=np.arange(start=1,stop=n+1),p=mu)
+        else:
+            X[i] = rng.choice(a=np.arange(start=1,stop=n+1),p=P[int(X[i-1]-1),:])
+    
     return X
 
 
@@ -1093,11 +1115,12 @@ def hard_em_bern(X, K, pi_0, p_0, maxiters=10, alpha=0., beta=0.):
 # Linear Gaussian models
 
 
-def lgSamplePath(ss, os, F, H, Q, R, init_mu, init_Sig, T):
+def lgSamplePath(rng, ss, os, F, H, Q, R, init_mu, init_Sig, T):
     """
     Generate a sample path from a linear Gaussian state-space model.
 
     Parameters:
+    rng (numpy.random.Generator): The random number generator.
     ss (int): The number of state variables.
     os (int): The number of observation variables.
     F (ndarray): The state transition matrix of shape (ss, ss).
@@ -1112,13 +1135,13 @@ def lgSamplePath(ss, os, F, H, Q, R, init_mu, init_Sig, T):
     x (ndarray): The generated state path of shape (ss, T).
     y (ndarray): The generated observation path of shape (os, T).
     """
-    x = np.zeros((ss, T)) 
-    y = np.zeros((os, T))
+    x = np.zeros((ss,T)) 
+    y = np.zeros((os,T))
 
-    x[:, 0] = np.random.multivariate_normal(init_mu, init_Sig)
-    for t in range(1, T):
-        x[:, t] = np.random.multivariate_normal(F @ x[:, t-1], Q)  # noise on x_t
-        y[:, t] = np.random.multivariate_normal(H @ x[:, t], R)  # noise on y_t
+    x[:,0] = rng.multivariate_normal(init_mu, init_Sig)
+    for t in range(1,T):
+        x[:,t] = rng.multivariate_normal(F @ x[:,t-1],Q)
+        y[:,t] = rng.multivariate_normal(H @ x[:,t],R)
     
     return x, y
 
@@ -1245,11 +1268,12 @@ def rbm_mean_visible(h, W, b):
 
 
 
-def rbm_gibbs_update(v, W, b, c):
+def rbm_gibbs_update(rng, v, W, b, c):
     """
     Performs one Gibbs sampling update step for a Restricted Boltzmann Machine (RBM).
 
     Args:
+        rng (numpy.random.Generator): Random number generator.
         v (ndarray): Visible units of the RBM.
         W (ndarray): Weight matrix connecting visible and hidden units.
         b (ndarray): Bias vector for the visible units.
@@ -1265,11 +1289,12 @@ def rbm_gibbs_update(v, W, b, c):
     return v
 
 
-def rbm_gibbs_sampling(k, v_0, W, b, c):
+def rbm_gibbs_sampling(rng, k, v_0, W, b, c):
     """
     Perform k steps of Gibbs sampling in a Restricted Boltzmann Machine (RBM).
 
     Parameters:
+    rng (object): The random number generator object.
     k (int): The number of Gibbs sampling steps to perform.
     v_0 (array-like): The initial visible layer state.
     W (array-like): The weight matrix of the RBM.
@@ -1282,7 +1307,7 @@ def rbm_gibbs_sampling(k, v_0, W, b, c):
     counter = 0
     v = v_0
     while counter < k:
-        v = rbm_gibbs_update(v, W, b, c)
+        v = rbm_gibbs_update(rng, v, W, b, c)
         counter += 1
     return v
 
@@ -1333,13 +1358,9 @@ def train(dataloader, model, loss_fn, optimizer, device):
     size = len(dataloader.dataset)
     model.train()
     for batch, (X, y) in enumerate(dataloader):
-        X, y = X.to(device), y.to(device)
-        
-        # Compute prediction error
+        X, y = X.to(device), y.to(device)    
         pred = model(X)
         loss = loss_fn(pred, y)
-        
-        # Backpropagation
         optimizer.zero_grad()
         loss.backward()
         optimizer.step()
@@ -1360,9 +1381,7 @@ def training_loop(train_loader, model, loss_fn, optimizer, device, epochs=3):
     """
     for epoch in range(epochs):
         train(train_loader, model, loss_fn, optimizer, device)
-        
-        if (epoch+1) % 1 == 0:
-            print(f"Epoch {epoch+1}/{epochs}")
+        print(f"Epoch {epoch+1}/{epochs}")
 
 
 
@@ -1379,17 +1398,22 @@ def test(dataloader, model, loss_fn, device):
         None
     """
     size = len(dataloader.dataset)
-    num_batches = len(dataloader)
+    correct = 0    
     model.eval()
-    test_loss, correct = 0, 0
     with torch.no_grad():
         for X, y in dataloader:
             X, y = X.to(device), y.to(device)
             pred = model(X)
-            test_loss += loss_fn(pred, y).item()
             correct += (pred.argmax(dim=1) == y).type(torch.float).sum().item()
-    test_loss /= num_batches
-    accuracy = correct / size
-    print(f"Test error: {(100*accuracy):>0.1f}% accuracy")
 
+    print(f"Test error: {(100*(correct / size)):>0.1f}% accuracy")
+
+
+
+def FashionMNIST_get_class_name(label):
+
+    class_names = ["T-shirt/top", "Trouser", "Pullover", "Dress", 
+    "Coat", "Sandal", "Shirt", "Sneaker", "Bag", "Ankle boot"]
+
+    return class_names[label]
 

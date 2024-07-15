@@ -8,21 +8,22 @@ This textbook on the **mathematics of data** has two intended audiences:
 
 - *For mathematically-inclined students in data science related fields (at the undergraduate or graduate level)*: it can serve as a mathematical companion to machine learning, AI, and statistics courses.
 
-Content-wise it is a second course in **linear algebra**, **multivariable calculus**, and **probability theory** motivated by and illustrated on data science applications. As such, the reader is expected to be familiar with the basics of those areas, as well as to have been exposed to proofs -- but no knowledge of data science is assumed. Moreover, while the emphasis is on the mathematical concepts and methods, coding is used throughout. Basic familiarity with [Python](https://docs.python.org/3/tutorial/index.html) will suffice. The book provides an introduction to some specialized packages, especially [Numpy](https://numpy.org), [NetworkX](https://networkx.org), and [PyTorch](https://pytorch.org/).
+Content-wise it is a second course in **multivariable calculus**, **linear algebra**, and **probability** motivated by and illustrated on data science applications. As such, the reader is expected to be familiar with the basics of those areas, as well as to have been exposed to proofs -- but no knowledge of data science is assumed. Moreover, while the emphasis is on the mathematical concepts and methods, coding is used throughout. Basic familiarity with [Python](https://docs.python.org/3/tutorial/index.html) will suffice. The book provides an introduction to some specialized packages, especially [Numpy](https://numpy.org), [NetworkX](https://networkx.org), and [PyTorch](https://pytorch.org/).
 
 The book is based on Jupyter notebooks that were developed for
 [MATH 535: Mathematical Methods in Data Science](https://people.math.wisc.edu/~roch/mmids/), a one-semester advanced undergraduate and Master's level course
 offered at [UW-Madison](https://math.wisc.edu/).
 
+A print version of the book will be published by Cambridge University Press. 
+
 ```{tableofcontents}
 ```
 
 ````{important}
- To run the code in these notes, you need to import the
+ To run the code in this book, you need to import the
  following librairies.
 
 ```python
-# PYTHON 3
 import numpy as np
 from numpy import linalg as LA
 import matplotlib.pyplot as plt

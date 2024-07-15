@@ -39,6 +39,9 @@ All datasets can be downloaded on the [GitHub page of the notes](https://github.
 
 Jupyter notebooks containing just the code are provided at the end of each chapter.
 Running them in [Google Colaboratory](https://colab.google) is recommended.  
+The notebooks are also available in slideshow format.
+The slideshows were created using Jupyter; 
+hence, instructors can create their own tailored version directly from the notebooks. 
 ````
 
 ```{note}

@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MMiDS 5.5: Self-Assessment Quiz</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600&family=Open+Sans&display=swap"
+        rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f5f5f5;
+            color: #333;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        #quiz-container {
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+            max-width: 800px;
+            width: 100%;
+            margin: 20px;
+        }
+
+        h1 {
+            font-family: 'Montserrat', sans-serif;
+            color: #673ab7;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .question {
+            background-color: #f5f0ff;
+            border: 1px solid #d1c4e9;
+            border-radius: 5px;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .question p {
+            margin: 0 0 15px;
+            font-weight: bold;
+        }
+
+        .options {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .options li {
+            margin-bottom: 0px;
+        }
+
+        .options li label {
+            display: block;
+            padding: 12px;
+            background-color: #f5f0ff;
+            color: #333;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .options li label:hover {
+            background-color: #e0d6ff;
+        }
+
+        .options li input[type="radio"] {
+            accent-color: #673ab7;
+        }
+
+        .feedback {
+            margin-top: 15px;
+            display: none;
+            padding: 12px;
+            border-radius: 5px;
+        }
+
+        .feedback.correct {
+            background-color: #e0f0e5;
+            color: #155724;
+            display: block;
+        }
+
+        .feedback.incorrect {
+            background-color: #f8e1e3;
+            color: #721c24;
+            display: block;
+        }
+
+        img.graph-image {
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+            width: 50%;
+            margin-bottom: 20px;
+            margin-top: 20px;
+        }
+
+        @media (max-width: 600px) {
+            #quiz-container {
+                padding: 20px;
+                margin: 20px 10px;
+            }
+
+            h1 {
+                font-size: 24px;
+                margin-bottom: 20px;
+            }
+
+            .question {
+                padding: 15px;
+                margin-bottom: 20px;
+            }
+
+            img.graph-image {
+                width: 70%;
+                margin-bottom: 15px;
+                margin-top: 15px;
+            }
+        }
+    </style>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+
+<body>
+    <div id="quiz-container">
+        <h1>MMiDS 5.5: Self-Assessment Quiz</h1>
+
+        <div class="question">
+            <p>Which of the following best describes the 'cut ratio' of a graph cut \((S, S^c)\)?</p>
+            <ul class="options">
+                <li><label><input type="radio" name="q0" value="0"> a) The ratio of the number of edges between \(S\) and \(S^c\) to the total number of edges in the graph.</label></li>
+                <li><label><input type="radio" name="q0" value="1"> b) The ratio of the number of edges between \(S\) and \(S^c\) to the size of the smaller set, \(\min\{|S|, |S^c|\}\).</label></li>
+                <li><label><input type="radio" name="q0" value="2"> c) The ratio of the number of edges within \(S\) to the number of edges within \(S^c\).</label></li>
+                <li><label><input type="radio" name="q0" value="3"> d) The ratio of the total number of edges in the graph to the number of edges between \(S\) and \(S^c\).</label></li>
+            </ul>
+            <div class="feedback" id="feedback0"></div>
+        </div>
+
+        <div class="question">
+            <p>What is the isoperimetric number (or Cheeger constant) of a graph \(G\)?</p>
+            <ul class="options">
+                <li><label><input type="radio" name="q1" value="0"> a) The largest value of the cut ratio over all possible cuts.</label></li>
+                <li><label><input type="radio" name="q1" value="1"> b) The smallest value of the cut ratio over all possible cuts.</label></li>
+                <li><label><input type="radio" name="q1" value="2"> c) The average value of the cut ratio over all possible cuts.</label></li>
+                <li><label><input type="radio" name="q1" value="3"> d) The median value of the cut ratio over all possible cuts.</label></li>
+            </ul>
+            <div class="feedback" id="feedback1"></div>
+        </div>
+
+        <div class="question">
+            <p>What does the Cheeger Inequality establish?</p>
+            <ul class="options">
+                <li><label><input type="radio" name="q2" value="0"> a) A relationship between the isoperimetric number and the largest Laplacian eigenvalue.</label></li>
+                <li><label><input type="radio" name="q2" value="1"> b) A relationship between the isoperimetric number and the second largest Laplacian eigenvalue.</label></li>
+                <li><label><input type="radio" name="q2" value="2"> c) A relationship between the isoperimetric number and the smallest Laplacian eigenvalue.</label></li>
+                <li><label><input type="radio" name="q2" value="3"> d) A relationship between the isoperimetric number and the second smallest Laplacian eigenvalue.</label></li>
+            </ul>
+            <div class="feedback" id="feedback2"></div>
+        </div>
+
+        <div class="question">
+            <p>Given a graph \(G\) with \(n\) vertices and maximum degree \(\bar{\delta}\), what is the range of the second smallest Laplacian eigenvalue \(\mu_2\) according to the Cheeger Inequality?</p>
+            <ul class="options">
+                <li><label><input type="radio" name="q3" value="0"> a) \(\frac{\phi_G^2}{2\bar{\delta}} \leq \mu_2 \leq 2\phi_G\)</label></li>
+                <li><label><input type="radio" name="q3" value="1"> b) \(\frac{\phi_G^2}{2\bar{\delta}} \leq \mu_2 \leq \phi_G\)</label></li>
+                <li><label><input type="radio" name="q3" value="2"> c) \(\frac{\phi_G}{2\bar{\delta}} \leq \mu_2 \leq 2\phi_G^2\)</label></li>
+                <li><label><input type="radio" name="q3" value="3"> d) \(\frac{\phi_G}{2\bar{\delta}} \leq \mu_2 \leq \phi_G^2\)</label></li>
+            </ul>
+            <div class="feedback" id="feedback3"></div>
+        </div>
+
+        <div class="question">
+            <p>In the context of spectral graph theory, what is the Fiedler vector?</p>
+            <ul class="options">
+                <li><label><input type="radio" name="q4" value="0"> a) The eigenvector associated with the largest eigenvalue of the Laplacian matrix.</label></li>
+                <li><label><input type="radio" name="q4" value="1"> b) The eigenvector associated with the smallest eigenvalue of the Laplacian matrix.</label></li>
+                <li><label><input type="radio" name="q4" value="2"> c) The eigenvector associated with the second smallest eigenvalue of the Laplacian matrix.</label></li>
+                <li><label><input type="radio" name="q4" value="3"> d) The eigenvector associated with the second largest eigenvalue of the Laplacian matrix.</label></li>
+            </ul>
+            <div class="feedback" id="feedback4"></div>
+        </div>
+
+        <div class="question">
+            <p>In the graph-cutting algorithm based on the Fiedler vector, how is the graph embedded in \(\mathbb{R}\)?</p>
+            <ul class="options">
+                <li><label><input type="radio" name="q5" value="0"> a) Each vertex \(i\) is mapped to the corresponding entry \(y_{1,i}\) of the first eigenvector.</label></li>
+                <li><label><input type="radio" name="q5" value="1"> b) Each vertex \(i\) is mapped to the corresponding entry \(y_{2,i}\) of the second eigenvector.</label></li>
+                <li><label><input type="radio" name="q5" value="2"> c) Each vertex \(i\) is mapped to the sum of the corresponding entries of the first and second eigenvectors.</label></li>
+                <li><label><input type="radio" name="q5" value="3"> d) Each vertex \(i\) is mapped to the difference between the corresponding entries of the first and second eigenvectors.</label></li>
+            </ul>
+            <div class="feedback" id="feedback5"></div>
+        </div>
+
+        <div class="question">
+            <p>What is the range of possible cuts considered by the graph-cutting algorithm based on the Fiedler vector?</p>
+            <ul class="options">
+                <li><label><input type="radio" name="q6" value="0"> a) All possible cuts of the graph.</label></li>
+                <li><label><input type="radio" name="q6" value="1"> b) Only cuts of the form \((S_k, S_k^c)\), where \(S_k = \{\pi(1), \ldots, \pi(k)\}\) for \(k \leq n-1\).</label></li>
+                <li><label><input type="radio" name="q6" value="2"> c) Only cuts of the form \((S_k, S_k^c)\), where \(S_k = \{\pi(1), \ldots, \pi(k)\}\) for \(k \leq n/2\).</label></li>
+                <li><label><input type="radio" name="q6" value="3"> d) Only cuts of the form \((S_k, S_k^c)\), where \(S_k = \{\pi(1), \ldots, \pi(k)\}\) for \(k \leq \sqrt{n}\).</label></li>
+            </ul>
+            <div class="feedback" id="feedback6"></div>
+        </div>
+
+        <div class="question">
+            <p>Consider the following graph:</p>
+            <img src="quiz-5_5-graph1.png" alt="Graph" class="graph-image">
+            <p>What is the isoperimetric number (Cheeger constant) of this graph?</p>
+            <ul class="options">
+                <li><label><input type="radio" name="q7" value="0"> a) 1/6</label></li>
+                <li><label><input type="radio" name="q7" value="1"> b) 1/3</label></li>
+                <li><label><input type="radio" name="q7" value="2"> c) 1/2</label></li>
+                <li><label><input type="radio" name="q7" value="3"> d) 2/3</label></li>
+            </ul>
+            <div class="feedback" id="feedback7"></div>
+        </div>
+
+        <div class="question">
+            <p>What is the main advantage of the graph-cutting algorithm based on the Fiedler vector compared to finding the cut that minimizes the cut ratio directly?</p>
+            <ul class="options">
+                <li><label><input type="radio" name="q8" value="0"> a) The Fiedler vector-based algorithm always finds the optimal cut.</label></li>
+                <li><label><input type="radio" name="q8" value="1"> b) The Fiedler vector-based algorithm is computationally tractable, while minimizing the cut ratio directly is NP-hard.</label></li>
+                <li><label><input type="radio" name="q8" value="2"> c) The Fiedler vector-based algorithm can handle weighted graphs, while minimizing the cut ratio directly cannot.</label></li>
+                <li><label><input type="radio" name="q8" value="3"> d) The Fiedler vector-based algorithm can handle directed graphs, while minimizing the cut ratio directly cannot.</label></li>
+            </ul>
+            <div class="feedback" id="feedback8"></div>
+        </div>
+
+        <div class="question">
+            <p>What is the minimum bisection problem?</p>
+            <ul class="options">
+                <li><label><input type="radio" name="q9" value="0"> a) Finding a cut of a graph that minimizes the number of edges across the cut.</label></li>
+                <li><label><input type="radio" name="q9" value="1"> b) Finding a cut of a graph that divides the vertices into two equal-sized sets and minimizes the number of edges across the cut.</label></li>
+                <li><label><input type="radio" name="q9" value="2"> c) Finding a cut of a graph that maximizes the number of edges across the cut.</label></li>
+                <li><label><input type="radio" name="q9" value="3"> d) Finding a cut of a graph that divides the vertices into two equal-sized sets and maximizes the number of edges across the cut.</label></li>
+            </ul>
+            <div class="feedback" id="feedback9"></div>
+        </div>
+
+        <div class="question">
+            <p>Which of the following is the relaxation of the minimum bisection problem presented in the text?</p>
+            <ul class="options">
+                <li><label><input type="radio" name="q10" value="0"> a) 
+                    \(\min \frac{1}{4} \left\{\sum_{\{i,j\} \in E} (x_i - x_j)^2 : x = (x_1, ..., x_n)^T \in \mathbb{R}^n, \sum_{i=1}^n x_i = 0, \sum_{i=1}^n x_i^2 = n\right\}\)</label></li>
+                <li><label><input type="radio" name="q10" value="1"> b) 
+                    \(\min \frac{1}{4} \left\{\sum_{\{i,j\} \in E} |x_i - x_j| : x = (x_1, ..., x_n)^T \in \mathbb{R}^n, \sum_{i=1}^n x_i = 0, \sum_{i=1}^n x_i^2 = n\right\}\)</label></li>
+                <li><label><input type="radio" name="q10" value="2"> c) 
+                    \(\max \frac{1}{4} \left\{\sum_{\{i,j\} \in E} (x_i - x_j)^2 : x = (x_1, ..., x_n)^T \in \mathbb{R}^n, \sum_{i=1}^n x_i = 0, \sum_{i=1}^n x_i^2 = n\right\}\)</label></li>
+                <li><label><input type="radio" name="q10" value="3"> d) 
+                    \(\max \frac{1}{4} \left\{\sum_{\{i,j\} \in E} |x_i - x_j| : x = (x_1, ..., x_n)^T \in \mathbb{R}^n, \sum_{i=1}^n x_i = 0, \sum_{i=1}^n x_i^2 = n\right\}\)</label></li>
+            </ul>
+            <div class="feedback" id="feedback10"></div>
+        </div>
+
+        <div class="question">
+            <p>In the proof of the easy direction of Cheeger's Inequality (\(\mu_2 \leq 2\varphi_G\)), how is the test vector \(x\) constructed?</p>
+            <ul class="options">
+                <li><label><input type="radio" name="q11" value="0"> a) It is chosen randomly.</label></li>
+                <li><label><input type="radio" name="q11" value="1"> b) It is the Fiedler vector.</label></li>
+                <li><label><input type="radio" name="q11" value="2"> c) It takes one value on the set \(S\) and a different value on its complement \(S^c\).</label></li>
+                <li><label><input type="radio" name="q11" value="3"> d) It is the indicator vector of the set \(S\).</label></li>
+            </ul>
+            <div class="feedback" id="feedback11"></div>
+        </div>
+
+    </div>
+
+    <script>
+        document.querySelectorAll('.options').forEach((optionsList, index) => {
+            const correctOptions = [1, 1, 3, 0, 2, 1, 1, 3, 1, 1, 0, 2];
+
+            optionsList.addEventListener('change', (event) => {
+                const selectedOption = parseInt(event.target.value);
+                const feedbackDiv = document.getElementById('feedback' + index);
+                let feedbackText = '';
+
+                if (selectedOption === correctOptions[index]) {
+                    feedbackText = "Excellent! " + getCorrectFeedback(index);
+                    feedbackDiv.classList.add('correct');
+                    feedbackDiv.classList.remove('incorrect');
+                } else {
+                    feedbackText = "Try again.";
+                    feedbackDiv.classList.add('incorrect');
+                    feedbackDiv.classList.remove('correct');
+                }
+
+                feedbackDiv.innerHTML = feedbackText;
+
+                MathJax.typesetPromise([feedbackDiv]);
+            });
+        });
+
+        function getCorrectFeedback(index) {
+            switch (index) {
+                case 0:
+                    return "The text defines the cut ratio as \\(\\varphi(S) = \\frac{|E(S, S^c)|}{\\min\\{|S|, |S^c|\\}}\\), where \\(|E(S, S^c)|\\) is the number of edges between \\(S\\) and \\(S^c\\).";
+                case 1:
+                    return "The text defines the isoperimetric number as 'the smallest value [the cut ratio] can take on \\(G\\), that is, \\(\\phi_G = \\min_{\\emptyset \\neq S \\subset V} \\phi(S)\\).'";
+                case 2:
+                    return "The text states that 'A key result of spectral graph theory establishes a quantitative relation between the isoperimetric number and the second smallest Laplacian eigenvalue.'";
+                case 3:
+                    return "The Cheeger Inequality states that \\(\\frac{\\phi_G^2}{2\\bar{\\delta}} \\leq \\mu_2 \\leq 2\\phi_G\\).";
+                case 4:
+                    return "The text refers to the eigenvector associated with the second smallest eigenvalue of the Laplacian matrix as the Fiedler vector.";
+                case 5:
+                    return "The text states that 'We use these entries to embed the graph in \\(\\mathbb{R}\\): vertex \\(i\\) is mapped to \\(y_{2,i}\\).'";
+                case 6:
+                    return "The text states that 'We consider only cuts of the form \\(S_k = \\{\\pi(1), \\ldots, \\pi(k)\\}\\) and we output the cut \\((S_k, S_k^c)\\) that minimizes the cut ratio \\(\\varphi(S_k) = \\frac{|E(S_k, S_k^c)|}{\\min\\{k, n-k\\}}\\) for the \\(k \\leq n-1\\).'";
+                case 7:
+                    return "For a connected graph with \\(n\\) vertices, the numerator of the cut ratio is at least 2, and the denominator is at most \\(n/2\\), which is achieved by cutting the graph into two equal parts. In this case, the graph is a cycle with 6 vertices, so the isoperimetric number is \\(2/(6/2) = 2/3\\).";
+                case 8:
+                    return "The text states that 'The above provides a heuristic to find a cut with provable guarantees. [...] In contrast, the problem of finding a cut which minimizes the cut ratio is known to be NP-hard, that is, computationally intractable.'";
+                case 9:
+                    return "The text defines the minimum bisection problem as finding the best balanced cut that minimizes the number of edges across it, over all cuts with \\(|S| = |S^c| = n/2\\).";
+                case 10:
+                    return "The text replaces the constraint \\(x = (x_1, ..., x_n)^T \\in \\{-1, +1\\}^n\\) with \\(x = (x_1, ..., x_n)^T \\in \\mathbb{R}^n\\) and adds the constraint \\(\\sum_{i=1}^n x_i^2 = n\\) to maintain the balanced cut property.";
+                case 11:
+                    return "The text describes the construction of the test vector \\(x\\) as taking one value on the set \\(S\\) and a different value on its complement \\(S^c\\), specifically: \\(x_i = \\begin{cases} \\sqrt{\\frac{|S^c|}{n|S|}} & \\text{if } i \\in S \\\\ -\\sqrt{\\frac{|S|}{n|S^c|}} & \\text{if } i \\in S^c \\end{cases}\\)";
+                default:
+                    return "";
+            }
+        }
+    </script>
+
+</body>
+
+</html>

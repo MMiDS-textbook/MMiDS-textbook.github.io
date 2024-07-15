@@ -1,0 +1,1348 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>5.2. Background: basic concepts in graph theory &#8212; MMiDS Textbook</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.5.1/css/all.min.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.1/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.1/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.1/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b76e3c8a" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=384b581d" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=87e54e7c" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae" />
+  <script src="../../_static/vendor/fontawesome/6.5.1/js/all.min.js?digest=8d27b9dea8ad943066ae"></script>
+
+    <script src="../../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?v=efea14e4"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../_static/design-tabs.js?v=f930bc37"></script>
+    <script async="async" src="https://www.googletagmanager.com/gtag/js?id=G-P5E8DW088F"></script>
+    <script>
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){ dataLayer.push(arguments); }
+                gtag('js', new Date());
+                gtag('config', 'G-P5E8DW088F');
+            </script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){ dataLayer.push(arguments); }
+                gtag('js', new Date());
+                gtag('config', 'G-P5E8DW088F');
+            </script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'chap04_specgraph/02_graph/roch-mmids-specgraph-graph';</script>
+    <link rel="canonical" href="https://mmids-textbook.github.io/chap04_specgraph/02_graph/roch-mmids-specgraph-graph.html" />
+    <link rel="icon" href="https://mmids-textbook.github.io/favicon-32x32.png"/>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="5.3. Variational characterization of eigenvalues" href="../03_extremal/roch-mmids-specgraph-extremal.html" />
+    <link rel="prev" title="5.1. Motivating example: uncovering social groups" href="../01_motiv/roch-mmids-specgraph-motiv.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a id="pst-skip-link" class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+
+<a class="navbar-brand logo" href="../../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/mmids-cover-small.jpg" class="logo__image only-light" alt="MMiDS Textbook - Home"/>
+    <script>document.write(`<img src="../../_static/mmids-cover-small.jpg" class="logo__image only-dark" alt="MMiDS Textbook - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../index.html">
+                    <b>MATHEMATICAL METHODS in DATA SCIENCE (with Python)</b>
+                </a>
+            </li>
+        </ul>
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../chap01_intro/00_intro/roch-mmids-intro-intro.html">1. Introduction: a first data science problem</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../chap01_intro/01_motiv/roch-mmids-intro-motiv.html">1.1. Motivating example: identifying penguin species</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap01_intro/02_review/roch-mmids-intro-review.html">1.2. Background: quick refresher of matrix algebra, differential calculus, and elementary probability</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap01_intro/03_clustering/roch-mmids-intro-clustering.html">1.3. Clustering: an objective, an algorithm and a guarantee</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap01_intro/04_highdim/roch-mmids-intro-highdim.html">1.4. Some observations about high-dimensional data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap01_intro/exercises/roch-mmids-intro-exercises.html">1.5. Exercises</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap01_intro/05_adv/roch-mmids-intro-adv.html">1.6. Online suppplementary material</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../chap02_ls/00_intro/roch-mmids-ls-intro.html">2. Least squares: geometric, algebraic, and numerical aspects</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../chap02_ls/01_motiv/roch-mmids-ls-motiv.html">2.1. Motivating example: predicting sales</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap02_ls/02_subspaces/roch-mmids-ls-spaces.html">2.2. Background: review of vector spaces and matrix inverses</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap02_ls/03_orthog/roch-mmids-ls-orthog.html">2.3. Geometry of least squares: the orthogonal projection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap02_ls/04_qr/roch-mmids-ls-qr.html">2.4. QR decomposition and Householder transformations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap02_ls/05_regression/roch-mmids-ls-regression.html">2.5. Application: regression analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap02_ls/exercises/roch-mmids-ls-exercises.html">2.6. Exercises</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap02_ls/06_adv/roch-mmids-ls-adv.html">2.7. Online suppplementary material</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../chap06_opt/00_intro/roch-mmids-opt-intro.html">3. Optimization theory and algorithms</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-3"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../chap06_opt/01_motiv/roch-mmids-opt-motiv.html">3.1. Motivating example:  analyzing customer satisfaction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap06_opt/02_several/roch-mmids-opt-several.html">3.2. Background: review of differentiable functions of several variables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap06_opt/03_optimality/roch-mmids-opt-optimality.html">3.3. Optimality conditions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap06_opt/03part2_convexity/roch-mmids-opt-convexity.html">3.4. Convexity</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap06_opt/04_gd/roch-mmids-opt-gd.html">3.5. Gradient descent and its convergence analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap06_opt/04part2_logistic/roch-mmids-opt-logistic.html">3.6. Application: logistic regression</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap06_opt/exercises/roch-mmids-opt-exercises.html">3.7. Exercises</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap06_opt/06_adv/roch-mmids-opt-adv.html">3.8. Online suppplementary material</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../chap03_svd/00_intro/roch-mmids-svd-intro.html">4. Singular value decomposition</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-4"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../chap03_svd/01_motiv/roch-mmids-svd-motiv.html">4.1. Motivating example: visualizing viral evolution</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap03_svd/02_spectral/roch-mmids-svd-spectral.html">4.2. Background: review of matrix rank  and spectral decomposition</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap03_svd/03_svd/roch-mmids-svd-svd.html">4.3. Approximating subspaces and the SVD</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap03_svd/04_power/roch-mmids-svd-power.html">4.4. Power iteration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap03_svd/05_pca/roch-mmids-svd-pca.html">4.5. Application: principal components analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap03_svd/06_further/roch-mmids-svd-further.html">4.6. Further applications of the SVD: low-rank approximations and ridge regression</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap03_svd/exercises/roch-mmids-svd-exercises.html">4.7. Exercises</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap03_svd/07_adv/roch-mmids-svd-adv.html">4.8. Online suppplementary material</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="../00_intro/roch-mmids-specgraph-intro.html">5. Spectral graph theory</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-5"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../01_motiv/roch-mmids-specgraph-motiv.html">5.1. Motivating example: uncovering social groups</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">5.2. Background: basic concepts in graph theory</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../03_extremal/roch-mmids-specgraph-extremal.html">5.3. Variational characterization of eigenvalues</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../04_laplacian/roch-mmids-specgraph-laplacian.html">5.4. Spectral properties of the Laplacian matrix</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../05_partitioning/roch-mmids-specgraph-partitioning.html">5.5. Application: graph partitioning via spectral clustering</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../05part2_sbm/roch-mmids-specgraph-sbm.html">5.6. Erdős-Rényi random graph and stochastic blockmodel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../exercises/roch-mmids-specgraph-exercises.html">5.7. Exercises</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../06_adv/roch-mmids-specgraph-adv.html">5.8. Online supplementary material</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../chap07_prob/00_intro/roch-mmids-prob-intro.html">6. Probabilistic models: from simple to complex</a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-6"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../chap07_prob/01_motiv/roch-mmids-prob-motiv.html">6.1. Motivating example: tracking location</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap07_prob/02_parametric/roch-mmids-prob-parametric.html">6.2. Background: introduction to parametric families and maximum likelihood estimation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap07_prob/03_joint/roch-mmids-prob-joint.html">6.3. Modeling more complex dependencies 1: using conditional independence</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap07_prob/03part2_em/roch-mmids-prob-em.html">6.4. Modeling more complex dependencies 2: marginalizing out an unobserved variable</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap07_prob/04_kalman/roch-mmids-prob-kalman.html">6.5. Application: linear-Gaussian models and Kalman filtering</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap07_prob/exercises/roch-mmids-prob-exercises.html">6.6. Exercises</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap07_prob/06_adv/roch-mmids-prob-adv.html">6.7. Online supplementary material</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../chap05_rwmc/00_intro/roch-mmids-rwmc-intro.html">7. Random walks on graphs and Markov chains</a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-7"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../chap05_rwmc/01_motiv/roch-mmids-rwmc-motiv.html">7.1. Motivating example: discovering mathematical topics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap05_rwmc/03_mcdefs/roch-mmids-rwmc-mcdefs.html">7.2. Background: elements of finite Markov chains</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap05_rwmc/04_stat/roch-mmids-rwmc-stat.html">7.3. Limit behavior 1: stationary distributions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap05_rwmc/04part2_mclimit/roch-mmids-rwmc-mclimit.html">7.4. Limit behavior 2: convergence to equilibrium</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap05_rwmc/05_pagerank/roch-mmids-rwmc-pagerank.html">7.5. Application: random walks on graphs and PageRank</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap05_rwmc/05part2_gibbs/roch-mmids-rwmc-gibbs.html">7.6. Further applications: Gibbs sampling and generating images</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap05_rwmc/exercises/roch-mmids-rwmc-exercises.html">7.7. Exercises</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap05_rwmc/06_adv/roch-mmids-rwmc-adv.html">7.8. Online supplementary material</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../chap08_nn/00_intro/roch-mmids-nn-intro.html">8. Neural networks, backpropagation and stochastic gradient descent</a><input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-8"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../chap08_nn/01_motiv/roch-mmids-nn-motiv.html">8.1. Motivating example:  classifying natural images</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap08_nn/02_chain/roch-mmids-nn-chain.html">8.2. Background: Jacobian, chain rule, and a brief introduction to automatic differentiation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap08_nn/03_backprop/roch-mmids-nn-backprop.html">8.3. Building blocks of AI 1: backpropagation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap08_nn/04_sgd/roch-mmids-nn-sgd.html">8.4. Building blocks of AI 2: stochastic gradient descent</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap08_nn/05_nn/roch-mmids-nn-nn.html">8.5. Building blocks of AI 3: neural networks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap08_nn/exercises/roch-mmids-nn-exercises.html">8.6. Exercises</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap08_nn/06_adv/roch-mmids-nn-adv.html">8.7. Online supplementary material</a></li>
+</ul>
+</li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/MMiDS-textbook/MMiDS-textbook.github.io" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/MMiDS-textbook/MMiDS-textbook.github.io/issues/new?title=Issue%20on%20page%20%2Fchap04_specgraph/02_graph/roch-mmids-specgraph-graph.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/chap04_specgraph/02_graph/roch-mmids-specgraph-graph.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Background: basic concepts in graph theory</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#undirected-graphs">5.2.1. Undirected graphs</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#directed-graphs">5.2.2. Directed graphs</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#matrix-representations-of-graphs">5.2.3. Matrix representations of graphs</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#laplacian-matrix">5.2.4. Laplacian matrix</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <p><span class="math notranslate nohighlight">\(\newcommand{\bmu}{\boldsymbol{\mu}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bSigma}{\boldsymbol{\Sigma}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bfbeta}{\boldsymbol{\beta}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bflambda}{\boldsymbol{\lambda}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bgamma}{\boldsymbol{\gamma}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bsigma}{{\boldsymbol{\sigma}}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bpi}{\boldsymbol{\pi}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\btheta}{{\boldsymbol{\theta}}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bphi}{\boldsymbol{\phi}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\balpha}{\boldsymbol{\alpha}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\blambda}{\boldsymbol{\lambda}}\)</span>
+<span class="math notranslate nohighlight">\(\renewcommand{\P}{\mathbb{P}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\E}{\mathbb{E}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\indep}{\perp\!\!\!\perp} \newcommand{\bx}{\mathbf{x}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bp}{\mathbf{p}}\)</span>
+<span class="math notranslate nohighlight">\(\renewcommand{\bx}{\mathbf{x}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bX}{\mathbf{X}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\by}{\mathbf{y}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bY}{\mathbf{Y}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bz}{\mathbf{z}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bZ}{\mathbf{Z}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bw}{\mathbf{w}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bW}{\mathbf{W}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bv}{\mathbf{v}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bV}{\mathbf{V}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bfg}{\mathbf{g}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bfh}{\mathbf{h}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\horz}{\rule[.5ex]{2.5ex}{0.5pt}}\)</span>
+<span class="math notranslate nohighlight">\(\renewcommand{\S}{\mathcal{S}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\X}{\mathcal{X}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\var}{\mathrm{Var}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\pa}{\mathrm{pa}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\Z}{\mathcal{Z}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bh}{\mathbf{h}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bb}{\mathbf{b}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bc}{\mathbf{c}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\cE}{\mathcal{E}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\cP}{\mathcal{P}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bbeta}{\boldsymbol{\beta}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bLambda}{\boldsymbol{\Lambda}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\cov}{\mathrm{Cov}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bfk}{\mathbf{k}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\idx}[1]{}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\xdi}{}\)</span></p>
+<section id="background-basic-concepts-in-graph-theory">
+<h1><span class="section-number">5.2. </span>Background: basic concepts in graph theory<a class="headerlink" href="#background-basic-concepts-in-graph-theory" title="Link to this heading">#</a></h1>
+<p>In this section, we cover the basics of graph theory. We also introduce the <code class="docutils literal notranslate"><span class="pre">NetworkX</span></code> package.</p>
+<section id="undirected-graphs">
+<h2><span class="section-number">5.2.1. </span>Undirected graphs<a class="headerlink" href="#undirected-graphs" title="Link to this heading">#</a></h2>
+<p>We start with undirected graphs.</p>
+<p><strong>DEFINITION</strong> <strong>(Undirected Graph)</strong> <span class="math notranslate nohighlight">\(\idx{graph}\xdi\)</span> <span class="math notranslate nohighlight">\(\idx{undirected graph}\xdi\)</span> An undirected graph (or graph for short)
+is a pair <span class="math notranslate nohighlight">\(G = (V,E)\)</span> where <span class="math notranslate nohighlight">\(V\)</span> is the set of vertices (or nodes) and</p>
+<div class="math notranslate nohighlight">
+\[
+E \subseteq \{\{u,v\}\,:\, u,v \in V,\ u \neq v\}
+\]</div>
+<p>is the set of edges. <span class="math notranslate nohighlight">\(\natural\)</span></p>
+<p>Note that, unless otehrwise stated, we typically do not allow self-loops, i.e., edges that connect a vertex to itself.</p>
+<!--TEX
+
+**Figure:** Petersen graph. Here the circles are vertices (of which there are $10$) and the segments connecting them represent edges (of which there are $15$). ([Source](https://commons.wikimedia.org/wiki/File:Nummerierter_Petersen-Graph.jpg))
+
+![Petersen Graph](https://upload.wikimedia.org/wikipedia/commons/8/88/Nummerierter_Petersen-Graph.jpg)
+
+$\bowtie$
+
+--><p><img alt="Petersen graph (with help from Claude and ChatGPT)" src="../../_images/petersen.png" /></p>
+<p>We occasionally write <span class="math notranslate nohighlight">\(V(G)\)</span> and <span class="math notranslate nohighlight">\(E(G)\)</span> for the vertices and edges
+of the graph <span class="math notranslate nohighlight">\(G\)</span>. In our case, the set of vertices <span class="math notranslate nohighlight">\(V\)</span> is always finite.</p>
+<p><strong>DEFINITION</strong> <strong>(Incidence and Adjacency)</strong> A vertex <span class="math notranslate nohighlight">\(v \in V\)</span> is incident<span class="math notranslate nohighlight">\(\idx{incident}\xdi\)</span> with an edge <span class="math notranslate nohighlight">\(e \in E\)</span> if <span class="math notranslate nohighlight">\(v \in e\)</span>. The incident vertices of an edge are called its endvertices. Two vertices <span class="math notranslate nohighlight">\(u,v \in V\)</span> are adjacent<span class="math notranslate nohighlight">\(\idx{adjacent}\xdi\)</span> (or neighbors), which we denote by <span class="math notranslate nohighlight">\(u \sim v\)</span>, if <span class="math notranslate nohighlight">\(\{u,v\} \in E\)</span>. <span class="math notranslate nohighlight">\(\natural\)</span></p>
+<p><strong>DEFINITION</strong> <strong>(Neighborhood and Degree)</strong> The set of adjacent vertices of <span class="math notranslate nohighlight">\(v\)</span>, denoted by <span class="math notranslate nohighlight">\(N(v)\)</span>, is called the neighborhood<span class="math notranslate nohighlight">\(\idx{neighborhood}\xdi\)</span> of <span class="math notranslate nohighlight">\(v\)</span> and its size, i.e., <span class="math notranslate nohighlight">\(\delta(v):=|N(v)|\)</span>, is the degree<span class="math notranslate nohighlight">\(\idx{degree}\xdi\)</span> of <span class="math notranslate nohighlight">\(v\)</span>. A vertex <span class="math notranslate nohighlight">\(v\)</span> with <span class="math notranslate nohighlight">\(\delta(v) = 0\)</span> is called isolated<span class="math notranslate nohighlight">\(\idx{isolated}\xdi\)</span>. A graph is called <span class="math notranslate nohighlight">\(d\)</span>-regular<span class="math notranslate nohighlight">\(\idx{regular}\xdi\)</span> if all its degrees are <span class="math notranslate nohighlight">\(d\)</span>. <span class="math notranslate nohighlight">\(\natural\)</span></p>
+<p>A well-known result, sometimes referred to as the <a class="reference external" href="https://en.wikipedia.org/wiki/Handshaking_lemma">Handshaking Lemma</a><span class="math notranslate nohighlight">\(\idx{handshaking lemma}\xdi\)</span>, says that the sum of all degrees is twice the number of edges (prove it!).</p>
+<p><strong>EXAMPLE:</strong> <strong>(Petersen, continued)</strong> Returning to the Petersen graph, all its vertices have degree <span class="math notranslate nohighlight">\(3\)</span>, that is, it is <span class="math notranslate nohighlight">\(3\)</span>-regular. In particular there is no isolated vertex. <span class="math notranslate nohighlight">\(\lhd\)</span></p>
+<p><strong>DEFINITION</strong> <strong>(Path)</strong> A path<span class="math notranslate nohighlight">\(\idx{path}\xdi\)</span> in <span class="math notranslate nohighlight">\(G\)</span> is a sequence of (not necessarily distinct)
+vertices <span class="math notranslate nohighlight">\(x_0 \sim x_1 \sim \cdots \sim x_k\)</span> with each consecutive pair being adjacent. The number of edges, <span class="math notranslate nohighlight">\(k\)</span>, is called the length of the path. If the endvertices <span class="math notranslate nohighlight">\(x_0\)</span>, <span class="math notranslate nohighlight">\(x_k\)</span> coincide, that is, <span class="math notranslate nohighlight">\(x_0 = x_k\)</span>, we call the path a cycle<span class="math notranslate nohighlight">\(\idx{cycle}\xdi\)</span>. If the vertices are all distinct (except possibly for the endvertices), we say that the path (or cycle) is self-avoiding. The length of the shortest self-avoiding path connecting two distinct vertices <span class="math notranslate nohighlight">\(u, v\)</span> is called the graph distance<span class="math notranslate nohighlight">\(\idx{graph distance}\xdi\)</span> between <span class="math notranslate nohighlight">\(u\)</span> and <span class="math notranslate nohighlight">\(v\)</span>, denoted by <span class="math notranslate nohighlight">\(\rho(u,v)\)</span>. <span class="math notranslate nohighlight">\(\natural\)</span></p>
+<p><strong>DEFINITION</strong> <strong>(Connected)</strong> We write <span class="math notranslate nohighlight">\(u \leftrightarrow v\)</span> if there is a path between <span class="math notranslate nohighlight">\(u\)</span> and <span class="math notranslate nohighlight">\(v\)</span>. (By convention <span class="math notranslate nohighlight">\(u \leftrightarrow u\)</span>.) A graph is connected if there is a path between any two of its vertices, that is, if <span class="math notranslate nohighlight">\(u \leftrightarrow v\)</span> for all <span class="math notranslate nohighlight">\(u, v \in V\)</span>. <span class="math notranslate nohighlight">\(\natural\)</span></p>
+<p><strong>EXAMPLE:</strong> <strong>(Petersen, continued)</strong> The Petersen graph is connected. <span class="math notranslate nohighlight">\(\lhd\)</span></p>
+<p><strong>LEMMA</strong> The relation <span class="math notranslate nohighlight">\(\leftrightarrow\)</span> is an <a class="reference external" href="https://en.wikipedia.org/wiki/Equivalence_relation">equivalence relation</a>, that is, <span class="math notranslate nohighlight">\(u \leftrightarrow u\)</span> for all <span class="math notranslate nohighlight">\(u\)</span> (reflexivity), <span class="math notranslate nohighlight">\(u \leftrightarrow v\)</span> if and only if <span class="math notranslate nohighlight">\(v \leftrightarrow u\)</span> (symmetry), and <span class="math notranslate nohighlight">\(u \leftrightarrow v\)</span> and <span class="math notranslate nohighlight">\(v \leftrightarrow w\)</span> implies <span class="math notranslate nohighlight">\(u \leftrightarrow w\)</span> (transitivity). <span class="math notranslate nohighlight">\(\flat\)</span></p>
+<p><em>Proof:</em> The first one is immediate from the definition. The second one is obtained by noting that we can reverse the path between <span class="math notranslate nohighlight">\(u\)</span> and <span class="math notranslate nohighlight">\(v\)</span> to construct a path between <span class="math notranslate nohighlight">\(v\)</span> and <span class="math notranslate nohighlight">\(u\)</span>. The third one is obtained by noting that we can add a path between <span class="math notranslate nohighlight">\(v\)</span> and <span class="math notranslate nohighlight">\(w\)</span> to a path between <span class="math notranslate nohighlight">\(u\)</span> and <span class="math notranslate nohighlight">\(v\)</span> to construct a path between <span class="math notranslate nohighlight">\(u\)</span> and <span class="math notranslate nohighlight">\(w\)</span>. <span class="math notranslate nohighlight">\(\square\)</span></p>
+<p><strong>DEFINITION</strong> <strong>(Connected Components)</strong> The <a class="reference external" href="https://en.wikipedia.org/wiki/Equivalence_class">equivalence class</a> <span class="math notranslate nohighlight">\(C[u] = \{v \in V\,:\, u \leftrightarrow v\}\)</span>, that is, the set of all vertices reachable from <span class="math notranslate nohighlight">\(u\)</span> through a path, is called a connected component<span class="math notranslate nohighlight">\(\idx{connected component}\xdi\)</span>. A graph is connected if and only if it has only one connected component. <span class="math notranslate nohighlight">\(\natural\)</span></p>
+<p>We show next that the connected components (excluding repeats) form a partition of <span class="math notranslate nohighlight">\(V\)</span>. It holds more generally for the equivalence classes of any equivalence relation.</p>
+<p><strong>LEMMA</strong> The following statements are equivalent:</p>
+<p>a) <span class="math notranslate nohighlight">\(u \leftrightarrow v\)</span></p>
+<p>b) <span class="math notranslate nohighlight">\(C[u] = C[v]\)</span></p>
+<p>c) <span class="math notranslate nohighlight">\(C[u] \cap C[v] \neq \emptyset\)</span></p>
+<p><span class="math notranslate nohighlight">\(\flat\)</span></p>
+<p>As a consequence, either <span class="math notranslate nohighlight">\(C[u] = C[v]\)</span> or <span class="math notranslate nohighlight">\(C[u] \cap C[v] = \emptyset\)</span>.</p>
+<p><em>Proof:</em></p>
+<p>a) <span class="math notranslate nohighlight">\(\implies\)</span> b): Let <span class="math notranslate nohighlight">\(w \in C[u]\)</span>. So <span class="math notranslate nohighlight">\(u \leftrightarrow w\)</span>. Symmetry and transitivity imply that <span class="math notranslate nohighlight">\(v \leftrightarrow w\)</span>, which proves the claim.</p>
+<p>b) <span class="math notranslate nohighlight">\(\implies\)</span> c): Since <span class="math notranslate nohighlight">\(u \in C[u]\)</span> by reflexivity, we have <span class="math notranslate nohighlight">\(\emptyset \neq C[u] = C[v] = C[u] \cap C[v]\)</span>.</p>
+<p>c) <span class="math notranslate nohighlight">\(\implies\)</span> a): Let <span class="math notranslate nohighlight">\(w \in C[u] \cap C[v]\)</span>. Then <span class="math notranslate nohighlight">\(u \leftrightarrow w\)</span> and <span class="math notranslate nohighlight">\(v \leftrightarrow w\)</span>. Symmetry and transitivity imply that <span class="math notranslate nohighlight">\(u \leftrightarrow v\)</span>.</p>
+<p><span class="math notranslate nohighlight">\(\square\)</span></p>
+<!--TEX
+
+**Figure:** Connected components ([Source](https://commons.wikimedia.org/wiki/File:Pseudoforest.svg))
+
+![Connected components](https://upload.wikimedia.org/wikipedia/commons/thumb/8/85/Pseudoforest.svg/554px-Pseudoforest.svg.png)
+
+$\bowtie$
+
+--><p><img alt="Connected components (with help from Claude; inspired by (Source))" src="../../_images/connected_components.png" /></p>
+<p><em>Subgraphs and special graphs:</em> In network analysis, one is often interested in finding or counting interesting motifs or subgraphs within a much larger graph. We will not cover this important problem in network analysis much here, but see the <em>Exercises</em> section.</p>
+<p><strong>DEFINITION</strong> <strong>(Subgraph)</strong> A subgraph<span class="math notranslate nohighlight">\(\idx{subgraph}\xdi\)</span> of <span class="math notranslate nohighlight">\(G = (V,E)\)</span> is a graph <span class="math notranslate nohighlight">\(G' = (V',E')\)</span> with <span class="math notranslate nohighlight">\(V' \subseteq V\)</span> and <span class="math notranslate nohighlight">\(E' \subseteq E\)</span>. Implicit in this definition is the fact that the edges in <span class="math notranslate nohighlight">\(E'\)</span> are incident only to <span class="math notranslate nohighlight">\(V'\)</span>. The subgraph <span class="math notranslate nohighlight">\(G'\)</span> is said
+to be induced if</p>
+<div class="math notranslate nohighlight">
+\[
+E' = \{\{x,y\}\,:\, x,y \in V',\ \{x,y\}\in E\},
+\]</div>
+<p>that is, if it contains all edges of <span class="math notranslate nohighlight">\(G\)</span> between the vertices
+of <span class="math notranslate nohighlight">\(V'\)</span>. In that case the notation <span class="math notranslate nohighlight">\(G' := G[V']\)</span> is used. <span class="math notranslate nohighlight">\(\natural\)</span></p>
+<p><strong>DEFINITION</strong> <strong>(Spanning Subgraph)</strong> A subgraph is said to be spanning<span class="math notranslate nohighlight">\(\idx{spanning subgraph}\xdi\)</span> if <span class="math notranslate nohighlight">\(V' = V\)</span>. <span class="math notranslate nohighlight">\(\natural\)</span></p>
+<p><strong>DEFINITION</strong> <strong>(Clique)</strong> A subgraph containing all possible edges between its vertices is called a complete subgraph or clique<span class="math notranslate nohighlight">\(\idx{clique}\xdi\)</span>. <span class="math notranslate nohighlight">\(\natural\)</span></p>
+<p><strong>EXAMPLE:</strong> <strong>(continued)</strong> The Petersen graph contains no triangle (that is, complete subgraphs with <span class="math notranslate nohighlight">\(3\)</span> vertices), induced or not. <span class="math notranslate nohighlight">\(\lhd\)</span></p>
+<p><strong>DEFINITION</strong> <strong>(Tree and forest)</strong> A forest<span class="math notranslate nohighlight">\(\idx{forest}\xdi\)</span> is a graph with no self-avoiding cycle. A tree<span class="math notranslate nohighlight">\(\idx{tree}\xdi\)</span> is a connected forest. Vertices of degree <span class="math notranslate nohighlight">\(1\)</span> are called leaves. A spanning tree of <span class="math notranslate nohighlight">\(G\)</span> is a subgraph which is a tree and is also spanning. <span class="math notranslate nohighlight">\(\natural\)</span></p>
+<p><strong>NUMERICAL CORNER:</strong> In Python, the <a class="reference external" href="https://networkx.org"><code class="docutils literal notranslate"><span class="pre">NetworkX</span></code></a> package provides many functionalities for defining, modifying and plotting graphs. For instance, many standard graphs can be defined conveniently. The <a class="reference external" href="https://networkx.org/documentation/stable/reference/generated/networkx.generators.small.petersen_graph.html"><code class="docutils literal notranslate"><span class="pre">petersen_graph()</span></code></a> function defines the Petersen graph.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">G</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">petersen_graph</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>The graph can be plotted using the function <a class="reference external" href="https://networkx.org/documentation/stable/reference/generated/networkx.drawing.nx_pylab.draw_networkx.html"><code class="docutils literal notranslate"><span class="pre">networkx.draw_networkx()</span></code></a>. Recall that in NumPy array indices start at <span class="math notranslate nohighlight">\(0\)</span>. Consistently, NetworkX also names vertices starting at <span class="math notranslate nohighlight">\(0\)</span>. Note, however, that this conflicts with our mathematical conventions.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">nx</span><span class="o">.</span><span class="n">draw_networkx</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">node_color</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">,</span> <span class="n">font_color</span><span class="o">=</span><span class="s1">&#39;white&#39;</span><span class="p">,</span> <span class="n">node_size</span><span class="o">=</span><span class="mi">200</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s1">&#39;off&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/bc1e5c15dbabd73384055795f03316299e56bcb5ecfe2e7d42eba5b488551fb1.png" src="../../_images/bc1e5c15dbabd73384055795f03316299e56bcb5ecfe2e7d42eba5b488551fb1.png" />
+</div>
+</div>
+<p>Other standard graphs can be generated with special functions, e.g. complete graphs using <a class="reference external" href="https://networkx.org/documentation/stable/reference/generated/networkx.generators.classic.complete_graph.html#networkx.generators.classic.complete_graph"><code class="docutils literal notranslate"><span class="pre">complete_graph()</span></code></a>. See <a class="reference external" href="https://networkx.org/documentation/stable/reference/generators.html#module-networkx.generators.classic">here</a> for a complete list.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">G</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">complete_graph</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+
+<span class="n">nx</span><span class="o">.</span><span class="n">draw_networkx</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">node_color</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">,</span> <span class="n">font_color</span><span class="o">=</span><span class="s1">&#39;white&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s1">&#39;off&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/ba5c41380657e4dfdbb4d0329911fec914e2b5ba891747b6d1e8c09c026527b8.png" src="../../_images/ba5c41380657e4dfdbb4d0329911fec914e2b5ba891747b6d1e8c09c026527b8.png" />
+</div>
+</div>
+<p>See <a class="reference external" href="https://networkx.org/documentation/stable/reference/functions.html">here</a> and <a class="reference external" href="https://networkx.org/documentation/stable/reference/algorithms/index.html">here</a> for a list of functions to access various properties of a graph. Here are a few examples:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">G</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">path_graph</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+
+<span class="n">nx</span><span class="o">.</span><span class="n">draw_networkx</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">node_color</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">,</span> <span class="n">font_color</span><span class="o">=</span><span class="s1">&#39;white&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s1">&#39;off&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/7ef1ee348edbeb421686a3ebddc39b0dbcfc61778ce9656a74733451454b441c.png" src="../../_images/7ef1ee348edbeb421686a3ebddc39b0dbcfc61778ce9656a74733451454b441c.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">G</span><span class="o">.</span><span class="n">number_of_nodes</span><span class="p">()</span> <span class="c1"># number of nodes</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>10
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">G</span><span class="o">.</span><span class="n">number_of_edges</span><span class="p">()</span> <span class="c1"># number of edges</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>9
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">G</span><span class="o">.</span><span class="n">has_node</span><span class="p">(</span><span class="mi">7</span><span class="p">)</span> <span class="c1"># checks whether the graph has a particular vertex</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>True
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">G</span><span class="o">.</span><span class="n">has_node</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>False
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">G</span><span class="o">.</span><span class="n">has_edge</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="c1"># checks whether the graph has a particular edge</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>True
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">G</span><span class="o">.</span><span class="n">has_edge</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>False
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">n</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">G</span><span class="o">.</span><span class="n">neighbors</span><span class="p">(</span><span class="mi">2</span><span class="p">)]</span> <span class="c1"># returns a list of neighbors of the specified vertex</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[1, 3]
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">nx</span><span class="o">.</span><span class="n">is_connected</span><span class="p">(</span><span class="n">G</span><span class="p">)</span> <span class="c1"># checks whether the graph is connected</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>True
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">cc</span> <span class="k">for</span> <span class="n">cc</span> <span class="ow">in</span> <span class="n">nx</span><span class="o">.</span><span class="n">connected_components</span><span class="p">(</span><span class="n">G</span><span class="p">)]</span> <span class="c1"># returns the connected components</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[{0, 1, 2, 3, 4, 5, 6, 7, 8, 9}]
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">G</span><span class="o">.</span><span class="n">edges</span><span class="p">():</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(0, 1)
+(1, 2)
+(2, 3)
+(3, 4)
+(4, 5)
+(5, 6)
+(6, 7)
+(7, 8)
+(8, 9)
+</pre></div>
+</div>
+</div>
+</div>
+<p>Another way of specifying a graph is to start with an empty graph with a given number of vertices and then add edges one by one. The following command creates a graph with <span class="math notranslate nohighlight">\(4\)</span> vertices and no edge (see <a class="reference external" href="https://networkx.org/documentation/stable/reference/generated/networkx.generators.classic.empty_graph.html#networkx.generators.classic.empty_graph"><code class="docutils literal notranslate"><span class="pre">empty_graph()</span></code></a>).</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">G</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">empty_graph</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
+<span class="n">G</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">G</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+<span class="n">G</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+<span class="n">G</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+
+<span class="n">nx</span><span class="o">.</span><span class="n">draw_networkx</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">node_color</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">,</span> <span class="n">font_color</span><span class="o">=</span><span class="s1">&#39;white&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s1">&#39;off&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/f90f1adf74153ba74829bbbc6fab83fbad9d44eb0ef6871a7ac5fd7c01939a8e.png" src="../../_images/f90f1adf74153ba74829bbbc6fab83fbad9d44eb0ef6871a7ac5fd7c01939a8e.png" />
+</div>
+</div>
+<p><span class="math notranslate nohighlight">\(\unlhd\)</span></p>
+</section>
+<section id="directed-graphs">
+<h2><span class="section-number">5.2.2. </span>Directed graphs<a class="headerlink" href="#directed-graphs" title="Link to this heading">#</a></h2>
+<p>We will also need directed graphs.</p>
+<p><strong>DEFINITION</strong> <strong>(Directed Graph)</strong> A directed graph<span class="math notranslate nohighlight">\(\idx{directed graph}\xdi\)</span> (or digraph for short) is a pair <span class="math notranslate nohighlight">\(G = (V,E)\)</span> where <span class="math notranslate nohighlight">\(V\)</span> is a set of vertices (or nodes) and</p>
+<div class="math notranslate nohighlight">
+\[
+E \subseteq V^2 = \{(u,v)\,:\, u,v \in V\}
+\]</div>
+<p>is a set of directed edges (or arcs). <span class="math notranslate nohighlight">\(\natural\)</span></p>
+<p>Note that, in the directed case, we explicitly allow self-loops<span class="math notranslate nohighlight">\(\idx{self-loop}\xdi\)</span>, i.e., edges of the form <span class="math notranslate nohighlight">\((u,u)\)</span> that connect a vertex to itself.</p>
+<p>Note that, unlike the undirected case, in a digraph the edges are ordered pairs – which is taken to mean that they have an orientation. If <span class="math notranslate nohighlight">\(e = (i,j) \in E\)</span> is an edge in a digraph <span class="math notranslate nohighlight">\(G = (V,E)\)</span>, then <span class="math notranslate nohighlight">\(i\)</span> is called the source of <span class="math notranslate nohighlight">\(e\)</span> and <span class="math notranslate nohighlight">\(j\)</span> is the destination.</p>
+<!--TEX
+
+**Figure:** A directed graph. Note that a pair of vertices can have arcs between them in both directions simultaneously. ([Source](https://commons.wikimedia.org/wiki/File:Directed_graph.svg))
+
+![A drected graph](https://upload.wikimedia.org/wikipedia/commons/thumb/5/51/Directed_graph.svg/320px-Directed_graph.svg.png)
+
+$\bowtie$
+
+--><p><img alt="A directed graph (with help from Claude; inspired by (Source)" src="../../_images/directed.png" /></p>
+<p>The definitions discussed in the undirected case can be adapted to the directed case.</p>
+<p>In the directed case, one distinguishes between the out-degree and the in-degree.</p>
+<p><strong>DEFINITION</strong> <strong>(Out-degree and in-degree)</strong> Let <span class="math notranslate nohighlight">\(G = (V,E)\)</span> be a digraph. The out-degree<span class="math notranslate nohighlight">\(\idx{out-degree}\xdi\)</span> of <span class="math notranslate nohighlight">\(v \in V\)</span>, denoted by <span class="math notranslate nohighlight">\(\delta^+(v)\)</span>, is the number of edges with source <span class="math notranslate nohighlight">\(v\)</span>. The in-degree<span class="math notranslate nohighlight">\(\idx{in-degree}\xdi\)</span> of <span class="math notranslate nohighlight">\(v\)</span>, denoted by <span class="math notranslate nohighlight">\(\delta^-(v)\)</span>, is the number of edges with destination <span class="math notranslate nohighlight">\(v\)</span>. <span class="math notranslate nohighlight">\(\natural\)</span></p>
+<p>Paths and connectivity are also generalized naturally.</p>
+<p><strong>DEFINITION</strong> <strong>(Directed Path)</strong> A directed path<span class="math notranslate nohighlight">\(\idx{directed path}\xdi\)</span> is a sequence of vertices <span class="math notranslate nohighlight">\(x_0, \ldots, x_k\)</span> with <span class="math notranslate nohighlight">\((x_{i-1},x_i) \in E\)</span> for all <span class="math notranslate nohighlight">\(i=1,\ldots,k\)</span>. We write <span class="math notranslate nohighlight">\(u \to v\)</span> if there is such a path with <span class="math notranslate nohighlight">\(x_0 = u\)</span> and <span class="math notranslate nohighlight">\(x_k = v\)</span>. If the endvertices <span class="math notranslate nohighlight">\(x_0\)</span>, <span class="math notranslate nohighlight">\(x_k\)</span> coincide, that is, <span class="math notranslate nohighlight">\(x_0 = x_k\)</span>, we call it a directed cycle<span class="math notranslate nohighlight">\(\idx{directed cycle}\xdi\)</span>. <span class="math notranslate nohighlight">\(\natural\)</span></p>
+<p><strong>DEFINITION</strong> <strong>(Communication)</strong> We say that <span class="math notranslate nohighlight">\(u,v \in V\)</span> communicate<span class="math notranslate nohighlight">\(\idx{communicate}\xdi\)</span>, which we denote by <span class="math notranslate nohighlight">\(u \leftrightarrow v\)</span>, if <span class="math notranslate nohighlight">\(u \to v\)</span> and <span class="math notranslate nohighlight">\(v \to u\)</span>. The <span class="math notranslate nohighlight">\(\leftrightarrow\)</span>
+relation is again an equivalence relation. The equivalence classes of <span class="math notranslate nohighlight">\(\leftrightarrow\)</span> are called the strongly connected components of <span class="math notranslate nohighlight">\(G\)</span>. <span class="math notranslate nohighlight">\(\natural\)</span></p>
+<p><strong>DEFINITION</strong> <strong>(Strongly Connected)</strong> A digraph is strongly connected<span class="math notranslate nohighlight">\(\idx{strongly connected}\xdi\)</span> if any two of its vertices communicate, that is, if <span class="math notranslate nohighlight">\(u \leftrightarrow v\)</span> for all <span class="math notranslate nohighlight">\(u, v \in V\)</span>. Or put differently, if there is only one strongly connected component<span class="math notranslate nohighlight">\(\idx{strongly connected component}\xdi\)</span>. <span class="math notranslate nohighlight">\(\natural\)</span></p>
+<p><strong>DEFINITION</strong> <strong>(Directed Acyclic Graph)</strong> A digraph is said to be a directed acyclic graph (DAG)<span class="math notranslate nohighlight">\(\idx{directed acyclic graph}\xdi\)</span> if it contains no directed cycle. <span class="math notranslate nohighlight">\(\natural\)</span></p>
+<p><strong>NUMERICAL CORNER:</strong> The package <code class="docutils literal notranslate"><span class="pre">NetworkX</span></code> also supports digraphs.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">G</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">DiGraph</span><span class="p">()</span>
+<span class="n">nx</span><span class="o">.</span><span class="n">add_star</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">])</span>
+
+<span class="n">nx</span><span class="o">.</span><span class="n">draw_networkx</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">node_color</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">,</span> <span class="n">font_color</span><span class="o">=</span><span class="s1">&#39;white&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s1">&#39;off&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/598e47fa47e6ac230dbab7c99ce8e809ad69bf35db52b008b741ec01965e1b88.png" src="../../_images/598e47fa47e6ac230dbab7c99ce8e809ad69bf35db52b008b741ec01965e1b88.png" />
+</div>
+</div>
+<p>Another way of specifying a digraph is to start with an empty graph with a given number of vertices and then add edges one by one (compare to the undirected case above).</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">G</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">DiGraph</span><span class="p">()</span>
+<span class="n">G</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">G</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+<span class="n">G</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+<span class="n">G</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+<span class="n">G</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+
+<span class="n">nx</span><span class="o">.</span><span class="n">draw_networkx</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">node_color</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">,</span> <span class="n">font_color</span><span class="o">=</span><span class="s1">&#39;white&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s1">&#39;off&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/6bf93e1e0b86b539305e5863c229af999740a804e143c2df0b94149298a6f1c2.png" src="../../_images/6bf93e1e0b86b539305e5863c229af999740a804e143c2df0b94149298a6f1c2.png" />
+</div>
+</div>
+<p>Note that edges in both directions are depicted here with a double-arrow. Also the self-loop is hard to see. We can use
+<a class="reference external" href="https://networkx.org/documentation/stable/reference/generated/networkx.drawing.nx_pylab.draw_networkx_edges.html#networkx.drawing.nx_pylab.draw_networkx_edges"><code class="docutils literal notranslate"><span class="pre">networkx.draw_networkx_edges()</span></code></a> (together with
+<a class="reference external" href="https://networkx.org/documentation/stable/reference/generated/networkx.drawing.nx_pylab.draw_networkx_nodes.html#networkx.drawing.nx_pylab.draw_networkx_nodes"><code class="docutils literal notranslate"><span class="pre">networkx.draw_networkx_nodes()</span></code></a> and
+<a class="reference external" href="https://networkx.org/documentation/stable/reference/generated/networkx.drawing.nx_pylab.draw_networkx_labels.html#networkx.drawing.nx_pylab.draw_networkx_labels"><code class="docutils literal notranslate"><span class="pre">networkx.draw_networkx_labels()</span></code></a>)
+to have more control over the drawing of the edges.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pos</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">spring_layout</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">42</span><span class="p">)</span>
+<span class="n">nx</span><span class="o">.</span><span class="n">draw_networkx_nodes</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">pos</span><span class="p">,</span> <span class="n">node_color</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">)</span>
+<span class="n">nx</span><span class="o">.</span><span class="n">draw_networkx_labels</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">pos</span><span class="p">,</span> <span class="n">font_color</span><span class="o">=</span><span class="s1">&#39;white&#39;</span><span class="p">)</span>
+<span class="n">nx</span><span class="o">.</span><span class="n">draw_networkx_edges</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">pos</span><span class="p">,</span> <span class="n">connectionstyle</span><span class="o">=</span><span class="s2">&quot;arc3,rad=0.3&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s1">&#39;off&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/d8579258a47c4e206f21c1519e0b45f538c1a5c1fd52c3f5396214279386e321.png" src="../../_images/d8579258a47c4e206f21c1519e0b45f538c1a5c1fd52c3f5396214279386e321.png" />
+</div>
+</div>
+<p><span class="math notranslate nohighlight">\(\unlhd\)</span></p>
+</section>
+<section id="matrix-representations-of-graphs">
+<h2><span class="section-number">5.2.3. </span>Matrix representations of graphs<a class="headerlink" href="#matrix-representations-of-graphs" title="Link to this heading">#</a></h2>
+<p>A convenient and useful way of specifying a graph is through a matrix representation. There are many such representations.</p>
+<p>We start with the adjacency matrix.</p>
+<p><strong>DEFINITION</strong> <strong>(Adjacency Matrix)</strong> Assume the (undirected) graph <span class="math notranslate nohighlight">\(G = (V,E)\)</span> has
+<span class="math notranslate nohighlight">\(n = |V|\)</span> vertices numbered <span class="math notranslate nohighlight">\(1,\ldots,n\)</span>.
+The adjacency matrix<span class="math notranslate nohighlight">\(\idx{adjacency matrix}\xdi\)</span> <span class="math notranslate nohighlight">\(A\)</span> of <span class="math notranslate nohighlight">\(G\)</span> is the <span class="math notranslate nohighlight">\(n\times n\)</span> symmetric matrix
+defined as</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+A_{xy} 
+= 
+\begin{cases}
+1 &amp; \text{if $\{x,y\} \in E$}\\ 
+0 &amp; \text{o.w.}
+\end{cases}
+\end{align*}\]</div>
+<p><span class="math notranslate nohighlight">\(\natural\)</span></p>
+<p><strong>EXAMPLE:</strong> The adjancency matrix of the following graph:</p>
+<!--TEX
+
+**Figure:** A graph with four edges ([Source](https://commons.wikimedia.org/wiki/File:Labeled_undirected_graph.svg))
+
+![Incidence matrix](https://upload.wikimedia.org/wikipedia/commons/thumb/9/90/Labeled_undirected_graph.svg/235px-Labeled_undirected_graph.svg.png)
+
+$\bowtie$
+
+--><p><img alt="A graph with four edges (with help form Claude; inspired by (Source))" src="../../_images/incidence.png" /></p>
+<p>is</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+A=
+\begin{pmatrix}
+0 &amp; 1 &amp; 1 &amp; 1\\
+1 &amp; 0 &amp; 0 &amp; 0\\
+1 &amp; 0 &amp; 0 &amp; 1\\
+1 &amp; 0 &amp; 1 &amp; 0
+\end{pmatrix}.
+\end{split}\]</div>
+<p>Note that it is indeed symmetric. <span class="math notranslate nohighlight">\(\lhd\)</span></p>
+<p>Another useful matrix associated to a graph is its incidence matrix. For convenience, we assume again that the vertices of <span class="math notranslate nohighlight">\(G = (V,E)\)</span> are numbered <span class="math notranslate nohighlight">\(1, \ldots, n\)</span>, where <span class="math notranslate nohighlight">\(n\)</span> is the number of vertices. We assume further that the edges are labeled <span class="math notranslate nohighlight">\(e_1, \ldots, e_{m}\)</span>, where <span class="math notranslate nohighlight">\(m\)</span> is the numebr of edges.</p>
+<p><strong>DEFINITION</strong> <strong>(Incidence Matrix)</strong> The incidence matrix<span class="math notranslate nohighlight">\(\idx{incidence matrix}\xdi\)</span> of an undirected graph <span class="math notranslate nohighlight">\(G = (V, E)\)</span> is the <span class="math notranslate nohighlight">\(n \times m\)</span> matrix <span class="math notranslate nohighlight">\(B\)</span>, where <span class="math notranslate nohighlight">\(n = |V|\)</span> and <span class="math notranslate nohighlight">\(m =|E|\)</span> are the numbers of vertices and edges respectively, such that <span class="math notranslate nohighlight">\(B_{ij} = 1\)</span> if the vertex <span class="math notranslate nohighlight">\(i\)</span> and edge <span class="math notranslate nohighlight">\(e_j\)</span> are incident and 0 otherwise. <span class="math notranslate nohighlight">\(\natural\)</span></p>
+<p><strong>EXAMPLE:</strong> <strong>(continued)</strong> The incidence matrix of the graph from the previous example is given by</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+B 
+= 
+\begin{pmatrix}
+1 &amp; 1 &amp; 1 &amp; 0\\
+1 &amp; 0 &amp; 0 &amp; 0\\
+0 &amp; 1 &amp; 0 &amp; 1\\
+0 &amp; 0 &amp; 1 &amp; 1
+\end{pmatrix}.
+\end{split}\]</div>
+<p>This matrix is not symmetric. In fact, in general, it is not even square. <span class="math notranslate nohighlight">\(\lhd\)</span></p>
+<p><strong>NUMERICAL CORNER:</strong> Using <code class="docutils literal notranslate"><span class="pre">NetworkX</span></code>, the adjacency matrix of a graph can be obtained with <a class="reference external" href="https://networkx.org/documentation/stable/reference/generated/networkx.linalg.graphmatrix.adjacency_matrix.html"><code class="docutils literal notranslate"><span class="pre">adjacency_matrix()</span></code></a>. By default, it returns a <code class="docutils literal notranslate"><span class="pre">SciPy</span></code> sparse matrix. Alternatively, one can get a regular array with <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.sparse.csr_matrix.toarray.html"><code class="docutils literal notranslate"><span class="pre">toarray()</span></code></a>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">G</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">complete_graph</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">A</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">adjacency_matrix</span><span class="p">(</span><span class="n">G</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  (0, 1)	1
+  (0, 2)	1
+  (0, 3)	1
+  (1, 0)	1
+  (1, 2)	1
+  (1, 3)	1
+  (2, 0)	1
+  (2, 1)	1
+  (2, 3)	1
+  (3, 0)	1
+  (3, 1)	1
+  (3, 2)	1
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">A</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">adjacency_matrix</span><span class="p">(</span><span class="n">G</span><span class="p">)</span><span class="o">.</span><span class="n">toarray</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[[0 1 1 1]
+ [1 0 1 1]
+ [1 1 0 1]
+ [1 1 1 0]]
+</pre></div>
+</div>
+</div>
+</div>
+<p>The incidence matrix is obtained with <a class="reference external" href="https://networkx.org/documentation/stable/reference/generated/networkx.linalg.graphmatrix.incidence_matrix.html"><code class="docutils literal notranslate"><span class="pre">incidence_matrix()</span></code></a> – again as a sparse array.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">B</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">incidence_matrix</span><span class="p">(</span><span class="n">G</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">B</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  (0, 0)	1.0
+  (1, 0)	1.0
+  (0, 1)	1.0
+  (2, 1)	1.0
+  (0, 2)	1.0
+  (3, 2)	1.0
+  (1, 3)	1.0
+  (2, 3)	1.0
+  (1, 4)	1.0
+  (3, 4)	1.0
+  (2, 5)	1.0
+  (3, 5)	1.0
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">B</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">incidence_matrix</span><span class="p">(</span><span class="n">G</span><span class="p">)</span><span class="o">.</span><span class="n">toarray</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">B</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[[1. 1. 1. 0. 0. 0.]
+ [1. 0. 0. 1. 1. 0.]
+ [0. 1. 0. 1. 0. 1.]
+ [0. 0. 1. 0. 1. 1.]]
+</pre></div>
+</div>
+</div>
+</div>
+<p><span class="math notranslate nohighlight">\(\unlhd\)</span></p>
+<p>In the digraph case, the definitions are adapted as follows. The adjacency matrix<span class="math notranslate nohighlight">\(\idx{adjacency matrix}\xdi\)</span> <span class="math notranslate nohighlight">\(A\)</span> of a digraph <span class="math notranslate nohighlight">\(G = (V, E)\)</span> is the matrix
+defined as</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+A_{xy} 
+= 
+\begin{cases}
+1 &amp; \text{if $(x,y) \in E$}\\ 
+0 &amp; \text{o.w.}
+\end{cases}
+\end{align*}\]</div>
+<p>The incidence matrix<span class="math notranslate nohighlight">\(\idx{incidence matrix}\xdi\)</span> of a digraph <span class="math notranslate nohighlight">\(G\)</span> with vertices <span class="math notranslate nohighlight">\(1,\ldots,n\)</span> and edges <span class="math notranslate nohighlight">\(e_1, \ldots, e_m\)</span> is the matrix <span class="math notranslate nohighlight">\(B\)</span> such that <span class="math notranslate nohighlight">\(B_{ij} = -1\)</span> if egde <span class="math notranslate nohighlight">\(e_j\)</span> leaves vertex <span class="math notranslate nohighlight">\(i\)</span>, <span class="math notranslate nohighlight">\(B_{ij} = 1\)</span> if egde <span class="math notranslate nohighlight">\(e_j\)</span> enters vertex <span class="math notranslate nohighlight">\(i\)</span>, and 0 otherwise.</p>
+<p>Returning to undirected graphs, an orientation of an (undirected) graph <span class="math notranslate nohighlight">\(G = (V, E)\)</span> is a choice of direction for each of its edges, turning it into a digraph.</p>
+<p><strong>DEFINITION</strong> <strong>(Oriented Incidence Matrix)</strong> An oriented incidence matrix<span class="math notranslate nohighlight">\(\idx{oriented incidence matrix}\xdi\)</span> of an undirected graph <span class="math notranslate nohighlight">\(G = (V, E)\)</span> is the incidence matrix of an orientation of <span class="math notranslate nohighlight">\(G\)</span>. <span class="math notranslate nohighlight">\(\natural\)</span></p>
+<!--TEX
+**Figure:** Example of an orientation ([Source](https://11011110.github.io/blog/2019/01/17/orientations-infinite-graphs.html))
+
+![Orienting a graph](https://11011110.github.io/blog/assets/2019/good-orientation.svg)
+
+$\bowtie$
+--><p><img alt="An orientation of the Petersen graph (with help from ChatGPT and Claude)" src="../../_images/oriented_petersen.png" /></p>
+<p><strong>NUMERICAL CORNER:</strong> We revisit an earlier directed graph.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">G</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">DiGraph</span><span class="p">()</span>
+<span class="n">G</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">G</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+<span class="n">G</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+<span class="n">G</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+<span class="n">G</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>We compute the adjacency and incidence matrices. For the incidence matrix, one must specify <code class="docutils literal notranslate"><span class="pre">oriented=True</span></code> for the oriented version.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">A</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">adjacency_matrix</span><span class="p">(</span><span class="n">G</span><span class="p">)</span><span class="o">.</span><span class="n">toarray</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[[0 1 0 1]
+ [0 1 0 0]
+ [0 0 0 1]
+ [1 0 0 0]]
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">B</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">incidence_matrix</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">oriented</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">toarray</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">B</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[[-1. -1.  0.  0.  1.]
+ [ 1.  0.  0.  0.  0.]
+ [ 0.  0.  0. -1.  0.]
+ [ 0.  1.  0.  1. -1.]]
+</pre></div>
+</div>
+</div>
+</div>
+<p>Revisiting an ealier undirected graph, we note that <code class="docutils literal notranslate"><span class="pre">incidence_matrix()</span></code> can also produce an arbitrary oriented incidence matrix by using the <code class="docutils literal notranslate"><span class="pre">oriented=True</span></code> option.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">G</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">empty_graph</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
+<span class="n">G</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">G</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+<span class="n">G</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+<span class="n">G</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+
+<span class="n">B</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">incidence_matrix</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">oriented</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">toarray</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">B</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[[-1. -1.  0.]
+ [ 1.  0.  0.]
+ [ 0.  0. -1.]
+ [ 0.  1.  1.]]
+</pre></div>
+</div>
+</div>
+</div>
+<p><span class="math notranslate nohighlight">\(\unlhd\)</span></p>
+</section>
+<section id="laplacian-matrix">
+<h2><span class="section-number">5.2.4. </span>Laplacian matrix<a class="headerlink" href="#laplacian-matrix" title="Link to this heading">#</a></h2>
+<p>A main matrix of interest for us will be the Laplacian matrix.
+It is a graph analogue of the <a class="reference external" href="https://en.wikipedia.org/wiki/Laplace%E2%80%93Beltrami_operator">Laplace-Beltrami operator</a> in differential geometry. We will show in particular that it contains useful information about the connectedness of the graph and we will describe an application to graph partitioning in the next section. But first some theory.</p>
+<p>Recall that, given a graph <span class="math notranslate nohighlight">\(G = (V, E)\)</span>, the quantity <span class="math notranslate nohighlight">\(\delta(v)\)</span> denotes the degree of <span class="math notranslate nohighlight">\(v \in V\)</span>.</p>
+<p><strong>DEFINITION</strong> <strong>(Degree Matrix)</strong> Let <span class="math notranslate nohighlight">\(G = (V,E)\)</span> be a graph with vertices <span class="math notranslate nohighlight">\(V = \{1, \ldots, n\}\)</span>. The degree matrix<span class="math notranslate nohighlight">\(\idx{degree matrix}\xdi\)</span> is the diagonal matrix with the degrees on the diagonal, i.e., <span class="math notranslate nohighlight">\(D = \mathrm{diag}(\delta(1), \ldots, \delta(n))\)</span>. <span class="math notranslate nohighlight">\(\natural\)</span></p>
+<p>The key definition is the following.</p>
+<p><strong>DEFINITION</strong> <strong>(Laplacian Matrix)</strong> Let <span class="math notranslate nohighlight">\(G = (V,E)\)</span> be a graph with vertices <span class="math notranslate nohighlight">\(V = \{1, \ldots, n\}\)</span> adjacency matrix <span class="math notranslate nohighlight">\(A \in \mathbb{R}^{n \times n}\)</span> and degree matrix <span class="math notranslate nohighlight">\(D = \mathrm{diag}(\delta(1), \ldots, \delta(n))\)</span>. The Laplacian matrix<span class="math notranslate nohighlight">\(\idx{Laplacian matrix}\xdi\)</span> associated to <span class="math notranslate nohighlight">\(G\)</span> is defined as <span class="math notranslate nohighlight">\(L = D - A\)</span>. Its entries are</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+l_{ij}
+=
+\begin{cases}
+\delta(i) &amp; \text{if $i = j$}\\
+-1 &amp; \text{if $\{i,j\} \in E$}\\
+0 &amp; \text{o.w.}
+\end{cases}
+\end{split}\]</div>
+<p><span class="math notranslate nohighlight">\(\natural\)</span></p>
+<p>Like the adjacency matrix, the Laplacian matrix is symmetric. Unlike the adjacency matrix, however, it is also positive semidefinite.</p>
+<p><strong>THEOREM</strong> <strong>(Properties of the Laplacian)</strong> <span class="math notranslate nohighlight">\(\idx{properties of the Laplacian theorem}\xdi\)</span> For any graph <span class="math notranslate nohighlight">\(G\)</span>, the Laplacian matrix is symmetric and positive semidefinite. <span class="math notranslate nohighlight">\(\sharp\)</span></p>
+<p><em>Proof:</em> Observe that the Laplacian matrix <span class="math notranslate nohighlight">\(L\)</span> of a graph <span class="math notranslate nohighlight">\(G\)</span> is indeed symmetric:</p>
+<div class="math notranslate nohighlight">
+\[
+L^T = (D- A)^T = D^T - A^T = D - A
+\]</div>
+<p>where we used that both <span class="math notranslate nohighlight">\(D\)</span> and <span class="math notranslate nohighlight">\(A\)</span> are themselves symmetric.</p>
+<p>To prove the second claim, we need a lemma.</p>
+<p><strong>LEMMA</strong> <strong>(Laplacian and Incidence)</strong> <span class="math notranslate nohighlight">\(\idx{Laplacian and incidence lemma}\xdi\)</span> Let <span class="math notranslate nohighlight">\(L\)</span> be the Laplacian matrix of a graph <span class="math notranslate nohighlight">\(G\)</span>. Let <span class="math notranslate nohighlight">\(B\)</span> be any oriented incidence matrix of <span class="math notranslate nohighlight">\(G\)</span>. Then</p>
+<div class="math notranslate nohighlight">
+\[
+L = B B^T.
+\]</div>
+<p><span class="math notranslate nohighlight">\(\flat\)</span></p>
+<p><em>Proof idea:</em> We just check the claim entry by entry.</p>
+<p><em>Proof:</em> Enumerate the edges <span class="math notranslate nohighlight">\(e_1,\ldots,e_m\)</span>. Let <span class="math notranslate nohighlight">\(b_{ik}\)</span> be entry <span class="math notranslate nohighlight">\((i,k)\)</span> of <span class="math notranslate nohighlight">\(B\)</span>. For <span class="math notranslate nohighlight">\(i \neq j\)</span>, entry <span class="math notranslate nohighlight">\((i,j)\)</span> of <span class="math notranslate nohighlight">\(B B^T\)</span></p>
+<div class="math notranslate nohighlight">
+\[
+(B B^T)_{ij} 
+= \sum_{k=1}^m b_{ik} b_{jk}.
+\]</div>
+<p>Note that <span class="math notranslate nohighlight">\(b_{ik} b_{jk}\)</span> is equal to (a) <span class="math notranslate nohighlight">\(0\)</span> if <span class="math notranslate nohighlight">\(i\)</span> or <span class="math notranslate nohighlight">\(j\)</span> (or both) are not incident with <span class="math notranslate nohighlight">\(e_k\)</span> or (b) <span class="math notranslate nohighlight">\(-1\)</span> if both <span class="math notranslate nohighlight">\(i\)</span> and <span class="math notranslate nohighlight">\(j\)</span> are incident with <span class="math notranslate nohighlight">\(e_k\)</span> (since one of <span class="math notranslate nohighlight">\(i\)</span> or <span class="math notranslate nohighlight">\(j\)</span> has a <span class="math notranslate nohighlight">\(1\)</span> in the column of <span class="math notranslate nohighlight">\(B\)</span> corresponding to <span class="math notranslate nohighlight">\(e_k\)</span> and the other one has a <span class="math notranslate nohighlight">\(-1\)</span>). So <span class="math notranslate nohighlight">\((B B^T)_{ij} = -1\)</span> when <span class="math notranslate nohighlight">\(\{i,j\} \in E\)</span> and is otherwise <span class="math notranslate nohighlight">\(0\)</span>. So it coincides with the corresponding entry of the Laplacian matrix there.</p>
+<p>For <span class="math notranslate nohighlight">\(i = j\)</span>,</p>
+<div class="math notranslate nohighlight">
+\[
+(B B^T)_{ii}
+= \sum_{k=1}^m b_{ik}^2
+= 
+\sum_{e = \{x, y\} \in E: i \in e} b_{xy}^2  
+= 
+\sum_{e = \{x, y\} \in E: i \in e} 1  
+= \delta(i),
+\]</div>
+<p>where we used that <span class="math notranslate nohighlight">\(b_{xy}^2 = 1\)</span> because <span class="math notranslate nohighlight">\(b_{xy} \in \{-1,1\}\)</span> when <span class="math notranslate nohighlight">\(\{x,y\} \in E\)</span>. Again it coincides with the corresponding entry of the Laplacian matrix. <span class="math notranslate nohighlight">\(\square\)</span></p>
+<p>We return to the proof of the theorem. By the previous lemma, for any <span class="math notranslate nohighlight">\(\mathbf{x} \in \mathbb{R}^n\)</span>,</p>
+<div class="math notranslate nohighlight">
+\[
+\mathbf{x}^T L \mathbf{x}
+= \mathbf{x}^T B B^T \mathbf{x}
+= \|B^T \mathbf{x}\|^2
+\geq 0.
+\]</div>
+<p>That proves positive semidefiniteness. <span class="math notranslate nohighlight">\(\square\)</span></p>
+<p><em><strong>Self-assessment quiz</strong></em> <em>(with help from Claude, Gemini, and ChatGPT)</em></p>
+<p><strong>1</strong> Which of the following is NOT a valid definition of an undirected graph?</p>
+<p>a) A pair <span class="math notranslate nohighlight">\(G = (V, E)\)</span>, where <span class="math notranslate nohighlight">\(V\)</span> is the set of vertices and <span class="math notranslate nohighlight">\(E\)</span> is a set of unordered pairs of vertices.</p>
+<p>b) A collection of nodes connected by edges, where the edges have no direction.</p>
+<p>c) A pair <span class="math notranslate nohighlight">\(G = (V, E)\)</span>, where <span class="math notranslate nohighlight">\(V\)</span> is the set of vertices and <span class="math notranslate nohighlight">\(E\)</span> is a set of ordered pairs of vertices.</p>
+<p>d) A mathematical structure used to model pairwise relations between objects.</p>
+<p><strong>2</strong> In a graph, what does the equivalence relation <span class="math notranslate nohighlight">\(\leftrightarrow\)</span> signify?</p>
+<p>a) Two vertices are in the same connected component.</p>
+<p>b) Two vertices have the same degree.</p>
+<p>c) Two vertices are adjacent.</p>
+<p>d) Two vertices are part of a cycle.</p>
+<p><strong>3</strong> In a directed graph, what is the relationship between the in-degree and out-degree of a vertex?</p>
+<p>a) The in-degree is always greater than or equal to the out-degree.</p>
+<p>b) The out-degree is always greater than or equal to the in-degree.</p>
+<p>c) The in-degree and out-degree are always equal.</p>
+<p>d) There is no fixed relationship between the in-degree and out-degree.</p>
+<p><strong>4</strong> Which of the following is NOT a property of the Laplacian matrix of a graph?</p>
+<p>a) It is symmetric</p>
+<p>b) It is positive semidefinite</p>
+<p>c) It is always invertible</p>
+<p>d) Its entries sum to zero in each row and column</p>
+<p><strong>5</strong> Which matrix representation of a graph is typically symmetric?</p>
+<p>a) Adjacency matrix of an undirected graph.</p>
+<p>b) Incidence matrix of an undirected graph.</p>
+<p>c) Adjacency matrix of a directed graph.</p>
+<p>d) All of the above.</p>
+<p>Answer for 1: c. Justification: The text defines an undirected graph as a pair <span class="math notranslate nohighlight">\(G = (V, E)\)</span>, where <span class="math notranslate nohighlight">\(E\)</span> is a set of unordered pairs of vertices, not ordered pairs.</p>
+<p>Answer for 2: a. Justification: The text defines the relation <span class="math notranslate nohighlight">\(\leftrightarrow\)</span> as an equivalence relation that indicates two vertices are in the same connected component.</p>
+<p>Answer for 3: d. Justification: The in-degree and out-degree of a vertex in a directed graph depend on the number of edges entering and leaving the vertex, respectively, and there is no fixed relationship between them.</p>
+<p>Answer for 4: c. Justification: The text proves that the Laplacian matrix is symmetric and positive semidefinite, but does not claim that it is always invertible.</p>
+<p>Answer for 5: a. Justification: The text states that the adjacency matrix of an undirected graph is symmetric.</p>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./chap04_specgraph/02_graph"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="../01_motiv/roch-mmids-specgraph-motiv.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title"><span class="section-number">5.1. </span>Motivating example: uncovering social groups</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="../03_extremal/roch-mmids-specgraph-extremal.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title"><span class="section-number">5.3. </span>Variational characterization of eigenvalues</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#undirected-graphs">5.2.1. Undirected graphs</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#directed-graphs">5.2.2. Directed graphs</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#matrix-representations-of-graphs">5.2.3. Matrix representations of graphs</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#laplacian-matrix">5.2.4. Laplacian matrix</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Sebastien Roch
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2024.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

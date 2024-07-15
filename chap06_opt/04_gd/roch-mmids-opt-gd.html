@@ -1,0 +1,1224 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>3.5. Gradient descent and its convergence analysis &#8212; MMiDS Textbook</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.5.1/css/all.min.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.1/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.1/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.1/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b76e3c8a" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=384b581d" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=87e54e7c" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae" />
+  <script src="../../_static/vendor/fontawesome/6.5.1/js/all.min.js?digest=8d27b9dea8ad943066ae"></script>
+
+    <script src="../../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?v=efea14e4"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../_static/design-tabs.js?v=f930bc37"></script>
+    <script async="async" src="https://www.googletagmanager.com/gtag/js?id=G-P5E8DW088F"></script>
+    <script>
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){ dataLayer.push(arguments); }
+                gtag('js', new Date());
+                gtag('config', 'G-P5E8DW088F');
+            </script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){ dataLayer.push(arguments); }
+                gtag('js', new Date());
+                gtag('config', 'G-P5E8DW088F');
+            </script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'chap06_opt/04_gd/roch-mmids-opt-gd';</script>
+    <link rel="canonical" href="https://mmids-textbook.github.io/chap06_opt/04_gd/roch-mmids-opt-gd.html" />
+    <link rel="icon" href="https://mmids-textbook.github.io/favicon-32x32.png"/>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="3.6. Application: logistic regression" href="../04part2_logistic/roch-mmids-opt-logistic.html" />
+    <link rel="prev" title="3.4. Convexity" href="../03part2_convexity/roch-mmids-opt-convexity.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a id="pst-skip-link" class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+
+<a class="navbar-brand logo" href="../../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/mmids-cover-small.jpg" class="logo__image only-light" alt="MMiDS Textbook - Home"/>
+    <script>document.write(`<img src="../../_static/mmids-cover-small.jpg" class="logo__image only-dark" alt="MMiDS Textbook - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../index.html">
+                    <b>MATHEMATICAL METHODS in DATA SCIENCE (with Python)</b>
+                </a>
+            </li>
+        </ul>
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../chap01_intro/00_intro/roch-mmids-intro-intro.html">1. Introduction: a first data science problem</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../chap01_intro/01_motiv/roch-mmids-intro-motiv.html">1.1. Motivating example: identifying penguin species</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap01_intro/02_review/roch-mmids-intro-review.html">1.2. Background: quick refresher of matrix algebra, differential calculus, and elementary probability</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap01_intro/03_clustering/roch-mmids-intro-clustering.html">1.3. Clustering: an objective, an algorithm and a guarantee</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap01_intro/04_highdim/roch-mmids-intro-highdim.html">1.4. Some observations about high-dimensional data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap01_intro/exercises/roch-mmids-intro-exercises.html">1.5. Exercises</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap01_intro/05_adv/roch-mmids-intro-adv.html">1.6. Online suppplementary material</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../chap02_ls/00_intro/roch-mmids-ls-intro.html">2. Least squares: geometric, algebraic, and numerical aspects</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../chap02_ls/01_motiv/roch-mmids-ls-motiv.html">2.1. Motivating example: predicting sales</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap02_ls/02_subspaces/roch-mmids-ls-spaces.html">2.2. Background: review of vector spaces and matrix inverses</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap02_ls/03_orthog/roch-mmids-ls-orthog.html">2.3. Geometry of least squares: the orthogonal projection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap02_ls/04_qr/roch-mmids-ls-qr.html">2.4. QR decomposition and Householder transformations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap02_ls/05_regression/roch-mmids-ls-regression.html">2.5. Application: regression analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap02_ls/exercises/roch-mmids-ls-exercises.html">2.6. Exercises</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap02_ls/06_adv/roch-mmids-ls-adv.html">2.7. Online suppplementary material</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="../00_intro/roch-mmids-opt-intro.html">3. Optimization theory and algorithms</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-3"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../01_motiv/roch-mmids-opt-motiv.html">3.1. Motivating example:  analyzing customer satisfaction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../02_several/roch-mmids-opt-several.html">3.2. Background: review of differentiable functions of several variables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../03_optimality/roch-mmids-opt-optimality.html">3.3. Optimality conditions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../03part2_convexity/roch-mmids-opt-convexity.html">3.4. Convexity</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">3.5. Gradient descent and its convergence analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../04part2_logistic/roch-mmids-opt-logistic.html">3.6. Application: logistic regression</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../exercises/roch-mmids-opt-exercises.html">3.7. Exercises</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../06_adv/roch-mmids-opt-adv.html">3.8. Online suppplementary material</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../chap03_svd/00_intro/roch-mmids-svd-intro.html">4. Singular value decomposition</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-4"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../chap03_svd/01_motiv/roch-mmids-svd-motiv.html">4.1. Motivating example: visualizing viral evolution</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap03_svd/02_spectral/roch-mmids-svd-spectral.html">4.2. Background: review of matrix rank  and spectral decomposition</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap03_svd/03_svd/roch-mmids-svd-svd.html">4.3. Approximating subspaces and the SVD</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap03_svd/04_power/roch-mmids-svd-power.html">4.4. Power iteration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap03_svd/05_pca/roch-mmids-svd-pca.html">4.5. Application: principal components analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap03_svd/06_further/roch-mmids-svd-further.html">4.6. Further applications of the SVD: low-rank approximations and ridge regression</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap03_svd/exercises/roch-mmids-svd-exercises.html">4.7. Exercises</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap03_svd/07_adv/roch-mmids-svd-adv.html">4.8. Online suppplementary material</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../chap04_specgraph/00_intro/roch-mmids-specgraph-intro.html">5. Spectral graph theory</a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-5"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../chap04_specgraph/01_motiv/roch-mmids-specgraph-motiv.html">5.1. Motivating example: uncovering social groups</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap04_specgraph/02_graph/roch-mmids-specgraph-graph.html">5.2. Background: basic concepts in graph theory</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap04_specgraph/03_extremal/roch-mmids-specgraph-extremal.html">5.3. Variational characterization of eigenvalues</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap04_specgraph/04_laplacian/roch-mmids-specgraph-laplacian.html">5.4. Spectral properties of the Laplacian matrix</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap04_specgraph/05_partitioning/roch-mmids-specgraph-partitioning.html">5.5. Application: graph partitioning via spectral clustering</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap04_specgraph/05part2_sbm/roch-mmids-specgraph-sbm.html">5.6. Erdős-Rényi random graph and stochastic blockmodel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap04_specgraph/exercises/roch-mmids-specgraph-exercises.html">5.7. Exercises</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap04_specgraph/06_adv/roch-mmids-specgraph-adv.html">5.8. Online supplementary material</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../chap07_prob/00_intro/roch-mmids-prob-intro.html">6. Probabilistic models: from simple to complex</a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-6"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../chap07_prob/01_motiv/roch-mmids-prob-motiv.html">6.1. Motivating example: tracking location</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap07_prob/02_parametric/roch-mmids-prob-parametric.html">6.2. Background: introduction to parametric families and maximum likelihood estimation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap07_prob/03_joint/roch-mmids-prob-joint.html">6.3. Modeling more complex dependencies 1: using conditional independence</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap07_prob/03part2_em/roch-mmids-prob-em.html">6.4. Modeling more complex dependencies 2: marginalizing out an unobserved variable</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap07_prob/04_kalman/roch-mmids-prob-kalman.html">6.5. Application: linear-Gaussian models and Kalman filtering</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap07_prob/exercises/roch-mmids-prob-exercises.html">6.6. Exercises</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap07_prob/06_adv/roch-mmids-prob-adv.html">6.7. Online supplementary material</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../chap05_rwmc/00_intro/roch-mmids-rwmc-intro.html">7. Random walks on graphs and Markov chains</a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-7"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../chap05_rwmc/01_motiv/roch-mmids-rwmc-motiv.html">7.1. Motivating example: discovering mathematical topics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap05_rwmc/03_mcdefs/roch-mmids-rwmc-mcdefs.html">7.2. Background: elements of finite Markov chains</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap05_rwmc/04_stat/roch-mmids-rwmc-stat.html">7.3. Limit behavior 1: stationary distributions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap05_rwmc/04part2_mclimit/roch-mmids-rwmc-mclimit.html">7.4. Limit behavior 2: convergence to equilibrium</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap05_rwmc/05_pagerank/roch-mmids-rwmc-pagerank.html">7.5. Application: random walks on graphs and PageRank</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap05_rwmc/05part2_gibbs/roch-mmids-rwmc-gibbs.html">7.6. Further applications: Gibbs sampling and generating images</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap05_rwmc/exercises/roch-mmids-rwmc-exercises.html">7.7. Exercises</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap05_rwmc/06_adv/roch-mmids-rwmc-adv.html">7.8. Online supplementary material</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../chap08_nn/00_intro/roch-mmids-nn-intro.html">8. Neural networks, backpropagation and stochastic gradient descent</a><input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-8"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../chap08_nn/01_motiv/roch-mmids-nn-motiv.html">8.1. Motivating example:  classifying natural images</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap08_nn/02_chain/roch-mmids-nn-chain.html">8.2. Background: Jacobian, chain rule, and a brief introduction to automatic differentiation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap08_nn/03_backprop/roch-mmids-nn-backprop.html">8.3. Building blocks of AI 1: backpropagation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap08_nn/04_sgd/roch-mmids-nn-sgd.html">8.4. Building blocks of AI 2: stochastic gradient descent</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap08_nn/05_nn/roch-mmids-nn-nn.html">8.5. Building blocks of AI 3: neural networks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap08_nn/exercises/roch-mmids-nn-exercises.html">8.6. Exercises</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap08_nn/06_adv/roch-mmids-nn-adv.html">8.7. Online supplementary material</a></li>
+</ul>
+</li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/MMiDS-textbook/MMiDS-textbook.github.io" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/MMiDS-textbook/MMiDS-textbook.github.io/issues/new?title=Issue%20on%20page%20%2Fchap06_opt/04_gd/roch-mmids-opt-gd.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/chap06_opt/04_gd/roch-mmids-opt-gd.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Gradient descent and its convergence analysis</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#gradient-descent">3.5.1. Gradient descent</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#convergence-analysis">3.5.2. Convergence analysis</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <p><span class="math notranslate nohighlight">\(\newcommand{\bmu}{\boldsymbol{\mu}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bSigma}{\boldsymbol{\Sigma}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bfbeta}{\boldsymbol{\beta}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bflambda}{\boldsymbol{\lambda}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bgamma}{\boldsymbol{\gamma}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bsigma}{{\boldsymbol{\sigma}}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bpi}{\boldsymbol{\pi}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\btheta}{{\boldsymbol{\theta}}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bphi}{\boldsymbol{\phi}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\balpha}{\boldsymbol{\alpha}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\blambda}{\boldsymbol{\lambda}}\)</span>
+<span class="math notranslate nohighlight">\(\renewcommand{\P}{\mathbb{P}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\E}{\mathbb{E}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\indep}{\perp\!\!\!\perp} \newcommand{\bx}{\mathbf{x}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bp}{\mathbf{p}}\)</span>
+<span class="math notranslate nohighlight">\(\renewcommand{\bx}{\mathbf{x}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bX}{\mathbf{X}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\by}{\mathbf{y}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bY}{\mathbf{Y}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bz}{\mathbf{z}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bZ}{\mathbf{Z}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bw}{\mathbf{w}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bW}{\mathbf{W}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bv}{\mathbf{v}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bV}{\mathbf{V}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bfg}{\mathbf{g}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bfh}{\mathbf{h}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\horz}{\rule[.5ex]{2.5ex}{0.5pt}}\)</span>
+<span class="math notranslate nohighlight">\(\renewcommand{\S}{\mathcal{S}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\X}{\mathcal{X}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\var}{\mathrm{Var}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\pa}{\mathrm{pa}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\Z}{\mathcal{Z}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bh}{\mathbf{h}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bb}{\mathbf{b}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bc}{\mathbf{c}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\cE}{\mathcal{E}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\cP}{\mathcal{P}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bbeta}{\boldsymbol{\beta}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bLambda}{\boldsymbol{\Lambda}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\cov}{\mathrm{Cov}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bfk}{\mathbf{k}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\idx}[1]{}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\xdi}{}\)</span></p>
+<section id="gradient-descent-and-its-convergence-analysis">
+<h1><span class="section-number">3.5. </span>Gradient descent and its convergence analysis<a class="headerlink" href="#gradient-descent-and-its-convergence-analysis" title="Link to this heading">#</a></h1>
+<p>We consider a natural approach for solving optimization problems numerically: a class of algorithms known as descent methods.</p>
+<p>Let <span class="math notranslate nohighlight">\(f : \mathbb{R}^d \to \mathbb{R}\)</span> be continuously differentiable. We restrict ourselves to unconstrained minimization problems of the form</p>
+<div class="math notranslate nohighlight">
+\[
+\min_{\mathbf{x} \in \mathbb{R}^d} f(\mathbf{x}).
+\]</div>
+<p>Ideally one would like to identify a global minimizer of <span class="math notranslate nohighlight">\(f\)</span>. A naive approach might be to evaluate <span class="math notranslate nohighlight">\(f\)</span> at a large number of points <span class="math notranslate nohighlight">\(\mathbf{x}\)</span>, say on a dense grid. However, even if we were satisfied with an approximate solution and limited ourselves to a bounded subset of the domain of <span class="math notranslate nohighlight">\(f\)</span>, this type of <a class="reference external" href="https://en.wikipedia.org/wiki/Brute-force_search">exhaustive search</a> is wasteful and impractical in large dimension <span class="math notranslate nohighlight">\(d\)</span>, as the number of points interrogated grows exponentially with <span class="math notranslate nohighlight">\(d\)</span>.</p>
+<p>A less naive approach might be to find all stationary points of <span class="math notranslate nohighlight">\(f\)</span>, that is, those <span class="math notranslate nohighlight">\(\mathbf{x}\)</span> such that <span class="math notranslate nohighlight">\(\nabla f(\mathbf{x}) = \mathbf{0}\)</span>. And then choose an <span class="math notranslate nohighlight">\(\mathbf{x}\)</span> among them that produces the smallest value of <span class="math notranslate nohighlight">\(f(\mathbf{x})\)</span>. This indeed works in many problems, like the following example we have encountered previously.</p>
+<p><strong>EXAMPLE:</strong> <strong>(Least Squares)</strong> Consider again the least squares problem<span class="math notranslate nohighlight">\(\idx{least squares problem}\xdi\)</span></p>
+<div class="math notranslate nohighlight">
+\[
+\min_{\mathbf{x} \in \mathbb{R}^d} \|A \mathbf{x} - \mathbf{b}\|^2
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(A \in \mathbb{R}^{n \times d}\)</span> has full column rank and <span class="math notranslate nohighlight">\(\mathbf{b} \in \mathbb{R}^n\)</span>. In particular, <span class="math notranslate nohighlight">\(d \leq n\)</span>. We saw in a previous example that the objective function is a quadratic function</p>
+<div class="math notranslate nohighlight">
+\[
+f(\mathbf{x}) 
+= \frac{1}{2} \mathbf{x}^T  P \mathbf{x} + \mathbf{q}^T \mathbf{x} + r,
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(P = 2 A^T A\)</span> is symmetric, <span class="math notranslate nohighlight">\(\mathbf{q} = - 2 A^T \mathbf{b}\)</span>, and <span class="math notranslate nohighlight">\(r= \mathbf{b}^T \mathbf{b} = \|\mathbf{b}\|^2\)</span>. We also showed that <span class="math notranslate nohighlight">\(f\)</span> is <span class="math notranslate nohighlight">\(\mu\)</span>-strongly convex where <span class="math notranslate nohighlight">\(\mu &gt; 0\)</span> is the smallest eigenvalue of <span class="math notranslate nohighlight">\(2 A^T A\)</span>. So there is a unique global minimizer.</p>
+<p>By a previous calculation,</p>
+<div class="math notranslate nohighlight">
+\[
+\nabla f(\mathbf{x})
+= P \mathbf{x} + \mathbf{q} = 2 A^T A \mathbf{x} - 2 A^T \mathbf{b}.
+\]</div>
+<p>So the stationary points satisfy</p>
+<div class="math notranslate nohighlight">
+\[
+A^T A \mathbf{x} = A^T \mathbf{b}
+\]</div>
+<p>which you may recognize as the normal equations<span class="math notranslate nohighlight">\(\idx{normal equations}\xdi\)</span> for the least-squares problem. <span class="math notranslate nohighlight">\(\lhd\)</span></p>
+<p>Unfortunately, identifying stationary points often leads to systems of nonlinear equations that do not have explicit solutions. Hence we resort to a different approach.</p>
+<section id="gradient-descent">
+<h2><span class="section-number">3.5.1. </span>Gradient descent<a class="headerlink" href="#gradient-descent" title="Link to this heading">#</a></h2>
+<p>In gradient descent, we attempt to find smaller values of <span class="math notranslate nohighlight">\(f\)</span> by successively following directions in which <span class="math notranslate nohighlight">\(f\)</span> decreases locally. As we have seen in the proof of the <em>First-Order Necessary Optimality Condition</em>, <span class="math notranslate nohighlight">\(- \nabla f\)</span> provides such a direction. In fact, it is the direction of steepest descent in the following sense.</p>
+<p>Recall from the <em>Descent Direction and Directional Derivative Lemma</em> that <span class="math notranslate nohighlight">\(\mathbf{v}\)</span> is a descent direction at <span class="math notranslate nohighlight">\(\mathbf{x}_0\)</span> if the directional derivative of <span class="math notranslate nohighlight">\(f\)</span> at <span class="math notranslate nohighlight">\(\mathbf{x}_0\)</span> in the direction <span class="math notranslate nohighlight">\(\mathbf{v}\)</span> is negative.</p>
+<p><strong>LEMMA</strong> <strong>(Steepest Descent)</strong> <span class="math notranslate nohighlight">\(\idx{steepest descent lemma}\xdi\)</span> Let <span class="math notranslate nohighlight">\(f : \mathbb{R}^d \to \mathbb{R}\)</span> be continuously differentiable at <span class="math notranslate nohighlight">\(\mathbf{x}_0\)</span>. For any unit vector <span class="math notranslate nohighlight">\(\mathbf{v} \in \mathbb{R}^d\)</span>,</p>
+<div class="math notranslate nohighlight">
+\[
+\frac{\partial f (\mathbf{x}_0)}{\partial \mathbf{v}} 
+\geq \frac{\partial f (\mathbf{x}_0)}{\partial \mathbf{v}^*} 
+\]</div>
+<p>where</p>
+<div class="math notranslate nohighlight">
+\[
+\mathbf{v}^*
+= - \frac{\nabla f(\mathbf{x}_0)}{\|\nabla f(\mathbf{x}_0)\|}.
+\]</div>
+<p><span class="math notranslate nohighlight">\(\flat\)</span></p>
+<p><em>Proof idea:</em> This is an immediate application of the <em>Cauchy-Schwarz inequality</em>.</p>
+<p><em>Proof:</em> By the <em>Cauchy-Schwarz inequality</em>, since <span class="math notranslate nohighlight">\(\mathbf{v}\)</span> has unit norm,</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+\left|\frac{\partial f (\mathbf{x}_0)}{\partial \mathbf{v}}\right| 
+&amp;= \left|\nabla f(\mathbf{x}_0)^T \mathbf{v}\right|\\
+&amp;\leq \|\nabla f(\mathbf{x}_0)\| \|\mathbf{v}\|\\
+&amp;= \|\nabla f(\mathbf{x}_0)\|.
+\end{align*}\]</div>
+<p>Or, put differently,</p>
+<div class="math notranslate nohighlight">
+\[
+- \|\nabla f(\mathbf{x}_0)\| \leq
+\frac{\partial f (\mathbf{x}_0)}{\partial \mathbf{v}}
+\leq \|\nabla f(\mathbf{x}_0)\|.
+\]</div>
+<p>On the other hand, by the choice of <span class="math notranslate nohighlight">\(\mathbf{v}^*\)</span>,</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+\frac{\partial f (\mathbf{x}_0)}{\partial \mathbf{v}^*}
+&amp;= \nabla f(\mathbf{x}_0)^T \left(\frac{\nabla f(\mathbf{x}_0)}{\|\nabla f(\mathbf{x}_0)\|}\right)\\
+&amp;= - \left(\frac{\nabla f(\mathbf{x}_0)^T \nabla f(\mathbf{x}_0)}{\|\nabla f(\mathbf{x}_0)\|}\right)\\
+&amp;= - \left(\frac{\|\nabla f(\mathbf{x}_0)\|^2}{\|\nabla f(\mathbf{x}_0)\|}\right)\\
+&amp;= - \|\nabla f(\mathbf{x}_0)\|.
+\end{align*}\]</div>
+<p>The last two displays combined give the result. <span class="math notranslate nohighlight">\(\square\)</span></p>
+<p>At each iteration of gradient descent, we take a step in the direction of the negative of the gradient, that is,</p>
+<div class="math notranslate nohighlight">
+\[
+\mathbf{x}^{t+1}
+= \mathbf{x}^t - \alpha_t \nabla f(\mathbf{x}^t),
+\quad t=0,1,2\ldots
+\]</div>
+<p>for a sequence of step sizes <span class="math notranslate nohighlight">\(\alpha_t &gt; 0\)</span>. Choosing the right step size (also known as steplength or learning rate) is a large subject in itself. We will only consider the case of fixed step size here.</p>
+<p><strong>CHAT &amp; LEARN</strong> Ask your favorite AI chatbot about the different approaches for selecting a step size in gradient descent methods. <span class="math notranslate nohighlight">\(\ddagger\)</span></p>
+<p>In general, we will not be able to guarantee that a global minimizer is reached in the limit, even if one exists. Our goal for now is more modest: to find a point where the gradient of <span class="math notranslate nohighlight">\(f\)</span> approximately vanishes.</p>
+<p>We implement gradient descent<span class="math notranslate nohighlight">\(\idx{gradient descent}\xdi\)</span> in Python. We assume that a function <code class="docutils literal notranslate"><span class="pre">f</span></code> and its gradient <code class="docutils literal notranslate"><span class="pre">grad_f</span></code> are provided. We first code the basic steepest descent step with a step size<span class="math notranslate nohighlight">\(\idx{step size}\xdi\)</span> <span class="math notranslate nohighlight">\(\idx{learning rate}\xdi\)</span> <span class="math notranslate nohighlight">\(\alpha =\)</span> <code class="docutils literal notranslate"><span class="pre">alpha</span></code>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">desc_update</span><span class="p">(</span><span class="n">grad_f</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">alpha</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">x</span> <span class="o">-</span> <span class="n">alpha</span><span class="o">*</span><span class="n">grad_f</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">gd</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">grad_f</span><span class="p">,</span> <span class="n">x0</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">1e-3</span><span class="p">,</span> <span class="n">niters</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="mf">1e6</span><span class="p">)):</span>
+    
+    <span class="n">xk</span> <span class="o">=</span> <span class="n">x0</span>
+    <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">niters</span><span class="p">):</span>
+        <span class="n">xk</span> <span class="o">=</span> <span class="n">desc_update</span><span class="p">(</span><span class="n">grad_f</span><span class="p">,</span> <span class="n">xk</span><span class="p">,</span> <span class="n">alpha</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">xk</span><span class="p">,</span> <span class="n">f</span><span class="p">(</span><span class="n">xk</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p><strong>NUMERICAL CORNER:</strong> We illustrate on a simple example.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">f</span><span class="p">(</span><span class="n">x</span><span class="p">):</span> 
+    <span class="k">return</span> <span class="p">(</span><span class="n">x</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="mi">10</span>
+
+<span class="k">def</span> <span class="nf">grad_f</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="k">return</span> <span class="mi">2</span><span class="o">*</span><span class="p">(</span><span class="n">x</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="n">xgrid</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mi">5</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">100</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">xgrid</span><span class="p">,</span> <span class="n">f</span><span class="p">(</span><span class="n">xgrid</span><span class="p">),</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;f&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">xgrid</span><span class="p">,</span> <span class="n">grad_f</span><span class="p">(</span><span class="n">xgrid</span><span class="p">),</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;grad_f&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylim</span><span class="p">((</span><span class="o">-</span><span class="mi">20</span><span class="p">,</span><span class="mi">50</span><span class="p">)),</span> <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/d51e8b18ce4fc334058747e3f8b4461146ba33ddbfad4ccf832d68879be5ae58.png" src="../../_images/d51e8b18ce4fc334058747e3f8b4461146ba33ddbfad4ccf832d68879be5ae58.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">gd</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">grad_f</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(0.9999999999999722, 10.0)
+</pre></div>
+</div>
+</div>
+</div>
+<p>We found a global minmizer in this case.</p>
+<p>The next example shows that a different local minimizer may be reached depending on the starting point.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">f</span><span class="p">(</span><span class="n">x</span><span class="p">):</span> 
+    <span class="k">return</span> <span class="mi">4</span> <span class="o">*</span> <span class="p">(</span><span class="n">x</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span> <span class="o">*</span> <span class="p">(</span><span class="n">x</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span> <span class="o">-</span> <span class="mi">2</span><span class="o">*</span><span class="p">(</span><span class="n">x</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">grad_f</span><span class="p">(</span><span class="n">x</span><span class="p">):</span> 
+    <span class="k">return</span> <span class="mi">8</span> <span class="o">*</span> <span class="p">(</span><span class="n">x</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">x</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="mi">8</span> <span class="o">*</span> <span class="p">(</span><span class="n">x</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span> <span class="o">*</span> <span class="p">(</span><span class="n">x</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span> <span class="o">-</span> <span class="mi">2</span>
+
+<span class="n">xgrid</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">100</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">xgrid</span><span class="p">,</span> <span class="n">f</span><span class="p">(</span><span class="n">xgrid</span><span class="p">),</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;f&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">xgrid</span><span class="p">,</span> <span class="n">grad_f</span><span class="p">(</span><span class="n">xgrid</span><span class="p">),</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;grad_f&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylim</span><span class="p">((</span><span class="o">-</span><span class="mi">10</span><span class="p">,</span><span class="mi">10</span><span class="p">)),</span> <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/75aca2b41af857c3c97219ad48be42c287f89e35a7ab184d2514f6013c124564.png" src="../../_images/75aca2b41af857c3c97219ad48be42c287f89e35a7ab184d2514f6013c124564.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">gd</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">grad_f</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(1.057453770738375, -0.0590145651028224)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">gd</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">grad_f</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(-0.9304029265558538, 3.933005966859003)
+</pre></div>
+</div>
+</div>
+</div>
+<p><strong>TRY IT!</strong> In this last example, does changing the step size affect the outcome? (<a class="reference external" href="https://colab.research.google.com/github/MMiDS-textbook/MMiDS-textbook.github.io/blob/main/just_the_code/roch_mmids_chap_opt_notebook.ipynb">Open In Colab</a>) <span class="math notranslate nohighlight">\(\ddagger\)</span></p>
+<p>In the final example, we end up at a stationary point that is not a local minimizer. Here both the first and second derivatives are zero. This is known as a <a class="reference external" href="https://en.wikipedia.org/wiki/Saddle_point">saddle point</a>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">f</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">x</span><span class="o">**</span><span class="mi">3</span>
+
+<span class="k">def</span> <span class="nf">grad_f</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="k">return</span> <span class="mi">3</span> <span class="o">*</span> <span class="n">x</span><span class="o">**</span><span class="mi">2</span>
+
+<span class="n">xgrid</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">100</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">xgrid</span><span class="p">,</span> <span class="n">f</span><span class="p">(</span><span class="n">xgrid</span><span class="p">),</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;f&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">xgrid</span><span class="p">,</span> <span class="n">grad_f</span><span class="p">(</span><span class="n">xgrid</span><span class="p">),</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;grad_f&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylim</span><span class="p">((</span><span class="o">-</span><span class="mi">10</span><span class="p">,</span><span class="mi">10</span><span class="p">)),</span> <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/da5c215ace3b510dfd32e6f372c4a8f206cf715c68fa6499d2799d461e251f1f.png" src="../../_images/da5c215ace3b510dfd32e6f372c4a8f206cf715c68fa6499d2799d461e251f1f.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">gd</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">grad_f</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(0.00033327488712690107, 3.701755838398568e-11)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">gd</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">grad_f</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="n">niters</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(-4.93350410883896, -120.0788396909241)
+</pre></div>
+</div>
+</div>
+</div>
+<p><span class="math notranslate nohighlight">\(\unlhd\)</span></p>
+</section>
+<section id="convergence-analysis">
+<h2><span class="section-number">3.5.2. </span>Convergence analysis<a class="headerlink" href="#convergence-analysis" title="Link to this heading">#</a></h2>
+<p>In this section, we prove some results about the convergence<span class="math notranslate nohighlight">\(\idx{convergence analysis}\xdi\)</span> of gradient descent. We start with the smooth case.</p>
+<p><strong>Smooth case</strong> Informally, a function is smooth if its gradient does not change too fast. The formal definition we will use here follows. We restrict ourselves to the twice continuously differentiable case.</p>
+<p><strong>DEFINITION</strong> <strong>(Smooth Function)</strong> <span class="math notranslate nohighlight">\(\idx{smooth function}\xdi\)</span> Let <span class="math notranslate nohighlight">\(f : \mathbb{R}^d \to \mathbb{R}\)</span> be twice continuously differentiable. We say that <span class="math notranslate nohighlight">\(f\)</span> is <span class="math notranslate nohighlight">\(L\)</span>-smooth if</p>
+<div class="math notranslate nohighlight">
+\[
+- L I_{d \times d} \preceq H_f(\mathbf{x}) \preceq L I_{d \times d},
+\quad \forall \mathbf{x} \in \mathbb{R}^d.
+\]</div>
+<p><span class="math notranslate nohighlight">\(\natural\)</span></p>
+<p>In the single-variable case, this reduces to <span class="math notranslate nohighlight">\(- L \leq f''(x) \leq L\)</span> for all <span class="math notranslate nohighlight">\(x \in \mathbb{R}\)</span>. More generally, recall that</p>
+<div class="math notranslate nohighlight">
+\[
+A \preceq B
+\iff \mathbf{z}^T A\mathbf{z} \leq \mathbf{z}^T B\mathbf{z}, \qquad \forall \mathbf{z} \in \mathbb{R}^{d}.
+\]</div>
+<p>So the condition above is equivalent to</p>
+<div class="math notranslate nohighlight">
+\[
+- L \|\mathbf{z}\|^2 \leq \mathbf{z}^T H_f(\mathbf{x}) \,\mathbf{z} \leq L \|\mathbf{z}\|^2,
+\quad \forall \mathbf{x}, \mathbf{z} \in \mathbb{R}^d.
+\]</div>
+<p>A different way to put this is that the second directional derivative satisfies</p>
+<div class="math notranslate nohighlight">
+\[
+- L \leq \frac{\partial^2 f (\mathbf{x})}{\partial \mathbf{v}^2} \leq L
+\]</div>
+<p>for all <span class="math notranslate nohighlight">\(\mathbf{x} \in \mathbb{R}^d\)</span> and all unit vectors <span class="math notranslate nohighlight">\(\mathbf{v} \in \mathbb{R}^d\)</span>.</p>
+<p>Combined with <em>Taylor’s Theorem</em>, this gives immediately the following.</p>
+<p><strong>LEMMA</strong> <strong>(Quadratic Bound for Smooth Functions)</strong> <span class="math notranslate nohighlight">\(\idx{quadratic bound for smooth functions}\xdi\)</span> Let <span class="math notranslate nohighlight">\(f : \mathbb{R}^d \to \mathbb{R}\)</span> be twice continuously differentiable. Then <span class="math notranslate nohighlight">\(f\)</span> is <span class="math notranslate nohighlight">\(L\)</span>-smooth if and only if for all <span class="math notranslate nohighlight">\(\mathbf{x}, \mathbf{y} \in \mathbb{R}^d\)</span> it holds that</p>
+<div class="math notranslate nohighlight">
+\[
+\left|f(\mathbf{y})
+- \{f(\mathbf{x}) 
++ \nabla f(\mathbf{x})^T(\mathbf{y} - \mathbf{x})\}\right|
+\leq \frac{L}{2} \|\mathbf{y} - \mathbf{x}\|^2.
+\]</div>
+<p><span class="math notranslate nohighlight">\(\flat\)</span></p>
+<p><em>Proof idea:</em> We apply the <em>Taylor’s Theorem</em>, then bound the second-order term.</p>
+<p><em>Proof:</em> By <em>Taylor’s Theorem</em>, for any <span class="math notranslate nohighlight">\(\alpha &gt; 0\)</span> there is <span class="math notranslate nohighlight">\(\xi_\alpha \in (0,1)\)</span></p>
+<div class="math notranslate nohighlight">
+\[
+f(\mathbf{x} + \alpha \mathbf{p})
+= f(\mathbf{x}) 
++ \alpha  \nabla f(\mathbf{x})^T \mathbf{p}
++ \frac{1}{2} \alpha^2 \mathbf{p}^T 
+\,H_f(\mathbf{x} + \xi_\alpha \alpha \mathbf{p})
+\,\mathbf{p}
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(\mathbf{p} = \mathbf{y} - \mathbf{x}\)</span>.</p>
+<p>If <span class="math notranslate nohighlight">\(f\)</span> is <span class="math notranslate nohighlight">\(L\)</span>-smooth, then at <span class="math notranslate nohighlight">\(\alpha = 1\)</span> by the observation above</p>
+<div class="math notranslate nohighlight">
+\[
+- L \|\mathbf{p}\|^2
+\leq \mathbf{p}^T 
+\,H_f(\mathbf{x} + \xi_1 \mathbf{p})
+\,\mathbf{p}
+\leq L \|\mathbf{p}\|^2.
+\]</div>
+<p>That implies the inequality in the statement.</p>
+<p>On the other hand, if that inequality holds, by combining with the Taylor expansion above we get</p>
+<div class="math notranslate nohighlight">
+\[
+\left|\,\frac{1}{2} \alpha^2 \mathbf{p}^T 
+\,H_f(\mathbf{x} + \xi_\alpha \alpha \mathbf{p})
+\,\mathbf{p}\,\right|
+\leq \frac{L}{2} \alpha^2 \|\mathbf{p}\|^2
+\]</div>
+<p>where we used that <span class="math notranslate nohighlight">\(\|\alpha \mathbf{p}\| = \alpha \|\mathbf{p}\|\)</span> by absolute homogeneity of the norm. Dividing by <span class="math notranslate nohighlight">\(\alpha^2/2\)</span>, then taking <span class="math notranslate nohighlight">\(\alpha \to 0\)</span> and using the continuity of the Hessian gives</p>
+<div class="math notranslate nohighlight">
+\[
+\left|\,
+\mathbf{p}^T 
+\,H_f(\mathbf{x})
+\,\mathbf{p}
+\,\right|
+\leq L \|\mathbf{p}\|^2.
+\]</div>
+<p>By the observation above again, that implies that <span class="math notranslate nohighlight">\(f\)</span> is <span class="math notranslate nohighlight">\(L\)</span>-smooth. <span class="math notranslate nohighlight">\(\square\)</span></p>
+<p>We show next that, in the smooth case, steepest descent with an appropriately chosen steplength produces a sequence of points whose objective values decrease and whose gradients vanish in the limit. We also give a quantitative convergence rate. Note that this result does not imply convergence to a local (or global) minimizer.</p>
+<p><strong>THEOREM</strong> <strong>(Convergence of Gradient Descent in the Smooth Case)</strong> <span class="math notranslate nohighlight">\(\idx{convergence of gradient descent in the smooth case}\xdi\)</span> Suppose that <span class="math notranslate nohighlight">\(f : \mathbb{R}^d \to \mathbb{R}\)</span> is <span class="math notranslate nohighlight">\(L\)</span>-smooth and bounded from below, that is, there is <span class="math notranslate nohighlight">\(\bar{f} &gt; - \infty\)</span> such that <span class="math notranslate nohighlight">\(f(\mathbf{x}) \geq \bar{f}\)</span>, <span class="math notranslate nohighlight">\(\forall \mathbf{x} \in \mathbb{R}^d\)</span>. Then gradient descent with step size <span class="math notranslate nohighlight">\(\alpha_t = \alpha := 1/L\)</span> started from any <span class="math notranslate nohighlight">\(\mathbf{x}^0\)</span> produces a sequence <span class="math notranslate nohighlight">\(\mathbf{x}^t\)</span>, <span class="math notranslate nohighlight">\(t=1,2,\ldots\)</span> such that</p>
+<div class="math notranslate nohighlight">
+\[
+f(\mathbf{x}^{t+1}) \leq f(\mathbf{x}^t),
+\quad \forall t
+\]</div>
+<p>and</p>
+<div class="math notranslate nohighlight">
+\[
+\lim_{t \to +\infty} \|\nabla f(\mathbf{x}^t)\| = 0.
+\]</div>
+<p>Moreover, after <span class="math notranslate nohighlight">\(S\)</span> steps, there is a <span class="math notranslate nohighlight">\(t\)</span> in <span class="math notranslate nohighlight">\(\{0,\ldots,S\}\)</span> such that</p>
+<div class="math notranslate nohighlight">
+\[
+\|\nabla f(\mathbf{x}^t)\|
+\leq \sqrt{\frac{2 L \left[\,f(\mathbf{x}^0) - \bar{f}\,\right]}{S}}.
+\]</div>
+<p><span class="math notranslate nohighlight">\(\sharp\)</span></p>
+<p>The assumption that a lower bound on <span class="math notranslate nohighlight">\(f\)</span> is known may seem far-fetched. But there are in fact many settings where this is natural. For instance, in the case of the least-squares problem, the objective function <span class="math notranslate nohighlight">\(f\)</span> is non-negative by definition and therefore we can take <span class="math notranslate nohighlight">\(\bar{f} = 0\)</span>.</p>
+<p>A different way to put the claim above regarding the convergence rate is the following. Take any <span class="math notranslate nohighlight">\(\epsilon &gt; 0\)</span>. If our goal is to find a point <span class="math notranslate nohighlight">\(\mathbf{x}\)</span> such that <span class="math notranslate nohighlight">\(\|\nabla f(\mathbf{x})\|_2 \leq \epsilon\)</span>, then we are guaranteed to find one if we perform <span class="math notranslate nohighlight">\(S\)</span> steps such that</p>
+<div class="math notranslate nohighlight">
+\[
+\min_{t = 0,\ldots, S-1} \|\nabla f(\mathbf{x}^t)\|
+\leq \sqrt{\frac{2 L \left[\,f(\mathbf{x}^0) - \bar{f}\,\right]}{S}}
+\leq \epsilon,
+\]</div>
+<p>that is, after rearranging,</p>
+<div class="math notranslate nohighlight">
+\[
+S \geq  \frac{2L [f(\mathbf{x}^0) - \bar{f}]}{\epsilon^2}.
+\]</div>
+<p>The heart of the proof is the following fundamental inequality. It also informs the choice of step size.</p>
+<p><strong>LEMMA</strong> <strong>(Descent Guarantee in the Smooth Case)</strong> <span class="math notranslate nohighlight">\(\idx{descent guarantee in the smooth case}\xdi\)</span> Suppose that <span class="math notranslate nohighlight">\(f : \mathbb{R}^d \to \mathbb{R}\)</span> is <span class="math notranslate nohighlight">\(L\)</span>-smooth. For any <span class="math notranslate nohighlight">\(\mathbf{x} \in \mathbb{R}^d\)</span>,</p>
+<div class="math notranslate nohighlight">
+\[
+f\left(\mathbf{x} - \frac{1}{L} \nabla f(\mathbf{x})\right)
+\leq f(\mathbf{x}) - \frac{1}{2 L} \|\nabla f(\mathbf{x})\|^2.
+\]</div>
+<p><span class="math notranslate nohighlight">\(\flat\)</span></p>
+<p><em>Proof idea (Descent Guarantee in the Smooth Case):</em> Intuitively, the <em>Quadratic Bound for Smooth Functions</em> shows that <span class="math notranslate nohighlight">\(f\)</span> is well approximated by a quadratic function in a neighborhood of <span class="math notranslate nohighlight">\(\mathbf{x}\)</span> whose size depends on the smoothness parameter <span class="math notranslate nohighlight">\(L\)</span>. Choosing a step that minimizes this approximation leads to a guaranteed improvement. The approach taken here is a special case of what is referred to as <a class="reference external" href="https://en.wikipedia.org/wiki/MM_algorithm">Majorize-Minimization (MM)</a><span class="math notranslate nohighlight">\(\idx{Majorize-Minimization}\xdi\)</span>.</p>
+<p><em>Proof:</em> <em>(Descent Guarantee in the Smooth Case)</em> By the <em>Quadratic Bound for Smooth Functions</em>, letting <span class="math notranslate nohighlight">\(\mathbf{p} = - \nabla f(\mathbf{x})\)</span></p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+f(\mathbf{x} + \alpha \mathbf{p})
+&amp;\leq f(\mathbf{x}) + \nabla f(\mathbf{x})^T (\alpha \mathbf{p})
++ \frac{L}{2} \|\alpha \mathbf{p}\|^2\\
+&amp;= f(\mathbf{x}) - \alpha \|\nabla f(\mathbf{x})\|^2
++ \alpha^2 \frac{L}{2} \|\nabla f(\mathbf{x})\|^2\\
+&amp;= f(\mathbf{x}) + 
+\left( - \alpha + \alpha^2 \frac{L}{2} \right) 
+\|\nabla f(\mathbf{x})\|^2.
+\end{align*}\]</div>
+<p>The quadratic function in parentheses is convex and minimized at the stationary point <span class="math notranslate nohighlight">\(\alpha\)</span> satisfying</p>
+<div class="math notranslate nohighlight">
+\[
+\frac{\mathrm{d}}{\mathrm{d} \alpha}\left( - \alpha + \alpha^2 \frac{L}{2} \right)
+= -1 + \alpha L = 0.  
+\]</div>
+<p>Taking <span class="math notranslate nohighlight">\(\alpha = 1/L\)</span>, where <span class="math notranslate nohighlight">\(-\alpha + \alpha^2 \frac{L}{2} = - \frac{1}{2L}\)</span>, and replacing in the inequality above gives</p>
+<div class="math notranslate nohighlight">
+\[
+f\left(\mathbf{x} - \frac{1}{L} \nabla f(\mathbf{x})\right)
+\leq f(\mathbf{x}) - \frac{1}{2L}\|\nabla f(\mathbf{x})\|^2,
+\]</div>
+<p>as claimed. <span class="math notranslate nohighlight">\(\square\)</span></p>
+<p>We return to the proof of the theorem.</p>
+<p><em>Proof idea (Convergence of Gradient Descent in the Smooth Case):</em> We use a telescoping argument to write <span class="math notranslate nohighlight">\(f(\mathbf{x}^S)\)</span> as a sum of stepwise increments, each of which can be bounded by the previous lemma. Because <span class="math notranslate nohighlight">\(f(\mathbf{x}^S)\)</span> is bounded from below, it then follows that the gradients must vanish in the limit.</p>
+<p><em>Proof:</em> <em>(Convergence of Gradient Descent in the Smooth Case)</em> By the <em>Descent Guarantee in the Smooth Case</em>,</p>
+<div class="math notranslate nohighlight">
+\[
+f(\mathbf{x}^{t+1}) \leq f(\mathbf{x}^t) - \frac{1}{2 L}\|\nabla f(\mathbf{x}^t)\|^2
+\leq f(\mathbf{x}^t),
+\quad \forall t.
+\]</div>
+<p>Furthermore, using a telescoping sum, we get</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+f(\mathbf{x}^S)
+&amp;= f(\mathbf{x}^0) + \sum_{t=0}^{S-1} [f(\mathbf{x}^{t+1}) - f(\mathbf{x}^t)]\\
+&amp;\leq f(\mathbf{x}^0) - \frac{1}{2 L}\sum_{t=0}^{S-1} \|\nabla f(\mathbf{x}^t)\|^2. 
+\end{align*}\]</div>
+<p>Rearranging and using <span class="math notranslate nohighlight">\(f(\mathbf{x}^S) \geq \bar{f}\)</span> leads to</p>
+<div class="math notranslate nohighlight">
+\[
+\sum_{t=0}^{S-1} \|\nabla f(\mathbf{x}^t)\|^2
+\leq 2L [f(\mathbf{x}^0) - \bar{f}].
+\]</div>
+<p>We get the quantitative bound</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+\min_{t=0,\ldots, S-1} \|\nabla f(\mathbf{x}^t)\|^2 
+&amp; \leq \frac{1}{S} \sum_{t=0}^{S-1} \|\nabla f(\mathbf{x}^t)\|^2\\
+&amp;\leq \frac{2L [f(\mathbf{x}^0) - \bar{f}]}{S}
+\end{align*}\]</div>
+<p>as the minimum is necessarily less or equal than the average. Moreover, as <span class="math notranslate nohighlight">\(S \to +\infty\)</span>, we must have <span class="math notranslate nohighlight">\(\|\nabla f(\mathbf{x}^S)\|^2 \to 0\)</span> by standard <a class="reference external" href="https://math.stackexchange.com/questions/62389/relationships-between-bounded-and-convergent-series">analytical</a> <a class="reference external" href="https://math.stackexchange.com/questions/107961/if-a-series-converges-then-the-sequence-of-terms-converges-to-0">arguments</a>. That proves the claim. <span class="math notranslate nohighlight">\(\square\)</span></p>
+<p><strong>Smooth and strongly convex case</strong> With stronger assumptions, we obtain stronger convergence results. One such assumption is strong convexity, which we defined in the previous section for twice continuously differentiable functions.</p>
+<p>We prove a convergence result for smooth, strongly convex functions. We show something stronger this time. We control the value of <span class="math notranslate nohighlight">\(f\)</span> itself and obtain a much faster rate of convergence. If <span class="math notranslate nohighlight">\(f\)</span> is <span class="math notranslate nohighlight">\(m\)</span>-strongly convex and has a global minimizer <span class="math notranslate nohighlight">\(\mathbf{x}^*\)</span>, then the global minimizer is unique and characterized by <span class="math notranslate nohighlight">\(\nabla f(\mathbf{x}^*) = \mathbf{0}\)</span>. Strong convexity allows us to relate the value of the function at a point <span class="math notranslate nohighlight">\(\mathbf{x}\)</span> and the gradient of <span class="math notranslate nohighlight">\(f\)</span> at that point. This is proved in the following lemma, which is key to our convergence results.</p>
+<p><strong>LEMMA</strong> <strong>(Relating a function and its gradient)</strong> <span class="math notranslate nohighlight">\(\idx{relating a function and its gradient lemma}\xdi\)</span> Let <span class="math notranslate nohighlight">\(f : \mathbb{R}^d \to \mathbb{R}\)</span> be twice continuously differentiable, <span class="math notranslate nohighlight">\(m\)</span>-strongly convex with a global minimizer at <span class="math notranslate nohighlight">\(\mathbf{x}^*\)</span>. Then for any <span class="math notranslate nohighlight">\(\mathbf{x} \in \mathbb{R}^d\)</span></p>
+<div class="math notranslate nohighlight">
+\[
+f(\mathbf{x}) - f(\mathbf{x}^*) \leq \frac{\|\nabla f(\mathbf{x})\|^2}{2 m}.
+\]</div>
+<p><span class="math notranslate nohighlight">\(\flat\)</span></p>
+<p><em>Proof:</em> By the <em>Quadratic Bound for Strongly Convex Functions</em>,</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+f(\mathbf{x}^*)
+&amp;\geq f(\mathbf{x}) + \nabla f(\mathbf{x})^T (\mathbf{x}^* - \mathbf{x})
++ \frac{m}{2} \|\mathbf{x}^* - \mathbf{x}\|^2\\
+&amp;= f(\mathbf{x}) + \nabla f(\mathbf{x})^T \mathbf{w}
++ \frac{1}{2} \mathbf{w}^T (m I_{d \times d}) \,\mathbf{w}\\
+&amp;=: r + \mathbf{q}^T \mathbf{w}
++ \frac{1}{2} \mathbf{w}^T P \,\mathbf{w}
+\end{align*}\]</div>
+<p>where on the second line we defined <span class="math notranslate nohighlight">\(\mathbf{w} = \mathbf{x}^* - \mathbf{x}\)</span>. The right-hand side is a quadratic function in <span class="math notranslate nohighlight">\(\mathbf{w}\)</span> (for <span class="math notranslate nohighlight">\(\mathbf{x}\)</span> fixed), and on the third line we used our previous notation <span class="math notranslate nohighlight">\(P\)</span>, <span class="math notranslate nohighlight">\(\mathbf{q}\)</span> and <span class="math notranslate nohighlight">\(r\)</span> for such a function. So the inequality is still valid if we replace <span class="math notranslate nohighlight">\(\mathbf{w}\)</span> with the global minimizer <span class="math notranslate nohighlight">\(\mathbf{w}^*\)</span> of that quadratic function.</p>
+<p>The matrix <span class="math notranslate nohighlight">\(P = m I_{d \times d}\)</span> is positive definite. By a previous example, we know that the minimizer is achieved when the gradient <span class="math notranslate nohighlight">\(\frac{1}{2}[P + P^T]\mathbf{w}^* + \mathbf{q} = \mathbf{0}\)</span>, which is equivalent to</p>
+<div class="math notranslate nohighlight">
+\[
+\mathbf{w}^* 
+= - (m I_{d \times d})^{-1} \nabla f(\mathbf{x})
+= - (m^{-1} I_{d \times d}) \nabla f(\mathbf{x})
+= - \frac{1}{m} \nabla f(\mathbf{x}).
+\]</div>
+<p>So, replacing <span class="math notranslate nohighlight">\(\mathbf{w}\)</span> with <span class="math notranslate nohighlight">\(\mathbf{w}^*\)</span>, we have the inequality</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+f(\mathbf{x}^*) 
+&amp; \geq f(\mathbf{x}) + \nabla f(\mathbf{x})^T \left\{- \frac{1}{m} \nabla f(\mathbf{x})\right\}\\
+&amp; \quad \quad+ \frac{1}{2} \left\{- \frac{1}{m} \nabla f(\mathbf{x})\right\}^T (m I_{d \times d}) \left\{- \frac{1}{m} \nabla f(\mathbf{x})\right\}\\
+&amp; = f(\mathbf{x}) - \frac{1}{2m} \|\nabla f(\mathbf{x})\|^2.
+\end{align*}\]</div>
+<p>Rearranging gives the claim. <span class="math notranslate nohighlight">\(\square\)</span></p>
+<p>We can now state our convergence result.</p>
+<p><strong>THEOREM</strong> <strong>(Convergence of Gradient Descent in the Strongly Convex Case)</strong> <span class="math notranslate nohighlight">\(\idx{convergence of gradient descent in the strongly convex case}\xdi\)</span> Suppose that <span class="math notranslate nohighlight">\(f : \mathbb{R}^d \to \mathbb{R}\)</span> is <span class="math notranslate nohighlight">\(L\)</span>-smooth and <span class="math notranslate nohighlight">\(m\)</span>-strongly convex with a global minimizer at <span class="math notranslate nohighlight">\(\mathbf{x}^*\)</span>. Then gradient descent with step size <span class="math notranslate nohighlight">\(\alpha = 1/L\)</span> started from any <span class="math notranslate nohighlight">\(\mathbf{x}^0\)</span> produces a sequence <span class="math notranslate nohighlight">\(\mathbf{x}^t\)</span>, <span class="math notranslate nohighlight">\(t=1,2,\ldots\)</span> such that</p>
+<div class="math notranslate nohighlight">
+\[
+\lim_{t \to +\infty} f(\mathbf{x}^t) = f(\mathbf{x}^*).
+\]</div>
+<p>Moreover, after <span class="math notranslate nohighlight">\(S\)</span> steps, we have</p>
+<div class="math notranslate nohighlight">
+\[
+f(\mathbf{x}^S) - f(\mathbf{x}^*)
+\leq \left(1 - \frac{m}{L}\right)^S [f(\mathbf{x}^0) - f(\mathbf{x}^*)].
+\]</div>
+<p><span class="math notranslate nohighlight">\(\sharp\)</span></p>
+<p>Observe that <span class="math notranslate nohighlight">\(f(\mathbf{x}^S) - f(\mathbf{x}^*)\)</span> decreases exponentially fast in <span class="math notranslate nohighlight">\(S\)</span>. A related bound can be proved for <span class="math notranslate nohighlight">\(\|\mathbf{x}^S - \mathbf{x}^*\|\)</span>.</p>
+<p>Put differently, fix any <span class="math notranslate nohighlight">\(\epsilon &gt; 0\)</span>. If our goal is to find a point <span class="math notranslate nohighlight">\(\mathbf{x}\)</span> such that <span class="math notranslate nohighlight">\(f(\mathbf{x}) - f(\mathbf{x}^*) \leq \epsilon\)</span>, then we are guaranteed to find one if we perform <span class="math notranslate nohighlight">\(H\)</span> steps such that</p>
+<div class="math notranslate nohighlight">
+\[
+f(\mathbf{x}^S) - f(\mathbf{x}^*)
+\leq \left(1 - \frac{m}{L}\right)^S [f(\mathbf{x}^0) - f(\mathbf{x}^*)]
+\leq \epsilon
+\]</div>
+<p>that is, after rearranging,</p>
+<div class="math notranslate nohighlight">
+\[
+S \geq  \frac{\log \epsilon^{-1} + \log(f(\mathbf{x}^0) - \bar{f})}{\log \left(1 - \frac{m}{L}\right)^{-1}}.
+\]</div>
+<p><em>Proof idea (Convergence of Gradient Descent in the Strongly Convex Case):</em> We apply the <em>Descent Guarantee for Smooth Functions</em> together with the lemma above.</p>
+<p><em>Proof:</em> <em>(Convergence of Gradient Descent in the Strongly Convex Case)</em> By the <em>Descent Guarantee for Smooth Functions</em> together with the lemma above, we have for all <span class="math notranslate nohighlight">\(t\)</span></p>
+<div class="math notranslate nohighlight">
+\[
+f(\mathbf{x}^{t+1})
+\leq f(\mathbf{x}^t) - \frac{1}{2L} \|\nabla f(\mathbf{x}^t)\|^2
+\leq f(\mathbf{x}^t) - \frac{m}{L} [f(\mathbf{x}^t) - f(\mathbf{x}^*)].
+\]</div>
+<p>Subtracting <span class="math notranslate nohighlight">\(f(\mathbf{x}^*)\)</span> on both sides gives</p>
+<div class="math notranslate nohighlight">
+\[
+f(\mathbf{x}^{t+1}) - f(\mathbf{x}^*)
+\leq \left(1 - \frac{m}{L}\right)[f(\mathbf{x}^t) - f(\mathbf{x}^*)].
+\]</div>
+<p>Recursing this is</p>
+<div class="math notranslate nohighlight">
+\[
+\leq \left(1 - \frac{m}{L}\right)^2[f(\mathbf{x}^{t-1}) - f(\mathbf{x}^*)],
+\]</div>
+<p>and so on. That gives the claim. <span class="math notranslate nohighlight">\(\square\)</span></p>
+<p><strong>NUMERICAL CORNER:</strong> We revisit our first simple single-variable example.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">f</span><span class="p">(</span><span class="n">x</span><span class="p">):</span> 
+    <span class="k">return</span> <span class="p">(</span><span class="n">x</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="mi">10</span>
+
+<span class="k">def</span> <span class="nf">grad_f</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="k">return</span> <span class="mi">2</span><span class="o">*</span><span class="p">(</span><span class="n">x</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>The second derivative is <span class="math notranslate nohighlight">\(f''(x) = 2\)</span>. Hence, this <span class="math notranslate nohighlight">\(f\)</span> is <span class="math notranslate nohighlight">\(L\)</span>-smooth and <span class="math notranslate nohighlight">\(m\)</span>-strongly convex with <span class="math notranslate nohighlight">\(L = m = 2\)</span>. The theory we developed suggests taking step size <span class="math notranslate nohighlight">\(\alpha_t = \alpha = 1/L = 1/2\)</span>. It also implies that</p>
+<div class="math notranslate nohighlight">
+\[
+f(x^1) - f(x^*)
+\leq \left(1 - \frac{m}{L}\right) [f(x^0) - f(x^*)]
+= 0.
+\]</div>
+<p>We converge in one step! And that holds for any starting point <span class="math notranslate nohighlight">\(x^0\)</span>.</p>
+<p>Let’s try this!</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">gd</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">grad_f</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">niters</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(1.0, 10.0)
+</pre></div>
+</div>
+</div>
+</div>
+<p>Let’s try a different starting point.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">gd</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">grad_f</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">niters</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(1.0, 10.0)
+</pre></div>
+</div>
+</div>
+</div>
+<p><span class="math notranslate nohighlight">\(\unlhd\)</span></p>
+<p><em><strong>Self-assessment quiz</strong></em> <em>(with help from Claude, Gemini, and ChatGPT)</em></p>
+<p><strong>1</strong> In the gradient descent update rule <span class="math notranslate nohighlight">\(x_{t+1} = x_t - \alpha_t \nabla f(x_t)\)</span>, what does <span class="math notranslate nohighlight">\(\alpha_t\)</span> represent?</p>
+<p>a) The gradient of <span class="math notranslate nohighlight">\(f\)</span> at <span class="math notranslate nohighlight">\(x_t\)</span></p>
+<p>b) The step size or learning rate</p>
+<p>c) The direction of steepest ascent</p>
+<p>d) The Hessian matrix of <span class="math notranslate nohighlight">\(f\)</span> at <span class="math notranslate nohighlight">\(x_t\)</span></p>
+<p><strong>2</strong> A function <span class="math notranslate nohighlight">\(f : \mathbb{R}^d \to \mathbb{R}\)</span> is said to be <span class="math notranslate nohighlight">\(L\)</span>-smooth if:</p>
+<p>a) <span class="math notranslate nohighlight">\(\|\nabla f(x)\| \leq L\)</span> for all <span class="math notranslate nohighlight">\(x \in \mathbb{R}^d\)</span></p>
+<p>b) <span class="math notranslate nohighlight">\(-LI_{d\times d} \preceq H_f(x) \preceq LI_{d\times d}\)</span> for all <span class="math notranslate nohighlight">\(x \in \mathbb{R}^d\)</span></p>
+<p>c) <span class="math notranslate nohighlight">\(f(y) \leq f(x) + \nabla f(x)^T(y - x) + \frac{L}{2}\|y - x\|^2\)</span> for all <span class="math notranslate nohighlight">\(x, y \in \mathbb{R}^d\)</span></p>
+<p>d) Both b) and c)</p>
+<p><strong>3</strong> Suppose <span class="math notranslate nohighlight">\(f : \mathbb{R}^d \to \mathbb{R}\)</span> is <span class="math notranslate nohighlight">\(L\)</span>-smooth and bounded from below. According to the “Convergence of Gradient Descent: Smooth Case” theorem, gradient descent with step size <span class="math notranslate nohighlight">\(\alpha_t = 1/L\)</span> started from any <span class="math notranslate nohighlight">\(x_0\)</span> produces a sequence <span class="math notranslate nohighlight">\(\{x_t\}\)</span> such that</p>
+<p>a) <span class="math notranslate nohighlight">\(\lim_{t \to +\infty} f(x_t) = 0\)</span></p>
+<p>b) <span class="math notranslate nohighlight">\(\lim_{t \to +\infty} \|\nabla f(x_t)\| = 0\)</span></p>
+<p>c) <span class="math notranslate nohighlight">\(\min_{t=0,\ldots,S-1} \|\nabla f(x_t)\| \leq \sqrt{\frac{2L[f(x_0) - \bar{f}]}{S}}\)</span> after <span class="math notranslate nohighlight">\(S\)</span> steps</p>
+<p>d) Both b) and c)</p>
+<p><strong>4</strong> Suppose <span class="math notranslate nohighlight">\(f : \mathbb{R}^d \to \mathbb{R}\)</span> is <span class="math notranslate nohighlight">\(L\)</span>-smooth and <span class="math notranslate nohighlight">\(m\)</span>-strongly convex with a global minimizer at <span class="math notranslate nohighlight">\(x^*\)</span>. According to the “Convergence of Gradient Descent: Strongly Convex Case” theorem, gradient descent with step size <span class="math notranslate nohighlight">\(\alpha = 1/L\)</span> started from any <span class="math notranslate nohighlight">\(x_0\)</span> produces a sequence <span class="math notranslate nohighlight">\(\{x_t\}\)</span> such that after <span class="math notranslate nohighlight">\(S\)</span> steps:</p>
+<p>a) <span class="math notranslate nohighlight">\(f(x_S) - f(x^*) \leq (1 - \frac{m}{L})^S[f(x_0) - f(x^*)]\)</span></p>
+<p>b) <span class="math notranslate nohighlight">\(f(x_S) - f(x^*) \geq (1 - \frac{m}{L})^S[f(x_0) - f(x^*)]\)</span></p>
+<p>c) <span class="math notranslate nohighlight">\(f(x_S) - f(x^*) \leq (1 + \frac{m}{L})^S[f(x_0) - f(x^*)]\)</span></p>
+<p>d) <span class="math notranslate nohighlight">\(f(x_S) - f(x^*) \geq (1 + \frac{m}{L})^S[f(x_0) - f(x^*)]\)</span></p>
+<p><strong>5</strong> If a function <span class="math notranslate nohighlight">\(f\)</span> is <span class="math notranslate nohighlight">\(m\)</span>-strongly convex, what can we say about its global minimizer?</p>
+<p>a) It may not exist.</p>
+<p>b) It exists and is unique.</p>
+<p>c) It exists but may not be unique.</p>
+<p>d) It always occurs at the origin.</p>
+<p>Answer for 1: b. Justification: The text states “At each iteration of gradient descent, we take a step in the direction of the negative of the gradient, that is, <span class="math notranslate nohighlight">\(x_{t+1} = x_t - \alpha_t \nabla f(x_t), t = 0, 1, 2, \ldots\)</span> for a sequence of step sizes <span class="math notranslate nohighlight">\(\alpha_t &gt; 0\)</span>.”</p>
+<p>Answer for 2: d. Justification: The text provides both the definition in terms of the Hessian matrix (option b) and the equivalent characterization in terms of the quadratic bound (option c).</p>
+<p>Answer for 3: d. Justification: The theorem states both the asymptotic convergence of the gradients to zero (option b) and the quantitative bound on the minimum gradient norm after <span class="math notranslate nohighlight">\(S\)</span> steps (option c).</p>
+<p>Answer for 4: a. Justification: This is the convergence rate stated in the theorem.</p>
+<p>Answer for 5: b. Justification: The text states that if <span class="math notranslate nohighlight">\(f\)</span> is <span class="math notranslate nohighlight">\(m\)</span>-strongly convex, then “the global minimizer is unique.”</p>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./chap06_opt/04_gd"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="../03part2_convexity/roch-mmids-opt-convexity.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title"><span class="section-number">3.4. </span>Convexity</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="../04part2_logistic/roch-mmids-opt-logistic.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title"><span class="section-number">3.6. </span>Application: logistic regression</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#gradient-descent">3.5.1. Gradient descent</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#convergence-analysis">3.5.2. Convergence analysis</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Sebastien Roch
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2024.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

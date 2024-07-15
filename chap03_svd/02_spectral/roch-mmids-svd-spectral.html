@@ -1,0 +1,1460 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>4.2. Background: review of matrix rank and spectral decomposition &#8212; MMiDS Textbook</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.5.1/css/all.min.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.1/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.1/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.1/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b76e3c8a" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=384b581d" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=87e54e7c" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae" />
+  <script src="../../_static/vendor/fontawesome/6.5.1/js/all.min.js?digest=8d27b9dea8ad943066ae"></script>
+
+    <script src="../../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?v=efea14e4"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../_static/design-tabs.js?v=f930bc37"></script>
+    <script async="async" src="https://www.googletagmanager.com/gtag/js?id=G-P5E8DW088F"></script>
+    <script>
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){ dataLayer.push(arguments); }
+                gtag('js', new Date());
+                gtag('config', 'G-P5E8DW088F');
+            </script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){ dataLayer.push(arguments); }
+                gtag('js', new Date());
+                gtag('config', 'G-P5E8DW088F');
+            </script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'chap03_svd/02_spectral/roch-mmids-svd-spectral';</script>
+    <link rel="canonical" href="https://mmids-textbook.github.io/chap03_svd/02_spectral/roch-mmids-svd-spectral.html" />
+    <link rel="icon" href="https://mmids-textbook.github.io/favicon-32x32.png"/>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="4.3. Approximating subspaces and the SVD" href="../03_svd/roch-mmids-svd-svd.html" />
+    <link rel="prev" title="4.1. Motivating example: visualizing viral evolution" href="../01_motiv/roch-mmids-svd-motiv.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a id="pst-skip-link" class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+
+<a class="navbar-brand logo" href="../../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/mmids-cover-small.jpg" class="logo__image only-light" alt="MMiDS Textbook - Home"/>
+    <script>document.write(`<img src="../../_static/mmids-cover-small.jpg" class="logo__image only-dark" alt="MMiDS Textbook - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../index.html">
+                    <b>MATHEMATICAL METHODS in DATA SCIENCE (with Python)</b>
+                </a>
+            </li>
+        </ul>
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../chap01_intro/00_intro/roch-mmids-intro-intro.html">1. Introduction: a first data science problem</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../chap01_intro/01_motiv/roch-mmids-intro-motiv.html">1.1. Motivating example: identifying penguin species</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap01_intro/02_review/roch-mmids-intro-review.html">1.2. Background: quick refresher of matrix algebra, differential calculus, and elementary probability</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap01_intro/03_clustering/roch-mmids-intro-clustering.html">1.3. Clustering: an objective, an algorithm and a guarantee</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap01_intro/04_highdim/roch-mmids-intro-highdim.html">1.4. Some observations about high-dimensional data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap01_intro/exercises/roch-mmids-intro-exercises.html">1.5. Exercises</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap01_intro/05_adv/roch-mmids-intro-adv.html">1.6. Online suppplementary material</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../chap02_ls/00_intro/roch-mmids-ls-intro.html">2. Least squares: geometric, algebraic, and numerical aspects</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../chap02_ls/01_motiv/roch-mmids-ls-motiv.html">2.1. Motivating example: predicting sales</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap02_ls/02_subspaces/roch-mmids-ls-spaces.html">2.2. Background: review of vector spaces and matrix inverses</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap02_ls/03_orthog/roch-mmids-ls-orthog.html">2.3. Geometry of least squares: the orthogonal projection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap02_ls/04_qr/roch-mmids-ls-qr.html">2.4. QR decomposition and Householder transformations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap02_ls/05_regression/roch-mmids-ls-regression.html">2.5. Application: regression analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap02_ls/exercises/roch-mmids-ls-exercises.html">2.6. Exercises</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap02_ls/06_adv/roch-mmids-ls-adv.html">2.7. Online suppplementary material</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../chap06_opt/00_intro/roch-mmids-opt-intro.html">3. Optimization theory and algorithms</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-3"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../chap06_opt/01_motiv/roch-mmids-opt-motiv.html">3.1. Motivating example:  analyzing customer satisfaction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap06_opt/02_several/roch-mmids-opt-several.html">3.2. Background: review of differentiable functions of several variables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap06_opt/03_optimality/roch-mmids-opt-optimality.html">3.3. Optimality conditions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap06_opt/03part2_convexity/roch-mmids-opt-convexity.html">3.4. Convexity</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap06_opt/04_gd/roch-mmids-opt-gd.html">3.5. Gradient descent and its convergence analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap06_opt/04part2_logistic/roch-mmids-opt-logistic.html">3.6. Application: logistic regression</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap06_opt/exercises/roch-mmids-opt-exercises.html">3.7. Exercises</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap06_opt/06_adv/roch-mmids-opt-adv.html">3.8. Online suppplementary material</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="../00_intro/roch-mmids-svd-intro.html">4. Singular value decomposition</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-4"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../01_motiv/roch-mmids-svd-motiv.html">4.1. Motivating example: visualizing viral evolution</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">4.2. Background: review of matrix rank  and spectral decomposition</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../03_svd/roch-mmids-svd-svd.html">4.3. Approximating subspaces and the SVD</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../04_power/roch-mmids-svd-power.html">4.4. Power iteration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../05_pca/roch-mmids-svd-pca.html">4.5. Application: principal components analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../06_further/roch-mmids-svd-further.html">4.6. Further applications of the SVD: low-rank approximations and ridge regression</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../exercises/roch-mmids-svd-exercises.html">4.7. Exercises</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../07_adv/roch-mmids-svd-adv.html">4.8. Online suppplementary material</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../chap04_specgraph/00_intro/roch-mmids-specgraph-intro.html">5. Spectral graph theory</a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-5"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../chap04_specgraph/01_motiv/roch-mmids-specgraph-motiv.html">5.1. Motivating example: uncovering social groups</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap04_specgraph/02_graph/roch-mmids-specgraph-graph.html">5.2. Background: basic concepts in graph theory</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap04_specgraph/03_extremal/roch-mmids-specgraph-extremal.html">5.3. Variational characterization of eigenvalues</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap04_specgraph/04_laplacian/roch-mmids-specgraph-laplacian.html">5.4. Spectral properties of the Laplacian matrix</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap04_specgraph/05_partitioning/roch-mmids-specgraph-partitioning.html">5.5. Application: graph partitioning via spectral clustering</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap04_specgraph/05part2_sbm/roch-mmids-specgraph-sbm.html">5.6. Erdős-Rényi random graph and stochastic blockmodel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap04_specgraph/exercises/roch-mmids-specgraph-exercises.html">5.7. Exercises</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap04_specgraph/06_adv/roch-mmids-specgraph-adv.html">5.8. Online supplementary material</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../chap07_prob/00_intro/roch-mmids-prob-intro.html">6. Probabilistic models: from simple to complex</a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-6"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../chap07_prob/01_motiv/roch-mmids-prob-motiv.html">6.1. Motivating example: tracking location</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap07_prob/02_parametric/roch-mmids-prob-parametric.html">6.2. Background: introduction to parametric families and maximum likelihood estimation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap07_prob/03_joint/roch-mmids-prob-joint.html">6.3. Modeling more complex dependencies 1: using conditional independence</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap07_prob/03part2_em/roch-mmids-prob-em.html">6.4. Modeling more complex dependencies 2: marginalizing out an unobserved variable</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap07_prob/04_kalman/roch-mmids-prob-kalman.html">6.5. Application: linear-Gaussian models and Kalman filtering</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap07_prob/exercises/roch-mmids-prob-exercises.html">6.6. Exercises</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap07_prob/06_adv/roch-mmids-prob-adv.html">6.7. Online supplementary material</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../chap05_rwmc/00_intro/roch-mmids-rwmc-intro.html">7. Random walks on graphs and Markov chains</a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-7"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../chap05_rwmc/01_motiv/roch-mmids-rwmc-motiv.html">7.1. Motivating example: discovering mathematical topics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap05_rwmc/03_mcdefs/roch-mmids-rwmc-mcdefs.html">7.2. Background: elements of finite Markov chains</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap05_rwmc/04_stat/roch-mmids-rwmc-stat.html">7.3. Limit behavior 1: stationary distributions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap05_rwmc/04part2_mclimit/roch-mmids-rwmc-mclimit.html">7.4. Limit behavior 2: convergence to equilibrium</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap05_rwmc/05_pagerank/roch-mmids-rwmc-pagerank.html">7.5. Application: random walks on graphs and PageRank</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap05_rwmc/05part2_gibbs/roch-mmids-rwmc-gibbs.html">7.6. Further applications: Gibbs sampling and generating images</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap05_rwmc/exercises/roch-mmids-rwmc-exercises.html">7.7. Exercises</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap05_rwmc/06_adv/roch-mmids-rwmc-adv.html">7.8. Online supplementary material</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../chap08_nn/00_intro/roch-mmids-nn-intro.html">8. Neural networks, backpropagation and stochastic gradient descent</a><input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-8"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../chap08_nn/01_motiv/roch-mmids-nn-motiv.html">8.1. Motivating example:  classifying natural images</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap08_nn/02_chain/roch-mmids-nn-chain.html">8.2. Background: Jacobian, chain rule, and a brief introduction to automatic differentiation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap08_nn/03_backprop/roch-mmids-nn-backprop.html">8.3. Building blocks of AI 1: backpropagation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap08_nn/04_sgd/roch-mmids-nn-sgd.html">8.4. Building blocks of AI 2: stochastic gradient descent</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap08_nn/05_nn/roch-mmids-nn-nn.html">8.5. Building blocks of AI 3: neural networks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap08_nn/exercises/roch-mmids-nn-exercises.html">8.6. Exercises</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap08_nn/06_adv/roch-mmids-nn-adv.html">8.7. Online supplementary material</a></li>
+</ul>
+</li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/MMiDS-textbook/MMiDS-textbook.github.io" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/MMiDS-textbook/MMiDS-textbook.github.io/issues/new?title=Issue%20on%20page%20%2Fchap03_svd/02_spectral/roch-mmids-svd-spectral.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/chap03_svd/02_spectral/roch-mmids-svd-spectral.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Background: review of matrix rank  and spectral decomposition</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#rank-of-a-matrix">4.2.1. Rank of a matrix</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#eigenvalues-and-eigenvectors">4.2.2. Eigenvalues and eigenvectors</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <p><span class="math notranslate nohighlight">\(\newcommand{\bmu}{\boldsymbol{\mu}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bSigma}{\boldsymbol{\Sigma}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bfbeta}{\boldsymbol{\beta}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bflambda}{\boldsymbol{\lambda}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bgamma}{\boldsymbol{\gamma}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bsigma}{{\boldsymbol{\sigma}}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bpi}{\boldsymbol{\pi}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\btheta}{{\boldsymbol{\theta}}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bphi}{\boldsymbol{\phi}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\balpha}{\boldsymbol{\alpha}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\blambda}{\boldsymbol{\lambda}}\)</span>
+<span class="math notranslate nohighlight">\(\renewcommand{\P}{\mathbb{P}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\E}{\mathbb{E}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\indep}{\perp\!\!\!\perp} \newcommand{\bx}{\mathbf{x}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bp}{\mathbf{p}}\)</span>
+<span class="math notranslate nohighlight">\(\renewcommand{\bx}{\mathbf{x}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bX}{\mathbf{X}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\by}{\mathbf{y}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bY}{\mathbf{Y}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bz}{\mathbf{z}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bZ}{\mathbf{Z}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bw}{\mathbf{w}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bW}{\mathbf{W}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bv}{\mathbf{v}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bV}{\mathbf{V}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bfg}{\mathbf{g}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bfh}{\mathbf{h}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\horz}{\rule[.5ex]{2.5ex}{0.5pt}}\)</span>
+<span class="math notranslate nohighlight">\(\renewcommand{\S}{\mathcal{S}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\X}{\mathcal{X}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\var}{\mathrm{Var}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\pa}{\mathrm{pa}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\Z}{\mathcal{Z}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bh}{\mathbf{h}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bb}{\mathbf{b}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bc}{\mathbf{c}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\cE}{\mathcal{E}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\cP}{\mathcal{P}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bbeta}{\boldsymbol{\beta}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bLambda}{\boldsymbol{\Lambda}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\cov}{\mathrm{Cov}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bfk}{\mathbf{k}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\idx}[1]{}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\xdi}{}\)</span></p>
+<section id="background-review-of-matrix-rank-and-spectral-decomposition">
+<h1><span class="section-number">4.2. </span>Background: review of matrix rank  and spectral decomposition<a class="headerlink" href="#background-review-of-matrix-rank-and-spectral-decomposition" title="Link to this heading">#</a></h1>
+<p>We will need two additional concepts from linear algebra, the rank of a matrix and the spectral theorem.</p>
+<section id="rank-of-a-matrix">
+<h2><span class="section-number">4.2.1. </span>Rank of a matrix<a class="headerlink" href="#rank-of-a-matrix" title="Link to this heading">#</a></h2>
+<p>Recall that the dimension of the column space of <span class="math notranslate nohighlight">\(A\)</span> is called the column rank of <span class="math notranslate nohighlight">\(A\)</span>. Similarly the row rank of <span class="math notranslate nohighlight">\(A\)</span> is the dimension of its row space. As it turns out, these two notions of rank are the same by the <em>Row Rank Equals Column Rank Theorem</em><span class="math notranslate nohighlight">\(\idx{row rank equals column rank theorem}\xdi\)</span>. We give a proof of that theorem next. From now on, we refer to the row rank and column rank of <span class="math notranslate nohighlight">\(A\)</span> simply as the rank, which we denote by <span class="math notranslate nohighlight">\(\mathrm{rk}(A)\)</span>. <span class="math notranslate nohighlight">\(\idx{rank}\xdi\)</span></p>
+<p><em>Proof idea:</em> <em>(Row Rank Equals Column Rank)</em> Write <span class="math notranslate nohighlight">\(A\)</span> as a matrix factorization <span class="math notranslate nohighlight">\(BC\)</span> where the columns of <span class="math notranslate nohighlight">\(B\)</span> form a basis of <span class="math notranslate nohighlight">\(\mathrm{col}(A)\)</span>. Then the rows of <span class="math notranslate nohighlight">\(C\)</span> necessarily form a spanning set of <span class="math notranslate nohighlight">\(\mathrm{row}(A)\)</span>. So, because the number of columns of <span class="math notranslate nohighlight">\(B\)</span> and the number of rows of <span class="math notranslate nohighlight">\(C\)</span> match, we conclude that the row rank is less or equal than the column rank. Applying the same argument to the transpose gives the claim.</p>
+<p>Recall the following observation from a previous chapter.</p>
+<p><strong>Observation D1:</strong> Any linear subspace <span class="math notranslate nohighlight">\(U\)</span> of <span class="math notranslate nohighlight">\(\mathbb{R}^n\)</span> has a basis.</p>
+<p><strong>Observation D2:</strong> If <span class="math notranslate nohighlight">\(U\)</span> and <span class="math notranslate nohighlight">\(V\)</span> are linear subspaces such that <span class="math notranslate nohighlight">\(U \subseteq V\)</span>, then <span class="math notranslate nohighlight">\(\mathrm{dim}(U) \leq \mathrm{dim}(V)\)</span>.</p>
+<p><strong>Observation D3:</strong> The dimension of <span class="math notranslate nohighlight">\(\mathrm{span}(\mathbf{u}_1,\ldots,\mathbf{u}_m)\)</span> is at most <span class="math notranslate nohighlight">\(m\)</span>.</p>
+<p><em>Proof:</em> <em>(Row Rank Equals Column Rank)</em> Assume that <span class="math notranslate nohighlight">\(A\)</span> has column rank <span class="math notranslate nohighlight">\(r\)</span>. Then there exists a basis <span class="math notranslate nohighlight">\(\mathbf{b}_1,\ldots, \mathbf{b}_r \in \mathbb{R}^n\)</span> of <span class="math notranslate nohighlight">\(\mathrm{col}(A)\)</span> by <em>Observation D1</em> above, and we know that <span class="math notranslate nohighlight">\(r \leq n\)</span> by <em>Observation D2</em>. That is, for each <span class="math notranslate nohighlight">\(j\)</span>, letting <span class="math notranslate nohighlight">\(\mathbf{a}_{j} = A_{\cdot,j}\)</span> be the <span class="math notranslate nohighlight">\(j\)</span>-th column of <span class="math notranslate nohighlight">\(A\)</span> we can write</p>
+<div class="math notranslate nohighlight">
+\[
+\mathbf{a}_{j} = \sum_{\ell=1}^r \mathbf{b}_\ell c_{\ell j}
+\]</div>
+<p>for some <span class="math notranslate nohighlight">\(c_{\ell j}\)</span>’s. Let <span class="math notranslate nohighlight">\(B\)</span> be the matrix whose columns are <span class="math notranslate nohighlight">\(\mathbf{b}_1, \ldots, \mathbf{b}_r\)</span> and let <span class="math notranslate nohighlight">\(C\)</span> be the matrix with entries <span class="math notranslate nohighlight">\((C)_{\ell j} = c_{\ell j}\)</span>, <span class="math notranslate nohighlight">\(\ell=1,\ldots,r\)</span>, <span class="math notranslate nohighlight">\(j=1,\ldots,m\)</span>. Then the equation above can be re-written as the matrix factorization <span class="math notranslate nohighlight">\(A = BC\)</span>. Indeed, by our previous observations about matrix-matrix products, the columns of <span class="math notranslate nohighlight">\(A\)</span> are linear combinations of the columns of <span class="math notranslate nohighlight">\(B\)</span> with coefficients taken from the corresponding column of <span class="math notranslate nohighlight">\(C\)</span>.</p>
+<p>The key point is the following: <span class="math notranslate nohighlight">\(C\)</span> necessarily has <span class="math notranslate nohighlight">\(r\)</span> rows. Let <span class="math notranslate nohighlight">\(\boldsymbol{\alpha}_{i}^T = A_{i,\cdot}\)</span> be the <span class="math notranslate nohighlight">\(i\)</span>-th row of <span class="math notranslate nohighlight">\(A\)</span> and <span class="math notranslate nohighlight">\(\mathbf{c}_{\ell}^T = C_{\ell,\cdot}\)</span> be the <span class="math notranslate nohighlight">\(\ell\)</span>-th row of <span class="math notranslate nohighlight">\(C\)</span>. Using our alternative representation of matrix-matrix product in terms of rows, the decomposition is equivalent to</p>
+<div class="math notranslate nohighlight">
+\[
+\boldsymbol{\alpha}_{i}^T = \sum_{\ell=1}^r b_{i\ell} \mathbf{c}_\ell^T, \quad i=1,\ldots, n,
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(b_{i\ell} = (\mathbf{b}_i)_\ell = (B)_{i\ell}\)</span> is the <span class="math notranslate nohighlight">\(i\)</span>-th entry of the <span class="math notranslate nohighlight">\(\ell\)</span>-th column of <span class="math notranslate nohighlight">\(B\)</span>. In words, the rows of <span class="math notranslate nohighlight">\(A\)</span> are linear combinations of the rows of <span class="math notranslate nohighlight">\(C\)</span> with coefficients taken from the corresponding row of <span class="math notranslate nohighlight">\(B\)</span>. In particular, <span class="math notranslate nohighlight">\(\mathcal{C} = \{\mathbf{c}_{j}:j=1,\ldots,r\}\)</span> is a spanning list of the row space of <span class="math notranslate nohighlight">\(A\)</span>, that is, each row of <span class="math notranslate nohighlight">\(A\)</span> can be written as a linear combination of <span class="math notranslate nohighlight">\(\mathcal{C}\)</span>. Put differently, <span class="math notranslate nohighlight">\(\mathrm{row}(A) \subseteq \mathrm{span}(\mathcal{C})\)</span>.</p>
+<p>So the row rank of <span class="math notranslate nohighlight">\(A\)</span> is at most <span class="math notranslate nohighlight">\(r\)</span>, the column rank of <span class="math notranslate nohighlight">\(A\)</span>, by <em>Observation D2</em>.</p>
+<p>Applying the same argument to <span class="math notranslate nohighlight">\(A^T\)</span>, which switches the role of the columns and the rows, gives that the column rank of <span class="math notranslate nohighlight">\(A\)</span> (i.e. the row rank of <span class="math notranslate nohighlight">\(A^T\)</span>) is at most the row rank of <span class="math notranslate nohighlight">\(A\)</span> (i.e. the column rank of <span class="math notranslate nohighlight">\(A^T\)</span>). Hence the two notions of rank must be equal. (We also deduce <span class="math notranslate nohighlight">\(r \leq m\)</span> by <em>Observation D2</em> again.) <span class="math notranslate nohighlight">\(\square\)</span></p>
+<p><strong>EXAMPLE:</strong> <strong>(continued)</strong> We illustrate the proof of the theorem. Continuing a previous example, let <span class="math notranslate nohighlight">\(A\)</span> be the matrix with columns <span class="math notranslate nohighlight">\(\mathbf{w}_1 = (1,0,1)\)</span>, <span class="math notranslate nohighlight">\(\mathbf{w}_2 = (0,1,1)\)</span>, and <span class="math notranslate nohighlight">\(\mathbf{w}_3 = (1,-1,0)\)</span></p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+A
+= 
+\begin{pmatrix}
+1 &amp; 0 &amp; 1\\
+0 &amp; 1 &amp; -1\\
+1 &amp; 1 &amp; 0
+\end{pmatrix}.
+\end{split}\]</div>
+<p>We know that <span class="math notranslate nohighlight">\(\mathbf{w}_1\)</span> and <span class="math notranslate nohighlight">\(\mathbf{w}_2\)</span> form a basis of <span class="math notranslate nohighlight">\(\mathrm{col}(A)\)</span>. We use them to construct our matrix <span class="math notranslate nohighlight">\(B\)</span></p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+B
+= 
+\begin{pmatrix}
+1 &amp; 0\\
+0 &amp; 1\\
+1 &amp; 1
+\end{pmatrix}.
+\end{split}\]</div>
+<p>Recall that <span class="math notranslate nohighlight">\(\mathbf{w}_3 = \mathbf{w}_1 - \mathbf{w}_2\)</span>. Hence the matrix <span class="math notranslate nohighlight">\(C\)</span> is</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+C
+= 
+\begin{pmatrix}
+1 &amp; 0 &amp; 1\\
+0 &amp; 1 &amp; -1
+\end{pmatrix}.
+\end{split}\]</div>
+<p>Indeed, column <span class="math notranslate nohighlight">\(j\)</span> of <span class="math notranslate nohighlight">\(C\)</span> gives the coefficients in the linear combination of the columns of <span class="math notranslate nohighlight">\(B\)</span> that produces column <span class="math notranslate nohighlight">\(j\)</span> of A. Check that <span class="math notranslate nohighlight">\(A = B C\)</span>. <span class="math notranslate nohighlight">\(\lhd\)</span></p>
+<p><strong>NUMERICAL CORNER:</strong> In Numpy, one can compute the rank of a matrix using the function <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.linalg.matrix_rank.html"><code class="docutils literal notranslate"><span class="pre">numpy.linalg.matrix_rank</span></code></a>. We will see later in the chapter how to compute it using the singular value decomposition (which is how <code class="docutils literal notranslate"><span class="pre">LA.matrix_rank</span></code> does it). Let’s try the example above.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">w1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="mf">1.</span><span class="p">])</span>
+<span class="n">w2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.</span><span class="p">,</span> <span class="mf">1.</span><span class="p">,</span> <span class="mf">1.</span><span class="p">])</span>
+<span class="n">w3</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">1.</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">])</span>
+<span class="n">A</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">stack</span><span class="p">((</span><span class="n">w1</span><span class="p">,</span> <span class="n">w2</span><span class="p">,</span> <span class="n">w3</span><span class="p">),</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[[ 1.  0.  1.]
+ [ 0.  1. -1.]
+ [ 1.  1.  0.]]
+</pre></div>
+</div>
+</div>
+</div>
+<p>We compute the rank of <code class="docutils literal notranslate"><span class="pre">A</span></code>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">LA</span><span class="o">.</span><span class="n">matrix_rank</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2
+</pre></div>
+</div>
+</div>
+</div>
+<p>We take only the first two columns of <code class="docutils literal notranslate"><span class="pre">A</span></code> this time to form <code class="docutils literal notranslate"><span class="pre">B</span></code>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">B</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">stack</span><span class="p">((</span><span class="n">w1</span><span class="p">,</span> <span class="n">w2</span><span class="p">),</span><span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">B</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[[1. 0.]
+ [0. 1.]
+ [1. 1.]]
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">LA</span><span class="o">.</span><span class="n">matrix_rank</span><span class="p">(</span><span class="n">B</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2
+</pre></div>
+</div>
+</div>
+</div>
+<p>Recall that, in Numpy, <code class="docutils literal notranslate"><span class="pre">&#64;</span></code> is used for matrix product.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">C</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="mf">1.</span><span class="p">],[</span><span class="mf">0.</span><span class="p">,</span> <span class="mf">1.</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.</span><span class="p">]])</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">C</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[[ 1.  0.  1.]
+ [ 0.  1. -1.]]
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">LA</span><span class="o">.</span><span class="n">matrix_rank</span><span class="p">(</span><span class="n">C</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">B</span> <span class="o">@</span> <span class="n">C</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[[ 1.  0.  1.]
+ [ 0.  1. -1.]
+ [ 1.  1.  0.]]
+</pre></div>
+</div>
+</div>
+</div>
+<p><span class="math notranslate nohighlight">\(\unlhd\)</span></p>
+<p><strong>EXAMPLE:</strong> Let <span class="math notranslate nohighlight">\(A \in \mathbb{R}^{n \times k}\)</span> and <span class="math notranslate nohighlight">\(B \in \mathbb{R}^{k \times m}\)</span>. Then we claim that</p>
+<div class="math notranslate nohighlight">
+\[
+\mathrm{rk}(AB) \leq \mathrm{rk}(A).
+\]</div>
+<p>Indeed, the columns of <span class="math notranslate nohighlight">\(AB\)</span> are linear combinations of the columns of <span class="math notranslate nohighlight">\(A\)</span>. Hence <span class="math notranslate nohighlight">\(\mathrm{col}(AB) \subseteq \mathrm{col}(A)\)</span>. The claim follows by <em>Observation D2</em>. <span class="math notranslate nohighlight">\(\lhd\)</span></p>
+<p><strong>EXAMPLE:</strong> Let <span class="math notranslate nohighlight">\(A \in \mathbb{R}^{n \times k}\)</span> and <span class="math notranslate nohighlight">\(B \in \mathbb{R}^{n \times m}\)</span>. Then we claim that</p>
+<div class="math notranslate nohighlight">
+\[
+\mathrm{rk}(A + B) \leq \mathrm{rk}(A) + \mathrm{rk}(B).
+\]</div>
+<p>Indeed, the columns of <span class="math notranslate nohighlight">\(A + B\)</span> are linear combinations of the columns of <span class="math notranslate nohighlight">\(A\)</span> and of <span class="math notranslate nohighlight">\(B\)</span>. Let <span class="math notranslate nohighlight">\(\mathbf{u}_1,\ldots,\mathbf{u}_h\)</span> be a basis of <span class="math notranslate nohighlight">\(\mathrm{col}(A)\)</span> and let <span class="math notranslate nohighlight">\(\mathbf{v}_1,\ldots,\mathbf{v}_{\ell}\)</span> be a basis of <span class="math notranslate nohighlight">\(\mathrm{col}(B)\)</span> by <em>Observation D1</em>. Then, we deduce</p>
+<div class="math notranslate nohighlight">
+\[
+\mathrm{col}(A + B) \subseteq \mathrm{span}(\mathbf{u}_1,\ldots,\mathbf{u}_h,\mathbf{v}_1,\ldots,\mathbf{v}_{\ell}).
+\]</div>
+<p>By <em>Observation D2</em>, it follows that</p>
+<div class="math notranslate nohighlight">
+\[
+\mathrm{rk}(A + B) \leq \mathrm{dim}(\mathrm{span}(\mathbf{u}_1,\ldots,\mathbf{u}_h,\mathbf{v}_1,\ldots,\mathbf{v}_{\ell})).
+\]</div>
+<p>By <em>Observation D3</em>, the right hand side is at most the length of the spanning list, i.e., <span class="math notranslate nohighlight">\(h+\ell\)</span>. But by construction <span class="math notranslate nohighlight">\(\mathrm{rk}(A) = h\)</span> and <span class="math notranslate nohighlight">\(\mathrm{rk}(B) = \ell\)</span>, so we are done. <span class="math notranslate nohighlight">\(\lhd\)</span></p>
+<p><strong>EXAMPLE:</strong> <strong>(A Proof of the Rank-Nullity Theorem)</strong> <span class="math notranslate nohighlight">\(\idx{rank-nullity theorem}\xdi\)</span> Let <span class="math notranslate nohighlight">\(A \in \mathbb{R}^{n \times m}\)</span>. Recall that the column space of <span class="math notranslate nohighlight">\(A\)</span>, <span class="math notranslate nohighlight">\(\mathrm{col}(A) \subseteq \mathbb{R}^n\)</span>, is the span of its columns. We compute its othogonal complement. By definition, the columns of <span class="math notranslate nohighlight">\(A\)</span>, which we denote by <span class="math notranslate nohighlight">\(\mathbf{a}_1,\ldots,\mathbf{a}_m\)</span>, form a spanning list of <span class="math notranslate nohighlight">\(\mathrm{col}(A)\)</span>. So <span class="math notranslate nohighlight">\(\mathbf{u} \in \mathrm{col}(A)^\perp \subseteq \mathbb{R}^n\)</span> if and only if</p>
+<div class="math notranslate nohighlight">
+\[
+\mathbf{a}_i^T\mathbf{u} = \langle \mathbf{u}, \mathbf{a}_i \rangle = 0, \quad \forall i=1,\ldots,m.
+\]</div>
+<p>Indeed that then implies that for any <span class="math notranslate nohighlight">\(\mathbf{v} \in \mathrm{col}(A)\)</span>, say <span class="math notranslate nohighlight">\(\mathbf{v} = \beta_1 \mathbf{a}_1 + \cdots + \beta_m \mathbf{a}_m\)</span> we have</p>
+<div class="math notranslate nohighlight">
+\[
+\left\langle \mathbf{u}, \sum_{i=1}^m \beta_i \mathbf{a}_i \right\rangle 
+= \sum_{i=1}^m \beta_i \langle \mathbf{u}, \mathbf{a}_i \rangle
+= 0.
+\]</div>
+<p>The <span class="math notranslate nohighlight">\(m\)</span> conditions above can be written in matrix form as</p>
+<div class="math notranslate nohighlight">
+\[
+A^T \mathbf{u} = \mathbf{0}.
+\]</div>
+<p>That is, the orthogonal complement of the column space of <span class="math notranslate nohighlight">\(A\)</span> is the null space of <span class="math notranslate nohighlight">\(A^T\)</span></p>
+<div class="math notranslate nohighlight">
+\[
+\mathrm{col}(A)^\perp = \mathrm{null}(A^T).
+\]</div>
+<p>Applying the same argument to the column space of <span class="math notranslate nohighlight">\(A^T\)</span>, it follows that</p>
+<div class="math notranslate nohighlight">
+\[
+\mathrm{col}(A^T)^\perp = \mathrm{null}(A),
+\]</div>
+<p>where note that <span class="math notranslate nohighlight">\(\mathrm{null}(A) \subseteq \mathbb{R}^m\)</span>. The four linear subspaces <span class="math notranslate nohighlight">\(\mathrm{col}(A)\)</span>, <span class="math notranslate nohighlight">\(\mathrm{col}(A^T)\)</span>, <span class="math notranslate nohighlight">\(\mathrm{null}(A)\)</span> and <span class="math notranslate nohighlight">\(\mathrm{null}(A^T)\)</span> are referred to as the fundamental subspaces of <span class="math notranslate nohighlight">\(A\)</span>. We have shown</p>
+<div class="math notranslate nohighlight">
+\[
+\mathrm{col}(A) \oplus  \mathrm{null}(A^T) = \mathbb{R}^n
+\quad 
+\text{and}
+\quad
+\mathrm{col}(A^T) \oplus  \mathrm{null}(A) = \mathbb{R}^m
+\]</div>
+<p>By the <em>Row Rank Equals Column Rank Theorem</em>, <span class="math notranslate nohighlight">\(\mathrm{dim}(\mathrm{col}(A)) = \mathrm{dim}(\mathrm{col}(A^T))\)</span>. Moreover, by our previous observation about the dimensions of direct sums, we have</p>
+<div class="math notranslate nohighlight">
+\[
+n = \mathrm{dim}(\mathrm{col}(A)) + \mathrm{dim}(\mathrm{null}(A^T))
+= \mathrm{dim}(\mathrm{col}(A^T)) + \mathrm{dim}(\mathrm{null}(A^T))
+\]</div>
+<p>and</p>
+<div class="math notranslate nohighlight">
+\[
+m = \mathrm{dim}(\mathrm{col}(A^T)) + \mathrm{dim}(\mathrm{null}(A))
+= \mathrm{dim}(\mathrm{col}(A)) + \mathrm{dim}(\mathrm{null}(A)).
+\]</div>
+<p>So we deduce that</p>
+<div class="math notranslate nohighlight">
+\[
+\mathrm{dim}(\mathrm{null}(A))
+= m - \mathrm{rk}(A)
+\]</div>
+<p>and</p>
+<div class="math notranslate nohighlight">
+\[
+\mathrm{dim}(\mathrm{null}(A^T))
+= n - \mathrm{rk}(A).
+\]</div>
+<p>These formulas are referred to the <em>Rank-Nullity Theorem</em>. The dimension of the null space is sometimes called the nullity. <span class="math notranslate nohighlight">\(\lhd\)</span></p>
+<p><strong>Outer products and rank-one matrices</strong> Let <span class="math notranslate nohighlight">\(\mathbf{u} = (u_1,\ldots,u_n)^T \in \mathbb{R}^n\)</span> and <span class="math notranslate nohighlight">\(\mathbf{v} = (v_1,\ldots,v_m)^T \in \mathbf{R}^m\)</span> be two column (nonzero) vectors. Their outer product<span class="math notranslate nohighlight">\(\idx{outer product}\xdi\)</span> is defined as the matrix</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\mathbf{u} \mathbf{v}^T
+= 
+\begin{pmatrix}
+u_1 v_1 &amp; u_1 v_2 &amp; \cdots &amp; u_1 v_m\\
+u_2 v_1 &amp; u_2 v_2 &amp; \cdots &amp; u_2 v_m\\
+\vdots &amp; \vdots &amp; \ddots &amp; \vdots\\
+u_n v_1 &amp; u_n v_2 &amp; \cdots &amp; u_n v_m
+\end{pmatrix}
+= 
+\begin{pmatrix}
+| &amp;  &amp; | \\
+v_{1} \mathbf{u} &amp; \ldots &amp; v_{m} \mathbf{u} \\
+| &amp;  &amp; | 
+\end{pmatrix}.
+\end{split}\]</div>
+<p>This is not to be confused with the inner product <span class="math notranslate nohighlight">\(\mathbf{u}^T \mathbf{v}\)</span>, which requires <span class="math notranslate nohighlight">\(n = m\)</span> and produces a scalar.</p>
+<p>If <span class="math notranslate nohighlight">\(\mathbf{u}\)</span> and <span class="math notranslate nohighlight">\(\mathbf{v}\)</span> are nonzero, the matrix <span class="math notranslate nohighlight">\(\mathbf{u} \mathbf{v}^T\)</span> has rank one. Indeed, its columns are all a multiple of the same vector <span class="math notranslate nohighlight">\(\mathbf{u}\)</span>. So the column space spanned by the columns of <span class="math notranslate nohighlight">\(\mathbf{u} \mathbf{v}^T\)</span> is one-dimensional. Vice versa, any rank-one matrix can be written in this form by definition of the rank.</p>
+<p>We have seen many different interpretations of matrix-matrix products. Here is yet another one. Let <span class="math notranslate nohighlight">\(A = (a_{ij})_{i,j} \in \mathbb{R}^{n \times k}\)</span> and
+<span class="math notranslate nohighlight">\(B = (b_{ij})_{i,j} \in \mathbb{R}^{k \times m}\)</span>. Denote by <span class="math notranslate nohighlight">\(\mathbf{a}_1,\ldots,\mathbf{a}_k\)</span> the columns of <span class="math notranslate nohighlight">\(A\)</span>
+and denote by <span class="math notranslate nohighlight">\(\mathbf{b}_1^T,\ldots,\mathbf{b}_k^T\)</span> the rows of <span class="math notranslate nohighlight">\(B\)</span>.</p>
+<p>Then</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+A B
+&amp;=
+\begin{pmatrix}
+\sum_{j=1}^k a_{1j} b_{j1} &amp; \sum_{j=1}^k a_{1j} b_{j2} &amp; \cdots &amp; \sum_{j=1}^k a_{1j} b_{jm}\\
+\sum_{j=1}^k a_{2j} b_{j1} &amp; \sum_{j=1}^k a_{2j} b_{j2} &amp; \cdots &amp; \sum_{j=1}^k a_{2j} b_{jm}\\
+\vdots &amp; \vdots &amp; \ddots &amp; \vdots\\
+\sum_{j=1}^k a_{nj} b_{j1} &amp; \sum_{j=1}^k a_{nj} b_{j2} &amp; \cdots &amp; \sum_{j=1}^k a_{nj} b_{jm}
+\end{pmatrix}\\
+&amp;=
+\sum_{j=1}^k
+\begin{pmatrix}
+ a_{1j} b_{j1} &amp; a_{1j} b_{j2} &amp; \cdots &amp; a_{1j} b_{jm}\\
+a_{2j} b_{j1} &amp; a_{2j} b_{j2} &amp; \cdots &amp; a_{2j} b_{jm}\\
+\vdots &amp; \vdots &amp; \ddots &amp; \vdots\\
+a_{nj} b_{j1} &amp; a_{nj} b_{j2} &amp; \cdots &amp; a_{nj} b_{jm}
+\end{pmatrix}\\
+&amp;=
+\sum_{j=1}^k \mathbf{a}_j \mathbf{b}_j^T.
+\end{align*}\]</div>
+<p>In words, the matrix product <span class="math notranslate nohighlight">\(AB\)</span> can be interpreted as a sum of <span class="math notranslate nohighlight">\(k\)</span> rank-one matrices, each of which is the outer product of a column of <span class="math notranslate nohighlight">\(A\)</span> with the corresponding row of <span class="math notranslate nohighlight">\(B\)</span>.</p>
+<p>Because the rank of a sum is at most the sum of the ranks (as shown in a previous example), it follows that the rank of <span class="math notranslate nohighlight">\(AB\)</span> is at most <span class="math notranslate nohighlight">\(k\)</span>. This is consistent with the fact that the rank of a product is at most the minimum of the ranks (also shown in a previous example).</p>
+</section>
+<section id="eigenvalues-and-eigenvectors">
+<h2><span class="section-number">4.2.2. </span>Eigenvalues and eigenvectors<a class="headerlink" href="#eigenvalues-and-eigenvectors" title="Link to this heading">#</a></h2>
+<p>Recall the concepts of eigenvalues<span class="math notranslate nohighlight">\(\idx{eigenvalue}\xdi\)</span> and eigenvectors<span class="math notranslate nohighlight">\(\idx{eigenvector}\xdi\)</span>. We work on <span class="math notranslate nohighlight">\(\mathbb{R}^d\)</span>.</p>
+<p><strong>DEFINITION</strong> <strong>(Eigenvalues and Eigenvectors)</strong> Let <span class="math notranslate nohighlight">\(A \in \mathbb{R}^{d \times d}\)</span> be a square matrix. Then <span class="math notranslate nohighlight">\(\lambda \in \mathbb{R}\)</span> is an eigenvalue of <span class="math notranslate nohighlight">\(A\)</span> if there exists a nonzero vector <span class="math notranslate nohighlight">\(\mathbf{x} \neq \mathbf{0}\)</span> such that</p>
+<div class="math notranslate nohighlight">
+\[
+A \mathbf{x} = \lambda \mathbf{x}.
+\]</div>
+<p>The vector <span class="math notranslate nohighlight">\(\mathbf{x}\)</span> is referred to as an eigenvector. <span class="math notranslate nohighlight">\(\natural\)</span></p>
+<p>As the next example shows, not every matrix has a (real) eigenvalue.</p>
+<p><strong>EXAMPLE:</strong> <strong>(No Real Eigenvalues)</strong> Set <span class="math notranslate nohighlight">\(d = 2\)</span> and let</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+A
+=
+\begin{pmatrix}
+0 &amp; -1 \\
+1 &amp; 0
+\end{pmatrix}.
+\end{split}\]</div>
+<p>For <span class="math notranslate nohighlight">\(\lambda\)</span> to be an eigenvalue, there must be an nonzero eigenvector <span class="math notranslate nohighlight">\(\mathbf{x} = (x_1, x_2)\)</span> such that</p>
+<div class="math notranslate nohighlight">
+\[
+A \mathbf{x} = \lambda \mathbf{x}
+\]</div>
+<p>or put differently <span class="math notranslate nohighlight">\(- x_2 = \lambda x_1\)</span>
+and <span class="math notranslate nohighlight">\(x_1 = \lambda x_2\)</span>. Replacing these equations into each other, it must be that <span class="math notranslate nohighlight">\(- x_2 = \lambda^2 x_2\)</span>
+and <span class="math notranslate nohighlight">\(x_1 = - \lambda^2 x_1\)</span>. Because <span class="math notranslate nohighlight">\(x_1, x_2\)</span> cannot both be <span class="math notranslate nohighlight">\(0\)</span>, <span class="math notranslate nohighlight">\(\lambda\)</span> must satisfy the equation <span class="math notranslate nohighlight">\(\lambda^2 = -1\)</span> for which there is no real solution. <span class="math notranslate nohighlight">\(\lhd\)</span></p>
+<p>In general, <span class="math notranslate nohighlight">\(A \in \mathbb{R}^{d \times d}\)</span> has at most <span class="math notranslate nohighlight">\(d\)</span> distinct eigenvalues.</p>
+<p><strong>LEMMA</strong> <strong>(Number of Eigenvalues)</strong> <span class="math notranslate nohighlight">\(\idx{number of eigenvalues lemma}\xdi\)</span> Let <span class="math notranslate nohighlight">\(A \in \mathbb{R}^{d \times d}\)</span> and
+let <span class="math notranslate nohighlight">\(\lambda_1, \ldots, \lambda_m\)</span> be distinct eigenvalues of <span class="math notranslate nohighlight">\(A\)</span> with corresponding
+eigenvectors <span class="math notranslate nohighlight">\(\mathbf{x}_1, \ldots, \mathbf{x}_m\)</span>. Then <span class="math notranslate nohighlight">\(\mathbf{x}_1, \ldots, \mathbf{x}_m\)</span> are linearly independent. In particular, <span class="math notranslate nohighlight">\(m \leq d\)</span>. <span class="math notranslate nohighlight">\(\flat\)</span></p>
+<p><em>Proof:</em> Assume by contradiction that <span class="math notranslate nohighlight">\(\mathbf{x}_1, \ldots, \mathbf{x}_m\)</span> are linearly dependent. By the <em>Linear Dependence Lemma</em>, there is <span class="math notranslate nohighlight">\(k \leq m\)</span> such that</p>
+<div class="math notranslate nohighlight">
+\[
+\mathbf{x}_k \in \mathrm{span}(\mathbf{x}_1, \ldots, \mathbf{x}_{k-1})
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(\mathbf{x}_1, \ldots, \mathbf{x}_{k-1}\)</span> are linearly independent. In particular, there are <span class="math notranslate nohighlight">\(a_1, \ldots, a_{k-1}\)</span> such that</p>
+<div class="math notranslate nohighlight">
+\[
+\mathbf{x}_k = a_1 \mathbf{x}_1 + \cdots + a_{k-1} \mathbf{x}_{k-1}.
+\]</div>
+<p>Transform the equation above in two ways: (1) multiply both sides by <span class="math notranslate nohighlight">\(\lambda_k\)</span> and (2) apply <span class="math notranslate nohighlight">\(A\)</span>. Then subtract the resulting equations. That leads to</p>
+<div class="math notranslate nohighlight">
+\[
+\mathbf{0}
+= a_1 (\lambda_k - \lambda_1) \mathbf{x}_1 + \cdots
++ a_{k-1} (\lambda_k - \lambda_{k-1}) \mathbf{x}_{k-1}. 
+\]</div>
+<p>Because the <span class="math notranslate nohighlight">\(\lambda_i\)</span>’s are distinct and <span class="math notranslate nohighlight">\(\mathbf{x}_1, \ldots, \mathbf{x}_{k-1}\)</span> are linearly independent, we must have <span class="math notranslate nohighlight">\(a_1 = \cdots = a_{k-1} = 0\)</span>. But that implies that <span class="math notranslate nohighlight">\(\mathbf{x}_k = \mathbf{0}\)</span>, a contradiction.</p>
+<p>For the second claim, if there were more than <span class="math notranslate nohighlight">\(d\)</span> distinct eigenvalues, then there would be more than <span class="math notranslate nohighlight">\(d\)</span> corresponding linearly independent eigenvectors by the first claim, a contradiction. <span class="math notranslate nohighlight">\(\square\)</span></p>
+<p><strong>EXAMPLE:</strong> <strong>(Diagonal (and Similar) Matrices)</strong> Recall that we use the notation <span class="math notranslate nohighlight">\(\mathrm{diag}(\lambda_1,\ldots,\lambda_d)\)</span> for the diagonal matrix<span class="math notranslate nohighlight">\(\idx{diagonal matrix}\xdi\)</span> with diagonal entries <span class="math notranslate nohighlight">\(\lambda_1,\ldots,\lambda_d\)</span>. The upper bound in the <em>Number of Eigenvalues Lemma</em> can be achieved, for instance, by diagonal matrices with distinct diagonal entries <span class="math notranslate nohighlight">\(A = \mathrm{diag}(\lambda_1, \ldots, \lambda_d)\)</span>. Each standard basis vector <span class="math notranslate nohighlight">\(\mathbf{e}_i\)</span> is then an eigenvector</p>
+<div class="math notranslate nohighlight">
+\[
+A \mathbf{e}_i = \lambda_i \mathbf{e}_i.
+\]</div>
+<p>More generally, let <span class="math notranslate nohighlight">\(A\)</span> be similar to a matrix <span class="math notranslate nohighlight">\(D = \mathrm{diag}(\lambda_1, \ldots, \lambda_d)\)</span> with distinct diagonal entries, that is, there exists a nonsingular matrix <span class="math notranslate nohighlight">\(P\)</span> such that</p>
+<div class="math notranslate nohighlight">
+\[
+A = P D P^{-1}.
+\]</div>
+<p>Let <span class="math notranslate nohighlight">\(\mathbf{p}_1, \ldots, \mathbf{p}_d\)</span> be the columns of <span class="math notranslate nohighlight">\(P\)</span>. Note that, because the columns of <span class="math notranslate nohighlight">\(P\)</span> form a basis of <span class="math notranslate nohighlight">\(\mathbb{R}^d\)</span>, the entries of the vector <span class="math notranslate nohighlight">\(\mathbf{c} = P^{-1} \mathbf{x}\)</span> are the coefficients of the unique linear combination of the <span class="math notranslate nohighlight">\(\mathbf{p}_i\)</span>’s equal to <span class="math notranslate nohighlight">\(\mathbf{x}\)</span>. Indeed, <span class="math notranslate nohighlight">\(P \mathbf{c} = \mathbf{x}\)</span>. Hence, <span class="math notranslate nohighlight">\(A \mathbf{x}\)</span> is can be thought of as: (1) expressing <span class="math notranslate nohighlight">\(\mathbf{x}\)</span> in the basis <span class="math notranslate nohighlight">\(\mathbf{p}_1, \ldots, \mathbf{p}_d\)</span>, (2) and scaling the <span class="math notranslate nohighlight">\(\mathbf{p}_i\)</span>’s by the corresponding <span class="math notranslate nohighlight">\(\lambda_i\)</span>’s. In particular, the <span class="math notranslate nohighlight">\(\mathbf{p}_i\)</span>’s are eigenvectors of <span class="math notranslate nohighlight">\(A\)</span> since, by the above, <span class="math notranslate nohighlight">\(P^{-1} \mathbf{p}_i = \mathbf{e}_i\)</span> and so</p>
+<div class="math notranslate nohighlight">
+\[
+A \mathbf{p}_i 
+= P D P^{-1} \mathbf{p}_i 
+= P D \mathbf{e}_i
+= P (\lambda_i \mathbf{e}_i)
+= \lambda_i \mathbf{p}_i.
+\]</div>
+<p><span class="math notranslate nohighlight">\(\lhd\)</span></p>
+<p><strong>NUMERICAL CORNER:</strong> In Numpy, the eigenvalues and eigenvectors of a matrix can be computed using <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.linalg.eig.html"><code class="docutils literal notranslate"><span class="pre">numpy.linalg.eig</span></code></a>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">A</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mf">2.5</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.5</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">2.5</span><span class="p">]])</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">w</span><span class="p">,</span> <span class="n">v</span> <span class="o">=</span> <span class="n">LA</span><span class="o">.</span><span class="n">eig</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">w</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[3. 2.]
+[[ 0.70710678  0.70710678]
+ [-0.70710678  0.70710678]]
+</pre></div>
+</div>
+</div>
+</div>
+<p>Above, <code class="docutils literal notranslate"><span class="pre">w</span></code> are the eigenvalues in an array, whereas the columns of <code class="docutils literal notranslate"><span class="pre">v</span></code> are the corresponding eigenvectors.</p>
+<p><span class="math notranslate nohighlight">\(\unlhd\)</span></p>
+<p><strong>Some matrix algebra</strong> We will need a few useful observations about matrices.</p>
+<p>A (not necessarily square) matrix <span class="math notranslate nohighlight">\(D \in \mathbb{R}^{k \times r}\)</span> is diagonal if its non-diagonal entries are zero. That is, <span class="math notranslate nohighlight">\(i \neq j\)</span> implies that <span class="math notranslate nohighlight">\(D_{ij} =0\)</span>. Note that a diagonal matrix is not necessarily square and that the diagonal elements are allowed to be zero.</p>
+<p>Multiplying a matrix by a diagonal one has a very specific effect. Let <span class="math notranslate nohighlight">\(A \in \mathbb{R}^{n \times k}\)</span> and
+<span class="math notranslate nohighlight">\(B \in \mathbb{R}^{r \times m}\)</span>. We focus here on the case <span class="math notranslate nohighlight">\(k \geq r\)</span>. The matrix product <span class="math notranslate nohighlight">\(A D\)</span> produces a matrix whose columns are linear combinations of the columns of <span class="math notranslate nohighlight">\(A\)</span> where the coefficients are taken from the corresponding column of <span class="math notranslate nohighlight">\(D\)</span>. But the columns of <span class="math notranslate nohighlight">\(D\)</span> have at most one nonzero elements, the diagonal one. So the columns of <span class="math notranslate nohighlight">\(AD\)</span> are in fact multiples of the columns of <span class="math notranslate nohighlight">\(A\)</span></p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+AD
+= 
+\begin{pmatrix}
+| &amp;  &amp; | \\
+d_{11} \mathbf{a}_1 &amp; \ldots &amp; d_{rr} \mathbf{a}_r \\
+| &amp;  &amp; | 
+\end{pmatrix}
+\end{split}\]</div>
+<p>where <span class="math notranslate nohighlight">\(\mathbf{a}_1,\ldots,\mathbf{a}_k\)</span> are the columns of <span class="math notranslate nohighlight">\(A\)</span> and <span class="math notranslate nohighlight">\(d_{11},\ldots,d_{rr}\)</span> are the diagonal elements of <span class="math notranslate nohighlight">\(D\)</span>.</p>
+<p>Similarly, the rows of <span class="math notranslate nohighlight">\(D B\)</span> are linear combinations of the rows of <span class="math notranslate nohighlight">\(B\)</span> where the coefficients are taken from the corresponding row of <span class="math notranslate nohighlight">\(D\)</span>. The rows of <span class="math notranslate nohighlight">\(D\)</span> have at most one nonzero elements, the diagonal one. In the case, <span class="math notranslate nohighlight">\(k \geq r\)</span>, rows <span class="math notranslate nohighlight">\(r+1,\ldots,k\)</span> necessarily have only zero entries since there is no diagonal entry there. Hence the first <span class="math notranslate nohighlight">\(r\)</span> rows of <span class="math notranslate nohighlight">\(DB\)</span> are multiples of the rows of <span class="math notranslate nohighlight">\(B\)</span> and the next <span class="math notranslate nohighlight">\(k-r\)</span> are <span class="math notranslate nohighlight">\(\mathbf{0}\)</span></p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+DB
+= 
+\begin{pmatrix}
+\horz &amp; d_{11} \mathbf{b}_1^T &amp; \horz \\
+&amp; \vdots &amp;\\
+\horz &amp; d_{rr} \mathbf{b}_r^T &amp; \horz\\
+\horz &amp; \mathbf{0} &amp; \horz\\
+&amp; \vdots &amp;\\
+\horz &amp; \mathbf{0} &amp; \horz
+\end{pmatrix}
+\end{split}\]</div>
+<p>where <span class="math notranslate nohighlight">\(\mathbf{b}_1^T,\ldots,\mathbf{b}_r^T\)</span> are the rows of <span class="math notranslate nohighlight">\(B\)</span>.</p>
+<p><strong>EXAMPLE:</strong> The following special case will be useful later in this chapter. Suppose <span class="math notranslate nohighlight">\(D, F \in \mathbb{R}^{n \times n}\)</span> are both square diagonal matrices. Then <span class="math notranslate nohighlight">\(D F\)</span> is the matrix whose diagonal elements are <span class="math notranslate nohighlight">\(d_{11} f_{11}, \ldots,d_{nn} f_{nn}\)</span>. <span class="math notranslate nohighlight">\(\lhd\)</span></p>
+<p><strong>Spectral theorem</strong> When <span class="math notranslate nohighlight">\(A\)</span> is symmetric, a remarkable result is that there exists an orthonormal basis of <span class="math notranslate nohighlight">\(\mathbb{R}^d\)</span> made of eigenvectors of <span class="math notranslate nohighlight">\(A\)</span>. We will prove this result in a subsequent chapter.</p>
+<p><strong>KNOWLEDGE CHECK:</strong> Let <span class="math notranslate nohighlight">\(A \in \mathbb{R}^{d \times d}\)</span> be symmetric. Show that for any <span class="math notranslate nohighlight">\(\mathbf{u}\)</span> and <span class="math notranslate nohighlight">\(\mathbf{v}\)</span> in <span class="math notranslate nohighlight">\(\mathbb{R}^d\)</span> it holds that</p>
+<div class="math notranslate nohighlight">
+\[
+\langle \mathbf{u}, A \mathbf{v} \rangle
+= \langle A \mathbf{u}, \mathbf{v} \rangle.
+\]</div>
+<p><span class="math notranslate nohighlight">\(\checkmark\)</span></p>
+<p>Before stating the result formally, we make a few observations. Let <span class="math notranslate nohighlight">\(A \in \mathbb{R}^{d \times d}\)</span> be symmetric. Suppose that <span class="math notranslate nohighlight">\(\mathbf{v}_i\)</span> and <span class="math notranslate nohighlight">\(\mathbf{v}_j\)</span> are eigenvectors corresponding respectively to distinct eigenvalues <span class="math notranslate nohighlight">\(\lambda_i\)</span> and <span class="math notranslate nohighlight">\(\lambda_j\)</span>. Then the following quantity can be written in two ways</p>
+<div class="math notranslate nohighlight">
+\[
+\langle \mathbf{v}_i, A \mathbf{v}_j \rangle
+= \langle \mathbf{v}_i, \lambda_j \mathbf{v}_j \rangle
+= \lambda_j \langle \mathbf{v}_i, \mathbf{v}_j \rangle
+\]</div>
+<p>and, by symmetry of <span class="math notranslate nohighlight">\(A\)</span>,</p>
+<div class="math notranslate nohighlight">
+\[
+\langle \mathbf{v}_i, A \mathbf{v}_j \rangle
+= \langle A \mathbf{v}_i, \mathbf{v}_j \rangle
+= \langle \lambda_i \mathbf{v}_i, \mathbf{v}_j \rangle
+= \lambda_i \langle \mathbf{v}_i, \mathbf{v}_j \rangle.
+\]</div>
+<p>Subtracting the two,</p>
+<div class="math notranslate nohighlight">
+\[
+(\lambda_j - \lambda_i) \langle \mathbf{v}_i, \mathbf{v}_j \rangle
+= 0
+\]</div>
+<p>and using that <span class="math notranslate nohighlight">\(\lambda_i \neq \lambda_j\)</span></p>
+<div class="math notranslate nohighlight">
+\[
+\langle \mathbf{v}_i, \mathbf{v}_j \rangle
+= 0.
+\]</div>
+<p>That is, <span class="math notranslate nohighlight">\(\mathbf{v}_i\)</span> and <span class="math notranslate nohighlight">\(\mathbf{v}_j\)</span> are necessarily orthogonal.</p>
+<p>We proved:</p>
+<p><strong>LEMMA</strong> Let <span class="math notranslate nohighlight">\(A \in \mathbb{R}^{d \times d}\)</span> be symmetric. Suppose that <span class="math notranslate nohighlight">\(\mathbf{v}_i\)</span> and <span class="math notranslate nohighlight">\(\mathbf{v}_j\)</span> are eigenvectors corresponding to distinct eigenvalues. Then <span class="math notranslate nohighlight">\(\mathbf{v}_i\)</span> and <span class="math notranslate nohighlight">\(\mathbf{v}_j\)</span> are orthogonal. <span class="math notranslate nohighlight">\(\flat\)</span></p>
+<p>This lemma gives a different proof – in the symmetric case – that the number of eigenvalues is at most <span class="math notranslate nohighlight">\(d\)</span> since a list of pairwise orthogonal vectors are linearly independent.</p>
+<p>In fact:</p>
+<p><strong>THEOREM</strong> <strong>(Spectral)</strong> <span class="math notranslate nohighlight">\(\idx{spectral theorem}\xdi\)</span> Let <span class="math notranslate nohighlight">\(A \in \mathbb{R}^{d \times d}\)</span> be a symmetric matrix, that is, <span class="math notranslate nohighlight">\(A^T = A\)</span>. Then <span class="math notranslate nohighlight">\(A\)</span> has <span class="math notranslate nohighlight">\(d\)</span> orthonormal eigenvectors <span class="math notranslate nohighlight">\(\mathbf{q}_1, \ldots, \mathbf{q}_d\)</span> with corresponding (not necessarily distinct) real eigenvalues <span class="math notranslate nohighlight">\(\lambda_1 \geq \lambda_2 \geq \cdots \geq \lambda_d\)</span>. Moreover, <span class="math notranslate nohighlight">\(A\)</span> can be written as the matrix factorization</p>
+<div class="math notranslate nohighlight">
+\[
+A 
+= Q \Lambda Q^T
+= \sum_{i=1}^d \lambda_i \mathbf{q}_i \mathbf{q}_i^T
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(Q\)</span> has columns <span class="math notranslate nohighlight">\(\mathbf{q}_1, \ldots, \mathbf{q}_d\)</span> and <span class="math notranslate nohighlight">\(\Lambda = \mathrm{diag}(\lambda_1, \ldots, \lambda_d)\)</span>. <span class="math notranslate nohighlight">\(\sharp\)</span></p>
+<p>We refer to this factorization as a spectral decomposition<span class="math notranslate nohighlight">\(\idx{spectral decomposition}\xdi\)</span> of <span class="math notranslate nohighlight">\(A\)</span>.</p>
+<p>Note that this decomposition indeed produces the eigenvectors of <span class="math notranslate nohighlight">\(A\)</span>. For any <span class="math notranslate nohighlight">\(j\)</span>, we have</p>
+<div class="math notranslate nohighlight">
+\[
+A \mathbf{q}_j 
+= \sum_{i=1}^d \lambda_i \mathbf{q}_i \mathbf{q}_i^T \mathbf{q}_j
+= \lambda_j \mathbf{q}_j, 
+\]</div>
+<p>where we used that, by orthonormality, <span class="math notranslate nohighlight">\(\mathbf{q}_i^T \mathbf{q}_j = 0\)</span> if <span class="math notranslate nohighlight">\(i \neq j\)</span> and <span class="math notranslate nohighlight">\(\mathbf{q}_i^T \mathbf{q}_j = 1\)</span> if <span class="math notranslate nohighlight">\(i = j\)</span>. The equation above says precisely that <span class="math notranslate nohighlight">\(\mathbf{q}_j\)</span> is an eigenvector of <span class="math notranslate nohighlight">\(A\)</span> with corresponding eigenvalue <span class="math notranslate nohighlight">\(\lambda_j\)</span>. Since we have found <span class="math notranslate nohighlight">\(d\)</span> eigenvalues (possibly with repetition), we have found all of them.</p>
+<p>Let <span class="math notranslate nohighlight">\(\lambda_1, \lambda_2, \ldots, \lambda_d\)</span> be the eigenvalues whose existence is guaranteed by the <em>Spectral Theorem</em>. We first argue that there is no other eigenvalue. Indeed, assume <span class="math notranslate nohighlight">\(\mu \neq \lambda_1, \lambda_2, \ldots, \lambda_d\)</span> is an eigenvalue with corresponding eigenvector <span class="math notranslate nohighlight">\(\mathbf{p}\)</span>. We have seen that <span class="math notranslate nohighlight">\(\mathbf{p}\)</span> is orthogonal to the eigenvectors <span class="math notranslate nohighlight">\(\mathbf{q}_1, \ldots, \mathbf{q}_d\)</span>. Since the latter list forms an orthonormal basis of <span class="math notranslate nohighlight">\(\mathbb{R}^d\)</span>, this cannot be the case and we have a contradiction.</p>
+<p>Some of the eigenvalues <span class="math notranslate nohighlight">\(\lambda_1, \lambda_2, \ldots, \lambda_d\)</span> can be repeated however, that is, there can be <span class="math notranslate nohighlight">\(i, j\)</span> such that <span class="math notranslate nohighlight">\(\lambda_{i} = \lambda_{j}\)</span>. For instance, if <span class="math notranslate nohighlight">\(A = I_{d \times d}\)</span> is the identity matrix, then the eigenvalues are <span class="math notranslate nohighlight">\(\lambda_i = 1\)</span> for all <span class="math notranslate nohighlight">\(i \in [d]\)</span>.</p>
+<p>For a fixed eigenvalue <span class="math notranslate nohighlight">\(\lambda\)</span> of <span class="math notranslate nohighlight">\(A\)</span>, the set of eigenvectors with eigenvalue <span class="math notranslate nohighlight">\(\lambda\)</span> satisfy</p>
+<div class="math notranslate nohighlight">
+\[
+A \mathbf{v} = \lambda \mathbf{v} = \lambda I_{d \times d} \mathbf{v}
+\]</div>
+<p>or, rearranging,</p>
+<div class="math notranslate nohighlight">
+\[
+(A - \lambda I_{d \times d})\mathbf{v} = \mathbf{0}.
+\]</div>
+<p>Put differently, it is the set <span class="math notranslate nohighlight">\(\mathrm{null}(A - \lambda I_{d \times d})\)</span>.</p>
+<p>The eigenvectors in the <em>Spectral Theorem</em> corresponding the same eigenvalue <span class="math notranslate nohighlight">\(\lambda\)</span> can be replaced by any orthonormal basis of the subspace <span class="math notranslate nohighlight">\(\mathrm{null}(A - \lambda I_{d \times d})\)</span>. But, beyond this freedom, we have the following characterization: let <span class="math notranslate nohighlight">\(\mu_1,\ldots,\mu_f\)</span> be the unique values in <span class="math notranslate nohighlight">\(\lambda_1, \lambda_2, \ldots, \lambda_d\)</span></p>
+<div class="math notranslate nohighlight">
+\[
+\mathbb{R}^d 
+= \mathrm{null}(A - \mu_1 I_{d \times d})
+\oplus \mathrm{null}(A - \mu_2 I_{d \times d})
+\oplus \cdots \oplus
+\mathrm{null}(A - \mu_f I_{d \times d}),
+\]</div>
+<p>where we used the fact that for any <span class="math notranslate nohighlight">\(\mathbf{u} \in \mathrm{null}(A - \mu_i I_{d \times d})\)</span> and <span class="math notranslate nohighlight">\(\mathbf{v} \in \mathrm{null}(A - \mu_j I_{d \times d})\)</span> with <span class="math notranslate nohighlight">\(i \neq j\)</span>, we have that <span class="math notranslate nohighlight">\(\mathbf{u}\)</span> is orthogonal to <span class="math notranslate nohighlight">\(\mathbf{v}\)</span>.</p>
+<p>We have shown in particular that the sequence of eigenvalues in the <em>Spectral Theorem</em> is unique (counting repeats).</p>
+<p>Two matrices <span class="math notranslate nohighlight">\(B, D \in \mathbb{R}^{d \times d}\)</span> are <a class="reference external" href="https://en.wikipedia.org/wiki/Matrix_similarity">similar</a><span class="math notranslate nohighlight">\(\idx{similar}\xdi\)</span> if there is an invertible matrix <span class="math notranslate nohighlight">\(P\)</span> such that <span class="math notranslate nohighlight">\(B = P^{-1} D P\)</span>. It can be shown that <span class="math notranslate nohighlight">\(B\)</span> and <span class="math notranslate nohighlight">\(D\)</span> correspond to the same linear map, but expressed in different bases. When <span class="math notranslate nohighlight">\(P = Q\)</span> is an orthogonal matrix, the transformation simplifies to <span class="math notranslate nohighlight">\(B = Q^T D Q\)</span>.</p>
+<p>Hence, a different way to think about a spectral decomposition is that it expresses the fact that any symmetric matrix is similar to a diagonal matrix through an orthogonal transformation. The basis in which the corresponding linear map is represented by a diagonal matrix is the basis of eigenvectors.</p>
+<p><strong>EXAMPLE:</strong> <strong>(Eigendecomposition of <span class="math notranslate nohighlight">\(2 \times 2\)</span> symmetric matrix)</strong> The simplest non-trivial case is the <span class="math notranslate nohighlight">\(2 \times 2\)</span> symmetric matrix</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+A 
+= \begin{pmatrix}
+a &amp; b\\
+b &amp; d
+\end{pmatrix}.
+\end{split}\]</div>
+<p>We derive a step-by-step recipe to compute its eigenvalues and eigenvectors.</p>
+<p>As shown previously, an eigenvalue <span class="math notranslate nohighlight">\(\lambda\)</span> corresponds to a nonempty <span class="math notranslate nohighlight">\(\mathrm{null}(A - \lambda I_{2 \times 2})\)</span> and the corresponding eigenvector solves</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\mathbf{0} = (A - \lambda I_{2 \times 2})\mathbf{v} = \begin{pmatrix}a - \lambda &amp; b\\ b &amp; d - \lambda\end{pmatrix}.
+\end{split}\]</div>
+<p>Put differently, the matrix <span class="math notranslate nohighlight">\(\begin{pmatrix}a - \lambda &amp; b\\ b &amp; d - \lambda\end{pmatrix}\)</span> has linearly dependent columns. We have seen that one way to check this is to compute the determinant which in the <span class="math notranslate nohighlight">\(2 \times 2\)</span> case is simply</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\mathrm{det}\left[\begin{pmatrix}a - \lambda &amp; b\\ b &amp; d - \lambda\end{pmatrix}\right]
+= (a - \lambda ) (d - \lambda) - b^2.
+\end{split}\]</div>
+<p>This is a polynomial of degree <span class="math notranslate nohighlight">\(2\)</span> in <span class="math notranslate nohighlight">\(\lambda\)</span> called the characteristic polynomial of the matrix <span class="math notranslate nohighlight">\(A\)</span>.</p>
+<p>The roots of the characteristic polynomial, that is, the solutions of</p>
+<div class="math notranslate nohighlight">
+\[
+0 = (a - \lambda ) (d - \lambda) - b^2 = \lambda^2 - (a + d)\lambda + (ad - b^2),
+\]</div>
+<p>are</p>
+<div class="math notranslate nohighlight">
+\[
+\lambda_{1} = \frac{(a + d) + \sqrt{(a + d)^2 - 4(ad - b^2)}}{2}
+\]</div>
+<p>and</p>
+<div class="math notranslate nohighlight">
+\[
+\lambda_{2} = \frac{(a + d) - \sqrt{(a + d)^2 - 4(ad - b^2)}}{2}.
+\]</div>
+<p>Expanding the expression in the square root</p>
+<div class="math notranslate nohighlight">
+\[
+(a + d)^2 - 4(ad - b^2)
+= a^2 + d^2 - 2ad + 4b^2
+= (a - d)^2 + 4b^2,
+\]</div>
+<p>we see that the square root is well-defined (i.e., produces a real value) for any <span class="math notranslate nohighlight">\(a, b, d\)</span>.</p>
+<p>It remains to find the corresponding eigenvectors <span class="math notranslate nohighlight">\(\mathbf{v}_{1} = (v_{1,1}, v_{1,2})\)</span> and <span class="math notranslate nohighlight">\(\mathbf{v}_2 = (v_{2,1}, v_{2,2})\)</span> by solving the <span class="math notranslate nohighlight">\(2 \times 2\)</span> systems of linear equations</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{pmatrix}
+a - \lambda_i &amp; b \\
+b &amp; d - \lambda_i
+\end{pmatrix}
+\begin{pmatrix}
+v_{i,1} \\
+v_{i,2}
+\end{pmatrix}
+= \begin{pmatrix}
+0 \\
+0
+\end{pmatrix}
+\end{split}\]</div>
+<p>which is guaranteed to have a solution. When <span class="math notranslate nohighlight">\(\lambda_1 = \lambda_2\)</span>, one needs to find two linearly independent solutions.</p>
+<p>Here is a numerical example. Consider the matrix</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+A = \begin{pmatrix}
+3 &amp; 1 \\
+1 &amp; 3
+\end{pmatrix}.
+\end{split}\]</div>
+<p>The characteristic polynomial equation is</p>
+<div class="math notranslate nohighlight">
+\[
+\lambda^2 - 6\lambda + 8 = 0.
+\]</div>
+<p>The eigenvalues are</p>
+<div class="math notranslate nohighlight">
+\[
+\lambda_{1}, \lambda_{2} = \frac{6 \pm \sqrt{36 - 4(9-1))}}{2} = \frac{6 \pm \sqrt{4}}{2} = 4, 2.
+\]</div>
+<p>We then solve for the eigenvectors. For <span class="math notranslate nohighlight">\(\lambda_1 = 4\)</span></p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{pmatrix}
+3 - \lambda_1 &amp; 1 \\
+1 &amp; 3 - \lambda_1
+\end{pmatrix}
+\begin{pmatrix}
+v_{1,1} \\
+v_{1,2}
+\end{pmatrix}
+= \begin{pmatrix}
+0 \\
+0
+\end{pmatrix}
+\Leftrightarrow
+\begin{cases}
+- v_{1,1} + v_{1,2} = 0\\
+v_{1,1} - v_{1,2} = 0
+\end{cases}
+\end{split}\]</div>
+<p>so, after normalizing, we take</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\mathbf{v}_1
+= \frac{1}{\sqrt{2}}\begin{pmatrix}1 \\ 1\end{pmatrix}.
+\end{split}\]</div>
+<p>For <span class="math notranslate nohighlight">\(\lambda_2 = 2\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{pmatrix}
+3 - \lambda_2 &amp; 1 \\
+1 &amp; 3 - \lambda_2
+\end{pmatrix}
+\begin{pmatrix}
+v_{2,1} \\
+v_{2,2}
+\end{pmatrix}
+= \begin{pmatrix}
+0 \\
+0
+\end{pmatrix}
+\Leftrightarrow
+\begin{cases}
+v_{1,1} + v_{1,2} = 0\\
+v_{1,1} + v_{1,2} = 0
+\end{cases}
+\end{split}\]</div>
+<p>so, after normalizing, we take</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\mathbf{v}_2
+= \frac{1}{\sqrt{2}}\begin{pmatrix}1 \\ -1\end{pmatrix}.
+\end{split}\]</div>
+<p>The fact that these are the eigenvectors can be checked by hand (try it!). <span class="math notranslate nohighlight">\(\lhd\)</span></p>
+<p>More generally, for any matrix <span class="math notranslate nohighlight">\(A \in \mathbb{R}^{d \times d}\)</span>, the roots of the characteristic polynomial <span class="math notranslate nohighlight">\(\mathrm{det}(A - \lambda I_{d \times d})\)</span> are eigenvalues of <span class="math notranslate nohighlight">\(A\)</span>. We will derive a more efficient numerical approach to compute them in a subsequent section.</p>
+<p><strong>The case of positive semidefinite matrices</strong> The eigenvalues of a symmetric matrix – while real – may be negative. There is however an important special case where the eigenvalues are nonnegative, positive semidefinite matrices. <span class="math notranslate nohighlight">\(\idx{positive semidefinite matrix}\xdi\)</span></p>
+<p><strong>THEOREM</strong> <strong>(Characterization of Positive Semidefiniteness)</strong> <span class="math notranslate nohighlight">\(\idx{characterization of positive semidefiniteness}\xdi\)</span> Let <span class="math notranslate nohighlight">\(A \in \mathbb{R}^{d \times d}\)</span> be a symmetric matrix and let <span class="math notranslate nohighlight">\(A = Q \Lambda Q^T\)</span> be a spectral decomposition of <span class="math notranslate nohighlight">\(A\)</span> with <span class="math notranslate nohighlight">\(\Lambda = \mathrm{diag}(\lambda_1, \ldots, \lambda_d)\)</span>. Then <span class="math notranslate nohighlight">\(A \succeq 0\)</span> if and only if its eigenvalues <span class="math notranslate nohighlight">\(\lambda_1, \ldots, \lambda_d\)</span> are nonnegative. <span class="math notranslate nohighlight">\(\sharp\)</span></p>
+<p><em>Proof:</em> Assume <span class="math notranslate nohighlight">\(A \succeq 0\)</span>. Let <span class="math notranslate nohighlight">\(\mathbf{q}_i\)</span> be an eigenvector of <span class="math notranslate nohighlight">\(A\)</span> with corresponding eigenvalue <span class="math notranslate nohighlight">\(\lambda_i\)</span>. Then</p>
+<div class="math notranslate nohighlight">
+\[
+\langle \mathbf{q}_i, A \mathbf{q}_i \rangle
+= \langle \mathbf{q}_i, \lambda_i \mathbf{q}_i \rangle
+= \lambda_i
+\]</div>
+<p>which must be nonnegative by definition of a positive semidefinite matrix.</p>
+<p>In the other direction, assume <span class="math notranslate nohighlight">\(\lambda_1, \ldots, \lambda_d \geq 0\)</span>. Then, by the spectral decomposition in outer-product form</p>
+<div class="math notranslate nohighlight">
+\[
+\langle \mathbf{x}, A \mathbf{x} \rangle
+= \mathbf{x}^T \left(\sum_{i=1}^d \lambda_i \mathbf{q}_i \mathbf{q}_i^T\right) \mathbf{x}
+=  \sum_{i=1}^d \lambda_i \mathbf{x}^T\mathbf{q}_i \mathbf{q}_i^T\mathbf{x} 
+= \sum_{i=1}^d \lambda_i \langle \mathbf{q}_i, \mathbf{x}\rangle^2
+\]</div>
+<p>which is necessarily nonnegative. <span class="math notranslate nohighlight">\(\square\)</span></p>
+<p>Similarly, a symmetric matrix is positive definite<span class="math notranslate nohighlight">\(\idx{positive definite matrix}\xdi\)</span> if and only if all its eigenvalues are strictly positive. The proof is essentially the same.</p>
+<p><strong>KNOWLEDGE CHECK:</strong> Prove this last claim by modifying the proof above. <span class="math notranslate nohighlight">\(\checkmark\)</span></p>
+<p>Recall that an important application of positive semidefiniteness is as a characterization of convexity<span class="math notranslate nohighlight">\(\idx{convex function}\xdi\)</span>. Here are some examples.</p>
+<p><strong>EXAMPLE:</strong> <strong>(Convexity via eigenvalues of Hessian)</strong> Consider the function</p>
+<div class="math notranslate nohighlight">
+\[
+f(x, y)
+= \frac{3}{2} x^2 + xy + \frac{3}{2} y^2 + 5x - 2y + 1.
+\]</div>
+<p>To show it is convex, we compute its Hessian</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+H_f(x,y)
+= \begin{pmatrix}
+3 &amp; 1 \\
+1 &amp; 3
+\end{pmatrix}
+\end{split}\]</div>
+<p>for all <span class="math notranslate nohighlight">\(x,y\)</span>. By a previous example, its eigenvalues are <span class="math notranslate nohighlight">\(2\)</span> and <span class="math notranslate nohighlight">\(4\)</span>, both of which are strictly positive. That proves the claim by the <em>Second-Order Convexity Condition</em>. <span class="math notranslate nohighlight">\(\lhd\)</span></p>
+<p><strong>EXAMPLE:</strong> <strong>(Log-concavity)</strong> A function <span class="math notranslate nohighlight">\(f :\mathbb{R}^d \to \mathbb{R}\)</span> is said to be log-concave if <span class="math notranslate nohighlight">\(-\log f\)</span> is convex. Put differently, we require for all <span class="math notranslate nohighlight">\(\mathbf{x}, \mathbf{y} \in \mathbb{R}^d\)</span> and <span class="math notranslate nohighlight">\(\alpha \in (0,1)\)</span></p>
+<div class="math notranslate nohighlight">
+\[
+- \log f((1-\alpha)\mathbf{x} + \alpha \mathbf{y})
+\leq - (1-\alpha) \log f(\mathbf{x}) - \alpha \log f(\mathbf{y}),
+\]</div>
+<p>This is equivalent to</p>
+<div class="math notranslate nohighlight">
+\[
+\log f((1-\alpha)\mathbf{x} + \alpha \mathbf{y}) \geq
+(1-\alpha) \log f(\mathbf{x}) + \alpha \log f(\mathbf{y}) ,
+\]</div>
+<p>Or, because <span class="math notranslate nohighlight">\(a \log b = \log b^a\)</span> and the logarithm is strictly increasing,</p>
+<div class="math notranslate nohighlight">
+\[
+f((1-\alpha)\mathbf{x} + \alpha \mathbf{y}) \geq f(\mathbf{x})^{1-\alpha} f(\mathbf{y})^{\alpha}.
+\]</div>
+<p>We will see later in the course that a multivariate Gaussian vector <span class="math notranslate nohighlight">\(\mathbf{X}\)</span> on <span class="math notranslate nohighlight">\(\mathbb{R}^d\)</span> with mean <span class="math notranslate nohighlight">\(\bmu \in \mathbb{R}^d\)</span> and positive definite covariance matrix <span class="math notranslate nohighlight">\(\bSigma \in \mathbb{R}^{d \times d}\)</span> has probability density function (PDF)</p>
+<div class="math notranslate nohighlight">
+\[
+f_{\bmu, \bSigma}(\mathbf{x})
+= \frac{1}{(2\pi)^{d/2} \,|\bSigma|^{1/2}}
+\exp\left(-\frac{1}{2}(\mathbf{x} - \bmu)^T \bSigma^{-1} (\mathbf{x} - \bmu)\right)
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(|A|\)</span> is the <a class="reference external" href="https://en.wikipedia.org/wiki/Determinant">determinant</a> of <span class="math notranslate nohighlight">\(A\)</span>, which in the case of a symmetric matrix is simply the product of its eigenvalues. We claim that this PDF is log-concave.</p>
+<p>From the definition,</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+&amp;- \log f_{\bmu, \bSigma}(\mathbf{x})\\
+&amp;= \frac{1}{2}(\mathbf{x} - \bmu)^T \bSigma^{-1} (\mathbf{x} - \bmu) + \log (2\pi)^{d/2} \,|\bSigma|^{1/2}\\
+&amp;= \frac{1}{2}\mathbf{x}^T \bSigma^{-1} \mathbf{x} 
+- \bmu^T \bSigma^{-1} \mathbf{x}
++ \left[\frac{1}{2}\bmu^T \bSigma^{-1} \bmu + \log (2\pi)^{d/2} \,|\bSigma|^{1/2}\right].
+\end{align*}\]</div>
+<p>Let <span class="math notranslate nohighlight">\(P = \bSigma^{-1}\)</span>, <span class="math notranslate nohighlight">\(\mathbf{q} = - \bmu^T \bSigma^{-1}\)</span> and <span class="math notranslate nohighlight">\(r = \frac{1}{2}\bmu^T \bSigma^{-1} \bmu + \log (2\pi)^{d/2} \,|\bSigma|^{1/2}\)</span>.</p>
+<p>A previous example then implies that the PDF is log-concave if <span class="math notranslate nohighlight">\(\bSigma^{-1}\)</span> is positive semidefinite. Since <span class="math notranslate nohighlight">\(\bSigma\)</span> is positive definite by assumption, <span class="math notranslate nohighlight">\(\bSigma = Q \Lambda Q^T\)</span> has a spectral decomposition where all diagonal entries of <span class="math notranslate nohighlight">\(\Lambda\)</span> are stricly positive. Then <span class="math notranslate nohighlight">\(\bSigma^{-1} = Q \Lambda^{-1} Q^T\)</span> where the diagonal entries of <span class="math notranslate nohighlight">\(\Lambda^{-1}\)</span> are the inverses of those of <span class="math notranslate nohighlight">\(\Lambda\)</span> - and hence strictly positive as well. In particular, <span class="math notranslate nohighlight">\(\bSigma^{-1}\)</span> is positive semidefinite. <span class="math notranslate nohighlight">\(\lhd\)</span></p>
+<p><strong>NUMERICAL CORNER:</strong> Hence, we can check whether a matrix is positive semidefinite by computing its eigenvalues using <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.linalg.eig.html"><code class="docutils literal notranslate"><span class="pre">numpy.linalg.eig</span></code></a>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">A</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]])</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">w</span><span class="p">,</span> <span class="n">v</span> <span class="o">=</span> <span class="n">LA</span><span class="o">.</span><span class="n">eig</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">w</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[2. 0.]
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">B</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">]])</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">z</span><span class="p">,</span> <span class="n">u</span> <span class="o">=</span> <span class="n">LA</span><span class="o">.</span><span class="n">eig</span><span class="p">(</span><span class="n">B</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">z</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[ 3. -1.]
+</pre></div>
+</div>
+</div>
+</div>
+<p><strong>KNOWLEDGE CHECK:</strong> Which one(s) of these matrices is positive semidefinite?</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+A = 
+\begin{pmatrix}
+1 &amp; -1\\
+-1 &amp; 1
+\end{pmatrix}
+\qquad
+B = 
+\begin{pmatrix}
+1 &amp; -2\\
+-2 &amp; 1
+\end{pmatrix}
+\end{split}\]</div>
+<p>a) Both</p>
+<p>b) <span class="math notranslate nohighlight">\(A\)</span></p>
+<p>c) <span class="math notranslate nohighlight">\(B\)</span></p>
+<p>d) Neither</p>
+<p><span class="math notranslate nohighlight">\(\checkmark\)</span></p>
+<p><span class="math notranslate nohighlight">\(\unlhd\)</span></p>
+<p><em><strong>Self-assessment quiz</strong></em> <em>(with help from Claude, Gemini, and ChatGPT)</em></p>
+<p><strong>1</strong> What is the rank of a matrix <span class="math notranslate nohighlight">\(A \in \mathbb{R}^{n \times m}\)</span>?</p>
+<p>a) The number of non-zero entries in <span class="math notranslate nohighlight">\(A\)</span>.</p>
+<p>b) The dimension of the row space of <span class="math notranslate nohighlight">\(A\)</span>.</p>
+<p>c) The dimension of the null space of <span class="math notranslate nohighlight">\(A\)</span>.</p>
+<p>d) The trace of <span class="math notranslate nohighlight">\(A\)</span>.</p>
+<p><strong>2</strong> Which of the following is true about the rank of a matrix <span class="math notranslate nohighlight">\(A \in \mathbb{R}^{n \times m}\)</span>?</p>
+<p>a) <span class="math notranslate nohighlight">\(\mathrm{rk}(A) \leq \min\{n,m\}\)</span></p>
+<p>b) <span class="math notranslate nohighlight">\(\mathrm{rk}(A) \geq \max\{n,m\}\)</span></p>
+<p>c) <span class="math notranslate nohighlight">\(\mathrm{rk}(A) = \mathrm{rk}(A^T)\)</span> only if <span class="math notranslate nohighlight">\(A\)</span> is symmetric</p>
+<p>d) <span class="math notranslate nohighlight">\(\mathrm{rk}(A) = \mathrm{rk}(A^T)\)</span> only if <span class="math notranslate nohighlight">\(A\)</span> is square</p>
+<p><strong>3</strong> Let <span class="math notranslate nohighlight">\(A \in \mathbb{R}^{n \times k}\)</span> and <span class="math notranslate nohighlight">\(B \in \mathbb{R}^{k \times m}\)</span>. Which of the following is true?</p>
+<p>a) <span class="math notranslate nohighlight">\(\mathrm{rk}(AB) \leq \mathrm{rk}(A)\)</span></p>
+<p>b) <span class="math notranslate nohighlight">\(\mathrm{rk}(AB) \geq \mathrm{rk}(A)\)</span></p>
+<p>c) <span class="math notranslate nohighlight">\(\mathrm{rk}(AB) = \mathrm{rk}(A)\)</span></p>
+<p>d) <span class="math notranslate nohighlight">\(\mathrm{rk}(AB) = \mathrm{rk}(B)\)</span></p>
+<p><strong>4</strong> Let <span class="math notranslate nohighlight">\(A \in \mathbb{R}^{d \times d}\)</span> be symmetric. Which of the following is true according to the Spectral Theorem?</p>
+<p>a) <span class="math notranslate nohighlight">\(A\)</span> has at most <span class="math notranslate nohighlight">\(d\)</span> distinct eigenvalues</p>
+<p>b) <span class="math notranslate nohighlight">\(A\)</span> has exactly <span class="math notranslate nohighlight">\(d\)</span> distinct eigenvalues</p>
+<p>c) <span class="math notranslate nohighlight">\(A\)</span> has at least <span class="math notranslate nohighlight">\(d\)</span> distinct eigenvalues</p>
+<p>d) The number of distinct eigenvalues of <span class="math notranslate nohighlight">\(A\)</span> is unrelated to <span class="math notranslate nohighlight">\(d\)</span></p>
+<p><strong>5</strong> Which of the following is true about the outer product of two vectors <span class="math notranslate nohighlight">\(u\)</span> and <span class="math notranslate nohighlight">\(v\)</span>?</p>
+<p>a) It is a scalar.</p>
+<p>b) It is a vector.</p>
+<p>c) It is a matrix of rank one.</p>
+<p>d) It is a matrix of rank zero.</p>
+<p>Answer for 1: b. Justification: The text states “the row rank and column rank of <span class="math notranslate nohighlight">\(A\)</span> [are] simply […] the rank, which we denote by <span class="math notranslate nohighlight">\(\mathrm{rk}(A)\)</span>.”</p>
+<p>Answer for 2: a. Justification: The text states in the Row Rank Equals Column Rank Theorem that “the row rank of <span class="math notranslate nohighlight">\(A\)</span> equals the column rank of <span class="math notranslate nohighlight">\(A\)</span>. Moreover, <span class="math notranslate nohighlight">\(\mathrm{rk}(A) \leq \min\{n,m\}\)</span>.”</p>
+<p>Answer for 3: a. Justification: The text shows that “the columns of <span class="math notranslate nohighlight">\(AB\)</span> are linear combinations of the columns of <span class="math notranslate nohighlight">\(A\)</span>. Hence <span class="math notranslate nohighlight">\(\mathrm{col}(AB) \subseteq \mathrm{col}(A)\)</span>. The claim follows by Observation D2.”</p>
+<p>Answer for 4: a. Justification: The Spectral Theorem states that “A symmetric matrix <span class="math notranslate nohighlight">\(A\)</span> has <span class="math notranslate nohighlight">\(d\)</span> orthonormal eigenvectors <span class="math notranslate nohighlight">\(\mathbf{q}_1, \ldots, \mathbf{q}_d\)</span> with corresponding (not necessarily distinct) real eigenvalues <span class="math notranslate nohighlight">\(\lambda_1 \geq \lambda_2 \geq \cdots \geq \lambda_d\)</span>.”</p>
+<p>Answer for 5: c. Justification: The text defines the outer product and states that “If <span class="math notranslate nohighlight">\(u\)</span> and <span class="math notranslate nohighlight">\(v\)</span> are nonzero, the matrix <span class="math notranslate nohighlight">\(uv^T\)</span> has rank one.”</p>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./chap03_svd/02_spectral"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="../01_motiv/roch-mmids-svd-motiv.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title"><span class="section-number">4.1. </span>Motivating example: visualizing viral evolution</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="../03_svd/roch-mmids-svd-svd.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title"><span class="section-number">4.3. </span>Approximating subspaces and the SVD</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#rank-of-a-matrix">4.2.1. Rank of a matrix</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#eigenvalues-and-eigenvectors">4.2.2. Eigenvalues and eigenvectors</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Sebastien Roch
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2024.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

@@ -1,0 +1,2014 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>8.3. Building blocks of AI 1: backpropagation &#8212; MMiDS Textbook</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.5.1/css/all.min.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.1/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.1/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.1/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b76e3c8a" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=384b581d" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=87e54e7c" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae" />
+  <script src="../../_static/vendor/fontawesome/6.5.1/js/all.min.js?digest=8d27b9dea8ad943066ae"></script>
+
+    <script src="../../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?v=efea14e4"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../_static/design-tabs.js?v=f930bc37"></script>
+    <script async="async" src="https://www.googletagmanager.com/gtag/js?id=G-P5E8DW088F"></script>
+    <script>
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){ dataLayer.push(arguments); }
+                gtag('js', new Date());
+                gtag('config', 'G-P5E8DW088F');
+            </script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){ dataLayer.push(arguments); }
+                gtag('js', new Date());
+                gtag('config', 'G-P5E8DW088F');
+            </script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'chap08_nn/03_backprop/roch-mmids-nn-backprop';</script>
+    <link rel="canonical" href="https://mmids-textbook.github.io/chap08_nn/03_backprop/roch-mmids-nn-backprop.html" />
+    <link rel="icon" href="https://mmids-textbook.github.io/favicon-32x32.png"/>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="8.4. Building blocks of AI 2: stochastic gradient descent" href="../04_sgd/roch-mmids-nn-sgd.html" />
+    <link rel="prev" title="8.2. Background: Jacobian, chain rule, and a brief introduction to automatic differentiation" href="../02_chain/roch-mmids-nn-chain.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a id="pst-skip-link" class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+
+<a class="navbar-brand logo" href="../../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/mmids-cover-small.jpg" class="logo__image only-light" alt="MMiDS Textbook - Home"/>
+    <script>document.write(`<img src="../../_static/mmids-cover-small.jpg" class="logo__image only-dark" alt="MMiDS Textbook - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../index.html">
+                    <b>MATHEMATICAL METHODS in DATA SCIENCE (with Python)</b>
+                </a>
+            </li>
+        </ul>
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../chap01_intro/00_intro/roch-mmids-intro-intro.html">1. Introduction: a first data science problem</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../chap01_intro/01_motiv/roch-mmids-intro-motiv.html">1.1. Motivating example: identifying penguin species</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap01_intro/02_review/roch-mmids-intro-review.html">1.2. Background: quick refresher of matrix algebra, differential calculus, and elementary probability</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap01_intro/03_clustering/roch-mmids-intro-clustering.html">1.3. Clustering: an objective, an algorithm and a guarantee</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap01_intro/04_highdim/roch-mmids-intro-highdim.html">1.4. Some observations about high-dimensional data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap01_intro/exercises/roch-mmids-intro-exercises.html">1.5. Exercises</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap01_intro/05_adv/roch-mmids-intro-adv.html">1.6. Online suppplementary material</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../chap02_ls/00_intro/roch-mmids-ls-intro.html">2. Least squares: geometric, algebraic, and numerical aspects</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../chap02_ls/01_motiv/roch-mmids-ls-motiv.html">2.1. Motivating example: predicting sales</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap02_ls/02_subspaces/roch-mmids-ls-spaces.html">2.2. Background: review of vector spaces and matrix inverses</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap02_ls/03_orthog/roch-mmids-ls-orthog.html">2.3. Geometry of least squares: the orthogonal projection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap02_ls/04_qr/roch-mmids-ls-qr.html">2.4. QR decomposition and Householder transformations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap02_ls/05_regression/roch-mmids-ls-regression.html">2.5. Application: regression analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap02_ls/exercises/roch-mmids-ls-exercises.html">2.6. Exercises</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap02_ls/06_adv/roch-mmids-ls-adv.html">2.7. Online suppplementary material</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../chap06_opt/00_intro/roch-mmids-opt-intro.html">3. Optimization theory and algorithms</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-3"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../chap06_opt/01_motiv/roch-mmids-opt-motiv.html">3.1. Motivating example:  analyzing customer satisfaction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap06_opt/02_several/roch-mmids-opt-several.html">3.2. Background: review of differentiable functions of several variables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap06_opt/03_optimality/roch-mmids-opt-optimality.html">3.3. Optimality conditions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap06_opt/03part2_convexity/roch-mmids-opt-convexity.html">3.4. Convexity</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap06_opt/04_gd/roch-mmids-opt-gd.html">3.5. Gradient descent and its convergence analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap06_opt/04part2_logistic/roch-mmids-opt-logistic.html">3.6. Application: logistic regression</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap06_opt/exercises/roch-mmids-opt-exercises.html">3.7. Exercises</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap06_opt/06_adv/roch-mmids-opt-adv.html">3.8. Online suppplementary material</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../chap03_svd/00_intro/roch-mmids-svd-intro.html">4. Singular value decomposition</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-4"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../chap03_svd/01_motiv/roch-mmids-svd-motiv.html">4.1. Motivating example: visualizing viral evolution</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap03_svd/02_spectral/roch-mmids-svd-spectral.html">4.2. Background: review of matrix rank  and spectral decomposition</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap03_svd/03_svd/roch-mmids-svd-svd.html">4.3. Approximating subspaces and the SVD</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap03_svd/04_power/roch-mmids-svd-power.html">4.4. Power iteration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap03_svd/05_pca/roch-mmids-svd-pca.html">4.5. Application: principal components analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap03_svd/06_further/roch-mmids-svd-further.html">4.6. Further applications of the SVD: low-rank approximations and ridge regression</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap03_svd/exercises/roch-mmids-svd-exercises.html">4.7. Exercises</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap03_svd/07_adv/roch-mmids-svd-adv.html">4.8. Online suppplementary material</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../chap04_specgraph/00_intro/roch-mmids-specgraph-intro.html">5. Spectral graph theory</a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-5"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../chap04_specgraph/01_motiv/roch-mmids-specgraph-motiv.html">5.1. Motivating example: uncovering social groups</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap04_specgraph/02_graph/roch-mmids-specgraph-graph.html">5.2. Background: basic concepts in graph theory</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap04_specgraph/03_extremal/roch-mmids-specgraph-extremal.html">5.3. Variational characterization of eigenvalues</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap04_specgraph/04_laplacian/roch-mmids-specgraph-laplacian.html">5.4. Spectral properties of the Laplacian matrix</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap04_specgraph/05_partitioning/roch-mmids-specgraph-partitioning.html">5.5. Application: graph partitioning via spectral clustering</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap04_specgraph/05part2_sbm/roch-mmids-specgraph-sbm.html">5.6. Erdős-Rényi random graph and stochastic blockmodel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap04_specgraph/exercises/roch-mmids-specgraph-exercises.html">5.7. Exercises</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap04_specgraph/06_adv/roch-mmids-specgraph-adv.html">5.8. Online supplementary material</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../chap07_prob/00_intro/roch-mmids-prob-intro.html">6. Probabilistic models: from simple to complex</a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-6"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../chap07_prob/01_motiv/roch-mmids-prob-motiv.html">6.1. Motivating example: tracking location</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap07_prob/02_parametric/roch-mmids-prob-parametric.html">6.2. Background: introduction to parametric families and maximum likelihood estimation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap07_prob/03_joint/roch-mmids-prob-joint.html">6.3. Modeling more complex dependencies 1: using conditional independence</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap07_prob/03part2_em/roch-mmids-prob-em.html">6.4. Modeling more complex dependencies 2: marginalizing out an unobserved variable</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap07_prob/04_kalman/roch-mmids-prob-kalman.html">6.5. Application: linear-Gaussian models and Kalman filtering</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap07_prob/exercises/roch-mmids-prob-exercises.html">6.6. Exercises</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap07_prob/06_adv/roch-mmids-prob-adv.html">6.7. Online supplementary material</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../chap05_rwmc/00_intro/roch-mmids-rwmc-intro.html">7. Random walks on graphs and Markov chains</a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-7"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../chap05_rwmc/01_motiv/roch-mmids-rwmc-motiv.html">7.1. Motivating example: discovering mathematical topics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap05_rwmc/03_mcdefs/roch-mmids-rwmc-mcdefs.html">7.2. Background: elements of finite Markov chains</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap05_rwmc/04_stat/roch-mmids-rwmc-stat.html">7.3. Limit behavior 1: stationary distributions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap05_rwmc/04part2_mclimit/roch-mmids-rwmc-mclimit.html">7.4. Limit behavior 2: convergence to equilibrium</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap05_rwmc/05_pagerank/roch-mmids-rwmc-pagerank.html">7.5. Application: random walks on graphs and PageRank</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap05_rwmc/05part2_gibbs/roch-mmids-rwmc-gibbs.html">7.6. Further applications: Gibbs sampling and generating images</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap05_rwmc/exercises/roch-mmids-rwmc-exercises.html">7.7. Exercises</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap05_rwmc/06_adv/roch-mmids-rwmc-adv.html">7.8. Online supplementary material</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="../00_intro/roch-mmids-nn-intro.html">8. Neural networks, backpropagation and stochastic gradient descent</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-8"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../01_motiv/roch-mmids-nn-motiv.html">8.1. Motivating example:  classifying natural images</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../02_chain/roch-mmids-nn-chain.html">8.2. Background: Jacobian, chain rule, and a brief introduction to automatic differentiation</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">8.3. Building blocks of AI 1: backpropagation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../04_sgd/roch-mmids-nn-sgd.html">8.4. Building blocks of AI 2: stochastic gradient descent</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../05_nn/roch-mmids-nn-nn.html">8.5. Building blocks of AI 3: neural networks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../exercises/roch-mmids-nn-exercises.html">8.6. Exercises</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../06_adv/roch-mmids-nn-adv.html">8.7. Online supplementary material</a></li>
+</ul>
+</li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/MMiDS-textbook/MMiDS-textbook.github.io" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/MMiDS-textbook/MMiDS-textbook.github.io/issues/new?title=Issue%20on%20page%20%2Fchap08_nn/03_backprop/roch-mmids-nn-backprop.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/chap08_nn/03_backprop/roch-mmids-nn-backprop.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Building blocks of AI 1: backpropagation</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#forward-v-backward">8.3.1. Forward v. backward</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#progressive-functions">8.3.2. Progressive functions</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <p><span class="math notranslate nohighlight">\(\newcommand{\bmu}{\boldsymbol{\mu}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bSigma}{\boldsymbol{\Sigma}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bfbeta}{\boldsymbol{\beta}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bflambda}{\boldsymbol{\lambda}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bgamma}{\boldsymbol{\gamma}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bsigma}{{\boldsymbol{\sigma}}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bpi}{\boldsymbol{\pi}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\btheta}{{\boldsymbol{\theta}}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bphi}{\boldsymbol{\phi}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\balpha}{\boldsymbol{\alpha}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\blambda}{\boldsymbol{\lambda}}\)</span>
+<span class="math notranslate nohighlight">\(\renewcommand{\P}{\mathbb{P}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\E}{\mathbb{E}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\indep}{\perp\!\!\!\perp} \newcommand{\bx}{\mathbf{x}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bp}{\mathbf{p}}\)</span>
+<span class="math notranslate nohighlight">\(\renewcommand{\bx}{\mathbf{x}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bX}{\mathbf{X}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\by}{\mathbf{y}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bY}{\mathbf{Y}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bz}{\mathbf{z}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bZ}{\mathbf{Z}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bw}{\mathbf{w}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bW}{\mathbf{W}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bv}{\mathbf{v}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bV}{\mathbf{V}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bfg}{\mathbf{g}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bfh}{\mathbf{h}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\horz}{\rule[.5ex]{2.5ex}{0.5pt}}\)</span>
+<span class="math notranslate nohighlight">\(\renewcommand{\S}{\mathcal{S}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\X}{\mathcal{X}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\var}{\mathrm{Var}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\pa}{\mathrm{pa}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\Z}{\mathcal{Z}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bh}{\mathbf{h}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bb}{\mathbf{b}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bc}{\mathbf{c}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\cE}{\mathcal{E}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\cP}{\mathcal{P}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bbeta}{\boldsymbol{\beta}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bLambda}{\boldsymbol{\Lambda}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\cov}{\mathrm{Cov}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bfk}{\mathbf{k}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\idx}[1]{}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\xdi}{}\)</span></p>
+<section id="building-blocks-of-ai-1-backpropagation">
+<h1><span class="section-number">8.3. </span>Building blocks of AI 1: backpropagation<a class="headerlink" href="#building-blocks-of-ai-1-backpropagation" title="Link to this heading">#</a></h1>
+<p>We develop the basic mathematical foundations of automatic differentiation. We restrict ourselves to a special setting: multi-layer progressive functions. Many important classifiers take the form of a sequence of compositions where parameters are specific to each layer of composition. We show how to systematically apply the <em>Chain Rule</em> to such functions. We also give a few examples.</p>
+<section id="forward-v-backward">
+<h2><span class="section-number">8.3.1. </span>Forward v. backward<a class="headerlink" href="#forward-v-backward" title="Link to this heading">#</a></h2>
+<p>We begin with a fixed-parameter example to illustrate the issues. Suppose <span class="math notranslate nohighlight">\(f : \mathbb{R}^d \to \mathbb{R}\)</span> can be expressed as a composition of <span class="math notranslate nohighlight">\(L+1\)</span> vector-valued functions <span class="math notranslate nohighlight">\(\bfg_i : \mathbb{R}^{n_i} \to \mathbb{R}^{n_{i+1}}\)</span> and a real-valued function <span class="math notranslate nohighlight">\(\ell : \mathbb{R}^{n_{L+1}} \to \mathbb{R}\)</span> as follows</p>
+<div class="math notranslate nohighlight">
+\[
+f(\mathbf{x}) 
+= \ell \circ \bfg_{L} \circ \bfg_{L-1} \circ \cdots \circ \bfg_1 \circ \bfg_0(\mathbf{x})
+= \ell(\bfg_{L}(\bfg_{L-1}(\cdots \bfg_1(\bfg_0(\mathbf{x}))\cdots))).
+\]</div>
+<p>Here <span class="math notranslate nohighlight">\(n_0 = d\)</span> is the input dimension. We also let <span class="math notranslate nohighlight">\(n_{L+1} = K\)</span> be the output dimension. Think of</p>
+<div class="math notranslate nohighlight">
+\[
+h(\mathbf{x}) = \bfg_{L}(\bfg_{L-1}(\cdots \bfg_1(\bfg_0(\mathbf{x}))\cdots))
+\]</div>
+<p>as a prediction function (i.e., a regression or classification function) and think of <span class="math notranslate nohighlight">\(\ell\)</span> as a loss function.</p>
+<p>Observe first that the function <span class="math notranslate nohighlight">\(f\)</span> itself is straighforward to compute recursively <em>starting from the inside</em> as follows:</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+\mathbf{z}_0 &amp;:= \mathbf{x}\\
+\mathbf{z}_1 &amp;:= \bfg_0(\mathbf{z}_0)\\
+\mathbf{z}_2 &amp;:= \bfg_1(\mathbf{z}_1)\\
+\vdots\\
+\mathbf{z}_L &amp;:= \bfg_{L-1}(\mathbf{z}_{L-1})\\
+\hat{\mathbf{y}} := \mathbf{z}_{L+1} &amp;:= \bfg_{L}(\mathbf{z}_{L})\\
+f(\mathbf{x}) &amp;:= \ell(\hat{\mathbf{y}}).
+\end{align*}\]</div>
+<p>Anticipating the setting of neural networks, our main application of interest, we refer to <span class="math notranslate nohighlight">\(\mathbf{z}_0 = \mathbf{x}\)</span> as the “input layer”, <span class="math notranslate nohighlight">\(\hat{\mathbf{y}} = \mathbf{z}_{L+1} = \bfg_{L}(\mathbf{z}_{L})\)</span> as the “output layer”, and <span class="math notranslate nohighlight">\(\mathbf{z}_{1} = \bfg_0(\mathbf{z}_0), \ldots, \mathbf{z}_L = \bfg_{L-1}(\mathbf{z}_{L-1})\)</span> as the “hidden layers”. In particular, <span class="math notranslate nohighlight">\(L\)</span> is the number of hidden layers.</p>
+<p><strong>EXAMPLE:</strong> We will use the following running example throughout this subsection. We assume that each <span class="math notranslate nohighlight">\(\bfg_i\)</span> is a linear map, that is, <span class="math notranslate nohighlight">\(\bfg_i(\mathbf{z}_i) = \mathcal{W}_{i} \mathbf{z}_i\)</span> where <span class="math notranslate nohighlight">\(\mathcal{W}_{i} \in \mathbb{R}^{n_{i+1} \times n_i}\)</span> is a fixed, known matrix. Assume also that <span class="math notranslate nohighlight">\(\ell : \mathbb{R}^K \to \mathbb{R}\)</span> is defined as</p>
+<div class="math notranslate nohighlight">
+\[
+\ell(\hat{\mathbf{y}})
+= \frac{1}{2} \|\mathbf{y} - \hat{\mathbf{y}}\|^2,
+\]</div>
+<p>for a fixed, known vector <span class="math notranslate nohighlight">\(\mathbf{y} \in \mathbb{R}^{K}\)</span>.</p>
+<p>Computing <span class="math notranslate nohighlight">\(f\)</span> recursively <em>starting from the inside</em> as above gives here</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+\mathbf{z}_0 &amp;:= \mathbf{x}\\
+\mathbf{z}_1 &amp;:= \mathcal{W}_{0} \mathbf{z}_0 = \mathcal{W}_{0} \mathbf{x}\\
+\mathbf{z}_2 &amp;:= \mathcal{W}_{1} \mathbf{z}_1 = \mathcal{W}_{1} \mathcal{W}_{0} \mathbf{x}\\
+\vdots\\
+\mathbf{z}_L &amp;:= \mathcal{W}_{L-1} \mathbf{z}_{L-1} = \mathcal{W}_{L-1} \cdots \mathcal{W}_{1} \mathcal{W}_{0} \mathbf{x}\\
+\hat{\mathbf{y}} := \mathbf{z}_{L+1} &amp;:= \mathcal{W}_{L} \mathbf{z}_{L} = \mathcal{W}_{L} \mathcal{W}_{L-1} \cdots \mathcal{W}_{1} \mathcal{W}_{0} \mathbf{x}\\
+f(\mathbf{x}) &amp;:= \ell(\hat{\mathbf{y}})
+= \frac{1}{2}\|\mathbf{y} - \hat{\mathbf{y}}\|^2
+= \frac{1}{2}\left\|\mathbf{y} - \mathcal{W}_{L} \mathcal{W}_{L-1} \cdots \mathcal{W}_{1} \mathcal{W}_{0} \mathbf{x}\right\|^2.
+\end{align*}\]</div>
+<p>In essence, we are comparing an observed outcome <span class="math notranslate nohighlight">\(\mathbf{y}\)</span> to a prediction <span class="math notranslate nohighlight">\(\mathcal{W}_{L} \mathcal{W}_{L-1} \cdots \mathcal{W}_{1} \mathcal{W}_{0} \mathbf{x}\)</span> based on input <span class="math notranslate nohighlight">\(\mathbf{x}\)</span>.</p>
+<p>In this section, we look into computing the gradient with respect to <span class="math notranslate nohighlight">\(\mathbf{x}\)</span>. (In reality, we will be more interested in taking the gradient with respect to the parameters, i.e., the entries of the matrices <span class="math notranslate nohighlight">\(\mathcal{W}_{0}, \ldots, \mathcal{W}_{L}\)</span>, a task to which we will come back later in this section. We will also be interested in more complex – in particular, non-linear – prediction functions.) <span class="math notranslate nohighlight">\(\lhd\)</span></p>
+<p><strong>NUMERICAL CORNER:</strong> To make things more concrete, we consider a specific example. We will use <a class="reference external" href="https://pytorch.org/docs/stable/generated/torch.linalg.vector_norm.html"><code class="docutils literal notranslate"><span class="pre">torch.linalg.vector_norm</span></code></a> to compute the Euclidean norm in PyTorch. Suppose <span class="math notranslate nohighlight">\(d=3\)</span>, <span class="math notranslate nohighlight">\(L=1\)</span>, <span class="math notranslate nohighlight">\(n_1 = 2\)</span>, and <span class="math notranslate nohighlight">\(K = 2\)</span> with the following choices:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">x</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mf">1.</span><span class="p">,</span><span class="mf">0.</span><span class="p">,</span><span class="o">-</span><span class="mf">1.</span><span class="p">],</span> <span class="n">requires_grad</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mf">0.</span><span class="p">,</span><span class="mf">1.</span><span class="p">])</span>
+<span class="n">W0</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([[</span><span class="mf">0.</span><span class="p">,</span><span class="mf">1.</span><span class="p">,</span><span class="o">-</span><span class="mf">1.</span><span class="p">],[</span><span class="mf">2.</span><span class="p">,</span><span class="mf">0.</span><span class="p">,</span><span class="mf">1.</span><span class="p">]])</span>
+<span class="n">W1</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([[</span><span class="o">-</span><span class="mf">1.</span><span class="p">,</span><span class="mf">0.</span><span class="p">],[</span><span class="mf">2.</span><span class="p">,</span><span class="o">-</span><span class="mf">1.</span><span class="p">]])</span>
+
+<span class="n">z0</span> <span class="o">=</span> <span class="n">x</span>
+<span class="n">z1</span> <span class="o">=</span> <span class="n">W0</span> <span class="o">@</span> <span class="n">z0</span>
+<span class="n">z2</span> <span class="o">=</span> <span class="n">W1</span> <span class="o">@</span> <span class="n">z1</span>
+<span class="n">f</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">vector_norm</span><span class="p">(</span><span class="n">y</span><span class="o">-</span><span class="n">z2</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">z0</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>tensor([ 1.,  0., -1.], requires_grad=True)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">z1</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>tensor([1., 1.], grad_fn=&lt;MvBackward0&gt;)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">z2</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>tensor([-1.,  1.], grad_fn=&lt;MvBackward0&gt;)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>tensor(0.5000, grad_fn=&lt;MulBackward0&gt;)
+</pre></div>
+</div>
+</div>
+</div>
+<p><span class="math notranslate nohighlight">\(\unlhd\)</span></p>
+<p><strong>Forward mode</strong> <span class="math notranslate nohighlight">\(\idx{forward mode}\xdi\)</span> We are ready to apply the <em>Chain Rule</em></p>
+<div class="math notranslate nohighlight">
+\[
+\nabla f(\mathbf{x})^T
+= J_{f}(\mathbf{x})
+= J_{\ell}(\mathbf{z}_{L+1})
+J_{\bfg_L}(\mathbf{z}_L)
+J_{\bfg_{L-1}}(\mathbf{z}_{L-1})
+\cdots
+J_{\bfg_1}(\mathbf{z}_1)
+J_{\bfg_0}(\mathbf{x})
+\]</div>
+<p>where the <span class="math notranslate nohighlight">\(\mathbf{z}_{i}\)</span>s are as above and we used that <span class="math notranslate nohighlight">\(\mathbf{z}_0 = \mathbf{x}\)</span>. The matrix product here is well-defined. Indeed, the size of <span class="math notranslate nohighlight">\(J_{g_i}(\mathbf{z}_i)\)</span> is <span class="math notranslate nohighlight">\(n_{i+1} \times n_{i}\)</span> (i.e., number of outputs by number of inputs) while the size of <span class="math notranslate nohighlight">\(J_{g_{i-1}}(\mathbf{z}_{i-1})\)</span> is <span class="math notranslate nohighlight">\(n_{i} \times n_{i-1}\)</span> – so the dimensions are compatible.</p>
+<p>So it is straighforward to compute <span class="math notranslate nohighlight">\(\nabla f(\mathbf{x})^T\)</span> recursively as we did for <span class="math notranslate nohighlight">\(f\)</span> itself. In fact, we can compute both simultaneously. This is called the forward mode:</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+\mathbf{z}_0 &amp;:= \mathbf{x}\\
+\mathbf{z}_1 &amp;:= \bfg_0(\mathbf{z}_0), \quad F_0 := J_{\bfg_0}(\mathbf{z}_0)\\
+\mathbf{z}_2 &amp;:= \bfg_1(\mathbf{z}_1), \quad F_1 := J_{\bfg_1}(\mathbf{z}_1)\, F_0\\
+\vdots\\
+\mathbf{z}_L &amp;:= \bfg_{L-1}(\mathbf{z}_{L-1}), \quad F_{L-1} := J_{\bfg_{L-1}}(\mathbf{z}_{L-1})\, F_{L-2}\\
+\hat{\mathbf{y}} := \mathbf{z}_{L+1} &amp;:= \bfg_{L}(\mathbf{z}_{L}), \quad F_{L} := J_{\bfg_{L}}(\mathbf{z}_{L})\, F_{L-1}\\
+f(\mathbf{x}) &amp;:= \ell(\hat{\mathbf{y}}), \quad \nabla f(\mathbf{x})^T := J_{\ell}(\hat{\mathbf{y}}) F_L.
+\end{align*}\]</div>
+<p><strong>EXAMPLE:</strong> <strong>(continued)</strong> We apply this procedure to the running example. The Jacobian of the linear map <span class="math notranslate nohighlight">\(\bfg_i(\mathbf{z}_i) = \mathcal{W}_{i} \mathbf{z}_i\)</span> is the matrix <span class="math notranslate nohighlight">\(\mathcal{W}_{i}\)</span>, as we have seen in a previous example. That is, <span class="math notranslate nohighlight">\(J_{\bfg_i}(\mathbf{z}_i) = \mathcal{W}_{i}\)</span> for any <span class="math notranslate nohighlight">\(\mathbf{z}_i\)</span>. To compute the Jacobian of <span class="math notranslate nohighlight">\(\ell\)</span>, we rewrite it as a quadratic function</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+\ell(\hat{\mathbf{y}})
+&amp;= \frac{1}{2} \|\mathbf{y} - \hat{\mathbf{y}}\|^2\\
+&amp;= \frac{1}{2} \mathbf{y}^T\mathbf{y} - \frac{1}{2} 2 \mathbf{y}^T\hat{\mathbf{y}} + \frac{1}{2}\hat{\mathbf{y}}^T \hat{\mathbf{y}}\\
+&amp;= \frac{1}{2} \hat{\mathbf{y}}^T I_{n_{L+1} \times n_{L+1}}\hat{\mathbf{y}} + (-\mathbf{y})^T\hat{\mathbf{y}} + \frac{1}{2} \mathbf{y}^T\mathbf{y}.
+\end{align*}\]</div>
+<p>From a previous example,</p>
+<div class="math notranslate nohighlight">
+\[
+J_\ell(\hat{\mathbf{y}})^T
+= \nabla \ell(\hat{\mathbf{y}})
+= \frac{1}{2}\left[I_{n_{L+1} \times n_{L+1}} + I_{n_{L+1} \times n_{L+1}}^T\right]\, \hat{\mathbf{y}} + (-\mathbf{y})
+= \hat{\mathbf{y}} - \mathbf{y}.
+\]</div>
+<p>Putting it all together, we get</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+F_0 &amp;:= J_{\bfg_0}(\mathbf{z}_0) = \mathcal{W}_{0}\\
+F_1 &amp;:= J_{\bfg_1}(\mathbf{z}_1)\, F_0 = \mathcal{W}_{1} F_0 = \mathcal{W}_{1} \mathcal{W}_{0}\\
+\vdots\\
+F_{L-1} &amp;:= J_{\bfg_{L-1}}(\mathbf{z}_{L-1})\, F_{L-2} = \mathcal{W}_{L-1} F_{L-2}= \mathcal{W}_{L-1} \cdots \mathcal{W}_{1} \mathcal{W}_{0}\\
+F_{L} &amp;:= J_{\bfg_{L}}(\mathbf{z}_{L})\, F_{L-1} = \mathcal{W}_{L} F_{L-1} = \mathcal{W}_{L} \mathcal{W}_{L-1} \cdots \mathcal{W}_{1} \mathcal{W}_{0}\\
+\nabla f(\mathbf{x})^T &amp;:= J_{\ell}(\hat{\mathbf{y}}) F_L = (\hat{\mathbf{y}} - \mathbf{y})^T F_L = (\hat{\mathbf{y}} - \mathbf{y})^T \mathcal{W}_{L} \mathcal{W}_{L-1} \cdots \mathcal{W}_{1} \mathcal{W}_{0}\\
+&amp;= (\mathcal{W}_{L} \mathcal{W}_{L-1} \cdots \mathcal{W}_{1} \mathcal{W}_{0} \mathbf{x} - \mathbf{y})^T \mathcal{W}_{L} \mathcal{W}_{L-1} \cdots \mathcal{W}_{1} \mathcal{W}_{0}.
+\end{align*}\]</div>
+<p><span class="math notranslate nohighlight">\(\lhd\)</span></p>
+<p><strong>NUMERICAL CORNER:</strong> We return to our concrete example.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">with</span> <span class="n">torch</span><span class="o">.</span><span class="n">no_grad</span><span class="p">():</span>
+    <span class="n">F0</span> <span class="o">=</span> <span class="n">W0</span>
+    <span class="n">F1</span> <span class="o">=</span> <span class="n">W1</span> <span class="o">@</span> <span class="n">F0</span>
+    <span class="n">grad_f</span> <span class="o">=</span> <span class="p">(</span><span class="n">z2</span> <span class="o">-</span> <span class="n">y</span><span class="p">)</span><span class="o">.</span><span class="n">T</span> <span class="o">@</span> <span class="n">F1</span>
+    
+<span class="nb">print</span><span class="p">(</span><span class="n">F0</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>tensor([[ 0.,  1., -1.],
+        [ 2.,  0.,  1.]])
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell tag_hide-input docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell source</span>
+<span class="expanded">Hide code cell source</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">F1</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</details>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>tensor([[ 0., -1.,  1.],
+        [-2.,  2., -3.]])
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">grad_f</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>tensor([ 0.,  1., -1.])
+</pre></div>
+</div>
+</div>
+</div>
+<p>We can check that we get the same outcome using AD.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">f</span><span class="o">.</span><span class="n">backward</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">grad</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>tensor([ 0.,  1., -1.])
+</pre></div>
+</div>
+</div>
+</div>
+<p><span class="math notranslate nohighlight">\(\unlhd\)</span></p>
+<p><strong>KNOWLEDGE CHECK:</strong> Obtain that last expression directly by taking the gradient of</p>
+<div class="math notranslate nohighlight">
+\[
+f(\mathbf{x})
+= \frac{1}{2}\|\mathbf{y} - \mathcal{W}_{L} \mathcal{W}_{L-1} \cdots \mathcal{W}_{1} \mathcal{W}_{0} \mathbf{x}\|^2.
+\]</div>
+<p><span class="math notranslate nohighlight">\(\checkmark\)</span></p>
+<p><strong>Reverse mode</strong> <span class="math notranslate nohighlight">\(\idx{reverse mode}\xdi\)</span> What we just described corresponds to performing the matrix products in the <em>Chain Rule</em> formula</p>
+<div class="math notranslate nohighlight">
+\[
+\nabla f(\mathbf{x})^T
+= J_{f}(\mathbf{x})
+= J_{\ell}(\hat{\mathbf{y}})
+J_{\bfg_L}(\mathbf{z}_L)
+J_{\bfg_{L-1}}(\mathbf{z}_{L-1})
+\cdots
+J_{\bfg_1}(\mathbf{z}_1)
+J_{\bfg_0}(\mathbf{x}).
+\]</div>
+<p><em>from right to left</em>. But there is another way to do this – from left to right! This is called reverse mode. First we compute <span class="math notranslate nohighlight">\(f\)</span> recursively as we did previously, in particular we compute the <span class="math notranslate nohighlight">\(\mathbf{z}_i\)</span>s, then going backwards we compute</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+G_{L+1} &amp;:= J_{\ell}(\hat{\mathbf{y}})\\
+G_{L} &amp;:= G_{L+1}\,J_{g_{L}}(\mathbf{z}_{L})\\
+&amp;\vdots\\
+G_1 &amp;:= G_2 \, J_{\bfg_1}(\mathbf{z}_1)\\
+\nabla f(\mathbf{x})^T &amp;:= G_1 \, J_{\bfg_0}(\mathbf{z}_0)
+\end{align*}\]</div>
+<p>This may seem like a rather minor modification to our previous algorithm. It is not – it is much faster! To see this, we need to count the number of elementary operations involved in implementing each mode.</p>
+<p>First a simple calcultion: How many elementary operations (i.e., additions and multiplications) does it take to multiply an <span class="math notranslate nohighlight">\(n \times m\)</span> matrix <span class="math notranslate nohighlight">\(A = (a_{ij})_{i,j}\)</span> and an <span class="math notranslate nohighlight">\(m \times \ell\)</span> matrix <span class="math notranslate nohighlight">\(B= (b_{ij})_{i,j}\)</span>? Let’s ask ChatGPT. Here’s the answer:</p>
+<p>“To calculate the number of elementary operations required to multiply an <span class="math notranslate nohighlight">\(n \times m\)</span> matrix by an <span class="math notranslate nohighlight">\(m \times \ell\)</span> matrix, consider the computation involved for each element of the resulting <span class="math notranslate nohighlight">\(n \times \ell\)</span> matrix.</p>
+<p>Each element of the resulting matrix is the dot product of a row from the first matrix and a column from the second matrix. If the first matrix is denoted as <span class="math notranslate nohighlight">\(A\)</span> and the second matrix as <span class="math notranslate nohighlight">\(B\)</span>, then the element at position <span class="math notranslate nohighlight">\(i, j\)</span> in the resulting matrix <span class="math notranslate nohighlight">\(C\)</span> is calculated as:</p>
+<div class="math notranslate nohighlight">
+\[
+c_{ij} = a_{i1}b_{1j} + a_{i2}b_{2j} + \ldots + a_{im}b_{mj}
+\]</div>
+<p>This computation involves <span class="math notranslate nohighlight">\(m\)</span> multiplications and <span class="math notranslate nohighlight">\(m - 1\)</span> additions, making a total of <span class="math notranslate nohighlight">\(m + (m - 1) = 2m - 1\)</span> elementary operations for each element.</p>
+<p>Since matrix <span class="math notranslate nohighlight">\(C\)</span> has <span class="math notranslate nohighlight">\(n \times \ell\)</span> elements, the total number of elementary operations required for the entire matrix <span class="math notranslate nohighlight">\(C\)</span> is:</p>
+<div class="math notranslate nohighlight">
+\[
+(n \ell)(2m - 1) = 2nm\ell - n\ell
+\]</div>
+<p>Thus, multiplying an <span class="math notranslate nohighlight">\(n \times m\)</span> matrix by an <span class="math notranslate nohighlight">\(m \times \ell\)</span> matrix takes <span class="math notranslate nohighlight">\(2nm\ell - n\ell\)</span> elementary operations.”</p>
+<p>Returning to computing the gradient, we count the number of elementary operations needed for each mode. To simplify the calculation, we assume that <span class="math notranslate nohighlight">\(n_0 = d\)</span> and <span class="math notranslate nohighlight">\(n_1 = n_2 = \cdots = n_{L} = m\)</span> and <span class="math notranslate nohighlight">\(n_{L+1} = K\)</span>.</p>
+<p><em>Forward:</em> The matrix <span class="math notranslate nohighlight">\(F_0 = J_{\bfg_0}(\mathbf{z}_0)\)</span> has dimensions <span class="math notranslate nohighlight">\(m \times d\)</span>. The matrix <span class="math notranslate nohighlight">\(F_1\)</span>, as a product of <span class="math notranslate nohighlight">\(J_{\bfg_1}(\mathbf{z}_1) \in \mathbb{R}^{m \times m}\)</span> and <span class="math notranslate nohighlight">\(F_0 \in \mathbb{R}^{m \times d}\)</span> has dimensions <span class="math notranslate nohighlight">\(m \times d\)</span>; it therefore takes <span class="math notranslate nohighlight">\(m (2m-1) d\)</span> operations to compute. The same holds for <span class="math notranslate nohighlight">\(F_2, \ldots, F_{L-1}\)</span> (check it!). By similar considerations, the matrix <span class="math notranslate nohighlight">\(F_L\)</span> has dimensions <span class="math notranslate nohighlight">\(K \times d\)</span> and takes <span class="math notranslate nohighlight">\(K (2m-1) d\)</span> operations to compute. Finally, <span class="math notranslate nohighlight">\(\nabla f(\mathbf{x})^T = J_{\ell}(\mathbf{z}_{L+1}) F_L \in \mathbb{R}^{1 \times d}\)</span> and takes <span class="math notranslate nohighlight">\((2K-1) d\)</span> operations to compute. Overall the number of operations is</p>
+<div class="math notranslate nohighlight">
+\[
+(L-2) m (2m-1) d + K (2m-1) d + (2K-1) d.
+\]</div>
+<p>This is approximately <span class="math notranslate nohighlight">\(2 L m^2 d\)</span> if we think of <span class="math notranslate nohighlight">\(K\)</span> as a small constant and ignore the smaller order terms.</p>
+<p><em>Reverse:</em> The matrix <span class="math notranslate nohighlight">\(G_{L+1} = J_{\ell}(\mathbf{z}_{L+1})\)</span> has dimensions <span class="math notranslate nohighlight">\(1 \times K\)</span>. The matrix <span class="math notranslate nohighlight">\(G_{L}\)</span>, as a product of <span class="math notranslate nohighlight">\(G_{L+1} \in \mathbb{R}^{1 \times K}\)</span> and <span class="math notranslate nohighlight">\(J_{g_{L}}(\mathbf{z}_{L}) \in \mathbb{R}^{K \times m}\)</span> has dimensions <span class="math notranslate nohighlight">\(1 \times m\)</span>; it therefore takes <span class="math notranslate nohighlight">\((2K-1) m\)</span> operations to compute. The matrix <span class="math notranslate nohighlight">\(G_{L-1}\)</span>, as a product of <span class="math notranslate nohighlight">\(G_{L} \in \mathbb{R}^{1 \times m}\)</span> and <span class="math notranslate nohighlight">\(J_{g_{L-1}}(\mathbf{z}_{L-1}) \in \mathbb{R}^{m \times m}\)</span> has dimensions <span class="math notranslate nohighlight">\(1 \times m\)</span>; it therefore takes <span class="math notranslate nohighlight">\((2m-1) m\)</span> operations to compute. The same holds for <span class="math notranslate nohighlight">\(G_{L-2}, \ldots, G_{1}\)</span> (check it!). By similar considerations, <span class="math notranslate nohighlight">\(\nabla f(\mathbf{x})^T = G_1 \, J_{\bfg_0}(\mathbf{z}_0) \in \mathbb{R}^{1 \times d}\)</span> and takes <span class="math notranslate nohighlight">\((2m-1) d\)</span> operations to compute. Overall the number of operations is</p>
+<div class="math notranslate nohighlight">
+\[
+(2K-1) m + (L-2) (2m-1) m + (2m-1) d.
+\]</div>
+<p>This is approximately <span class="math notranslate nohighlight">\(2 L m^2 + 2 m d\)</span> – which can be much smaller than <span class="math notranslate nohighlight">\(2 L m^2 d\)</span>! In other words, the reverse mode approach can be much faster. Note in particular that all computations in the reverse mode are matrix-vector products (or more precisely row vector-matrix products) rather than matrix-matrix products.</p>
+<p><strong>EXAMPLE:</strong> <strong>(continued)</strong> We apply the reverse mode approach to our previous example. We get</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+G_{L+1} &amp;:= J_{\ell}(\hat{\mathbf{y}}) = (\hat{\mathbf{y}} - \mathbf{y})^T\\
+G_{L} &amp;:= G_{L+1}\,J_{g_{L}}(\mathbf{z}_{L}) = G_{L+1} \mathcal{W}_{L} = (\hat{\mathbf{y}} - \mathbf{y})^T \mathcal{W}_{L} \\
+\vdots\\
+G_1 &amp;:= G_2 \, J_{\bfg_1}(\mathbf{z}_1) = G_2 \mathcal{W}_{1} = [(\hat{\mathbf{y}} - \mathbf{y})^T \mathcal{W}_{L} \cdots \mathcal{W}_{2}] \mathcal{W}_{1} \\
+\nabla f(\mathbf{x})^T &amp;:= G_1 \, J_{\bfg_0}(\mathbf{z}_0)
+= [(\hat{\mathbf{y}} - \mathbf{y})^T \mathcal{W}_{L} \cdots \mathcal{W}_{2}\mathcal{W}_{1}] \mathcal{W}_{0}\\
+&amp;= (\mathcal{W}_{L} \mathcal{W}_{L-1} \cdots \mathcal{W}_{1} \mathcal{W}_{0} \mathbf{x} - \mathbf{y})^T \mathcal{W}_{L} \mathcal{W}_{L-1} \cdots \mathcal{W}_{1} \mathcal{W}_{0},
+\end{align*}\]</div>
+<p>which matches our previous calculation. Note that all computations involve multiplying a row vector by a matrix. <span class="math notranslate nohighlight">\(\lhd\)</span></p>
+<p><strong>NUMERICAL CORNER:</strong> We try our specific example.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">with</span> <span class="n">torch</span><span class="o">.</span><span class="n">no_grad</span><span class="p">():</span>
+    <span class="n">G2</span> <span class="o">=</span> <span class="p">(</span><span class="n">z2</span> <span class="o">-</span> <span class="n">y</span><span class="p">)</span><span class="o">.</span><span class="n">T</span>
+    <span class="n">G1</span> <span class="o">=</span> <span class="n">G2</span> <span class="o">@</span> <span class="n">W1</span>
+    <span class="n">grad_f</span> <span class="o">=</span> <span class="n">G1</span> <span class="o">@</span> <span class="n">W0</span>
+    
+<span class="nb">print</span><span class="p">(</span><span class="n">G2</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>tensor([-1.,  0.])
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell tag_hide-input docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell source</span>
+<span class="expanded">Hide code cell source</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">G1</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</details>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>tensor([1., 0.])
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell tag_hide-input docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell source</span>
+<span class="expanded">Hide code cell source</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">grad_f</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</details>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>tensor([ 0.,  1., -1.])
+</pre></div>
+</div>
+</div>
+</div>
+<p>We indeed obtain the same answer yet again.</p>
+<p><span class="math notranslate nohighlight">\(\unlhd\)</span></p>
+<p>To provide a little more insight in the savings obtained through the reverse mode, consider the following simple calculations. Let <span class="math notranslate nohighlight">\(A, B \in \mathbb{R}^{n \times n}\)</span> and <span class="math notranslate nohighlight">\(\mathbf{v} \in \mathbb{R}^n\)</span>. Suppose we seek to compute <span class="math notranslate nohighlight">\(\mathbf{v}^T B A\)</span>. By <a class="reference external" href="https://en.wikipedia.org/wiki/Associative_property">associativity</a> of matrix multiplication, there are two ways of doing this: compute <span class="math notranslate nohighlight">\(\mathbf{v}^{T}(BA)\)</span> (i.e., first compute <span class="math notranslate nohighlight">\(BA\)</span> then multiply by <span class="math notranslate nohighlight">\(\mathbf{v}^T\)</span>; or compute <span class="math notranslate nohighlight">\((\mathbf{v}^T B) A\)</span>. The first approach requires <span class="math notranslate nohighlight">\(n^2(2n-1) + n(2n-1)\)</span> operations, while the second only requires <span class="math notranslate nohighlight">\(2n(2n-1)\)</span>. The latter is much smaller since <span class="math notranslate nohighlight">\(2 n^3\)</span> (the leading term in the first approach) grows much faster than <span class="math notranslate nohighlight">\(4 n^2\)</span> (the leading term in the second approach) when <span class="math notranslate nohighlight">\(n\)</span> is large.</p>
+<p>Why is this happening? One way to understand this is to think of the output <span class="math notranslate nohighlight">\(\mathbf{v}^T B A\)</span> as a <em>linear combination of the rows of <span class="math notranslate nohighlight">\(A\)</span></em> – a very specific linear combination in fact. In the first approach, we compute <span class="math notranslate nohighlight">\(BA\)</span> which gives us <span class="math notranslate nohighlight">\(n\)</span> different linear combinations of the rows of <span class="math notranslate nohighlight">\(A\)</span> – none being the one we want – and then we compute the desired linear combination by multiplying by <span class="math notranslate nohighlight">\(\mathbf{v}^T\)</span>. This is wasteful. In the second approach, we immediately compute the coefficients of the specific linear combination we seek – <span class="math notranslate nohighlight">\(\mathbf{v}^T B\)</span> – and then we compute that linear combination by multiplying to the right by <span class="math notranslate nohighlight">\(A\)</span>.</p>
+<p>While the setting we examined in this subsection is illuminating, it is not exactly what we want. In the machine learning context, each “layer” <span class="math notranslate nohighlight">\(\bfg_i\)</span> has parameters (in our running example, there were the entries of <span class="math notranslate nohighlight">\(\mathcal{W}_{i}\)</span>) and we seek to optimize with respect to those parameters. For this, we need the gradient with respect to the parameters, not the input <span class="math notranslate nohighlight">\(\mathbf{x}\)</span>. In the next subsection, we consider a generalization of the current setting, progressive functions, which will allow us to do this. The notation gets more complicated, but the basic idea remains the same.</p>
+</section>
+<section id="progressive-functions">
+<h2><span class="section-number">8.3.2. </span>Progressive functions<a class="headerlink" href="#progressive-functions" title="Link to this heading">#</a></h2>
+<p>As mentioned previously, while it may seem natural to define a prediction function <span class="math notranslate nohighlight">\(h\)</span> (e.g., a classifier) as a function of the input data <span class="math notranslate nohighlight">\(\mathbf{x}\in \mathbb{R}^{d}\)</span>, when fitting data we are ultimately interested in thinking of <span class="math notranslate nohighlight">\(h\)</span> as a function of the parameters <span class="math notranslate nohighlight">\(\mathbf{w} \in \mathbb{R}^r\)</span> that need to be adjusted – over a fixed dataset. Hence, in this section, the input <span class="math notranslate nohighlight">\(\mathbf{x}\)</span> is fixed while the vector of parameters <span class="math notranslate nohighlight">\(\mathbf{w}\)</span> is now variable.</p>
+<p><strong>A first example</strong> We use the example from the previous subsection to illustrate the main ideas. That is, suppose <span class="math notranslate nohighlight">\(d=3\)</span>, <span class="math notranslate nohighlight">\(L=1\)</span>, <span class="math notranslate nohighlight">\(n_1 = 2\)</span>, and <span class="math notranslate nohighlight">\(K = 2\)</span>. Fix a data sample <span class="math notranslate nohighlight">\(\mathbf{x} = (x_1,x_2,x_3) \in \mathbb{R}^3, \mathbf{y} = (y_1, y_2) \in \mathbb{R}^2\)</span>. For <span class="math notranslate nohighlight">\(i=0, 1\)</span>, we use the notation</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\mathcal{W}_{0}
+=
+\begin{pmatrix}
+w_0 &amp; w_1 &amp; w_2\\
+w_3 &amp; w_4 &amp; w_5
+\end{pmatrix}
+\quad
+\text{and}
+\quad
+\mathcal{W}_{1}
+=
+\begin{pmatrix}
+w_6 &amp; w_7\\
+w_8 &amp; w_9
+\end{pmatrix}.
+\end{split}\]</div>
+<p>and let</p>
+<div class="math notranslate nohighlight">
+\[
+\ell(\hat{\mathbf{y}})
+= \frac{1}{2} \|\mathbf{y} - \hat{\mathbf{y}}\|^2
+= \frac{1}{2}(y_1 - \hat{y}_1)^2
++ \frac{1}{2}(y_2 - \hat{y}_2)^2.
+\]</div>
+<p>We change the notation for the “layer” function <span class="math notranslate nohighlight">\(\bfg_i\)</span> to reflect the fact that it is now a function of two (concatenated) vectors: the input <span class="math notranslate nohighlight">\(\mathbf{z}_i = (z_{i,1},\ldots,z_{i,n_i})\)</span> from the previous layer and a layer-specific set of parameters <span class="math notranslate nohighlight">\(\mathbf{w}_i\)</span>. That is,</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\bfg_i(\mathbf{z}_i, \mathbf{w}_i) 
+= \mathcal{W}_{i} \mathbf{z}_i
+= \begin{pmatrix}
+(\mathbf{w}_i^{(1)})^T\\
+(\mathbf{w}_i^{(2)})^T
+\end{pmatrix}
+\mathbf{z}_i
+\end{split}\]</div>
+<p>with <span class="math notranslate nohighlight">\(\mathbf{w}_i = (\mathbf{w}_i^{(1)}, \mathbf{w}_i^{(2)})\)</span>, the concatenation of the rows of <span class="math notranslate nohighlight">\(\mathcal{W}_{i}\)</span> (as column vectors). A different way to put this is that</p>
+<div class="math notranslate nohighlight">
+\[
+\mathbf{w}_i
+= \mathrm{vec}(\mathcal{W}_{i}^T),
+\]</div>
+<p>where we took the transpose to turn the rows into columns. More specifically,</p>
+<div class="math notranslate nohighlight">
+\[
+\bfg_0(\mathbf{z}_0, \mathbf{w}_0)
+= \mathcal{W}_{0} \mathbf{z}_{0}
+\quad\text{with}\quad
+\mathbf{w}_0
+= (w_0, w_1, w_2, w_3, w_4, w_5)
+\]</div>
+<p>(i.e., <span class="math notranslate nohighlight">\(\mathbf{w}_0^{(1)} = (w_0, w_1, w_2)\)</span> and <span class="math notranslate nohighlight">\(\mathbf{w}_0^{(2)} = (w_3, w_4, w_5)\)</span>) and</p>
+<div class="math notranslate nohighlight">
+\[
+\bfg_1(\mathbf{z}_1, \mathbf{w}_1)
+= \mathcal{W}_{1} \mathbf{z}_{1}
+\quad\text{with}\quad
+\mathbf{w}_1
+= (w_6, w_7, w_8, w_9)
+\]</div>
+<p>(i.e., <span class="math notranslate nohighlight">\(\mathbf{w}_1^{(1)} = (w_6, w_7)\)</span> and <span class="math notranslate nohighlight">\(\mathbf{w}_1^{(2)} = (w_8, w_9)\)</span>).</p>
+<p>We seek to compute the gradient of</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+f(\mathbf{w})
+&amp;= \ell(\bfg_1(\bfg_0(\mathbf{x},\mathbf{w}_0),\mathbf{w}_1))\\
+&amp;= \frac{1}{2} \|\mathbf{y} - \mathcal{W}_{1} \mathcal{W}_{0} \mathbf{x}\|^2\\
+&amp;= \frac{1}{2}\left(y_1 - w_6(w_0 x_1 + w_1 x_2 + w_2 x_3) - w_7(w_3 x_1 + w_4 x_2 + w_5 x_3)\right)^2\\
+&amp; \qquad + \frac{1}{2}\left(y_2 - w_8(w_0 x_1 + w_1 x_2 + w_2 x_3) - w_9(w_3 x_1 + w_4 x_2 + w_5 x_3)\right)^2.
+\end{align*}\]</div>
+<p>by applying the <em>Chain Rule</em> backwards, as we justified in the previous subsection – but this time we take the gradient with respect to the parameters</p>
+<div class="math notranslate nohighlight">
+\[
+\mathbf{w} := (\mathbf{w}_0, \mathbf{w}_1) = (w_0,w_1,\ldots,w_9).
+\]</div>
+<p>Notice a key change in the notation: we now accordingly think of <span class="math notranslate nohighlight">\(f\)</span> <em>as a function of <span class="math notranslate nohighlight">\(\mathbf{w}\)</span></em>; the role of <span class="math notranslate nohighlight">\(\mathbf{x}\)</span> is implicit.</p>
+<p>On the other hand, it may seem counter-intuitive that we now think of <span class="math notranslate nohighlight">\(\bfg_i\)</span> as a function of <em>both</em> its own parameters and its inputs from the previous layer when we just stated that we only care about the gradient with respect to the former. But, as we will see, it turns out that we need the Jacobians with respect to both as the input from the previous layer <em>actually depends on the parameters of the previous layers</em>. For instance, <span class="math notranslate nohighlight">\(\bfg_1(\mathbf{z}_1, \mathbf{w}_1) = \mathcal{W}_{1} \mathbf{z}_{1}\)</span> where <span class="math notranslate nohighlight">\(\mathbf{z}_{1} = \bfg_0(\mathbf{z}_0, \mathbf{w}_0) = \mathcal{W}_{0} \mathbf{z}_{0}\)</span>.</p>
+<p>Recall that we have already computed the requisite Jacobians <span class="math notranslate nohighlight">\(J_{\bfg_0}\)</span> and <span class="math notranslate nohighlight">\(J_{\bfg_1}\)</span> in a previous example. We have also computed the Jacobian <span class="math notranslate nohighlight">\(J_{\ell}\)</span> of <span class="math notranslate nohighlight">\(\ell\)</span>. At this point, it is tempting to apply the <em>Chain Rule</em> and deduce that the gradient of <span class="math notranslate nohighlight">\(f\)</span> is</p>
+<div class="math notranslate nohighlight">
+\[
+J_{\ell}(\bfg_1(\bfg_0(\mathbf{x},\mathbf{w}_0),\mathbf{w}_1))
+\,J_{\bfg_1}(\bfg_0(\mathbf{x},\mathbf{w}_0),\mathbf{w}_1)
+\,J_{\bfg_0}(\mathbf{x}, \mathbf{w}_0).
+\]</div>
+<p>But this is not correct. For one, the dimensions do not match! For instance, <span class="math notranslate nohighlight">\(J_{\bfg_0} \in \mathbb{R}^{2 \times 9}\)</span> since <span class="math notranslate nohighlight">\(\bfg_0\)</span> has <span class="math notranslate nohighlight">\(2\)</span> outputs and <span class="math notranslate nohighlight">\(9\)</span> inputs (i.e., <span class="math notranslate nohighlight">\(z_{0,1}, z_{0,2}, z_{0,3}, w_0, w_1, w_2, w_3, w_4, w_5\)</span>) while <span class="math notranslate nohighlight">\(J_{\bfg_1} \in \mathbb{R}^{2 \times 6}\)</span> since <span class="math notranslate nohighlight">\(\bfg_1\)</span> has <span class="math notranslate nohighlight">\(2\)</span> outputs and <span class="math notranslate nohighlight">\(6\)</span> inputs (i.e., <span class="math notranslate nohighlight">\(z_{1,1}, z_{1,2}, w_6, w_7, w_8, w_9\)</span>). So what went wrong?</p>
+<p>The function <span class="math notranslate nohighlight">\(f\)</span> is <em>not</em> in fact a straight composition of the functions <span class="math notranslate nohighlight">\(\ell\)</span>, <span class="math notranslate nohighlight">\(\bfg_1\)</span>, and <span class="math notranslate nohighlight">\(\bfg_0\)</span>. Indeed the parameters to differentiate with respect to are introduced progressively, each layer injecting its own additional parameters which are not obtained from the previous layers. Hence we cannot write the gradient of <span class="math notranslate nohighlight">\(f\)</span> as a simple product the Jacobians, unlike what happend in the previous subsection.</p>
+<p>But not all is lost. We show below that we can still apply the <em>Chain Rule</em> step-by-step in a way that accounts for the additional parameters on each layer. Taking a hint from the previous subsection, we proceed forward first to compute <span class="math notranslate nohighlight">\(f\)</span> and the Jacobians, and then go backwards to compute the gradient <span class="math notranslate nohighlight">\(\nabla f\)</span>. We use the notation <span class="math notranslate nohighlight">\(\mathbb{A}_{n}[\mathbf{x}]\)</span> and <span class="math notranslate nohighlight">\(\mathbb{B}_{n}[\mathbf{z}]\)</span> from the background section.</p>
+<p>In the forward phase, we compute <span class="math notranslate nohighlight">\(f\)</span> itself and the requisite Jacobians:</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+&amp;\mathbf{z}_0 := \mathbf{x}\\ 
+&amp; = (x_1, x_2, x_3)\\
+&amp;\mathbf{z}_1 := \bfg_0(\mathbf{z}_0, \mathbf{w}_0)
+= \mathcal{W}_{0} \mathbf{z}_{0}\\
+&amp;= \begin{pmatrix} (\mathbf{w}_0^{(1)})^T\mathbf{x}\\ (\mathbf{w}_0^{(2)})^T\mathbf{x}\end{pmatrix}
+= \begin{pmatrix} w_0 x_1 + w_1 x_2 + w_2 x_3\\ w_3 x_1 + w_4 x_2 + w_5 x_3 \end{pmatrix}\\ 
+&amp;J_{\bfg_0}(\mathbf{z}_0, \mathbf{w}_0) := 
+\begin{pmatrix}
+\mathbb{A}_{2}[\mathbf{w}_0] &amp;
+\mathbb{B}_{2}[\mathbf{z}_0]
+\end{pmatrix}
+= \begin{pmatrix}
+\mathcal{W}_{0} &amp;
+I_{2\times 2} \otimes \mathbf{z}_0^T
+\end{pmatrix}\\
+&amp;= \begin{pmatrix}
+w_0 &amp; w_1 &amp; w_2 &amp; x_1 &amp; x_2 &amp; x_3 &amp; 0 &amp; 0 &amp; 0\\ 
+w_3 &amp; w_4 &amp; w_5 &amp; 0 &amp; 0 &amp; 0 &amp; x_1 &amp; x_2 &amp; x_3
+\end{pmatrix}
+\end{align*}\]</div>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+&amp;\hat{\mathbf{y}} := \mathbf{z}_2 := \bfg_1(\mathbf{z}_1, \mathbf{w}_1)
+= \mathcal{W}_{1} \mathbf{z}_{1}\\
+&amp;= \begin{pmatrix}
+w_6 z_{1,1} + w_7 z_{1,2}\\
+w_8 z_{1,1} + w_9 z_{1,2}
+\end{pmatrix}\\
+&amp;= \begin{pmatrix}
+w_6 (\mathbf{w}_0^{(1)})^T\mathbf{x} + w_7 (\mathbf{w}_0^{(2)})^T\mathbf{x}\\
+w_8 (\mathbf{w}_0^{(1)})^T\mathbf{x} + w_9 (\mathbf{w}_0^{(2)})^T\mathbf{x}
+\end{pmatrix}\\
+&amp;= \begin{pmatrix}
+w_6(w_0 x_1 + w_1 x_2 + w_2 x_3) + w_7(w_3 x_1 + w_4 x_2 + w_5 x_3)\\
+w_8(w_0 x_1 + w_1 x_2 + w_2 x_3) + w_9(w_3 x_1 + w_4 x_2 + w_5 x_3)
+\end{pmatrix}\\
+&amp;J_{\bfg_1}(\mathbf{z}_1, \mathbf{w}_1):=
+\begin{pmatrix}
+\mathbb{A}_{2}[\mathbf{w}_1] &amp;
+\mathbb{B}_{2}[\mathbf{z}_1]
+\end{pmatrix}
+= \begin{pmatrix}
+\mathcal{W}_{1} &amp;
+I_{2\times 2} \otimes \mathbf{z}_1^T
+\end{pmatrix}\\
+&amp;= \begin{pmatrix}
+w_6 &amp; w_7 &amp; z_{1,1} &amp; z_{1,2}  &amp; 0 &amp; 0\\ 
+w_8 &amp; w_9 &amp; 0 &amp; 0 &amp; z_{1,1} &amp; z_{1,2}
+\end{pmatrix}\\
+&amp;= \begin{pmatrix}
+w_6 &amp; w_7 &amp; (\mathbf{w}_0^{(1)})^T\mathbf{x} &amp; (\mathbf{w}_0^{(2)})^T\mathbf{x}  &amp; 0 &amp; 0\\ 
+w_8 &amp; w_9 &amp; 0 &amp; 0 &amp; (\mathbf{w}_0^{(1)})^T\mathbf{x} &amp; (\mathbf{w}_0^{(2)})^T\mathbf{x}
+\end{pmatrix}
+\end{align*}\]</div>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+&amp;f(\mathbf{x}) := \ell(\hat{\mathbf{y}}) 
+= \frac{1}{2} \|\mathbf{y} - \hat{\mathbf{y}}\|^2\\
+&amp;= \frac{1}{2}\left(y_1 - w_6(w_0 x_1 + w_1 x_2 + w_2 x_3) - w_7(w_3 x_1 + w_4 x_2 + w_5 x_3)\right)^2\\
+&amp; \qquad + \frac{1}{2}\left(y_2 - w_8(w_0 x_1 + w_1 x_2 + w_2 x_3) - w_9(w_3 x_1 + w_4 x_2 + w_5 x_3)\right)^2\\
+&amp;J_{\ell}(\hat{\mathbf{y}}) = (\hat{\mathbf{y}} - \mathbf{y})^T\\
+&amp;= \begin{pmatrix}
+w_6 (\mathbf{w}_0^{(1)})^T\mathbf{x} + w_7 (\mathbf{w}_0^{(2)})^T\mathbf{x} - y_1 &amp; 
+w_8 (\mathbf{w}_0^{(1)})^T\mathbf{x} + w_9 (\mathbf{w}_0^{(2)})^T\mathbf{x} - y_2
+\end{pmatrix}.
+\end{align*}\]</div>
+<p>We now compute the gradient of <span class="math notranslate nohighlight">\(\mathbf{f}\)</span> with respect to <span class="math notranslate nohighlight">\(\mathbf{w}\)</span>. We start with <span class="math notranslate nohighlight">\(\mathbf{w}_1 = (w_6, w_7, w_8, w_9)\)</span>. For this step, we think of <span class="math notranslate nohighlight">\(f\)</span> as the composition <span class="math notranslate nohighlight">\(\ell(\bfg_1(\mathbf{z}_1, \mathbf{w}_1))\)</span>. Here <span class="math notranslate nohighlight">\(\mathbf{z}_1\)</span> does not depend on <span class="math notranslate nohighlight">\(\mathbf{w}_1\)</span> and therefore can be considered fixed for this calculation. By the <em>Chain Rule</em></p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+\frac{\partial f(\mathbf{w})}{\partial w_6}
+&amp;=  \frac{\partial \ell(\bfg_1(\mathbf{z}_1, \mathbf{w}_1))}{\partial w_6}
+= \frac{\partial \ell(\hat{\mathbf{y}})}{\partial \hat{y}_1}
+\frac{\partial g_{1,1}(\mathbf{z}_1, \mathbf{w}_1)}{\partial w_6}
++ \frac{\partial \ell(\hat{\mathbf{y}})}{\partial \hat{y}_2}
+\frac{\partial g_{1,2}(\mathbf{z}_1, \mathbf{w}_1)}{\partial w_6}
+= (\hat{y}_1 - y_1) z_{1,1}
+\end{align*}\]</div>
+<p>where we used the fact that <span class="math notranslate nohighlight">\(g_{1,2}(\mathbf{z}_1, \mathbf{w}_1) = w_8 z_{1,1} + w_9 z_{1,2}\)</span> does not depend on <span class="math notranslate nohighlight">\(w_6\)</span> and therefore <span class="math notranslate nohighlight">\(\frac{\partial g_{1,2}(\mathbf{z}_1, \mathbf{w}_1)}{\partial w_6} = 0\)</span>. Similarly</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+\frac{\partial f(\mathbf{w})}{\partial w_7}
+&amp;= \frac{\partial \ell(\bfg_1(\mathbf{z}_1, \mathbf{w}_1))}{\partial w_7}
+=\frac{\partial \ell(\hat{\mathbf{y}})}{\partial \hat{y}_1}
+\frac{\partial g_{1,1}(\mathbf{z}_1, \mathbf{w}_1)}{\partial w_7}
++ \frac{\partial \ell(\hat{\mathbf{y}})}{\partial \hat{y}_2}
+\frac{\partial g_{1,2}(\mathbf{z}_1, \mathbf{w}_1)}{\partial w_7}
+= (\hat{y}_1 - y_1) z_{1,2}\\
+\frac{\partial f(\mathbf{w})}{\partial w_8}
+&amp;= \frac{\partial \ell(\bfg_1(\mathbf{z}_1, \mathbf{w}_1))}{\partial w_8}
+=\frac{\partial \ell(\hat{\mathbf{y}})}{\partial \hat{y}_1}
+\frac{\partial g_{1,1}(\mathbf{z}_1, \mathbf{w}_1)}{\partial w_8}
++ \frac{\partial \ell(\hat{\mathbf{y}})}{\partial \hat{y}_2}
+\frac{\partial g_{1,2}(\mathbf{z}_1, \mathbf{w}_1)}{\partial w_8}
+= (\hat{y}_1 - y_1) z_{2,1}\\
+\frac{\partial f(\mathbf{w})}{\partial w_9}
+&amp;= \frac{\partial \ell(\bfg_1(\mathbf{z}_1, \mathbf{w}_1))}{\partial w_9}
+=\frac{\partial \ell(\hat{\mathbf{y}})}{\partial \hat{y}_1}
+\frac{\partial g_{1,1}(\mathbf{z}_1, \mathbf{w}_1)}{\partial w_9}
++ \frac{\partial \ell(\hat{\mathbf{y}})}{\partial \hat{y}_2}
+\frac{\partial g_{1,2}(\mathbf{z}_1, \mathbf{w}_1)}{\partial w_9}
+= (\hat{y}_1 - y_1) z_{2,2}.
+\end{align*}\]</div>
+<p>In matrix form, this is</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+&amp;\begin{pmatrix}\frac{\partial f(\mathbf{w})}{\partial w_6} &amp;
+\frac{\partial f(\mathbf{w})}{\partial w_7} &amp;
+\frac{\partial f(\mathbf{w})}{\partial w_8} &amp;
+\frac{\partial f(\mathbf{w})}{\partial w_9}
+\end{pmatrix}\\
+&amp;= J_{\ell}(\hat{\mathbf{y}}) \,\mathbb{B}_{2}[\mathbf{z}_1]\\
+&amp;= (\hat{\mathbf{y}} - \mathbf{y})^T (I_{2\times 2} \otimes \mathbf{z}_1^T)\\
+&amp;= (\hat{\mathbf{y}} - \mathbf{y})^T \otimes \mathbf{z}_1^T\\
+&amp;= \begin{pmatrix}
+(\hat{y}_1 - y_1) z_{1,1} &amp;
+(\hat{y}_1 - y_1) z_{1,2} &amp;
+(\hat{y}_1 - y_1) z_{2,1} &amp;
+(\hat{y}_1 - y_1) z_{2,2}
+\end{pmatrix}
+\end{align*}\]</div>
+<p>where we used <em>Properties of the Kronecker Product (f)</em> on the second to last line.</p>
+<p>To compute the partial derivatives with respect to <span class="math notranslate nohighlight">\(\mathbf{w}_0 = (w_0, w_1, \ldots, w_5)\)</span>, we first need to compute partial derivatives with respect to <span class="math notranslate nohighlight">\(\mathbf{z}_1 = (z_{1,1}, z_{1,2})\)</span> since <span class="math notranslate nohighlight">\(f\)</span> depends on <span class="math notranslate nohighlight">\(\mathbf{w}_0\)</span> through it. For this calculation, we think again of <span class="math notranslate nohighlight">\(f\)</span> as the composition <span class="math notranslate nohighlight">\(\ell(\bfg_1(\mathbf{z}_1, \mathbf{w}_1))\)</span>, but this time our focus is on the variables <span class="math notranslate nohighlight">\(\mathbf{z}_1\)</span>. We obtain</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+\frac{\partial f(\mathbf{w})}{\partial z_{1,1}}
+&amp;= \frac{\partial \ell(\bfg_1(\mathbf{z}_1, \mathbf{w}_1))}{\partial z_{1,1}}\\
+&amp;= \frac{\partial \ell(\hat{\mathbf{y}})}{\partial \hat{y}_1}
+\frac{\partial g_{1,1}(\mathbf{z}_1, \mathbf{w}_1)}{\partial z_{1,1}}
++ \frac{\partial \ell(\hat{\mathbf{y}})}{\partial \hat{y}_2}
+\frac{\partial g_{1,2}(\mathbf{z}_1, \mathbf{w}_1)}{\partial z_{1,1}}\\
+&amp;= (\hat{y}_1 - y_1) w_6 + (\hat{y}_2 - y_2) w_8
+\end{align*}\]</div>
+<p>and</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+\frac{\partial f(\mathbf{w})}{\partial z_{1,2}}
+&amp;= \frac{\partial \ell(\bfg_1(\mathbf{z}_1, \mathbf{w}_1))}{\partial z_{1,2}}\\
+&amp;= \frac{\partial \ell(\hat{\mathbf{y}})}{\partial \hat{y}_1}
+\frac{\partial g_{1,1}(\mathbf{z}_1, \mathbf{w}_1)}{\partial z_{1,2}}
++ \frac{\partial \ell(\hat{\mathbf{y}})}{\partial \hat{y}_2}
+\frac{\partial g_{1,2}(\mathbf{z}_1, \mathbf{w}_1)}{\partial z_{1,2}}\\
+&amp;= (\hat{y}_1 - y_1) w_7 + (\hat{y}_2 - y_2) w_9.
+\end{align*}\]</div>
+<p>In matrix form, this is</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+&amp;\begin{pmatrix}\frac{\partial f(\mathbf{w})}{\partial z_{1,1}} &amp;
+\frac{\partial f(\mathbf{w})}{\partial z_{1,2}}
+\end{pmatrix}\\
+&amp;= J_{\ell}(\hat{\mathbf{y}}) \,\mathbb{A}_{2}[\mathbf{z}_1]\\
+&amp;= (\hat{\mathbf{y}} - \mathbf{y})^T \mathcal{W}_1\\
+&amp;= \begin{pmatrix}
+(\hat{y}_1 - y_1) w_6 + (\hat{y}_2 - y_2) w_8 &amp;
+(\hat{y}_1 - y_1) w_7 + (\hat{y}_2 - y_2) w_9
+\end{pmatrix}.
+\end{align*}\]</div>
+<p>The vector <span class="math notranslate nohighlight">\(\left(\frac{\partial f(\mathbf{w})}{\partial z_{1,1}},
+\frac{\partial f(\mathbf{w})}{\partial z_{1,2}}\right)\)</span> is called an adjoint.</p>
+<p>We now compute the gradient of <span class="math notranslate nohighlight">\(\mathbf{f}\)</span> with respect to <span class="math notranslate nohighlight">\(\mathbf{w}_0 = (w_0, w_1, \ldots, w_5)\)</span>. For this step, we think of <span class="math notranslate nohighlight">\(f\)</span> as the composition of <span class="math notranslate nohighlight">\(\ell(\bfg_1(\mathbf{z}_1, \mathbf{w}_1))\)</span> as a function of <span class="math notranslate nohighlight">\(\mathbf{z}_1\)</span> and <span class="math notranslate nohighlight">\(\bfg_0(\mathbf{z}_0, \mathbf{w}_0)\)</span> as a function of <span class="math notranslate nohighlight">\(\mathbf{w}_0\)</span>. Here <span class="math notranslate nohighlight">\(\mathbf{z}_0\)</span> does not depend on <span class="math notranslate nohighlight">\(\mathbf{w}_0\)</span> and therefore can be considered fixed for this calculation. By the <em>Chain Rule</em></p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+\frac{\partial f(\mathbf{w})}{\partial w_0}
+&amp;= \frac{\partial \ell(\bfg_1(\bfg_0(\mathbf{z}_0, \mathbf{w}_0), \mathbf{w}_1))}{\partial w_0}\\
+&amp;= \frac{\partial \ell(\bfg_1(\mathbf{z}_1, \mathbf{w}_1))}{\partial z_{1,1}}
+\frac{\partial g_{0,1}(\mathbf{z}_0, \mathbf{w}_0)}{\partial w_0}
++ \frac{\partial \ell(\bfg_1(\mathbf{z}_1, \mathbf{w}_1))}{\partial z_{1,2}}
+\frac{\partial g_{0,2}(\mathbf{z}_0, \mathbf{w}_0)}{\partial w_0}\\
+&amp;= ((\hat{y}_1 - y_1) w_6 + (\hat{y}_2 - y_2) w_8) z_{0,1}\\
+&amp;= ((\hat{y}_1 - y_1) w_6 + (\hat{y}_2 - y_2) w_8) x_{1},
+\end{align*}\]</div>
+<p>where we used the fact that <span class="math notranslate nohighlight">\(g_{0,2}(\mathbf{z}_0, \mathbf{w}_0) = w_3 z_{0,1} + w_4 z_{0,2} + w_5 z_{0,3}\)</span> does not depend on <span class="math notranslate nohighlight">\(w_0\)</span> and therefore <span class="math notranslate nohighlight">\(\frac{\partial g_{0,2}(\mathbf{z}_0, \mathbf{w}_0)}{\partial w_0} = 0\)</span>.</p>
+<p>Similarly (check it!)</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+\frac{\partial f(\mathbf{w})}{\partial w_1}
+&amp;= ((\hat{y}_1 - y_1) w_6 + (\hat{y}_2 - y_2) w_8) x_{2}\\
+\frac{\partial f(\mathbf{w})}{\partial w_2}
+&amp;= ((\hat{y}_1 - y_1) w_6 + (\hat{y}_2 - y_2) w_8) x_{3}\\
+\frac{\partial f(\mathbf{w})}{\partial w_3}
+&amp;= ((\hat{y}_1 - y_1) w_7 + (\hat{y}_2 - y_2) w_9) x_{1}\\
+\frac{\partial f(\mathbf{w})}{\partial w_4}
+&amp;= ((\hat{y}_1 - y_1) w_7 + (\hat{y}_2 - y_2) w_9) x_{2}\\
+\frac{\partial f(\mathbf{w})}{\partial w_5}
+&amp;= ((\hat{y}_1 - y_1) w_7 + (\hat{y}_2 - y_2) w_9) x_{3}.
+\end{align*}\]</div>
+<p>In matrix form, this is</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+&amp;\begin{pmatrix}\frac{\partial f(\mathbf{w})}{\partial w_0} &amp;
+\frac{\partial f(\mathbf{w})}{\partial w_1} &amp;
+\frac{\partial f(\mathbf{w})}{\partial w_2} &amp;
+\frac{\partial f(\mathbf{w})}{\partial w_3} &amp;
+\frac{\partial f(\mathbf{w})}{\partial w_4} &amp;
+\frac{\partial f(\mathbf{w})}{\partial w_5}
+\end{pmatrix}\\
+&amp;= J_{\ell}(\hat{\mathbf{y}}) \,\mathbb{A}_{2}[\mathbf{z}_1] \,\mathbb{B}_{2}[\mathbf{z}_0]\\
+&amp;= (\hat{\mathbf{y}} - \mathbf{y})^T  \mathcal{W}_1 (I_{2\times 2} \otimes \mathbf{z}_0^T)\\
+&amp;= ((\hat{\mathbf{y}} - \mathbf{y})^T \mathcal{W}_1) \otimes \mathbf{x}^T\\
+&amp;= \begin{pmatrix}
+((\hat{y}_1 - y_1) w_6 + (\hat{y}_2 - y_2) w_8) x_{1} &amp;
+\cdots &amp;
+((\hat{y}_1 - y_1) w_7 + (\hat{y}_2 - y_2) w_9) x_{3}
+\end{pmatrix}
+\end{align*}\]</div>
+<p>where we used <em>Properties of the Kronecker Product (f)</em> on the second to last line.</p>
+<p>To sum up,</p>
+<div class="math notranslate nohighlight">
+\[
+\nabla f (\mathbf{w})^T
+= \begin{pmatrix}
+(\hat{\mathbf{y}} - \mathbf{y})^T \otimes (\mathcal{W}_{0} \mathbf{x})^T &amp;
+((\hat{\mathbf{y}} - \mathbf{y})^T \mathcal{W}_1) \otimes \mathbf{x}^T
+\end{pmatrix}.
+\]</div>
+<p><strong>NUMERICAL CORNER:</strong> We return to the concrete example from the previous subsection. This time the matrices <code class="docutils literal notranslate"><span class="pre">W0</span></code> and <code class="docutils literal notranslate"><span class="pre">W1</span></code> require partial derivatives.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">x</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mf">1.</span><span class="p">,</span><span class="mf">0.</span><span class="p">,</span><span class="o">-</span><span class="mf">1.</span><span class="p">])</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mf">0.</span><span class="p">,</span><span class="mf">1.</span><span class="p">])</span>
+<span class="n">W0</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([[</span><span class="mf">0.</span><span class="p">,</span><span class="mf">1.</span><span class="p">,</span><span class="o">-</span><span class="mf">1.</span><span class="p">],[</span><span class="mf">2.</span><span class="p">,</span><span class="mf">0.</span><span class="p">,</span><span class="mf">1.</span><span class="p">]],</span> <span class="n">requires_grad</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">W1</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([[</span><span class="o">-</span><span class="mf">1.</span><span class="p">,</span><span class="mf">0.</span><span class="p">],[</span><span class="mf">2.</span><span class="p">,</span><span class="o">-</span><span class="mf">1.</span><span class="p">]],</span> <span class="n">requires_grad</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="n">z0</span> <span class="o">=</span> <span class="n">x</span>
+<span class="n">z1</span> <span class="o">=</span> <span class="n">W0</span> <span class="o">@</span> <span class="n">z0</span>
+<span class="n">z2</span> <span class="o">=</span> <span class="n">W1</span> <span class="o">@</span> <span class="n">z1</span>
+<span class="n">f</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">vector_norm</span><span class="p">(</span><span class="n">y</span><span class="o">-</span><span class="n">z2</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">z0</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>tensor([ 1.,  0., -1.])
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">z1</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>tensor([1., 1.], grad_fn=&lt;MvBackward0&gt;)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell tag_hide-input docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell source</span>
+<span class="expanded">Hide code cell source</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">z2</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</details>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>tensor([-1.,  1.], grad_fn=&lt;MvBackward0&gt;)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell tag_hide-input docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell source</span>
+<span class="expanded">Hide code cell source</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</details>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>tensor(0.5000, grad_fn=&lt;MulBackward0&gt;)
+</pre></div>
+</div>
+</div>
+</div>
+<p>We compute the gradient <span class="math notranslate nohighlight">\(\nabla f(\mathbf{w})\)</span> using AD.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">f</span><span class="o">.</span><span class="n">backward</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell tag_hide-input docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell source</span>
+<span class="expanded">Hide code cell source</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">W0</span><span class="o">.</span><span class="n">grad</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</details>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>tensor([[ 1.,  0., -1.],
+        [ 0.,  0., -0.]])
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell tag_hide-input docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell source</span>
+<span class="expanded">Hide code cell source</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">W1</span><span class="o">.</span><span class="n">grad</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</details>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>tensor([[-1., -1.],
+        [-0., -0.]])
+</pre></div>
+</div>
+</div>
+</div>
+<p>These are written in the form of matrix derivatives</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\frac{\partial f}{\partial \mathcal{W}_0}
+= \begin{pmatrix}
+\frac{\partial f}{\partial w_0} &amp;
+\frac{\partial f}{\partial w_1} &amp;
+\frac{\partial f}{\partial w_2} \\
+\frac{\partial f}{\partial w_3} &amp;
+\frac{\partial f}{\partial w_4} &amp;
+\frac{\partial f}{\partial w_5}
+\end{pmatrix}
+\quad\text{and}\quad
+\frac{\partial f}{\partial \mathcal{W}_1}
+= \begin{pmatrix}
+\frac{\partial f}{\partial w_6} &amp;
+\frac{\partial f}{\partial w_7} \\
+\frac{\partial f}{\partial w_8} &amp;
+\frac{\partial f}{\partial w_9}
+\end{pmatrix}.
+\end{split}\]</div>
+<p>We use our formulas to confirm that they match these results. We need the Kronecker product, which in PyTorch is implemented as <a class="reference external" href="https://pytorch.org/docs/stable/generated/torch.kron.html"><code class="docutils literal notranslate"><span class="pre">torch.kron</span></code></a>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">with</span> <span class="n">torch</span><span class="o">.</span><span class="n">no_grad</span><span class="p">():</span>
+    <span class="n">grad_W0</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">kron</span><span class="p">((</span><span class="n">z2</span> <span class="o">-</span> <span class="n">y</span><span class="p">)</span><span class="o">.</span><span class="n">T</span> <span class="o">@</span> <span class="n">W1</span><span class="p">,</span> <span class="n">z0</span><span class="o">.</span><span class="n">T</span><span class="p">)</span>
+    <span class="n">grad_W1</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">kron</span><span class="p">((</span><span class="n">z2</span> <span class="o">-</span> <span class="n">y</span><span class="p">)</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">z1</span><span class="o">.</span><span class="n">T</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">grad_W0</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>tensor([ 1.,  0., -1.,  0.,  0., -0.])
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell tag_hide-input docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell source</span>
+<span class="expanded">Hide code cell source</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">grad_W1</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</details>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>tensor([-1., -1.,  0.,  0.])
+</pre></div>
+</div>
+</div>
+</div>
+<p>Observe that this time these results are written in vectorized form (i.e., obtained by concatenating the rows). But they do match with the AD output.</p>
+<p><span class="math notranslate nohighlight">\(\unlhd\)</span></p>
+<p><strong>General setting</strong> <span class="math notranslate nohighlight">\(\idx{progressive function}\xdi\)</span> More generally, we have <span class="math notranslate nohighlight">\(L+2\)</span> layers. The input layer is <span class="math notranslate nohighlight">\(\mathbf{z}_0 := \mathbf{x}\)</span>, which we refer to as layer <span class="math notranslate nohighlight">\(0\)</span>. Hidden layer <span class="math notranslate nohighlight">\(i\)</span>, <span class="math notranslate nohighlight">\(i=1,\ldots,L\)</span>, is defined by a continuously differentiable function <span class="math notranslate nohighlight">\(\mathbf{z}_i := \bfg_{i-1}(\mathbf{z}_{i-1}, \mathbf{w}_{i-1})\)</span> which this time takes <em>two vector-valued inputs</em>: a vector <span class="math notranslate nohighlight">\(\mathbf{z}_{i-1} \in \mathbb{R}^{n_{i-1}}\)</span> fed from the <span class="math notranslate nohighlight">\((i-1)\)</span>-st layer and a vector <span class="math notranslate nohighlight">\(\mathbf{w}_{i-1} \in \mathbb{R}^{r_{i-1}}\)</span> of parameters specific to the <span class="math notranslate nohighlight">\(i\)</span>-th layer</p>
+<div class="math notranslate nohighlight">
+\[
+\bfg_{i-1} = (g_{i-1,1},\ldots,g_{i-1,n_{i}}) : \mathbb{R}^{n_{i-1} + r_{i-1}} \to \mathbb{R}^{n_{i}}.
+\]</div>
+<p>The output <span class="math notranslate nohighlight">\(\mathbf{z}_i\)</span> of <span class="math notranslate nohighlight">\(\bfg_{i-1}\)</span> is a vector in <span class="math notranslate nohighlight">\(\mathbb{R}^{n_{i}}\)</span> which is passed to the <span class="math notranslate nohighlight">\((i+1)\)</span>-st layer as input. The output layer is <span class="math notranslate nohighlight">\(\mathbf{z}_{L+1} := \bfg_{L}(\mathbf{z}_{L}, \mathbf{w}_{L})\)</span>, which we also refer to as layer <span class="math notranslate nohighlight">\(L+1\)</span>.</p>
+<p>For <span class="math notranslate nohighlight">\(i = 1,\ldots,L+1\)</span>, let</p>
+<div class="math notranslate nohighlight">
+\[
+\overline{\mathbf{w}}^{i-1} = (\mathbf{w}_0,\mathbf{w}_1,\ldots,\mathbf{w}_{i-1}) \in \mathbb{R}^{r_0 + r_1+\cdots+r_{i-1}}
+\]</div>
+<p>be the concatenation of the parameters from the first <span class="math notranslate nohighlight">\(i\)</span> layers (not including the input layer, which does not have parameters) as a vector in <span class="math notranslate nohighlight">\(\mathbb{R}^{r_0+r_1+\cdots+r_{i-1}}\)</span>. Then the output of layer <span class="math notranslate nohighlight">\(i\)</span> <em>as a function of the parameters</em> is the composition</p>
+<div class="math notranslate nohighlight">
+\[
+\mathcal{O}_{i-1}(\overline{\mathbf{w}}^{i-1})
+= \bfg_{i-1}(\mathcal{O}_{i-2}(\overline{\mathbf{w}}^{i-2}),
+\mathbf{w}_{i-1}) 
+= \bfg_{i-1}(\bfg_{i-2}(\cdots \bfg_1(\bfg_0(\mathbf{x},\mathbf{w}_0),\mathbf{w}_1), \cdots, \mathbf{w}_{i-2}), \mathbf{w}_{i-1})
+\in \mathbb{R}^{n_{i}},
+\]</div>
+<p>for <span class="math notranslate nohighlight">\(i = 2, \ldots, L+1\)</span>. When <span class="math notranslate nohighlight">\(i=1\)</span>, we have simply</p>
+<div class="math notranslate nohighlight">
+\[
+\mathcal{O}_{0}(\overline{\mathbf{w}}^{0})
+= \bfg_{0}(\mathbf{x}, \mathbf{w}_0).
+\]</div>
+<p>Observe that the function <span class="math notranslate nohighlight">\(\mathcal{O}_{i-1}\)</span> depends implicitly on the input <span class="math notranslate nohighlight">\(\mathbf{x}\)</span> – which we do <em>not</em> think of as a variable in this setting. To simplify the notation, we do not make the dependence on <span class="math notranslate nohighlight">\(\mathbf{x}\)</span> explicit.</p>
+<p>Letting <span class="math notranslate nohighlight">\(\mathbf{w} := \overline{\mathbf{w}}^{L}\)</span>, the final output is</p>
+<div class="math notranslate nohighlight">
+\[
+\bfh(\mathbf{w}) 
+= \mathcal{O}_{L}(\overline{\mathbf{w}}^{L}).
+\]</div>
+<p>Expanding out the composition, this can be written alternatively as</p>
+<div class="math notranslate nohighlight">
+\[
+\bfh(\mathbf{w})
+= \bfg_{L}(\bfg_{L-1}(\cdots \bfg_1(\bfg_0(\mathbf{x},\mathbf{w}_0),\mathbf{w}_1), \cdots, \mathbf{w}_{L-1}), \mathbf{w}_{L}).
+\]</div>
+<p>Again, we do not make the dependence on <span class="math notranslate nohighlight">\(\mathbf{x}\)</span> explicit.</p>
+<p>As a final step, we have a loss function <span class="math notranslate nohighlight">\(\ell : \mathbb{R}^{n_{L+1}} \to \mathbb{R}\)</span> which takes as input the output of the last layer and measures the fit to the given label <span class="math notranslate nohighlight">\(\mathbf{y} \in \Delta_K\)</span>. We will see some example below. The final function is then</p>
+<div class="math notranslate nohighlight">
+\[
+f(\mathbf{w})
+= \ell(\bfh(\mathbf{w})) \in \mathbb{R}.
+\]</div>
+<p>We seek to compute the gradient of <span class="math notranslate nohighlight">\(f(\mathbf{w})\)</span> with respect to the parameters <span class="math notranslate nohighlight">\(\mathbf{w}\)</span> in order to apply a gradient descent method.</p>
+<p><strong>EXAMPLE:</strong> <strong>(continued)</strong> We return to the running example from the previous subsection. That is, <span class="math notranslate nohighlight">\(\bfg_i(\mathbf{z}_i, \mathbf{w}_i) = \mathcal{W}_{i} \mathbf{z}_i\)</span> where the entries of <span class="math notranslate nohighlight">\(\mathcal{W}_{i} \in \mathbb{R}^{n_{i+1} \times n_i}\)</span> are considered parameters and we let <span class="math notranslate nohighlight">\(\mathbf{w}_i = \mathrm{vec}(\mathcal{W}_{i}^T)\)</span>. Assume also that <span class="math notranslate nohighlight">\(\ell : \mathbb{R}^K \to \mathbb{R}\)</span> is defined as</p>
+<div class="math notranslate nohighlight">
+\[
+\ell(\hat{\mathbf{y}})
+= \frac{1}{2} \|\mathbf{y} - \hat{\mathbf{y}}\|^2,
+\]</div>
+<p>for a fixed, known vector <span class="math notranslate nohighlight">\(\mathbf{y} \in \mathbb{R}^{K}\)</span>.</p>
+<p>Computing <span class="math notranslate nohighlight">\(f\)</span> recursively gives</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+\mathbf{z}_0 &amp;:= \mathbf{x}\\
+\mathbf{z}_1 &amp;:= \mathcal{O}_0(\overline{\mathbf{w}}^0) = \bfg_0(\mathbf{z}_0, \mathbf{w}_0) = \mathcal{W}_{0} \mathbf{z}_0 = \mathcal{W}_{0} \mathbf{x}\\
+\mathbf{z}_2 &amp;:= \mathcal{O}_1(\overline{\mathbf{w}}^1) = \bfg_1(\mathbf{z}_1, \mathbf{w}_1) = \mathcal{W}_{1} \mathbf{z}_1 = \mathcal{W}_{1} \mathcal{W}_{0} \mathbf{x}\\
+\vdots\\
+\mathbf{z}_L &amp;:= \mathcal{O}_{L-1}(\overline{\mathbf{w}}^{L-1}) = \bfg_{L-1}(\mathbf{z}_{L-1}, \mathbf{w}_{L-1})
+= \mathcal{W}_{L-1} \mathbf{z}_{L-1} = \mathcal{W}_{L-1} \cdots \mathcal{W}_{1} \mathcal{W}_{0} \mathbf{x}\\
+\hat{\mathbf{y}} := \mathbf{z}_{L+1} &amp;:= \mathcal{O}_{L}(\overline{\mathbf{w}}^{L}) = \bfg_{L}(\mathbf{z}_{L}, \mathbf{w}_{L})
+= \mathcal{W}_{L} \mathbf{z}_{L} = \mathcal{W}_{L} \mathcal{W}_{L-1} \cdots \mathcal{W}_{1} \mathcal{W}_{0} \mathbf{x}\\
+f(\mathbf{x}) &amp;:= \ell(\hat{\mathbf{y}})
+= \frac{1}{2}\|\mathbf{y} - \hat{\mathbf{y}}\|^2
+= \frac{1}{2}\left\|\mathbf{y} - \mathcal{W}_{L} \mathcal{W}_{L-1} \cdots \mathcal{W}_{1} \mathcal{W}_{0} \mathbf{x}\right\|^2.
+\end{align*}\]</div>
+<p><span class="math notranslate nohighlight">\(\lhd\)</span></p>
+<p><strong>Applying the chain rule</strong> Recall that the key insight from the <em>Chain Rule</em> is that to compute the gradient of a composition such as <span class="math notranslate nohighlight">\(\bfh(\mathbf{w})\)</span> – no matter how complex – it suffices to <em>separately</em> compute the Jacobians of the intervening functions and then take <em>matrix products</em>. In this section, we compute the necessary Jacobians in the progressive case.</p>
+<p>It will be convenient to re-write the basic composition step as</p>
+<div class="math notranslate nohighlight">
+\[
+\mathcal{O}_{i}(\overline{\mathbf{w}}^{i})
+= \bfg_{i}(\mathcal{O}_{i-1}(\overline{\mathbf{w}}^{i-1}),
+\mathbf{w}_{i}) 
+= \bfg_{i}(\mathcal{I}_{i}(\overline{\mathbf{w}}^{i}))
+\in \mathbb{R}^{n_{i+1}},
+\]</div>
+<p>where the input to layer <span class="math notranslate nohighlight">\(i+1\)</span> (both layer-specific parameters and the output of the previous layer) is</p>
+<div class="math notranslate nohighlight">
+\[
+\mathcal{I}_{i}(\overline{\mathbf{w}}^{i})
+= \left( 
+\mathcal{O}_{i-1}(\overline{\mathbf{w}}^{i-1}),
+\mathbf{w}_{i}
+\right) \in \mathbb{R}^{n_{i} + r_{i}},
+\]</div>
+<p>for <span class="math notranslate nohighlight">\(i = 1, \ldots, L\)</span>. When <span class="math notranslate nohighlight">\(i=0\)</span>, we have simply</p>
+<div class="math notranslate nohighlight">
+\[
+\mathcal{I}_{0}(\overline{\mathbf{w}}^{0}) = \left(\mathbf{z}_0, \mathbf{w}_0 \right) = \left(\mathbf{x}, \mathbf{w}_0 \right).
+\]</div>
+<p>Applying the <em>Chain Rule</em> we get</p>
+<div class="math notranslate nohighlight">
+\[
+J_{\mathcal{O}_{i}}(\overline{\mathbf{w}}^{i})
+= J_{\bfg_i}(\mathcal{I}_{i}(\overline{\mathbf{w}}^{i}))
+\,J_{\mathcal{I}_{i}}(\overline{\mathbf{w}}^{i}).
+\]</div>
+<p>First, the Jacobian of</p>
+<div class="math notranslate nohighlight">
+\[
+\mathcal{I}_{i}(\overline{\mathbf{w}}^{i})
+= \left(
+\mathcal{O}_{i-1}(\overline{\mathbf{w}}^{i-1}), \mathbf{w}_i
+\right)
+\]</div>
+<p>has a simple block diagonal structure</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+J_{\mathcal{I}_{i}}(\overline{\mathbf{w}}^{i})
+= 
+\begin{pmatrix}
+J_{\mathcal{O}_{i-1}}(\overline{\mathbf{w}}^{i-1}) &amp; 0 \\
+0 &amp; I_{r_i \times r_i}
+\end{pmatrix}
+\in \mathbb{R}^{(n_{i} + r_{i})\times(r_0 + \cdots + r_i)}
+\end{split}\]</div>
+<p>since the first block component of <span class="math notranslate nohighlight">\(\mathcal{I}_{i}\)</span>, <span class="math notranslate nohighlight">\(\mathcal{O}_{i-1}(\overline{\mathbf{w}}^{i-1})\)</span>, does not depend on <span class="math notranslate nohighlight">\(\mathbf{w}_i\)</span> whereas the second block component of <span class="math notranslate nohighlight">\(\mathcal{I}_{i}\)</span>, <span class="math notranslate nohighlight">\(\mathbf{w}_i\)</span>, does not depend on <span class="math notranslate nohighlight">\(\overline{\mathbf{w}}^{i-1}\)</span>. Observe that this is a fairly large matrix whose number of columns in particular grows with <span class="math notranslate nohighlight">\(i\)</span>. That last formula is for <span class="math notranslate nohighlight">\(i \geq 1\)</span>. When <span class="math notranslate nohighlight">\(i=0\)</span> we have
+<span class="math notranslate nohighlight">\(\mathcal{I}_{0}(\overline{\mathbf{w}}^{0}) = \left(\mathbf{x}, \mathbf{w}_0\right)\)</span>,
+so that</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+J_{\mathcal{I}_{0}}(\overline{\mathbf{w}}^{0})
+= 
+\begin{pmatrix}
+\mathbf{0}_{d \times r_0} \\
+I_{r_0 \times r_0}
+\end{pmatrix} \in \mathbb{R}^{r \times r_0}.
+\end{split}\]</div>
+<p>We partition the Jacobian of <span class="math notranslate nohighlight">\(\bfg_i(\mathbf{z}_i, \mathbf{w}_i)\)</span> likewise, that is, we divide it into those columns corresponding to partial derivatives with respect to <span class="math notranslate nohighlight">\(\mathbf{z}_{i}\)</span> (the corresponding block being denoted by <span class="math notranslate nohighlight">\(A_i\)</span>) and with respect to <span class="math notranslate nohighlight">\(\mathbf{w}_i\)</span> (the corresponding block being denoted by <span class="math notranslate nohighlight">\(B_i\)</span>)</p>
+<div class="math notranslate nohighlight">
+\[
+J_{\bfg_i}(\mathbf{z}_i, \mathbf{w}_i)
+= 
+\begin{pmatrix}
+A_i &amp; B_i
+\end{pmatrix}
+\in \mathbb{R}^{n_{i+1} \times (n_i + r_i)},
+\]</div>
+<p>evaluated at <span class="math notranslate nohighlight">\((\mathbf{z}_i, \mathbf{w}_i) = \mathcal{I}_{i}(\overline{\mathbf{w}}^{i}) 
+= (\mathcal{O}_{i-1}(\overline{\mathbf{w}}^{i-1}), \mathbf{w}_i)\)</span>. Note that <span class="math notranslate nohighlight">\(A_i\)</span> and <span class="math notranslate nohighlight">\(B_i\)</span> depend on the details of the function <span class="math notranslate nohighlight">\(\bfg_i\)</span>, which typically is fairly simple. We give examples in the next subsections.</p>
+<p>Plugging back above we get</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+J_{\mathcal{O}_{i}}(\overline{\mathbf{w}}^{i})
+= \begin{pmatrix}
+A_i &amp; B_i
+\end{pmatrix}
+\,\begin{pmatrix}
+J_{\mathcal{O}_{i-1}}(\overline{\mathbf{w}}^{i-1}) &amp; 0 \\
+0 &amp; I_{r_i \times r_i}
+\end{pmatrix}.
+\end{split}\]</div>
+<p>This leads to the recursion</p>
+<div class="math notranslate nohighlight">
+\[
+J_{\mathcal{O}_{i}}(\overline{\mathbf{w}}^{i})
+=
+\begin{pmatrix}
+A_i \, J_{\mathcal{O}_{i-1}}(\overline{\mathbf{w}}^{i-1}) &amp; B_i
+\end{pmatrix}
+\in \mathbb{R}^{n_{i+1}\times(r_0 + \cdots + r_i)}
+\]</div>
+<p>from which the Jacobian of <span class="math notranslate nohighlight">\(\mathbf{h}(\mathbf{w})\)</span> can be computed. Like <span class="math notranslate nohighlight">\(J_{\mathcal{I}_{i}}\)</span>, <span class="math notranslate nohighlight">\(J_{\mathcal{O}_{i}}\)</span> is a large matrix. We refer to this matrix equation as the <em>fundamental recursion</em>.</p>
+<p>The base case <span class="math notranslate nohighlight">\(i=0\)</span> is</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+J_{\mathcal{O}_{0}}(\overline{\mathbf{w}}^{0})
+= \begin{pmatrix}
+A_0 &amp; B_0
+\end{pmatrix}\begin{pmatrix}
+\mathbf{0}_{d \times r_0} \\
+I_{r_0 \times r_0}
+\end{pmatrix}
+= B_0.
+\end{split}\]</div>
+<p>Finally, using the <em>Chain Rule</em> again</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+\nabla {f(\mathbf{w})}
+&amp;= J_{f}(\mathbf{w})^T\\
+&amp;= [J_{\ell}(\bfh(\mathbf{w})) 
+\,J_{\bfh}(\mathbf{w})]^T\\
+&amp;= J_{\bfh}(\mathbf{w})^T
+\,\nabla {\ell}(\bfh(\mathbf{w}))\\
+&amp;= J_{\mathcal{O}_{L}}(\overline{\mathbf{w}}^{L})^T
+\,\nabla {\ell}(\mathcal{O}_{L}(\overline{\mathbf{w}}^{L})).
+\end{align*}\]</div>
+<p>The matrix <span class="math notranslate nohighlight">\(J_{\mathcal{O}_{L}}(\overline{\mathbf{w}}^{L})\)</span> is computed using the recursion above, while <span class="math notranslate nohighlight">\(\nabla {\ell}\)</span> depends on the function <span class="math notranslate nohighlight">\(\ell\)</span>.</p>
+<p><strong>Backpropagation</strong> <span class="math notranslate nohighlight">\(\idx{backpropagation}\xdi\)</span> We take advantage of the fundamental recursion to compute the gradient of <span class="math notranslate nohighlight">\(\bfh\)</span>. As we have seen, there are two ways of doing this. Applying the recursion directly is one of them, but it requires many matrix-matrix products. The first few steps are</p>
+<div class="math notranslate nohighlight">
+\[
+J_{\mathcal{O}_{0}}(\overline{\mathbf{w}}^{0})
+= B_0,
+\]</div>
+<div class="math notranslate nohighlight">
+\[
+J_{\mathcal{O}_{1}}(\overline{\mathbf{w}}^{1})
+=
+\begin{pmatrix}
+A_1 J_{\mathcal{O}_{0}}(\overline{\mathbf{w}}^{0}) &amp; B_1
+\end{pmatrix}
+\]</div>
+<div class="math notranslate nohighlight">
+\[
+J_{\mathcal{O}_{2}}(\overline{\mathbf{w}}^{2})
+=
+\begin{pmatrix}
+A_2 \, J_{\mathcal{O}_{1}}(\overline{\mathbf{w}}^{1}) &amp; B_2
+\end{pmatrix},
+\]</div>
+<p>and so on.</p>
+<p>Instead, as in the case of differentiating with respect to the input <span class="math notranslate nohighlight">\(\mathbf{x}\)</span>, one can also run the recursion backwards. The latter approach can be much faster because, as we detail next, it involves only matrix-vector products. Start from the end, that is, with the equation</p>
+<div class="math notranslate nohighlight">
+\[
+\nabla {f}(\mathbf{w})
+= 
+J_{\bfh}(\mathbf{w})^T
+\,\nabla {\ell}(\bfh(\mathbf{w})).
+\]</div>
+<p>Note that <span class="math notranslate nohighlight">\(\nabla {\ell}(\bfh(\mathbf{w}))\)</span> is a vector – not a matrix. Then expand the matrix <span class="math notranslate nohighlight">\(J_{\bfh}(\mathbf{w})\)</span> using the recursion above</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+\nabla {f}(\mathbf{w})
+&amp;= 
+J_{\bfh}(\mathbf{w})^T
+\,\nabla {\ell}(\bfh(\mathbf{w}))\\
+&amp;= 
+J_{\mathcal{O}_{L}}(\overline{\mathbf{w}}^{L})^T
+\,\nabla {\ell}(\bfh(\mathbf{w}))\\
+&amp;= 
+\begin{pmatrix}
+A_L \, J_{\mathcal{O}_{L-1}}(\overline{\mathbf{w}}^{L-1}) &amp; B_L 
+\end{pmatrix}^T
+\,\nabla {\ell}(\bfh(\mathbf{w}))\\
+&amp;= 
+\begin{pmatrix}
+J_{\mathcal{O}_{L-1}}(\overline{\mathbf{w}}^{L-1})^T A_L^T \\  
+B_L^T 
+\end{pmatrix}
+\,\nabla {\ell}(\bfh(\mathbf{w}))\\
+&amp;= 
+\begin{pmatrix}
+J_{\mathcal{O}_{L-1}}(\overline{\mathbf{w}}^{L-1})^T 
+\left\{ A_L^T \,\nabla {\ell}(\bfh(\mathbf{w}))\right\}
+\\
+B_L^T \,\nabla {\ell}(\bfh(\mathbf{w}))
+\end{pmatrix}.
+\end{align*}\]</div>
+<p>The key is that both expressions
+<span class="math notranslate nohighlight">\(A_L^T \,\nabla {\ell}(\bfh(\mathbf{w}))\)</span>
+and
+<span class="math notranslate nohighlight">\(B_L^T \,\nabla {\ell}(\bfh(\mathbf{w}))\)</span> are <em>matrix-vector products</em>. That pattern persists at the next level of recursion. Note that this supposes that we have precomputed <span class="math notranslate nohighlight">\(\bfh(\mathbf{w})\)</span> first.</p>
+<p>At the next level, we expand the matrix <span class="math notranslate nohighlight">\(J_{\mathcal{O}_{L-1}}(\overline{\mathbf{w}}^{L-1})^T\)</span> using the fundamental recursion</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+\nabla {f}(\mathbf{w})
+&amp;= 
+\begin{pmatrix}
+J_{\mathcal{O}_{L-1}}(\overline{\mathbf{w}}^{L-1})^T 
+\left\{ A_L^T \,\nabla {\ell}(\bfh(\mathbf{w}))\right\}
+\\
+B_L^T \,\nabla {\ell}(\bfh(\mathbf{w}))
+\end{pmatrix}\\
+&amp;= 
+\begin{pmatrix}
+\begin{pmatrix}
+A_{L-1} \, J_{\mathcal{O}_{L-2}}(\overline{\mathbf{w}}^{L-2}) &amp; B_{L-1}
+\end{pmatrix}^T 
+\left\{ A_L^T \,\nabla {\ell}(\bfh(\mathbf{w}))\right\}
+\\
+B_L^T \,\nabla {\ell}(\bfh(\mathbf{w}))
+\end{pmatrix}\\
+&amp;= 
+\begin{pmatrix}
+\begin{pmatrix}
+J_{\mathcal{O}_{L-2}}(\overline{\mathbf{w}}^{L-2})\,A_{L-1}^T \\ B_{L-1}^T
+\end{pmatrix}
+\left\{ A_L^T \,\nabla {\ell}(\bfh(\mathbf{w}))\right\}
+\\
+B_L^T \,\nabla {\ell}(\bfh(\mathbf{w}))
+\end{pmatrix}\\
+&amp;= 
+\begin{pmatrix}
+J_{\mathcal{O}_{L-2}}(\overline{\mathbf{w}}^{L-2})\left\{A_{L-1}^T
+\left\{ A_L^T \,\nabla {\ell}(\bfh(\mathbf{w}))\right\}\right\}
+\\
+B_{L-1}^T \left\{ A_L^T \,\nabla {\ell}(\bfh(\mathbf{w}))\right\}\\
+B_L^T \,\nabla {\ell}(\bfh(\mathbf{w}))
+\end{pmatrix}.
+\end{align*}\]</div>
+<p>Continuing by induction gives an alternative formula for the gradient of <span class="math notranslate nohighlight">\(f\)</span>.</p>
+<p>Indeed, the next level gives</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+\nabla {f}(\mathbf{w})
+&amp;= 
+\begin{pmatrix}
+J_{\mathcal{O}_{L-3}}(\overline{\mathbf{w}}^{L-3})\left\{A_{L-2}^T
+\left\{A_{L-1}^T
+\left\{ A_L^T \,\nabla {\ell}(\bfh(\mathbf{w}))\right\}\right\}\right\}
+\\
+B_{L-2}^T \left\{A_{L-1}^T
+\left\{ A_L^T \,\nabla {\ell}(\bfh(\mathbf{w}))\right\}\right\}
+\\
+B_{L-1}^T \left\{ A_L^T \,\nabla {\ell}(\bfh(\mathbf{w}))\right\}\\
+B_L^T \,\nabla {\ell}(\bfh(\mathbf{w}))
+\end{pmatrix}.
+\end{align*}\]</div>
+<p>and so on. Observe that we do not in fact need to compute the large matrices <span class="math notranslate nohighlight">\(J_{\mathcal{O}_{i}}\)</span> – only the sequence of vectors
+<span class="math notranslate nohighlight">\(B_L^T \,\nabla {\ell}(\bfh(\mathbf{w}))\)</span>,
+<span class="math notranslate nohighlight">\(B_{L-1}^T \left\{ A_L^T \,\nabla {\ell}(\bfh(\mathbf{w}))\right\}\)</span>,
+<span class="math notranslate nohighlight">\(B_{L-2}^T \left\{A_{L-1}^T \left\{ A_L^T \,\nabla {\ell}(\bfh(\mathbf{w}))\right\}\right\}, 
+\)</span>etc.</p>
+<p>These formulas may seem cumbersome, but they take an intuitive form. Matrix <span class="math notranslate nohighlight">\(A_i\)</span> is the submatrix of the Jacobian <span class="math notranslate nohighlight">\(J_{\bfg_i}\)</span> corresponding only to the partial derivatives with respect to <span class="math notranslate nohighlight">\(\mathbf{z}_i\)</span>, i.e., the input from the previous layer. Matrix <span class="math notranslate nohighlight">\(B_i\)</span> is the submatrix of the Jacobian <span class="math notranslate nohighlight">\(J_{\bfg_i}\)</span> corresponding only to the partial derivatives with respect to <span class="math notranslate nohighlight">\(\mathbf{w}_i\)</span>, i.e., the layer-specific parameters. To compute the subvector of <span class="math notranslate nohighlight">\(\nabla f\)</span> corresponding to the parameters <span class="math notranslate nohighlight">\(\mathbf{w}_i\)</span> of the <span class="math notranslate nohighlight">\((i+1)\)</span>-th layer, we repeatedly differentiate with respect to the inputs of the previous layer (by multiplying by the corresponding <span class="math notranslate nohighlight">\(A_j^T\)</span>) starting from the last one, until we reach layer <span class="math notranslate nohighlight">\(i+1\)</span> at which point we take partial derivatives with respect to the layer-specific parameters (by multiplying by <span class="math notranslate nohighlight">\(B_i^T\)</span>). The process stops there since the layers preceding it do not depend on <span class="math notranslate nohighlight">\(\mathbf{w}_i\)</span> and therefore its full effect on <span class="math notranslate nohighlight">\(f\)</span> has been accounted for.</p>
+<p>In other words, we need to compute</p>
+<div class="math notranslate nohighlight">
+\[
+\mathbf{p}_{L} := A_L^T \,\nabla {\ell}(\bfh(\mathbf{w}))\]</div>
+<p>and</p>
+<div class="math notranslate nohighlight">
+\[
+\mathbf{q}_{L} := B_L^T \,\nabla {\ell}(\bfh(\mathbf{w})),
+\]</div>
+<p>then</p>
+<div class="math notranslate nohighlight">
+\[
+\mathbf{p}_{L-1} := A_{L-1}^T \mathbf{p}_{L} = A_{L-1}^T
+\left\{ A_L^T \,\nabla {\ell}(\bfh(\mathbf{w}))\right\}
+\]</div>
+<p>and</p>
+<div class="math notranslate nohighlight">
+\[
+\mathbf{q}_{L-1} := B_{L-1}^T \mathbf{p}_{L} = B_{L-1}^T \left\{ A_L^T \,\nabla {\ell}(\bfh(\mathbf{w}))\right\},
+\]</div>
+<p>then</p>
+<div class="math notranslate nohighlight">
+\[
+\mathbf{p}_{L-2} :=  A_{L-2}^T \mathbf{p}_{L-1} = A_{L-2}^T
+\left\{A_{L-1}^T
+\left\{ A_L^T \,\nabla {\ell}(\bfh(\mathbf{w}))\right\}\right\}
+\]</div>
+<p>and</p>
+<div class="math notranslate nohighlight">
+\[
+\mathbf{q}_{L-2} := B_{L-2}^T \mathbf{p}_{L-1} =  B_{L-2}^T \left\{A_{L-1}^T
+\left\{ A_L^T \,\nabla {\ell}(\bfh(\mathbf{w}))\right\} \right\},
+\]</div>
+<p>and so on. The <span class="math notranslate nohighlight">\(\mathbf{p}_i\)</span>s are referred to as adjoints; they correspond to the vectors of partial derivatives of <span class="math notranslate nohighlight">\(f\)</span> with respect to the <span class="math notranslate nohighlight">\(\mathbf{z}_i\)</span>s.</p>
+<p>There is one more detail to note. The matrices <span class="math notranslate nohighlight">\(A_i, B_i\)</span> depend on the output of layer <span class="math notranslate nohighlight">\(i-1\)</span>. To compute them, we first proceed forward, that is, we let <span class="math notranslate nohighlight">\(\mathbf{z}_0 = \mathbf{x}\)</span> then</p>
+<div class="math notranslate nohighlight">
+\[
+\mathbf{z}_1 = \mathcal{O}_{0}(\overline{\mathbf{w}}^{0})
+= \bfg_0(\mathbf{z}_0,
+\mathbf{w}_0),
+\]</div>
+<div class="math notranslate nohighlight">
+\[
+\mathbf{z}_2 = \mathcal{O}_{1}(\overline{\mathbf{w}}^{1})
+= \bfg_1(\mathcal{O}_{0}(\overline{\mathbf{w}}^{0}),
+\mathbf{w}_1)
+= \bfg_1(\mathbf{z}_1,
+\mathbf{w}_1),
+\]</div>
+<p>and so on. In that forward pass, we also compute <span class="math notranslate nohighlight">\(A_i, B_i\)</span> along the way.</p>
+<p>We give the full algorithm now, which involves two passes. In the forward pass, or forward propagation step, we compute the following.</p>
+<p><em>Initialization:</em></p>
+<div class="math notranslate nohighlight">
+\[\mathbf{z}_0 := \mathbf{x}\]</div>
+<p><em>Forward layer loop:</em> For <span class="math notranslate nohighlight">\(i = 0, 1,\ldots,L\)</span>,</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+\mathbf{z}_{i+1} &amp;:= \bfg_i(\mathbf{z}_i, \mathbf{w}_i)\\
+\begin{pmatrix}
+A_i &amp; B_i
+\end{pmatrix}
+&amp;:= J_{\bfg_i}(\mathbf{z}_i, \mathbf{w}_i)
+\end{align*}\]</div>
+<p><em>Loss:</em></p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+z_{L+2}
+&amp;:= \ell(\mathbf{z}_{L+1})\\
+\mathbf{p}_{L+1}
+&amp;:= \nabla {\ell}(\mathbf{z}_{L+1}).
+\end{align*}\]</div>
+<p>In the backward pass, or backpropagation step, we compute the following.</p>
+<p><em>Backward layer loop:</em> For <span class="math notranslate nohighlight">\(i = L,\ldots,1, 0\)</span>,</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+\mathbf{p}_{i} &amp;:= A_i^T \mathbf{p}_{i+1}\\
+\mathbf{q}_{i} &amp;:= B_i^T \mathbf{p}_{i+1}
+\end{align*}\]</div>
+<p><em>Output:</em></p>
+<div class="math notranslate nohighlight">
+\[
+\nabla f(\mathbf{w})
+= (\mathbf{q}_0,\mathbf{q}_1,\ldots,\mathbf{q}_L).
+\]</div>
+<p>Note that we do not in fact need to compute <span class="math notranslate nohighlight">\(A_0\)</span> and <span class="math notranslate nohighlight">\(\mathbf{p}_0\)</span>.</p>
+<p><strong>EXAMPLE:</strong> <strong>(continued)</strong> We apply the algorithm to our running example. From previous calculations, for <span class="math notranslate nohighlight">\(i = 0, 1,\ldots,L\)</span>, the Jacobians are</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+J_{\bfg_i}(\mathbf{z}_i, \mathbf{w}_i)
+&amp;= \begin{pmatrix}
+\mathbb{A}_{n_{i+1}}[\mathbf{w}_i] &amp;
+\mathbb{B}_{n_{i+1}}[\mathbf{z}_i]
+\end{pmatrix}\\
+&amp;= \begin{pmatrix}
+\mathcal{W}_i &amp;
+I_{n_{i+1} \times n_{i+1}} \otimes \mathbf{z}_i^T
+\end{pmatrix}\\
+&amp;=: \begin{pmatrix}
+A_i &amp; B_i
+\end{pmatrix}
+\end{align*}\]</div>
+<p>and</p>
+<div class="math notranslate nohighlight">
+\[
+J_{\ell}(\hat{\mathbf{y}}) = (\hat{\mathbf{y}} - \mathbf{y})^T.
+\]</div>
+<p>Using the <em>Properties of the Kronecker Product</em>, we obtain</p>
+<div class="math notranslate nohighlight">
+\[
+\mathbf{p}_{L} := A_L^T \,\nabla {\ell}(\bfh(\mathbf{w}))
+= \mathcal{W}_L^T (\hat{\mathbf{y}} - \mathbf{y})
+\]</div>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+\mathbf{q}_{L} &amp;:= B_L^T \,\nabla {\ell}(\bfh(\mathbf{w}))
+= (I_{n_{L+1} \times n_{L+1}} \otimes \mathbf{z}_L^T)^T (\hat{\mathbf{y}} - \mathbf{y})
+= (\hat{\mathbf{y}} - \mathbf{y}) \otimes \mathbf{z}_L\\
+&amp;= (\hat{\mathbf{y}} - \mathbf{y}) \otimes \mathcal{W}_{L-1} \cdots \mathcal{W}_{1} \mathcal{W}_{0} \mathbf{x}
+\end{align*}\]</div>
+<div class="math notranslate nohighlight">
+\[
+\mathbf{p}_{L-1} := A_{L-1}^T \mathbf{p}_{L} = \mathcal{W}_{L-1}^T
+\mathcal{W}_L^T (\hat{\mathbf{y}} - \mathbf{y})
+\]</div>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+\mathbf{q}_{L-1} &amp;:= B_{L-1}^T \mathbf{p}_{L} = (I_{n_{L} \times n_{L}} \otimes \mathbf{z}_{L-1}^T)^T  \mathcal{W}_L^T (\hat{\mathbf{y}} - \mathbf{y})
+= \mathcal{W}_L^T (\hat{\mathbf{y}} - \mathbf{y}) \otimes \mathbf{z}_{L-1}\\
+&amp;= \mathcal{W}_L^T (\hat{\mathbf{y}} - \mathbf{y}) \otimes \mathcal{W}_{L-2} \cdots \mathcal{W}_{1} \mathcal{W}_{0} \mathbf{x}
+\end{align*}\]</div>
+<div class="math notranslate nohighlight">
+\[
+\mathbf{p}_{L-2} :=  A_{L-2}^T \mathbf{p}_{L-1} = \mathcal{W}_{L-2}^T \mathcal{W}_{L-1}^T
+\mathcal{W}_L^T (\hat{\mathbf{y}} - \mathbf{y})
+\]</div>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+\mathbf{q}_{L-2} &amp;:= B_{L-2}^T \mathbf{p}_{L-1} = (I_{n_{L-1} \times n_{L-1}} \otimes \mathbf{z}_{L-2}^T)^T  \mathcal{W}_{L-1}^T
+\mathcal{W}_L^T (\hat{\mathbf{y}} - \mathbf{y}) 
+= \mathcal{W}_{L-1}^T
+\mathcal{W}_L^T (\hat{\mathbf{y}} - \mathbf{y}) \otimes \mathbf{z}_{L-2}\\
+&amp;= \mathcal{W}_{L-1}^T
+\mathcal{W}_L^T (\hat{\mathbf{y}} - \mathbf{y}) \otimes \mathcal{W}_{L-3} \cdots \mathcal{W}_{1} \mathcal{W}_{0} \mathbf{x}
+\end{align*}\]</div>
+<p>and so on. Following the pattern, the last step is</p>
+<div class="math notranslate nohighlight">
+\[
+\mathbf{p}_1
+:= \mathcal{W}_{1}^T \cdots \mathcal{W}_{L-1}^T
+\mathcal{W}_L^T (\hat{\mathbf{y}} - \mathbf{y})
+\]</div>
+<div class="math notranslate nohighlight">
+\[
+\mathbf{q}_0
+:= B_{0}^T \mathbf{p}_{1}
+= \mathcal{W}_{1}^T \cdots \mathcal{W}_{L-1}^T
+\mathcal{W}_L^T (\hat{\mathbf{y}} - \mathbf{y}) \otimes \mathbf{x}.
+\]</div>
+<p>These calculations are consistent with the case <span class="math notranslate nohighlight">\(L=1\)</span> that we derived previously (check it!). <span class="math notranslate nohighlight">\(\lhd\)</span></p>
+<p><strong>CHAT &amp; LEARN</strong> The efficiency of backpropagation has been key to the success of deep learning. Ask your favorite AI chatbot about the history of backpropagation and its role in the development of modern deep learning. <span class="math notranslate nohighlight">\(\ddagger\)</span></p>
+<p><em><strong>Self-assessment quiz</strong></em> <em>(with help from Claude, Gemini, and ChatGPT)</em></p>
+<p><strong>1</strong> In the backpropagation algorithm, what does the ‘forward pass’ compute?</p>
+<p>a) The adjoints <span class="math notranslate nohighlight">\(p_i\)</span> for each layer <span class="math notranslate nohighlight">\(i\)</span>.</p>
+<p>b) The gradients <span class="math notranslate nohighlight">\(q_i\)</span> for the parameters of each layer <span class="math notranslate nohighlight">\(i\)</span>.</p>
+<p>c) The function values <span class="math notranslate nohighlight">\(z_i\)</span> and the Jacobians <span class="math notranslate nohighlight">\(A_i, B_i\)</span> for each layer <span class="math notranslate nohighlight">\(i\)</span>.</p>
+<p>d) The final gradient <span class="math notranslate nohighlight">\(\nabla f(w)\)</span> with respect to all parameters.</p>
+<p><strong>2</strong> What is the purpose of the ‘backward pass’ in the backpropagation algorithm?</p>
+<p>a) To compute the function values <span class="math notranslate nohighlight">\(z_i\)</span> for each layer <span class="math notranslate nohighlight">\(i\)</span> from the input <span class="math notranslate nohighlight">\(x\)</span>.</p>
+<p>b) To compute the Jacobians <span class="math notranslate nohighlight">\(A_i, B_i\)</span> for each layer <span class="math notranslate nohighlight">\(i\)</span> using the fundamental recursion.</p>
+<p>c) To compute the adjoints <span class="math notranslate nohighlight">\(p_i\)</span> and the gradients <span class="math notranslate nohighlight">\(q_i\)</span> for each layer <span class="math notranslate nohighlight">\(i\)</span> using the fundamental recursion.</p>
+<p>d) To compute the final output <span class="math notranslate nohighlight">\(\ell(z_{L+1})\)</span> of the progressive function.</p>
+<p><strong>3</strong> What is the computational complexity of the backpropagation algorithm in terms of the number of layers <span class="math notranslate nohighlight">\(L\)</span> and the matrix dimensions <span class="math notranslate nohighlight">\(m\)</span>?</p>
+<p>a) <span class="math notranslate nohighlight">\(\mathcal{O}(Lm)\)</span></p>
+<p>b) <span class="math notranslate nohighlight">\(\mathcal{O}(Lm^2)\)</span></p>
+<p>c) <span class="math notranslate nohighlight">\(\mathcal{O}(Lm^2d)\)</span></p>
+<p>d) <span class="math notranslate nohighlight">\(\mathcal{O}(Lm^3d)\)</span></p>
+<p><strong>4</strong> In the context of progressive functions, what is the significance of the matrices <span class="math notranslate nohighlight">\(A_i\)</span> and <span class="math notranslate nohighlight">\(B_i\)</span>?</p>
+<p>a) They represent the Jacobians of the layer functions with respect to the inputs and parameters, respectively.</p>
+<p>b) They are the intermediate values computed during the forward pass.</p>
+<p>c) They are the adjoints used in the backpropagation algorithm.</p>
+<p>d) They are the matrices of parameters for each layer.</p>
+<p><strong>5</strong> In the context of progressive functions, which of the following best describes the role of the vector <span class="math notranslate nohighlight">\(w_i\)</span>?</p>
+<p>a) The input to the <span class="math notranslate nohighlight">\(i\)</span>-th layer.</p>
+<p>b) The output of the <span class="math notranslate nohighlight">\(i\)</span>-th layer.</p>
+<p>c) The parameters specific to the <span class="math notranslate nohighlight">\(i\)</span>-th layer.</p>
+<p>d) The concatenation of parameters from all layers up to <span class="math notranslate nohighlight">\(i\)</span>.</p>
+<p>Answer for 1: c. Justification: The section presents the forward propagation step which computes “the following:
+Initialization: <span class="math notranslate nohighlight">\(z_0 := x\)</span>
+Forward layer loop: For <span class="math notranslate nohighlight">\(i=0,1,\dots,L\)</span>,
+<span class="math notranslate nohighlight">\(z_{i+1} := g_i(z_i, w_i)\)</span>
+<span class="math notranslate nohighlight">\((A_i,B_i) := J_{g_i}(z_i, w_i)\)</span>
+Loss: <span class="math notranslate nohighlight">\(z_{L+2} := \ell(z_{L+1})\)</span>”</p>
+<p>Answer for 2: c. Justification: The backward pass is described as follows:
+“Backward layer loop: For <span class="math notranslate nohighlight">\(i=L,\dots,1,0\)</span>,
+<span class="math notranslate nohighlight">\(p_i := A_i^T p_{i+1}\)</span>
+<span class="math notranslate nohighlight">\(q_i := B_i^T p_{i+1}\)</span>
+Output: <span class="math notranslate nohighlight">\(\nabla f(w) = (q_0, q_1, \dots, q_L)\)</span>.”</p>
+<p>Answer for 3: b. Justification: The text derives that the number of operations in the reverse mode is approximately <span class="math notranslate nohighlight">\(2Lm^2\)</span>, stating “This is approximately <span class="math notranslate nohighlight">\(2Lm^2\)</span> – which can be much smaller than <span class="math notranslate nohighlight">\(2Lm^2d\)</span>!”</p>
+<p>Answer for 4: a. Justification: The text defines <span class="math notranslate nohighlight">\(A_i\)</span> and <span class="math notranslate nohighlight">\(B_i\)</span> as the blocks of the Jacobian <span class="math notranslate nohighlight">\(J_{g_i}(z_i, w_i)\)</span> corresponding to the partial derivatives with respect to <span class="math notranslate nohighlight">\(z_i\)</span> and <span class="math notranslate nohighlight">\(w_i\)</span>, respectively.</p>
+<p>Answer for 5: c. Justification: The text explains: “In the machine learning context, each “layer” <span class="math notranslate nohighlight">\(g_i\)</span> has parameters (in our running example, there were the entries of <span class="math notranslate nohighlight">\(W_i\)</span>) and we seek to optimize with respect to those parameters.”</p>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./chap08_nn/03_backprop"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="../02_chain/roch-mmids-nn-chain.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title"><span class="section-number">8.2. </span>Background: Jacobian, chain rule, and a brief introduction to automatic differentiation</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="../04_sgd/roch-mmids-nn-sgd.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title"><span class="section-number">8.4. </span>Building blocks of AI 2: stochastic gradient descent</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#forward-v-backward">8.3.1. Forward v. backward</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#progressive-functions">8.3.2. Progressive functions</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Sebastien Roch
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2024.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

@@ -1,0 +1,1543 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>6.2. Background: introduction to parametric families and maximum likelihood estimation &#8212; MMiDS Textbook</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.5.1/css/all.min.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.1/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.1/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.1/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b76e3c8a" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=384b581d" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=87e54e7c" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae" />
+  <script src="../../_static/vendor/fontawesome/6.5.1/js/all.min.js?digest=8d27b9dea8ad943066ae"></script>
+
+    <script src="../../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?v=efea14e4"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../_static/design-tabs.js?v=f930bc37"></script>
+    <script async="async" src="https://www.googletagmanager.com/gtag/js?id=G-P5E8DW088F"></script>
+    <script>
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){ dataLayer.push(arguments); }
+                gtag('js', new Date());
+                gtag('config', 'G-P5E8DW088F');
+            </script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){ dataLayer.push(arguments); }
+                gtag('js', new Date());
+                gtag('config', 'G-P5E8DW088F');
+            </script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'chap07_prob/02_parametric/roch-mmids-prob-parametric';</script>
+    <link rel="canonical" href="https://mmids-textbook.github.io/chap07_prob/02_parametric/roch-mmids-prob-parametric.html" />
+    <link rel="icon" href="https://mmids-textbook.github.io/favicon-32x32.png"/>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="6.3. Modeling more complex dependencies 1: using conditional independence" href="../03_joint/roch-mmids-prob-joint.html" />
+    <link rel="prev" title="6.1. Motivating example: tracking location" href="../01_motiv/roch-mmids-prob-motiv.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a id="pst-skip-link" class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+
+<a class="navbar-brand logo" href="../../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/mmids-cover-small.jpg" class="logo__image only-light" alt="MMiDS Textbook - Home"/>
+    <script>document.write(`<img src="../../_static/mmids-cover-small.jpg" class="logo__image only-dark" alt="MMiDS Textbook - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../index.html">
+                    <b>MATHEMATICAL METHODS in DATA SCIENCE (with Python)</b>
+                </a>
+            </li>
+        </ul>
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../chap01_intro/00_intro/roch-mmids-intro-intro.html">1. Introduction: a first data science problem</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../chap01_intro/01_motiv/roch-mmids-intro-motiv.html">1.1. Motivating example: identifying penguin species</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap01_intro/02_review/roch-mmids-intro-review.html">1.2. Background: quick refresher of matrix algebra, differential calculus, and elementary probability</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap01_intro/03_clustering/roch-mmids-intro-clustering.html">1.3. Clustering: an objective, an algorithm and a guarantee</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap01_intro/04_highdim/roch-mmids-intro-highdim.html">1.4. Some observations about high-dimensional data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap01_intro/exercises/roch-mmids-intro-exercises.html">1.5. Exercises</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap01_intro/05_adv/roch-mmids-intro-adv.html">1.6. Online suppplementary material</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../chap02_ls/00_intro/roch-mmids-ls-intro.html">2. Least squares: geometric, algebraic, and numerical aspects</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../chap02_ls/01_motiv/roch-mmids-ls-motiv.html">2.1. Motivating example: predicting sales</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap02_ls/02_subspaces/roch-mmids-ls-spaces.html">2.2. Background: review of vector spaces and matrix inverses</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap02_ls/03_orthog/roch-mmids-ls-orthog.html">2.3. Geometry of least squares: the orthogonal projection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap02_ls/04_qr/roch-mmids-ls-qr.html">2.4. QR decomposition and Householder transformations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap02_ls/05_regression/roch-mmids-ls-regression.html">2.5. Application: regression analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap02_ls/exercises/roch-mmids-ls-exercises.html">2.6. Exercises</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap02_ls/06_adv/roch-mmids-ls-adv.html">2.7. Online suppplementary material</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../chap06_opt/00_intro/roch-mmids-opt-intro.html">3. Optimization theory and algorithms</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-3"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../chap06_opt/01_motiv/roch-mmids-opt-motiv.html">3.1. Motivating example:  analyzing customer satisfaction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap06_opt/02_several/roch-mmids-opt-several.html">3.2. Background: review of differentiable functions of several variables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap06_opt/03_optimality/roch-mmids-opt-optimality.html">3.3. Optimality conditions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap06_opt/03part2_convexity/roch-mmids-opt-convexity.html">3.4. Convexity</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap06_opt/04_gd/roch-mmids-opt-gd.html">3.5. Gradient descent and its convergence analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap06_opt/04part2_logistic/roch-mmids-opt-logistic.html">3.6. Application: logistic regression</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap06_opt/exercises/roch-mmids-opt-exercises.html">3.7. Exercises</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap06_opt/06_adv/roch-mmids-opt-adv.html">3.8. Online suppplementary material</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../chap03_svd/00_intro/roch-mmids-svd-intro.html">4. Singular value decomposition</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-4"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../chap03_svd/01_motiv/roch-mmids-svd-motiv.html">4.1. Motivating example: visualizing viral evolution</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap03_svd/02_spectral/roch-mmids-svd-spectral.html">4.2. Background: review of matrix rank  and spectral decomposition</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap03_svd/03_svd/roch-mmids-svd-svd.html">4.3. Approximating subspaces and the SVD</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap03_svd/04_power/roch-mmids-svd-power.html">4.4. Power iteration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap03_svd/05_pca/roch-mmids-svd-pca.html">4.5. Application: principal components analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap03_svd/06_further/roch-mmids-svd-further.html">4.6. Further applications of the SVD: low-rank approximations and ridge regression</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap03_svd/exercises/roch-mmids-svd-exercises.html">4.7. Exercises</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap03_svd/07_adv/roch-mmids-svd-adv.html">4.8. Online suppplementary material</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../chap04_specgraph/00_intro/roch-mmids-specgraph-intro.html">5. Spectral graph theory</a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-5"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../chap04_specgraph/01_motiv/roch-mmids-specgraph-motiv.html">5.1. Motivating example: uncovering social groups</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap04_specgraph/02_graph/roch-mmids-specgraph-graph.html">5.2. Background: basic concepts in graph theory</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap04_specgraph/03_extremal/roch-mmids-specgraph-extremal.html">5.3. Variational characterization of eigenvalues</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap04_specgraph/04_laplacian/roch-mmids-specgraph-laplacian.html">5.4. Spectral properties of the Laplacian matrix</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap04_specgraph/05_partitioning/roch-mmids-specgraph-partitioning.html">5.5. Application: graph partitioning via spectral clustering</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap04_specgraph/05part2_sbm/roch-mmids-specgraph-sbm.html">5.6. Erdős-Rényi random graph and stochastic blockmodel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap04_specgraph/exercises/roch-mmids-specgraph-exercises.html">5.7. Exercises</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap04_specgraph/06_adv/roch-mmids-specgraph-adv.html">5.8. Online supplementary material</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="../00_intro/roch-mmids-prob-intro.html">6. Probabilistic models: from simple to complex</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-6"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../01_motiv/roch-mmids-prob-motiv.html">6.1. Motivating example: tracking location</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">6.2. Background: introduction to parametric families and maximum likelihood estimation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../03_joint/roch-mmids-prob-joint.html">6.3. Modeling more complex dependencies 1: using conditional independence</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../03part2_em/roch-mmids-prob-em.html">6.4. Modeling more complex dependencies 2: marginalizing out an unobserved variable</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../04_kalman/roch-mmids-prob-kalman.html">6.5. Application: linear-Gaussian models and Kalman filtering</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../exercises/roch-mmids-prob-exercises.html">6.6. Exercises</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../06_adv/roch-mmids-prob-adv.html">6.7. Online supplementary material</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../chap05_rwmc/00_intro/roch-mmids-rwmc-intro.html">7. Random walks on graphs and Markov chains</a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-7"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../chap05_rwmc/01_motiv/roch-mmids-rwmc-motiv.html">7.1. Motivating example: discovering mathematical topics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap05_rwmc/03_mcdefs/roch-mmids-rwmc-mcdefs.html">7.2. Background: elements of finite Markov chains</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap05_rwmc/04_stat/roch-mmids-rwmc-stat.html">7.3. Limit behavior 1: stationary distributions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap05_rwmc/04part2_mclimit/roch-mmids-rwmc-mclimit.html">7.4. Limit behavior 2: convergence to equilibrium</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap05_rwmc/05_pagerank/roch-mmids-rwmc-pagerank.html">7.5. Application: random walks on graphs and PageRank</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap05_rwmc/05part2_gibbs/roch-mmids-rwmc-gibbs.html">7.6. Further applications: Gibbs sampling and generating images</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap05_rwmc/exercises/roch-mmids-rwmc-exercises.html">7.7. Exercises</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap05_rwmc/06_adv/roch-mmids-rwmc-adv.html">7.8. Online supplementary material</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../chap08_nn/00_intro/roch-mmids-nn-intro.html">8. Neural networks, backpropagation and stochastic gradient descent</a><input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-8"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../chap08_nn/01_motiv/roch-mmids-nn-motiv.html">8.1. Motivating example:  classifying natural images</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap08_nn/02_chain/roch-mmids-nn-chain.html">8.2. Background: Jacobian, chain rule, and a brief introduction to automatic differentiation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap08_nn/03_backprop/roch-mmids-nn-backprop.html">8.3. Building blocks of AI 1: backpropagation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap08_nn/04_sgd/roch-mmids-nn-sgd.html">8.4. Building blocks of AI 2: stochastic gradient descent</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap08_nn/05_nn/roch-mmids-nn-nn.html">8.5. Building blocks of AI 3: neural networks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap08_nn/exercises/roch-mmids-nn-exercises.html">8.6. Exercises</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap08_nn/06_adv/roch-mmids-nn-adv.html">8.7. Online supplementary material</a></li>
+</ul>
+</li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/MMiDS-textbook/MMiDS-textbook.github.io" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/MMiDS-textbook/MMiDS-textbook.github.io/issues/new?title=Issue%20on%20page%20%2Fchap07_prob/02_parametric/roch-mmids-prob-parametric.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/chap07_prob/02_parametric/roch-mmids-prob-parametric.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Background: introduction to parametric families and maximum likelihood estimation</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exponential-family">6.2.1. Exponential family</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#parameter-estimation">6.2.2. Parameter estimation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#parameter-estimation-for-exponential-families">6.2.3. Parameter estimation for exponential families</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#generalized-linear-models">6.2.4. Generalized linear models</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <p><span class="math notranslate nohighlight">\(\newcommand{\bmu}{\boldsymbol{\mu}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bSigma}{\boldsymbol{\Sigma}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bfbeta}{\boldsymbol{\beta}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bflambda}{\boldsymbol{\lambda}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bgamma}{\boldsymbol{\gamma}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bsigma}{{\boldsymbol{\sigma}}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bpi}{\boldsymbol{\pi}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\btheta}{{\boldsymbol{\theta}}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bphi}{\boldsymbol{\phi}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\balpha}{\boldsymbol{\alpha}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\blambda}{\boldsymbol{\lambda}}\)</span>
+<span class="math notranslate nohighlight">\(\renewcommand{\P}{\mathbb{P}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\E}{\mathbb{E}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\indep}{\perp\!\!\!\perp} \newcommand{\bx}{\mathbf{x}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bp}{\mathbf{p}}\)</span>
+<span class="math notranslate nohighlight">\(\renewcommand{\bx}{\mathbf{x}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bX}{\mathbf{X}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\by}{\mathbf{y}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bY}{\mathbf{Y}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bz}{\mathbf{z}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bZ}{\mathbf{Z}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bw}{\mathbf{w}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bW}{\mathbf{W}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bv}{\mathbf{v}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bV}{\mathbf{V}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bfg}{\mathbf{g}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bfh}{\mathbf{h}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\horz}{\rule[.5ex]{2.5ex}{0.5pt}}\)</span>
+<span class="math notranslate nohighlight">\(\renewcommand{\S}{\mathcal{S}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\X}{\mathcal{X}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\var}{\mathrm{Var}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\pa}{\mathrm{pa}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\Z}{\mathcal{Z}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bh}{\mathbf{h}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bb}{\mathbf{b}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bc}{\mathbf{c}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\cE}{\mathcal{E}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\cP}{\mathcal{P}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bbeta}{\boldsymbol{\beta}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bLambda}{\boldsymbol{\Lambda}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\cov}{\mathrm{Cov}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bfk}{\mathbf{k}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\idx}[1]{}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\xdi}{}\)</span></p>
+<section id="background-introduction-to-parametric-families-and-maximum-likelihood-estimation">
+<h1><span class="section-number">6.2. </span>Background: introduction to parametric families and maximum likelihood estimation<a class="headerlink" href="#background-introduction-to-parametric-families-and-maximum-likelihood-estimation" title="Link to this heading">#</a></h1>
+<p>We introduce the basic building blocks in constructing probabilistic models. We introduce a common family of distributions, the exponential family.</p>
+<p>Throughout this topic, all formal proofs are done under the assumption of a discrete distribution with finite support to avoid unnecessary technicalities and focus on the concepts. But everything we discuss can be adapted to continuous distributions.</p>
+<p>Parametric families<span class="math notranslate nohighlight">\(\idx{parametric family}\xdi\)</span> of probability distributions serve as basic building blocks for more complex models. By this, we mean a collection <span class="math notranslate nohighlight">\(\{p_{\btheta}:\btheta \in \Theta\}\)</span>, where <span class="math notranslate nohighlight">\(p_{\btheta}\)</span> is a probability distribution over a set <span class="math notranslate nohighlight">\(\S_{\btheta}\)</span> and <span class="math notranslate nohighlight">\(\btheta\)</span> is a vector-valued parameter.</p>
+<p><strong>EXAMPLE:</strong> <strong>(Bernoulli)</strong> The random variable <span class="math notranslate nohighlight">\(X\)</span> is Bernoulli<span class="math notranslate nohighlight">\(\idx{Bernoulli}\xdi\)</span> with parameter <span class="math notranslate nohighlight">\(q \in [0,1]\)</span>, denoted <span class="math notranslate nohighlight">\(X \sim \mathrm{Ber}(q)\)</span>, if it takes values in <span class="math notranslate nohighlight">\(\S_X = \{0,1\}\)</span> and <span class="math notranslate nohighlight">\(\P[X=1] = q\)</span>. Varying <span class="math notranslate nohighlight">\(q\)</span> produces the family of Bernoulli distributions. <span class="math notranslate nohighlight">\(\lhd\)</span></p>
+<p>Here we focus on exponential families, which include many common distributions (including the Bernoulli distribution).</p>
+<section id="exponential-family">
+<h2><span class="section-number">6.2.1. </span>Exponential family<a class="headerlink" href="#exponential-family" title="Link to this heading">#</a></h2>
+<p>One particularly useful class of probability distributions in data science is the <a class="reference external" href="https://en.wikipedia.org/wiki/Exponential_family#Vector_parameter">exponential family</a>, which includes many well-known cases.</p>
+<p><strong>DEFINITION</strong> <strong>(Exponential Family - Discrete Case)</strong> <span class="math notranslate nohighlight">\(\idx{exponential family}\xdi\)</span> A parametric collection of probability distributions <span class="math notranslate nohighlight">\(\{p_{\btheta}:\btheta \in \Theta\}\)</span> over a discrete space <span class="math notranslate nohighlight">\(\S\)</span> is an exponential family if it can be written in the form</p>
+<div class="math notranslate nohighlight">
+\[
+p_{\btheta}(\mathbf{x})
+= \frac{1}{Z(\btheta)} h(\mathbf{x}) \exp\left(\btheta^T \bphi(\mathbf{x})\right)
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(\btheta \in \mathbb{R}^m\)</span> are the canonical parameters, <span class="math notranslate nohighlight">\(\bphi : \S \to \mathbb{R}^m\)</span> are the sufficient statistics and <span class="math notranslate nohighlight">\(Z(\btheta)\)</span> is the partition function<span class="math notranslate nohighlight">\(\idx{partition function}\xdi\)</span>.
+It is often convenient to introduce the log-partition function<span class="math notranslate nohighlight">\(\idx{log-partition function}\xdi\)</span> <span class="math notranslate nohighlight">\(A(\btheta) = \log Z(\btheta)\)</span> and re-write</p>
+<div class="math notranslate nohighlight">
+\[
+p_{\btheta}(\mathbf{x})
+= h(\mathbf{x}) \exp\left(\btheta^T \bphi(\mathbf{x}) - A(\btheta)\right).
+\]</div>
+<p><span class="math notranslate nohighlight">\(\natural\)</span></p>
+<p><strong>EXAMPLE:</strong> <strong>(Bernoulli, continued)</strong> For <span class="math notranslate nohighlight">\(x \in \{0,1\}\)</span>, the <span class="math notranslate nohighlight">\(\mathrm{Ber}(q)\)</span> distribution for <span class="math notranslate nohighlight">\(0 &lt; q &lt; 1\)</span> can be written as</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+q^{x} (1-q)^{1-x} 
+&amp;= (1-q) \left(\frac{q}{1-q}\right)^x\\
+&amp;= (1-q) \exp\left[x \log \left(\frac{q}{1-q}\right)\right]\\
+&amp;= \frac{1}{Z(\theta)} h(x) \exp(\theta \,\phi(x))
+\end{align*}\]</div>
+<p>where we define <span class="math notranslate nohighlight">\(h(x) = 1\)</span>, <span class="math notranslate nohighlight">\(\phi(x) = x\)</span>, <span class="math notranslate nohighlight">\(\theta = \log \left(\frac{q}{1-q}\right)\)</span> and, since <span class="math notranslate nohighlight">\(Z(\theta)\)</span> serves as the normalization constant in <span class="math notranslate nohighlight">\(p_\theta\)</span>,</p>
+<div class="math notranslate nohighlight">
+\[
+Z(\theta)
+= \sum_{x \in \{0,1\}} h(x) \exp(\theta \,\phi(x))
+= 1 + e^\theta.
+\]</div>
+<p><span class="math notranslate nohighlight">\(\lhd\)</span></p>
+<p>The following is an important generalization.</p>
+<p><strong>EXAMPLE:</strong> <strong>(Categorical and Multinomial)</strong> A categorical variable<span class="math notranslate nohighlight">\(\idx{categorical}\xdi\)</span> <span class="math notranslate nohighlight">\(\mathbf{Y}\)</span> takes <span class="math notranslate nohighlight">\(K \geq 2\)</span> possible values. A standard choice is to use one-hot encoding<span class="math notranslate nohighlight">\(\idx{one-hot encoding}\xdi\)</span> <span class="math notranslate nohighlight">\(\S = \{\mathbf{e}_i : i=1,\ldots,K\}\)</span> where <span class="math notranslate nohighlight">\(\mathbf{e}_i\)</span> is the <span class="math notranslate nohighlight">\(i\)</span>-th canonical basis in <span class="math notranslate nohighlight">\(\mathbb{R}^K\)</span>. The distribution is specified by setting the probabilities <span class="math notranslate nohighlight">\(\bpi = (\pi_1,\ldots,\pi_K)\)</span></p>
+<div class="math notranslate nohighlight">
+\[
+\pi_i = \P[\mathbf{Y} = \mathbf{e}_i].
+\]</div>
+<p>We denote this <span class="math notranslate nohighlight">\(\mathbf{Y} \sim \mathrm{Cat}(\bpi)\)</span> and we assume <span class="math notranslate nohighlight">\(\pi_i &gt; 0\)</span> for all <span class="math notranslate nohighlight">\(i\)</span>.</p>
+<p>To see that this is an exponential family, write the probability mass function at <span class="math notranslate nohighlight">\(\mathbf{x} = (x_1,\ldots,x_K)\)</span> as</p>
+<div class="math notranslate nohighlight">
+\[
+\prod_{i=1}^K \pi_i^{x_i}
+= \exp\left(\sum_{i=1}^K x_i \log \pi_i \right).
+\]</div>
+<p>So we can take <span class="math notranslate nohighlight">\(h(\mathbf{x}) = 1\)</span>, <span class="math notranslate nohighlight">\(\btheta = (\log \pi_i)_{i=1}^K\)</span>, <span class="math notranslate nohighlight">\(\bphi(\mathbf{x}) = (x_i)_{i=1}^K\)</span> and <span class="math notranslate nohighlight">\(Z(\btheta) = 1\)</span>.</p>
+<p>The <a class="reference external" href="https://en.wikipedia.org/wiki/Multinomial_distribution">multinomial distribution</a><span class="math notranslate nohighlight">\(\idx{multinomial}\xdi\)</span> arises as a sum of independent categorical variables. Let <span class="math notranslate nohighlight">\(n \geq 1\)</span> be the number of trials (or samples) and let <span class="math notranslate nohighlight">\(\mathbf{Y}_1,\ldots,\mathbf{Y}_n\)</span> be i.i.d. <span class="math notranslate nohighlight">\(\mathrm{Cat}(\bpi)\)</span>. Define <span class="math notranslate nohighlight">\(\mathbf{X} = \sum_{i=1}^n \mathbf{Y}_i\)</span>. The probability mass function of <span class="math notranslate nohighlight">\(X\)</span> at</p>
+<div class="math notranslate nohighlight">
+\[
+\mathbf{x} = (x_1,\ldots,x_K) \in \left\{ \mathbf{x} \in \{0,1,\ldots,n\}^K : \sum_{i=1}^K x_i = n \right\}=: \S
+\]</div>
+<p>is</p>
+<div class="math notranslate nohighlight">
+\[
+\frac{n!}{x_1!\cdots x_K!} \prod_{i=1}^K \pi_i^{x_i}
+= \frac{n!}{x_1!\cdots x_K!} \exp\left(\sum_{i=1}^K x_i \log \pi_i\right)
+\]</div>
+<p>and we can take <span class="math notranslate nohighlight">\(h(\mathbf{x}) = \frac{n!}{x_1!\cdots x_K!}\)</span>, <span class="math notranslate nohighlight">\(\btheta = (\log \pi_i)_{i=1}^K\)</span>, <span class="math notranslate nohighlight">\(\bphi(\mathbf{x}) = (x_i)_{i=1}^K\)</span> and <span class="math notranslate nohighlight">\(Z(\btheta) = 1\)</span>. This is an exponential family if we think of <span class="math notranslate nohighlight">\(n\)</span> as fixed.</p>
+<p>We use the notation <span class="math notranslate nohighlight">\(\mathbf{X} \sim \mathrm{Mult}(n, \bpi)\)</span>. <span class="math notranslate nohighlight">\(\lhd\)</span></p>
+<p>While we have focused so far on discrete distributions, one can adapt the definitions above by replacing mass functions with density functions. We give two important examples.</p>
+<p>We need some definitions for our first example.</p>
+<p>The <a class="reference external" href="https://en.wikipedia.org/wiki/Trace_%28linear_algebra%29">trace</a><span class="math notranslate nohighlight">\(\idx{trace}\xdi\)</span> of a square matrix <span class="math notranslate nohighlight">\(A \in \mathbb{R}^{d \times d}\)</span>, denoted <span class="math notranslate nohighlight">\(\mathrm{tr}(A)\)</span>, is the sum of its diagonal entries. We will need the following trace identity whose proof we leave as an exercise: <span class="math notranslate nohighlight">\(\mathrm{tr}(ABC) = \mathrm{tr}(CAB) = \mathrm{tr}(BCA)\)</span> for any matrices <span class="math notranslate nohighlight">\(A, B, C\)</span> for which <span class="math notranslate nohighlight">\(AB\)</span>, <span class="math notranslate nohighlight">\(BC\)</span> and <span class="math notranslate nohighlight">\(CA\)</span> are well-defined.</p>
+<p>The <a class="reference external" href="https://en.wikipedia.org/wiki/Determinant">determinant</a><span class="math notranslate nohighlight">\(\idx{determinant}\xdi\)</span> of a square matrix <span class="math notranslate nohighlight">\(A\)</span> is denoted by <span class="math notranslate nohighlight">\(|A|\)</span>. For our purposes, it will be enough to consider symmetric, positive semidefinite matrices for which the determinant is the product of the eigenvalues. Recall that we proved that the sequence of eigenvalues (with repeats) of a symmetric matrix is unique (in the sense that any two spectral decomposition have the same sequence of eigenvalues).</p>
+<p>A symmetric, positive definite matrix <span class="math notranslate nohighlight">\(A \in \mathbb{R}^{d \times d}\)</span> is necessarily invertible. Indeed, it has a spectral decomposition</p>
+<div class="math notranslate nohighlight">
+\[
+A 
+= Q \Lambda Q^T
+= \sum_{i=1}^d \lambda_i \mathbf{q}_i \mathbf{q}_i^T
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(\lambda_1 \geq \cdots \geq \lambda_d &gt; 0\)</span> and <span class="math notranslate nohighlight">\(\mathbf{q}_1, \ldots, \mathbf{q}_d\)</span> are orthonormal. Then</p>
+<div class="math notranslate nohighlight">
+\[
+A^{-1} 
+= Q \Lambda^{-1} Q^T.
+\]</div>
+<p>To see this, note that</p>
+<div class="math notranslate nohighlight">
+\[
+A A^{-1}
+= Q \Lambda Q^T
+Q \Lambda^{-1} Q^T
+= Q Q^T
+= I_{d \times d}.
+\]</div>
+<p>The last equality follows from the fact that <span class="math notranslate nohighlight">\(Q Q^T\)</span> is the orthogonal projection on the orthonormal basis <span class="math notranslate nohighlight">\(\mathbf{q}_1,\ldots,\mathbf{q}_d\)</span>. Similarly, <span class="math notranslate nohighlight">\(A^{-1} A = I_{d \times d}\)</span>.</p>
+<p><strong>EXAMPLE:</strong> <strong>(Multivariate Gaussian)</strong> <span class="math notranslate nohighlight">\(\idx{multivariate normal}\xdi\)</span> A multivariate Gaussian<span class="math notranslate nohighlight">\(\idx{multivariate Gaussian}\xdi\)</span> vector <span class="math notranslate nohighlight">\(\mathbf{X} = (X_1,\ldots,X_d)\)</span> on <span class="math notranslate nohighlight">\(\mathbb{R}^d\)</span> with mean <span class="math notranslate nohighlight">\(\bmu \in \mathbb{R}^d\)</span> and positive definite covariance matrix <span class="math notranslate nohighlight">\(\bSigma \in \mathbb{R}^{d \times d}\)</span> has probability density function</p>
+<div class="math notranslate nohighlight">
+\[
+f_{\bmu, \bSigma}(\mathbf{x})
+= \frac{1}{(2\pi)^{d/2} \,|\bSigma|^{1/2}}
+\exp\left(-\frac{1}{2}(\mathbf{x} - \bmu)^T \bSigma^{-1} (\mathbf{x} - \bmu)\right).
+\]</div>
+<p>We use the notation <span class="math notranslate nohighlight">\(\mathbf{X} \sim N_d(\bmu, \bSigma)\)</span>.</p>
+<p>It can be shown that indeed the mean is</p>
+<div class="math notranslate nohighlight">
+\[
+\E[\mathbf{X}]
+= \bmu
+\]</div>
+<p>and the covariance matrix is</p>
+<div class="math notranslate nohighlight">
+\[
+\E[(\mathbf{X} - \bmu)(\mathbf{X} - \bmu)^T]
+= \E[\mathbf{X} \mathbf{X}^T] - \bmu \bmu^T
+= \bSigma.
+\]</div>
+<p>In the bivariate<span class="math notranslate nohighlight">\(\idx{bivariate Gaussian}\xdi\)</span> case (i.e., when <span class="math notranslate nohighlight">\(d = 2\)</span>)<span class="math notranslate nohighlight">\(\idx{bivariate normal}\xdi\)</span>, the covariance matrix reduces to</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\bSigma
+= \begin{bmatrix} \sigma_1^2 &amp; \rho \sigma_1 \sigma_2 \\ \rho \sigma_1 \sigma_2 &amp; \sigma_2^2 \end{bmatrix}
+\end{split}\]</div>
+<p>where <span class="math notranslate nohighlight">\(\sigma_1^2\)</span> and <span class="math notranslate nohighlight">\(\sigma_2^2\)</span> are the respective variances of <span class="math notranslate nohighlight">\(X_1\)</span> and <span class="math notranslate nohighlight">\(X_2\)</span>, and</p>
+<div class="math notranslate nohighlight">
+\[
+\rho
+= \frac{\mathrm{Cov}[X_1,X_2]}{\sigma_1 \sigma_2}
+\]</div>
+<p>is the correlation coefficient. Recall that, by the <em>Cauchy-Schwarz inequality</em>, it lies in <span class="math notranslate nohighlight">\([-1,1]\)</span>.</p>
+<p>Rewriting the density as</p>
+<div class="math notranslate nohighlight">
+\[
+f_{\bmu, \bSigma}(\mathbf{x})
+= \frac{e^{-(1/2) \bmu^T \bSigma^{-1} \bmu}}{(2\pi)^{d/2} \,|\bSigma|^{1/2}}
+\exp\left(- \mathbf{x}^T \bSigma^{-1}\bmu 
+- \frac{1}{2} \mathrm{tr}\left(\mathbf{x} \mathbf{x}^T \bSigma^{-1}\right)\right)
+\]</div>
+<p>where we used the symmetric nature of <span class="math notranslate nohighlight">\(\bSigma^{-1}\)</span> in the first term of the exponential and the previous trace identity in the second term. The expression in parentheses is linear in the entries of <span class="math notranslate nohighlight">\(\mathbf{x}\)</span> and <span class="math notranslate nohighlight">\(\mathbf{x} \mathbf{x}^T\)</span>, which can then be taken as  sufficient statistics (formally, using <a class="reference external" href="https://en.wikipedia.org/wiki/Vectorization_%28mathematics%29">vectorization</a>). Indeed note that</p>
+<div class="math notranslate nohighlight">
+\[
+\mathbf{x}^T \bSigma^{-1}\bmu 
+= \sum_{i=1}^d x_i (\bSigma^{-1}\bmu)_i
+\]</div>
+<p>and</p>
+<div class="math notranslate nohighlight">
+\[
+\mathrm{tr}\left(\mathbf{x} \mathbf{x}^T \bSigma^{-1}\right)
+= \sum_{i = 1}^d \left(\sum_{j=1}^d (\mathbf{x} \mathbf{x}^T)_{i,j} (\bSigma^{-1})_{j,i}\right)
+= \sum_{i = 1}^d \sum_{j=1}^d x_i x_j (\bSigma^{-1})_{j,i}.
+\]</div>
+<p>So we can take</p>
+<div class="math notranslate nohighlight">
+\[
+\bphi(\mathbf{x})
+= (x_1,\ldots,x_d, x_1 x_1, \ldots, x_d x_1, x_1 x_2, \ldots, x_d x_2, \ldots, x_1 x_d, \ldots, x_d x_d)
+\]</div>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+\btheta
+&amp;= \bigg(-(\bSigma^{-1}\bmu)_1,\ldots,-(\bSigma^{-1}\bmu)_d,\\
+&amp;\qquad - \frac{1}{2}(\bSigma^{-1})_{1,1}, \ldots, - \frac{1}{2}(\bSigma^{-1})_{1,d},\\
+&amp;\qquad - \frac{1}{2}(\bSigma^{-1})_{2,1}, \ldots, - \frac{1}{2}(\bSigma^{-1})_{2,d},\\ 
+&amp;\qquad \ldots, - \frac{1}{2}(\bSigma^{-1})_{d,1}, \ldots,- \frac{1}{2}(\bSigma^{-1})_{d,d}\bigg)
+\end{align*}\]</div>
+<p>and <span class="math notranslate nohighlight">\(h (\mathbf{x}) \equiv 1\)</span>. Expressing <span class="math notranslate nohighlight">\(Z(\btheta)\)</span> explicitly is  not straightforward. But note that <span class="math notranslate nohighlight">\(\btheta\)</span> includes all entries of <span class="math notranslate nohighlight">\(\bSigma^{-1}\)</span>, from which <span class="math notranslate nohighlight">\(\bSigma\)</span> can be computed (e.g., from <a class="reference external" href="https://en.wikipedia.org/wiki/Cramer%27s_rule#Finding_inverse_matrix">Cramer’s rule</a>), and in turn from which <span class="math notranslate nohighlight">\(\bmu\)</span> can be extracted out of the entries of <span class="math notranslate nohighlight">\(\bSigma^{-1}\bmu\)</span> in <span class="math notranslate nohighlight">\(\btheta\)</span>. So the normalizing factor <span class="math notranslate nohighlight">\(\frac{(2\pi)^{d/2} \,|\bSigma|^{1/2}}{e^{-(1/2) \bmu^T \bSigma^{-1} \bmu}}\)</span> can in principle be expressed in terms of <span class="math notranslate nohighlight">\(\btheta\)</span>.</p>
+<p>This shows that the multivariate normal is an exponential family.</p>
+<p>The matrix <span class="math notranslate nohighlight">\(\bLambda = \bSigma^{-1}\)</span> is also known as the precision matrix.</p>
+<p>Alternatively, let <span class="math notranslate nohighlight">\(\mathbf{Z}\)</span> be a standard normal <span class="math notranslate nohighlight">\(d\)</span>-vector,
+let <span class="math notranslate nohighlight">\(\bmu \in \mathbb{R}^d\)</span> and let <span class="math notranslate nohighlight">\(\bSigma \in \mathbb{R}^{d \times d}\)</span> be positive definite. Then the transformed random variable <span class="math notranslate nohighlight">\(\mathbf{X} = \bmu + \bSigma \mathbf{Z}\)</span> is a multivariate Gaussian with mean <span class="math notranslate nohighlight">\(\bmu\)</span> and covariance matrix <span class="math notranslate nohighlight">\(\bSigma\)</span>. This can be proved using the <a class="reference external" href="https://en.wikipedia.org/wiki/Probability_density_function#Function_of_random_variables_and_change_of_variables_in_the_probability_density_function">change of variables formula</a> (try it!). <span class="math notranslate nohighlight">\(\lhd\)</span></p>
+<p><strong>NUMERICAL CORNER:</strong> The following code, which plots the density in the bivariate case, was adapted from <a class="reference external" href="https://github.com/probml/pyprobml/blob/master/notebooks/book1/03/gauss_plot_2d.ipynb">gauss_plot_2d.ipynb</a> by ChatGPT.</p>
+<p><strong>CHAT &amp; LEARN</strong> Ask your favorite AI chatbot to explain the code! Try different covariance matrices. (<a class="reference external" href="https://colab.research.google.com/github/MMiDS-textbook/MMiDS-textbook.github.io/blob/main/just_the_code/roch_mmids_chap_prob_notebook.ipynb">Open In Colab</a>) <span class="math notranslate nohighlight">\(\ddagger\)</span></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">scipy.stats</span> <span class="kn">import</span> <span class="n">multivariate_normal</span>
+
+<span class="k">def</span> <span class="nf">gaussian_pdf</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">,</span> <span class="n">mean</span><span class="p">,</span> <span class="n">cov</span><span class="p">):</span>
+    <span class="n">xy</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">stack</span><span class="p">([</span><span class="n">X</span><span class="o">.</span><span class="n">flatten</span><span class="p">(),</span> <span class="n">Y</span><span class="o">.</span><span class="n">flatten</span><span class="p">()],</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">multivariate_normal</span><span class="o">.</span><span class="n">pdf</span><span class="p">(</span>
+        <span class="n">xy</span><span class="p">,</span> <span class="n">mean</span><span class="o">=</span><span class="n">mean</span><span class="p">,</span> <span class="n">cov</span><span class="o">=</span><span class="n">cov</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">make_surface_plot</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">,</span> <span class="n">Z</span><span class="p">):</span>
+    <span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
+    <span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">111</span><span class="p">,</span> <span class="n">projection</span><span class="o">=</span><span class="s1">&#39;3d&#39;</span><span class="p">)</span>
+    <span class="n">surf</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">plot_surface</span><span class="p">(</span>
+        <span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">,</span> <span class="n">Z</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="n">plt</span><span class="o">.</span><span class="n">cm</span><span class="o">.</span><span class="n">viridis</span><span class="p">,</span> <span class="n">antialiased</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>We plot the density for mean <span class="math notranslate nohighlight">\((0,0)\)</span> with two different covariance matrices:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\bSigma_1 = \begin{bmatrix} 1.0 &amp; 0 \\ 0 &amp; 1.0 \end{bmatrix}
+\quad \text{and} \quad 
+\bSigma_2 = \begin{bmatrix} \sigma_1^2 &amp; \rho \sigma_1 \sigma_2 \\ \rho \sigma_1 \sigma_2 &amp; \sigma_2^2 \end{bmatrix}
+\end{split}\]</div>
+<p>where <span class="math notranslate nohighlight">\(\sigma_1 = 1.5\)</span>, <span class="math notranslate nohighlight">\(\sigma_2 = 0.5\)</span> and <span class="math notranslate nohighlight">\(\rho = -0.75\)</span>.</p>
+<div class="cell tag_hide-input docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell source</span>
+<span class="expanded">Hide code cell source</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">start_point</span> <span class="o">=</span> <span class="mi">5</span>
+<span class="n">stop_point</span> <span class="o">=</span> <span class="mi">5</span>
+<span class="n">num_samples</span> <span class="o">=</span> <span class="mi">100</span>
+<span class="n">points</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="n">start_point</span><span class="p">,</span> <span class="n">stop_point</span><span class="p">,</span> <span class="n">num_samples</span><span class="p">)</span>
+<span class="n">X</span><span class="p">,</span> <span class="n">Y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">meshgrid</span><span class="p">(</span><span class="n">points</span><span class="p">,</span> <span class="n">points</span><span class="p">)</span>
+
+<span class="n">mean</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">])</span>
+<span class="n">cov</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">],</span> <span class="p">[</span><span class="mf">0.</span><span class="p">,</span> <span class="mf">1.</span><span class="p">]])</span>
+<span class="n">make_surface_plot</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">,</span> <span class="n">gaussian_pdf</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">,</span> <span class="n">mean</span><span class="p">,</span> <span class="n">cov</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+</details>
+<div class="cell_output docutils container">
+<img alt="../../_images/97fc035f9b40fd2b720cd88a676952cd86352ca8d0b6a2e616ba846be2203891.png" src="../../_images/97fc035f9b40fd2b720cd88a676952cd86352ca8d0b6a2e616ba846be2203891.png" />
+</div>
+</div>
+<div class="cell tag_hide-input docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell source</span>
+<span class="expanded">Hide code cell source</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">mean</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">])</span>
+<span class="n">cov</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mf">1.5</span> <span class="o">**</span> <span class="mf">2.</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.75</span> <span class="o">*</span> <span class="mf">1.5</span> <span class="o">*</span> <span class="mf">0.5</span><span class="p">],</span> 
+                 <span class="p">[</span><span class="o">-</span><span class="mf">0.75</span> <span class="o">*</span> <span class="mf">1.5</span> <span class="o">*</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.5</span> <span class="o">**</span> <span class="mf">2.</span><span class="p">]])</span>
+<span class="n">make_surface_plot</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">,</span> <span class="n">gaussian_pdf</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">,</span> <span class="n">mean</span><span class="p">,</span> <span class="n">cov</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+</details>
+<div class="cell_output docutils container">
+<img alt="../../_images/abe8eb3fe55b1146e97cf52444faa4aae74dbf9462be641e5d4da473731a8121.png" src="../../_images/abe8eb3fe55b1146e97cf52444faa4aae74dbf9462be641e5d4da473731a8121.png" />
+</div>
+</div>
+<p><span class="math notranslate nohighlight">\(\unlhd\)</span></p>
+<p>The <a class="reference external" href="https://en.wikipedia.org/wiki/Dirichlet_distribution">Dirichlet distribution</a>, which we describe next, is a natural probability distribution over probability distributions. In particular, it is used in <a class="reference external" href="https://en.wikipedia.org/wiki/Bayesian_statistics">Bayesian data analysis</a> as a <a class="reference external" href="https://en.wikipedia.org/wiki/Prior_probability">prior</a> on the parameters of categorical and multinomial distribution, largely because of a property known as <a class="reference external" href="https://en.wikipedia.org/wiki/Conjugate_prior">conjuguacy</a>. We will not describe Bayesian approaches here.</p>
+<p><strong>EXAMPLE:</strong> <strong>(Dirichlet)</strong> <span class="math notranslate nohighlight">\(\idx{Dirichlet}\xdi\)</span> The Dirichlet distribution is a distribution over the <span class="math notranslate nohighlight">\((K-1)\)</span>-simplex</p>
+<div class="math notranslate nohighlight">
+\[
+\S = \Delta_{K} := \left\{
+\mathbf{x} = (x_1, \ldots, x_K) : \mathbf{x} \geq \mathbf{0},\ \sum_{i=1}^K x_i = 1
+\right\}.
+\]</div>
+<p>Its parameters are <span class="math notranslate nohighlight">\(\balpha = (\alpha_1, \ldots, \alpha_K) \in \mathbb{R}\)</span> and the density is</p>
+<div class="math notranslate nohighlight">
+\[
+f_{\balpha}(\mathbf{x})
+= \frac{1}{B(\balpha)} \prod_{i=1}^K x_i^{\alpha_i-1},
+\quad \mathbf{x} \in \Delta_{K}
+\]</div>
+<p>where the normalizing constant <span class="math notranslate nohighlight">\(B(\balpha)\)</span> is the <a class="reference external" href="https://en.wikipedia.org/wiki/Beta_function#Multivariate_beta_function">multivariate Beta function</a>.</p>
+<p>Rewriting the density as</p>
+<div class="math notranslate nohighlight">
+\[
+\frac{1}{B(\balpha)} \prod_{i=1}^K x_i^{\alpha_i-1}
+= \frac{1}{B(\balpha)} \frac{1}{\prod_{i=1}^K x_i} \exp\left(\sum_{i=1}^K \alpha_i \log x_i\right)
+\]</div>
+<p>shows that this is an exponential family with the canonical parameters <span class="math notranslate nohighlight">\(\balpha\)</span> and sufficient statistics <span class="math notranslate nohighlight">\((\log x_i)_{i=1}^K\)</span>. <span class="math notranslate nohighlight">\(\lhd\)</span></p>
+<p>See <a class="reference external" href="https://en.wikipedia.org/wiki/Exponential_family#Table_of_distributions">here</a> for many more examples. Observe, in particular, that the same distribution can have several representations as an exponential family.</p>
+<p><strong>NUMERICAL CORNER:</strong> In Numpy, as we have seen before, the module <a class="reference external" href="https://numpy.org/doc/stable/reference/random/index.html">numpy.random</a> provides a way to sample from a variety of standard distributions. We first initialize the <a class="reference external" href="https://en.wikipedia.org/wiki/Pseudorandom_number_generator">pseudorandom number generator</a><span class="math notranslate nohighlight">\(\idx{pseudorandom number generator}\xdi\)</span> with a <a class="reference external" href="https://en.wikipedia.org/wiki/Random_seed">random seed</a>. Recall that it allows the results to be reproducible: using the same seed produces the same results again.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">seed</span> <span class="o">=</span> <span class="mi">535</span>
+<span class="n">rng</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">(</span><span class="n">seed</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Here’s are lists of available <a class="reference external" href="https://numpy.org/doc/stable/reference/random/generator.html#distributions">probability distributions</a>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">p</span> <span class="o">=</span> <span class="mf">0.1</span>
+<span class="n">N</span> <span class="o">=</span> <span class="mi">5</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">rng</span><span class="o">.</span><span class="n">binomial</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">N</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[1 0 0 0 0]
+</pre></div>
+</div>
+</div>
+</div>
+<p>Here are a few other examples.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">p</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.7</span><span class="p">]</span>
+<span class="n">n</span> <span class="o">=</span> <span class="mi">100</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">rng</span><span class="o">.</span><span class="n">multinomial</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">N</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[[ 9 12 79]
+ [ 5 20 75]
+ [13 18 69]
+ [ 8 18 74]
+ [ 8 24 68]]
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">mu</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.1</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.3</span><span class="p">])</span>
+<span class="n">sig</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mf">2.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">],[</span><span class="mf">0.</span><span class="p">,</span> <span class="mf">3.</span><span class="p">]])</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">rng</span><span class="o">.</span><span class="n">multivariate_normal</span><span class="p">(</span><span class="n">mu</span><span class="p">,</span> <span class="n">sig</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">N</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[[-0.7275232   2.66555155]
+ [ 0.45641186 -2.65834344]
+ [ 1.13188325  0.43920735]
+ [ 0.69846716  2.49891659]
+ [ 0.91725117  1.89618733]]
+</pre></div>
+</div>
+</div>
+</div>
+<p><span class="math notranslate nohighlight">\(\unlhd\)</span></p>
+<p><strong>KNOWLEDGE CHECK:</strong> The Weibull distribution with known shape parameter <span class="math notranslate nohighlight">\(k &gt; 0\)</span> takes the following form</p>
+<div class="math notranslate nohighlight">
+\[
+f(x; \lambda)
+= \frac{k}{\lambda} \left(\frac{x}{\lambda}\right)^{k-1} e^{-(x/\lambda)^k},
+\]</div>
+<p>for <span class="math notranslate nohighlight">\(x \geq 0\)</span>, where <span class="math notranslate nohighlight">\(\lambda &gt; 0\)</span>.</p>
+<p>What is the sufficient statistic of its exponential family form?</p>
+<p>a) <span class="math notranslate nohighlight">\(x\)</span></p>
+<p>b) <span class="math notranslate nohighlight">\(\log x\)</span></p>
+<p>c) <span class="math notranslate nohighlight">\(x^{k-1}\)</span></p>
+<p>d) <span class="math notranslate nohighlight">\(x^k\)</span></p>
+<p>e) <span class="math notranslate nohighlight">\((\log x, x^k)\)</span></p>
+<p><span class="math notranslate nohighlight">\(\checkmark\)</span></p>
+</section>
+<section id="parameter-estimation">
+<h2><span class="section-number">6.2.2. </span>Parameter estimation<a class="headerlink" href="#parameter-estimation" title="Link to this heading">#</a></h2>
+<p>When modeling data via a parametric family of distributions, the parameters must be determined from the data itself. In a typical setting, we assume that the data comprises <span class="math notranslate nohighlight">\(n\)</span> independent samples <span class="math notranslate nohighlight">\(\mathbf{X}_1,\ldots,\mathbf{X}_n\)</span> from a parametric family <span class="math notranslate nohighlight">\(p_{\btheta}\)</span> with unknown <span class="math notranslate nohighlight">\(\btheta \in \Theta\)</span>. Many methods exist for estimating <span class="math notranslate nohighlight">\(\btheta\)</span>, depending on the context. Here we focus on <a class="reference external" href="https://en.wikipedia.org/wiki/Maximum_likelihood_estimation">maximum likelihood estimation</a>. It has many <a class="reference external" href="https://en.wikipedia.org/wiki/Maximum_likelihood_estimation#Properties">good theoretical properties</a> which we will not describe here, as well as <a class="reference external" href="https://stats.stackexchange.com/questions/261056/why-does-maximum-likelihood-estimation-have-issues-with-over-fitting">drawbacks</a>.</p>
+<p>The idea behind maximum likelihood estimation is simple and intuitive: we choose the parameter that maximizes the probability of observing the data.</p>
+<p><strong>DEFINITION</strong> <strong>(Maximum likelihood estimator)</strong> <span class="math notranslate nohighlight">\(\idx{maximum likelihood}\xdi\)</span> Assume that <span class="math notranslate nohighlight">\(\mathbf{X}_1,\ldots,\mathbf{X}_n\)</span> are <span class="math notranslate nohighlight">\(n\)</span> independent samples from a parametric family <span class="math notranslate nohighlight">\(p_{\btheta^*}\)</span> with unknown <span class="math notranslate nohighlight">\(\btheta^* \in \Theta\)</span>. The maximum likelihood estimator of <span class="math notranslate nohighlight">\(\btheta\)</span> is defined as</p>
+<div class="math notranslate nohighlight">
+\[
+\hat\btheta_{\mathrm{MLE}}
+\in \arg\max\left\{ \prod_{i=1}^n p_{\btheta}(\mathbf{X}_i) \,:\, \btheta \in \Theta \right\}.
+\]</div>
+<p>It is often useful to work with the negative log-likelihood (NLL)<span class="math notranslate nohighlight">\(\idx{negative log-likelihood}\xdi\)</span></p>
+<div class="math notranslate nohighlight">
+\[
+L_n(\btheta; \{\mathbf{X}_i\}_{i=1}^n)
+= - \sum_{i=1}^n \log p_{\btheta}(\mathbf{X}_i),
+\]</div>
+<p>in which case we are miniziming. <span class="math notranslate nohighlight">\(\natural\)</span></p>
+<p><strong>EXAMPLE:</strong> <strong>(Biased coin)</strong> Suppose we observe <span class="math notranslate nohighlight">\(n\)</span> coin flips <span class="math notranslate nohighlight">\(X_1,\ldots, X_n \in \{0,1\}\)</span> from a biased coin with an unknown probability <span class="math notranslate nohighlight">\(\theta^*\)</span> of producing <span class="math notranslate nohighlight">\(1\)</span>. We assume the flips are independent. We compute the MLE of the parameter <span class="math notranslate nohighlight">\(\theta\)</span>.</p>
+<p>The definition is</p>
+<div class="math notranslate nohighlight">
+\[
+\hat\theta_{\mathrm{MLE}}
+\in \arg\min\left\{ 
+L_n(\theta; \{X_i\}_{i=1}^n) \,:\, \theta \in \Theta = [0,1] \right\}
+\]</div>
+<p>where, using our previous Bernoulli example, the NLL is</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+L_n(\theta; \{X_i\}_{i=1}^n)
+&amp;= - \sum_{i=1}^n \log p_{\theta}(X_i)\\
+&amp;= - \sum_{i=1}^n \log \left[\theta^{X_i} (1- \theta)^{1 -X_i}\right]\\
+&amp;= - \sum_{i=1}^n \left[ X_i \log \theta + (1 -X_i) \log (1- \theta)\right].
+\end{align*}\]</div>
+<p>We compute the first and second derivatives of <span class="math notranslate nohighlight">\(L_n(\theta; \{X_i\}_{i=1}^n)\)</span> as a function of <span class="math notranslate nohighlight">\(\theta\)</span>:</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+\frac{\mathrm{d}}{\mathrm{d} \theta}L_n(\theta; \{X_i\}_{i=1}^n)
+&amp;= - \sum_{i=1}^n \left[ \frac{X_i}{\theta} - \frac{1 -X_i}{1- \theta}\right]\\
+&amp;= - \frac{\sum_{i=1}^n X_i}{\theta} + \frac{n - \sum_{i=1}^n X_i}{1- \theta}
+\end{align*}\]</div>
+<p>and</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+\frac{\mathrm{d}^2}{\mathrm{d} \theta^2}L_n(\theta; \{X_i\}_{i=1}^n)
+&amp;=  \frac{\sum_{i=1}^n X_i}{\theta^2} + \frac{n - \sum_{i=1}^n X_i}{(1- \theta)^2}.
+\end{align*}\]</div>
+<p>The second derivative is non-negative and therefore the NLL is convex. To find a global minimizer, it suffices to find a stationary point.</p>
+<p>We make the derivative of the NLL equal to <span class="math notranslate nohighlight">\(0\)</span></p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+&amp;0 = - \frac{\sum_{i=1}^n X_i}{\theta} + \frac{n - \sum_{i=1}^n X_i}{1- \theta}\\
+&amp; \iff \frac{\sum_{i=1}^n X_i}{\theta} = \frac{n - \sum_{i=1}^n X_i}{1- \theta}\\
+&amp; \iff (1- \theta)\sum_{i=1}^n X_i = \theta \left(n - \sum_{i=1}^n X_i \right)\\
+&amp; \iff \sum_{i=1}^n X_i = \theta n.
+\end{align*}\]</div>
+<p>So</p>
+<div class="math notranslate nohighlight">
+\[
+\hat\theta_{\mathrm{MLE}} = \frac{\sum_{i=1}^n X_i}{n}.
+\]</div>
+<p>This is in fact a natural estimator: the empirical frequency of <span class="math notranslate nohighlight">\(1\)</span>s. <span class="math notranslate nohighlight">\(\lhd\)</span></p>
+<p>We give an alternative perspective on the maximum likelihood estimator. Assume that <span class="math notranslate nohighlight">\(p_{\btheta}\)</span> is supported on a fixed finite set <span class="math notranslate nohighlight">\(\X\)</span> for all <span class="math notranslate nohighlight">\(\btheta \in \Theta\)</span>. Given samples <span class="math notranslate nohighlight">\(\mathbf{X}_1,\ldots,\mathbf{X}_n\)</span>, for each <span class="math notranslate nohighlight">\(\mathbf{x} \in \X\)</span>, let</p>
+<div class="math notranslate nohighlight">
+\[
+N_\mathbf{x} = \sum_{i=1}^n \mathbf{1}_{\{\mathbf{X}_i = \mathbf{x}\}}
+\]</div>
+<p>count the number of times <span class="math notranslate nohighlight">\(\mathbf{x}\)</span> is observed in the data and let</p>
+<div class="math notranslate nohighlight">
+\[
+\hat\mu_n(\mathbf{x}) = \frac{N_\mathbf{x}}{n}
+\]</div>
+<p>be the empirical frequency of <span class="math notranslate nohighlight">\(\mathbf{x}\)</span> in the sample. Observe that <span class="math notranslate nohighlight">\(\hat\mu_n\)</span> is a probability distribution over <span class="math notranslate nohighlight">\(\X\)</span>.</p>
+<p>The following theorem characterizes the maximum likelihood estimator in terms of the <a class="reference external" href="https://en.wikipedia.org/wiki/Kullback%E2%80%93Leibler_divergence">Kullback-Liebler divergence</a><span class="math notranslate nohighlight">\(\idx{Kullback-Liebler divergence}\xdi\)</span>, which was introduced in a previous section.</p>
+<p>For two probability distributions</p>
+<div class="math notranslate nohighlight">
+\[
+\mathbf{p}, \mathbf{q} \in \Delta_K := \left\{
+(p_1,\ldots,p_K) \in [0,1]^K \,:\, \sum_{k=1}^K p_k = 1 
+\right\},
+\]</div>
+<p>it is defined as</p>
+<div class="math notranslate nohighlight">
+\[
+\mathrm{KL}(\mathbf{p} \| \mathbf{q})
+= \sum_{i=1}^K p_i \log \frac{p_i}{q_i}
+\]</div>
+<p>where it will suffice to restrict ourselves to the case <span class="math notranslate nohighlight">\(\mathbf{q} &gt; \mathbf{0}\)</span> and where we use the convention <span class="math notranslate nohighlight">\(0 \log 0 = 0\)</span> (so that terms with <span class="math notranslate nohighlight">\(p_i = 0\)</span> contribute <span class="math notranslate nohighlight">\(0\)</span> to the sum).</p>
+<p>Notice that <span class="math notranslate nohighlight">\(\mathbf{p} = \mathbf{q}\)</span> implies <span class="math notranslate nohighlight">\(\mathrm{KL}(\mathbf{p} \| \mathbf{q}) = 0\)</span>. We show that <span class="math notranslate nohighlight">\(\mathrm{KL}(\mathbf{p} \| \mathbf{q}) \geq 0\)</span>, a result known as <em>Gibbs’ inequality</em>. (A quick look at the proof shows that the result holds as long as <span class="math notranslate nohighlight">\(\sum_{i=1}^K q_i \leq 1\)</span> instead of <span class="math notranslate nohighlight">\(\sum_{i=1}^K q_i = 1\)</span>. )</p>
+<p><strong>THEOREM</strong> <strong>(Gibbs)</strong> <span class="math notranslate nohighlight">\(\idx{Gibbs' inequality}\xdi\)</span> For any <span class="math notranslate nohighlight">\(\mathbf{p}, \mathbf{q} \in \Delta_K\)</span> with <span class="math notranslate nohighlight">\(\mathbf{q} &gt; \mathbf{0}\)</span>,</p>
+<div class="math notranslate nohighlight">
+\[
+\mathrm{KL}(\mathbf{p} \| \mathbf{q}) \geq 0.
+\]</div>
+<p><span class="math notranslate nohighlight">\(\sharp\)</span></p>
+<p><em>Proof:</em> Let <span class="math notranslate nohighlight">\(I\)</span> be the set of indices <span class="math notranslate nohighlight">\(i\)</span> such that <span class="math notranslate nohighlight">\(p_i &gt; 0\)</span>. Hence</p>
+<div class="math notranslate nohighlight">
+\[
+\mathrm{KL}(\mathbf{p} \| \mathbf{q}) 
+= \sum_{i \in I} p_i \log \frac{p_i}{q_i}.
+\]</div>
+<p>It can be proved that <span class="math notranslate nohighlight">\(\log x \leq x - 1\)</span> for all <span class="math notranslate nohighlight">\(x &gt; 0\)</span> (Try it!). So</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+\mathrm{KL}(\mathbf{p} \| \mathbf{q}) 
+&amp;= - \sum_{i \in I} p_i \log \frac{q_i}{p_i}\\
+&amp;\geq - \sum_{i \in I} p_i \left(\frac{q_i}{p_i} - 1\right)\\
+&amp;= - \sum_{i \in I} q_i + \sum_{i \in I} p_i\\
+&amp;= - \sum_{i \in I} q_i + 1\\
+&amp;\geq 0
+\end{align*}\]</div>
+<p>where we used that <span class="math notranslate nohighlight">\(\log z^{-1} = - \log z\)</span> on the first line and the fact that <span class="math notranslate nohighlight">\(p_i = 0\)</span> for all <span class="math notranslate nohighlight">\(i \notin I\)</span> on the fourth line. <span class="math notranslate nohighlight">\(\square\)</span></p>
+<p><strong>THEOREM</strong> <strong>(MLE via KL)</strong> <span class="math notranslate nohighlight">\(\idx{MLE via KL theorem}\xdi\)</span> Assume that, for all <span class="math notranslate nohighlight">\(\btheta \in \Theta\)</span>, <span class="math notranslate nohighlight">\(p_{\btheta}\)</span> is supported on a fixed finite set <span class="math notranslate nohighlight">\(\X\)</span> and that <span class="math notranslate nohighlight">\(p_{\btheta}(\mathbf{x}) &gt; 0\)</span> for all <span class="math notranslate nohighlight">\(\mathbf{x} \in \X\)</span>. Given samples <span class="math notranslate nohighlight">\(\mathbf{X}_1,\ldots,\mathbf{X}_n\)</span> from <span class="math notranslate nohighlight">\(p_{\btheta^*}\)</span>, let <span class="math notranslate nohighlight">\(\{\hat\mu_n(\mathbf{x})\}_{\mathbf{x} \in \X}\)</span> be the corresponding empirical frequencies. Then the maximum likelihood estimator <span class="math notranslate nohighlight">\(\hat\btheta_{\mathrm{MLE}}\)</span> of <span class="math notranslate nohighlight">\(\btheta\)</span> is also a solution to</p>
+<div class="math notranslate nohighlight">
+\[
+\hat\btheta_{\mathrm{MLE}}
+\in \arg\min\left\{ \mathrm{KL}(\hat{\mu}_n \| p_{\btheta}) \,:\, \btheta \in \Theta \right\}.
+\]</div>
+<p><span class="math notranslate nohighlight">\(\sharp\)</span></p>
+<p><em>Proof idea:</em> Manipulate the negative log-likelihood to bring out its relationship to the Kullback-Liebler divergence.</p>
+<p><em>Proof:</em> We can re-write the negative log-likelihood as</p>
+<div class="math notranslate nohighlight">
+\[
+L_n(\btheta; \{\mathbf{X}_i\}_{i=1}^n)
+= - \sum_{i=1}^n \log p_{\btheta}(\mathbf{X}_i)
+= - \sum_{\mathbf{x} \in \X} N_{\mathbf{x}} \log p_{\btheta}(\mathbf{x}).
+\]</div>
+<p>To bring out the Kullback-Liebler divergence,
+we further transform the previous equation into</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+\frac{1}{n} L_n(\btheta; \{\mathbf{X}_i\}_{i=1}^n)
+&amp;= - \frac{1}{n} \sum_{\mathbf{x} \in \X} N_{\mathbf{x}} \log p_{\btheta}(\mathbf{x})\\
+&amp;= \sum_{\mathbf{x} \in \X} (N_{\mathbf{x}}/n) \log \frac{N_{\mathbf{x}}/n}{p_{\btheta}(\mathbf{x})} - \sum_{\mathbf{x} \in \X} (N_{\mathbf{x}}/n) \log (N_{\mathbf{x}}/n)\\
+&amp;= \sum_{\mathbf{x} \in \X} \hat\mu_n(\mathbf{x}) \log \frac{\hat\mu_n(\mathbf{x})}{p_{\btheta}(\mathbf{x})} - \sum_{\mathbf{x} \in \X} \hat\mu_n(\mathbf{x}) \log \hat\mu_n(\mathbf{x})\\
+&amp;= \mathrm{KL}(\hat{\mu}_n \| p_{\btheta}) + \mathrm{H}(\hat\mu_n),
+\end{align*}\]</div>
+<p>where the second term is referred to as the <a class="reference external" href="https://en.wikipedia.org/wiki/Entropy_(information_theory)">entropy</a><span class="math notranslate nohighlight">\(\idx{entropy}\xdi\)</span> of <span class="math notranslate nohighlight">\(\hat\mu_n\)</span>.</p>
+<p>Because <span class="math notranslate nohighlight">\(\mathrm{H}(\hat\mu_n)\)</span> does not depend on <span class="math notranslate nohighlight">\(\btheta\)</span>, minimizing <span class="math notranslate nohighlight">\(L_n(\btheta; \{\mathbf{X}_i\}_{i=1}^n)\)</span> is equivalent to minimizing <span class="math notranslate nohighlight">\(\mathrm{KL}(\hat{\mu}_n \| p_{\btheta})\)</span> as claimed. <span class="math notranslate nohighlight">\(\square\)</span></p>
+<p>In words, the maximum likelihood estimator chooses the parametric distribution that is closest to <span class="math notranslate nohighlight">\(\hat\mu_n\)</span> in Kullback-Liebler divergence. One can think of this as “projecting” <span class="math notranslate nohighlight">\(\hat\mu_n\)</span> onto the space <span class="math notranslate nohighlight">\(\{p_{\btheta} : \btheta \in \Theta\}\)</span> under the Kullback-Liebler notion of distance.</p>
+<p><strong>EXAMPLE:</strong> <strong>(Special case)</strong> One special case is where <span class="math notranslate nohighlight">\(\X\)</span> is finite, <span class="math notranslate nohighlight">\(\btheta = (\theta_\mathbf{x})_{\mathbf{x} \in \X}\)</span> is a probability distribution over <span class="math notranslate nohighlight">\(\X\)</span>, and <span class="math notranslate nohighlight">\(p_{\btheta} = \btheta\)</span>. That is, we consider the class of all probability distributions over <span class="math notranslate nohighlight">\(\X\)</span>. Given samples <span class="math notranslate nohighlight">\(\mathbf{X}_1,\ldots,\mathbf{X}_n\)</span> from <span class="math notranslate nohighlight">\(p_{\btheta^*}\)</span>, in this case we have</p>
+<div class="math notranslate nohighlight">
+\[
+\mathrm{KL}(\hat{\mu}_n \| p_{\btheta}) 
+= \sum_{\mathbf{x} \in \X} \hat\mu_n(\mathbf{x}) \log \frac{\hat\mu_n(\mathbf{x})}{p_{\btheta}(\mathbf{x})}
+= \sum_{\mathbf{x} \in \X} \hat\mu_n(\mathbf{x}) \log \frac{\hat\mu_n(\mathbf{x})}{\theta_\mathbf{x}},
+\]</div>
+<p>where recall that, by convention, if <span class="math notranslate nohighlight">\(\hat\mu_n(\mathbf{x}) = 0\)</span> then <span class="math notranslate nohighlight">\(\hat\mu_n(\mathbf{x}) \log \frac{\hat\mu_n(\mathbf{x})}{\theta_\mathbf{x}} = 0\)</span> for any <span class="math notranslate nohighlight">\(\theta_\mathbf{x}\)</span>. So, letting <span class="math notranslate nohighlight">\(\mathbb{X}_n = \{\mathbf{X}_1,\ldots,\mathbf{X}_n\}\)</span> be the set of distinct values encountered in the sample (ignoring repetitions), we have</p>
+<div class="math notranslate nohighlight">
+\[
+\mathrm{KL}(\hat{\mu}_n \| p_{\btheta}) 
+= \sum_{\mathbf{x} \in \mathbb{X}_n} \hat\mu_n(\mathbf{x}) \log \frac{\hat\mu_n(\mathbf{x})}{\theta_\mathbf{x}}.
+\]</div>
+<p>Note that <span class="math notranslate nohighlight">\(\sum_{\mathbf{x} \in \mathbb{X}_n} \hat\mu_n(\mathbf{x}) = 1\)</span>.</p>
+<p>We have previously established <em>Gibbs’ inequality</em> which says that: for any <span class="math notranslate nohighlight">\(\mathbf{p}, \mathbf{q} \in \Delta_K\)</span> with <span class="math notranslate nohighlight">\(\mathbf{q} &gt; \mathbf{0}\)</span>, it holds that <span class="math notranslate nohighlight">\(\mathrm{KL}(\mathbf{p} \| \mathbf{q}) \geq 0\)</span>.</p>
+<p>The minimum <span class="math notranslate nohighlight">\(\mathrm{KL}(\hat{\mu}_n \| p_{\btheta})  = 0\)</span> can be achieved by setting <span class="math notranslate nohighlight">\(\btheta_{\mathbf{x}} = \hat\mu_n(\mathbf{x})\)</span> for all <span class="math notranslate nohighlight">\(\mathbf{x} \in \mathbb{X}_n\)</span>
+and <span class="math notranslate nohighlight">\(\btheta_{\mathbf{x}} = 0\)</span> for all <span class="math notranslate nohighlight">\(\mathbf{x} \notin \mathbb{X}_n\)</span>. The condition</p>
+<div class="math notranslate nohighlight">
+\[
+\sum_{\mathbf{x} \in \X} \btheta_{\mathbf{x}}
+= \sum_{\mathbf{x} \in \mathbb{X}_n} \btheta_{\mathbf{x}}
++ \sum_{\mathbf{x} \notin \mathbb{X}_n} \btheta_{\mathbf{x}}
+= \sum_{\mathbf{x} \in \mathbb{X}_n} \hat\mu_n(\mathbf{x})
+= 1,
+\]</div>
+<p>is then satisfied.</p>
+<p>So in this case <span class="math notranslate nohighlight">\(\hat\mu_n\)</span> is a maximum likelihood estimator.</p>
+<p>A special case of this is the <em>biased coin</em> example. <span class="math notranslate nohighlight">\(\lhd\)</span></p>
+<p><strong>CHAT &amp; LEARN</strong> Explore the concept of Bayesian parameter estimation. Ask your favorite AI chatbot how Bayesian parameter estimation differs from maximum likelihood estimation (MLE) and discuss their relative strengths and weaknesses. Here are some possible follow-ups. (1) Get an example implementation using a simple dataset. (2) The categorical and multinomial distributions are related to the Dirichlet distribution. Ask about relationship and how the Dirichlet distribution is used in Bayesian inference for these distributions. <span class="math notranslate nohighlight">\(\ddagger\)</span></p>
+</section>
+<section id="parameter-estimation-for-exponential-families">
+<h2><span class="section-number">6.2.3. </span>Parameter estimation for exponential families<a class="headerlink" href="#parameter-estimation-for-exponential-families" title="Link to this heading">#</a></h2>
+<p>For exponential families, maximum likelihood estimation takes a particularly natural form. We provide details in the discrete case.</p>
+<p><strong>THEOREM</strong> <strong>(Maximum Likelihood Estimator for Exponential Families)</strong> <span class="math notranslate nohighlight">\(\idx{maximum likelihood estimator for exponential families}\xdi\)</span> Assume that <span class="math notranslate nohighlight">\(p_{\btheta}\)</span> takes the exponential family form</p>
+<div class="math notranslate nohighlight">
+\[
+p_{\btheta}(\mathbf{x})
+= h(\mathbf{x}) \exp\left(\btheta^T \bphi(\mathbf{x}) - A(\btheta)\right),
+\]</div>
+<p>that the support <span class="math notranslate nohighlight">\(\S\)</span> is finite, and that <span class="math notranslate nohighlight">\(A\)</span> is twice continuously differentiable over the open set <span class="math notranslate nohighlight">\(\Theta\)</span>. Let <span class="math notranslate nohighlight">\(\mathbf{X}_1,\ldots,\mathbf{X}_n\)</span> be <span class="math notranslate nohighlight">\(n\)</span> independent samples from a parametric family <span class="math notranslate nohighlight">\(p_{\btheta^*}\)</span> with unknown <span class="math notranslate nohighlight">\(\btheta^* \in \Theta\)</span>. Then <span class="math notranslate nohighlight">\(L_n(\btheta; \{\mathbf{X}_i\}_{i=1}^n)\)</span>,  as a function of <span class="math notranslate nohighlight">\(\btheta\)</span>, is convex and the maximum likelihood estimator of <span class="math notranslate nohighlight">\(\btheta\)</span> – if it exists – solves the system of moment-matching equations</p>
+<div class="math notranslate nohighlight">
+\[
+\E[\bphi(\mathbf{X})]
+= \frac{1}{n} \sum_{i=1}^n \bphi(\mathbf{X}_i),
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(\mathbf{X} \sim p_{\hat\btheta_{\mathrm{MLE}}}\)</span>. <span class="math notranslate nohighlight">\(\sharp\)</span></p>
+<p>Recall that the covariance matrix of a random vector <span class="math notranslate nohighlight">\(\mathbf{Z}\)</span> taking values in <span class="math notranslate nohighlight">\(\mathbb{R}^m\)</span> whose components have finite variances is defined as <span class="math notranslate nohighlight">\(\mathrm{K}_{\mathbf{Z}, \mathbf{Z}} = \E[(\mathbf{Z} - \E[\mathbf{Z}])(\mathbf{Z} - \E[\mathbf{Z}])^T]\)</span> and is a positive semidefinite matrix. It is also sometimes denoted as <span class="math notranslate nohighlight">\(\bSigma_\mathbf{Z}\)</span>.</p>
+<p>The function <span class="math notranslate nohighlight">\(A\)</span> has properties worth highlighting that will be used in the proof.</p>
+<p><strong>LEMMA</strong> <strong>(Derivatives of <span class="math notranslate nohighlight">\(A\)</span>)</strong> Assume that <span class="math notranslate nohighlight">\(p_{\btheta}\)</span> takes the exponential family form</p>
+<div class="math notranslate nohighlight">
+\[
+p_{\btheta}(\mathbf{x})
+= h(\mathbf{x}) \exp\left(\btheta^T \bphi(\mathbf{x}) - A(\btheta)\right),
+\]</div>
+<p>that the support <span class="math notranslate nohighlight">\(\S\)</span> is finite, and that <span class="math notranslate nohighlight">\(A\)</span> is twice continuously differentiable over the open set <span class="math notranslate nohighlight">\(\Theta\)</span>. Then</p>
+<div class="math notranslate nohighlight">
+\[
+\nabla A(\btheta) = \E[\bphi(\mathbf{X})]
+\qquad \text{and} \qquad
+\mathbf{H}_A (\btheta) = \mathrm{K}_{\bphi(\mathbf{X}), \bphi(\mathbf{X})},
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(\mathbf{X} \sim p_{\btheta}\)</span>. <span class="math notranslate nohighlight">\(\flat\)</span></p>
+<p><em>Proof idea:</em> Follows from a direct calculation.</p>
+<p><em>Proof:</em> We observe first that</p>
+<div class="math notranslate nohighlight">
+\[
+A(\btheta) 
+= \log Z(\btheta)
+= \log\left(\sum_{\mathbf{x} \in \S} h(\mathbf{x}) \exp(\btheta^T \bphi(\mathbf{x}))\right),
+\]</div>
+<p>where we used the fact that, by definition, <span class="math notranslate nohighlight">\(Z(\btheta)\)</span> is the normalization constant of <span class="math notranslate nohighlight">\(p_{\btheta}\)</span>. In particular, as the logarithm of a finite, weighted sum of exponentials, the function <span class="math notranslate nohighlight">\(A(\btheta)\)</span> is continuously differentiable. Hence so is <span class="math notranslate nohighlight">\(p_{\btheta}(\mathbf{x})\)</span> as a function of <span class="math notranslate nohighlight">\(\btheta\)</span>.</p>
+<p>From the formula above and the basic rules of calculus,</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+\frac{\partial}{\partial \theta_j} A(\btheta)
+&amp;= \frac{\partial}{\partial \theta_j} \log\left(\sum_{\mathbf{x} \in \S} h(\mathbf{x}) \exp(\btheta^T \bphi(\mathbf{x}))\right)\\
+&amp;= \frac{\sum_{\mathbf{x} \in \S} h(\mathbf{x}) \,\phi_j(\mathbf{x}) \exp(\btheta^T \bphi(\mathbf{x}))}{\sum_{\mathbf{x} \in \S} h(\mathbf{x}) \exp(\btheta^T \bphi(\mathbf{x}))}\\
+&amp;= \sum_{\mathbf{x} \in \S} \phi_j(\mathbf{x}) \frac{1}{Z(\btheta)} h(\mathbf{x}) \exp(\btheta^T \bphi(\mathbf{x}))\\
+&amp;= \sum_{\mathbf{x} \in \S} \phi_j(\mathbf{x}) h(\mathbf{x}) \exp(\btheta^T \bphi(\mathbf{x}) - A(\btheta))\\
+&amp;= \E[\phi_j(\mathbf{X})],
+\end{align*}\]</div>
+<p>where <span class="math notranslate nohighlight">\(\mathbf{X} \sim p_{\btheta}\)</span>.</p>
+<p>Differentiating again, this time with respect to <span class="math notranslate nohighlight">\(\theta_i\)</span>, we obtain</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+\frac{\partial^2}{\partial \theta_i \partial \theta_j} A(\btheta)
+&amp;= \frac{\partial}{\partial \theta_i} \left\{\sum_{\mathbf{x} \in \S} \phi_j(\mathbf{x}) h(\mathbf{x}) \exp(\btheta^T \bphi(\mathbf{x}) - A(\btheta))\right\}\\
+&amp;= \sum_{\mathbf{x} \in \S} \phi_j(\mathbf{x}) h(\mathbf{x}) \exp(\btheta^T \bphi(\mathbf{x}) - A(\btheta)) \left\{\phi_i(\mathbf{x}) - \frac{\partial}{\partial \theta_i} A(\btheta) \right\}\\
+&amp;= \sum_{\mathbf{x} \in \S} \phi_i(\mathbf{x}) \phi_j(\mathbf{x}) h(\mathbf{x}) \exp(\btheta^T \bphi(\mathbf{x}) - A(\btheta))\\
+&amp; \qquad - \left(\sum_{\mathbf{x} \in \S} \phi_i(\mathbf{x}) h(\mathbf{x}) \exp(\btheta^T \bphi(\mathbf{x}) - A(\btheta)) \right)\\
+&amp; \qquad\qquad \times \left(\sum_{\mathbf{x} \in \S} \phi_j(\mathbf{x}) h(\mathbf{x}) \exp(\btheta^T \bphi(\mathbf{x}) - A(\btheta)) \right)\\
+&amp;= \E[\phi_i(\mathbf{X})\phi_j(\mathbf{X})] - \E[\phi_i(\mathbf{X})]\E[\phi_j(\mathbf{X})],
+\end{align*}\]</div>
+<p>where again <span class="math notranslate nohighlight">\(\mathbf{X} \sim p_{\btheta}\)</span>. That concludes the proof. <span class="math notranslate nohighlight">\(\square\)</span></p>
+<p>We are now ready to the prove the main theorem.</p>
+<p><em>Proof:</em> <em>(Maximum Likelihood Estimator for Exponential Families)</em> We begin by computing the stationary points of the log-likelihood, for which we need the gradient with respect to <span class="math notranslate nohighlight">\(\btheta \in \mathbb{R}^m\)</span>. We will also need the second-order derivatives to establish convexity. We have</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+\frac{\partial}{\partial \theta_j} \{- \log p_{\btheta}(\mathbf{x})\}
+&amp;= \frac{\partial}{\partial \theta_j} \left\{- \log h(\mathbf{x}) - \btheta^T \bphi(\mathbf{x}) + A(\btheta)\right\}\\
+&amp;= - \phi_j(\mathbf{x}) + \frac{\partial}{\partial \theta_j} A(\btheta).
+\end{align*}\]</div>
+<p>and</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+\frac{\partial^2}{\partial \theta_i \partial \theta_j} \{- \log p_{\btheta}(\mathbf{x})\}
+&amp;= \frac{\partial}{\partial \theta_i} \left\{- \phi_j(\mathbf{x}) + \frac{\partial}{\partial \theta_j} A(\btheta)\right\}\\
+&amp;= \frac{\partial^2}{\partial \theta_i \partial \theta_j} A(\btheta).
+\end{align*}\]</div>
+<p>We use the expressions for the derivatives of <span class="math notranslate nohighlight">\(A\)</span> obtained above.</p>
+<p>Plugging into the formula for the minus log-likelihood (as a function of <span class="math notranslate nohighlight">\(\btheta\)</span>), we get for the gradient with respect to <span class="math notranslate nohighlight">\(\btheta\)</span></p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+\nabla_\btheta L_n(\btheta; \{\mathbf{X}_i\}_{i=1}^n)
+&amp;= - \sum_{i=1}^n \nabla_\btheta \log p_{\btheta}(\mathbf{X}_i)\\
+&amp;= \sum_{i=1}^n \{- \bphi(\mathbf{X}_i) + \nabla_\btheta A(\btheta)\}\\
+&amp;= \sum_{i=1}^n \{- \bphi(\mathbf{X}_i) + \E[\bphi(\mathbf{X})]\}.
+\end{align*}\]</div>
+<p>This is also known in statistics as the <a class="reference external" href="https://en.wikipedia.org/wiki/Score_(statistics)">score</a>.</p>
+<p>For the Hessian with respect to <span class="math notranslate nohighlight">\(\btheta\)</span>, we get</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+\mathbf{H}_{L_n}(\btheta; \{\mathbf{X}_i\}_{i=1}^n)
+= \sum_{i=1}^n \mathbf{H}_A (\btheta)
+= n \,\mathrm{K}_{\bphi(\mathbf{X}), \bphi(\mathbf{X})}.
+\end{align*}\]</div>
+<p>This is also known in statistics as the <a class="reference external" href="https://en.wikipedia.org/wiki/Observed_information">observed information</a>. (In fact, in this case, it reduces to the <a class="reference external" href="https://en.wikipedia.org/wiki/Fisher_information">Fisher information</a>.) Since <span class="math notranslate nohighlight">\(\mathrm{K}_{\bphi(\mathbf{X}), \bphi(\mathbf{X})}\)</span> is positive semidefinite, so is <span class="math notranslate nohighlight">\(\mathbf{H}_{L_n}(\btheta; \{\mathbf{X}_i\}_{i=1}^n)\)</span>.</p>
+<p>Hence, a stationary point <span class="math notranslate nohighlight">\(\hat\btheta_{\mathrm{MLE}}\)</span> must satisfy</p>
+<div class="math notranslate nohighlight">
+\[
+\mathbf{0} = \nabla L_n(\btheta; \{\mathbf{X}_i\}_{i=1}^n)
+= \sum_{i=1}^n \{- \bphi(\mathbf{X}_i) + \E[\bphi(\mathbf{X})]\},
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(\mathbf{X} \sim p_{\hat\btheta_{\mathrm{MLE}}}\)</span> or, after re-arranging,</p>
+<div class="math notranslate nohighlight">
+\[
+\E[\bphi(\mathbf{X})]
+= \frac{1}{n} \sum_{i=1}^n \bphi(\mathbf{X}_i).
+\]</div>
+<p>Because <span class="math notranslate nohighlight">\(L_n\)</span> is convex, a stationary point – if it exists – is necessarily a global minimum (and vice versa). <span class="math notranslate nohighlight">\(\square\)</span></p>
+<p><strong>EXAMPLE:</strong> <strong>(Bernoulli/biased coin, continued)</strong> For <span class="math notranslate nohighlight">\(x \in \{0,1\}\)</span>, recall that the <span class="math notranslate nohighlight">\(\mathrm{Ber}(q)\)</span> distribution can be written as</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+p_{\theta}(x)
+&amp;= \frac{1}{Z(\theta)} h(x) \exp(\theta \,\phi(x))
+\end{align*}\]</div>
+<p>where we define <span class="math notranslate nohighlight">\(h(x) = 1\)</span>, <span class="math notranslate nohighlight">\(\phi(x) = x\)</span>, <span class="math notranslate nohighlight">\(\theta = \log \left(\frac{q}{1-q}\right)\)</span> and <span class="math notranslate nohighlight">\(Z(\theta) = \sigma(\theta)\)</span>. Let <span class="math notranslate nohighlight">\(X_1,\ldots,X_n\)</span> be independent samples from <span class="math notranslate nohighlight">\(p_{\theta^*}\)</span>.</p>
+<p>For <span class="math notranslate nohighlight">\(X \sim p_{\hat\theta_{\mathrm{MLE}}}\)</span>, the moment-matching equations reduce to</p>
+<div class="math notranslate nohighlight">
+\[
+\hat{q}_{\mathrm{MLE}} :=
+\E[X] = \E[\phi(X)] = \frac{1}{n} \sum_{i=1}^n \phi(X_i) = \frac{1}{n} \sum_{i=1}^n X_i.
+\]</div>
+<p>To compute the left-hand side in terms of <span class="math notranslate nohighlight">\(\hat\theta_{\mathrm{MLE}}\)</span> we use the relationship <span class="math notranslate nohighlight">\(\theta = \log \left(\frac{q}{1-q}\right)\)</span>, that is,</p>
+<div class="math notranslate nohighlight">
+\[
+\hat\theta_{\mathrm{MLE}}
+= \log \left(\frac{\frac{1}{n} \sum_{i=1}^n X_i}{1-\frac{1}{n} \sum_{i=1}^n X_i}\right).
+\]</div>
+<p>Hence, <span class="math notranslate nohighlight">\(\hat\theta_{\mathrm{MLE}}\)</span> is well-defined when <span class="math notranslate nohighlight">\(\frac{1}{n} \sum_{i=1}^n X_i \neq 0, 1\)</span>.</p>
+<p>Define <span class="math notranslate nohighlight">\(q^*\)</span> as the solution to</p>
+<div class="math notranslate nohighlight">
+\[
+\theta^* = \log \left(\frac{q^*}{1-q^*}\right)
+\]</div>
+<p>that is,</p>
+<div class="math notranslate nohighlight">
+\[
+q^* = \frac{e^{\theta^*}}{1+e^{\theta^*}} = \frac{1}{1 + e^{-\theta*}} = \sigma(\theta^*),
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(\sigma\)</span> is the sigmoid function.</p>
+<p>By the law of large numbers, as <span class="math notranslate nohighlight">\(n \to +\infty\)</span>, we get the convergence</p>
+<div class="math notranslate nohighlight">
+\[
+\frac{1}{n} \sum_{i=1}^n X_i \to q^*,
+\]</div>
+<p>with probability one.</p>
+<p>Because the function <span class="math notranslate nohighlight">\(\log \left(\frac{q}{1-q}\right)\)</span> is continuous for <span class="math notranslate nohighlight">\(q \in (0,1)\)</span>, we have furthermore</p>
+<div class="math notranslate nohighlight">
+\[
+\hat\theta_{\mathrm{MLE}}
+= \log \left(\frac{\frac{1}{n} \sum_{i=1}^n X_i}{1-\frac{1}{n} \sum_{i=1}^n X_i}\right)
+\to \log \left(\frac{q^*}{1-q^*}\right) = \theta^*.
+\]</div>
+<p>In words, the maximum likelihood estimator <span class="math notranslate nohighlight">\(\hat\theta_{\mathrm{MLE}}\)</span> is guaranteed to converge to the true parameter <span class="math notranslate nohighlight">\(\theta^*\)</span> when the number of samples grows. This fundamental property is known as <a class="reference external" href="https://en.wikipedia.org/wiki/Consistent_estimator">statistical consistency</a><span class="math notranslate nohighlight">\(\idx{statistical consistency}\xdi\)</span>. <span class="math notranslate nohighlight">\(\lhd\)</span></p>
+<p>Statistical consistency holds more generally for the maximum likelihood estimator under exponential families (and parametric families more broadly), provided certain technical conditions hold. We will not provide further details here.</p>
+<p>Unlike the previous example, one does not always have an explicit formula for the maximum likelihood estimator under exponential families. Instead, optimization methods, for instance <a class="reference external" href="https://en.wikipedia.org/wiki/Newton%27s_method_in_optimization">Newton’s method</a>, are used in such cases.</p>
+<p><strong>EXAMPLE:</strong> <strong>(Multivariate Gaussian)</strong> We established the theorem for finite <span class="math notranslate nohighlight">\(\mathcal{S}\)</span>, but it holds more generally. Consider the multivariate Gaussian case. Here the sufficient statistics are</p>
+<div class="math notranslate nohighlight">
+\[
+\bphi(\mathbf{x})
+= (x_1,\ldots,x_d, x_1 x_1, \ldots, x_d x_1, x_1 x_2, \ldots, x_d x_2, \ldots, x_1 x_d, \ldots, x_d x_d)
+\]</div>
+<p>which is simply the vector <span class="math notranslate nohighlight">\(\mathbf{x}\)</span> itself stacked with the vectorized form of the matrix <span class="math notranslate nohighlight">\(\mathbf{x} \mathbf{x}^T\)</span>. So the moment-matching equations boil down to</p>
+<div class="math notranslate nohighlight">
+\[
+\E[\mathbf{X}] = \frac{1}{n} \sum_{i=1}^n \mathbf{X}_i
+\]</div>
+<p>and</p>
+<div class="math notranslate nohighlight">
+\[
+\E[\mathbf{X} \mathbf{X}^T ] = \frac{1}{n} \sum_{i=1}^n \mathbf{X}_i \mathbf{X}_i^T.
+\]</div>
+<p>The first equation says to choose <span class="math notranslate nohighlight">\(\bmu = \frac{1}{n} \sum_{i=1}^n \mathbf{X}_i\)</span>. The second one says to take</p>
+<div class="math notranslate nohighlight">
+\[
+\bSigma
+= \E[\mathbf{X} \mathbf{X}^T] - \E[\mathbf{X}]\,\E[\mathbf{X}]^T
+= \frac{1}{n} \sum_{i=1}^n \mathbf{X}_i \mathbf{X}_i^T
+- \left(\frac{1}{n} \sum_{i=1}^n \mathbf{X}_i\right) \left(\frac{1}{n} \sum_{i=1}^n \mathbf{X}_i^T \right).
+\]</div>
+<p><span class="math notranslate nohighlight">\(\lhd\)</span></p>
+<p><strong>KNOWLEDGE CHECK:</strong> Consider again the Weibull distribution with known shape parameter <span class="math notranslate nohighlight">\(k &gt; 0\)</span>.</p>
+<p>a) Compute <span class="math notranslate nohighlight">\(\E[X^k]\)</span>. [<em>Hint:</em> Perform a change of variables.]</p>
+<p>b) What is the MLE of <span class="math notranslate nohighlight">\(\lambda\)</span>?</p>
+<p><span class="math notranslate nohighlight">\(\checkmark\)</span></p>
+</section>
+<section id="generalized-linear-models">
+<h2><span class="section-number">6.2.4. </span>Generalized linear models<a class="headerlink" href="#generalized-linear-models" title="Link to this heading">#</a></h2>
+<p>Generalized linear models<span class="math notranslate nohighlight">\(\idx{generalized linear model}\xdi\)</span> provide a vast generalization of linear regression using exponential families. Quoting from <a class="reference external" href="https://en.wikipedia.org/wiki/Generalized_linear_model">Wikipedia</a>, the context in which they arise is the following:</p>
+<blockquote>
+<div><p>Ordinary linear regression predicts the expected value of a given unknown quantity (the response variable, a random variable) as a linear combination of a set of observed values (predictors). This implies that a constant change in a predictor leads to a constant change in the response variable (i.e. a linear-response model). This is appropriate when the response variable can vary, to a good approximation, indefinitely in either direction, or more generally for any quantity that only varies by a relatively small amount compared to the variation in the predictive variables, e.g. human heights.
+However, these assumptions are inappropriate for some types of response variables. For example, in cases where the response variable is expected to be always positive and varying over a wide range, constant input changes lead to geometrically (i.e. exponentially) varying, rather than constantly varying, output changes. […] Similarly, a model that predicts a probability of making a yes/no choice (a Bernoulli variable) is even less suitable as a linear-response model, since probabilities are bounded on both ends (they must be between 0 and 1). […] Generalized linear models cover all these situations by allowing for response variables that have arbitrary distributions (rather than simply normal distributions), and for an arbitrary function of the response variable (the link function) to vary linearly with the predicted values (rather than assuming that the response itself must vary linearly).</p>
+</div></blockquote>
+<p>In its simplest form, a generalized linear model assumes that an outcome variable <span class="math notranslate nohighlight">\(y \in \mathbb{R}\)</span> is generated from an exponential family <span class="math notranslate nohighlight">\(p_\theta\)</span>, where <span class="math notranslate nohighlight">\(\theta \in \mathbb{R}\)</span> is a linear combination of the predictor variables <span class="math notranslate nohighlight">\(\mathbf{x} \in \mathbb{R}^d\)</span>. That is, we assume that <span class="math notranslate nohighlight">\(\theta = \mathbf{w}^T \mathbf{x}\)</span> for unknown <span class="math notranslate nohighlight">\(\mathbf{w} \in \mathbb{R}^d\)</span> and the probability distribution of <span class="math notranslate nohighlight">\(y\)</span> is of the form</p>
+<div class="math notranslate nohighlight">
+\[
+p_{\mathbf{w}^T \mathbf{x}}(y)
+= h(y) \exp\left((\mathbf{w}^T\mathbf{x}) \,\phi(y) - A(\mathbf{w}^T \mathbf{x})\right)
+\]</div>
+<p>for some sufficient statistic <span class="math notranslate nohighlight">\(\phi(y)\)</span>. We further assume that <span class="math notranslate nohighlight">\(A\)</span> is twice continuously differentiable over <span class="math notranslate nohighlight">\(\mathbb{R}\)</span>.</p>
+<p>Given data points <span class="math notranslate nohighlight">\((\mathbf{x}_i,y_i)_{i=1}^n\)</span>, the model is fitted using maximum likelihood as follows. Under independence of the samples, the likelihood of the data is <span class="math notranslate nohighlight">\(\prod_{i=1}^n p_{\mathbf{w}^T \mathbf{x}_i}(y_i)\)</span>, which we seek to maximize over <span class="math notranslate nohighlight">\(\mathbf{w}\)</span> (which is different from maximizing over <span class="math notranslate nohighlight">\(\theta\)</span>!). As before, we work with the negative log-likelihood, which we denote  as (with a slight abuse of notation)</p>
+<div class="math notranslate nohighlight">
+\[
+L_n(\mathbf{w};\{(\mathbf{x}_i,y_i)_{i=1}^n\})
+= - \sum_{i=1}^n \log p_{\mathbf{w}^T \mathbf{x}_i}(y_i).
+\]</div>
+<p>The gradient with respect to <span class="math notranslate nohighlight">\(\mathbf{w}\)</span> is given by</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+\nabla_\mathbf{w} L_n(\mathbf{w};\{(\mathbf{x}_i,y_i)_{i=1}^n\})
+&amp;= - \sum_{i=1}^n \nabla_\mathbf{w} \log\left[ h(y_i) \exp\left(\mathbf{w}^T \mathbf{x}_i \phi(y_i) - A(\mathbf{w}^T \mathbf{x}_i)\right)\right]\\
+&amp;= - \sum_{i=1}^n \nabla_\mathbf{w} \left[\log h(y_i) + \mathbf{w}^T \mathbf{x}_i \phi(y_i) - A(\mathbf{w}^T \mathbf{x}_i)\right]\\
+&amp;= - \sum_{i=1}^n \left[ \mathbf{x}_i \phi(y_i) - \nabla_\mathbf{w} A(\mathbf{w}^T \mathbf{x}_i)\right].
+\end{align*}\]</div>
+<p>By the <em>Chain Rule</em> and our previous formulas,</p>
+<div class="math notranslate nohighlight">
+\[
+\nabla_\mathbf{w} A(\mathbf{w}^T \mathbf{x}_i)
+= A'(\mathbf{w}^T \mathbf{x}_i) \,\mathbf{x}_i
+= \mu(\mathbf{w}; \mathbf{x}_i) \,\mathbf{x}_i
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(\mu(\mathbf{w}; \mathbf{x}_i) = \E[\phi(Y_i)]\)</span> with <span class="math notranslate nohighlight">\(Y_i \sim p_{\mathbf{w}^T \mathbf{x}_i}\)</span>. That is,</p>
+<div class="math notranslate nohighlight">
+\[
+\nabla_\mathbf{w} L_n(\mathbf{w};\{(\mathbf{x}_i,y_i)_{i=1}^n\})
+= - \sum_{i=1}^n \mathbf{x}_i (\phi(y_i) - \mu(\mathbf{w}; \mathbf{x}_i)).
+\]</div>
+<p>The Hessian of <span class="math notranslate nohighlight">\(A(\mathbf{w}^T \mathbf{x}_i)\)</span>, again by the <em>Chain Rule</em> and our previous formulas, is</p>
+<div class="math notranslate nohighlight">
+\[
+A''(\mathbf{w}^T \mathbf{x}_i) \,\mathbf{x}_i \mathbf{x}_i^T
+= \sigma^2 (\mathbf{w}; \mathbf{x}_i) \,\mathbf{x}_i \mathbf{x}_i^T
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(\sigma^2(\mathbf{w}; \mathbf{x}_i) = \mathrm{K}_{\phi(Y_i), \phi(Y_i)} = \var[\phi(Y_i)]\)</span> with <span class="math notranslate nohighlight">\(Y_i \sim p_{\mathbf{w}^T \mathbf{x}_i}\)</span>. So the Hessian of the negative log-likelihood is</p>
+<div class="math notranslate nohighlight">
+\[
+\mathrm{H}_{L_n}(\mathbf{w})
+= \sum_{i=1}^n \sigma^2(\mathbf{w}; \mathbf{x}_i) \,\mathbf{x}_i \mathbf{x}_i^T
+\]</div>
+<p>which is positive semidefinite (prove it!).</p>
+<p>As a result, the negative log-likelihood is convex and the maximum likelihood estimator <span class="math notranslate nohighlight">\(\hat{\mathbf{w}}_{\mathrm{MLE}}\)</span> solves the equation <span class="math notranslate nohighlight">\(\nabla_\mathbf{w} L_n(\mathbf{w};\{(\mathbf{x}_i,y_i)_{i=1}^n\}) = \mathbf{0}\)</span>, that is,</p>
+<div class="math notranslate nohighlight">
+\[
+\sum_{i=1}^n \mathbf{x}_i \mu(\mathbf{w}; \mathbf{x}_i)
+= \sum_{i=1}^n \mathbf{x}_i \phi(y_i).
+\]</div>
+<p>We revisit linear and logistic regression next.</p>
+<p><strong>EXAMPLE:</strong> <strong>(Linear regression)</strong> <span class="math notranslate nohighlight">\(\idx{linear regression}\xdi\)</span> Consider the case where <span class="math notranslate nohighlight">\(p_\theta\)</span> is a univariate Gaussian with mean <span class="math notranslate nohighlight">\(\theta\)</span> and fixed variance <span class="math notranslate nohighlight">\(1\)</span>. That is,</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+p_{\theta}(y)
+&amp;= \frac{1}{\sqrt{2 \pi}}
+\exp\left(- \frac{(y - \theta)^2}{2}\right)\\
+&amp;= \frac{1}{\sqrt{2 \pi}}
+\exp\left(- \frac{1}{2}[y^2 - 2 y \theta + \theta^2]\right)\\
+&amp;= \frac{1}{\sqrt{2 \pi}} \exp\left(- \frac{y^2}{2}\right)
+\exp\left(\theta y - \frac{\theta^2}{2}\right)\\
+&amp;= h(y)
+\exp\left(\theta \phi(y) - A(\theta)\right),
+\end{align*}\]</div>
+<p>where <span class="math notranslate nohighlight">\(\phi(y) = y\)</span> and <span class="math notranslate nohighlight">\(A(\theta) = \theta^2/2\)</span>. We now assume that <span class="math notranslate nohighlight">\(\theta = \mathbf{x}^T \mathbf{w}\)</span> to obtain the corresponding generalized linear model.</p>
+<p>Given data points <span class="math notranslate nohighlight">\((\mathbf{x}_i,y_i)_{i=1}^n\)</span>, recall that the maximum likelihood estimator <span class="math notranslate nohighlight">\(\hat{\mathbf{w}}_{\mathrm{MLE}}\)</span> solves the equation</p>
+<div class="math notranslate nohighlight">
+\[
+\sum_{i=1}^n \mathbf{x}_i \mu(\mathbf{w}; \mathbf{x}_i)
+= \sum_{i=1}^n \mathbf{x}_i \phi(y_i)
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(\mu(\mathbf{w}; \mathbf{x}_i) = \E[\phi(Y_i)]\)</span> with <span class="math notranslate nohighlight">\(Y_i \sim p_{\mathbf{x}_i^T \mathbf{w}}\)</span>. Here <span class="math notranslate nohighlight">\(\E[\phi(Y_i)] = \E[Y_i] = \mathbf{x}_i^T \mathbf{w}\)</span>. So the equation reduces to</p>
+<div class="math notranslate nohighlight">
+\[
+\sum_{i=1}^n \mathbf{x}_i \mathbf{x}_i^T \mathbf{w}
+= \sum_{i=1}^n \mathbf{x}_i y_i.
+\]</div>
+<p>You may not recognize this equation, but we have encountered it before in a different form. Let <span class="math notranslate nohighlight">\(A\)</span> be the matrix with row <span class="math notranslate nohighlight">\(i\)</span> equal to <span class="math notranslate nohighlight">\(\mathbf{x}_i\)</span> and let <span class="math notranslate nohighlight">\(\mathbf{y}\)</span> be the vector with <span class="math notranslate nohighlight">\(i\)</span>-th entry equal to <span class="math notranslate nohighlight">\(y_i\)</span>. Then</p>
+<div class="math notranslate nohighlight">
+\[
+\sum_{i=1}^n \mathbf{x}_i \mathbf{x}_i^T = A^T A
+\qquad
+\text{and}
+\qquad
+\sum_{i=1}^n \mathbf{x}_i y_i = A^T \mathbf{y}
+\]</div>
+<p>as can be checked entry by entry or by using our previous characterizations of matrix-matrix products (in outer-product form) and matrix-vector products (as linear combinations of columns). Therefore, the equation above is equivalent to <span class="math notranslate nohighlight">\(A^T A \mathbf{w} = A^T \mathbf{y}\)</span> - the normal equations of linear regression.</p>
+<p>To make sense of this finding, we look back at the minus log-likelihood</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+L_n(\mathbf{w};\{(\mathbf{x}_i,y_i)_{i=1}^n\})
+&amp;= - \sum_{i=1}^n \log p_{\mathbf{x}_i^T \mathbf{w}}(y_i)\\
+&amp;= - \sum_{i=1}^n \log \left(\frac{1}{\sqrt{2 \pi}}
+\exp\left(- \frac{(y_i - \mathbf{x}_i^T \mathbf{w})^2}{2}\right)\right)\\
+&amp;= - \log (\sqrt{2 \pi})
++ \frac{1}{2} \sum_{i=1}^n 
+(y_i - \mathbf{x}_i^T \mathbf{w})^2.
+\end{align*}\]</div>
+<p>Observe that mimizing this expression over <span class="math notranslate nohighlight">\(\mathbf{w}\)</span> is equivalent to solving the least-squares problem as the first term does not depend on <span class="math notranslate nohighlight">\(\mathbf{w}\)</span> and the factor of <span class="math notranslate nohighlight">\(1/2\)</span> does not affect the optimum.</p>
+<p>While we have rederived the least squares problem from a probabilistic model, it should be noted that the Gaussian assumption is not in fact required for linear regression to be warranted. Rather, it gives a different perspective on the same problem. <span class="math notranslate nohighlight">\(\lhd\)</span></p>
+<p><strong>EXAMPLE:</strong> <strong>(Logistic regression)</strong> <span class="math notranslate nohighlight">\(\idx{logistic regression}\xdi\)</span> Consider the case where <span class="math notranslate nohighlight">\(p_{\theta}\)</span> is a Bernoulli distribution. That is, for <span class="math notranslate nohighlight">\(y \in \{0,1\}\)</span>,</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+p_{\theta}(y)
+&amp;=  h(y) \exp(\theta \,\phi(y) - A(\theta)),
+\end{align*}\]</div>
+<p>where  <span class="math notranslate nohighlight">\(h(y) = 1\)</span>, <span class="math notranslate nohighlight">\(\phi(y) = y\)</span> and <span class="math notranslate nohighlight">\(A(\theta) = \log(1 + e^\theta)\)</span>. We assume that <span class="math notranslate nohighlight">\(\theta = \mathbf{x}^T \mathbf{w}\)</span> to obtain the corresponding generalized linear model. Given data points <span class="math notranslate nohighlight">\((\mathbf{x}_i,y_i)_{i=1}^n\)</span>, the maximum likelihood estimator <span class="math notranslate nohighlight">\(\hat{\mathbf{w}}_{\mathrm{MLE}}\)</span> solves the equation</p>
+<div class="math notranslate nohighlight">
+\[
+\sum_{i=1}^n \mathbf{x}_i \mu(\mathbf{w}; \mathbf{x}_i)
+= \sum_{i=1}^n \mathbf{x}_i \phi(y_i)
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(\mu(\mathbf{w}; \mathbf{x}_i) = \E[\phi(Y_i)]\)</span> with <span class="math notranslate nohighlight">\(Y_i \sim p_{\mathbf{x}_i^T \mathbf{w}}\)</span>. Here, by our formula for the gradient of <span class="math notranslate nohighlight">\(A\)</span>,</p>
+<div class="math notranslate nohighlight">
+\[
+\E[\phi(Y_i)] = \E[Y_i] = A'(\mathbf{x}_i^T \mathbf{w}) = \frac{e^{\mathbf{x}_i^T \mathbf{w}}}{1 + e^{\mathbf{x}_i^T \mathbf{w}}}
+= \sigma(\mathbf{x}_i^T \mathbf{w}),
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(\sigma\)</span> is the sigmoid function. So the equation reduces to</p>
+<div class="math notranslate nohighlight">
+\[
+\sum_{i=1}^n \mathbf{x}_i \sigma(\mathbf{x}_i^T \mathbf{w})
+= \sum_{i=1}^n \mathbf{x}_i y_i.
+\]</div>
+<p>The equation in this case cannot be solved explicitly. Instead we can use gradient descent, or a variant, to minimize the minus log-likelihood directly. The lattter is</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+L_n(\mathbf{w};\{(\mathbf{x}_i,y_i)_{i=1}^n\})
+&amp;= - \sum_{i=1}^n \log p_{\mathbf{x}_i^T \mathbf{w}}(y_i)\\
+&amp;= - \sum_{i=1}^n \log \left(\exp((\mathbf{x}_i^T \mathbf{w}) y_i - \log(1 + e^{\mathbf{x}_i^T \mathbf{w}}))\right)\\
+&amp;= - \sum_{i=1}^n \left[(\mathbf{x}_i^T \mathbf{w}) y_i - \log(1 + e^{\mathbf{x}_i^T \mathbf{w}})\right]\\
+&amp;= - \sum_{i=1}^n \left[y_i \log(e^{\mathbf{x}_i^T \mathbf{w}}) - (y_i + (1-y_i))\log(1 + e^{\mathbf{x}_i^T \mathbf{w}})\right]\\
+&amp;= - \sum_{i=1}^n \left[y_i \log(\sigma(\mathbf{x}_i^T \mathbf{w}))  + (1-y_i) \log(1 -\sigma(\mathbf{x}_i^T \mathbf{w}))\right].
+\end{align*}\]</div>
+<p>Minimizing <span class="math notranslate nohighlight">\(L_n(\mathbf{w};\{(\mathbf{x}_i,y_i)_{i=1}^n\})\)</span> is equivalent to logistic regression.</p>
+<p>To use gradient descent, we compute</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+\nabla_\mathbf{w} L_n(\mathbf{w};\{(\mathbf{x}_i,y_i)_{i=1}^n\})
+&amp;= - \sum_{i=1}^n \mathbf{x}_i (\phi(y_i) - \mu(\mathbf{w}; \mathbf{x}_i))\\
+&amp;= - \sum_{i=1}^n \mathbf{x}_i (y_i - \sigma(\mathbf{x}_i^T \mathbf{w})).
+\end{align*}\]</div>
+<p>This expression is indeed consistent with what we previously derived for logistic regression. <span class="math notranslate nohighlight">\(\lhd\)</span></p>
+<p>In practice, generalized linear models of moderate dimension are often fitted using the second-order method Iterative Reweighted Least Squares (IRLS), which generalizes the special case for logistic regression.</p>
+<p><strong>CHAT &amp; LEARN</strong> Generalized linear models can be extended to handle more complex data structures. Ask your favorite AI chatbot to explain what generalized additive models (GAMs) are and how they differ from generalized linear models. Also, ask about some common applications of GAMs. <span class="math notranslate nohighlight">\(\ddagger\)</span></p>
+<p><em><strong>Self-assessment quiz</strong></em> <em>(with help from Claude, Gemini, and ChatGPT)</em></p>
+<p><strong>1</strong> Which of the following is NOT an example of an exponential family of distributions?</p>
+<p>a) Bernoulli</p>
+<p>b) Categorical</p>
+<p>c) Uniform</p>
+<p>d) Multivariate Gaussian</p>
+<p><strong>2</strong> In the exponential family form <span class="math notranslate nohighlight">\(p_\theta(x) = h(x) \exp(\theta^T \phi(x) - A(\theta))\)</span>, what does <span class="math notranslate nohighlight">\(A(\theta)\)</span> represent?</p>
+<p>a) The sufficient statistic</p>
+<p>b) The log-partition function</p>
+<p>c) The canonical parameter</p>
+<p>d) The base measure</p>
+<p><strong>3</strong> Given <span class="math notranslate nohighlight">\(n\)</span> independent samples <span class="math notranslate nohighlight">\(X_1, \ldots, X_n\)</span> from a parametric family <span class="math notranslate nohighlight">\(p_{\theta^*}\)</span> with unknown <span class="math notranslate nohighlight">\(\theta^* \in \Theta\)</span>, the maximum likelihood estimator <span class="math notranslate nohighlight">\(\hat{\theta}_{\mathrm{MLE}}\)</span> is defined as:</p>
+<p>a) <span class="math notranslate nohighlight">\(\hat{\theta}_{\mathrm{MLE}} \in \arg\max \left\{ \prod_{i=1}^n p_\theta(X_i) : \theta \in \Theta \right\}\)</span></p>
+<p>b) <span class="math notranslate nohighlight">\(\hat{\theta}_{\mathrm{MLE}} \in \arg\min \left\{ \prod_{i=1}^n p_\theta(X_i) : \theta \in \Theta \right\}\)</span></p>
+<p>c) <span class="math notranslate nohighlight">\(\hat{\theta}_{\mathrm{MLE}} \in \arg\max \left\{ \sum_{i=1}^n p_\theta(X_i) : \theta \in \Theta \right\}\)</span></p>
+<p>d) <span class="math notranslate nohighlight">\(\hat{\theta}_{\mathrm{MLE}} \in \arg\min \left\{ \sum_{i=1}^n p_\theta(X_i) : \theta \in \Theta \right\}\)</span></p>
+<p><strong>4</strong> In a generalized linear model, the maximum likelihood estimator <span class="math notranslate nohighlight">\(\hat{w}_{\mathrm{MLE}}\)</span> solves the equation:</p>
+<p>a) <span class="math notranslate nohighlight">\(\sum_{i=1}^n x_i \mu(w; x_i) = \sum_{i=1}^n x_i \phi(y_i)\)</span></p>
+<p>b) <span class="math notranslate nohighlight">\(\sum_{i=1}^n x_i \mu(w; x_i) = \sum_{i=1}^n y_i \phi(x_i)\)</span></p>
+<p>c) <span class="math notranslate nohighlight">\(\sum_{i=1}^n \mu(w; x_i) = \sum_{i=1}^n \phi(y_i)\)</span></p>
+<p>d) <span class="math notranslate nohighlight">\(\sum_{i=1}^n \mu(w; x_i) = \sum_{i=1}^n y_i\)</span></p>
+<p><strong>5</strong> In logistic regression, which distribution is used for the outcome variable?</p>
+<p>a) Normal distribution</p>
+<p>b) Poisson distribution</p>
+<p>c) Bernoulli distribution</p>
+<p>d) Exponential distribution</p>
+<p>Answer for 1: c. Justification: The text provides examples of Bernoulli, categorical, and multivariate Gaussian distributions as members of the exponential family. The uniform distribution, however, does not fit the exponential family form.</p>
+<p>Answer for 2: b. Justification: The text states that <span class="math notranslate nohighlight">\(A(\theta) = \log Z(\theta)\)</span>, where <span class="math notranslate nohighlight">\(Z(\theta)\)</span> is referred to as the partition function.</p>
+<p>Answer for 3: a. Justification: The text provides the definition of the maximum likelihood estimator as <span class="math notranslate nohighlight">\(\hat{\theta}_{\mathrm{MLE}} \in \arg\max \left\{ \prod_{i=1}^n p_\theta(X_i) : \theta \in \Theta \right\}\)</span>.</p>
+<p>Answer for 4: a. Justification: The text derives the equation <span class="math notranslate nohighlight">\(\sum_{i=1}^n x_i \mu(w; x_i) = \sum_{i=1}^n x_i \phi(y_i)\)</span> as the one that the maximum likelihood estimator solves in a generalized linear model.</p>
+<p>Answer for 5: c. Justification: The text describes logistic regression as a GLM where the outcome variable is assumed to follow a Bernoulli distribution.</p>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./chap07_prob/02_parametric"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="../01_motiv/roch-mmids-prob-motiv.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title"><span class="section-number">6.1. </span>Motivating example: tracking location</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="../03_joint/roch-mmids-prob-joint.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title"><span class="section-number">6.3. </span>Modeling more complex dependencies 1: using conditional independence</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exponential-family">6.2.1. Exponential family</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#parameter-estimation">6.2.2. Parameter estimation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#parameter-estimation-for-exponential-families">6.2.3. Parameter estimation for exponential families</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#generalized-linear-models">6.2.4. Generalized linear models</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Sebastien Roch
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2024.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

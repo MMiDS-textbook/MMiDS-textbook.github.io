@@ -1,0 +1,1180 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>3.4. Convexity &#8212; MMiDS Textbook</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.5.1/css/all.min.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.1/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.1/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.1/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b76e3c8a" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=384b581d" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=87e54e7c" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae" />
+  <script src="../../_static/vendor/fontawesome/6.5.1/js/all.min.js?digest=8d27b9dea8ad943066ae"></script>
+
+    <script src="../../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?v=efea14e4"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../_static/design-tabs.js?v=f930bc37"></script>
+    <script async="async" src="https://www.googletagmanager.com/gtag/js?id=G-P5E8DW088F"></script>
+    <script>
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){ dataLayer.push(arguments); }
+                gtag('js', new Date());
+                gtag('config', 'G-P5E8DW088F');
+            </script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){ dataLayer.push(arguments); }
+                gtag('js', new Date());
+                gtag('config', 'G-P5E8DW088F');
+            </script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'chap06_opt/03part2_convexity/roch-mmids-opt-convexity';</script>
+    <link rel="canonical" href="https://mmids-textbook.github.io/chap06_opt/03part2_convexity/roch-mmids-opt-convexity.html" />
+    <link rel="icon" href="https://mmids-textbook.github.io/favicon-32x32.png"/>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="3.5. Gradient descent and its convergence analysis" href="../04_gd/roch-mmids-opt-gd.html" />
+    <link rel="prev" title="3.3. Optimality conditions" href="../03_optimality/roch-mmids-opt-optimality.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a id="pst-skip-link" class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+
+<a class="navbar-brand logo" href="../../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/mmids-cover-small.jpg" class="logo__image only-light" alt="MMiDS Textbook - Home"/>
+    <script>document.write(`<img src="../../_static/mmids-cover-small.jpg" class="logo__image only-dark" alt="MMiDS Textbook - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../index.html">
+                    <b>MATHEMATICAL METHODS in DATA SCIENCE (with Python)</b>
+                </a>
+            </li>
+        </ul>
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../chap01_intro/00_intro/roch-mmids-intro-intro.html">1. Introduction: a first data science problem</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../chap01_intro/01_motiv/roch-mmids-intro-motiv.html">1.1. Motivating example: identifying penguin species</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap01_intro/02_review/roch-mmids-intro-review.html">1.2. Background: quick refresher of matrix algebra, differential calculus, and elementary probability</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap01_intro/03_clustering/roch-mmids-intro-clustering.html">1.3. Clustering: an objective, an algorithm and a guarantee</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap01_intro/04_highdim/roch-mmids-intro-highdim.html">1.4. Some observations about high-dimensional data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap01_intro/exercises/roch-mmids-intro-exercises.html">1.5. Exercises</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap01_intro/05_adv/roch-mmids-intro-adv.html">1.6. Online suppplementary material</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../chap02_ls/00_intro/roch-mmids-ls-intro.html">2. Least squares: geometric, algebraic, and numerical aspects</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../chap02_ls/01_motiv/roch-mmids-ls-motiv.html">2.1. Motivating example: predicting sales</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap02_ls/02_subspaces/roch-mmids-ls-spaces.html">2.2. Background: review of vector spaces and matrix inverses</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap02_ls/03_orthog/roch-mmids-ls-orthog.html">2.3. Geometry of least squares: the orthogonal projection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap02_ls/04_qr/roch-mmids-ls-qr.html">2.4. QR decomposition and Householder transformations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap02_ls/05_regression/roch-mmids-ls-regression.html">2.5. Application: regression analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap02_ls/exercises/roch-mmids-ls-exercises.html">2.6. Exercises</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap02_ls/06_adv/roch-mmids-ls-adv.html">2.7. Online suppplementary material</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="../00_intro/roch-mmids-opt-intro.html">3. Optimization theory and algorithms</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-3"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../01_motiv/roch-mmids-opt-motiv.html">3.1. Motivating example:  analyzing customer satisfaction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../02_several/roch-mmids-opt-several.html">3.2. Background: review of differentiable functions of several variables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../03_optimality/roch-mmids-opt-optimality.html">3.3. Optimality conditions</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">3.4. Convexity</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../04_gd/roch-mmids-opt-gd.html">3.5. Gradient descent and its convergence analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../04part2_logistic/roch-mmids-opt-logistic.html">3.6. Application: logistic regression</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../exercises/roch-mmids-opt-exercises.html">3.7. Exercises</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../06_adv/roch-mmids-opt-adv.html">3.8. Online suppplementary material</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../chap03_svd/00_intro/roch-mmids-svd-intro.html">4. Singular value decomposition</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-4"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../chap03_svd/01_motiv/roch-mmids-svd-motiv.html">4.1. Motivating example: visualizing viral evolution</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap03_svd/02_spectral/roch-mmids-svd-spectral.html">4.2. Background: review of matrix rank  and spectral decomposition</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap03_svd/03_svd/roch-mmids-svd-svd.html">4.3. Approximating subspaces and the SVD</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap03_svd/04_power/roch-mmids-svd-power.html">4.4. Power iteration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap03_svd/05_pca/roch-mmids-svd-pca.html">4.5. Application: principal components analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap03_svd/06_further/roch-mmids-svd-further.html">4.6. Further applications of the SVD: low-rank approximations and ridge regression</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap03_svd/exercises/roch-mmids-svd-exercises.html">4.7. Exercises</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap03_svd/07_adv/roch-mmids-svd-adv.html">4.8. Online suppplementary material</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../chap04_specgraph/00_intro/roch-mmids-specgraph-intro.html">5. Spectral graph theory</a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-5"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../chap04_specgraph/01_motiv/roch-mmids-specgraph-motiv.html">5.1. Motivating example: uncovering social groups</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap04_specgraph/02_graph/roch-mmids-specgraph-graph.html">5.2. Background: basic concepts in graph theory</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap04_specgraph/03_extremal/roch-mmids-specgraph-extremal.html">5.3. Variational characterization of eigenvalues</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap04_specgraph/04_laplacian/roch-mmids-specgraph-laplacian.html">5.4. Spectral properties of the Laplacian matrix</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap04_specgraph/05_partitioning/roch-mmids-specgraph-partitioning.html">5.5. Application: graph partitioning via spectral clustering</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap04_specgraph/05part2_sbm/roch-mmids-specgraph-sbm.html">5.6. Erdős-Rényi random graph and stochastic blockmodel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap04_specgraph/exercises/roch-mmids-specgraph-exercises.html">5.7. Exercises</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap04_specgraph/06_adv/roch-mmids-specgraph-adv.html">5.8. Online supplementary material</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../chap07_prob/00_intro/roch-mmids-prob-intro.html">6. Probabilistic models: from simple to complex</a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-6"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../chap07_prob/01_motiv/roch-mmids-prob-motiv.html">6.1. Motivating example: tracking location</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap07_prob/02_parametric/roch-mmids-prob-parametric.html">6.2. Background: introduction to parametric families and maximum likelihood estimation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap07_prob/03_joint/roch-mmids-prob-joint.html">6.3. Modeling more complex dependencies 1: using conditional independence</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap07_prob/03part2_em/roch-mmids-prob-em.html">6.4. Modeling more complex dependencies 2: marginalizing out an unobserved variable</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap07_prob/04_kalman/roch-mmids-prob-kalman.html">6.5. Application: linear-Gaussian models and Kalman filtering</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap07_prob/exercises/roch-mmids-prob-exercises.html">6.6. Exercises</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap07_prob/06_adv/roch-mmids-prob-adv.html">6.7. Online supplementary material</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../chap05_rwmc/00_intro/roch-mmids-rwmc-intro.html">7. Random walks on graphs and Markov chains</a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-7"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../chap05_rwmc/01_motiv/roch-mmids-rwmc-motiv.html">7.1. Motivating example: discovering mathematical topics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap05_rwmc/03_mcdefs/roch-mmids-rwmc-mcdefs.html">7.2. Background: elements of finite Markov chains</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap05_rwmc/04_stat/roch-mmids-rwmc-stat.html">7.3. Limit behavior 1: stationary distributions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap05_rwmc/04part2_mclimit/roch-mmids-rwmc-mclimit.html">7.4. Limit behavior 2: convergence to equilibrium</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap05_rwmc/05_pagerank/roch-mmids-rwmc-pagerank.html">7.5. Application: random walks on graphs and PageRank</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap05_rwmc/05part2_gibbs/roch-mmids-rwmc-gibbs.html">7.6. Further applications: Gibbs sampling and generating images</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap05_rwmc/exercises/roch-mmids-rwmc-exercises.html">7.7. Exercises</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap05_rwmc/06_adv/roch-mmids-rwmc-adv.html">7.8. Online supplementary material</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../chap08_nn/00_intro/roch-mmids-nn-intro.html">8. Neural networks, backpropagation and stochastic gradient descent</a><input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-8"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../chap08_nn/01_motiv/roch-mmids-nn-motiv.html">8.1. Motivating example:  classifying natural images</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap08_nn/02_chain/roch-mmids-nn-chain.html">8.2. Background: Jacobian, chain rule, and a brief introduction to automatic differentiation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap08_nn/03_backprop/roch-mmids-nn-backprop.html">8.3. Building blocks of AI 1: backpropagation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap08_nn/04_sgd/roch-mmids-nn-sgd.html">8.4. Building blocks of AI 2: stochastic gradient descent</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap08_nn/05_nn/roch-mmids-nn-nn.html">8.5. Building blocks of AI 3: neural networks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap08_nn/exercises/roch-mmids-nn-exercises.html">8.6. Exercises</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap08_nn/06_adv/roch-mmids-nn-adv.html">8.7. Online supplementary material</a></li>
+</ul>
+</li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/MMiDS-textbook/MMiDS-textbook.github.io" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/MMiDS-textbook/MMiDS-textbook.github.io/issues/new?title=Issue%20on%20page%20%2Fchap06_opt/03part2_convexity/roch-mmids-opt-convexity.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/chap06_opt/03part2_convexity/roch-mmids-opt-convexity.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Convexity</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#definitions">3.4.1. Definitions</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#convexity-and-unconstrained-optimization">3.4.2. Convexity and unconstrained optimization</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <p><span class="math notranslate nohighlight">\(\newcommand{\bmu}{\boldsymbol{\mu}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bSigma}{\boldsymbol{\Sigma}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bfbeta}{\boldsymbol{\beta}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bflambda}{\boldsymbol{\lambda}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bgamma}{\boldsymbol{\gamma}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bsigma}{{\boldsymbol{\sigma}}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bpi}{\boldsymbol{\pi}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\btheta}{{\boldsymbol{\theta}}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bphi}{\boldsymbol{\phi}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\balpha}{\boldsymbol{\alpha}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\blambda}{\boldsymbol{\lambda}}\)</span>
+<span class="math notranslate nohighlight">\(\renewcommand{\P}{\mathbb{P}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\E}{\mathbb{E}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\indep}{\perp\!\!\!\perp} \newcommand{\bx}{\mathbf{x}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bp}{\mathbf{p}}\)</span>
+<span class="math notranslate nohighlight">\(\renewcommand{\bx}{\mathbf{x}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bX}{\mathbf{X}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\by}{\mathbf{y}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bY}{\mathbf{Y}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bz}{\mathbf{z}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bZ}{\mathbf{Z}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bw}{\mathbf{w}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bW}{\mathbf{W}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bv}{\mathbf{v}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bV}{\mathbf{V}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bfg}{\mathbf{g}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bfh}{\mathbf{h}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\horz}{\rule[.5ex]{2.5ex}{0.5pt}}\)</span>
+<span class="math notranslate nohighlight">\(\renewcommand{\S}{\mathcal{S}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\X}{\mathcal{X}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\var}{\mathrm{Var}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\pa}{\mathrm{pa}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\Z}{\mathcal{Z}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bh}{\mathbf{h}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bb}{\mathbf{b}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bc}{\mathbf{c}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\cE}{\mathcal{E}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\cP}{\mathcal{P}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bbeta}{\boldsymbol{\beta}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bLambda}{\boldsymbol{\Lambda}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\cov}{\mathrm{Cov}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bfk}{\mathbf{k}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\idx}[1]{}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\xdi}{}\)</span></p>
+<section id="convexity">
+<h1><span class="section-number">3.4. </span>Convexity<a class="headerlink" href="#convexity" title="Link to this heading">#</a></h1>
+<p>Our optimality conditions have only concerned local minimizers. Indeed, in the absence of global structure, local information such as gradients and Hessians can only inform us about the immediate neighborhood of points. Here we introduce convexity, a commonly encountered condition under which local minimizers become global minimizers.</p>
+<section id="definitions">
+<h2><span class="section-number">3.4.1. </span>Definitions<a class="headerlink" href="#definitions" title="Link to this heading">#</a></h2>
+<p><strong>Convex sets</strong> We start with convex sets.</p>
+<p><strong>DEFINITION</strong> <strong>(Convex Set)</strong> <span class="math notranslate nohighlight">\(\idx{convex set}\xdi\)</span> A set <span class="math notranslate nohighlight">\(D \subseteq \mathbb{R}^d\)</span> is convex if for all <span class="math notranslate nohighlight">\(\mathbf{x}, \mathbf{y} \in D\)</span> and all <span class="math notranslate nohighlight">\(\alpha \in (0,1)\)</span></p>
+<div class="math notranslate nohighlight">
+\[
+(1-\alpha) \mathbf{x} + \alpha \mathbf{y} \in D.
+\]</div>
+<p><span class="math notranslate nohighlight">\(\natural\)</span></p>
+<p>Note that, as <span class="math notranslate nohighlight">\(\alpha\)</span> goes from <span class="math notranslate nohighlight">\(0\)</span> to <span class="math notranslate nohighlight">\(1\)</span>,</p>
+<div class="math notranslate nohighlight">
+\[
+(1-\alpha) \mathbf{x} + \alpha \mathbf{y} = \mathbf{x} + \alpha (\mathbf{y} - \mathbf{x}),
+\]</div>
+<p>traces a line joining <span class="math notranslate nohighlight">\(\mathbf{x}\)</span> and <span class="math notranslate nohighlight">\(\mathbf{y}\)</span>. In words, a set is convex if all segments between pairs of points in the set also lie in it.</p>
+<p><strong>KNOWLEDGE CHECK:</strong> Is a banana a convex set? <span class="math notranslate nohighlight">\(\checkmark\)</span></p>
+<!--TEX
+
+**Figure:** A convex set ([Source](https://commons.wikimedia.org/wiki/File:Convex_polygon_illustration1.png))
+
+![A convex set ](https://upload.wikimedia.org/wikipedia/commons/thumb/0/06/Convex_polygon_illustration1.png/254px-Convex_polygon_illustration1.png)
+
+**Figure:** A set that is not convex ([Source](https://commons.wikimedia.org/wiki/File:Convex_polygon_illustration2.png))
+
+![A set that is not convex](https://upload.wikimedia.org/wikipedia/commons/thumb/1/11/Convex_polygon_illustration2.png/254px-Convex_polygon_illustration2.png)
+
+$\bowtie$
+
+--><p><strong>EXAMPLE:</strong> An open ball in <span class="math notranslate nohighlight">\(\mathbb{R}^d\)</span> is convex. Indeed, let <span class="math notranslate nohighlight">\(\delta &gt; 0\)</span> and <span class="math notranslate nohighlight">\(\mathbf{x}_0 \in \mathbb{R}^d\)</span>. For any <span class="math notranslate nohighlight">\(\mathbf{x}, \mathbf{y} \in B_{\delta}(\mathbf{x}_0)\)</span> and any <span class="math notranslate nohighlight">\(\alpha \in [0,1]\)</span>, we have</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+\|[(1-\alpha) \mathbf{x} + \alpha \mathbf{y}] - \mathbf{x}_0\|_2
+&amp;= \|(1-\alpha) (\mathbf{x} - \mathbf{x}_0) + \alpha (\mathbf{y} - \mathbf{x}_0)\|_2\\
+&amp;\leq  \|(1-\alpha) (\mathbf{x} - \mathbf{x}_0)\|_2 + \|\alpha (\mathbf{y} - \mathbf{x}_0)\|_2\\
+&amp;= (1-\alpha) \|\mathbf{x} - \mathbf{x}_0\|_2 + \alpha \|\mathbf{y} - \mathbf{x}_0\|_2\\
+&amp;&lt; (1-\alpha) \delta + \alpha \delta\\
+&amp;= \delta
+\end{align*}\]</div>
+<p>where we used the triangle inequality on the second line. Hence we have established that <span class="math notranslate nohighlight">\((1-\alpha) \mathbf{x} + \alpha \mathbf{y} \in B_{\delta}(\mathbf{x}_0)\)</span>.</p>
+<p>One remark. All we used in this argument is that the Euclidean norm is homogeneous and satisfies the triangle inequality. That is true of every norm. So we conclude that an open ball under any norm is convex. Also, the open nature of the set played no role. The same holds for closed balls in any norm. <span class="math notranslate nohighlight">\(\lhd\)</span></p>
+<p><strong>EXAMPLE:</strong> Here is an important generalization. Think of the space of <span class="math notranslate nohighlight">\(n \times n\)</span> symmetric matrices</p>
+<div class="math notranslate nohighlight">
+\[
+\mathbf{S}^n 
+= \left\{
+X \in \mathbb{R}^{n \times n}\,:\, X = X^T
+\right\},
+\]</div>
+<p>as a linear subspace of <span class="math notranslate nohighlight">\(\mathbb{R}^{n^2}\)</span> (how?). The dimension of <span class="math notranslate nohighlight">\(\mathbf{S}^n\)</span> is <span class="math notranslate nohighlight">\({n \choose 2} + n\)</span>, the number of free parameters under the symmetry assumption. Consider now the set of all positive semidefinite matrices in <span class="math notranslate nohighlight">\(\mathbf{S}^n\)</span></p>
+<div class="math notranslate nohighlight">
+\[
+\mathbf{S}_+^n 
+= \left\{
+X \in \mathbf{S}^n \,:\, X \succeq \mathbf{0}
+\right\}.
+\]</div>
+<p>(Observe that <span class="math notranslate nohighlight">\(\mathbf{S}_+^n\)</span> is not the same as the set of symmetric matrices with nonnegative elements.)</p>
+<p>We claim that the set <span class="math notranslate nohighlight">\(\mathbf{S}_+^n\)</span> is convex. Indeed let <span class="math notranslate nohighlight">\(X, Y \in \mathbf{S}_+^n\)</span> and <span class="math notranslate nohighlight">\(\alpha \in [0,1]\)</span>. Then by postive semidefiniteness of <span class="math notranslate nohighlight">\(X\)</span> and <span class="math notranslate nohighlight">\(Y\)</span>, for any <span class="math notranslate nohighlight">\(\mathbf{v} \in \mathbb{R}^n\)</span></p>
+<div class="math notranslate nohighlight">
+\[
+\langle \mathbf{v}, [(1-\alpha) X + \alpha Y] \mathbf{v}\rangle
+= (1-\alpha) \langle \mathbf{v}, X \mathbf{v}\rangle
++ \alpha \langle \mathbf{v}, Y \mathbf{v}\rangle
+\geq 0.
+\]</div>
+<p>This shows that <span class="math notranslate nohighlight">\((1-\alpha) X + \alpha Y \succeq \mathbf{0}\)</span> and hence that <span class="math notranslate nohighlight">\(\mathbf{S}_+^n\)</span> is convex. <span class="math notranslate nohighlight">\(\lhd\)</span></p>
+<p>A number of operations preserve convexity. In an abuse of notation, we think of a pair of vectors <span class="math notranslate nohighlight">\((\mathbf{x}_1, \mathbf{x}_2) \in \mathbb{R}^d \times \mathbb{R}^{f}\)</span> as a vector in <span class="math notranslate nohighlight">\(\mathbb{R}^{d+f}\)</span>. Put differently, <span class="math notranslate nohighlight">\((\mathbf{x}_1, \mathbf{x}_2)\)</span> is the vertical concatenation of column vectors <span class="math notranslate nohighlight">\(\mathbf{x}_1\)</span> and <span class="math notranslate nohighlight">\(\mathbf{x}_2\)</span>. This is not to be confused with <span class="math notranslate nohighlight">\(\begin{pmatrix}\mathbf{x}_1 &amp; \mathbf{x}_2\end{pmatrix}\)</span> which is the <span class="math notranslate nohighlight">\(d \times 2\)</span> matrix with columns <span class="math notranslate nohighlight">\(\mathbf{x}_1\)</span> and <span class="math notranslate nohighlight">\(\mathbf{x}_2\)</span> – provided <span class="math notranslate nohighlight">\(f = d\)</span> (otherwise it is not a well-defined matrix).</p>
+<p><strong>LEMMA</strong> <strong>(Operations that Preserve Convexity)</strong> <span class="math notranslate nohighlight">\(\idx{operations that preserve convexity}\xdi\)</span> Let <span class="math notranslate nohighlight">\(S_1, S_2 \subseteq \mathbb{R}^d\)</span>, <span class="math notranslate nohighlight">\(S_3 \subseteq \mathbb{R}^{f}\)</span>, and  <span class="math notranslate nohighlight">\(S_4 \subseteq \mathbb{R}^{d+f}\)</span> be convex sets. Let <span class="math notranslate nohighlight">\(\beta \in \mathbb{R}\)</span> and <span class="math notranslate nohighlight">\(\mathbf{b} \in \mathbb{R}^d\)</span>. The following sets are also convex:</p>
+<p>a) <em>Scaling:</em> <span class="math notranslate nohighlight">\(\beta S_1 = \{\beta \mathbf{x}\,:\, \mathbf{x} \in S_1\}\)</span></p>
+<p>b) <em>Translation:</em> <span class="math notranslate nohighlight">\(S_1 + \mathbf{b} = \{\mathbf{x} + \mathbf{b}\,:\, \mathbf{x} \in S_1\}\)</span></p>
+<p>c) <em>Sum:</em> <span class="math notranslate nohighlight">\(S_1 + S_2 = \{\mathbf{x}_1 + \mathbf{x}_2\,:\, \mathbf{x}_1 \in S_1 \text{ and } \mathbf{x}_2 \in S_2\}\)</span></p>
+<p>d) <em>Cartesian product:</em> <span class="math notranslate nohighlight">\(S_1 \times S_3 = \{(\mathbf{x}_1, \mathbf{x}_2) \,:\, \mathbf{x}_1 \in S_1 \text{ and } \mathbf{x}_2 \in S_3\}\)</span></p>
+<p>e) <em>Projection:</em> <span class="math notranslate nohighlight">\(T = \{\mathbf{x}_1\,:\, (\mathbf{x}_1, \mathbf{x}_2) \in S_4 \text{ for some }\mathbf{x}_2 \in \mathbb{R}^f\}\)</span></p>
+<p>f) <em>Intersection:</em> <span class="math notranslate nohighlight">\(S_1 \cap S_2\)</span></p>
+<p><span class="math notranslate nohighlight">\(\flat\)</span></p>
+<p><em>Proof:</em> We only prove f). The other statements are left as an exercise. Suppose <span class="math notranslate nohighlight">\(\mathbf{x}, \mathbf{y} \in S_1 \cap S_2\)</span> and <span class="math notranslate nohighlight">\(\alpha \in [0,1]\)</span>. Then, by the convexity of <span class="math notranslate nohighlight">\(S_1\)</span>, <span class="math notranslate nohighlight">\((1-\alpha) \mathbf{x} + \alpha \mathbf{y} \in S_1\)</span> and, by the convexity of <span class="math notranslate nohighlight">\(S_2\)</span>, <span class="math notranslate nohighlight">\((1-\alpha) \mathbf{x} + \alpha \mathbf{y} \in S_2\)</span>. Hence</p>
+<div class="math notranslate nohighlight">
+\[
+(1-\alpha) \mathbf{x} + \alpha \mathbf{y} \in S_1 \cap S_2.
+\]</div>
+<p>This property can be extended to an intersection of an arbitrary number of convex sets. <span class="math notranslate nohighlight">\(\square\)</span></p>
+<p><strong>Convex functions</strong> Our main interest is in convex functions.</p>
+<p>Here is the definition.</p>
+<p><strong>DEFINITION</strong> <strong>(Convex Function)</strong> <span class="math notranslate nohighlight">\(\idx{convex function}\xdi\)</span> A function <span class="math notranslate nohighlight">\(f : \mathbb{R}^d \to \mathbb{R}\)</span> is convex if, for all <span class="math notranslate nohighlight">\(\mathbf{x}, \mathbf{y} \in \mathbb{R}^d\)</span> and all <span class="math notranslate nohighlight">\(\alpha \in (0,1)\)</span></p>
+<div class="math notranslate nohighlight">
+\[
+f((1-\alpha) \mathbf{x} + \alpha \mathbf{y})
+\leq (1-\alpha) f(\mathbf{x}) + \alpha f(\mathbf{y}).
+\]</div>
+<p>More generally, a function <span class="math notranslate nohighlight">\(f : D \to \mathbb{R}\)</span> with a convex domain <span class="math notranslate nohighlight">\(D \subseteq \mathbb{R}^d\)</span> is said to be convex over <span class="math notranslate nohighlight">\(D\)</span> if the definition above holds over all <span class="math notranslate nohighlight">\(\mathbf{x}, \mathbf{y} \in D\)</span>. A function is said to be strictly convex<span class="math notranslate nohighlight">\(\idx{stricltly convex function}\xdi\)</span> if a strict inequality holds. If <span class="math notranslate nohighlight">\(-f\)</span> is convex (respectively, strictly convex), then <span class="math notranslate nohighlight">\(f\)</span> is said to be concave<span class="math notranslate nohighlight">\(\idx{concave function}\xdi\)</span> (respectively, strictly concave). <span class="math notranslate nohighlight">\(\natural\)</span></p>
+<p>The definition above is sometimes referred to as the <a class="reference external" href="https://en.wikipedia.org/wiki/Secant_line">secant line</a> definition.</p>
+<p><img alt="A convex function (with help from Claude)" src="../../_images/convex-function.png" /></p>
+<p><strong>LEMMA</strong> <strong>(Affine Functions are Convex)</strong> <span class="math notranslate nohighlight">\(\idx{affine functions are convex lemma}\xdi\)</span> Let <span class="math notranslate nohighlight">\(\mathbf{w} \in \mathbb{R}^d\)</span> and <span class="math notranslate nohighlight">\(b \in \mathbb{R}\)</span>. The function <span class="math notranslate nohighlight">\(f(\mathbf{x}) = \mathbf{w}^T \mathbf{x} + b\)</span> is convex. <span class="math notranslate nohighlight">\(\flat\)</span></p>
+<p><em>Proof:</em> For any <span class="math notranslate nohighlight">\(\mathbf{x}, \mathbf{y} \in \mathbb{R}^d\)</span> and <span class="math notranslate nohighlight">\(\alpha \in [0,1]\)</span>,</p>
+<div class="math notranslate nohighlight">
+\[
+f((1-\alpha) \mathbf{x} + \alpha \mathbf{y})
+= \mathbf{w}^T [(1-\alpha) \mathbf{x} + \alpha \mathbf{y}] + b
+= (1-\alpha)[\mathbf{w}^T \mathbf{x} + b] + \alpha [\mathbf{w}^T \mathbf{y} + b]
+\]</div>
+<p>which proves the claim. <span class="math notranslate nohighlight">\(\square\)</span></p>
+<p>Here is a less straightforward example. A concrete application is given below.</p>
+<p><strong>LEMMA</strong> <strong>(Infimum over a Convex Set)</strong> <span class="math notranslate nohighlight">\(\idx{infimum over a convex set lemma}\xdi\)</span> Let <span class="math notranslate nohighlight">\(f : \mathbb{R}^{d+f} \to \mathbb{R}\)</span> be a convex function and let <span class="math notranslate nohighlight">\(C \subseteq \mathbb{R}^{f}\)</span> be a convex set. The function</p>
+<div class="math notranslate nohighlight">
+\[
+g(\mathbf{x})
+= \inf_{\mathbf{y} \in C} f(\mathbf{x},\mathbf{y}),
+\]</div>
+<p>is convex provided <span class="math notranslate nohighlight">\(g(\mathbf{x}) &gt; -\infty\)</span> for all <span class="math notranslate nohighlight">\(\mathbf{x} \in \mathbb{R}^d\)</span>. <span class="math notranslate nohighlight">\(\flat\)</span></p>
+<p><em>Proof:</em> Let <span class="math notranslate nohighlight">\(\mathbf{x}_1, \mathbf{x}_2 \in \mathbb{R}^d\)</span> and <span class="math notranslate nohighlight">\(\alpha \in [0,1]\)</span>. For <span class="math notranslate nohighlight">\(i=1,2\)</span>, by definition of <span class="math notranslate nohighlight">\(g\)</span>, for any <span class="math notranslate nohighlight">\(\epsilon &gt; 0\)</span> there is <span class="math notranslate nohighlight">\(\mathbf{y}_i \in C\)</span> such that <span class="math notranslate nohighlight">\(f(\mathbf{x}_i, \mathbf{y}_i) \leq g(\mathbf{x}_i) + \epsilon\)</span>.</p>
+<p>By the convexity of <span class="math notranslate nohighlight">\(C\)</span>, <span class="math notranslate nohighlight">\(\alpha \mathbf{y}_1 + (1- \alpha)\mathbf{y}_2 \in C\)</span>. So because <span class="math notranslate nohighlight">\(g\)</span> is an infimum over points <span class="math notranslate nohighlight">\(\mathbf{y}\)</span> in <span class="math notranslate nohighlight">\(C\)</span>, we have</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+g(\alpha \mathbf{x}_1 + (1- \alpha)\mathbf{x}_2)
+&amp;\leq f(\alpha \mathbf{x}_1 + (1- \alpha)\mathbf{x}_2, \alpha \mathbf{y}_1 + (1- \alpha)\mathbf{y}_2)\\
+&amp;= f(\alpha (\mathbf{x}_1, \mathbf{y}_1) + (1- \alpha)(\mathbf{x}_2, \mathbf{y}_2))\\
+&amp;\leq \alpha f(\mathbf{x}_1, \mathbf{y}_1) + (1- \alpha)f(\mathbf{x}_2, \mathbf{y}_2)\\
+&amp;\leq \alpha [g(\mathbf{x}_1) + \epsilon] + (1- \alpha)[g(\mathbf{x}_2) + \epsilon]\\
+&amp;\leq \alpha g(\mathbf{x}_1) + (1- \alpha) g(\mathbf{x}_2) + \epsilon,
+\end{align*}\]</div>
+<p>where we used the convexity of <span class="math notranslate nohighlight">\(f\)</span> on the second line.  Because <span class="math notranslate nohighlight">\(\epsilon &gt; 0\)</span> is arbitrary, the claim follows. <span class="math notranslate nohighlight">\(\square\)</span></p>
+<p><strong>EXAMPLE:</strong> <strong>(Distance to a Convex Set)</strong> Let <span class="math notranslate nohighlight">\(C\)</span> be a convex set in <span class="math notranslate nohighlight">\(\mathbb{R}^d\)</span>. We show that the distance to <span class="math notranslate nohighlight">\(C\)</span></p>
+<div class="math notranslate nohighlight">
+\[
+g(\mathbf{x})
+= \inf_{\mathbf{y} \in C} \|\mathbf{x} - \mathbf{y}\|_2,
+\]</div>
+<p>is convex.</p>
+<p>To apply the <em>Infinimum over a Convex Set Lemma</em>, we first need to show that <span class="math notranslate nohighlight">\(f(\mathbf{x},\mathbf{y}) := \|\mathbf{x} - \mathbf{y}\|_2\)</span> is convex as a function of <span class="math notranslate nohighlight">\((\mathbf{x}, \mathbf{y})\)</span>. Let <span class="math notranslate nohighlight">\(\mathbf{x}_1, \mathbf{x}_2 \in \mathbb{R}^d\)</span>, <span class="math notranslate nohighlight">\(\mathbf{y}_1, \mathbf{y}_2 \in C\)</span>, and <span class="math notranslate nohighlight">\(\alpha \in [0,1]\)</span>. We want to show that <span class="math notranslate nohighlight">\(f\)</span> evaluated at the convex combination</p>
+<div class="math notranslate nohighlight">
+\[
+\alpha (\mathbf{x}_1,\mathbf{y}_1)
++ (1-\alpha) (\mathbf{x}_2,\mathbf{y}_2)
+= (\alpha \mathbf{x}_1 + (1-\alpha)\mathbf{x}_2, \alpha \mathbf{y}_1 + (1-\alpha)\mathbf{y}_2),
+\]</div>
+<p>is upper bounded by the same convex combination of the values of <span class="math notranslate nohighlight">\(f\)</span> at <span class="math notranslate nohighlight">\((\mathbf{x}_1,\mathbf{y}_1)\)</span> and <span class="math notranslate nohighlight">\((\mathbf{x}_2,\mathbf{y}_2)\)</span>.</p>
+<p>By the triangle inequality and the absolute homogeneity of the norm,</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+&amp;f(\alpha \mathbf{x}_1 + (1-\alpha)\mathbf{x}_2, \alpha \mathbf{y}_1 + (1-\alpha)\mathbf{y}_2)\\
+&amp;=\|[\alpha \mathbf{x}_1 + (1-\alpha)\mathbf{x}_2] -  [\alpha \mathbf{y}_1 + (1-\alpha)\mathbf{y}_2]\|_2\\
+&amp;= \|\alpha (\mathbf{x}_1 - \mathbf{y}_1 ) + (1-\alpha)(\mathbf{x}_2 - \mathbf{y}_2)\|_2\\
+&amp;\leq \alpha\|\mathbf{x}_1 - \mathbf{y}_1\|_2 + (1-\alpha)\|\mathbf{x}_2 - \mathbf{y}_2\|_2\\
+&amp;= \alpha f(\mathbf{x}_1, \mathbf{y}_1) + (1-\alpha)f(\mathbf{x}_2, \mathbf{y}_2).
+\end{align*}\]</div>
+<p>It remains to show that <span class="math notranslate nohighlight">\(g(\mathbf{x}) &gt; -\infty\)</span> for all <span class="math notranslate nohighlight">\(\mathbf{x}\)</span>. But this is immediate since <span class="math notranslate nohighlight">\(\|\mathbf{x} - \mathbf{y}\|_2 \geq 0\)</span>. Hence the previous lemma gives the claim. <span class="math notranslate nohighlight">\(\lhd\)</span></p>
+<p><strong>Conditions based on the gradient and Hessian</strong> A common way to prove that a function is convex is to look at its Hessian (or second derivative in the single-variable case). We start with a first-order characterization of convexity.</p>
+<p>Throughout, when we say that a function <span class="math notranslate nohighlight">\(f : D \to \mathbb{R}\)</span> is continuously differentiable, we implicitly assume that <span class="math notranslate nohighlight">\(D\)</span> is open or that <span class="math notranslate nohighlight">\(D\)</span> is contained in an open set where <span class="math notranslate nohighlight">\(f\)</span> is continuously differentiable. Same for twice continuously differentiable.</p>
+<p><strong>LEMMA</strong> <strong>(First-Order Convexity Condition)</strong> <span class="math notranslate nohighlight">\(\idx{first-order convexity condition}\xdi\)</span> Let <span class="math notranslate nohighlight">\(f : D \to \mathbb{R}\)</span> be continuously differentiable, where <span class="math notranslate nohighlight">\(D \subseteq \mathbb{R}^d\)</span> is convex. Then <span class="math notranslate nohighlight">\(f\)</span> is convex over <span class="math notranslate nohighlight">\(D\)</span> if and only if</p>
+<div class="math notranslate nohighlight">
+\[
+f(\mathbf{y})
+\geq f(\mathbf{x}) + \nabla f(\mathbf{x})^T (\mathbf{y}-\mathbf{x}),
+\qquad \forall \mathbf{x}, \mathbf{y} \in D.
+\]</div>
+<p><span class="math notranslate nohighlight">\(\flat\)</span></p>
+<p>On the right-hand side above, you should recognize the linear approximation to <span class="math notranslate nohighlight">\(f\)</span> at <span class="math notranslate nohighlight">\(\mathbf{x}\)</span> from <em>Taylor’s Theorem</em> without the remainder.</p>
+<p><img alt="Illustration of the first-order convexity condition (with help from Claude)" src="../../_images/first-order-convexity.png" /></p>
+<p><em>Proof:</em> <em>(First-Order Convexity Condition)</em> Suppose first that <span class="math notranslate nohighlight">\(f(\mathbf{z}_2)
+\geq f(\mathbf{z}_1) + \nabla f(\mathbf{z}_1)^T (\mathbf{z}_2-\mathbf{z}_1)\)</span> for all <span class="math notranslate nohighlight">\(\mathbf{z}_1, \mathbf{z}_2 \in D\)</span>. For any <span class="math notranslate nohighlight">\(\mathbf{x}, \mathbf{y} \in D\)</span> and <span class="math notranslate nohighlight">\(\alpha \in [0,1]\)</span>, let <span class="math notranslate nohighlight">\(\mathbf{w} = (1-\alpha) \mathbf{x} + \alpha \mathbf{y}\)</span> (which is in <span class="math notranslate nohighlight">\(D\)</span> by convexity). Then taking <span class="math notranslate nohighlight">\(\mathbf{z}_1 = \mathbf{w}\)</span> and <span class="math notranslate nohighlight">\(\mathbf{z}_2 = \mathbf{x}\)</span> gives</p>
+<div class="math notranslate nohighlight">
+\[
+f(\mathbf{x})
+\geq f(\mathbf{w}) + \nabla f(\mathbf{w})^T (\mathbf{x}-\mathbf{w})
+\]</div>
+<p>and taking <span class="math notranslate nohighlight">\(\mathbf{z}_1 = \mathbf{w}\)</span> and <span class="math notranslate nohighlight">\(\mathbf{z}_2 = \mathbf{y}\)</span> gives</p>
+<div class="math notranslate nohighlight">
+\[
+f(\mathbf{y})
+\geq f(\mathbf{w}) + \nabla f(\mathbf{w})^T (\mathbf{y}-\mathbf{w}).
+\]</div>
+<p>Multiplying the first inequality by <span class="math notranslate nohighlight">\((1-\alpha)\)</span> and the second one by <span class="math notranslate nohighlight">\(\alpha\)</span>, and adding them up gives</p>
+<div class="math notranslate nohighlight">
+\[
+(1-\alpha) f(\mathbf{x}) + \alpha f(\mathbf{y})
+\geq f(\mathbf{w}) + \nabla f(\mathbf{w})^T ([(1-\alpha) \mathbf{x} + \alpha \mathbf{y}] - \mathbf{w})
+= f(\mathbf{w})
+\]</div>
+<p>proving convexity.</p>
+<p>For the other direction, assume that <span class="math notranslate nohighlight">\(f\)</span> is convex over <span class="math notranslate nohighlight">\(D\)</span>. For any <span class="math notranslate nohighlight">\(\mathbf{x}, \mathbf{y} \in D\)</span> and <span class="math notranslate nohighlight">\(\alpha \in (0,1)\)</span>, by the <em>Mean Value Theorem</em>, for some <span class="math notranslate nohighlight">\(\xi_\alpha \in (0,1)\)</span> it holds that</p>
+<div class="math notranslate nohighlight">
+\[
+f(\mathbf{w})
+= f(\mathbf{x} + \alpha (\mathbf{y} - \mathbf{x}))
+= f(\mathbf{x}) + \alpha (\mathbf{y} - \mathbf{x})^T \nabla f (\mathbf{x} + \xi_\alpha \alpha (\mathbf{y} - \mathbf{x}))
+\]</div>
+<p>while convexity implies</p>
+<div class="math notranslate nohighlight">
+\[
+f(\mathbf{w})
+\leq (1-\alpha) f(\mathbf{x}) + \alpha f(\mathbf{y}).
+\]</div>
+<p>Combining, rearranging and dividing by <span class="math notranslate nohighlight">\(\alpha\)</span> gives</p>
+<div class="math notranslate nohighlight">
+\[
+(\mathbf{y} - \mathbf{x})^T \nabla f (\mathbf{x} + \xi_\alpha \alpha (\mathbf{y} - \mathbf{x}))
+\leq f(\mathbf{y}) - f(\mathbf{x}).
+\]</div>
+<p>Taking <span class="math notranslate nohighlight">\(\alpha \to 0\)</span> gives the claim. <span class="math notranslate nohighlight">\(\square\)</span></p>
+<p>We move on to second-order conditions. We start with the case <span class="math notranslate nohighlight">\(D = \mathbb{R}^d\)</span>.</p>
+<p><strong>LEMMA</strong> <strong>(Second-Order Convexity Condition)</strong> <span class="math notranslate nohighlight">\(\idx{second-order convexity condition}\xdi\)</span> Let <span class="math notranslate nohighlight">\(f : \mathbb{R}^d \to \mathbb{R}\)</span> be twice continuously differentiable. Then <span class="math notranslate nohighlight">\(f\)</span> is convex (over <span class="math notranslate nohighlight">\(\mathbb{R}^d\)</span>) if and only if <span class="math notranslate nohighlight">\(H_f(\mathbf{x})\)</span> is positive semidefinite for all <span class="math notranslate nohighlight">\(\mathbf{x} \in \mathbb{R}^d\)</span>. <span class="math notranslate nohighlight">\(\flat\)</span></p>
+<p><em>Proof:</em> Suppose first that <span class="math notranslate nohighlight">\(H_f(\mathbf{z}_1) \succeq 0\)</span> for all <span class="math notranslate nohighlight">\(\mathbf{z}_1\)</span>. For any <span class="math notranslate nohighlight">\(\mathbf{x}, \mathbf{y}\)</span>, by <em>Taylor</em>, there is <span class="math notranslate nohighlight">\(\xi \in (0,1)\)</span> such that</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+f(\mathbf{y})
+&amp;= f(\mathbf{x}) + \nabla f(\mathbf{x})^T (\mathbf{y}-\mathbf{x})
++ (\mathbf{y}-\mathbf{x})^T H_f(\mathbf{x} + \xi(\mathbf{y} - \mathbf{x})) \,(\mathbf{y}-\mathbf{x})\\
+&amp;\geq f(\mathbf{x}) + \nabla f(\mathbf{x})^T (\mathbf{y}-\mathbf{x})
+\end{align*}\]</div>
+<p>where we used the positive semidefiniteness of the Hessian. By the <em>First-Order Convexity Condition</em>, it implies that <span class="math notranslate nohighlight">\(f\)</span> is convex.</p>
+<p>For the other direction, assume that <span class="math notranslate nohighlight">\(f\)</span> is convex. For any <span class="math notranslate nohighlight">\(\mathbf{x}, \mathbf{w}\)</span> and <span class="math notranslate nohighlight">\(\alpha \in (0,1)\)</span>, by <em>Taylor</em> again, for some <span class="math notranslate nohighlight">\(\xi_\alpha \in (0,1)\)</span> it holds that</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+f(\mathbf{x} + \alpha \mathbf{w})
+= f(\mathbf{x}) + \alpha \mathbf{w}^T \nabla f (\mathbf{x})
++ \alpha^2 \mathbf{w}^T H_f(\mathbf{x} + \xi_\alpha \alpha \mathbf{w}) \,\mathbf{w}
+\end{align*}\]</div>
+<p>while the <em>First-Order Convexity Condition</em> implies</p>
+<div class="math notranslate nohighlight">
+\[
+f(\mathbf{x} + \alpha \mathbf{w})
+\geq f(\mathbf{x}) + \alpha \mathbf{w}^T \nabla f (\mathbf{x}).
+\]</div>
+<p>Combining, rearranging and dividing by <span class="math notranslate nohighlight">\(\alpha^2\)</span> gives</p>
+<div class="math notranslate nohighlight">
+\[
+\mathbf{w}^T H_f(\mathbf{x} + \xi_\alpha \alpha \mathbf{w}) \,\mathbf{w} \geq 0.
+\]</div>
+<p>Taking <span class="math notranslate nohighlight">\(\alpha \to 0\)</span> and using the continuity of the Hessian shows that <span class="math notranslate nohighlight">\(\mathbf{w}^T H_f(\mathbf{x}) \,\mathbf{w} \geq 0\)</span>. Since <span class="math notranslate nohighlight">\(\mathbf{w}\)</span> is arbitrary, this implies that the Hessian is positive semidefinite at <span class="math notranslate nohighlight">\(\mathbf{x}\)</span>. This holds for any <span class="math notranslate nohighlight">\(\mathbf{x}\)</span>, which proves the claim. <span class="math notranslate nohighlight">\(\square\)</span></p>
+<p><strong>EXAMPLE:</strong> Consider the quadratic function</p>
+<div class="math notranslate nohighlight">
+\[
+f(\mathbf{x})
+= \frac{1}{2} \mathbf{x}^T P \mathbf{x} + \mathbf{q}^T \mathbf{x} + r,
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(P\)</span> is a symmetric matrix. We showed previously that the Hessian is</p>
+<div class="math notranslate nohighlight">
+\[
+H_f(\mathbf{x}) = \frac{1}{2}[P + P^T] = P.
+\]</div>
+<p>So <span class="math notranslate nohighlight">\(f\)</span> is convex if and only if the matrix <span class="math notranslate nohighlight">\(P\)</span> is positive semidefinite. <span class="math notranslate nohighlight">\(\lhd\)</span></p>
+<p>In the more general case over a convex set, we have the following statement. The proof is essentially unchanged.</p>
+<p><strong>LEMMA</strong> <strong>(Second-Order Convexity Condition)</strong> <span class="math notranslate nohighlight">\(\idx{second-order convexity condition}\xdi\)</span> Let <span class="math notranslate nohighlight">\(f : D \to \mathbb{R}\)</span> be twice continuously differentiable, wherere <span class="math notranslate nohighlight">\(D \subseteq \mathbb{R}^d\)</span> is convex. If <span class="math notranslate nohighlight">\(H_f(\mathbf{x})\)</span> is positive semidefinite (respectively positive definite) for all <span class="math notranslate nohighlight">\(\mathbf{x} \in D\)</span>, then <span class="math notranslate nohighlight">\(f\)</span> is convex (respectively strictly convex) over D. <span class="math notranslate nohighlight">\(\flat\)</span></p>
+<p>The following example shows what can go wrong in the other direction.</p>
+<p><strong>EXAMPLE:</strong> Consider the function</p>
+<div class="math notranslate nohighlight">
+\[
+f(\mathbf{x}) = x_1^2 - x_2^2
+\]</div>
+<p>on the convex set</p>
+<div class="math notranslate nohighlight">
+\[
+D = \{\mathbf{x} : x_2 = 0\}.
+\]</div>
+<p>On <span class="math notranslate nohighlight">\(D\)</span>, the function reduces to <span class="math notranslate nohighlight">\(x_1^2\)</span> which is convex. The Hessian is</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+H_f(\mathbf{x}) = \begin{pmatrix}
+1 &amp; 0\\
+0 &amp; -1
+\end{pmatrix}
+\end{split}\]</div>
+<p>which is not positive semidefinite (why?). <span class="math notranslate nohighlight">\(\lhd\)</span></p>
+</section>
+<section id="convexity-and-unconstrained-optimization">
+<h2><span class="section-number">3.4.2. </span>Convexity and unconstrained optimization<a class="headerlink" href="#convexity-and-unconstrained-optimization" title="Link to this heading">#</a></h2>
+<p>Now comes the key property of convex functions (at least as far as we are concerned).</p>
+<p><strong>Global minimization in the convex case</strong> In the convex case, global minimization reduces to local minimization.</p>
+<p><strong>THEOREM</strong> <strong>(Global Minimizers of a Convex Function)</strong> <span class="math notranslate nohighlight">\(\idx{global minimizers of a convex function theorem}\xdi\)</span> Let <span class="math notranslate nohighlight">\(f : D \to \mathbb{R}\)</span> be a convex function, where <span class="math notranslate nohighlight">\(D \subseteq \mathbb{R}^d\)</span> is convex. Then any local minimizer of <span class="math notranslate nohighlight">\(f\)</span> over <span class="math notranslate nohighlight">\(D\)</span> is also a global minimizer over <span class="math notranslate nohighlight">\(D\)</span>. <span class="math notranslate nohighlight">\(\sharp\)</span></p>
+<p><em>Proof:</em> By contradiction, suppose <span class="math notranslate nohighlight">\(\mathbf{x}_0\)</span> is a local minimizer, but not a global minimizer. Then there is <span class="math notranslate nohighlight">\(\mathbf{y} \in D\)</span> such that</p>
+<div class="math notranslate nohighlight">
+\[
+f(\mathbf{y}) &lt; f(\mathbf{x}_0).
+\]</div>
+<p>By convexity of <span class="math notranslate nohighlight">\(f\)</span> and <span class="math notranslate nohighlight">\(D\)</span>, for any <span class="math notranslate nohighlight">\(\alpha \in (0,1)\)</span></p>
+<div class="math notranslate nohighlight">
+\[
+f(\mathbf{x}_0 + \alpha (\mathbf{y} - \mathbf{x}_0))
+\leq (1-\alpha) f(\mathbf{x}_0) + \alpha f(\mathbf{y}) 
+&lt; f(\mathbf{x}_0).
+\]</div>
+<p>But that implies that every open ball around <span class="math notranslate nohighlight">\(\mathbf{x}_0\)</span> contains a point taking a smaller value than <span class="math notranslate nohighlight">\(f(\mathbf{x}_0)\)</span>, a contradiction. <span class="math notranslate nohighlight">\(\square\)</span></p>
+<p>When <span class="math notranslate nohighlight">\(f\)</span> is strictly convex, the global minimizer is unique (if it exists). (Why?)</p>
+<p>For our purposes, we will need a uniform version of strict convexity known as strong convexity which we define in the next subsection.</p>
+<p>In the continuously differentiable case over <span class="math notranslate nohighlight">\(\mathbb{R}^d\)</span>, we get in addition that a vanishing gradient at <span class="math notranslate nohighlight">\(\mathbf{x}_0\)</span> is now a sufficient condition for <span class="math notranslate nohighlight">\(\mathbf{x}_0\)</span> to be a local – and therefore global – minimizer.</p>
+<p><strong>THEOREM</strong> <strong>(First-Order Optimality Condition for Unconstrained Convex Functions)</strong> <span class="math notranslate nohighlight">\(\idx{first-order optimality condition for unconstrained convex functions}\xdi\)</span> Let <span class="math notranslate nohighlight">\(f : \mathbb{R}^d \to \mathbb{R}\)</span> be a continuously differentiable, convex function. Then <span class="math notranslate nohighlight">\(\mathbf{x}_0\)</span> is a local minimizer – and therefore a global minimizer – if and only if <span class="math notranslate nohighlight">\(\nabla f(\mathbf{x}_0) = \mathbf{0}\)</span> . <span class="math notranslate nohighlight">\(\sharp\)</span></p>
+<p><em>Proof:</em> Assume <span class="math notranslate nohighlight">\(\nabla f(\mathbf{x}_0) = \mathbf{0}\)</span>. By the <em>First-Order Convexity Condition</em>, for any <span class="math notranslate nohighlight">\(\mathbf{y}\)</span></p>
+<div class="math notranslate nohighlight">
+\[
+f(\mathbf{y}) - f(\mathbf{x}_0) \geq \nabla f(\mathbf{x}_0)^T (\mathbf{y} - \mathbf{x}_0) = 0.
+\]</div>
+<p>So <span class="math notranslate nohighlight">\(\mathbf{x}_0\)</span> is a global minimizer.</p>
+<p>The other direction follows immediately from the <em>First-Order Necessary Optimality Condition</em>. <span class="math notranslate nohighlight">\(\square\)</span></p>
+<p><strong>EXAMPLE:</strong> <strong>(Quadratic Function)</strong> Consider the quadratic function</p>
+<div class="math notranslate nohighlight">
+\[
+f(\mathbf{x})
+= \frac{1}{2} \mathbf{x}^T P \mathbf{x} + \mathbf{q}^T \mathbf{x} + r
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(P\)</span> is symmetric and positive semidefinite. The Hessian is then</p>
+<div class="math notranslate nohighlight">
+\[
+H_f(\mathbf{x}) = \frac{1}{2}[P + P^T] = P
+\]</div>
+<p>for any <span class="math notranslate nohighlight">\(\mathbf{x}\)</span>. So <span class="math notranslate nohighlight">\(f\)</span> is convex. Further the gradient is</p>
+<div class="math notranslate nohighlight">
+\[
+\nabla f(\mathbf{x}) = P\mathbf{x} + \mathbf{q}
+\]</div>
+<p>for all <span class="math notranslate nohighlight">\(\mathbf{x}\)</span>.</p>
+<p>Any <span class="math notranslate nohighlight">\(\mathbf{x}\)</span> satisfying</p>
+<div class="math notranslate nohighlight">
+\[
+P\mathbf{x} = - \mathbf{q}
+\]</div>
+<p>is a global minimizer. <span class="math notranslate nohighlight">\(\lhd\)</span></p>
+<p>More generally, we have the following.</p>
+<p><strong>THEOREM</strong> <strong>(First-Order Optimality Condition for Convex Functions on Convex Sets)</strong> <span class="math notranslate nohighlight">\(\idx{first-order optimality condition for convex functions on convex sets}\xdi\)</span> Let <span class="math notranslate nohighlight">\(f : D \to \mathbb{R}\)</span> be a continuously differentiable, convex function, where <span class="math notranslate nohighlight">\(D \subseteq \mathbb{R}^d\)</span> is convex. Then <span class="math notranslate nohighlight">\(\mathbf{x}_0\)</span> is a local minimizer – and therefore a global minimizer – if and only if for any <span class="math notranslate nohighlight">\(\mathbf{y} \in D\)</span></p>
+<div class="math notranslate nohighlight">
+\[
+\nabla f(\mathbf{x}_0)^T (\mathbf{y} - \mathbf{x}_0) \geq 0.
+\]</div>
+<p><span class="math notranslate nohighlight">\(\sharp\)</span></p>
+<p><em>Proof idea:</em> Put differently the condition above says that, in any direction <span class="math notranslate nohighlight">\(\mathbf{v}\)</span> of the form <span class="math notranslate nohighlight">\(\mathbf{y} - \mathbf{x}_0\)</span> for some <span class="math notranslate nohighlight">\(\mathbf{y} \in D\)</span>, the directional derivative <span class="math notranslate nohighlight">\(\frac{\partial f(\mathbf{x}_0)}{\partial \mathbf{v}}\)</span> is nonnegative. Indeed, otherwise <span class="math notranslate nohighlight">\(\mathbf{v}\)</span> would be a descent direction and we could find points in <span class="math notranslate nohighlight">\(D\)</span> arbitrarily close to <span class="math notranslate nohighlight">\(\mathbf{x}_0\)</span> taking a smaller <span class="math notranslate nohighlight">\(f\)</span> value.</p>
+<p><em>Proof:</em> Assume the condition holds. By the <em>First-Order Convexity Condition</em>, for any <span class="math notranslate nohighlight">\(\mathbf{y} \in D\)</span></p>
+<div class="math notranslate nohighlight">
+\[
+f(\mathbf{y}) - f(\mathbf{x}_0) \geq \nabla f(\mathbf{x}_0)^T (\mathbf{y} - \mathbf{x}_0) \geq 0.
+\]</div>
+<p>So <span class="math notranslate nohighlight">\(\mathbf{x}_0\)</span> is a global minimizer.</p>
+<p>For the other direction, assume that there is <span class="math notranslate nohighlight">\(\mathbf{y} \in D\)</span> such that</p>
+<div class="math notranslate nohighlight">
+\[
+\nabla f(\mathbf{x}_0)^T (\mathbf{y} - \mathbf{x}_0) &lt; 0.
+\]</div>
+<p>For any <span class="math notranslate nohighlight">\(\alpha \in (0,1)\)</span>, by the <em>Mean Value Theorem</em>, for some <span class="math notranslate nohighlight">\(\xi_\alpha \in (0,1)\)</span> it holds that</p>
+<div class="math notranslate nohighlight">
+\[
+f(\mathbf{x}_0 + \alpha (\mathbf{y} - \mathbf{x}_0))
+= f(\mathbf{x}_0) + \alpha (\mathbf{y} - \mathbf{x}_0)^T \nabla f (\mathbf{x}_0 + \xi_\alpha \alpha (\mathbf{y} - \mathbf{x}_0)).
+\]</div>
+<p>By continuity of the gradient, for <span class="math notranslate nohighlight">\(\alpha\)</span> small enough, we have by the assumption above that</p>
+<div class="math notranslate nohighlight">
+\[
+\nabla f (\mathbf{x}_0 + \xi_\alpha \alpha (\mathbf{y} - \mathbf{x}_0)) &lt; 0.
+\]</div>
+<p>Plugging this back above, it follows that for all such <span class="math notranslate nohighlight">\(\alpha\)</span></p>
+<div class="math notranslate nohighlight">
+\[
+f(\mathbf{x}_0 + \alpha (\mathbf{y} - \mathbf{x}_0))
+&lt; f(\mathbf{x}_0),
+\]</div>
+<p>contradicting the fact that <span class="math notranslate nohighlight">\(\mathbf{x}_0\)</span> is a local minimizer. <span class="math notranslate nohighlight">\(\square\)</span></p>
+<p><strong>EXAMPLE:</strong> Consider the function <span class="math notranslate nohighlight">\(f(x) = \frac{1}{2} x^2\)</span> for <span class="math notranslate nohighlight">\(x \in D = \{x : x \geq 1\}\)</span>. The function <span class="math notranslate nohighlight">\(f\)</span> is convex for any <span class="math notranslate nohighlight">\(x\)</span> since <span class="math notranslate nohighlight">\(f''(x) = 1 &gt; 0\)</span>.</p>
+<p>Over <span class="math notranslate nohighlight">\(D\)</span>, the global minimizer is <span class="math notranslate nohighlight">\(x^* = 1\)</span>, yet the derivative is <span class="math notranslate nohighlight">\(f'(1) = 1 \neq 0\)</span>. Indeed, because <span class="math notranslate nohighlight">\(x^*\)</span> is on the boundary of the domain <span class="math notranslate nohighlight">\(D\)</span>, it does not matter that the function decreases when moving to the left from <span class="math notranslate nohighlight">\(x^*\)</span>. We only care about directions that take us into the domain <span class="math notranslate nohighlight">\(D\)</span>, in this case the right direction at <span class="math notranslate nohighlight">\(x^*\)</span>.</p>
+<p>The condition in the theorem reads</p>
+<div class="math notranslate nohighlight">
+\[
+f'(1) (y - 1) \geq 0, \qquad \forall y \geq 1.
+\]</div>
+<p>This is equivalent to <span class="math notranslate nohighlight">\(f'(1) \geq 0\)</span>, which is indeed satisfied here.</p>
+<p>If <span class="math notranslate nohighlight">\(x &gt; 1\)</span>, then the condition is</p>
+<div class="math notranslate nohighlight">
+\[
+f'(x) (y - x) \geq 0.
+\]</div>
+<p>Taking <span class="math notranslate nohighlight">\(y = x+ 1\)</span>, we get <span class="math notranslate nohighlight">\(f'(x) \geq 0\)</span> while taking <span class="math notranslate nohighlight">\(y = \frac{1}{2} (1 + x)\)</span> gives <span class="math notranslate nohighlight">\(f'(x) \frac{1}{2}(1-x) \geq 0\)</span> which implies <span class="math notranslate nohighlight">\(f'(x) \leq 0\)</span> (Why?). Combining the two gives <span class="math notranslate nohighlight">\(f'(x) = 0\)</span>. No <span class="math notranslate nohighlight">\(x &gt; 1\)</span> satisfies this condition. <span class="math notranslate nohighlight">\(\lhd\)</span></p>
+<p><strong>Strong convexity</strong> With stronger assumptions, we obtain stronger guarantees. One such assumption is strong convexity, which we define next in the special case of twice continuously differentiable functions. It generalizes the single-variable condition of requiring that the second derivative <span class="math notranslate nohighlight">\(f''(x) &gt; m &gt; 0\)</span> for all <span class="math notranslate nohighlight">\(x \in \mathbb{R}\)</span>. Specifically we require that the second derivative “in every direction” is bounded from below. For this purpose, we use the second directional derivative.</p>
+<p>A strongly convex function is one where the second directional derivative along all unit vector directions is uniformly bounded below away from <span class="math notranslate nohighlight">\(0\)</span>. That is, there is <span class="math notranslate nohighlight">\(m &gt; 0\)</span> such that</p>
+<div class="math notranslate nohighlight">
+\[
+\frac{\partial^2 f (\mathbf{x})}{\partial \mathbf{v}^2} = \mathbf{v}^T H_f(\mathbf{x}) \,\mathbf{v} \geq m
+\]</div>
+<p>for all <span class="math notranslate nohighlight">\(\mathbf{x} \in \mathbb{R}^d\)</span> and all unit vectors <span class="math notranslate nohighlight">\(\mathbf{v} \in \mathbb{R}^d\)</span>.</p>
+<p>We will use the following notation to state it formally. Let <span class="math notranslate nohighlight">\(A, B \in \mathbb{R}^{d \times d}\)</span> be symmetric matrices. Recall that <span class="math notranslate nohighlight">\(A \succeq 0\)</span> means that <span class="math notranslate nohighlight">\(A\)</span> is positive semidefinite. We write <span class="math notranslate nohighlight">\(A \preceq B\)</span> (respectively <span class="math notranslate nohighlight">\(A \succeq B\)</span>) to indicate that <span class="math notranslate nohighlight">\(B - A \succeq 0\)</span> (respectively <span class="math notranslate nohighlight">\(A - B \succeq 0\)</span>). A different, useful way to put this is the following. Recall that <span class="math notranslate nohighlight">\(B - A \succeq 0\)</span> means <span class="math notranslate nohighlight">\(\mathbf{z}^T B\mathbf{z} - \mathbf{z}^T A\mathbf{z} \geq 0\)</span> for all <span class="math notranslate nohighlight">\(\mathbf{z} \in \mathbb{R}^{d}\)</span>. Hence, rearranging,</p>
+<div class="math notranslate nohighlight">
+\[
+A \preceq B
+\iff \mathbf{z}^T A\,\mathbf{z} \leq \mathbf{z}^T B\,\mathbf{z}, \qquad \forall \mathbf{z} \in \mathbb{R}^{d}.
+\]</div>
+<p>Similarly,</p>
+<div class="math notranslate nohighlight">
+\[
+A \succeq B
+\iff \mathbf{z}^T A\,\mathbf{z} \geq \mathbf{z}^T B\,\mathbf{z}, \qquad \forall \mathbf{z} \in \mathbb{R}^{d}.
+\]</div>
+<p><strong>DEFINITION</strong> <strong>(Strongly Convex Function)</strong> <span class="math notranslate nohighlight">\(\idx{strongly convex function}\xdi\)</span> Let <span class="math notranslate nohighlight">\(f : \mathbb{R}^d \to \mathbb{R}\)</span> be twice continuously differentiable and let <span class="math notranslate nohighlight">\(m &gt; 0\)</span>. We say that <span class="math notranslate nohighlight">\(f\)</span> is <span class="math notranslate nohighlight">\(m\)</span>-strongly convex if</p>
+<div class="math notranslate nohighlight">
+\[
+H_f(\mathbf{x}) \succeq m I_{d \times d},
+\quad \forall \mathbf{x} \in \mathbb{R}^d.
+\]</div>
+<p><span class="math notranslate nohighlight">\(\natural\)</span></p>
+<p>By the observation above, noting that <span class="math notranslate nohighlight">\(\mathbf{z}^T I\mathbf{z} = \|\mathbf{z}\|^2\)</span>, we get that the condition above is equivalent to</p>
+<div class="math notranslate nohighlight">
+\[
+\mathbf{z}^T H_f(\mathbf{x}) \,\mathbf{z} \geq m \|\mathbf{z}\|^2,
+\quad \forall \mathbf{x}, \mathbf{z} \in \mathbb{R}^d.
+\]</div>
+<p>In particular, for a unit vector <span class="math notranslate nohighlight">\(\mathbf{v}\)</span> we get <span class="math notranslate nohighlight">\(\mathbf{v}^T H_f(\mathbf{x}) \,\mathbf{v} \geq m\)</span>. Vice versa, if <span class="math notranslate nohighlight">\(\mathbf{v}^T H_f(\mathbf{x}) \,\mathbf{v} \geq m\)</span> for all <span class="math notranslate nohighlight">\(\mathbf{x} \in \mathbb{R}^d\)</span> and all unit vectors <span class="math notranslate nohighlight">\(\mathbf{v} \in \mathbb{R}^d\)</span>, then it holds that for any nonzero vector <span class="math notranslate nohighlight">\(\mathbf{z} \in \mathbb{R}^d\)</span></p>
+<div class="math notranslate nohighlight">
+\[
+\left(\frac{\mathbf{z}}{\|\mathbf{z}\|}\right)^T H_f(\mathbf{x}) \,\left(\frac{\mathbf{z}}{\|\mathbf{z}\|}\right) \geq m,
+\]</div>
+<p>which after rearranging gives <span class="math notranslate nohighlight">\(\mathbf{z}^T H_f(\mathbf{x}) \,\mathbf{z} \geq m \|\mathbf{z}\|^2\)</span>.</p>
+<p>Combined with <em>Taylor’s Theorem</em>, this gives immediately the following. The proof is left as an exercise.</p>
+<p><strong>LEMMA</strong> <strong>(Quadratic Bound for Strongly Convex Functions)</strong> <span class="math notranslate nohighlight">\(\idx{quadratic bound for strongly convex functions}\xdi\)</span> Let <span class="math notranslate nohighlight">\(f : \mathbb{R}^d \to \mathbb{R}\)</span> be twice continuously differentiable. Then <span class="math notranslate nohighlight">\(f\)</span> is <span class="math notranslate nohighlight">\(m\)</span>-strongly convex if and only if</p>
+<div class="math notranslate nohighlight">
+\[
+f(\mathbf{y})
+\geq f(\mathbf{x}) 
++ \nabla f(\mathbf{x})^T(\mathbf{y} - \mathbf{x})
++ \frac{m}{2} \|\mathbf{y} - \mathbf{x}\|^2,
+\qquad \forall \mathbf{x}, \mathbf{y} \in \mathbb{R}^d.
+\]</div>
+<p><span class="math notranslate nohighlight">\(\flat\)</span></p>
+<p>The previous lemma immediately leads to the following fundamental result.</p>
+<p><strong>THEOREM</strong> <strong>(Global Minimizer of a Strongly Convex Function)</strong> <span class="math notranslate nohighlight">\(\idx{global minimizer of a strongly convex function theorem}\xdi\)</span> Let <span class="math notranslate nohighlight">\(f : \mathbb{R}^d \to \mathbb{R}\)</span> be twice continuously differentiable and <span class="math notranslate nohighlight">\(m\)</span>-strongly convex with <span class="math notranslate nohighlight">\(m&gt;0\)</span>. If <span class="math notranslate nohighlight">\(\nabla f(\mathbf{x}^*) = \mathbf{0}\)</span>, then <span class="math notranslate nohighlight">\(\mathbf{x}^*\)</span> is a unique global minimizer of <span class="math notranslate nohighlight">\(f\)</span>. <span class="math notranslate nohighlight">\(\sharp\)</span></p>
+<p><em>Proof:</em> If <span class="math notranslate nohighlight">\(\nabla f(\mathbf{x}^*) = \mathbf{0}\)</span>, by the <em>Quadratic Bound for Strongly Convex Functions</em>,</p>
+<div class="math notranslate nohighlight">
+\[
+f(\mathbf{y})
+\geq f(\mathbf{x}^*) 
++ \frac{m}{2} \|\mathbf{y} - \mathbf{x}^*\|^2
+&gt; f(\mathbf{x}^*) 
+\]</div>
+<p>for all <span class="math notranslate nohighlight">\(\mathbf{y} \neq \mathbf{x}^*\)</span>, which proves the claim. <span class="math notranslate nohighlight">\(\square\)</span></p>
+<p><strong>EXAMPLE:</strong> <strong>(Quadratic Function, continued)</strong> Consider again the quadratic function</p>
+<div class="math notranslate nohighlight">
+\[
+f(\mathbf{x})
+= \frac{1}{2} \mathbf{x}^T P \mathbf{x} + \mathbf{q}^T \mathbf{x} + r
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(P\)</span> is symmetric and, this time, positive definite. Again, for any <span class="math notranslate nohighlight">\(\mathbf{x}\)</span>, the Hessian is</p>
+<div class="math notranslate nohighlight">
+\[
+H_f(\mathbf{x}) = \frac{1}{2}[P + P^T] = P.
+\]</div>
+<p>The expression <span class="math notranslate nohighlight">\(\mathbf{v}^T P \,\mathbf{v}\)</span>, viewed as a function of <span class="math notranslate nohighlight">\(\mathbf{v}\)</span> is continuous, it attains its minimum on <span class="math notranslate nohighlight">\(\mathbb{S}^{d-1}\)</span> by the <em>Extreme Value Theorem</em>. By our assumption that <span class="math notranslate nohighlight">\(P\)</span> is positive definite, that minimum must be strictly positive, say <span class="math notranslate nohighlight">\(\mu &gt; 0\)</span>. Then <span class="math notranslate nohighlight">\(f\)</span> is <span class="math notranslate nohighlight">\(\mu\)</span>-strongly convex. The <em>Global Minimizer of a Strongly Convex Function Theorem</em> then indicates that there is a unique global minimizer to the least-squares objective in that case. Using a previous calculation, it is obtained by computing <span class="math notranslate nohighlight">\(\mathbf{x}^* = - P^{-1} \mathbf{q}\)</span>. (Why is <span class="math notranslate nohighlight">\(P\)</span> invertible?) <span class="math notranslate nohighlight">\(\lhd\)</span></p>
+<p><strong>EXAMPLE:</strong> Consider the least-squares objective function</p>
+<div class="math notranslate nohighlight">
+\[
+f(\mathbf{x}) = \|A \mathbf{x} - \mathbf{b}\|^2,
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(A \in \mathbb{R}^{n \times d}\)</span> has full column rank and <span class="math notranslate nohighlight">\(\mathbf{b} \in \mathbb{R}^n\)</span>. This objective function can be rewritten as a quadratic function</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+f(\mathbf{x}) 
+&amp;=  \|A \mathbf{x} - \mathbf{b}\|^2\\
+&amp;= (A \mathbf{x} - \mathbf{b})^T(A \mathbf{x} - \mathbf{b})\\
+&amp;= \mathbf{x}^T A^T A \mathbf{x} - 2 \mathbf{b}^T A \mathbf{x} + \mathbf{b}^T \mathbf{b}\\
+&amp;= \frac{1}{2} \mathbf{x}^T  P \mathbf{x} + \mathbf{q}^T \mathbf{x} + r
+\end{align*}\]</div>
+<p>where <span class="math notranslate nohighlight">\(P = 2 A^T A\)</span> is symmetric, <span class="math notranslate nohighlight">\(\mathbf{q} = - 2 A^T \mathbf{b}\)</span>, and <span class="math notranslate nohighlight">\(r= \mathbf{b}^T \mathbf{b} = \|\mathbf{b}\|^2\)</span>.</p>
+<p>The Hessian of <span class="math notranslate nohighlight">\(f\)</span> is</p>
+<div class="math notranslate nohighlight">
+\[
+H_f(\mathbf{x})
+= 2 A^T A.
+\]</div>
+<p>This Hessian is positive definite. Indeed we have proved previously that, for any <span class="math notranslate nohighlight">\(\mathbf{z} \in \mathbb{R}^d\)</span>,</p>
+<div class="math notranslate nohighlight">
+\[
+\langle \mathbf{z}, 2 A^T A \mathbf{z}\rangle 
+= 2 (A \mathbf{z})^T (A \mathbf{z})
+= 2 \|A \mathbf{z}\|^2 &gt; 0,
+\]</div>
+<p>since <span class="math notranslate nohighlight">\(A \mathbf{z} = \mathbf{0}\)</span> implies <span class="math notranslate nohighlight">\(\mathbf{z} = \mathbf{0}\)</span> by the full column rank assumption.</p>
+<p>By the previous example, <span class="math notranslate nohighlight">\(f\)</span> is <span class="math notranslate nohighlight">\(\mu\)</span>-strongly convex for some <span class="math notranslate nohighlight">\(\mu &gt; 0\)</span>. The <em>Global Minimizer of a Strongly Convex Function Theorem</em> then indicates that there is a unique global minimizer to the least-squares objective in that case. <span class="math notranslate nohighlight">\(\lhd\)</span></p>
+<p><strong>EXAMPLE:</strong> Let <span class="math notranslate nohighlight">\(D \subseteq \mathbb{R}^d\)</span> be a nonempty, closed, convex set. For <span class="math notranslate nohighlight">\(\mathbf{x}\in\mathbb{R}^d\)</span> we define the projection of <span class="math notranslate nohighlight">\(\mathbf{x}\)</span> onto <span class="math notranslate nohighlight">\(D\)</span> as</p>
+<div class="math notranslate nohighlight">
+\[
+\mathrm{proj}_{D}(\mathbf{x})
+= \arg\min\left\{\|\mathbf{x} - \mathbf{z}\| : \mathbf{z} \in D\right\}.
+\]</div>
+<p>Let <span class="math notranslate nohighlight">\(\mathbf{w} \in D\)</span>. By the <em>Extreme Value Theorem</em> applied to <span class="math notranslate nohighlight">\(\|\mathbf{x} - \mathbf{z}\|\)</span> on the closed, bonded set <span class="math notranslate nohighlight">\(\{\mathbf{z} \in D: \|\mathbf{x} - \mathbf{z}\| \leq \|\mathbf{x} - \mathbf{w}\|\}\)</span>, there is a global minimizer for this problem. Moreover, the problem is equivalent to minimizing the <em>squared</em> norm <span class="math notranslate nohighlight">\(\|\mathbf{x} - \mathbf{z}\|^2\)</span> which is strongly convex as a function of <span class="math notranslate nohighlight">\(\mathbf{z}\)</span> since</p>
+<div class="math notranslate nohighlight">
+\[
+\|\mathbf{x} - \mathbf{z}\|^2
+= \mathbf{z}^T\mathbf{z}
+- 2 \mathbf{x}^T\mathbf{z}
++ \|\mathbf{x}\|^2.
+\]</div>
+<p>As a result, the minimizer is unique.</p>
+<p>We use the <em>First-Order Optimality Conditions for Convex Functions on Convex Sets</em> to characterize it. The gradient of <span class="math notranslate nohighlight">\(\|\mathbf{x} - \mathbf{z}\|^2\)</span> as a function of <span class="math notranslate nohighlight">\(\mathbf{z}\)</span> is <span class="math notranslate nohighlight">\(2\mathbf{z} - 2 \mathbf{x}\)</span> by our previous formula for quadratic functions. So the optimality condition reads (after simplifying the factor of <span class="math notranslate nohighlight">\(2\)</span>)</p>
+<div class="math notranslate nohighlight">
+\[
+(\mathrm{proj}_{D}(\mathbf{x}) - \mathbf{x})^T(\mathbf{y} - \mathrm{proj}_{D}(\mathbf{x})) \geq 0, \qquad \forall \mathbf{y} \in D.
+\]</div>
+<p>This formula generlizes the <em>Orthogonal Projection Theorem</em> beyond the case of linear subspaces. <span class="math notranslate nohighlight">\(\lhd\)</span></p>
+<p><strong>KNOWLEDGE CHECK:</strong> Recover the geometric characterization of the orthogonal projection onto a linear subspace from the previous example. <span class="math notranslate nohighlight">\(\checkmark\)</span></p>
+<p><em><strong>Self-assessment quiz</strong></em> <em>(with help from Claude, Gemini, and ChatGPT)</em></p>
+<p><strong>1</strong> Which of the following is NOT an operation that preserves the convexity of sets?</p>
+<p>a) Scaling a convex set by a real number.</p>
+<p>b) Translating a convex set by a vector.</p>
+<p>c) Taking the union of two convex sets.</p>
+<p>d) Taking the intersection of two convex sets.</p>
+<p><strong>2</strong> Let <span class="math notranslate nohighlight">\(f : \mathbb{R}^d \to \mathbb{R}\)</span> be twice continuously differentiable. Which of the following conditions is sufficient for <span class="math notranslate nohighlight">\(f\)</span> to be convex?</p>
+<p>a) <span class="math notranslate nohighlight">\(\nabla^2 f(x) \prec 0\)</span>, for all <span class="math notranslate nohighlight">\(x \in \mathbb{R}^d\)</span></p>
+<p>b) <span class="math notranslate nohighlight">\(\nabla^2 f(x) \preceq 0\)</span>, for all <span class="math notranslate nohighlight">\(x \in \mathbb{R}^d\)</span></p>
+<p>c) <span class="math notranslate nohighlight">\(\nabla^2 f(x) \succeq 0\)</span>, for all <span class="math notranslate nohighlight">\(x \in \mathbb{R}^d\)</span></p>
+<p>d) <span class="math notranslate nohighlight">\(\nabla^2 f(x) \succ 0\)</span>, for all <span class="math notranslate nohighlight">\(x \in \mathbb{R}^d\)</span></p>
+<p><strong>3</strong> Let <span class="math notranslate nohighlight">\(f : \mathbb{R}^d \to \mathbb{R}\)</span> be a continuously differentiable, convex function. Which of the following is a necessary and sufficient condition for <span class="math notranslate nohighlight">\(x_0\)</span> to be a global minimizer of <span class="math notranslate nohighlight">\(f\)</span>?</p>
+<p>a) <span class="math notranslate nohighlight">\(\nabla f(x_0) \neq 0\)</span></p>
+<p>b) <span class="math notranslate nohighlight">\(\nabla f(x_0) = 0\)</span></p>
+<p>c) <span class="math notranslate nohighlight">\(\nabla^2 f(x_0) \succeq 0\)</span></p>
+<p>d) <span class="math notranslate nohighlight">\(\nabla^2 f(x_0) \succ 0\)</span></p>
+<p><strong>4</strong> A function <span class="math notranslate nohighlight">\(f : \mathbb{R}^d \to \mathbb{R}\)</span> is <span class="math notranslate nohighlight">\(m\)</span>-strongly convex if:</p>
+<p>a) <span class="math notranslate nohighlight">\(\nabla^2 f(x) \succeq mI_{d \times d}\)</span>, for all <span class="math notranslate nohighlight">\(x \in \mathbb{R}^d\)</span> and some <span class="math notranslate nohighlight">\(m &gt; 0\)</span></p>
+<p>b) <span class="math notranslate nohighlight">\(\nabla^2 f(x) \preceq mI_{d \times d}\)</span>, for all <span class="math notranslate nohighlight">\(x \in \mathbb{R}^d\)</span> and some <span class="math notranslate nohighlight">\(m &gt; 0\)</span></p>
+<p>c) <span class="math notranslate nohighlight">\(\nabla^2 f(x) \succeq -mI_{d \times d}\)</span>, for all <span class="math notranslate nohighlight">\(x \in \mathbb{R}^d\)</span> and some <span class="math notranslate nohighlight">\(m &gt; 0\)</span></p>
+<p>d) <span class="math notranslate nohighlight">\(\nabla^2 f(x) \preceq -mI_{d \times d}\)</span>, for all <span class="math notranslate nohighlight">\(x \in \mathbb{R}^d\)</span> and some <span class="math notranslate nohighlight">\(m &gt; 0\)</span></p>
+<p><strong>5</strong> Which of the following statements is true about the least-squares objective function <span class="math notranslate nohighlight">\(f(x) = \|Ax - b\|_2^2\)</span>, where <span class="math notranslate nohighlight">\(A \in \mathbb{R}^{n \times d}\)</span> has full column rank and <span class="math notranslate nohighlight">\(b \in \mathbb{R}^n\)</span>?</p>
+<p>a) <span class="math notranslate nohighlight">\(f(x)\)</span> is convex but not necessarily strongly convex.</p>
+<p>b) <span class="math notranslate nohighlight">\(f(x)\)</span> is strongly convex.</p>
+<p>c) <span class="math notranslate nohighlight">\(f(x)\)</span> is convex if and only if <span class="math notranslate nohighlight">\(b = 0\)</span>.</p>
+<p>d) <span class="math notranslate nohighlight">\(f(x)\)</span> is strongly convex if and only if <span class="math notranslate nohighlight">\(b = 0\)</span>.</p>
+<p>Answer for 1: c. Justification: The text states that scaling, translation, addition, Cartesian product, projection, and intersection preserve convexity. It does not mention the union. In fact, the union of two convex sets is not necessarily convex (e.g., take the union of two distinct points).</p>
+<p>Answer for 2: c. Justification: The text states the second-order convexity condition: if <span class="math notranslate nohighlight">\(f : \mathbb{R}^d \to \mathbb{R}\)</span> is twice continuously differentiable, then <span class="math notranslate nohighlight">\(f\)</span> is convex if and only if <span class="math notranslate nohighlight">\(\nabla^2 f(x) \succeq 0\)</span>, for all <span class="math notranslate nohighlight">\(x \in \mathbb{R}^d\)</span>.</p>
+<p>Answer for 3: b. Justification: The text states and proves the first-order optimality condition for convex functions on <span class="math notranslate nohighlight">\(\mathbb{R}^d\)</span>: if <span class="math notranslate nohighlight">\(f : \mathbb{R}^d \to \mathbb{R}\)</span> is a continuously differentiable, convex function, then <span class="math notranslate nohighlight">\(x_0\)</span> is a global minimizer if and only if <span class="math notranslate nohighlight">\(\nabla f(x_0) = 0\)</span>.</p>
+<p>Answer for 4: a. Justification: The text defines an <span class="math notranslate nohighlight">\(m\)</span>-strongly convex function <span class="math notranslate nohighlight">\(f : \mathbb{R}^d \to \mathbb{R}\)</span> as one satisfying <span class="math notranslate nohighlight">\(\nabla^2 f(x) \succeq mI_{d \times d}\)</span>, for all <span class="math notranslate nohighlight">\(x \in \mathbb{R}^d\)</span> and some <span class="math notranslate nohighlight">\(m &gt; 0\)</span>.</p>
+<p>Answer for 5: b. Justification: The text shows that the Hessian of the least-squares objective function is <span class="math notranslate nohighlight">\(2A^TA\)</span>, which is positive definite when <span class="math notranslate nohighlight">\(A\)</span> has full column rank. Therefore, the least-squares objective function is strongly convex.</p>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./chap06_opt/03part2_convexity"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="../03_optimality/roch-mmids-opt-optimality.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title"><span class="section-number">3.3. </span>Optimality conditions</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="../04_gd/roch-mmids-opt-gd.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title"><span class="section-number">3.5. </span>Gradient descent and its convergence analysis</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#definitions">3.4.1. Definitions</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#convexity-and-unconstrained-optimization">3.4.2. Convexity and unconstrained optimization</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Sebastien Roch
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2024.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

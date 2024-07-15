@@ -1,0 +1,1441 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>8.4. Building blocks of AI 2: stochastic gradient descent &#8212; MMiDS Textbook</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.5.1/css/all.min.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.1/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.1/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.1/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b76e3c8a" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=384b581d" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=87e54e7c" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae" />
+  <script src="../../_static/vendor/fontawesome/6.5.1/js/all.min.js?digest=8d27b9dea8ad943066ae"></script>
+
+    <script src="../../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?v=efea14e4"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../_static/design-tabs.js?v=f930bc37"></script>
+    <script async="async" src="https://www.googletagmanager.com/gtag/js?id=G-P5E8DW088F"></script>
+    <script>
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){ dataLayer.push(arguments); }
+                gtag('js', new Date());
+                gtag('config', 'G-P5E8DW088F');
+            </script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){ dataLayer.push(arguments); }
+                gtag('js', new Date());
+                gtag('config', 'G-P5E8DW088F');
+            </script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'chap08_nn/04_sgd/roch-mmids-nn-sgd';</script>
+    <link rel="canonical" href="https://mmids-textbook.github.io/chap08_nn/04_sgd/roch-mmids-nn-sgd.html" />
+    <link rel="icon" href="https://mmids-textbook.github.io/favicon-32x32.png"/>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="8.5. Building blocks of AI 3: neural networks" href="../05_nn/roch-mmids-nn-nn.html" />
+    <link rel="prev" title="8.3. Building blocks of AI 1: backpropagation" href="../03_backprop/roch-mmids-nn-backprop.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a id="pst-skip-link" class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+
+<a class="navbar-brand logo" href="../../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/mmids-cover-small.jpg" class="logo__image only-light" alt="MMiDS Textbook - Home"/>
+    <script>document.write(`<img src="../../_static/mmids-cover-small.jpg" class="logo__image only-dark" alt="MMiDS Textbook - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../index.html">
+                    <b>MATHEMATICAL METHODS in DATA SCIENCE (with Python)</b>
+                </a>
+            </li>
+        </ul>
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../chap01_intro/00_intro/roch-mmids-intro-intro.html">1. Introduction: a first data science problem</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../chap01_intro/01_motiv/roch-mmids-intro-motiv.html">1.1. Motivating example: identifying penguin species</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap01_intro/02_review/roch-mmids-intro-review.html">1.2. Background: quick refresher of matrix algebra, differential calculus, and elementary probability</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap01_intro/03_clustering/roch-mmids-intro-clustering.html">1.3. Clustering: an objective, an algorithm and a guarantee</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap01_intro/04_highdim/roch-mmids-intro-highdim.html">1.4. Some observations about high-dimensional data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap01_intro/exercises/roch-mmids-intro-exercises.html">1.5. Exercises</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap01_intro/05_adv/roch-mmids-intro-adv.html">1.6. Online suppplementary material</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../chap02_ls/00_intro/roch-mmids-ls-intro.html">2. Least squares: geometric, algebraic, and numerical aspects</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../chap02_ls/01_motiv/roch-mmids-ls-motiv.html">2.1. Motivating example: predicting sales</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap02_ls/02_subspaces/roch-mmids-ls-spaces.html">2.2. Background: review of vector spaces and matrix inverses</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap02_ls/03_orthog/roch-mmids-ls-orthog.html">2.3. Geometry of least squares: the orthogonal projection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap02_ls/04_qr/roch-mmids-ls-qr.html">2.4. QR decomposition and Householder transformations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap02_ls/05_regression/roch-mmids-ls-regression.html">2.5. Application: regression analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap02_ls/exercises/roch-mmids-ls-exercises.html">2.6. Exercises</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap02_ls/06_adv/roch-mmids-ls-adv.html">2.7. Online suppplementary material</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../chap06_opt/00_intro/roch-mmids-opt-intro.html">3. Optimization theory and algorithms</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-3"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../chap06_opt/01_motiv/roch-mmids-opt-motiv.html">3.1. Motivating example:  analyzing customer satisfaction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap06_opt/02_several/roch-mmids-opt-several.html">3.2. Background: review of differentiable functions of several variables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap06_opt/03_optimality/roch-mmids-opt-optimality.html">3.3. Optimality conditions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap06_opt/03part2_convexity/roch-mmids-opt-convexity.html">3.4. Convexity</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap06_opt/04_gd/roch-mmids-opt-gd.html">3.5. Gradient descent and its convergence analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap06_opt/04part2_logistic/roch-mmids-opt-logistic.html">3.6. Application: logistic regression</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap06_opt/exercises/roch-mmids-opt-exercises.html">3.7. Exercises</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap06_opt/06_adv/roch-mmids-opt-adv.html">3.8. Online suppplementary material</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../chap03_svd/00_intro/roch-mmids-svd-intro.html">4. Singular value decomposition</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-4"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../chap03_svd/01_motiv/roch-mmids-svd-motiv.html">4.1. Motivating example: visualizing viral evolution</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap03_svd/02_spectral/roch-mmids-svd-spectral.html">4.2. Background: review of matrix rank  and spectral decomposition</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap03_svd/03_svd/roch-mmids-svd-svd.html">4.3. Approximating subspaces and the SVD</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap03_svd/04_power/roch-mmids-svd-power.html">4.4. Power iteration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap03_svd/05_pca/roch-mmids-svd-pca.html">4.5. Application: principal components analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap03_svd/06_further/roch-mmids-svd-further.html">4.6. Further applications of the SVD: low-rank approximations and ridge regression</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap03_svd/exercises/roch-mmids-svd-exercises.html">4.7. Exercises</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap03_svd/07_adv/roch-mmids-svd-adv.html">4.8. Online suppplementary material</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../chap04_specgraph/00_intro/roch-mmids-specgraph-intro.html">5. Spectral graph theory</a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-5"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../chap04_specgraph/01_motiv/roch-mmids-specgraph-motiv.html">5.1. Motivating example: uncovering social groups</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap04_specgraph/02_graph/roch-mmids-specgraph-graph.html">5.2. Background: basic concepts in graph theory</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap04_specgraph/03_extremal/roch-mmids-specgraph-extremal.html">5.3. Variational characterization of eigenvalues</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap04_specgraph/04_laplacian/roch-mmids-specgraph-laplacian.html">5.4. Spectral properties of the Laplacian matrix</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap04_specgraph/05_partitioning/roch-mmids-specgraph-partitioning.html">5.5. Application: graph partitioning via spectral clustering</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap04_specgraph/05part2_sbm/roch-mmids-specgraph-sbm.html">5.6. Erdős-Rényi random graph and stochastic blockmodel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap04_specgraph/exercises/roch-mmids-specgraph-exercises.html">5.7. Exercises</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap04_specgraph/06_adv/roch-mmids-specgraph-adv.html">5.8. Online supplementary material</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../chap07_prob/00_intro/roch-mmids-prob-intro.html">6. Probabilistic models: from simple to complex</a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-6"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../chap07_prob/01_motiv/roch-mmids-prob-motiv.html">6.1. Motivating example: tracking location</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap07_prob/02_parametric/roch-mmids-prob-parametric.html">6.2. Background: introduction to parametric families and maximum likelihood estimation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap07_prob/03_joint/roch-mmids-prob-joint.html">6.3. Modeling more complex dependencies 1: using conditional independence</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap07_prob/03part2_em/roch-mmids-prob-em.html">6.4. Modeling more complex dependencies 2: marginalizing out an unobserved variable</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap07_prob/04_kalman/roch-mmids-prob-kalman.html">6.5. Application: linear-Gaussian models and Kalman filtering</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap07_prob/exercises/roch-mmids-prob-exercises.html">6.6. Exercises</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap07_prob/06_adv/roch-mmids-prob-adv.html">6.7. Online supplementary material</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../chap05_rwmc/00_intro/roch-mmids-rwmc-intro.html">7. Random walks on graphs and Markov chains</a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-7"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../chap05_rwmc/01_motiv/roch-mmids-rwmc-motiv.html">7.1. Motivating example: discovering mathematical topics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap05_rwmc/03_mcdefs/roch-mmids-rwmc-mcdefs.html">7.2. Background: elements of finite Markov chains</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap05_rwmc/04_stat/roch-mmids-rwmc-stat.html">7.3. Limit behavior 1: stationary distributions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap05_rwmc/04part2_mclimit/roch-mmids-rwmc-mclimit.html">7.4. Limit behavior 2: convergence to equilibrium</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap05_rwmc/05_pagerank/roch-mmids-rwmc-pagerank.html">7.5. Application: random walks on graphs and PageRank</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap05_rwmc/05part2_gibbs/roch-mmids-rwmc-gibbs.html">7.6. Further applications: Gibbs sampling and generating images</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap05_rwmc/exercises/roch-mmids-rwmc-exercises.html">7.7. Exercises</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap05_rwmc/06_adv/roch-mmids-rwmc-adv.html">7.8. Online supplementary material</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="../00_intro/roch-mmids-nn-intro.html">8. Neural networks, backpropagation and stochastic gradient descent</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-8"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../01_motiv/roch-mmids-nn-motiv.html">8.1. Motivating example:  classifying natural images</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../02_chain/roch-mmids-nn-chain.html">8.2. Background: Jacobian, chain rule, and a brief introduction to automatic differentiation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../03_backprop/roch-mmids-nn-backprop.html">8.3. Building blocks of AI 1: backpropagation</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">8.4. Building blocks of AI 2: stochastic gradient descent</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../05_nn/roch-mmids-nn-nn.html">8.5. Building blocks of AI 3: neural networks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../exercises/roch-mmids-nn-exercises.html">8.6. Exercises</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../06_adv/roch-mmids-nn-adv.html">8.7. Online supplementary material</a></li>
+</ul>
+</li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/MMiDS-textbook/MMiDS-textbook.github.io" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/MMiDS-textbook/MMiDS-textbook.github.io/issues/new?title=Issue%20on%20page%20%2Fchap08_nn/04_sgd/roch-mmids-nn-sgd.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/chap08_nn/04_sgd/roch-mmids-nn-sgd.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Building blocks of AI 2: stochastic gradient descent</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#algorithm">8.4.1. Algorithm</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#example-multinomial-logistic-regression">8.4.2. Example: multinomial logistic regression</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <p><span class="math notranslate nohighlight">\(\newcommand{\bmu}{\boldsymbol{\mu}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bSigma}{\boldsymbol{\Sigma}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bfbeta}{\boldsymbol{\beta}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bflambda}{\boldsymbol{\lambda}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bgamma}{\boldsymbol{\gamma}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bsigma}{{\boldsymbol{\sigma}}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bpi}{\boldsymbol{\pi}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\btheta}{{\boldsymbol{\theta}}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bphi}{\boldsymbol{\phi}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\balpha}{\boldsymbol{\alpha}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\blambda}{\boldsymbol{\lambda}}\)</span>
+<span class="math notranslate nohighlight">\(\renewcommand{\P}{\mathbb{P}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\E}{\mathbb{E}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\indep}{\perp\!\!\!\perp} \newcommand{\bx}{\mathbf{x}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bp}{\mathbf{p}}\)</span>
+<span class="math notranslate nohighlight">\(\renewcommand{\bx}{\mathbf{x}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bX}{\mathbf{X}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\by}{\mathbf{y}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bY}{\mathbf{Y}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bz}{\mathbf{z}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bZ}{\mathbf{Z}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bw}{\mathbf{w}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bW}{\mathbf{W}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bv}{\mathbf{v}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bV}{\mathbf{V}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bfg}{\mathbf{g}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bfh}{\mathbf{h}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\horz}{\rule[.5ex]{2.5ex}{0.5pt}}\)</span>
+<span class="math notranslate nohighlight">\(\renewcommand{\S}{\mathcal{S}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\X}{\mathcal{X}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\var}{\mathrm{Var}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\pa}{\mathrm{pa}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\Z}{\mathcal{Z}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bh}{\mathbf{h}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bb}{\mathbf{b}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bc}{\mathbf{c}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\cE}{\mathcal{E}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\cP}{\mathcal{P}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bbeta}{\boldsymbol{\beta}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bLambda}{\boldsymbol{\Lambda}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\cov}{\mathrm{Cov}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bfk}{\mathbf{k}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\idx}[1]{}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\xdi}{}\)</span></p>
+<section id="building-blocks-of-ai-2-stochastic-gradient-descent">
+<h1><span class="section-number">8.4. </span>Building blocks of AI 2: stochastic gradient descent<a class="headerlink" href="#building-blocks-of-ai-2-stochastic-gradient-descent" title="Link to this heading">#</a></h1>
+<p>Having shown how to compute the gradient, we can now apply gradient descent to fit the data.</p>
+<p>To get the full gradient, we now consider <span class="math notranslate nohighlight">\(n\)</span> samples <span class="math notranslate nohighlight">\((\mathbf{x}_i,y_i)\)</span>, <span class="math notranslate nohighlight">\(i=1,\ldots,n\)</span>. At this point, we make the dependence on <span class="math notranslate nohighlight">\((\mathbf{x}_i, y_i)\)</span> explicit. The loss function can be taken as the average of the individual sample contributions, so the gradient is obtained by linearity</p>
+<div class="math notranslate nohighlight">
+\[
+\nabla \left(\frac{1}{n} \sum_{i=1}^n f_{\mathbf{x}_i,y_i}(\mathbf{w})\right)
+=  \frac{1}{n} \sum_{i=1}^n \nabla f_{\mathbf{x}_i,y_i}(\mathbf{w}),
+\]</div>
+<p>where each term can be computed separately by the procedure above.</p>
+<p>We can then apply gradient decent. We start from an arbitrary <span class="math notranslate nohighlight">\(\mathbf{w}^{0}\)</span> and update as follows</p>
+<div class="math notranslate nohighlight">
+\[
+\mathbf{w}^{t+1} = 
+\mathbf{w}^{t} - \alpha_t \left(\frac{1}{n} \sum_{i=1}^n \nabla f_{\mathbf{x}_i,y_i}(\mathbf{w}^{t})\right).
+\]</div>
+<p>In a large dataset, computing the sum over all samples may be prohibitively expensive. We present a popular alternative.</p>
+<section id="algorithm">
+<h2><span class="section-number">8.4.1. </span>Algorithm<a class="headerlink" href="#algorithm" title="Link to this heading">#</a></h2>
+<p>In <a class="reference external" href="https://en.wikipedia.org/wiki/Stochastic_gradient_descent">stochastic gradient descent</a> (SGD)<span class="math notranslate nohighlight">\(\idx{stochastic gradient descent}\xdi\)</span>, a variant of gradient descent, we pick a sample <span class="math notranslate nohighlight">\(I_t\)</span> uniformly at random in <span class="math notranslate nohighlight">\(\{1,\ldots,n\}\)</span> and update as follows</p>
+<div class="math notranslate nohighlight">
+\[
+\mathbf{w}^{t+1}
+= \mathbf{w}^{t} - \alpha_t \nabla f_{\mathbf{x}_{I_t},y_{I_t}}(\mathbf{w}^{t}).
+\]</div>
+<p>More generally, in the so-called mini-batch version of SGD, we pick instead a uniformly random sub-sample <span class="math notranslate nohighlight">\(\mathcal{B}_t \subseteq \{1,\ldots,n\}\)</span> of size <span class="math notranslate nohighlight">\(b\)</span> without replacement (i.e., all sub-samples of that size have the same probability of being picked)</p>
+<div class="math notranslate nohighlight">
+\[
+\mathbf{w}^{t+1}
+= \mathbf{w}^{t} - \alpha_t \frac{1}{b} \sum_{i\in \mathcal{B}_t} \nabla f_{\mathbf{x}_i,y_i}(\mathbf{w}^{t}).
+\]</div>
+<p>The key observation about the two stochastic updates above is that, in expectation, they perform a step of gradient descent. That turns out to be enough and it has computational advantages.</p>
+<p><strong>LEMMA</strong> Fix a batch size <span class="math notranslate nohighlight">\(1 \leq b \leq n\)</span> and and an arbitrary vector of parameters <span class="math notranslate nohighlight">\(\mathbf{w}\)</span>. Let <span class="math notranslate nohighlight">\(\mathcal{B} \subseteq \{1,\ldots,n\}\)</span> be a uniformly random sub-sample of size <span class="math notranslate nohighlight">\(b\)</span>. Then</p>
+<div class="math notranslate nohighlight">
+\[
+\mathbb{E}\left[\frac{1}{b} \sum_{i\in \mathcal{B}} \nabla f_{\mathbf{x}_i,y_i}(\mathbf{w})\right]
+= 
+\frac{1}{n} \sum_{i=1}^n \nabla f_{\mathbf{x}_i,y_i}(\mathbf{w}).
+\]</div>
+<p><span class="math notranslate nohighlight">\(\flat\)</span></p>
+<p><em>Proof:</em> Because <span class="math notranslate nohighlight">\(\mathcal{B}\)</span> is picked uniformly at random (without replacement), for any sub-sample <span class="math notranslate nohighlight">\(B \subseteq \{1,\ldots,n\}\)</span> of size <span class="math notranslate nohighlight">\(b\)</span> without repeats</p>
+<div class="math notranslate nohighlight">
+\[
+\mathbb{P}[\mathcal{B} = B]
+= \frac{1}{\binom{n}{b}}.
+\]</div>
+<p>So, so summing over all such sub-samples, we obtain</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+\mathbb{E}\left[\frac{1}{b} \sum_{i\in \mathcal{B}} \nabla f_{\mathbf{x}_i,y_i}(\mathbf{w})\right]
+&amp;= \frac{1}{b} \sum_{B \subseteq \{1,\ldots,n\}} \mathbb{P}[\mathcal{B} = B] \sum_{i\in \mathcal{B}} \nabla f_{\mathbf{x}_i,y_i}(\mathbf{w})\\
+&amp;= \frac{1}{b} \sum_{B \subseteq \{1,\ldots,n\}} \frac{1}{\binom{n}{b}} \sum_{i=1}^n \mathbf{1}\{i \in B\} \nabla f_{\mathbf{x}_i,y_i}(\mathbf{w})\\
+&amp;= \sum_{i=1}^n \nabla f_{\mathbf{x}_i,y_i}(\mathbf{w}) \frac{1}{b \binom{n}{b}} \sum_{B \subseteq \{1,\ldots,n\}} \mathbf{1}\{i \in B\}.
+\end{align*}\]</div>
+<p>Computing the internal sum requires a combinatorial argument. Indeed, <span class="math notranslate nohighlight">\(\sum_{B \subseteq \{1,\ldots,n\}} \mathbf{1}\{i \in B\}\)</span> counts the number of ways that <span class="math notranslate nohighlight">\(i\)</span> can be picked in a sub-sample of size <span class="math notranslate nohighlight">\(b\)</span> without repeats. That is <span class="math notranslate nohighlight">\(\binom{n-1}{b-1}\)</span>, which is the number of ways of picking the remaining <span class="math notranslate nohighlight">\(b-1\)</span> elements of <span class="math notranslate nohighlight">\(B\)</span> from the other <span class="math notranslate nohighlight">\(n-1\)</span> possible elements. By definition of the binomial coefficient and the properties of factorials,</p>
+<div class="math notranslate nohighlight">
+\[
+\frac{\binom{n-1}{b-1}}{b \binom{n}{b}}
+= \frac{\frac{(n-1)!}{(b-1)! (n-b)!}}{b \frac{n!}{b! (n-b)!}}
+= \frac{(n-1)!}{n!} \frac{b!}{b (b-1)!}
+= \frac{1}{n}.
+\]</div>
+<p>Plugging back gives the claim. <span class="math notranslate nohighlight">\(\square\)</span></p>
+<p>As a first illustration, we return to logistic regression<span class="math notranslate nohighlight">\(\idx{logistic regression}\xdi\)</span>. Recall that the input data is of the form <span class="math notranslate nohighlight">\(\{(\boldsymbol{\alpha}_i, b_i) : i=1,\ldots, n\}\)</span> where <span class="math notranslate nohighlight">\(\boldsymbol{\alpha}_i = (\alpha_{i,1}, \ldots, \alpha_{i,d}) \in \mathbb{R}^d\)</span> are the features and <span class="math notranslate nohighlight">\(b_i \in \{0,1\}\)</span> is the label. As before we use a matrix representation: <span class="math notranslate nohighlight">\(A \in \mathbb{R}^{n \times d}\)</span> has rows <span class="math notranslate nohighlight">\(\boldsymbol{\alpha}_i^T\)</span>, <span class="math notranslate nohighlight">\(i = 1,\ldots, n\)</span> and <span class="math notranslate nohighlight">\(\mathbf{b} = (b_1, \ldots, b_n) \in \{0,1\}^n\)</span>. We want to solve the minimization problem</p>
+<div class="math notranslate nohighlight">
+\[
+\min_{\mathbf{x} \in \mathbb{R}^d} \ell(\mathbf{x}; A, \mathbf{b})
+\]</div>
+<p>where the loss is</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+\ell(\mathbf{x}; A, \mathbf{b})
+&amp;= \frac{1}{n} \sum_{i=1}^n \left\{- b_i \log(\sigma(\boldsymbol{\alpha_i}^T \mathbf{x}))
+- (1-b_i) \log(1- \sigma(\boldsymbol{\alpha_i}^T \mathbf{x}))\right\}\\
+&amp;= \mathrm{mean}\left(-\mathbf{b} \odot \mathbf{log}(\bsigma(A \mathbf{x})) - (\mathbf{1} - \mathbf{b}) \odot \mathbf{log}(\mathbf{1} - \bsigma(A \mathbf{x}))\right).
+\end{align*}\]</div>
+<p>The gradient was previously computed as</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+\nabla\ell(\mathbf{x}; A, \mathbf{b})
+&amp;= - \frac{1}{n} \sum_{i=1}^n (
+b_i - \sigma(\boldsymbol{\alpha}_i^T \mathbf{x}) 
+) \,\boldsymbol{\alpha}_i\\
+&amp;= -\frac{1}{n} A^T [\mathbf{b} - \bsigma(A \mathbf{x})].
+\end{align*}\]</div>
+<p>For the mini-batch version of SGD, we pick a random sub-sample <span class="math notranslate nohighlight">\(\mathcal{B}_t \subseteq \{1,\ldots,n\}\)</span> of size <span class="math notranslate nohighlight">\(B\)</span> and take the step</p>
+<div class="math notranslate nohighlight">
+\[
+\mathbf{x}^{t+1}
+= \mathbf{x}^{t} +\beta \frac{1}{B} \sum_{i\in \mathcal{B}_t} (
+b_i - \sigma(\boldsymbol{\alpha}_i^T \mathbf{x}^t) 
+) \,\boldsymbol{\alpha}_i.
+\]</div>
+<p>We modify our previous code for logistic regression. The only change is to pick a random mini-batch which can be fed to the descent update sub-routine as dataset.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">sigmoid</span><span class="p">(</span><span class="n">z</span><span class="p">):</span> 
+    <span class="k">return</span> <span class="mi">1</span><span class="o">/</span><span class="p">(</span><span class="mi">1</span><span class="o">+</span><span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">z</span><span class="p">))</span>
+
+<span class="k">def</span> <span class="nf">pred_fn</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">A</span><span class="p">):</span> 
+    <span class="k">return</span> <span class="n">sigmoid</span><span class="p">(</span><span class="n">A</span> <span class="o">@</span> <span class="n">x</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">loss_fn</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">A</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span> 
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="o">-</span><span class="n">b</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">pred_fn</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">A</span><span class="p">))</span> <span class="o">-</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">b</span><span class="p">)</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">pred_fn</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">A</span><span class="p">)))</span>
+
+<span class="k">def</span> <span class="nf">grad_fn</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">A</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
+    <span class="k">return</span> <span class="o">-</span><span class="n">A</span><span class="o">.</span><span class="n">T</span> <span class="o">@</span> <span class="p">(</span><span class="n">b</span> <span class="o">-</span> <span class="n">pred_fn</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">A</span><span class="p">))</span><span class="o">/</span><span class="nb">len</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">desc_update_for_logreg</span><span class="p">(</span><span class="n">grad_fn</span><span class="p">,</span> <span class="n">A</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">curr_x</span><span class="p">,</span> <span class="n">beta</span><span class="p">):</span>
+    <span class="n">gradient</span> <span class="o">=</span> <span class="n">grad_fn</span><span class="p">(</span><span class="n">curr_x</span><span class="p">,</span> <span class="n">A</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">curr_x</span> <span class="o">-</span> <span class="n">beta</span><span class="o">*</span><span class="n">gradient</span>
+
+<span class="k">def</span> <span class="nf">sgd_for_logreg</span><span class="p">(</span><span class="n">rng</span><span class="p">,</span> <span class="n">loss_fn</span><span class="p">,</span> <span class="n">grad_fn</span><span class="p">,</span> <span class="n">A</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> 
+                   <span class="n">init_x</span><span class="p">,</span> <span class="n">beta</span><span class="o">=</span><span class="mf">1e-3</span><span class="p">,</span> <span class="n">niters</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="mf">1e5</span><span class="p">),</span> <span class="n">batch</span><span class="o">=</span><span class="mi">40</span><span class="p">):</span>
+    
+    <span class="n">curr_x</span> <span class="o">=</span> <span class="n">init_x</span>
+    <span class="n">nsamples</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">niters</span><span class="p">):</span>
+        <span class="n">I</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">integers</span><span class="p">(</span><span class="n">nsamples</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">batch</span><span class="p">)</span>
+        <span class="n">curr_x</span> <span class="o">=</span> <span class="n">desc_update_for_logreg</span><span class="p">(</span>
+            <span class="n">grad_fn</span><span class="p">,</span> <span class="n">A</span><span class="p">[</span><span class="n">I</span><span class="p">,:],</span> <span class="n">b</span><span class="p">[</span><span class="n">I</span><span class="p">],</span> <span class="n">curr_x</span><span class="p">,</span> <span class="n">beta</span><span class="p">)</span>
+    
+    <span class="k">return</span> <span class="n">curr_x</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p><strong>NUMERICAL CORNER:</strong> We analyze a dataset from [<a class="reference external" href="https://web.stanford.edu/~hastie/ElemStatLearn/">ESL</a>], which can be downloaded <a class="reference external" href="https://web.stanford.edu/~hastie/ElemStatLearn/data.html">here</a>. Quoting [<a class="reference external" href="https://web.stanford.edu/~hastie/ElemStatLearn/">ESL</a>, Section 4.4.2]</p>
+<blockquote>
+<div><p>The data […] are a subset of the Coronary Risk-Factor Study (CORIS) baseline survey, carried out in three rural areas of the Western Cape, South Africa (Rousseauw et al., 1983). The aim of the study was to establish the intensity of ischemic heart disease risk factors in that high-incidence region. The data represent white males between 15 and 64, and the response variable is the presence or absence of myocardial infarction (MI) at the time of the survey (the overall prevalence of MI was 5.1% in this region). There are 160 cases in our data set, and a sample of 302 controls. These data are described in more detail in Hastie and Tibshirani (1987).</p>
+</div></blockquote>
+<p>We load the data, which we slightly reformatted and look at a summary.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;SAHeart.csv&#39;</span><span class="p">)</span>
+<span class="n">data</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>sbp</th>
+      <th>tobacco</th>
+      <th>ldl</th>
+      <th>adiposity</th>
+      <th>typea</th>
+      <th>obesity</th>
+      <th>alcohol</th>
+      <th>age</th>
+      <th>chd</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>160.0</td>
+      <td>12.00</td>
+      <td>5.73</td>
+      <td>23.11</td>
+      <td>49.0</td>
+      <td>25.30</td>
+      <td>97.20</td>
+      <td>52.0</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>144.0</td>
+      <td>0.01</td>
+      <td>4.41</td>
+      <td>28.61</td>
+      <td>55.0</td>
+      <td>28.87</td>
+      <td>2.06</td>
+      <td>63.0</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>118.0</td>
+      <td>0.08</td>
+      <td>3.48</td>
+      <td>32.28</td>
+      <td>52.0</td>
+      <td>29.14</td>
+      <td>3.81</td>
+      <td>46.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>170.0</td>
+      <td>7.50</td>
+      <td>6.41</td>
+      <td>38.03</td>
+      <td>51.0</td>
+      <td>31.99</td>
+      <td>24.26</td>
+      <td>58.0</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>134.0</td>
+      <td>13.60</td>
+      <td>3.50</td>
+      <td>27.78</td>
+      <td>60.0</td>
+      <td>25.99</td>
+      <td>57.34</td>
+      <td>49.0</td>
+      <td>1.0</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<p>Our goal to predict <code class="docutils literal notranslate"><span class="pre">chd</span></code>, which stands for coronary heart disease, based on the other variables (which are briefly described <a class="reference external" href="https://web.stanford.edu/~hastie/ElemStatLearn/datasets/SAheart.info.txt">here</a>). We use logistic regression again.</p>
+<p>We first construct the data matrices. We only use three of the predictors.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">feature</span> <span class="o">=</span> <span class="n">data</span><span class="p">[[</span><span class="s1">&#39;tobacco&#39;</span><span class="p">,</span> <span class="s1">&#39;ldl&#39;</span><span class="p">,</span> <span class="s1">&#39;age&#39;</span><span class="p">]]</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">feature</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[[1.200e+01 5.730e+00 5.200e+01]
+ [1.000e-02 4.410e+00 6.300e+01]
+ [8.000e-02 3.480e+00 4.600e+01]
+ ...
+ [3.000e+00 1.590e+00 5.500e+01]
+ [5.400e+00 1.161e+01 4.000e+01]
+ [0.000e+00 4.820e+00 4.600e+01]]
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">label</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;chd&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">()</span>
+<span class="n">A</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="n">label</span><span class="p">),</span><span class="mi">1</span><span class="p">)),</span><span class="n">feature</span><span class="p">),</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">b</span> <span class="o">=</span> <span class="n">label</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>We try mini-batch SGD.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">seed</span> <span class="o">=</span> <span class="mi">535</span>
+<span class="n">rng</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">(</span><span class="n">seed</span><span class="p">)</span>
+<span class="n">init_x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">A</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+<span class="n">best_x</span> <span class="o">=</span> <span class="n">sgd_for_logreg</span><span class="p">(</span><span class="n">rng</span><span class="p">,</span> <span class="n">loss_fn</span><span class="p">,</span> <span class="n">grad_fn</span><span class="p">,</span> <span class="n">A</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">init_x</span><span class="p">,</span> <span class="n">beta</span><span class="o">=</span><span class="mf">1e-3</span><span class="p">,</span> <span class="n">niters</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="mf">1e6</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">best_x</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[-4.06558071  0.07990955  0.18813635  0.04693118]
+</pre></div>
+</div>
+</div>
+</div>
+<p>The outcome is harder to vizualize. To get a sense of how accurate the result is, we compare our predictions to the true labels. By prediction, let us say that we mean that we predict label <span class="math notranslate nohighlight">\(1\)</span> whenever <span class="math notranslate nohighlight">\(\sigma(\boldsymbol{\alpha}^T \mathbf{x}) &gt; 1/2\)</span>. We try this on the training set. (A better approach would be to split the data into training and testing sets, but we will not do this here.)</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">logis_acc</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">A</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">((</span><span class="n">pred_fn</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">A</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mf">0.5</span><span class="p">)</span> <span class="o">==</span> <span class="n">b</span><span class="p">)</span><span class="o">/</span><span class="nb">len</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">logis_acc</span><span class="p">(</span><span class="n">best_x</span><span class="p">,</span> <span class="n">A</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.7207792207792207
+</pre></div>
+</div>
+</div>
+</div>
+<p><span class="math notranslate nohighlight">\(\unlhd\)</span></p>
+</section>
+<section id="example-multinomial-logistic-regression">
+<h2><span class="section-number">8.4.2. </span>Example: multinomial logistic regression<a class="headerlink" href="#example-multinomial-logistic-regression" title="Link to this heading">#</a></h2>
+<p>We give a concrete example of progressive functions and of the application of backpropagation and SGD.</p>
+<p>Recall that a classifier <span class="math notranslate nohighlight">\(h\)</span> takes an input in <span class="math notranslate nohighlight">\(\mathbb{R}^d\)</span> and predicts one of <span class="math notranslate nohighlight">\(K\)</span> possible labels. It will be convenient for reasons that will become clear below to use <a class="reference external" href="https://en.wikipedia.org/wiki/One-hot">one-hot encoding</a><span class="math notranslate nohighlight">\(\idx{one-hot encoding}\xdi\)</span> of the labels. That is, we encode label <span class="math notranslate nohighlight">\(i\)</span> as the <span class="math notranslate nohighlight">\(K\)</span>-dimensional vector <span class="math notranslate nohighlight">\(\mathbf{e}_i\)</span>. Here, as usual, <span class="math notranslate nohighlight">\(\mathbf{e}_i\)</span> the canonical basis of <span class="math notranslate nohighlight">\(\mathbb{R}^K\)</span>, i.e., the vector with a <span class="math notranslate nohighlight">\(1\)</span> in entry <span class="math notranslate nohighlight">\(i\)</span> and a <span class="math notranslate nohighlight">\(0\)</span> elsewhere. Furthermore, we allow the output of the classifier to be a probability distribution over the labels <span class="math notranslate nohighlight">\(\{1,\ldots,K\}\)</span>, that is, a vector in</p>
+<div class="math notranslate nohighlight">
+\[
+\Delta_K 
+= \left\{
+(p_1,\ldots,p_K) \in [0,1]^K \,:\, \sum_{k=1}^K p_k = 1 
+\right\}.
+\]</div>
+<p><strong>Background on multinomial logistic regression</strong> We turn to <a class="reference external" href="https://en.wikipedia.org/wiki/Multinomial_logistic_regression">multinomial logistic regression</a><span class="math notranslate nohighlight">\(\idx{multinomial logistic regression}\xdi\)</span> to learn a classifier over <span class="math notranslate nohighlight">\(K\)</span> labels. Recall that we encode label <span class="math notranslate nohighlight">\(i\)</span> as the <span class="math notranslate nohighlight">\(K\)</span>-dimensional vector <span class="math notranslate nohighlight">\(\mathbf{e}_i\)</span>. We allow the output of the classifier to be a probability distribution over the labels <span class="math notranslate nohighlight">\(\{1,\ldots,K\}\)</span>. Observe that <span class="math notranslate nohighlight">\(\mathbf{e}_i\)</span> can itself be thought of as a probability distribution, one that assigns probability one to <span class="math notranslate nohighlight">\(i\)</span>.</p>
+<p>In multinomial logistic regression, we once again use an affine function of the input data.</p>
+<p>This time, we have <span class="math notranslate nohighlight">\(K\)</span> functions that output a score associated to each label. We then transform these scores into a probability distribution over the <span class="math notranslate nohighlight">\(K\)</span> labels. There are many ways of doing this. A standard approach is the <a class="reference external" href="https://en.wikipedia.org/wiki/Softmax_function">softmax function</a><span class="math notranslate nohighlight">\(\idx{softmax}\xdi\)</span> <span class="math notranslate nohighlight">\(\bgamma = (\gamma_1,\ldots,\gamma_K)\)</span>: for <span class="math notranslate nohighlight">\(\mathbf{z} \in \mathbb{R}^K\)</span></p>
+<div class="math notranslate nohighlight">
+\[
+\gamma_i(\mathbf{z})
+= \frac{e^{z_i}}{\sum_{j=1}^K e^{z_j}},
+\quad i=1,\ldots,K.
+\]</div>
+<p>To explain the name, observe that the larger inputs are mapped to larger probabilities.</p>
+<p>In fact, since a probability distribution must sum to <span class="math notranslate nohighlight">\(1\)</span>, it is determined by the probabilities assigned to the first <span class="math notranslate nohighlight">\(K-1\)</span> labels. In other words, we could drop the score associated to the last label. But the keep the notation simple, we will not do this here.</p>
+<p>For each <span class="math notranslate nohighlight">\(k\)</span>, we have a regression function</p>
+<div class="math notranslate nohighlight">
+\[
+\sum_{j=1}^d w^{(k)}_{1,j} x_{j}
+= \mathbf{x}_1^T \mathbf{w}^{(k)},
+\quad k=1,\ldots,K
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(\mathbf{w} = (\mathbf{w}^{(1)},\ldots,\mathbf{w}^{(K)})\)</span> are the parameters with <span class="math notranslate nohighlight">\(\mathbf{w}^{(k)} \in \mathbb{R}^{d}\)</span> and <span class="math notranslate nohighlight">\(\mathbf{x} \in \mathbb{R}^d\)</span> is the input. A constant term can be included by adding an additional entry <span class="math notranslate nohighlight">\(1\)</span> to <span class="math notranslate nohighlight">\(\mathbf{x}\)</span>. As we did in the linear regression case, we assume that this pre-processing has been performed previously. To simplify the notation, we let <span class="math notranslate nohighlight">\(\mathcal{W} \in \mathbb{R}^{K \times d}\)</span> as the matrix with rows <span class="math notranslate nohighlight">\((\mathbf{w}^{(1)})^T,\ldots,(\mathbf{w}^{(K)})^T\)</span>.</p>
+<p>The output of the classifier is</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+\bfh(\mathbf{w})
+&amp;= \bgamma\left(\mathcal{W} \mathbf{x}\right),
+\end{align*}\]</div>
+<p>for <span class="math notranslate nohighlight">\(i=1,\ldots,K\)</span>, where <span class="math notranslate nohighlight">\(\bgamma\)</span> is the softmax function. Note that the latter has no associated parameter.</p>
+<p>It remains to define a loss function. To quantify the fit, it is natural to use a notion of distance between probability measures, here between the output <span class="math notranslate nohighlight">\(\mathbf{h}_{\mathbf{x}}(\mathbf{w}) \in \Delta_K\)</span> and the correct label <span class="math notranslate nohighlight">\(\mathbf{y} \in \{\mathbf{e}_1,\ldots,\mathbf{e}_{K}\} \subseteq \Delta_K\)</span>. There are many such measures. In multinomial logistic regression, we use the Kullback-Leibler divergence, which we have encountered in the context of maximum likelihood estimation. Recall that, for two probability distributions <span class="math notranslate nohighlight">\(\mathbf{p}, \mathbf{q} \in \Delta_K\)</span>, it is defined as</p>
+<div class="math notranslate nohighlight">
+\[
+\mathrm{KL}(\mathbf{p} \| \mathbf{q})
+= \sum_{i=1}^K p_i \log \frac{p_i}{q_i}
+\]</div>
+<p>where it will suffice to restrict ourselves to the case <span class="math notranslate nohighlight">\(\mathbf{q} &gt; \mathbf{0}\)</span> and where we use the convention <span class="math notranslate nohighlight">\(0 \log 0 = 0\)</span> (so that terms with <span class="math notranslate nohighlight">\(p_i = 0\)</span> contribute <span class="math notranslate nohighlight">\(0\)</span> to the sum). Notice that <span class="math notranslate nohighlight">\(\mathbf{p} = \mathbf{q}\)</span> implies <span class="math notranslate nohighlight">\(\mathrm{KL}(\mathbf{p} \| \mathbf{q}) = 0\)</span>. We proved previously that <span class="math notranslate nohighlight">\(\mathrm{KL}(\mathbf{p} \| \mathbf{q}) \geq 0\)</span>, a result known as <em>Gibbs’ inequality</em>.</p>
+<p>Going back to the loss function, we use the identity <span class="math notranslate nohighlight">\(\log\frac{\alpha}{\beta} = \log \alpha - \log \beta\)</span> to re-write</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+\mathrm{KL}(\mathbf{y} \| \bfh(\mathbf{w}))
+&amp;= \sum_{i=1}^K y_i \log \frac{y_i}{h_{i}(\mathbf{w})}\\
+&amp;= \sum_{i=1}^K y_i \log y_i
+- \sum_{i=1}^K y_i \log h_{i}(\mathbf{w}),
+\end{align*}\]</div>
+<p>where <span class="math notranslate nohighlight">\(\bfh = (h_{1},\ldots,h_{K})\)</span>. Notice that the first term on right-hand side does not depend on <span class="math notranslate nohighlight">\(\mathbf{w}\)</span>. Hence we can ignore it when optimizing <span class="math notranslate nohighlight">\(\mathrm{KL}(\mathbf{y} \| \bfh(\mathbf{w}))\)</span>. The remaining term is</p>
+<div class="math notranslate nohighlight">
+\[
+H(\mathbf{y}, \bfh(\mathbf{w}))
+= - \sum_{i=1}^K y_i \log h_{i}(\mathbf{w}).
+\]</div>
+<p>We use it to define our loss function. That is, we set</p>
+<div class="math notranslate nohighlight">
+\[
+\ell(\hat{\mathbf{y}})
+= H(\mathbf{y}, \hat{\mathbf{y}})
+= - \sum_{i=1}^K y_i \log \hat{y}_{i}.
+\]</div>
+<p>Finally,</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+f(\mathbf{w})
+&amp;= \ell(\bfh(\mathbf{w}))\\
+&amp;= H(\mathbf{y}, \bfh(\mathbf{w}))\\
+&amp;= H\left(\mathbf{y}, \bgamma\left(\mathcal{W} \mathbf{x}\right)\right)\\
+&amp;=  - \sum_{i=1}^K y_i \log\gamma_i\left(\mathcal{W} \mathbf{x}\right).
+\end{align*}\]</div>
+<p><strong>Computing the gradient</strong> We apply the forward and backpropagation steps from the previous section. We then use the resulting recursions to derive an analytical formula for the gradient.</p>
+<p>The forward pass starts with the initialization <span class="math notranslate nohighlight">\(\mathbf{z}_0 := \mathbf{x}\)</span>. The forward layer loop has two steps. Set <span class="math notranslate nohighlight">\(\mathbf{w}_0 = (\mathbf{w}_0^{(1)},\ldots,\mathbf{w}_0^{(K)})\)</span> equal to <span class="math notranslate nohighlight">\(\mathbf{w} = (\mathbf{w}^{(1)},\ldots,\mathbf{w}^{(K)})\)</span>. First we compute</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+\mathbf{z}_{1} 
+&amp;:= \bfg_0(\mathbf{z}_0,\mathbf{w}_0)
+= \mathcal{W}_0 \mathbf{z}_0\\
+J_{\bfg_0}(\mathbf{z}_0,\mathbf{w}_0)
+&amp;:=\begin{pmatrix}
+A_0 &amp; B_0
+\end{pmatrix}
+\end{align*}\]</div>
+<p>where we defined <span class="math notranslate nohighlight">\(\mathcal{W}_0 \in \mathbb{R}^{K \times d}\)</span> as the matrix with rows <span class="math notranslate nohighlight">\((\mathbf{w}_0^{(1)})^T,\ldots,(\mathbf{w}_0^{(K-1)})^T\)</span>. We have previously computed the Jacobian:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+A_0
+= \mathbb{A}_{K}[\mathbf{w}_0]
+= \mathcal{W}_0
+=
+\begin{pmatrix}
+(\mathbf{w}^{(1)}_0)^T\\
+\vdots\\
+(\mathbf{w}^{(K)}_0)^T
+\end{pmatrix}
+\end{split}\]</div>
+<p>and</p>
+<div class="math notranslate nohighlight">
+\[
+B_0
+= \mathbb{B}_{K}[\mathbf{z}_0]
+= I_{K\times K} \otimes \mathbf{z}_0^T
+= \begin{pmatrix}
+\mathbf{e}_1 \mathbf{z}_0^T
+&amp; \cdots &amp; \mathbf{e}_{K}\mathbf{z}_0^T
+\end{pmatrix}.
+\]</div>
+<p>In the second step of the forward layer loop, we compute</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+\hat{\mathbf{y}} := \mathbf{z}_2 
+&amp;:= \bfg_1(\mathbf{z}_1)
+= \bgamma(\mathbf{z}_1)\\
+A_1
+&amp;:= J_{\bfg_1}(\mathbf{z}_1)
+= J_{\bgamma}(\mathbf{z}_1).
+\end{align*}\]</div>
+<p>So we need to compute the Jacobian of <span class="math notranslate nohighlight">\(\bgamma\)</span>. We divide this computation into two cases.  When <span class="math notranslate nohighlight">\(1 \leq i = j \leq K\)</span>,</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+(A_1)_{ii}
+&amp;= \frac{\partial}{\partial z_{1,i}} \left[ \gamma_i(\mathbf{z}_1) \right]\\
+&amp;= \frac{\partial}{\partial z_{1,i}} \left[ \frac{e^{z_{1,i}}}{\sum_{k=1}^{K} e^{z_{1,k}}} \right]\\
+&amp;= \frac{e^{z_{1,i}}\left(\sum_{k=1}^{K} e^{z_{1,k}}\right) - e^{z_{1,i}}\left(e^{z_{1,i}}\right)}
+{\left(\sum_{k=1}^{K} e^{z_{1,k}}\right)^2}\\
+&amp;= \gamma_i(\mathbf{z}_1) - \gamma_i(\mathbf{z}_1)^2,
+\end{align*}\]</div>
+<p>by the <a class="reference external" href="https://en.wikipedia.org/wiki/Quotient_rule">quotient rule</a>.</p>
+<p>When <span class="math notranslate nohighlight">\(1 \leq i, j \leq K\)</span> with <span class="math notranslate nohighlight">\(i \neq j\)</span>,</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+(A_1)_{ij}
+&amp;= \frac{\partial}{\partial z_{1,j}} \left[ \gamma_i(\mathbf{z}_1) \right]\\
+&amp;= \frac{\partial}{\partial z_{1,j}} \left[ \frac{e^{z_{1,i}}}{\sum_{k=1}^{K} e^{z_{1,k}}} \right]\\
+&amp;= \frac{- e^{z_{1,i}}\left(e^{z_{1,j}}\right)}
+{\left(\sum_{k=1}^{K} e^{z_{1,k}}\right)^2}\\
+&amp;= - \gamma_i(\mathbf{z}_1)\gamma_j(\mathbf{z}_1).
+\end{align*}\]</div>
+<p>In matrix form,</p>
+<div class="math notranslate nohighlight">
+\[
+A_1
+= \mathrm{diag}(\bgamma(\mathbf{z}_1)) - \bgamma(\mathbf{z}_1) \, \bgamma(\mathbf{z}_1)^T.
+\]</div>
+<p>The Jacobian of the loss function is</p>
+<div class="math notranslate nohighlight">
+\[
+J_{\ell}(\hat{\mathbf{y}})
+= \nabla \left[ - \sum_{i=1}^K y_i \log \hat{y}_{i} \right]^T
+= -\left(\frac{y_1}{\hat{y}_{1}}, \ldots, \frac{y_K}{\hat{y}_{K}}\right)^T
+= - (\mathbf{y}\oslash\hat{\mathbf{y}})^T,
+\]</div>
+<p>where recall that <span class="math notranslate nohighlight">\(\oslash\)</span> is the Hadamard division (i.e., element-wise division).</p>
+<p>We summarize the whole procedure next.</p>
+<p><em>Initialization:</em></p>
+<div class="math notranslate nohighlight">
+\[\mathbf{z}_0 := \mathbf{x}\]</div>
+<p><em>Forward layer loop:</em></p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+\mathbf{z}_{1} 
+&amp;:= \bfg_0(\mathbf{z}_0, \mathbf{w}_0)
+= \mathcal{W}_0 \mathbf{z}_0\\
+\begin{pmatrix}
+A_0 &amp; B_0
+\end{pmatrix}
+&amp;:= J_{\bfg_0}(\mathbf{z}_0,\mathbf{w}_0)
+= 
+\begin{pmatrix}
+\mathbb{A}_{K}[\mathbf{w}_0] &amp; \mathbb{B}_{K}[\mathbf{z}_0]
+\end{pmatrix}
+\end{align*}\]</div>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+\hat{\mathbf{y}} := \mathbf{z}_2 &amp;:= \bfg_1(\mathbf{z}_1) = \bgamma(\mathbf{z}_1)\\
+A_1
+&amp;:= J_{\bfg_1}(\mathbf{z}_1)
+= \mathrm{diag}(\bgamma(\mathbf{z}_1)) - \bgamma(\mathbf{z}_1) \, \bgamma(\mathbf{z}_1)^T
+\end{align*}\]</div>
+<p><em>Loss:</em></p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+z_3
+&amp;:= \ell(\mathbf{z}_2) = - \sum_{i=1}^K y_i \log z_{2,i}\\
+\mathbf{p}_2
+&amp;:= \nabla {\ell_{\mathbf{y}}}(\mathbf{z}_2)
+=  -\left(\frac{y_1}{z_{2,1}}, \ldots, \frac{y_K}{z_{2,K}}\right)
+= - \mathbf{y} \oslash \mathbf{z}_2.
+\end{align*}\]</div>
+<p><em>Backward layer loop:</em></p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+\mathbf{p}_{1} &amp;:= A_1^T \mathbf{p}_{2}
+\end{align*}\]</div>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+\mathbf{q}_{0} &amp;:= B_0^T \mathbf{p}_{1}
+\end{align*}\]</div>
+<p><em>Output:</em></p>
+<div class="math notranslate nohighlight">
+\[
+\nabla f(\mathbf{w})
+= \mathbf{q}_0,
+\]</div>
+<p>where recall that <span class="math notranslate nohighlight">\(\mathbf{w} := \mathbf{w}_0\)</span>.</p>
+<p>Explicit formulas can be derived from the previous recursion.</p>
+<p>We first compute <span class="math notranslate nohighlight">\(\mathbf{p}_1\)</span>. We use the <em>Properties of the Hadamard Product</em>. We get for <span class="math notranslate nohighlight">\(1 \leq j \leq K\)</span></p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+\mathbf{p}_1
+&amp;= A_1^T \mathbf{p}_{2}\\
+&amp;= [\mathrm{diag}(\bgamma(\mathbf{z}_1)) - \bgamma(\mathbf{z}_1) \, \bgamma(\mathbf{z}_1)^T]^T
+[- \mathbf{y} \oslash \bgamma(\mathbf{z}_1)]\\
+&amp;= - \mathrm{diag}(\bgamma(\mathbf{z}_1)) \, (\mathbf{y} \oslash \bgamma(\mathbf{z}_1)) + \bgamma(\mathbf{z}_1) \, \bgamma(\mathbf{z}_1)^T \, (\mathbf{y} \oslash \bgamma(\mathbf{z}_1))\\
+&amp;= - \mathbf{y} + \bgamma(\mathbf{z}_1) \, \mathbf{1}^T\mathbf{y}\\
+&amp;= \bgamma(\mathbf{z}_1) - \mathbf{y},
+\end{align*}\]</div>
+<p>where we used that <span class="math notranslate nohighlight">\(\sum_{k=1}^{K} y_k = 1\)</span>.</p>
+<p>It remains to compute <span class="math notranslate nohighlight">\(\mathbf{q}_0\)</span>. We have by parts (e) and (f) of the <em>Properties of the Kronecker Product</em></p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+\mathbf{q}_{0} 
+= B_0^T \mathbf{p}_{1}
+&amp;= (I_{K\times K} \otimes \mathbf{z}_0^T)^T
+(\bgamma(\mathbf{z}_1) - \mathbf{y})\\
+&amp;= ( I_{K\times K} \otimes \mathbf{z}_0)\, (\bgamma(\mathbf{z}_1) - \mathbf{y})\\
+&amp;= (\bgamma(\mathbf{z}_1) - \mathbf{y}) \otimes \mathbf{z}_0.
+\end{align*}\]</div>
+<p>Finally, replacing <span class="math notranslate nohighlight">\(\mathbf{z}_0 = \mathbf{x}\)</span> and <span class="math notranslate nohighlight">\(\mathbf{z}_1 = \mathcal{W} \mathbf{x}\)</span>, the gradient is</p>
+<div class="math notranslate nohighlight">
+\[
+\nabla f(\mathbf{w})
+= \mathbf{q}_0 
+= (\bgamma\left(\mathcal{W} \mathbf{x}\right) - \mathbf{y}) \otimes \mathbf{x}.
+\]</div>
+<p>It can be shown that the objective function <span class="math notranslate nohighlight">\(f(\mathbf{w})\)</span> is convex in <span class="math notranslate nohighlight">\(\mathbf{w}\)</span>.</p>
+<p><strong>NUMERICAL CORNER:</strong> We will use the Fashion MNIST dataset. This example is inspired by <a class="reference external" href="https://pytorch.org/tutorials/beginner/basics/quickstart_tutorial.html">these</a> <a class="reference external" href="https://www.tensorflow.org/tutorials/keras/classification">tutorials</a>. We first check for the availability of GPUs and load the data.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">device</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">device</span><span class="p">(</span><span class="s2">&quot;cuda&quot;</span> <span class="k">if</span> <span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">is_available</span><span class="p">()</span> 
+                      <span class="k">else</span> <span class="p">(</span><span class="s2">&quot;mps&quot;</span> <span class="k">if</span> <span class="n">torch</span><span class="o">.</span><span class="n">backends</span><span class="o">.</span><span class="n">mps</span><span class="o">.</span><span class="n">is_available</span><span class="p">()</span> 
+                            <span class="k">else</span> <span class="s2">&quot;cpu&quot;</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Using device:&quot;</span><span class="p">,</span> <span class="n">device</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Using device: mps
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">torchvision</span> <span class="kn">import</span> <span class="n">datasets</span><span class="p">,</span> <span class="n">transforms</span>
+<span class="kn">from</span> <span class="nn">torch.utils.data</span> <span class="kn">import</span> <span class="n">DataLoader</span>
+<span class="kn">import</span> <span class="nn">torch.nn</span> <span class="k">as</span> <span class="nn">nn</span>
+<span class="kn">import</span> <span class="nn">torch.optim</span> <span class="k">as</span> <span class="nn">optim</span>
+
+<span class="n">seed</span> <span class="o">=</span> <span class="mi">42</span>
+<span class="n">torch</span><span class="o">.</span><span class="n">manual_seed</span><span class="p">(</span><span class="n">seed</span><span class="p">)</span>
+
+<span class="k">if</span> <span class="n">device</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="s1">&#39;cuda&#39;</span><span class="p">:</span> <span class="c1"># device-specific seeding and settings</span>
+    <span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">manual_seed</span><span class="p">(</span><span class="n">seed</span><span class="p">)</span>
+    <span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">manual_seed_all</span><span class="p">(</span><span class="n">seed</span><span class="p">)</span>  <span class="c1"># for multi-GPU</span>
+    <span class="n">torch</span><span class="o">.</span><span class="n">backends</span><span class="o">.</span><span class="n">cudnn</span><span class="o">.</span><span class="n">deterministic</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="n">torch</span><span class="o">.</span><span class="n">backends</span><span class="o">.</span><span class="n">cudnn</span><span class="o">.</span><span class="n">benchmark</span> <span class="o">=</span> <span class="kc">False</span>
+<span class="k">elif</span> <span class="n">device</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="s1">&#39;mps&#39;</span><span class="p">:</span>
+    <span class="n">torch</span><span class="o">.</span><span class="n">mps</span><span class="o">.</span><span class="n">manual_seed</span><span class="p">(</span><span class="n">seed</span><span class="p">)</span>  <span class="c1"># MPS-specific seeding</span>
+
+<span class="n">g</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">Generator</span><span class="p">()</span>
+<span class="n">g</span><span class="o">.</span><span class="n">manual_seed</span><span class="p">(</span><span class="n">seed</span><span class="p">)</span>
+
+<span class="n">train_dataset</span> <span class="o">=</span> <span class="n">datasets</span><span class="o">.</span><span class="n">FashionMNIST</span><span class="p">(</span><span class="n">root</span><span class="o">=</span><span class="s1">&#39;./data&#39;</span><span class="p">,</span> <span class="n">train</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> 
+                               <span class="n">download</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">transform</span><span class="o">=</span><span class="n">transforms</span><span class="o">.</span><span class="n">ToTensor</span><span class="p">())</span>
+<span class="n">test_dataset</span> <span class="o">=</span> <span class="n">datasets</span><span class="o">.</span><span class="n">FashionMNIST</span><span class="p">(</span><span class="n">root</span><span class="o">=</span><span class="s1">&#39;./data&#39;</span><span class="p">,</span> <span class="n">train</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> 
+                              <span class="n">download</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">transform</span><span class="o">=</span><span class="n">transforms</span><span class="o">.</span><span class="n">ToTensor</span><span class="p">())</span>
+
+<span class="n">BATCH_SIZE</span> <span class="o">=</span> <span class="mi">32</span>
+<span class="n">train_loader</span> <span class="o">=</span> <span class="n">DataLoader</span><span class="p">(</span><span class="n">train_dataset</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="n">BATCH_SIZE</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">generator</span><span class="o">=</span><span class="n">g</span><span class="p">)</span>
+<span class="n">test_loader</span> <span class="o">=</span> <span class="n">DataLoader</span><span class="p">(</span><span class="n">test_dataset</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="n">BATCH_SIZE</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>We used <a class="reference external" href="https://pytorch.org/docs/stable/data.html#torch.utils.data.DataLoader"><code class="docutils literal notranslate"><span class="pre">torch.utils.data.DataLoader</span></code></a>, which provides utilities to load the data in batches for training. We took mini-batches of size <code class="docutils literal notranslate"><span class="pre">BATCH_SIZE</span> <span class="pre">=</span> <span class="pre">32</span></code> and we apply a random permutation of the samples on every pass over the training data (with the option <code class="docutils literal notranslate"><span class="pre">shuffle=True</span></code>). The function <a class="reference external" href="https://pytorch.org/docs/stable/generated/torch.manual_seed.html"><code class="docutils literal notranslate"><span class="pre">torch.manual_seed()</span></code></a> is used to set the global seed for PyTorch operations (e.g., weight initialization). The shuffling in <code class="docutils literal notranslate"><span class="pre">DataLoader</span></code> uses its own separate random number generator, which we initialize with <a class="reference external" href="https://pytorch.org/docs/stable/generated/torch.Generator.html#torch.Generator"><code class="docutils literal notranslate"><span class="pre">torch.Generator()</span></code></a> and <a class="reference external" href="https://pytorch.org/docs/stable/generated/torch.Generator.html#torch.Generator.manual_seed"><code class="docutils literal notranslate"><span class="pre">manual_seed()</span></code></a>. (You can tell from the fact that <code class="docutils literal notranslate"><span class="pre">seed=42</span></code> that Claude explained that one to me…)</p>
+<p><strong>CHAT &amp; LEARN</strong> Ask your favorite AI chatbot to explain the lines:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">if</span> <span class="n">device</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="s1">&#39;cuda&#39;</span><span class="p">:</span> <span class="c1"># device-specific seeding and settings</span>
+    <span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">manual_seed</span><span class="p">(</span><span class="n">seed</span><span class="p">)</span>
+    <span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">manual_seed_all</span><span class="p">(</span><span class="n">seed</span><span class="p">)</span>  <span class="c1"># for multi-GPU</span>
+    <span class="n">torch</span><span class="o">.</span><span class="n">backends</span><span class="o">.</span><span class="n">cudnn</span><span class="o">.</span><span class="n">deterministic</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="n">torch</span><span class="o">.</span><span class="n">backends</span><span class="o">.</span><span class="n">cudnn</span><span class="o">.</span><span class="n">benchmark</span> <span class="o">=</span> <span class="kc">False</span>
+<span class="k">elif</span> <span class="n">device</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="s1">&#39;mps&#39;</span><span class="p">:</span>
+    <span class="n">torch</span><span class="o">.</span><span class="n">mps</span><span class="o">.</span><span class="n">manual_seed</span><span class="p">(</span><span class="n">seed</span><span class="p">)</span>  <span class="c1"># MPS-specific seeding</span>
+</pre></div>
+</div>
+<p><span class="math notranslate nohighlight">\(\ddagger\)</span></p>
+<p>We implement multinomial logistic regression to learn a classifier for the MNIST data. In PyTorch, composition of functions can be achieved with <a class="reference external" href="https://pytorch.org/docs/stable/generated/torch.nn.Sequential.html"><code class="docutils literal notranslate"><span class="pre">torch.nn.Sequential</span></code></a>. Our model is:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">model</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Sequential</span><span class="p">(</span>
+    <span class="n">nn</span><span class="o">.</span><span class="n">Flatten</span><span class="p">(),</span>
+    <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="mi">28</span> <span class="o">*</span> <span class="mi">28</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+<span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>The <a class="reference external" href="https://pytorch.org/docs/stable/generated/torch.nn.Flatten.html"><code class="docutils literal notranslate"><span class="pre">torch.nn.Flatten</span></code></a> layer turns each input image into a vector of size <span class="math notranslate nohighlight">\(784\)</span> (where <span class="math notranslate nohighlight">\(784 = 28^2\)</span> is the number of pixels in each image). After the flattening, we have an affine map from <span class="math notranslate nohighlight">\(\mathbb{R}^{784}\)</span> to <span class="math notranslate nohighlight">\(\mathbb{R}^{10}\)</span>. Note that there is no need to pre-process the inputs by adding <span class="math notranslate nohighlight">\(1\)</span>s. A constant term (or “bias variable”) is automatically added by PyTorch (unless one chooses the option <a class="reference external" href="https://pytorch.org/docs/stable/generated/torch.nn.Linear.html"><code class="docutils literal notranslate"><span class="pre">bias=False</span></code></a>). The final output is <span class="math notranslate nohighlight">\(10\)</span>-dimensional.</p>
+<p>Finally, we are ready to run an optimization method of our choice on the loss function, which are specified next. There are many <a class="reference external" href="https://pytorch.org/docs/stable/optim.html#algorithms">optimizers</a> available. (See this <a class="reference external" href="https://hackernoon.com/demystifying-different-variants-of-gradient-descent-optimization-algorithm-19ae9ba2e9bc">post</a> for a brief explanation of many common optimizers.) Here we use SGD as the optimizer. A quick tutorial is <a class="reference external" href="https://pytorch.org/tutorials/beginner/basics/optimization_tutorial.html">here</a>. The loss function is the <a class="reference external" href="https://en.wikipedia.org/wiki/Cross_entropy">cross-entropy</a>, as implemented by <a class="reference external" href="https://pytorch.org/docs/stable/generated/torch.nn.CrossEntropyLoss.html"><code class="docutils literal notranslate"><span class="pre">torch.nn.CrossEntropyLoss</span></code></a>, which first takes the softmax and expects the labels to be class names rather than their one-hot encoding.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">loss_fn</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">CrossEntropyLoss</span><span class="p">()</span>
+<span class="n">optimizer</span> <span class="o">=</span> <span class="n">optim</span><span class="o">.</span><span class="n">SGD</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">parameters</span><span class="p">(),</span> <span class="n">lr</span><span class="o">=</span><span class="mf">1e-3</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>We implement special functions for training.</p>
+<div class="cell tag_hide-output docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">train</span><span class="p">(</span><span class="n">dataloader</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span> <span class="n">loss_fn</span><span class="p">,</span> <span class="n">optimizer</span><span class="p">,</span> <span class="n">device</span><span class="p">):</span>
+    <span class="n">size</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">dataloader</span><span class="o">.</span><span class="n">dataset</span><span class="p">)</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">train</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">batch</span><span class="p">,</span> <span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">dataloader</span><span class="p">):</span>
+        <span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">),</span> <span class="n">y</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>    
+        <span class="n">pred</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+        <span class="n">loss</span> <span class="o">=</span> <span class="n">loss_fn</span><span class="p">(</span><span class="n">pred</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+        <span class="n">optimizer</span><span class="o">.</span><span class="n">zero_grad</span><span class="p">()</span>
+        <span class="n">loss</span><span class="o">.</span><span class="n">backward</span><span class="p">()</span>
+        <span class="n">optimizer</span><span class="o">.</span><span class="n">step</span><span class="p">()</span>
+
+<span class="k">def</span> <span class="nf">training_loop</span><span class="p">(</span><span class="n">train_loader</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span> <span class="n">loss_fn</span><span class="p">,</span> <span class="n">optimizer</span><span class="p">,</span> <span class="n">device</span><span class="p">,</span> <span class="n">epochs</span><span class="o">=</span><span class="mi">3</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">epoch</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">epochs</span><span class="p">):</span>
+        <span class="n">train</span><span class="p">(</span><span class="n">train_loader</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span> <span class="n">loss_fn</span><span class="p">,</span> <span class="n">optimizer</span><span class="p">,</span> <span class="n">device</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Epoch </span><span class="si">{</span><span class="n">epoch</span><span class="o">+</span><span class="mi">1</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">epochs</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>An epoch is one training iteration where all samples are iterated once (in a randomly shuffled order). In the interest of time, we train for 10 epochs only. But it does better if you train it longer (try it!). On each pass, we compute the output of the current model, use <code class="docutils literal notranslate"><span class="pre">backward()</span></code> to obtain the gradient, and then perform a descent update with <code class="docutils literal notranslate"><span class="pre">step()</span></code>. We also have to reset the gradients first (otherwise they add up by default).</p>
+<div class="cell tag_remove-output docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">training_loop</span><span class="p">(</span><span class="n">train_loader</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span> <span class="n">loss_fn</span><span class="p">,</span> <span class="n">optimizer</span><span class="p">,</span> <span class="n">device</span><span class="p">,</span> <span class="n">epochs</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Because of the issue of <a class="reference external" href="https://en.wikipedia.org/wiki/Overfitting">overfitting</a>, we use the <em>test</em> images to assess the performance of the final classifier.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">test</span><span class="p">(</span><span class="n">dataloader</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span> <span class="n">loss_fn</span><span class="p">,</span> <span class="n">device</span><span class="p">):</span>
+    <span class="n">size</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">dataloader</span><span class="o">.</span><span class="n">dataset</span><span class="p">)</span>
+    <span class="n">correct</span> <span class="o">=</span> <span class="mi">0</span>    
+    <span class="n">model</span><span class="o">.</span><span class="n">eval</span><span class="p">()</span>
+    <span class="k">with</span> <span class="n">torch</span><span class="o">.</span><span class="n">no_grad</span><span class="p">():</span>
+        <span class="k">for</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="ow">in</span> <span class="n">dataloader</span><span class="p">:</span>
+            <span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">),</span> <span class="n">y</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
+            <span class="n">pred</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+            <span class="n">correct</span> <span class="o">+=</span> <span class="p">(</span><span class="n">pred</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span> <span class="o">==</span> <span class="n">y</span><span class="p">)</span><span class="o">.</span><span class="n">type</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">float</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Test error: </span><span class="si">{</span><span class="p">(</span><span class="mi">100</span><span class="o">*</span><span class="p">(</span><span class="n">correct</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">size</span><span class="p">))</span><span class="si">:</span><span class="s2">&gt;0.1f</span><span class="si">}</span><span class="s2">% accuracy&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">test</span><span class="p">(</span><span class="n">test_loader</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span> <span class="n">loss_fn</span><span class="p">,</span> <span class="n">device</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Test error: 78.7% accuracy
+</pre></div>
+</div>
+</div>
+</div>
+<p>To make a prediction, we take a <a class="reference external" href="https://pytorch.org/docs/stable/generated/torch.nn.functional.softmax.html"><code class="docutils literal notranslate"><span class="pre">torch.nn.functional.softmax</span></code></a> of the output of our model. Recall that it is implicitly included in <code class="docutils literal notranslate"><span class="pre">torch.nn.CrossEntropyLoss</span></code>, but is not actually part of <code class="docutils literal notranslate"><span class="pre">model</span></code>. (Note that the softmax itself has no parameter.)</p>
+<p>As an illustration, we do this for each test image. We use <a class="reference external" href="https://pytorch.org/docs/stable/generated/torch.cat.html"><code class="docutils literal notranslate"><span class="pre">torch.cat</span></code></a> to concatenate a sequence of tensors into a single tensor.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">torch.nn.functional</span> <span class="k">as</span> <span class="nn">F</span>
+
+<span class="k">def</span> <span class="nf">predict_softmax</span><span class="p">(</span><span class="n">dataloader</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span> <span class="n">device</span><span class="p">):</span>
+    <span class="n">size</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">dataloader</span><span class="o">.</span><span class="n">dataset</span><span class="p">)</span>
+    <span class="n">num_batches</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">dataloader</span><span class="p">)</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">eval</span><span class="p">()</span>
+    <span class="n">predictions</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">with</span> <span class="n">torch</span><span class="o">.</span><span class="n">no_grad</span><span class="p">():</span>
+        <span class="k">for</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="ow">in</span> <span class="n">dataloader</span><span class="p">:</span>
+            <span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">),</span> <span class="n">y</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
+            <span class="n">pred</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+            <span class="n">probabilities</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">softmax</span><span class="p">(</span><span class="n">pred</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+            <span class="n">predictions</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">probabilities</span><span class="o">.</span><span class="n">cpu</span><span class="p">())</span>
+            
+    <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">cat</span><span class="p">(</span><span class="n">predictions</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+<span class="n">predictions</span> <span class="o">=</span> <span class="n">predict_softmax</span><span class="p">(</span><span class="n">test_loader</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span> <span class="n">device</span><span class="p">)</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>The result for the first test image is shown below. To make a prediction, we choose the label with the highest probability.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">predictions</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[4.4307165e-04 3.8354204e-04 2.0886613e-03 8.8066678e-04 3.6079765e-03
+ 1.7791630e-01 1.4651606e-03 2.2466542e-01 4.8245404e-02 5.4030383e-01]
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">predictions</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>9
+</pre></div>
+</div>
+</div>
+</div>
+<p>The truth is:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">images</span><span class="p">,</span> <span class="n">labels</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="nb">iter</span><span class="p">(</span><span class="n">test_loader</span><span class="p">))</span>
+<span class="n">images</span> <span class="o">=</span> <span class="n">images</span><span class="o">.</span><span class="n">squeeze</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span>
+<span class="n">labels</span> <span class="o">=</span> <span class="n">labels</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">labels</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">: &#39;</span><span class="si">{</span><span class="n">mmids</span><span class="o">.</span><span class="n">FashionMNIST_get_class_name</span><span class="p">(</span><span class="n">labels</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="si">}</span><span class="s2">&#39;&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>9: &#39;Ankle boot&#39;
+</pre></div>
+</div>
+</div>
+</div>
+<p>Above, <code class="docutils literal notranslate"><span class="pre">next(iter(test_loader))</span></code> loads the first batch of test images. (See <a class="reference external" href="https://docs.python.org/3/tutorial/classes.html#iterators">here</a> for background on iterators in Python.)</p>
+<p><span class="math notranslate nohighlight">\(\unlhd\)</span></p>
+<p><em><strong>Self-assessment quiz</strong></em> <em>(with help from Claude, Gemini, and ChatGPT)</em></p>
+<p><strong>1</strong> In stochastic gradient descent (SGD), how is the gradient estimated at each iteration?</p>
+<p>a) By computing the gradient over the entire dataset.</p>
+<p>b) By using the gradient from the previous iteration.</p>
+<p>c) By randomly selecting a subset of sample and computing their gradient.</p>
+<p>d) By averaging the gradients of all samples in the dataset.</p>
+<p><strong>2</strong> What is the key advantage of using mini-batch SGD over standard SGD?</p>
+<p>a) It guarantees faster convergence to the optimal solution.</p>
+<p>b) It reduces the variance of the gradient estimate at each iteration.</p>
+<p>c) It eliminates the need for computing gradients altogether.</p>
+<p>d) It increases the computational cost per iteration.</p>
+<p><strong>3</strong> Which of the following statements is true about the expected update step in stochastic gradient descent?</p>
+<p>a) It is always equal to the full gradient descent update.</p>
+<p>b) It is always in the opposite direction of the full gradient descent update.</p>
+<p>c) It is, on average, equivalent to the full gradient descent update.</p>
+<p>d) It has no relationship to the full gradient descent update.</p>
+<p><strong>4</strong> In multinomial logistic regression, what is the role of the softmax function (<span class="math notranslate nohighlight">\(\gamma\)</span>)?</p>
+<p>a) To compute the gradient of the loss function.</p>
+<p>b) To normalize the input features.</p>
+<p>c) To transform scores into a probability distribution over labels.</p>
+<p>d) To update the model parameters during gradient descent.</p>
+<p><strong>5</strong> What is the Kullback-Leibler (KL) divergence used for in multinomial logistic regression?</p>
+<p>a) To measure the distance between the predicted probabilities and the true labels.</p>
+<p>b) To normalize the input features.</p>
+<p>c) To update the model parameters during gradient descent.</p>
+<p>d) To compute the gradient of the loss function.</p>
+<p>Answer for 1: c. Justification: The text states that in SGD, “we pick a sample uniformly at random in <span class="math notranslate nohighlight">\(\{1, ..., n\}\)</span> and update as follows <span class="math notranslate nohighlight">\(w^{t+1} = w^t - \alpha_t \nabla f_{x_{I_t}, y_{I_t}}(w^t).\)</span>”</p>
+<p>Answer for 2: b. Justification: The text implies that mini-batch SGD reduces the variance of the gradient estimate compared to standard SGD, which only uses a single sample.</p>
+<p>Answer for 3: c. Justification: The text proves a lemma stating that “in expectation, they [stochastic updates] perform a step of gradient descent.”</p>
+<p>Answer for 4: c. Justification: The text defines the softmax function and states that it is used to “transform these scores into a probability distribution over the labels.”</p>
+<p>Answer for 5: a. Justification: The text introduces the KL divergence as a “notion of distance between probability measures” and uses it to define the loss function in multinomial logistic regression.</p>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./chap08_nn/04_sgd"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="../03_backprop/roch-mmids-nn-backprop.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title"><span class="section-number">8.3. </span>Building blocks of AI 1: backpropagation</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="../05_nn/roch-mmids-nn-nn.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title"><span class="section-number">8.5. </span>Building blocks of AI 3: neural networks</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#algorithm">8.4.1. Algorithm</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#example-multinomial-logistic-regression">8.4.2. Example: multinomial logistic regression</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Sebastien Roch
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2024.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

@@ -1,0 +1,1300 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>4.6. Further applications of the SVD: low-rank approximations and ridge regression &#8212; MMiDS Textbook</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.5.1/css/all.min.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.1/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.1/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.1/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b76e3c8a" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=384b581d" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=87e54e7c" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae" />
+  <script src="../../_static/vendor/fontawesome/6.5.1/js/all.min.js?digest=8d27b9dea8ad943066ae"></script>
+
+    <script src="../../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?v=efea14e4"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../_static/design-tabs.js?v=f930bc37"></script>
+    <script async="async" src="https://www.googletagmanager.com/gtag/js?id=G-P5E8DW088F"></script>
+    <script>
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){ dataLayer.push(arguments); }
+                gtag('js', new Date());
+                gtag('config', 'G-P5E8DW088F');
+            </script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){ dataLayer.push(arguments); }
+                gtag('js', new Date());
+                gtag('config', 'G-P5E8DW088F');
+            </script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'chap03_svd/06_further/roch-mmids-svd-further';</script>
+    <link rel="canonical" href="https://mmids-textbook.github.io/chap03_svd/06_further/roch-mmids-svd-further.html" />
+    <link rel="icon" href="https://mmids-textbook.github.io/favicon-32x32.png"/>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="4.7. Exercises" href="../exercises/roch-mmids-svd-exercises.html" />
+    <link rel="prev" title="4.5. Application: principal components analysis" href="../05_pca/roch-mmids-svd-pca.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a id="pst-skip-link" class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+
+<a class="navbar-brand logo" href="../../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/mmids-cover-small.jpg" class="logo__image only-light" alt="MMiDS Textbook - Home"/>
+    <script>document.write(`<img src="../../_static/mmids-cover-small.jpg" class="logo__image only-dark" alt="MMiDS Textbook - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../index.html">
+                    <b>MATHEMATICAL METHODS in DATA SCIENCE (with Python)</b>
+                </a>
+            </li>
+        </ul>
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../chap01_intro/00_intro/roch-mmids-intro-intro.html">1. Introduction: a first data science problem</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../chap01_intro/01_motiv/roch-mmids-intro-motiv.html">1.1. Motivating example: identifying penguin species</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap01_intro/02_review/roch-mmids-intro-review.html">1.2. Background: quick refresher of matrix algebra, differential calculus, and elementary probability</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap01_intro/03_clustering/roch-mmids-intro-clustering.html">1.3. Clustering: an objective, an algorithm and a guarantee</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap01_intro/04_highdim/roch-mmids-intro-highdim.html">1.4. Some observations about high-dimensional data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap01_intro/exercises/roch-mmids-intro-exercises.html">1.5. Exercises</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap01_intro/05_adv/roch-mmids-intro-adv.html">1.6. Online suppplementary material</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../chap02_ls/00_intro/roch-mmids-ls-intro.html">2. Least squares: geometric, algebraic, and numerical aspects</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../chap02_ls/01_motiv/roch-mmids-ls-motiv.html">2.1. Motivating example: predicting sales</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap02_ls/02_subspaces/roch-mmids-ls-spaces.html">2.2. Background: review of vector spaces and matrix inverses</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap02_ls/03_orthog/roch-mmids-ls-orthog.html">2.3. Geometry of least squares: the orthogonal projection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap02_ls/04_qr/roch-mmids-ls-qr.html">2.4. QR decomposition and Householder transformations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap02_ls/05_regression/roch-mmids-ls-regression.html">2.5. Application: regression analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap02_ls/exercises/roch-mmids-ls-exercises.html">2.6. Exercises</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap02_ls/06_adv/roch-mmids-ls-adv.html">2.7. Online suppplementary material</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../chap06_opt/00_intro/roch-mmids-opt-intro.html">3. Optimization theory and algorithms</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-3"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../chap06_opt/01_motiv/roch-mmids-opt-motiv.html">3.1. Motivating example:  analyzing customer satisfaction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap06_opt/02_several/roch-mmids-opt-several.html">3.2. Background: review of differentiable functions of several variables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap06_opt/03_optimality/roch-mmids-opt-optimality.html">3.3. Optimality conditions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap06_opt/03part2_convexity/roch-mmids-opt-convexity.html">3.4. Convexity</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap06_opt/04_gd/roch-mmids-opt-gd.html">3.5. Gradient descent and its convergence analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap06_opt/04part2_logistic/roch-mmids-opt-logistic.html">3.6. Application: logistic regression</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap06_opt/exercises/roch-mmids-opt-exercises.html">3.7. Exercises</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap06_opt/06_adv/roch-mmids-opt-adv.html">3.8. Online suppplementary material</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="../00_intro/roch-mmids-svd-intro.html">4. Singular value decomposition</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-4"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../01_motiv/roch-mmids-svd-motiv.html">4.1. Motivating example: visualizing viral evolution</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../02_spectral/roch-mmids-svd-spectral.html">4.2. Background: review of matrix rank  and spectral decomposition</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../03_svd/roch-mmids-svd-svd.html">4.3. Approximating subspaces and the SVD</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../04_power/roch-mmids-svd-power.html">4.4. Power iteration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../05_pca/roch-mmids-svd-pca.html">4.5. Application: principal components analysis</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">4.6. Further applications of the SVD: low-rank approximations and ridge regression</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../exercises/roch-mmids-svd-exercises.html">4.7. Exercises</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../07_adv/roch-mmids-svd-adv.html">4.8. Online suppplementary material</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../chap04_specgraph/00_intro/roch-mmids-specgraph-intro.html">5. Spectral graph theory</a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-5"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../chap04_specgraph/01_motiv/roch-mmids-specgraph-motiv.html">5.1. Motivating example: uncovering social groups</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap04_specgraph/02_graph/roch-mmids-specgraph-graph.html">5.2. Background: basic concepts in graph theory</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap04_specgraph/03_extremal/roch-mmids-specgraph-extremal.html">5.3. Variational characterization of eigenvalues</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap04_specgraph/04_laplacian/roch-mmids-specgraph-laplacian.html">5.4. Spectral properties of the Laplacian matrix</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap04_specgraph/05_partitioning/roch-mmids-specgraph-partitioning.html">5.5. Application: graph partitioning via spectral clustering</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap04_specgraph/05part2_sbm/roch-mmids-specgraph-sbm.html">5.6. Erdős-Rényi random graph and stochastic blockmodel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap04_specgraph/exercises/roch-mmids-specgraph-exercises.html">5.7. Exercises</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap04_specgraph/06_adv/roch-mmids-specgraph-adv.html">5.8. Online supplementary material</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../chap07_prob/00_intro/roch-mmids-prob-intro.html">6. Probabilistic models: from simple to complex</a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-6"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../chap07_prob/01_motiv/roch-mmids-prob-motiv.html">6.1. Motivating example: tracking location</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap07_prob/02_parametric/roch-mmids-prob-parametric.html">6.2. Background: introduction to parametric families and maximum likelihood estimation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap07_prob/03_joint/roch-mmids-prob-joint.html">6.3. Modeling more complex dependencies 1: using conditional independence</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap07_prob/03part2_em/roch-mmids-prob-em.html">6.4. Modeling more complex dependencies 2: marginalizing out an unobserved variable</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap07_prob/04_kalman/roch-mmids-prob-kalman.html">6.5. Application: linear-Gaussian models and Kalman filtering</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap07_prob/exercises/roch-mmids-prob-exercises.html">6.6. Exercises</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap07_prob/06_adv/roch-mmids-prob-adv.html">6.7. Online supplementary material</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../chap05_rwmc/00_intro/roch-mmids-rwmc-intro.html">7. Random walks on graphs and Markov chains</a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-7"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../chap05_rwmc/01_motiv/roch-mmids-rwmc-motiv.html">7.1. Motivating example: discovering mathematical topics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap05_rwmc/03_mcdefs/roch-mmids-rwmc-mcdefs.html">7.2. Background: elements of finite Markov chains</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap05_rwmc/04_stat/roch-mmids-rwmc-stat.html">7.3. Limit behavior 1: stationary distributions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap05_rwmc/04part2_mclimit/roch-mmids-rwmc-mclimit.html">7.4. Limit behavior 2: convergence to equilibrium</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap05_rwmc/05_pagerank/roch-mmids-rwmc-pagerank.html">7.5. Application: random walks on graphs and PageRank</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap05_rwmc/05part2_gibbs/roch-mmids-rwmc-gibbs.html">7.6. Further applications: Gibbs sampling and generating images</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap05_rwmc/exercises/roch-mmids-rwmc-exercises.html">7.7. Exercises</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap05_rwmc/06_adv/roch-mmids-rwmc-adv.html">7.8. Online supplementary material</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../chap08_nn/00_intro/roch-mmids-nn-intro.html">8. Neural networks, backpropagation and stochastic gradient descent</a><input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-8"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../chap08_nn/01_motiv/roch-mmids-nn-motiv.html">8.1. Motivating example:  classifying natural images</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap08_nn/02_chain/roch-mmids-nn-chain.html">8.2. Background: Jacobian, chain rule, and a brief introduction to automatic differentiation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap08_nn/03_backprop/roch-mmids-nn-backprop.html">8.3. Building blocks of AI 1: backpropagation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap08_nn/04_sgd/roch-mmids-nn-sgd.html">8.4. Building blocks of AI 2: stochastic gradient descent</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap08_nn/05_nn/roch-mmids-nn-nn.html">8.5. Building blocks of AI 3: neural networks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap08_nn/exercises/roch-mmids-nn-exercises.html">8.6. Exercises</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap08_nn/06_adv/roch-mmids-nn-adv.html">8.7. Online supplementary material</a></li>
+</ul>
+</li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/MMiDS-textbook/MMiDS-textbook.github.io" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/MMiDS-textbook/MMiDS-textbook.github.io/issues/new?title=Issue%20on%20page%20%2Fchap03_svd/06_further/roch-mmids-svd-further.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/chap03_svd/06_further/roch-mmids-svd-further.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Further applications of the SVD: low-rank approximations and ridge regression</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#matrix-norms">4.6.1. Matrix norms</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#low-rank-approximation">4.6.2. Low-rank approximation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ridge-regression">4.6.3. Ridge regression</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <p><span class="math notranslate nohighlight">\(\newcommand{\bmu}{\boldsymbol{\mu}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bSigma}{\boldsymbol{\Sigma}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bfbeta}{\boldsymbol{\beta}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bflambda}{\boldsymbol{\lambda}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bgamma}{\boldsymbol{\gamma}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bsigma}{{\boldsymbol{\sigma}}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bpi}{\boldsymbol{\pi}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\btheta}{{\boldsymbol{\theta}}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bphi}{\boldsymbol{\phi}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\balpha}{\boldsymbol{\alpha}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\blambda}{\boldsymbol{\lambda}}\)</span>
+<span class="math notranslate nohighlight">\(\renewcommand{\P}{\mathbb{P}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\E}{\mathbb{E}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\indep}{\perp\!\!\!\perp} \newcommand{\bx}{\mathbf{x}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bp}{\mathbf{p}}\)</span>
+<span class="math notranslate nohighlight">\(\renewcommand{\bx}{\mathbf{x}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bX}{\mathbf{X}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\by}{\mathbf{y}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bY}{\mathbf{Y}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bz}{\mathbf{z}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bZ}{\mathbf{Z}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bw}{\mathbf{w}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bW}{\mathbf{W}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bv}{\mathbf{v}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bV}{\mathbf{V}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bfg}{\mathbf{g}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bfh}{\mathbf{h}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\horz}{\rule[.5ex]{2.5ex}{0.5pt}}\)</span>
+<span class="math notranslate nohighlight">\(\renewcommand{\S}{\mathcal{S}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\X}{\mathcal{X}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\var}{\mathrm{Var}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\pa}{\mathrm{pa}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\Z}{\mathcal{Z}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bh}{\mathbf{h}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bb}{\mathbf{b}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bc}{\mathbf{c}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\cE}{\mathcal{E}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\cP}{\mathcal{P}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bbeta}{\boldsymbol{\beta}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bLambda}{\boldsymbol{\Lambda}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\cov}{\mathrm{Cov}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bfk}{\mathbf{k}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\idx}[1]{}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\xdi}{}\)</span></p>
+<section id="further-applications-of-the-svd-low-rank-approximations-and-ridge-regression">
+<h1><span class="section-number">4.6. </span>Further applications of the SVD: low-rank approximations and ridge regression<a class="headerlink" href="#further-applications-of-the-svd-low-rank-approximations-and-ridge-regression" title="Link to this heading">#</a></h1>
+<p>In this section, we discuss further properties of the SVD. We first introduce additional matrix norms.</p>
+<section id="matrix-norms">
+<h2><span class="section-number">4.6.1. </span>Matrix norms<a class="headerlink" href="#matrix-norms" title="Link to this heading">#</a></h2>
+<p>Recall that the Frobenius norm<span class="math notranslate nohighlight">\(\idx{Frobenius norm}\xdi\)</span> of an <span class="math notranslate nohighlight">\(n \times m\)</span> matrix <span class="math notranslate nohighlight">\(A = (a_{i,j})_{i,j} \in \mathbb{R}^{n \times m}\)</span> is defined as</p>
+<div class="math notranslate nohighlight">
+\[
+\|A\|_F
+= \sqrt{\sum_{i=1}^n \sum_{j=1}^m a_{i,j}^2}.
+\]</div>
+<p>Here we introduce a different notion of matrix norm that has many uses in data science (and beyond).</p>
+<p><strong>Induced norm</strong> The Frobenius norm does not directly relate to <span class="math notranslate nohighlight">\(A\)</span> as a representation of a <a class="reference external" href="https://en.wikipedia.org/wiki/Linear_map">linear map</a>. In particular, it is desirable in many contexts to quantify how two matrices differ in terms of how they act on vectors. For instance, one is often interested in bounding quantities of the following form. Let <span class="math notranslate nohighlight">\(B, B' \in \mathbb{R}^{n \times m}\)</span> and let <span class="math notranslate nohighlight">\(\mathbf{x} \in \mathbb{R}^m\)</span> be of unit norm. What can be said about <span class="math notranslate nohighlight">\(\|B \mathbf{x} - B' \mathbf{x}\|\)</span>? Intuitively, what we would like is this: if the norm of <span class="math notranslate nohighlight">\(B - B'\)</span> is small then <span class="math notranslate nohighlight">\(B\)</span> is close to <span class="math notranslate nohighlight">\(B'\)</span> as a linear map, that is, the vector norm <span class="math notranslate nohighlight">\(\|B \mathbf{x} - B' \mathbf{x}\|\)</span> is small for any unit vector <span class="math notranslate nohighlight">\(\mathbf{x}\)</span>. The following definition provides us with such a notion. Define the unit sphere <span class="math notranslate nohighlight">\(\mathbb{S}^{m-1} = \{\mathbf{x} \in \mathbb{R}^m\,:\,\|\mathbf{x}\| = 1\}\)</span> in <span class="math notranslate nohighlight">\(m\)</span> dimensions.</p>
+<p><strong>DEFINITION</strong> <strong>(<span class="math notranslate nohighlight">\(2\)</span>-Norm)</strong> The <span class="math notranslate nohighlight">\(2\)</span>-norm of a matrix<span class="math notranslate nohighlight">\(\idx{2-norm}\xdi\)</span> <span class="math notranslate nohighlight">\(A \in \mathbb{R}^{n \times m}\)</span> is</p>
+<div class="math notranslate nohighlight">
+\[
+\|A\|_2
+= \max_{\mathbf{0} \neq \mathbf{x} \in \mathbb{R}^m} \frac{\|A \mathbf{x}\|}{\|\mathbf{x}\|} = \max_{\mathbf{x} \in \mathbb{S}^{m-1}} \|A \mathbf{x}\|.
+\]</div>
+<p><span class="math notranslate nohighlight">\(\natural\)</span></p>
+<p>The equality in the definition uses the absolute homogeneity of the vector norm. Also the definition implicitly uses the <em>Extreme Value Theorem</em>. In this case, we use the fact that the function <span class="math notranslate nohighlight">\(f(\mathbf{x}) = \|A \mathbf{x}\|\)</span> is continuous and the set <span class="math notranslate nohighlight">\(\mathbb{S}^{m-1}\)</span> is closed and bounded to conclude that there exists <span class="math notranslate nohighlight">\(\mathbf{x}^* \in \mathbb{S}^{m-1}\)</span> such that <span class="math notranslate nohighlight">\(f(\mathbf{x}^*) \geq f(\mathbf{x})\)</span> for all <span class="math notranslate nohighlight">\(\mathbf{x} \in \mathbb{S}^{m-1}\)</span>.</p>
+<p>The <span class="math notranslate nohighlight">\(2\)</span>-norm of a matrix has many other useful properties. The first four below are what makes it a <a class="reference external" href="https://en.wikipedia.org/wiki/Matrix_norm#Preliminaries">norm</a>.</p>
+<p><strong>LEMMA</strong> <strong>(Properties of the <span class="math notranslate nohighlight">\(2\)</span>-Norm)</strong> Let <span class="math notranslate nohighlight">\(A, B \in \mathbb{R}^{n \times m}\)</span> and <span class="math notranslate nohighlight">\(\alpha \in \mathbb{R}\)</span>. The following hold:</p>
+<p>a) <span class="math notranslate nohighlight">\(\|A\|_2 \geq 0\)</span></p>
+<p>b) <span class="math notranslate nohighlight">\(\|A\|_2 = 0\)</span> if and only if <span class="math notranslate nohighlight">\(A = 0\)</span></p>
+<p>c) <span class="math notranslate nohighlight">\(\|\alpha A\|_2 = |\alpha| \|A\|_2\)</span></p>
+<p>d) <span class="math notranslate nohighlight">\(\|A + B \|_2 \leq \|A\|_2 + \|B\|_2\)</span></p>
+<p>e) <span class="math notranslate nohighlight">\(\|A B \|_2 \leq \|A\|_2 \|B\|_2\)</span>.</p>
+<p>f) <span class="math notranslate nohighlight">\(\|A \mathbf{x}\| \leq \|A\|_2 \|\mathbf{x}\|\)</span>, <span class="math notranslate nohighlight">\(\forall \mathbf{0} \neq \mathbf{x} \in \mathbb{R}^m\)</span></p>
+<p><span class="math notranslate nohighlight">\(\flat\)</span></p>
+<p><em>Proof:</em> These properties all follow from the definition of the <span class="math notranslate nohighlight">\(2\)</span>-norm and the corresponding properties for the vector norm:</p>
+<ul class="simple">
+<li><p>Claims a) and f) are immediate from the definition.</p></li>
+<li><p>For b) note that <span class="math notranslate nohighlight">\(\|A\|_2 = 0\)</span> implies <span class="math notranslate nohighlight">\(\|A \mathbf{x}\|_2 = 0, \forall \mathbf{x} \in \mathbb{S}^{m-1}\)</span>, so that <span class="math notranslate nohighlight">\(A \mathbf{x} = \mathbf{0}, \forall \mathbf{x} \in \mathbb{S}^{m-1}\)</span>. In particular, <span class="math notranslate nohighlight">\(a_{ij} = \mathbf{e}_i^T A \mathbf{e}_j = 0, \forall i,j\)</span>.</p></li>
+</ul>
+<ul class="simple">
+<li><p>For c), d), e), observe that for all <span class="math notranslate nohighlight">\(\mathbf{x} \in \mathbb{S}^{m-1}\)</span></p></li>
+</ul>
+<div class="math notranslate nohighlight">
+\[
+\|\alpha A \mathbf{x}\| = |\alpha| \|A \mathbf{x}\|,
+\]</div>
+<div class="math notranslate nohighlight">
+\[\|(A+B)\mathbf{x}\|
+= \|A\mathbf{x} + B\mathbf{x}\| \leq \|A\mathbf{x}\| + \|B\mathbf{x}\|
+\leq \|A\|_2 + \|B\|_2
+\]</div>
+<div class="math notranslate nohighlight">
+\[
+\|(AB)\mathbf{x}\|
+= \|A(B\mathbf{x})\| \leq \|A\|_2 \|B\mathbf{x}\|
+\leq \|A\|_2 \|B\|_2.\]</div>
+<p>Then apply the definition of <span class="math notranslate nohighlight">\(2\)</span>-norm. For example, for ©,</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+\|\alpha A\|_2 
+&amp;= \max_{\mathbf{x} \in \mathbb{S}^{m-1}} \|\alpha A \mathbf{x}\|\\
+&amp;= \max_{\mathbf{x} \in \mathbb{S}^{m-1}} |\alpha| \|A \mathbf{x}\|\\
+&amp;= |\alpha| \max_{\mathbf{x} \in \mathbb{S}^{m-1}} \|A \mathbf{x}\|\\
+&amp;= |\alpha| \|A\|_2, 
+\end{align*}\]</div>
+<p>where we used that <span class="math notranslate nohighlight">\(|\alpha|\)</span> does not depend on <span class="math notranslate nohighlight">\(\mathbf{x}\)</span>. <span class="math notranslate nohighlight">\(\square\)</span></p>
+<p><strong>NUMERICAL CORNER:</strong> In Numpy, the Frobenius norm of a matrix can be computed using the default of the function <code class="docutils literal notranslate"><span class="pre">numpy.linalg.norm</span></code> while the induced norm can be computed using the same function with <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.linalg.norm.html"><code class="docutils literal notranslate"><span class="pre">ord</span></code> parameter set to <code class="docutils literal notranslate"><span class="pre">2</span></code></a>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">A</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">],[</span><span class="mf">0.</span><span class="p">,</span> <span class="mf">1.</span><span class="p">],[</span><span class="mf">0.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">]])</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[[1. 0.]
+ [0. 1.]
+ [0. 0.]]
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">LA</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1.4142135623730951
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">LA</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1.0
+</pre></div>
+</div>
+</div>
+</div>
+<p><span class="math notranslate nohighlight">\(\unlhd\)</span></p>
+<p><strong>Matrix norms and SVD</strong> As it turns out, the two notions of matrix norms we have introduced admit simple expressions in terms of the singular values of the matrix.</p>
+<p><strong>LEMMA</strong> <strong>(Matrix Norms and Singular Values)</strong> <span class="math notranslate nohighlight">\(\idx{matrix norms and singular values lemma}\xdi\)</span> Let <span class="math notranslate nohighlight">\(A \in \mathbb{R}^{n \times m}\)</span> be a matrix with compact SVD</p>
+<div class="math notranslate nohighlight">
+\[
+A = \sum_{\ell=1}^r \sigma_\ell \mathbf{u}_\ell \mathbf{v}_\ell^T
+\]</div>
+<p>where recall that <span class="math notranslate nohighlight">\(\sigma_1 \geq \sigma_2 \geq \cdots \sigma_r &gt; 0\)</span>. Then</p>
+<div class="math notranslate nohighlight">
+\[
+\|A\|^2_F = \sum_{\ell=1}^r \sigma_\ell^2
+\]</div>
+<p>and</p>
+<div class="math notranslate nohighlight">
+\[
+\|A\|^2_2 = \sigma_{1}^2.
+\]</div>
+<p><span class="math notranslate nohighlight">\(\flat\)</span></p>
+<p><em>Proof:</em> We will use the notation <span class="math notranslate nohighlight">\(\mathbf{v}_\ell = (v_{\ell,1},\ldots,v_{\ell,m})^T\)</span>. Using that the squared Frobenius norm of <span class="math notranslate nohighlight">\(A\)</span> is the sum of the squared norms of its columns, we have</p>
+<div class="math notranslate nohighlight">
+\[
+\|A\|^2_F
+= \left\|\sum_{\ell=1}^r \sigma_\ell \mathbf{u}_\ell \mathbf{v}_\ell^T\right\|_F^2
+= \sum_{j=1}^m \left\|\sum_{\ell=1}^r \sigma_\ell v_{\ell,j} \mathbf{u}_\ell  \right\|^2.
+\]</div>
+<p>Because the <span class="math notranslate nohighlight">\(\mathbf{u}_\ell\)</span>’s are orthonormal, this is</p>
+<div class="math notranslate nohighlight">
+\[
+\sum_{j=1}^m \sum_{\ell=1}^r  \sigma_\ell^2 v_{\ell,j}^2
+= \sum_{\ell=1}^r  \sigma_\ell^2 \left(\sum_{j=1}^m  v_{\ell,j}^2\right)
+= \sum_{\ell=1}^r  \sigma_\ell^2 \|\mathbf{v}_{\ell}\|^2
+= \sum_{\ell=1}^r  \sigma_\ell^2,
+\]</div>
+<p>where we used that the <span class="math notranslate nohighlight">\(\mathbf{v}_\ell\)</span>’s are also orthonormal.</p>
+<p>For the second claim, recall that the <span class="math notranslate nohighlight">\(2\)</span>-norm is defined as</p>
+<div class="math notranslate nohighlight">
+\[
+\|A\|_2^2
+= \max_{\mathbf{x} \in \mathbb{S}^{m-1}} \|A \mathbf{x}\|^2.
+\]</div>
+<p>We have shown previously that <span class="math notranslate nohighlight">\(\mathbf{v}_1\)</span> solves this problem. Hence <span class="math notranslate nohighlight">\(\|A\|_2^2 = \|A \mathbf{v}_1\|^2 = \sigma_1^2\)</span>. <span class="math notranslate nohighlight">\(\square\)</span></p>
+<!--ONLINE
+
+*Proof:* *(Second proof)* We give a second proof of the second claim that does not use the greedy sequence. Because the $\mathbf{u}_j$'s are orthonormal we have 
+
+\begin{align*}
+\|A \mathbf{x}\|^2
+&= \left\|\sum_{\ell=1}^r \sigma_\ell \mathbf{u}_\ell (\mathbf{v}_\ell^T \mathbf{x})\right\|^2\\
+&= \sum_{\ell=1}^r \sigma_\ell^2 \langle \mathbf{v}_\ell, \mathbf{x} \rangle^2.
+\end{align*}
+
+Here $\langle \mathbf{v}_\ell, \mathbf{x} \rangle^2 \geq 0$ for all $\ell$ and further
+
+\begin{align*}
+\sum_{\ell=1}^r \langle \mathbf{v}_\ell, \mathbf{x} \rangle^2
+&= \left\|\sum_{\ell=1}^r \langle \mathbf{v}_\ell, \mathbf{x} \rangle \mathbf{v}_\ell \right\|^2\\
+&= \left\|\mathrm{proj}_{\mathrm{row}(A)} \mathbf{x}\right\|^2,
+\end{align*}
+
+since the $\mathbf{v}_\ell$'s form an orthonormal basis of the row space of $A$. By *Pythagoras*, for a unit norm vector $\mathbf{x}$,
+
+\begin{align*}
+1 = \left\|\mathbf{x}\right\|^2
+&=  \left\|(\mathbf{x} - \mathrm{proj}_{\mathrm{row}(A)} \mathbf{x}) + \mathrm{proj}_{\mathrm{row}(A)} \mathbf{x}\right\|^2\\
+&= \left\|\mathbf{x} - \mathrm{proj}_{\mathrm{row}(A)} \mathbf{x}\right\|^2 + \left\|\mathrm{proj}_{\mathrm{row}(A)} \mathbf{x}\right\|^2
+\end{align*}
+
+where we used the orthogonality of $\mathbf{x} - \mathrm{proj}_{\mathrm{row}(A)} \mathbf{x}$ and $\mathrm{proj}_{\mathrm{row}(A)} \mathbf{x}$. That implies in particular that, necessarily, $\left\|\mathrm{proj}_{\mathrm{row}(A)} \mathbf{x}\right\|^2 \leq 1$.
+
+On the other hand, $\mathbf{v}_1$ is a unit norm vector such that
+
+$$
+\|A \mathbf{v}_1\|^2
+= \sum_{\ell=1}^r \sigma_\ell^2 \langle \mathbf{v}_\ell, \mathbf{v}_1 \rangle^2
+= \sigma_1^2.
+$$
+
+Hence
+
+$$
+\max_{\mathbf{x} \in \mathbb{S}^{m-1}} \|A \mathbf{x}\|^2 = \sigma_1^2.
+$$
+
+$\square$
+
+--><!--ONLINE 
+
+**EXAMPLE:** Let $A \in \mathbb{R}^{n \times m}$ be a matrix with compact SVD
+
+$$
+A = \sum_{\ell=1}^r \sigma_\ell \mathbf{u}_\ell \mathbf{v}_\ell^T
+$$
+
+where recall that $\sigma_1 \geq \sigma_2 \geq \cdots \sigma_r > 0$. The proof above can be used to bound the range of possible values for $\|A \mathbf{x}\|$ with $\mathbf{x}$ a unit vector. If $r < m$, then $\mathrm{null}(A)$ contains nonzero vectors and we have
+
+$$
+0\leq \|A \mathbf{x}\| \leq \sigma_1
+$$
+
+with endpoints achieved.
+
+Suppose now that $r = m$. In that case, $\mathrm{row}(A) = \mathbb{R}^m$ and the right singular vectors $\mathbf{v}_1,\ldots,\mathbf{v}_m$ form an orthonormal basis of $\mathbb{R}^m$. Hence, for any unit vector $\mathbf{x}$,
+
+$$
+\sum_{\ell=1}^m \langle \mathbf{v}_\ell, \mathbf{x} \rangle^2
+= \left\|\sum_{\ell=1}^m \langle \mathbf{v}_\ell, \mathbf{x} \rangle \mathbf{v}_\ell \right\|^2
+= \left\|\mathbf{x}\right\|^2
+= 1.
+$$
+
+As a result, we have by using $\sigma_n \leq \sigma_\ell$ for all $\ell$ that
+
+\begin{align*}
+\|A \mathbf{x}\|^2
+&= \sum_{\ell=1}^m \sigma_\ell^2 \langle \mathbf{v}_\ell, \mathbf{x} \rangle^2\\
+&\geq \sum_{\ell=1}^m \sigma_m^2 \langle \mathbf{v}_\ell, \mathbf{x} \rangle^2\\
+&= \sigma_m^2 \sum_{\ell=1}^m  \langle \mathbf{v}_\ell, \mathbf{x} \rangle^2\\
+&= \sigma_m^2.
+\end{align*}
+
+We have shown in that case that
+
+$$
+\sigma_m \leq \|A \mathbf{x}\| \leq \sigma_1.
+$$
+
+The endpoints are achieved by taking $\mathbf{x} = \mathbf{v}_m$ and $\mathbf{x} = \mathbf{v}_1$ respectively.
+
+Put differently,
+
+$$
+\min_{\mathbf{x} \in \mathbb{S}^{m-1}} \|A \mathbf{x}\| = \sigma_m
+\quad
+\text{and}
+\quad
+\max_{\mathbf{x} \in \mathbb{S}^{m-1}} \|A \mathbf{x}\| = \sigma_1.
+$$
+
+(If $\sigma_m$ denotes the smallest singular value in the *full SVD*, then the above expressions hold generally.) $\lhd$
+
+--></section>
+<section id="low-rank-approximation">
+<h2><span class="section-number">4.6.2. </span>Low-rank approximation<a class="headerlink" href="#low-rank-approximation" title="Link to this heading">#</a></h2>
+<p>Now that we have defined a notion of distance between matrices, we will consider the problem of finding a good approximation to a matrix <span class="math notranslate nohighlight">\(A\)</span> among all matrices of rank at most <span class="math notranslate nohighlight">\(k\)</span>. We will start with the Frobenius norm, which is easier to work with, and we will show later on that the solution is the same under the induced norm. The solution to this problem will be familiar. In essence, we will re-interpret our solution to the best approximating subspace as a low-rank approximation.</p>
+<p><strong>Low-rank approximation in the Frobenius norm</strong> <span class="math notranslate nohighlight">\(\idx{low-rank approximation}\xdi\)</span> From the proof of the <em>Row Rank Equals Column Rank Lemma</em>, it follows that a rank-<span class="math notranslate nohighlight">\(r\)</span> matrix <span class="math notranslate nohighlight">\(A\)</span> can be written as a sum of <span class="math notranslate nohighlight">\(r\)</span> rank-<span class="math notranslate nohighlight">\(1\)</span> matrices</p>
+<div class="math notranslate nohighlight">
+\[
+A = 
+\sum_{i=1}^r \mathbf{b}_i \mathbf{c}_i^T.
+\]</div>
+<p>We will now consider the problem of finding a “simpler” approximation to <span class="math notranslate nohighlight">\(A\)</span></p>
+<div class="math notranslate nohighlight">
+\[
+A \approx \sum_{i=1}^k \mathbf{b}'_i (\mathbf{c}'_i)^T
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(k &lt; r\)</span>. Here we measure the quality of this approximation using a matrix norm.</p>
+<p>We are ready to state our key observation. In words, the best rank-<span class="math notranslate nohighlight">\(k\)</span> approximation to <span class="math notranslate nohighlight">\(A\)</span> in Frobenius norm is obtained by projecting the rows of <span class="math notranslate nohighlight">\(A\)</span> onto a linear subspace of dimension <span class="math notranslate nohighlight">\(k\)</span>. We will come back to how one finds the best such subspace below. (<em>Hint:</em> We have already solved this problem.)</p>
+<p><strong>LEMMA</strong> <strong>(Projection and Rank-<span class="math notranslate nohighlight">\(k\)</span> Approximation)</strong> <span class="math notranslate nohighlight">\(\idx{projection and rank-k approximation lemma}\xdi\)</span> Let <span class="math notranslate nohighlight">\(A \in \mathbb{R}^{n \times m}\)</span>. For any matrix <span class="math notranslate nohighlight">\(B \in \mathbb{R}^{n \times m}\)</span> of rank <span class="math notranslate nohighlight">\(k \leq \min\{n,m\}\)</span>,</p>
+<div class="math notranslate nohighlight">
+\[
+\|A - B_{\perp}\|_F \leq \|A - B\|_F
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(B_{\perp} \in \mathbb{R}^{n \times m}\)</span> is the matrix of rank at most <span class="math notranslate nohighlight">\(k\)</span> obtained as follows. Denote row <span class="math notranslate nohighlight">\(i\)</span> of <span class="math notranslate nohighlight">\(A\)</span>, <span class="math notranslate nohighlight">\(B\)</span> and <span class="math notranslate nohighlight">\(B_{\perp}\)</span> respectively by <span class="math notranslate nohighlight">\(\boldsymbol{\alpha}_i^T\)</span>, <span class="math notranslate nohighlight">\(\mathbf{b}_{i}^T\)</span> and <span class="math notranslate nohighlight">\(\mathbf{b}_{\perp,i}^T\)</span>, <span class="math notranslate nohighlight">\(i=1,\ldots, n\)</span>. Set <span class="math notranslate nohighlight">\(\mathbf{b}_{\perp,i}\)</span> to be the orthogonal projection of <span class="math notranslate nohighlight">\(\boldsymbol{\alpha}_i\)</span> onto <span class="math notranslate nohighlight">\(\mathcal{Z} = \mathrm{span}(\mathbf{b}_1,\ldots,\mathbf{b}_n)\)</span>. <span class="math notranslate nohighlight">\(\flat\)</span></p>
+<p><em>Proof idea:</em> The square of the Frobenius norm decomposes as a sum of squared row norms. Each term in the sum is minimized by the orthogonal projection.</p>
+<p><em>Proof:</em> By definition of the Frobenius norm, we note that</p>
+<div class="math notranslate nohighlight">
+\[
+\|A - B\|_F^2
+= \sum_{i=1}^n \sum_{j=1}^m (a_{i,j} - b_{i,j})^2 
+= \sum_{i=1}^n \|\boldsymbol{\alpha}_i - \mathbf{b}_{i}\|^2
+\]</div>
+<p>and similarly for <span class="math notranslate nohighlight">\(\|A - B_{\perp}\|_F\)</span>. We make two observations:</p>
+<ol class="arabic simple">
+<li><p>Because the orthogonal projection of <span class="math notranslate nohighlight">\(\boldsymbol{\alpha}_i\)</span> onto <span class="math notranslate nohighlight">\(\mathcal{Z}\)</span> minimizes the distance to <span class="math notranslate nohighlight">\(\mathcal{Z}\)</span>, it follows that term by term <span class="math notranslate nohighlight">\(\|\boldsymbol{\alpha}_i - \mathbf{b}_{\perp,i}\| \leq \|\boldsymbol{\alpha}_i - \mathbf{b}_{i}\|\)</span> so that</p></li>
+</ol>
+<div class="math notranslate nohighlight">
+\[
+\|A - B_\perp\|_F^2 =
+\sum_{i=1}^n \|\boldsymbol{\alpha}_i - \mathbf{b}_{\perp,i}\|^2
+\leq \sum_{i=1}^n \|\boldsymbol{\alpha}_i - \mathbf{b}_{i}\|^2
+= \|A - B\|_F^2.
+\]</div>
+<ol class="arabic simple" start="2">
+<li><p>Moreover, because the projections satisfy <span class="math notranslate nohighlight">\(\mathbf{b}_{\perp,i} \in \mathcal{Z}\)</span> for all <span class="math notranslate nohighlight">\(i\)</span>, <span class="math notranslate nohighlight">\(\mathrm{row}(B_\perp) \subseteq \mathrm{row}(B)\)</span> and, hence, the rank of <span class="math notranslate nohighlight">\(B_\perp\)</span> is at most the rank of <span class="math notranslate nohighlight">\(B\)</span>.</p></li>
+</ol>
+<p>That concludes the proof. <span class="math notranslate nohighlight">\(\square\)</span></p>
+<p>Recall the approximating subspace problem. That is, think of the rows <span class="math notranslate nohighlight">\(\boldsymbol{\alpha}_i^T\)</span> of <span class="math notranslate nohighlight">\(A \in \mathbb{R}^{n \times m}\)</span> as a collection of <span class="math notranslate nohighlight">\(n\)</span> data points in <span class="math notranslate nohighlight">\(\mathbb{R}^m\)</span>. We are looking for a linear subspace <span class="math notranslate nohighlight">\(\mathcal{Z}\)</span> that minimizes <span class="math notranslate nohighlight">\(\sum_{i=1}^n \|\boldsymbol{\alpha}_i - \mathrm{proj}_\mathcal{Z}(\boldsymbol{\alpha}_i)\|^2\)</span> over all linear subspaces of <span class="math notranslate nohighlight">\(\mathbb{R}^m\)</span> of dimension at most <span class="math notranslate nohighlight">\(k\)</span>. By the <em>Projection and Rank-<span class="math notranslate nohighlight">\(k\)</span> Approximation Lemma</em>, this problem is equivalent to finding a matrix <span class="math notranslate nohighlight">\(B\)</span> that minimizes <span class="math notranslate nohighlight">\(\|A - B\|_F\)</span> among all matrices in <span class="math notranslate nohighlight">\(\mathbb{R}^{n \times m}\)</span> of rank at most <span class="math notranslate nohighlight">\(k\)</span>. Of course we have solved this problem before.</p>
+<p>Let <span class="math notranslate nohighlight">\(A \in \mathbb{R}^{n \times m}\)</span> be a matrix with SVD <span class="math notranslate nohighlight">\(A = \sum_{j=1}^r \sigma_j \mathbf{u}_j \mathbf{v}_j^T\)</span>. For <span class="math notranslate nohighlight">\(k &lt; r\)</span>, truncate the sum at the <span class="math notranslate nohighlight">\(k\)</span>-th term <span class="math notranslate nohighlight">\(A_k = \sum_{j=1}^k \sigma_j \mathbf{u}_j \mathbf{v}_j^T\)</span>. The rank of <span class="math notranslate nohighlight">\(A_k\)</span> is exactly <span class="math notranslate nohighlight">\(k\)</span>. Indeed, by construction,</p>
+<ol class="arabic simple">
+<li><p>the vectors <span class="math notranslate nohighlight">\(\{\mathbf{u}_j\,:\,j = 1,\ldots,k\}\)</span> are orthonormal, and</p></li>
+<li><p>since <span class="math notranslate nohighlight">\(\sigma_j &gt; 0\)</span> for <span class="math notranslate nohighlight">\(j=1,\ldots,k\)</span> and the vectors <span class="math notranslate nohighlight">\(\{\mathbf{v}_j\,:\,j = 1,\ldots,k\}\)</span> are orthonormal, <span class="math notranslate nohighlight">\(\{\mathbf{u}_j\,:\,j = 1,\ldots,k\}\)</span> spans the column space of <span class="math notranslate nohighlight">\(A_k\)</span>.</p></li>
+</ol>
+<p>We have shown before that <span class="math notranslate nohighlight">\(A_k\)</span> is the best approximation to <span class="math notranslate nohighlight">\(A\)</span> among matrices of rank at most <span class="math notranslate nohighlight">\(k\)</span> in Frobenius norm. Specifically, the <em>Greedy Finds Best Fit Theorem</em> implies that, for any matrix <span class="math notranslate nohighlight">\(B \in \mathbb{R}^{n \times m}\)</span> of rank at most <span class="math notranslate nohighlight">\(k\)</span>,</p>
+<div class="math notranslate nohighlight">
+\[
+\|A - A_k\|_F \leq \|A - B\|_F.
+\]</div>
+<p>This result is known as the <em>Eckart-Young Theorem</em><span class="math notranslate nohighlight">\(\idx{Eckart-Young theorem}\xdi\)</span>. It also holds in the induced <span class="math notranslate nohighlight">\(2\)</span>-norm, as we show next.</p>
+<p><strong>Low-rank approximation in the induced norm</strong> We show in this section that the same holds in the induced norm. First, some observations.</p>
+<p><strong>LEMMA</strong> <strong>(Matrix Norms and Singular Values: Truncation)</strong> Let <span class="math notranslate nohighlight">\(A \in \mathbb{R}^{n \times m}\)</span> be a matrix with SVD</p>
+<div class="math notranslate nohighlight">
+\[
+A = \sum_{j=1}^r \sigma_j \mathbf{u}_j \mathbf{v}_j^T
+\]</div>
+<p>where recall that <span class="math notranslate nohighlight">\(\sigma_1 \geq \sigma_2 \geq \cdots \sigma_r &gt; 0\)</span> and let <span class="math notranslate nohighlight">\(A_k\)</span> be the truncation defined above. Then</p>
+<div class="math notranslate nohighlight">
+\[
+\|A - A_k\|^2_F = \sum_{j=k+1}^r \sigma_j^2
+\]</div>
+<p>and</p>
+<div class="math notranslate nohighlight">
+\[
+\|A - A_k\|^2_2 = \sigma_{k+1}^2.
+\]</div>
+<p><span class="math notranslate nohighlight">\(\flat\)</span></p>
+<p><em>Proof:</em> For the first claim, by definition, summing over the columns of <span class="math notranslate nohighlight">\(A - A_k\)</span></p>
+<div class="math notranslate nohighlight">
+\[
+\|A - A_k\|^2_F
+= \left\|\sum_{j=k+1}^r \sigma_j \mathbf{u}_j \mathbf{v}_j^T\right\|_F^2
+= \sum_{i=1}^m \left\|\sum_{j=k+1}^r \sigma_j v_{j,i} \mathbf{u}_j  \right\|^2.
+\]</div>
+<p>Because the <span class="math notranslate nohighlight">\(\mathbf{u}_j\)</span>’s are orthonormal, this is</p>
+<div class="math notranslate nohighlight">
+\[
+\sum_{i=1}^m \sum_{j=k+1}^r  \sigma_j^2 v_{j,i}^2
+= \sum_{j=k+1}^r  \sigma_j^2 \left(\sum_{i=1}^m  v_{j,i}^2\right)
+= \sum_{j=k+1}^r  \sigma_j^2
+\]</div>
+<p>where we used that the <span class="math notranslate nohighlight">\(\mathbf{v}_j\)</span>’s are also orthonormal.</p>
+<p>For the second claim, recall that the induced norm is defined as</p>
+<div class="math notranslate nohighlight">
+\[
+\|B\|_2
+= \max_{\mathbf{x} \in \mathbb{S}^{m-1}} \|B \mathbf{x}\|.
+\]</div>
+<p>For any <span class="math notranslate nohighlight">\(\mathbf{x} \in \mathbb{S}^{m-1}\)</span></p>
+<div class="math notranslate nohighlight">
+\[
+\left\|(A - A_k)\mathbf{x}\right\|^2 
+= \left\| \sum_{j=k+1}^r \sigma_j \mathbf{u}_j (\mathbf{v}_j^T \mathbf{x}) \right\|^2
+= \sum_{j=k+1}^r \sigma_j^2 \langle \mathbf{v}_j, \mathbf{x}\rangle^2.
+\]</div>
+<p>Because the <span class="math notranslate nohighlight">\(\sigma_j\)</span>’s are in decreasing order, this is maximized when
+<span class="math notranslate nohighlight">\(\langle \mathbf{v}_j, \mathbf{x}\rangle = 1\)</span> if <span class="math notranslate nohighlight">\(j=k+1\)</span> and <span class="math notranslate nohighlight">\(0\)</span> otherwise. That is, we take <span class="math notranslate nohighlight">\(\mathbf{x} = \mathbf{v}_{k+1}\)</span> and the norm is then <span class="math notranslate nohighlight">\(\sigma_{k+1}^2\)</span>, as claimed. <span class="math notranslate nohighlight">\(\square\)</span></p>
+<p><strong>THEOREM</strong> <strong>(Low-Rank Approximation in the Induced Norm)</strong> <span class="math notranslate nohighlight">\(\idx{low-rank approximation in the induced norm theorem}\xdi\)</span> Let <span class="math notranslate nohighlight">\(A \in \mathbb{R}^{n \times m}\)</span> be a matrix with SVD</p>
+<div class="math notranslate nohighlight">
+\[
+A = \sum_{j=1}^r \sigma_j \mathbf{u}_j \mathbf{v}_j^T
+\]</div>
+<p>and let <span class="math notranslate nohighlight">\(A_k\)</span> be the truncation defined above with <span class="math notranslate nohighlight">\(k &lt; r\)</span>. For any matrix <span class="math notranslate nohighlight">\(B \in \mathbb{R}^{n \times m}\)</span> of rank at most <span class="math notranslate nohighlight">\(k\)</span>,</p>
+<div class="math notranslate nohighlight">
+\[
+\|A - A_k\|_2 \leq \|A - B\|_2.
+\]</div>
+<p><span class="math notranslate nohighlight">\(\sharp\)</span></p>
+<p><em>Proof idea:</em> We know that <span class="math notranslate nohighlight">\(\|A - A_k\|_2^2 = \sigma_{k+1}^2\)</span>. So we want to lower bound <span class="math notranslate nohighlight">\(\|A - B\|_2^2\)</span> by <span class="math notranslate nohighlight">\(\sigma_{k+1}^2\)</span>. For that, we have to find an appropriate <span class="math notranslate nohighlight">\(\mathbf{z}\)</span> for any given <span class="math notranslate nohighlight">\(B\)</span> of rank at most <span class="math notranslate nohighlight">\(k\)</span>. The idea is to take a vector <span class="math notranslate nohighlight">\(\mathbf{z}\)</span> in the intersection of the null space of <span class="math notranslate nohighlight">\(B\)</span> and the span of the singular vectors <span class="math notranslate nohighlight">\(\mathbf{v}_1,\ldots,\mathbf{v}_{k+1}\)</span>. By the former, the squared norm of <span class="math notranslate nohighlight">\((A - B)\mathbf{z}\)</span> is equal to the squared norm of <span class="math notranslate nohighlight">\(A\mathbf{z}\)</span> which lower bounds <span class="math notranslate nohighlight">\(\|A\|_2^2\)</span>. By the latter, <span class="math notranslate nohighlight">\(\|A \mathbf{z}\|^2\)</span> is at least <span class="math notranslate nohighlight">\(\sigma_{k+1}^2\)</span>.</p>
+<p><em>Proof:</em> By the <em>Rank-Nullity Theorem</em>, the dimension of <span class="math notranslate nohighlight">\(\mathrm{null}(B)\)</span> is at least <span class="math notranslate nohighlight">\(m-k\)</span> so there is a unit vector <span class="math notranslate nohighlight">\(\mathbf{z}\)</span> in the intersection</p>
+<div class="math notranslate nohighlight">
+\[
+\mathbf{z} \in \mathrm{null}(B) \cap \mathrm{span}(\mathbf{v}_1,\ldots,\mathbf{v}_{k+1}).
+\]</div>
+<p>(Prove it!) Then <span class="math notranslate nohighlight">\((A-B)\mathbf{z} = A\mathbf{z}\)</span> since <span class="math notranslate nohighlight">\(\mathbf{z} \in \mathrm{null}(B)\)</span>. Also since  <span class="math notranslate nohighlight">\(\mathbf{z} \in \mathrm{span}(\mathbf{v}_1,\ldots,\mathbf{v}_{k+1})\)</span>, and therefore orthogonal to <span class="math notranslate nohighlight">\(\mathbf{v}_{k+2},\ldots,\mathbf{v}_r\)</span>, we have</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+\|(A-B)\mathbf{z}\|^2
+&amp;= \|A\mathbf{z}\|^2\\
+&amp;= \left\|\sum_{j=1}^r \sigma_j \mathbf{u}_j \mathbf{v}_j^T\mathbf{z}\right\|^2\\
+&amp;= \left\|\sum_{j=1}^{k+1} \sigma_j \mathbf{u}_j \mathbf{v}_j^T\mathbf{z}\right\|^2\\
+&amp;= \sum_{j=1}^{k+1} \sigma_j^2 \langle \mathbf{v}_j, \mathbf{z}\rangle^2\\
+&amp;\geq \sigma_{k+1}^2 \sum_{j=1}^{k+1} \langle \mathbf{v}_j, \mathbf{z}\rangle^2\\
+&amp;= \sigma_{k+1}^2.
+\end{align*}\]</div>
+<p>By the <em>Matrix Norms and Singular Values Lemma</em>, <span class="math notranslate nohighlight">\(\sigma_{k+1}^2 = \|A - A_k\|_2\)</span> and we are done. <span class="math notranslate nohighlight">\(\square\)</span></p>
+<p><strong>An application: Why project?</strong> We return to <span class="math notranslate nohighlight">\(k\)</span>-means clustering and why projecting to a lower-dimensional subspace can produce better results. We prove a simple inequality that provides some insight. Quoting [BHK, Section 7.5.1]:</p>
+<blockquote>
+<div><p>[…] let’s understand the central advantage of doing the projection to [the top <span class="math notranslate nohighlight">\(k\)</span> right singular vectors]. It is simply that for any reasonable (unknown) clustering of data points, the projection brings data points closer to their cluster centers.</p>
+</div></blockquote>
+<p>To elaborate, suppose we have <span class="math notranslate nohighlight">\(n\)</span> data points in <span class="math notranslate nohighlight">\(d\)</span> dimensions in the form of the rows <span class="math notranslate nohighlight">\(\mathbf{a}_i^T\)</span>, <span class="math notranslate nohighlight">\(i=1\ldots, n\)</span>, of matrix <span class="math notranslate nohighlight">\(A \in \mathbb{A}^{n \times d}\)</span>, where we assume that <span class="math notranslate nohighlight">\(n &gt; d\)</span> and that <span class="math notranslate nohighlight">\(A\)</span> has full column rank. Imagine these data points come from an unknown ground-truth <span class="math notranslate nohighlight">\(k\)</span>-clustering assignment <span class="math notranslate nohighlight">\(g(i) \in [k]\)</span>, <span class="math notranslate nohighlight">\(i = 1,\ldots, n\)</span>, with corresponding unknown centers <span class="math notranslate nohighlight">\(\mathbf{c}_j\)</span>, <span class="math notranslate nohighlight">\(j = 1,\ldots, k\)</span>, for <span class="math notranslate nohighlight">\(g(i) = j\)</span>. Let <span class="math notranslate nohighlight">\(C \in \mathbb{R}^{n \times d}\)</span> be the corresponding matrix, that is, row <span class="math notranslate nohighlight">\(i\)</span> of <span class="math notranslate nohighlight">\(C\)</span> is <span class="math notranslate nohighlight">\(\mathbf{c}_j^T\)</span> if <span class="math notranslate nohighlight">\(g(i) = j\)</span>. The <span class="math notranslate nohighlight">\(k\)</span>-means objective of the true clustering is then</p>
+<div class="amsmath math notranslate nohighlight" id="equation-92b257e3-e9b3-4527-8133-5c14048e3f49">
+<span class="eqno">(4.1)<a class="headerlink" href="#equation-92b257e3-e9b3-4527-8133-5c14048e3f49" title="Permalink to this equation">#</a></span>\[\begin{align}
+\sum_{j\in [k]} \sum_{i:g(i)=j} \|\mathbf{a}_i - \mathbf{c}_{j}\|^2
+&amp;= \sum_{j\in [k]} \sum_{i:g(i)=j} \sum_{\ell=1}^d (a_{i,\ell} - c_{j,\ell})^2\\
+&amp;= \sum_{i=1}^n \sum_{\ell=1}^d (a_{i,\ell} - c_{g(i),\ell})^2\\
+&amp;= \|A - C\|_F^2.
+\end{align}\]</div>
+<p>The matrix <span class="math notranslate nohighlight">\(A\)</span> has an SVD <span class="math notranslate nohighlight">\(A = \sum_{j=1}^r \sigma_j \mathbf{u}_j \mathbf{v}_j^T\)</span> and for <span class="math notranslate nohighlight">\(k &lt; r\)</span> we have the truncation <span class="math notranslate nohighlight">\(A_k = \sum_{j=1}^k \sigma_j \mathbf{u}_j \mathbf{v}_j^T\)</span>. It corresponds to projecting each row of <span class="math notranslate nohighlight">\(A\)</span> onto the linear subspace spanned by the first <span class="math notranslate nohighlight">\(k\)</span> right singular vectors <span class="math notranslate nohighlight">\(\mathbf{v}_1, \ldots, \mathbf{v}_k\)</span>. To see this, note that the <span class="math notranslate nohighlight">\(i\)</span>-th row of <span class="math notranslate nohighlight">\(A\)</span> is <span class="math notranslate nohighlight">\(\boldsymbol{\alpha}_i^T = \sum_{j=1}^r \sigma_j u_{j,i} \mathbf{v}_j^T\)</span> and that, because the <span class="math notranslate nohighlight">\(\mathbf{v}_j\)</span>’s are linearly independent and in particular <span class="math notranslate nohighlight">\(\mathbf{v}_1,\ldots,\mathbf{v}_k\)</span> is an orthonormal basis of its span, the projection of <span class="math notranslate nohighlight">\(\boldsymbol{\alpha}_i\)</span> onto <span class="math notranslate nohighlight">\(\mathrm{span}(\mathbf{v}_1,\ldots,\mathbf{v}_k)\)</span> is</p>
+<div class="math notranslate nohighlight">
+\[
+\sum_{\ell=1}^k  \mathbf{v}_\ell \left\langle\sum_{j=1}^r \sigma_j u_{j,i} \mathbf{v}_j,\mathbf{v}_\ell\right\rangle
+= \sum_{\ell=1}^k \sigma_\ell u_{\ell,i} \mathbf{v}_\ell
+\]</div>
+<p>which is the <span class="math notranslate nohighlight">\(i\)</span>-th row of <span class="math notranslate nohighlight">\(A_k\)</span>. The <span class="math notranslate nohighlight">\(k\)</span>-means objective of <span class="math notranslate nohighlight">\(A_k\)</span> with respect to the ground-truth centers <span class="math notranslate nohighlight">\(\mathbf{c}_j\)</span>, <span class="math notranslate nohighlight">\(j=1,\ldots,k\)</span>, is <span class="math notranslate nohighlight">\(\|A_k - C\|_F^2\)</span>.</p>
+<p>One more observation: the rank of <span class="math notranslate nohighlight">\(C\)</span> is at most <span class="math notranslate nohighlight">\(k\)</span>. Indeed, there are <span class="math notranslate nohighlight">\(k\)</span> different rows in <span class="math notranslate nohighlight">\(C\)</span> so its row rank is <span class="math notranslate nohighlight">\(k\)</span> if these different rows are linearly independent and less than <span class="math notranslate nohighlight">\(k\)</span> otherwise.</p>
+<p><strong>THEOREM</strong> <strong>(Why Project)</strong> <span class="math notranslate nohighlight">\(\idx{why project theorem}\xdi\)</span> Let <span class="math notranslate nohighlight">\(A \in \mathbb{A}^{n \times d}\)</span> be a matrix
+and let <span class="math notranslate nohighlight">\(A_k\)</span> be the truncation above. For any matrix <span class="math notranslate nohighlight">\(C \in \mathbb{R}^{n \times d}\)</span> of rank <span class="math notranslate nohighlight">\(\leq k\)</span>,</p>
+<div class="math notranslate nohighlight">
+\[
+\|A_k - C\|_F^2 \leq 8 k \|A - C\|_2^2.
+\]</div>
+<p><span class="math notranslate nohighlight">\(\sharp\)</span></p>
+<p>The content of this inequality is the following. The quantity <span class="math notranslate nohighlight">\(\|A_k - C\|_F^2\)</span> is the <span class="math notranslate nohighlight">\(k\)</span>-means objective of the projection <span class="math notranslate nohighlight">\(A_k\)</span> with respect to the true centers, that is, the sum of the squared distances to the centers. By the <em>Matrix Norms and Singular Values Lemma</em>, the inequality above gives that</p>
+<div class="math notranslate nohighlight">
+\[
+\|A_k - C\|_F^2 \leq 8 k \sigma_1(A - C)^2,
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(\sigma_j(A - C)\)</span> is the <span class="math notranslate nohighlight">\(j\)</span>-th singular value of <span class="math notranslate nohighlight">\(A - C\)</span>. On the other hand, by the same lemma, the <span class="math notranslate nohighlight">\(k\)</span>-means objective of the un-projected data is</p>
+<div class="math notranslate nohighlight">
+\[
+\|A - C\|_F^2 = \sum_{j=1}^{\mathrm{rk}(A-C)} \sigma_j(A - C)^2.
+\]</div>
+<p>If the rank of <span class="math notranslate nohighlight">\(A-C\)</span> is much larger than <span class="math notranslate nohighlight">\(k\)</span> and the singular values of <span class="math notranslate nohighlight">\(A-C\)</span> decay slowly, then the latter quantity may be much larger. In other words, projecting may bring the data points closer to their true centers, potentially making it easier to cluster them.</p>
+<p><em>Proof:</em> <em>(Why Project)</em> We have shown previously that, for any matrices <span class="math notranslate nohighlight">\(A, B \in \mathbb{R}^{n \times m}\)</span>, the rank of their sum is less or equal than the sum of their ranks, that is, <span class="math notranslate nohighlight">\(\mathrm{rk}(A+B) \leq \mathrm{rk}(A) + \mathrm{rk}(B)\)</span>. So the rank of the difference <span class="math notranslate nohighlight">\(A_k - C\)</span> is at most the sum of the ranks</p>
+<div class="math notranslate nohighlight">
+\[
+\mathrm{rk}(A_k - C)
+\leq \mathrm{rk}(A_k) + \mathrm{rk}(-C) \leq 2 k
+\]</div>
+<p>where we used that the rank of <span class="math notranslate nohighlight">\(A_k\)</span> is <span class="math notranslate nohighlight">\(k\)</span> and the rank of <span class="math notranslate nohighlight">\(C\)</span> is <span class="math notranslate nohighlight">\(\leq k\)</span> since it has <span class="math notranslate nohighlight">\(k\)</span> distinct rows. By the <em>Matrix Norms and Singular Values Lemma</em>,</p>
+<div class="math notranslate nohighlight">
+\[
+\|A_k - C\|_F^2 \leq 2k \|A_k - C\|_2^2. 
+\]</div>
+<p>By the triangle inequality for matrix norms,</p>
+<div class="math notranslate nohighlight">
+\[
+\|A_k - C\|_2
+\leq \|A_k - A\|_2 + \|A - C\|_2.
+\]</div>
+<p>By the <em>Low-Rank Approximation in the Induced Norm Theorem</em>,</p>
+<div class="math notranslate nohighlight">
+\[
+\|A - A_k\|_2
+\leq \|A - C\|_2
+\]</div>
+<p>since <span class="math notranslate nohighlight">\(C\)</span> has rank at most <span class="math notranslate nohighlight">\(k\)</span>. Putting these three inequalities together,</p>
+<div class="math notranslate nohighlight">
+\[
+\|A_k - C\|_F^2 
+\leq 2k (2 \|A - C\|_2)^2
+= 8k \|A - C\|_2^2. 
+\]</div>
+<p><span class="math notranslate nohighlight">\(\square\)</span></p>
+<p><strong>NUMERICAL CORNER:</strong> We return to our example with the two Gaussian clusters. We use function producing two separate clusters.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">two_separate_clusters</span><span class="p">(</span><span class="n">rng</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">w</span><span class="p">):</span>
+    
+    <span class="n">mu0</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(([</span><span class="n">w</span><span class="p">],</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">d</span><span class="o">-</span><span class="mi">1</span><span class="p">)))</span>
+    <span class="n">mu1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(([</span><span class="o">-</span><span class="n">w</span><span class="p">],</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">d</span><span class="o">-</span><span class="mi">1</span><span class="p">)))</span>
+    
+    <span class="n">X0</span> <span class="o">=</span> <span class="n">mmids</span><span class="o">.</span><span class="n">spherical_gaussian</span><span class="p">(</span><span class="n">rng</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">mu0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">X1</span> <span class="o">=</span> <span class="n">mmids</span><span class="o">.</span><span class="n">spherical_gaussian</span><span class="p">(</span><span class="n">rng</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">mu1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+    
+    <span class="k">return</span> <span class="n">X0</span><span class="p">,</span> <span class="n">X1</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>We first generate the data.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">seed</span> <span class="o">=</span> <span class="mi">535</span>
+<span class="n">rng</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">(</span><span class="n">seed</span><span class="p">)</span>
+<span class="n">d</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">w</span> <span class="o">=</span> <span class="mi">1000</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mf">3.</span>
+<span class="n">X1</span><span class="p">,</span> <span class="n">X2</span> <span class="o">=</span> <span class="n">two_separate_clusters</span><span class="p">(</span><span class="n">rng</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">w</span><span class="p">)</span>
+<span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">((</span><span class="n">X1</span><span class="p">,</span> <span class="n">X2</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>In reality, we cannot compute the matrix norms of <span class="math notranslate nohighlight">\(X-C\)</span> and <span class="math notranslate nohighlight">\(X_k-C\)</span> as the true centers are not known. But, because this is simulated data, we happen to know the truth and we can check the validity of our results in this case. The centers are:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">C1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">stack</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(([</span><span class="o">-</span><span class="n">w</span><span class="p">],</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">d</span><span class="o">-</span><span class="mi">1</span><span class="p">)))</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">)])</span>
+<span class="n">C2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">stack</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(([</span><span class="n">w</span><span class="p">],</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">d</span><span class="o">-</span><span class="mi">1</span><span class="p">)))</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">)])</span>
+<span class="n">C</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">((</span><span class="n">C1</span><span class="p">,</span> <span class="n">C2</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>We use <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.linalg.svd.html"><code class="docutils literal notranslate"><span class="pre">numpy.linalg.svd</span></code></a> function to compute the norms from the formulas in the <em>Matrix Norms and Singular Values Lemma</em>. First, we observe that the singular values of <span class="math notranslate nohighlight">\(X-C\)</span> are decaying slowly.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">uc</span><span class="p">,</span> <span class="n">sc</span><span class="p">,</span> <span class="n">vhc</span> <span class="o">=</span> <span class="n">LA</span><span class="o">.</span><span class="n">svd</span><span class="p">(</span><span class="n">X</span><span class="o">-</span><span class="n">C</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">sc</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="s1">&#39;k&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/b7eb936e196aac8ee29824d2babe0e0558a263ee523864ceb42a88a1dc9b8bcf.png" src="../../_images/b7eb936e196aac8ee29824d2babe0e0558a263ee523864ceb42a88a1dc9b8bcf.png" />
+</div>
+</div>
+<p>The <span class="math notranslate nohighlight">\(k\)</span>-means objective with respect to the true centers under the full-dimensional data is:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">sc</span><span class="o">**</span><span class="mi">2</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>207905.47916782406
+</pre></div>
+</div>
+</div>
+</div>
+<p>while the square of the top singular value of <span class="math notranslate nohighlight">\(X-C\)</span> is only:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">sc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>8258.19604762502
+</pre></div>
+</div>
+</div>
+</div>
+<p>Finally, we compute the <span class="math notranslate nohighlight">\(k\)</span>-means objective with respect to the true centers under the projected one-dimensional data:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">u</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="n">vh</span> <span class="o">=</span> <span class="n">LA</span><span class="o">.</span><span class="n">svd</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">((</span><span class="n">s</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">outer</span><span class="p">(</span><span class="n">u</span><span class="p">[:,</span><span class="mi">0</span><span class="p">],</span><span class="n">vh</span><span class="p">[:,</span><span class="mi">0</span><span class="p">])</span> <span class="o">-</span> <span class="n">C</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>8099.057045408984
+</pre></div>
+</div>
+</div>
+</div>
+<p><span class="math notranslate nohighlight">\(\unlhd\)</span></p>
+<p><strong>CHAT &amp; LEARN</strong> Ask your AI chatbot about the applications of SVD in recommendation systems. How is it used to predict user preferences? <span class="math notranslate nohighlight">\(\ddagger\)</span></p>
+<p><strong>CHAT &amp; LEARN</strong> Ask your favorite AI chatbot about nonnegative matrix factorization (NMF) and how it compares to SVD. What are the key differences in their constraints and applications? How does NMF handle interpretability in topics like text analysis or image processing? Explore some algorithms used to compute NMF. <span class="math notranslate nohighlight">\(\ddagger\)</span></p>
+</section>
+<section id="ridge-regression">
+<h2><span class="section-number">4.6.3. </span>Ridge regression<a class="headerlink" href="#ridge-regression" title="Link to this heading">#</a></h2>
+<p>Here we consider what is called Tikhonov regularization<span class="math notranslate nohighlight">\(\idx{Tikhonov regularization}\xdi\)</span>, an idea that idea turns out to be useful in overdetermined linear systems, particularly when the columns of the matrix <span class="math notranslate nohighlight">\(A\)</span> are linearly dependent or close to linearly dependent (which is sometimes referred as <a class="reference external" href="https://en.wikipedia.org/wiki/Multicollinearity">multicollinearity</a><span class="math notranslate nohighlight">\(\idx{multicollinearity}\xdi\)</span> in statistics). It trades off minimizing the fit to the data versus minimizing the norm of the solution. More precisely, for a parameter <span class="math notranslate nohighlight">\(\lambda &gt; 0\)</span> to be chosen, we solve<span class="math notranslate nohighlight">\(\idx{ridge regression}\xdi\)</span></p>
+<div class="math notranslate nohighlight">
+\[
+\min_{\mathbf{x} \in \mathbb{R}^m} \|A \mathbf{x} - \mathbf{b}\|_2^2 + \lambda \|\mathbf{x}\|_2^2.
+\]</div>
+<p>The second term is referred to as an <span class="math notranslate nohighlight">\(L_2\)</span>-regularizer<span class="math notranslate nohighlight">\(\idx{L2-regularization}\xdi\)</span>. Here <span class="math notranslate nohighlight">\(A \in \mathbb{R}^{n\times m}\)</span> with <span class="math notranslate nohighlight">\(n \geq m\)</span> and <span class="math notranslate nohighlight">\(\mathbf{b} \in \mathbb{R}^n\)</span>.</p>
+<p>To solve this optimization problem, we show that the objective function is strongly convex. We then find its unique stationary point. Rewriting the objective in quadratic function form</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+f(\mathbf{x})
+&amp;= \|A \mathbf{x} - \mathbf{b}\|_2^2 + \lambda \|\mathbf{x}\|_2^2\\
+&amp;=  \mathbf{x}^T A^T A \mathbf{x} - 2 \mathbf{b}^T A \mathbf{x} + \mathbf{b}^T \mathbf{b}
++ \lambda \mathbf{x}^T \mathbf{x}\\
+&amp;= \mathbf{x}^T (A^T A + \lambda I_{m \times m}) \mathbf{x} - 2 \mathbf{b}^T A \mathbf{x} + \mathbf{b}^T \mathbf{b}\\
+&amp;= \frac{1}{2} \mathbf{x}^T  P \mathbf{x} + \mathbf{q}^T \mathbf{x} + r,
+\end{align*}\]</div>
+<p>where <span class="math notranslate nohighlight">\(P = 2 (A^T A + \lambda I_{m \times m})\)</span> is symmetric, <span class="math notranslate nohighlight">\(\mathbf{q} = - 2 A^T \mathbf{b}\)</span>, and <span class="math notranslate nohighlight">\(r= \mathbf{b}^T \mathbf{b} = \|\mathbf{b}\|^2\)</span>.</p>
+<p>As we previously computed, the Hessian of <span class="math notranslate nohighlight">\(f\)</span> is <span class="math notranslate nohighlight">\(H_f(\mathbf{x})= P\)</span>. Now comes a key observation. The matrix <span class="math notranslate nohighlight">\(P\)</span> is positive definite whenever <span class="math notranslate nohighlight">\(\lambda &gt; 0\)</span>. Indeed, for any <span class="math notranslate nohighlight">\(\mathbf{z} \in \mathbb{R}^m\)</span>,</p>
+<div class="math notranslate nohighlight">
+\[
+\mathbf{z}^T [2 (A^T A + \lambda I_{m \times m})] \mathbf{z}
+= 2 \|A \mathbf{z}\|_2^2 + 2 \lambda \|\mathbf{z}\|_2^2 &gt; 0.
+\]</div>
+<p>Let <span class="math notranslate nohighlight">\(\mu = 2 \lambda &gt; 0\)</span>. Then <span class="math notranslate nohighlight">\(f\)</span> is <span class="math notranslate nohighlight">\(\mu\)</span>-strongly convex. This holds whether or not the columns of <span class="math notranslate nohighlight">\(A\)</span> are linearly independent.</p>
+<p>The stationary points are easily characterized. Recall that the gradient is <span class="math notranslate nohighlight">\(\nabla f(\mathbf{x}) = P \mathbf{x} + \mathbf{q}\)</span>. Equating to <span class="math notranslate nohighlight">\(\mathbf{0}\)</span> leads to the system</p>
+<div class="math notranslate nohighlight">
+\[
+2 (A^T A + \lambda I_{m \times m}) \mathbf{x} - 2 A^T \mathbf{b} = \mathbf{0},
+\]</div>
+<p>that is</p>
+<div class="math notranslate nohighlight">
+\[
+\mathbf{x}^{**}
+= (A^T A + \lambda I_{m \times m})^{-1} A^T \mathbf{b}.
+\]</div>
+<p>The matrix in parenthesis is invertible as it is <span class="math notranslate nohighlight">\(1/2\)</span> of the Hessian, which is positive definite.</p>
+<p><strong>Connection to SVD</strong> Expressing the solution in terms of a compact SVD <span class="math notranslate nohighlight">\(A = U \Sigma V^T = \sum_{j=1}^r \sigma_j \mathbf{u}_j \mathbf{v}_j^T\)</span> provides some insights into how ridge regression works. Suppose that <span class="math notranslate nohighlight">\(A\)</span> has full column rank. That implies that <span class="math notranslate nohighlight">\(V V^T = I_{m \times m}\)</span>. Then observe that</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+(A^T A + \lambda I_{m \times m})^{-1}
+&amp;= (V \Sigma U^T U \Sigma V^T + \lambda I_{m \times m})^{-1}\\
+&amp;= (V \Sigma^2 V^T + \lambda I_{m \times m})^{-1}\\
+&amp;= (V \Sigma^2 V^T + V \lambda I_{m \times m} V^T)^{-1}\\
+&amp;= (V [\Sigma^2 + \lambda I_{m \times m}] V^T)^{-1}\\
+&amp;= V (\Sigma^2 + \lambda I_{m \times m})^{-1} V^T.
+\end{align*}\]</div>
+<p>Hence</p>
+<div class="math notranslate nohighlight">
+\[
+\mathbf{x}^{**}
+= (A^T A + \lambda I_{m \times m})^{-1} A^T \mathbf{b}
+= V (\Sigma^2 + \lambda I_{m \times m})^{-1} V^T V \Sigma U^T \mathbf{b}
+= V (\Sigma^2 + \lambda I_{m \times m})^{-1} \Sigma U^T \mathbf{b}.
+\]</div>
+<p>Our predictions are</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+A \mathbf{x}^{**}
+&amp;= U \Sigma V^T V (\Sigma^2 + \lambda I_{m \times m})^{-1} \Sigma U^T \mathbf{b}\\
+&amp;= U \Sigma (\Sigma^2 + \lambda I_{m \times m})^{-1} \Sigma U^T \mathbf{b}\\
+&amp;= \sum_{j=1}^r \mathbf{u}_j \left\{\frac{\sigma_j^2}{\sigma_j^2 + \lambda} \right\} \mathbf{u}_j^T \mathbf{b}.
+\end{align*}\]</div>
+<p>Note that the terms in curly brackets are <span class="math notranslate nohighlight">\(&lt; 1\)</span> when <span class="math notranslate nohighlight">\(\lambda &gt; 0\)</span>.</p>
+<p>Compare this to the unregularized least squares solution, which is obtained simply by setting <span class="math notranslate nohighlight">\(\lambda = 0\)</span> above,</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+A \mathbf{x}^*
+&amp;= \sum_{j=1}^r \mathbf{u}_j  \mathbf{u}_j^T \mathbf{b}.
+\end{align*}\]</div>
+<p>The difference is that the regularized solution reduces the contributions from the left singular vectors corresponding to small singular values.</p>
+<p><em><strong>Self-assessment quiz</strong></em> <em>(with help from Claude, Gemini, and ChatGPT)</em></p>
+<p><strong>1</strong> Which of the following best describes the Frobenius norm of a matrix <span class="math notranslate nohighlight">\(A \in \mathbb{R}^{n \times m}\)</span>?</p>
+<p>a) The maximum singular value of <span class="math notranslate nohighlight">\(A\)</span>.</p>
+<p>b) The square root of the sum of the squares of all entries in <span class="math notranslate nohighlight">\(A\)</span>.</p>
+<p>c) The maximum absolute row sum of <span class="math notranslate nohighlight">\(A\)</span>.</p>
+<p>d) The maximum absolute column sum of <span class="math notranslate nohighlight">\(A\)</span>.</p>
+<p><strong>2</strong> Let <span class="math notranslate nohighlight">\(A \in \mathbb{R}^{n \times m}\)</span> be a matrix with SVD <span class="math notranslate nohighlight">\(A = \sum_{j=1}^r \sigma_j \mathbf{u}_j \mathbf{v}_j^T\)</span> and let <span class="math notranslate nohighlight">\(A_k = \sum_{j=1}^k \sigma_j \mathbf{u}_j \mathbf{v}_j^T\)</span> be the truncated SVD with <span class="math notranslate nohighlight">\(k &lt; r\)</span>. Which of the following is true about the Frobenius norm of <span class="math notranslate nohighlight">\(A - A_k\)</span>?</p>
+<p>a) <span class="math notranslate nohighlight">\(\|A - A_k\|_F^2 = \sum_{j=1}^k \sigma_j^2\)</span></p>
+<p>b) <span class="math notranslate nohighlight">\(\|A - A_k\|_F^2 = \sum_{j=k+1}^r \sigma_j^2\)</span></p>
+<p>c) <span class="math notranslate nohighlight">\(\|A - A_k\|_F^2 = \sigma_k^2\)</span></p>
+<p>d) <span class="math notranslate nohighlight">\(\|A - A_k\|_F^2 = \sigma_{k+1}^2\)</span></p>
+<p><strong>3</strong> The ridge regression problem is formulated as <span class="math notranslate nohighlight">\(\min_{x \in \mathbb{R}^m} \|Ax - b\|_2^2 + \lambda \|x\|_2^2\)</span>. What is the role of the parameter <span class="math notranslate nohighlight">\(\lambda\)</span>?</p>
+<p>a) It controls the trade-off between fitting the data and minimizing the norm of the solution.</p>
+<p>b) It determines the rank of the matrix <span class="math notranslate nohighlight">\(A\)</span>.</p>
+<p>c) It is the smallest singular value of <span class="math notranslate nohighlight">\(A\)</span>.</p>
+<p>d) It is the largest singular value of <span class="math notranslate nohighlight">\(A\)</span>.</p>
+<p><strong>4</strong> Let <span class="math notranslate nohighlight">\(A\)</span> be an <span class="math notranslate nohighlight">\(n \times m\)</span> matrix with compact SVD <span class="math notranslate nohighlight">\(A = \sum_{j=1}^r \sigma_j u_j v_j^T\)</span>. How does the ridge regression solution <span class="math notranslate nohighlight">\(x^{**}\)</span> compare to the least squares solution <span class="math notranslate nohighlight">\(x^*\)</span>?</p>
+<p>a) <span class="math notranslate nohighlight">\(x^{**}\)</span> has larger components along the left singular vectors corresponding to small singular values.</p>
+<p>b) <span class="math notranslate nohighlight">\(x^{**}\)</span> has smaller components along the left singular vectors corresponding to small singular values.</p>
+<p>c) <span class="math notranslate nohighlight">\(x^{**}\)</span> is identical to <span class="math notranslate nohighlight">\(x^*\)</span>.</p>
+<p>d) None of the above.</p>
+<p><strong>5</strong> Let <span class="math notranslate nohighlight">\(A \in \mathbb{R}^{n \times n}\)</span> be a square nonsingular matrix with compact SVD <span class="math notranslate nohighlight">\(A = \sum_{j=1}^n \sigma_j \mathbf{u}_j \mathbf{v}_j^T\)</span>. Which of the following is true about the induced 2-norm of the inverse <span class="math notranslate nohighlight">\(A^{-1}\)</span>?</p>
+<p>a) <span class="math notranslate nohighlight">\(\|A^{-1}\|_2 = \sigma_1\)</span></p>
+<p>b) <span class="math notranslate nohighlight">\(\|A^{-1}\|_2 = \sigma_n\)</span></p>
+<p>c) <span class="math notranslate nohighlight">\(\|A^{-1}\|_2 = \sigma_1^{-1}\)</span></p>
+<p>d) <span class="math notranslate nohighlight">\(\|A^{-1}\|_2 = \sigma_n^{-1}\)</span></p>
+<p>Answer for 1: b. Justification: The text defines the Frobenius norm of an <span class="math notranslate nohighlight">\(n \times m\)</span> matrix <span class="math notranslate nohighlight">\(A\)</span> as <span class="math notranslate nohighlight">\(\|A\|_F = \sqrt{\sum_{i=1}^{n} \sum_{j=1}^{m} a_{ij}^2}\)</span>.</p>
+<p>Answer for 2: b. Justification: The text proves that <span class="math notranslate nohighlight">\(\|A - A_k\|_F^2 = \sum_{j=k+1}^r \sigma_j^2\)</span> in the Matrix Norms and Singular Values: Truncation Lemma.</p>
+<p>Answer for 3: a. Justification: The text explains that ridge regression “trades off minimizing the fit to the data versus minimizing the norm of the solution,” and <span class="math notranslate nohighlight">\(\lambda\)</span> is the parameter that controls this trade-off.</p>
+<p>Answer for 4: b. Justification: The text notes that the ridge regression solution “reduces the contributions from the left singular vectors corresponding to small singular values.”</p>
+<p>Answer for 5: d. Justification: The text shows in an example that for a square nonsingular matrix <span class="math notranslate nohighlight">\(A\)</span>, <span class="math notranslate nohighlight">\(\|A^{-1}\|_2 = \sigma_n^{-1}\)</span>, where <span class="math notranslate nohighlight">\(\sigma_n\)</span> is the smallest singular value of <span class="math notranslate nohighlight">\(A\)</span>.</p>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./chap03_svd/06_further"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="../05_pca/roch-mmids-svd-pca.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title"><span class="section-number">4.5. </span>Application: principal components analysis</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="../exercises/roch-mmids-svd-exercises.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title"><span class="section-number">4.7. </span>Exercises</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#matrix-norms">4.6.1. Matrix norms</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#low-rank-approximation">4.6.2. Low-rank approximation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ridge-regression">4.6.3. Ridge regression</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Sebastien Roch
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2024.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

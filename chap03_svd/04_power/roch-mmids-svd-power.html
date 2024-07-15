@@ -1,0 +1,1070 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>4.4. Power iteration &#8212; MMiDS Textbook</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.5.1/css/all.min.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.1/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.1/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.1/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b76e3c8a" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=384b581d" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=87e54e7c" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae" />
+  <script src="../../_static/vendor/fontawesome/6.5.1/js/all.min.js?digest=8d27b9dea8ad943066ae"></script>
+
+    <script src="../../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?v=efea14e4"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../_static/design-tabs.js?v=f930bc37"></script>
+    <script async="async" src="https://www.googletagmanager.com/gtag/js?id=G-P5E8DW088F"></script>
+    <script>
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){ dataLayer.push(arguments); }
+                gtag('js', new Date());
+                gtag('config', 'G-P5E8DW088F');
+            </script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){ dataLayer.push(arguments); }
+                gtag('js', new Date());
+                gtag('config', 'G-P5E8DW088F');
+            </script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'chap03_svd/04_power/roch-mmids-svd-power';</script>
+    <link rel="canonical" href="https://mmids-textbook.github.io/chap03_svd/04_power/roch-mmids-svd-power.html" />
+    <link rel="icon" href="https://mmids-textbook.github.io/favicon-32x32.png"/>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="4.5. Application: principal components analysis" href="../05_pca/roch-mmids-svd-pca.html" />
+    <link rel="prev" title="4.3. Approximating subspaces and the SVD" href="../03_svd/roch-mmids-svd-svd.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a id="pst-skip-link" class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+
+<a class="navbar-brand logo" href="../../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/mmids-cover-small.jpg" class="logo__image only-light" alt="MMiDS Textbook - Home"/>
+    <script>document.write(`<img src="../../_static/mmids-cover-small.jpg" class="logo__image only-dark" alt="MMiDS Textbook - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../index.html">
+                    <b>MATHEMATICAL METHODS in DATA SCIENCE (with Python)</b>
+                </a>
+            </li>
+        </ul>
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../chap01_intro/00_intro/roch-mmids-intro-intro.html">1. Introduction: a first data science problem</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../chap01_intro/01_motiv/roch-mmids-intro-motiv.html">1.1. Motivating example: identifying penguin species</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap01_intro/02_review/roch-mmids-intro-review.html">1.2. Background: quick refresher of matrix algebra, differential calculus, and elementary probability</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap01_intro/03_clustering/roch-mmids-intro-clustering.html">1.3. Clustering: an objective, an algorithm and a guarantee</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap01_intro/04_highdim/roch-mmids-intro-highdim.html">1.4. Some observations about high-dimensional data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap01_intro/exercises/roch-mmids-intro-exercises.html">1.5. Exercises</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap01_intro/05_adv/roch-mmids-intro-adv.html">1.6. Online suppplementary material</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../chap02_ls/00_intro/roch-mmids-ls-intro.html">2. Least squares: geometric, algebraic, and numerical aspects</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../chap02_ls/01_motiv/roch-mmids-ls-motiv.html">2.1. Motivating example: predicting sales</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap02_ls/02_subspaces/roch-mmids-ls-spaces.html">2.2. Background: review of vector spaces and matrix inverses</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap02_ls/03_orthog/roch-mmids-ls-orthog.html">2.3. Geometry of least squares: the orthogonal projection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap02_ls/04_qr/roch-mmids-ls-qr.html">2.4. QR decomposition and Householder transformations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap02_ls/05_regression/roch-mmids-ls-regression.html">2.5. Application: regression analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap02_ls/exercises/roch-mmids-ls-exercises.html">2.6. Exercises</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap02_ls/06_adv/roch-mmids-ls-adv.html">2.7. Online suppplementary material</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../chap06_opt/00_intro/roch-mmids-opt-intro.html">3. Optimization theory and algorithms</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-3"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../chap06_opt/01_motiv/roch-mmids-opt-motiv.html">3.1. Motivating example:  analyzing customer satisfaction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap06_opt/02_several/roch-mmids-opt-several.html">3.2. Background: review of differentiable functions of several variables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap06_opt/03_optimality/roch-mmids-opt-optimality.html">3.3. Optimality conditions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap06_opt/03part2_convexity/roch-mmids-opt-convexity.html">3.4. Convexity</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap06_opt/04_gd/roch-mmids-opt-gd.html">3.5. Gradient descent and its convergence analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap06_opt/04part2_logistic/roch-mmids-opt-logistic.html">3.6. Application: logistic regression</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap06_opt/exercises/roch-mmids-opt-exercises.html">3.7. Exercises</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap06_opt/06_adv/roch-mmids-opt-adv.html">3.8. Online suppplementary material</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="../00_intro/roch-mmids-svd-intro.html">4. Singular value decomposition</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-4"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../01_motiv/roch-mmids-svd-motiv.html">4.1. Motivating example: visualizing viral evolution</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../02_spectral/roch-mmids-svd-spectral.html">4.2. Background: review of matrix rank  and spectral decomposition</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../03_svd/roch-mmids-svd-svd.html">4.3. Approximating subspaces and the SVD</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">4.4. Power iteration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../05_pca/roch-mmids-svd-pca.html">4.5. Application: principal components analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../06_further/roch-mmids-svd-further.html">4.6. Further applications of the SVD: low-rank approximations and ridge regression</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../exercises/roch-mmids-svd-exercises.html">4.7. Exercises</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../07_adv/roch-mmids-svd-adv.html">4.8. Online suppplementary material</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../chap04_specgraph/00_intro/roch-mmids-specgraph-intro.html">5. Spectral graph theory</a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-5"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../chap04_specgraph/01_motiv/roch-mmids-specgraph-motiv.html">5.1. Motivating example: uncovering social groups</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap04_specgraph/02_graph/roch-mmids-specgraph-graph.html">5.2. Background: basic concepts in graph theory</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap04_specgraph/03_extremal/roch-mmids-specgraph-extremal.html">5.3. Variational characterization of eigenvalues</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap04_specgraph/04_laplacian/roch-mmids-specgraph-laplacian.html">5.4. Spectral properties of the Laplacian matrix</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap04_specgraph/05_partitioning/roch-mmids-specgraph-partitioning.html">5.5. Application: graph partitioning via spectral clustering</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap04_specgraph/05part2_sbm/roch-mmids-specgraph-sbm.html">5.6. Erdős-Rényi random graph and stochastic blockmodel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap04_specgraph/exercises/roch-mmids-specgraph-exercises.html">5.7. Exercises</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap04_specgraph/06_adv/roch-mmids-specgraph-adv.html">5.8. Online supplementary material</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../chap07_prob/00_intro/roch-mmids-prob-intro.html">6. Probabilistic models: from simple to complex</a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-6"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../chap07_prob/01_motiv/roch-mmids-prob-motiv.html">6.1. Motivating example: tracking location</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap07_prob/02_parametric/roch-mmids-prob-parametric.html">6.2. Background: introduction to parametric families and maximum likelihood estimation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap07_prob/03_joint/roch-mmids-prob-joint.html">6.3. Modeling more complex dependencies 1: using conditional independence</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap07_prob/03part2_em/roch-mmids-prob-em.html">6.4. Modeling more complex dependencies 2: marginalizing out an unobserved variable</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap07_prob/04_kalman/roch-mmids-prob-kalman.html">6.5. Application: linear-Gaussian models and Kalman filtering</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap07_prob/exercises/roch-mmids-prob-exercises.html">6.6. Exercises</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap07_prob/06_adv/roch-mmids-prob-adv.html">6.7. Online supplementary material</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../chap05_rwmc/00_intro/roch-mmids-rwmc-intro.html">7. Random walks on graphs and Markov chains</a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-7"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../chap05_rwmc/01_motiv/roch-mmids-rwmc-motiv.html">7.1. Motivating example: discovering mathematical topics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap05_rwmc/03_mcdefs/roch-mmids-rwmc-mcdefs.html">7.2. Background: elements of finite Markov chains</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap05_rwmc/04_stat/roch-mmids-rwmc-stat.html">7.3. Limit behavior 1: stationary distributions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap05_rwmc/04part2_mclimit/roch-mmids-rwmc-mclimit.html">7.4. Limit behavior 2: convergence to equilibrium</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap05_rwmc/05_pagerank/roch-mmids-rwmc-pagerank.html">7.5. Application: random walks on graphs and PageRank</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap05_rwmc/05part2_gibbs/roch-mmids-rwmc-gibbs.html">7.6. Further applications: Gibbs sampling and generating images</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap05_rwmc/exercises/roch-mmids-rwmc-exercises.html">7.7. Exercises</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap05_rwmc/06_adv/roch-mmids-rwmc-adv.html">7.8. Online supplementary material</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../chap08_nn/00_intro/roch-mmids-nn-intro.html">8. Neural networks, backpropagation and stochastic gradient descent</a><input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-8"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../chap08_nn/01_motiv/roch-mmids-nn-motiv.html">8.1. Motivating example:  classifying natural images</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap08_nn/02_chain/roch-mmids-nn-chain.html">8.2. Background: Jacobian, chain rule, and a brief introduction to automatic differentiation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap08_nn/03_backprop/roch-mmids-nn-backprop.html">8.3. Building blocks of AI 1: backpropagation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap08_nn/04_sgd/roch-mmids-nn-sgd.html">8.4. Building blocks of AI 2: stochastic gradient descent</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap08_nn/05_nn/roch-mmids-nn-nn.html">8.5. Building blocks of AI 3: neural networks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap08_nn/exercises/roch-mmids-nn-exercises.html">8.6. Exercises</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap08_nn/06_adv/roch-mmids-nn-adv.html">8.7. Online supplementary material</a></li>
+</ul>
+</li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/MMiDS-textbook/MMiDS-textbook.github.io" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/MMiDS-textbook/MMiDS-textbook.github.io/issues/new?title=Issue%20on%20page%20%2Fchap03_svd/04_power/roch-mmids-svd-power.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/chap03_svd/04_power/roch-mmids-svd-power.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Power iteration</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#key-lemma">4.4.1. Key lemma</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#computing-the-top-singular-vector">4.4.2. Computing the top singular vector</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <p><span class="math notranslate nohighlight">\(\newcommand{\bmu}{\boldsymbol{\mu}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bSigma}{\boldsymbol{\Sigma}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bfbeta}{\boldsymbol{\beta}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bflambda}{\boldsymbol{\lambda}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bgamma}{\boldsymbol{\gamma}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bsigma}{{\boldsymbol{\sigma}}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bpi}{\boldsymbol{\pi}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\btheta}{{\boldsymbol{\theta}}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bphi}{\boldsymbol{\phi}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\balpha}{\boldsymbol{\alpha}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\blambda}{\boldsymbol{\lambda}}\)</span>
+<span class="math notranslate nohighlight">\(\renewcommand{\P}{\mathbb{P}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\E}{\mathbb{E}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\indep}{\perp\!\!\!\perp} \newcommand{\bx}{\mathbf{x}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bp}{\mathbf{p}}\)</span>
+<span class="math notranslate nohighlight">\(\renewcommand{\bx}{\mathbf{x}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bX}{\mathbf{X}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\by}{\mathbf{y}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bY}{\mathbf{Y}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bz}{\mathbf{z}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bZ}{\mathbf{Z}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bw}{\mathbf{w}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bW}{\mathbf{W}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bv}{\mathbf{v}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bV}{\mathbf{V}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bfg}{\mathbf{g}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bfh}{\mathbf{h}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\horz}{\rule[.5ex]{2.5ex}{0.5pt}}\)</span>
+<span class="math notranslate nohighlight">\(\renewcommand{\S}{\mathcal{S}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\X}{\mathcal{X}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\var}{\mathrm{Var}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\pa}{\mathrm{pa}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\Z}{\mathcal{Z}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bh}{\mathbf{h}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bb}{\mathbf{b}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bc}{\mathbf{c}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\cE}{\mathcal{E}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\cP}{\mathcal{P}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bbeta}{\boldsymbol{\beta}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bLambda}{\boldsymbol{\Lambda}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\cov}{\mathrm{Cov}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bfk}{\mathbf{k}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\idx}[1]{}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\xdi}{}\)</span></p>
+<section id="power-iteration">
+<h1><span class="section-number">4.4. </span>Power iteration<a class="headerlink" href="#power-iteration" title="Link to this heading">#</a></h1>
+<p>There is in general <a class="reference external" href="https://math.stackexchange.com/questions/2582300/what-does-the-author-mean-by-no-method-exists-for-exactly-computing-the-eigenva">no exact method</a> for computing SVDs. Instead we must rely on iterative methods, that is, methods that progressively approach the solution. We describe in this section the power iteration method. This method is behind an effective numerical approach for computing SVDs.</p>
+<p>The focus here is on numerical methods and we will not spend much time computing SVDs by hand. But note that the connection between the SVD and the spectral decomposition of <span class="math notranslate nohighlight">\(A^T A\)</span> can be used for this purpose on small examples.</p>
+<section id="key-lemma">
+<h2><span class="section-number">4.4.1. </span>Key lemma<a class="headerlink" href="#key-lemma" title="Link to this heading">#</a></h2>
+<p>We now derive the main idea behind an algorithm to compute singular vectors. Let <span class="math notranslate nohighlight">\(U \Sigma V^T\)</span> be a (compact) SVD of <span class="math notranslate nohighlight">\(A\)</span>. Because of the orthogonality of <span class="math notranslate nohighlight">\(U\)</span> and <span class="math notranslate nohighlight">\(V\)</span>, the powers of <span class="math notranslate nohighlight">\(A^T A\)</span> have a simple representation. Indeed</p>
+<div class="math notranslate nohighlight">
+\[
+B = A^T A
+= (U \Sigma V^T)^T (U \Sigma V^T)
+= V \Sigma^T U^T U \Sigma V^T
+= V \Sigma^T \Sigma V^T.
+\]</div>
+<p>Note that this formula is closely related to our previously uncovered connection between the SVD and the spectral decomposition of <span class="math notranslate nohighlight">\(A^T A\)</span> – although it is not quite a spectral decomposition of <span class="math notranslate nohighlight">\(A^T A\)</span> since <span class="math notranslate nohighlight">\(V\)</span> is not orthogonal.</p>
+<p>Iterating,</p>
+<div class="math notranslate nohighlight">
+\[
+B^2 
+= (V \Sigma^T \Sigma V^T) (V \Sigma^T \Sigma V^T)
+= V (\Sigma^T \Sigma)^2 V^T,
+\]</div>
+<p>and, for general <span class="math notranslate nohighlight">\(k\)</span>,</p>
+<div class="math notranslate nohighlight">
+\[
+B^{k}
+= V (\Sigma^T \Sigma)^{k} V^T.
+\]</div>
+<p>Hence, defining</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\widetilde{\Sigma}
+= \Sigma^T \Sigma
+= \begin{pmatrix}
+\sigma_1^2 &amp; 0 &amp; \cdots &amp; 0\\
+0 &amp; \sigma_2^2 &amp; \cdots &amp; 0\\
+\vdots &amp; \vdots &amp; \ddots &amp; \vdots\\
+0 &amp; 0 &amp; \cdots &amp; \sigma_r^2
+\end{pmatrix},
+\end{split}\]</div>
+<p>we see that</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\widetilde{\Sigma}^k
+= \begin{pmatrix}
+\sigma_1^{2k} &amp; 0 &amp; \cdots &amp; 0\\
+0 &amp; \sigma_2^{2k} &amp; \cdots &amp; 0\\
+\vdots &amp; \vdots &amp; \ddots &amp; \vdots\\
+0 &amp; 0 &amp; \cdots &amp; \sigma_r^{2k}
+\end{pmatrix}.
+\end{split}\]</div>
+<p>When <span class="math notranslate nohighlight">\(\sigma_1 &gt; \sigma_2, \ldots, \sigma_r\)</span>, which is often the case with real datasets, we get that <span class="math notranslate nohighlight">\(\sigma_1^{2k} \gg \sigma_2^{2k}, \ldots, \sigma_r^{2k}\)</span> when <span class="math notranslate nohighlight">\(k\)</span> is large. Then, we get the approximation</p>
+<div class="math notranslate nohighlight">
+\[
+B^{k}
+=
+\sum_{j=1}^r \sigma_j^{2k} \mathbf{v}_j \mathbf{v}_j^T
+\approx
+\sigma_1^{2k} \mathbf{v}_1 \mathbf{v}_1^T.
+\]</div>
+<p>Finally, we arrive at:</p>
+<p><strong>LEMMA</strong> <strong>(Power Iteration)</strong> <span class="math notranslate nohighlight">\(\idx{power iteration lemma}\xdi\)</span> Let <span class="math notranslate nohighlight">\(A \in \mathbb{R}^{n\times m}\)</span> be a matrix and let <span class="math notranslate nohighlight">\(U \Sigma V^T\)</span> be a (compact) SVD of <span class="math notranslate nohighlight">\(A\)</span> such that <span class="math notranslate nohighlight">\(\sigma_1 &gt; \sigma_2 &gt; 0\)</span>. Define <span class="math notranslate nohighlight">\(B = A^T A\)</span> and assume that <span class="math notranslate nohighlight">\(\mathbf{x} \in \mathbb{R}^m\)</span> is a vector satisfying <span class="math notranslate nohighlight">\(\langle \mathbf{v}_1, \mathbf{x} \rangle &gt; 0\)</span>. Then</p>
+<div class="math notranslate nohighlight">
+\[
+\frac{B^{k} \mathbf{x}}{\|B^{k} \mathbf{x}\|} \to \mathbf{v}_1
+\]</div>
+<p>as <span class="math notranslate nohighlight">\(k \to +\infty\)</span>. If instead <span class="math notranslate nohighlight">\(\langle \mathbf{v}_1, \mathbf{x} \rangle &lt; 0\)</span>, then the limit is <span class="math notranslate nohighlight">\(- \mathbf{v}_1\)</span>. <span class="math notranslate nohighlight">\(\flat\)</span></p>
+<p><em>Proof idea:</em> We use the approximation above and divide by the norm to get a unit norm vector in the direction of <span class="math notranslate nohighlight">\(\mathbf{v}_1\)</span>.</p>
+<p><em>Proof:</em> We have</p>
+<div class="math notranslate nohighlight">
+\[
+B^{k}\mathbf{x}
+=
+\sum_{j=1}^r \sigma_j^{2k} \mathbf{v}_j \mathbf{v}_j^T \mathbf{x}.
+\]</div>
+<p>So</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+\frac{B^{k} \mathbf{x}}{\|B^{k} \mathbf{x}\|}
+&amp;= 
+\sum_{j=1}^r \mathbf{v}_j \frac{\sigma_j^{2k} (\mathbf{v}_j^T \mathbf{x})}
+{\|B^{k} \mathbf{x}\|}\\
+&amp;= 
+\mathbf{v}_1 \left\{\frac{\sigma_1^{2k} (\mathbf{v}_1^T \mathbf{x})}
+{\|B^{k} \mathbf{x}\|}\right\}
++ \sum_{j=2}^r \mathbf{v}_j \left\{\frac{\sigma_j^{2k} (\mathbf{v}_j^T \mathbf{x})}
+{\|B^{k} \mathbf{x}\|}\right\}.
+\end{align*}\]</div>
+<p>This goes to <span class="math notranslate nohighlight">\(\mathbf{v}_1\)</span> as <span class="math notranslate nohighlight">\(k\to +\infty\)</span> if the expression in the first curly brackets goes to <span class="math notranslate nohighlight">\(1\)</span> and the one in the second curly brackets goes to <span class="math notranslate nohighlight">\(0\)</span>. We prove this in the next claim.</p>
+<p><strong>LEMMA</strong> As <span class="math notranslate nohighlight">\(k\to +\infty\)</span>,</p>
+<div class="math notranslate nohighlight">
+\[
+\frac{\sigma_1^{2k} (\mathbf{v}_1^T \mathbf{x})}
+{\|B^{k} \mathbf{x}\|} \to 1
+\qquad
+\text{and}
+\qquad
+\frac{\sigma_j^{2k} (\mathbf{v}_j^T \mathbf{x})}
+{\|B^{k} \mathbf{x}\|} \to 0, 
+\ 
+j = 2,\ldots,r.
+\]</div>
+<p><span class="math notranslate nohighlight">\(\flat\)</span></p>
+<p><em>Proof:</em> Because the <span class="math notranslate nohighlight">\(\mathbf{v}_j\)</span>s are an orthonormal basis,</p>
+<div class="math notranslate nohighlight">
+\[
+\|B^{k}\mathbf{x}\|^2
+= 
+\sum_{j=1}^r \left[\sigma_j^{2k} (\mathbf{v}_j^T \mathbf{x})\right]^2
+=
+\sum_{j=1}^r \sigma_j^{4k} (\mathbf{v}_j^T \mathbf{x})^2.
+\]</div>
+<p>So, as <span class="math notranslate nohighlight">\(k\to +\infty\)</span>, using the fact that <span class="math notranslate nohighlight">\(\langle \mathbf{v}_1, \mathbf{x} \rangle \neq 0\)</span> by assumption</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+\frac{\|B^{k}\mathbf{x}\|^2}{\sigma_1^{4k} (\mathbf{v}_1^T \mathbf{x})^2}
+&amp;=
+1 + \sum_{j=2}^r \frac{\sigma_j^{4k} (\mathbf{v}_j^T \mathbf{x})^2}{\sigma_1^{4k} (\mathbf{v}_1^T \mathbf{x})^2}\\
+&amp;=
+1 + \sum_{j=2}^r \left(\frac{\sigma_j}{\sigma_1}\right)^{4k} \frac{(\mathbf{v}_j^T \mathbf{x})^2}{(\mathbf{v}_1^T \mathbf{x})^2}\\
+&amp;\to 
+1,
+\end{align*}\]</div>
+<p>since <span class="math notranslate nohighlight">\(\sigma_j &lt; \sigma_1\)</span> for all <span class="math notranslate nohighlight">\(j =2,\ldots,r\)</span>. That implies the first part of the claim by taking a square root and using <span class="math notranslate nohighlight">\(\langle \mathbf{v}_1, \mathbf{x} \rangle &gt; 0\)</span>. The second part of the claim follows essentially from the same argument. <span class="math notranslate nohighlight">\(\square\)</span> <span class="math notranslate nohighlight">\(\square\)</span></p>
+<p><strong>EXAMPLE:</strong> We revisit the example</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+A = \begin{pmatrix}
+1 &amp; 0\\
+-1 &amp; 0
+\end{pmatrix}.
+\end{split}\]</div>
+<p>We previously compute its SVD and found that</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\mathbf{v}_1 
+= \begin{pmatrix}
+1\\
+0
+\end{pmatrix}.
+\end{split}\]</div>
+<p>This time we use the <em>Power Iteration Lemma</em>. Here</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+B = A^T A 
+= \begin{pmatrix}
+2 &amp; 0\\
+0 &amp; 0
+\end{pmatrix}.
+\end{split}\]</div>
+<p>Taking powers of this matrix is easy</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+B^k = \begin{pmatrix}
+2^k &amp; 0\\
+0 &amp; 0
+\end{pmatrix}.
+\end{split}\]</div>
+<p>Let’s choose an arbitrary initial vector <span class="math notranslate nohighlight">\(\mathbf{x}\)</span>, say <span class="math notranslate nohighlight">\((-1, 2)^T\)</span>. Then</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+B^k \mathbf{x}
+= \begin{pmatrix}
+-2^k\\
+0
+\end{pmatrix}
+\quad
+\text{and}
+\quad
+\|B^k \mathbf{x}\| = 2^k.
+\end{split}\]</div>
+<p>So</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\frac{B^{k} \mathbf{x}}{\|B^{k} \mathbf{x}\|} \to \begin{pmatrix}
+-1\\
+0
+\end{pmatrix} 
+=
+- \mathbf{v}_1,
+\end{split}\]</div>
+<p>as <span class="math notranslate nohighlight">\(k \to +\infty\)</span>. In fact, in this case, convergence occurs after one step. <span class="math notranslate nohighlight">\(\lhd\)</span></p>
+<p>The argument leading to the <em>Power Iteration Lemma</em> also holds more generally for the eigenvectors of positive semidefinite matrices. Let <span class="math notranslate nohighlight">\(A\)</span> be a symmetric, positive semindefinite matrix in <span class="math notranslate nohighlight">\(\mathbb{R}^{d \times d}\)</span>. By the <em>Spectral Theorem</em>, it has an eigenvector decomposition</p>
+<div class="math notranslate nohighlight">
+\[
+A
+= Q \Lambda Q^T
+= \sum_{i=1}^d \lambda_i \mathbf{q}_i \mathbf{q}_i^T
+\]</div>
+<p>where further <span class="math notranslate nohighlight">\(0 \leq \lambda_d \leq \cdots \leq \lambda_1\)</span> by the <em>Characterization of Positive Semidefiniteness</em>. Because of the orthogonality of <span class="math notranslate nohighlight">\(Q\)</span>, the powers of <span class="math notranslate nohighlight">\(A\)</span> have a simple representation. The square gives</p>
+<div class="math notranslate nohighlight">
+\[
+A^2 
+= (Q \Lambda Q^T) (Q \Lambda Q^T)
+= Q \Lambda^2 Q^T.
+\]</div>
+<p>Repeating, we obtain</p>
+<div class="math notranslate nohighlight">
+\[
+A^{k}
+= Q \Lambda^{k} Q^T.
+\]</div>
+<p>This leads to the following:</p>
+<p><strong>LEMMA</strong> <strong>(Power Iteration)</strong> <span class="math notranslate nohighlight">\(\idx{power iteration lemma}\xdi\)</span> Let <span class="math notranslate nohighlight">\(A\)</span> be a symmetric, positive semindefinite matrix in <span class="math notranslate nohighlight">\(\mathbb{R}^{d \times d}\)</span> with eigenvector decomposition <span class="math notranslate nohighlight">\(A= Q \Lambda Q^T\)</span> where the eigenvalues satisfy <span class="math notranslate nohighlight">\(0 \leq \lambda_d \leq \cdots \leq \lambda_2 &lt; \lambda_1\)</span>. Assume that <span class="math notranslate nohighlight">\(\mathbf{x} \in \mathbb{R}^d\)</span> is a vector such that <span class="math notranslate nohighlight">\(\langle \mathbf{q}_1, \mathbf{x} \rangle &gt; 0\)</span>. Then</p>
+<div class="math notranslate nohighlight">
+\[
+\frac{A^{k} \mathbf{x}}{\|A^{k} \mathbf{x}\|} \to \mathbf{q}_1
+\]</div>
+<p>as <span class="math notranslate nohighlight">\(k \to +\infty\)</span>. If instead <span class="math notranslate nohighlight">\(\langle \mathbf{q}_1, \mathbf{x} \rangle &lt; 0\)</span>, then the limit is <span class="math notranslate nohighlight">\(- \mathbf{q}_1\)</span>. <span class="math notranslate nohighlight">\(\flat\)</span></p>
+<p>The proof is similar to the case of singular vectors.</p>
+</section>
+<section id="computing-the-top-singular-vector">
+<h2><span class="section-number">4.4.2. </span>Computing the top singular vector<a class="headerlink" href="#computing-the-top-singular-vector" title="Link to this heading">#</a></h2>
+<p>Power iteration gives us a way to compute <span class="math notranslate nohighlight">\(\mathbf{v}_1\)</span> – at least approximately if we use a large enough <span class="math notranslate nohighlight">\(k\)</span>. But how do we find an appropriate vector <span class="math notranslate nohighlight">\(\mathbf{x}\)</span>, as required by the <em>Power Iteration Lemma</em>? It turns out that a random vector will do. For instance, let <span class="math notranslate nohighlight">\(\mathbf{X}\)</span> be an <span class="math notranslate nohighlight">\(m\)</span>-dimensional spherical Gaussian with mean <span class="math notranslate nohighlight">\(0\)</span> and variance <span class="math notranslate nohighlight">\(1\)</span>. Then, <span class="math notranslate nohighlight">\(\mathbb{P}[\langle \mathbf{v}_1, \mathbf{X} \rangle = 0] = 0\)</span>. We will show this when we discuss multivariate Gaussians. Note that, if <span class="math notranslate nohighlight">\(\langle \mathbf{v}_1, \mathbf{X} \rangle &lt; 0\)</span>, we will instead converge to <span class="math notranslate nohighlight">\(-\mathbf{v}_1\)</span> which is also a right singular vector.</p>
+<p>We implement the algorithm suggested by the <em>Power Iteration Lemma</em>. That is, we compute <span class="math notranslate nohighlight">\(B^{k} \mathbf{x}\)</span>, then normalize it. To obtain the corresponding singular value and left singular vector, we use that <span class="math notranslate nohighlight">\(\sigma_1 = \|A \mathbf{v}_1\|\)</span> and <span class="math notranslate nohighlight">\(\mathbf{u}_1 = A \mathbf{v}_1/\sigma_1\)</span>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">topsing</span><span class="p">(</span><span class="n">rng</span><span class="p">,</span> <span class="n">A</span><span class="p">,</span> <span class="n">maxiter</span><span class="o">=</span><span class="mi">10</span><span class="p">):</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="n">np</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">A</span><span class="p">)[</span><span class="mi">1</span><span class="p">])</span>
+    <span class="n">B</span> <span class="o">=</span> <span class="n">A</span><span class="o">.</span><span class="n">T</span> <span class="o">@</span> <span class="n">A</span>
+    <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">maxiter</span><span class="p">):</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">B</span> <span class="o">@</span> <span class="n">x</span>
+    <span class="n">v</span> <span class="o">=</span> <span class="n">x</span> <span class="o">/</span> <span class="n">LA</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+    <span class="n">s</span> <span class="o">=</span> <span class="n">LA</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">A</span> <span class="o">@</span> <span class="n">v</span><span class="p">)</span>
+    <span class="n">u</span> <span class="o">=</span> <span class="n">A</span> <span class="o">@</span> <span class="n">v</span> <span class="o">/</span> <span class="n">s</span>
+    <span class="k">return</span> <span class="n">u</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="n">v</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p><strong>NUMERICAL CORNER:</strong> We will apply it to our previous two-cluster example. The necessary functions are in <a class="reference external" href="https://raw.githubusercontent.com/MMiDS-textbook/MMiDS-textbook.github.io/main/utils/mmids.py">mmids.py</a>, which is available on the <a class="reference external" href="https://github.com/MMiDS-textbook/MMiDS-textbook.github.io/tree/main">GitHub of the book</a>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">seed</span> <span class="o">=</span> <span class="mi">42</span>
+<span class="n">rng</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">(</span><span class="n">seed</span><span class="p">)</span>
+<span class="n">d</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">w</span> <span class="o">=</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mf">3.</span>
+<span class="n">X</span> <span class="o">=</span> <span class="n">mmids</span><span class="o">.</span><span class="n">two_mixed_clusters</span><span class="p">(</span><span class="n">rng</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">w</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span><span class="mi">3</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">X</span><span class="p">[:,</span><span class="mi">0</span><span class="p">],</span> <span class="n">X</span><span class="p">[:,</span><span class="mi">1</span><span class="p">],</span> <span class="n">s</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="s1">&#39;k&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">axis</span><span class="p">([</span><span class="o">-</span><span class="mi">6</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="o">-</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/4d12778628176b02b424fcfc66f849cb34799e979418bc0f5cdaa9d027dc7c51.png" src="../../_images/4d12778628176b02b424fcfc66f849cb34799e979418bc0f5cdaa9d027dc7c51.png" />
+</div>
+</div>
+<p>Let’s compute the top singular vector.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">u</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="n">v</span> <span class="o">=</span> <span class="n">topsing</span><span class="p">(</span><span class="n">rng</span><span class="p">,</span> <span class="n">X</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[ 0.99257882  0.10164805  0.01581003  0.03202184  0.02075852  0.02798115
+ -0.02920916 -0.028189   -0.0166094  -0.00648726]
+</pre></div>
+</div>
+</div>
+</div>
+<p>This is approximately <span class="math notranslate nohighlight">\(-\mathbf{e}_1\)</span>. We get roughly the same answer (possibly up to sign) from Python’s <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.linalg.svd.html"><code class="docutils literal notranslate"><span class="pre">numpy.linalg.svd</span></code></a> function.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">u</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="n">vh</span> <span class="o">=</span> <span class="n">LA</span><span class="o">.</span><span class="n">svd</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">vh</span><span class="o">.</span><span class="n">T</span><span class="p">[:,</span><span class="mi">0</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[ 0.99257882  0.10164803  0.01581003  0.03202184  0.02075851  0.02798112
+ -0.02920917 -0.028189   -0.01660938 -0.00648724]
+</pre></div>
+</div>
+</div>
+</div>
+<p>Recall that, when we applied <span class="math notranslate nohighlight">\(k\)</span>-means clustering to this example with <span class="math notranslate nohighlight">\(d=1000\)</span> dimension, we obtained a very poor clustering.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">d</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">w</span> <span class="o">=</span> <span class="mi">1000</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mf">3.</span>
+<span class="n">X</span> <span class="o">=</span> <span class="n">mmids</span><span class="o">.</span><span class="n">two_mixed_clusters</span><span class="p">(</span><span class="n">rng</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">w</span><span class="p">)</span>
+
+<span class="n">assign</span> <span class="o">=</span> <span class="n">mmids</span><span class="o">.</span><span class="n">kmeans</span><span class="p">(</span><span class="n">rng</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>99423.42794703908
+99423.42794703908
+99423.42794703908
+99423.42794703908
+99423.42794703908
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span><span class="mi">3</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">X</span><span class="p">[:,</span><span class="mi">0</span><span class="p">],</span> <span class="n">X</span><span class="p">[:,</span><span class="mi">1</span><span class="p">],</span> <span class="n">s</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="n">assign</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;brg&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">axis</span><span class="p">([</span><span class="o">-</span><span class="mi">6</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="o">-</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/98bcbc581d6fd24b5376c6b299b6c936c246138550b1849915597def29fd3850.png" src="../../_images/98bcbc581d6fd24b5376c6b299b6c936c246138550b1849915597def29fd3850.png" />
+</div>
+</div>
+<p>Let’s try again, but after projecting on the top singular vector. Recall that this corresponds to finding the best one-dimensional approximating subspace. The projection can be computed using the truncated SVD <span class="math notranslate nohighlight">\(Z= U_{(1)} \Sigma_{(1)} V_{(1)}^T\)</span>. We can interpret the rows of <span class="math notranslate nohighlight">\(U_{(1)} \Sigma_{(1)}\)</span> as the coefficients of each data point in the basis <span class="math notranslate nohighlight">\(\mathbf{v}_1\)</span>. We will work in that basis. We need one small hack: because our implementation of <span class="math notranslate nohighlight">\(k\)</span>-means clustering expects data points in at least <span class="math notranslate nohighlight">\(2\)</span> dimension, we add a column of <span class="math notranslate nohighlight">\(0\)</span>’s.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">u</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="n">v</span> <span class="o">=</span> <span class="n">topsing</span><span class="p">(</span><span class="n">rng</span><span class="p">,</span> <span class="n">X</span><span class="p">)</span>
+<span class="n">Xproj</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">stack</span><span class="p">((</span><span class="n">u</span><span class="o">*</span><span class="n">s</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">X</span><span class="p">)[</span><span class="mi">0</span><span class="p">])),</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">111</span><span class="p">,</span> <span class="n">aspect</span><span class="o">=</span><span class="s1">&#39;equal&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">Xproj</span><span class="p">[:,</span><span class="mi">0</span><span class="p">],</span> <span class="n">Xproj</span><span class="p">[:,</span><span class="mi">1</span><span class="p">],</span> <span class="n">s</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.25</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylim</span><span class="p">([</span><span class="o">-</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/8d7686d82b06bad3838606c3d1c06c45ea84432058a2eed2361c48cbdc0743ca.png" src="../../_images/8d7686d82b06bad3838606c3d1c06c45ea84432058a2eed2361c48cbdc0743ca.png" />
+</div>
+</div>
+<p>There is a small – yet noticeable – gap around 0. We run <span class="math notranslate nohighlight">\(k\)</span>-means clustering on the projected data.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">assign</span> <span class="o">=</span> <span class="n">mmids</span><span class="o">.</span><span class="n">kmeans</span><span class="p">(</span><span class="n">rng</span><span class="p">,</span> <span class="n">Xproj</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1779.020119584778
+514.1899426112672
+514.1899426112672
+514.1899426112672
+514.1899426112672
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell tag_hide-input docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell source</span>
+<span class="expanded">Hide code cell source</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span><span class="mi">3</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">X</span><span class="p">[:,</span><span class="mi">0</span><span class="p">],</span> <span class="n">X</span><span class="p">[:,</span><span class="mi">1</span><span class="p">],</span> <span class="n">s</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="n">assign</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;brg&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">axis</span><span class="p">([</span><span class="o">-</span><span class="mi">6</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="o">-</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</details>
+<div class="cell_output docutils container">
+<img alt="../../_images/ff4d66985302e86c0ce20498a35fcb5c4939eb8270b30dea7c03a65bd4560a0b.png" src="../../_images/ff4d66985302e86c0ce20498a35fcb5c4939eb8270b30dea7c03a65bd4560a0b.png" />
+</div>
+</div>
+<p>Much better. We give a more formal explanation of this outcome in a subsequent section. In essence, quoting [BHK, Section 7.5.1]:</p>
+<blockquote>
+<div><p>[…] let’s understand the central advantage of doing the projection to [the top <span class="math notranslate nohighlight">\(k\)</span> right singular vectors]. It is simply that for any reasonable (unknown) clustering of data points, the projection brings data points closer to their cluster centers.</p>
+</div></blockquote>
+<p>Finally, looking at the top right singular vector (or its first ten entries for lack of space), we see that it does align quite well (but not perfectly) with the first dimension.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">v</span><span class="p">[:</span><span class="mi">10</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[-0.55564563 -0.02433674  0.02193487 -0.0333936  -0.00445505 -0.00243003
+  0.02576056  0.02523275 -0.00682153  0.02524646]
+</pre></div>
+</div>
+</div>
+</div>
+<p><span class="math notranslate nohighlight">\(\unlhd\)</span></p>
+<p><strong>CHAT &amp; LEARN</strong> There are other methods to compute the SVD. Ask your favorite AI chatbot about randomized algorithms for the SVD. What are their advantages in terms of computational efficiency for large matrices? <span class="math notranslate nohighlight">\(\ddagger\)</span></p>
+<p><em><strong>Self-assessment quiz</strong></em> <em>(with help from Claude, Gemini, and ChatGPT)</em></p>
+<p><strong>1</strong> In the power iteration lemma for the positive semidefinite case, what happens when the initial vector <span class="math notranslate nohighlight">\(x\)</span> satisfies <span class="math notranslate nohighlight">\(\langle q_1, x \rangle &lt; 0\)</span>?</p>
+<p>a) The iteration converges to <span class="math notranslate nohighlight">\(q_1\)</span>.</p>
+<p>b) The iteration converges to <span class="math notranslate nohighlight">\(-q_1\)</span>.</p>
+<p>c) The iteration does not converge.</p>
+<p>d) The iteration converges to a random eigenvector.</p>
+<p><strong>2</strong> In the power iteration lemma for the SVD case, what is the convergence result for a random vector <span class="math notranslate nohighlight">\(x\)</span>?</p>
+<p>a) <span class="math notranslate nohighlight">\(B^k x / \|B^k x\|\)</span> converges to <span class="math notranslate nohighlight">\(u_1\)</span>.</p>
+<p>b) <span class="math notranslate nohighlight">\(B^k x / \|B^k x\|\)</span> converges to <span class="math notranslate nohighlight">\(v_1\)</span> or <span class="math notranslate nohighlight">\(-v_1\)</span>.</p>
+<p>c) <span class="math notranslate nohighlight">\(B^k x / \|B^k x\|\)</span> converges to <span class="math notranslate nohighlight">\(\sigma_1\)</span>.</p>
+<p>d) <span class="math notranslate nohighlight">\(B^k x / \|B^k x\|\)</span> does not converge.</p>
+<p><strong>3</strong> Suppose you apply the power iteration method to a matrix <span class="math notranslate nohighlight">\(A\)</span> and obtain a vector <span class="math notranslate nohighlight">\(v\)</span>. How can you compute the corresponding singular value <span class="math notranslate nohighlight">\(\sigma\)</span> and left singular vector <span class="math notranslate nohighlight">\(u\)</span>?</p>
+<p>a) <span class="math notranslate nohighlight">\(\sigma = \|Av\|\)</span> and <span class="math notranslate nohighlight">\(u = Av/\sigma\)</span></p>
+<p>b) <span class="math notranslate nohighlight">\(\sigma = \|A^Tv\|\)</span> and <span class="math notranslate nohighlight">\(u = A^Tv/\sigma\)</span></p>
+<p>c) <span class="math notranslate nohighlight">\(\sigma = \|v\|\)</span> and <span class="math notranslate nohighlight">\(u = v/\sigma\)</span></p>
+<p>d) <span class="math notranslate nohighlight">\(\sigma = 1\)</span> and <span class="math notranslate nohighlight">\(u = Av\)</span></p>
+<p><strong>4</strong> What is required for the initial vector <span class="math notranslate nohighlight">\(x\)</span> in the power iteration method to ensure convergence to the top eigenvector?</p>
+<p>a) <span class="math notranslate nohighlight">\(x\)</span> must be a zero vector.</p>
+<p>b) <span class="math notranslate nohighlight">\(x\)</span> must be orthogonal to the top eigenvector.</p>
+<p>c) <span class="math notranslate nohighlight">\(\langle q_1, x \rangle \neq 0\)</span>.</p>
+<p>d) <span class="math notranslate nohighlight">\(x\)</span> must be the top eigenvector itself.</p>
+<p><strong>5</strong> What does the truncated SVD <span class="math notranslate nohighlight">\(Z = U_{(2)} \Sigma_{(2)} V_{(2)}^T\)</span> correspond to?</p>
+<p>a) The best one-dimensional approximating subspace</p>
+<p>b) The best two-dimensional approximating subspace</p>
+<p>c) The projection of the data onto the top singular vector</p>
+<p>d) The projection of the data onto the top two singular vectors</p>
+<p>Answer for 1: b. Justification: The lemma states that if <span class="math notranslate nohighlight">\(\langle q_1, x \rangle &lt; 0\)</span>, then the limit of <span class="math notranslate nohighlight">\(A^k x / \|A^k x\|\)</span> is <span class="math notranslate nohighlight">\(-q_1\)</span>.</p>
+<p>Answer for 2: b. Justification: The lemma states that if <span class="math notranslate nohighlight">\(\langle v_1, x \rangle &gt; 0\)</span>, then <span class="math notranslate nohighlight">\(B^k x / \|B^k x\|\)</span> converges to <span class="math notranslate nohighlight">\(v_1\)</span>, and if <span class="math notranslate nohighlight">\(\langle v_1, x \rangle &lt; 0\)</span>, then the limit is <span class="math notranslate nohighlight">\(-v_1\)</span>.</p>
+<p>Answer for 3: a. Justification: The text provides these formulas in the “Numerical Corner” section.</p>
+<p>Answer for 4: c. Justification: The key lemma states that convergence is ensured if <span class="math notranslate nohighlight">\(x\)</span> is such that <span class="math notranslate nohighlight">\(\langle q_1, x \rangle \neq 0\)</span>.</p>
+<p>Answer for 5: d. Justification: The text states that “projecting on the top two singular vectors… corresponds to finding the best two-dimensional approximating subspace. The projection can be computed using the truncated SVD <span class="math notranslate nohighlight">\(Z = U_{(2)} \Sigma_{(2)} V_{(2)}^T\)</span>.”</p>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./chap03_svd/04_power"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="../03_svd/roch-mmids-svd-svd.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title"><span class="section-number">4.3. </span>Approximating subspaces and the SVD</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="../05_pca/roch-mmids-svd-pca.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title"><span class="section-number">4.5. </span>Application: principal components analysis</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#key-lemma">4.4.1. Key lemma</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#computing-the-top-singular-vector">4.4.2. Computing the top singular vector</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Sebastien Roch
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2024.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

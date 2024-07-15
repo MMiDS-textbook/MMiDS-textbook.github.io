@@ -1,0 +1,1326 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>4.3. Approximating subspaces and the SVD &#8212; MMiDS Textbook</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.5.1/css/all.min.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.1/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.1/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.1/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b76e3c8a" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=384b581d" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=87e54e7c" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae" />
+  <script src="../../_static/vendor/fontawesome/6.5.1/js/all.min.js?digest=8d27b9dea8ad943066ae"></script>
+
+    <script src="../../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?v=efea14e4"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../_static/design-tabs.js?v=f930bc37"></script>
+    <script async="async" src="https://www.googletagmanager.com/gtag/js?id=G-P5E8DW088F"></script>
+    <script>
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){ dataLayer.push(arguments); }
+                gtag('js', new Date());
+                gtag('config', 'G-P5E8DW088F');
+            </script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){ dataLayer.push(arguments); }
+                gtag('js', new Date());
+                gtag('config', 'G-P5E8DW088F');
+            </script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'chap03_svd/03_svd/roch-mmids-svd-svd';</script>
+    <link rel="canonical" href="https://mmids-textbook.github.io/chap03_svd/03_svd/roch-mmids-svd-svd.html" />
+    <link rel="icon" href="https://mmids-textbook.github.io/favicon-32x32.png"/>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="4.4. Power iteration" href="../04_power/roch-mmids-svd-power.html" />
+    <link rel="prev" title="4.2. Background: review of matrix rank and spectral decomposition" href="../02_spectral/roch-mmids-svd-spectral.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a id="pst-skip-link" class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+
+<a class="navbar-brand logo" href="../../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/mmids-cover-small.jpg" class="logo__image only-light" alt="MMiDS Textbook - Home"/>
+    <script>document.write(`<img src="../../_static/mmids-cover-small.jpg" class="logo__image only-dark" alt="MMiDS Textbook - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../index.html">
+                    <b>MATHEMATICAL METHODS in DATA SCIENCE (with Python)</b>
+                </a>
+            </li>
+        </ul>
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../chap01_intro/00_intro/roch-mmids-intro-intro.html">1. Introduction: a first data science problem</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../chap01_intro/01_motiv/roch-mmids-intro-motiv.html">1.1. Motivating example: identifying penguin species</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap01_intro/02_review/roch-mmids-intro-review.html">1.2. Background: quick refresher of matrix algebra, differential calculus, and elementary probability</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap01_intro/03_clustering/roch-mmids-intro-clustering.html">1.3. Clustering: an objective, an algorithm and a guarantee</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap01_intro/04_highdim/roch-mmids-intro-highdim.html">1.4. Some observations about high-dimensional data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap01_intro/exercises/roch-mmids-intro-exercises.html">1.5. Exercises</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap01_intro/05_adv/roch-mmids-intro-adv.html">1.6. Online suppplementary material</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../chap02_ls/00_intro/roch-mmids-ls-intro.html">2. Least squares: geometric, algebraic, and numerical aspects</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../chap02_ls/01_motiv/roch-mmids-ls-motiv.html">2.1. Motivating example: predicting sales</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap02_ls/02_subspaces/roch-mmids-ls-spaces.html">2.2. Background: review of vector spaces and matrix inverses</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap02_ls/03_orthog/roch-mmids-ls-orthog.html">2.3. Geometry of least squares: the orthogonal projection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap02_ls/04_qr/roch-mmids-ls-qr.html">2.4. QR decomposition and Householder transformations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap02_ls/05_regression/roch-mmids-ls-regression.html">2.5. Application: regression analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap02_ls/exercises/roch-mmids-ls-exercises.html">2.6. Exercises</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap02_ls/06_adv/roch-mmids-ls-adv.html">2.7. Online suppplementary material</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../chap06_opt/00_intro/roch-mmids-opt-intro.html">3. Optimization theory and algorithms</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-3"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../chap06_opt/01_motiv/roch-mmids-opt-motiv.html">3.1. Motivating example:  analyzing customer satisfaction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap06_opt/02_several/roch-mmids-opt-several.html">3.2. Background: review of differentiable functions of several variables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap06_opt/03_optimality/roch-mmids-opt-optimality.html">3.3. Optimality conditions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap06_opt/03part2_convexity/roch-mmids-opt-convexity.html">3.4. Convexity</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap06_opt/04_gd/roch-mmids-opt-gd.html">3.5. Gradient descent and its convergence analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap06_opt/04part2_logistic/roch-mmids-opt-logistic.html">3.6. Application: logistic regression</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap06_opt/exercises/roch-mmids-opt-exercises.html">3.7. Exercises</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap06_opt/06_adv/roch-mmids-opt-adv.html">3.8. Online suppplementary material</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="../00_intro/roch-mmids-svd-intro.html">4. Singular value decomposition</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-4"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../01_motiv/roch-mmids-svd-motiv.html">4.1. Motivating example: visualizing viral evolution</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../02_spectral/roch-mmids-svd-spectral.html">4.2. Background: review of matrix rank  and spectral decomposition</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">4.3. Approximating subspaces and the SVD</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../04_power/roch-mmids-svd-power.html">4.4. Power iteration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../05_pca/roch-mmids-svd-pca.html">4.5. Application: principal components analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../06_further/roch-mmids-svd-further.html">4.6. Further applications of the SVD: low-rank approximations and ridge regression</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../exercises/roch-mmids-svd-exercises.html">4.7. Exercises</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../07_adv/roch-mmids-svd-adv.html">4.8. Online suppplementary material</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../chap04_specgraph/00_intro/roch-mmids-specgraph-intro.html">5. Spectral graph theory</a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-5"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../chap04_specgraph/01_motiv/roch-mmids-specgraph-motiv.html">5.1. Motivating example: uncovering social groups</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap04_specgraph/02_graph/roch-mmids-specgraph-graph.html">5.2. Background: basic concepts in graph theory</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap04_specgraph/03_extremal/roch-mmids-specgraph-extremal.html">5.3. Variational characterization of eigenvalues</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap04_specgraph/04_laplacian/roch-mmids-specgraph-laplacian.html">5.4. Spectral properties of the Laplacian matrix</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap04_specgraph/05_partitioning/roch-mmids-specgraph-partitioning.html">5.5. Application: graph partitioning via spectral clustering</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap04_specgraph/05part2_sbm/roch-mmids-specgraph-sbm.html">5.6. Erdős-Rényi random graph and stochastic blockmodel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap04_specgraph/exercises/roch-mmids-specgraph-exercises.html">5.7. Exercises</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap04_specgraph/06_adv/roch-mmids-specgraph-adv.html">5.8. Online supplementary material</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../chap07_prob/00_intro/roch-mmids-prob-intro.html">6. Probabilistic models: from simple to complex</a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-6"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../chap07_prob/01_motiv/roch-mmids-prob-motiv.html">6.1. Motivating example: tracking location</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap07_prob/02_parametric/roch-mmids-prob-parametric.html">6.2. Background: introduction to parametric families and maximum likelihood estimation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap07_prob/03_joint/roch-mmids-prob-joint.html">6.3. Modeling more complex dependencies 1: using conditional independence</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap07_prob/03part2_em/roch-mmids-prob-em.html">6.4. Modeling more complex dependencies 2: marginalizing out an unobserved variable</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap07_prob/04_kalman/roch-mmids-prob-kalman.html">6.5. Application: linear-Gaussian models and Kalman filtering</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap07_prob/exercises/roch-mmids-prob-exercises.html">6.6. Exercises</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap07_prob/06_adv/roch-mmids-prob-adv.html">6.7. Online supplementary material</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../chap05_rwmc/00_intro/roch-mmids-rwmc-intro.html">7. Random walks on graphs and Markov chains</a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-7"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../chap05_rwmc/01_motiv/roch-mmids-rwmc-motiv.html">7.1. Motivating example: discovering mathematical topics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap05_rwmc/03_mcdefs/roch-mmids-rwmc-mcdefs.html">7.2. Background: elements of finite Markov chains</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap05_rwmc/04_stat/roch-mmids-rwmc-stat.html">7.3. Limit behavior 1: stationary distributions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap05_rwmc/04part2_mclimit/roch-mmids-rwmc-mclimit.html">7.4. Limit behavior 2: convergence to equilibrium</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap05_rwmc/05_pagerank/roch-mmids-rwmc-pagerank.html">7.5. Application: random walks on graphs and PageRank</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap05_rwmc/05part2_gibbs/roch-mmids-rwmc-gibbs.html">7.6. Further applications: Gibbs sampling and generating images</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap05_rwmc/exercises/roch-mmids-rwmc-exercises.html">7.7. Exercises</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap05_rwmc/06_adv/roch-mmids-rwmc-adv.html">7.8. Online supplementary material</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../chap08_nn/00_intro/roch-mmids-nn-intro.html">8. Neural networks, backpropagation and stochastic gradient descent</a><input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-8"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../chap08_nn/01_motiv/roch-mmids-nn-motiv.html">8.1. Motivating example:  classifying natural images</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap08_nn/02_chain/roch-mmids-nn-chain.html">8.2. Background: Jacobian, chain rule, and a brief introduction to automatic differentiation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap08_nn/03_backprop/roch-mmids-nn-backprop.html">8.3. Building blocks of AI 1: backpropagation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap08_nn/04_sgd/roch-mmids-nn-sgd.html">8.4. Building blocks of AI 2: stochastic gradient descent</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap08_nn/05_nn/roch-mmids-nn-nn.html">8.5. Building blocks of AI 3: neural networks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap08_nn/exercises/roch-mmids-nn-exercises.html">8.6. Exercises</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap08_nn/06_adv/roch-mmids-nn-adv.html">8.7. Online supplementary material</a></li>
+</ul>
+</li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/MMiDS-textbook/MMiDS-textbook.github.io" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/MMiDS-textbook/MMiDS-textbook.github.io/issues/new?title=Issue%20on%20page%20%2Fchap03_svd/03_svd/roch-mmids-svd-svd.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/chap03_svd/03_svd/roch-mmids-svd-svd.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Approximating subspaces and the SVD</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#an-objective-an-algorithm-and-a-guarantee">4.3.1. An objective, an algorithm, and a guarantee</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#from-approximating-subspaces-to-the-svd">4.3.2. From approximating subspaces to the SVD</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <p><span class="math notranslate nohighlight">\(\newcommand{\bmu}{\boldsymbol{\mu}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bSigma}{\boldsymbol{\Sigma}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bfbeta}{\boldsymbol{\beta}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bflambda}{\boldsymbol{\lambda}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bgamma}{\boldsymbol{\gamma}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bsigma}{{\boldsymbol{\sigma}}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bpi}{\boldsymbol{\pi}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\btheta}{{\boldsymbol{\theta}}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bphi}{\boldsymbol{\phi}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\balpha}{\boldsymbol{\alpha}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\blambda}{\boldsymbol{\lambda}}\)</span>
+<span class="math notranslate nohighlight">\(\renewcommand{\P}{\mathbb{P}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\E}{\mathbb{E}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\indep}{\perp\!\!\!\perp} \newcommand{\bx}{\mathbf{x}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bp}{\mathbf{p}}\)</span>
+<span class="math notranslate nohighlight">\(\renewcommand{\bx}{\mathbf{x}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bX}{\mathbf{X}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\by}{\mathbf{y}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bY}{\mathbf{Y}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bz}{\mathbf{z}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bZ}{\mathbf{Z}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bw}{\mathbf{w}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bW}{\mathbf{W}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bv}{\mathbf{v}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bV}{\mathbf{V}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bfg}{\mathbf{g}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bfh}{\mathbf{h}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\horz}{\rule[.5ex]{2.5ex}{0.5pt}}\)</span>
+<span class="math notranslate nohighlight">\(\renewcommand{\S}{\mathcal{S}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\X}{\mathcal{X}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\var}{\mathrm{Var}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\pa}{\mathrm{pa}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\Z}{\mathcal{Z}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bh}{\mathbf{h}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bb}{\mathbf{b}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bc}{\mathbf{c}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\cE}{\mathcal{E}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\cP}{\mathcal{P}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bbeta}{\boldsymbol{\beta}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bLambda}{\boldsymbol{\Lambda}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\cov}{\mathrm{Cov}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bfk}{\mathbf{k}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\idx}[1]{}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\xdi}{}\)</span></p>
+<section id="approximating-subspaces-and-the-svd">
+<h1><span class="section-number">4.3. </span>Approximating subspaces and the SVD<a class="headerlink" href="#approximating-subspaces-and-the-svd" title="Link to this heading">#</a></h1>
+<p>In this section, we introduce the singular value decomposition (SVD). We motivate it via the problem of finding a best approximating subspace to a collection of data points – although it has applications far beyond.</p>
+<section id="an-objective-an-algorithm-and-a-guarantee">
+<h2><span class="section-number">4.3.1. </span>An objective, an algorithm, and a guarantee<a class="headerlink" href="#an-objective-an-algorithm-and-a-guarantee" title="Link to this heading">#</a></h2>
+<p>Let <span class="math notranslate nohighlight">\(\boldsymbol{\alpha}_1,\dots,\boldsymbol{\alpha}_n\)</span> be a collection of <span class="math notranslate nohighlight">\(n\)</span> data points in <span class="math notranslate nohighlight">\(\mathbb{R}^m\)</span>. A natural way to extract low-dimensional structure in this dataset is to find a low-dimensional linear subspace <span class="math notranslate nohighlight">\(\mathcal{Z}\)</span> of <span class="math notranslate nohighlight">\(\mathbb{R}^m\)</span> such that the <span class="math notranslate nohighlight">\(\boldsymbol{\alpha}_i\)</span>’s are “close to it.”</p>
+<!--TEX
+**Figure:** The closest line to some data points ([Source](https://web.stanford.edu/class/bios221/book/07-chap.html#a-line-that-minimizes-distances-in-both-directions))
+
+![PCA](https://web.stanford.edu/class/bios221/book/07-chap_files/figure-html/fig-PCAmin-1.png)
+
+$\bowtie$
+--><p><img alt="The closest line to some data points (with help from ChatGPT; code converted from (Source))" src="../../_images/pca-lin-reg.png" /></p>
+<p><strong>Mathematical formulation of the problem</strong> Again the squared Euclidean norm turns out to be computationally convenient. So we look for a linear subspace <span class="math notranslate nohighlight">\(\mathcal{Z}\)</span> that minimizes</p>
+<div class="math notranslate nohighlight">
+\[
+\sum_{i=1}^n \|\boldsymbol{\alpha}_i - \mathrm{proj}_\mathcal{Z}(\boldsymbol{\alpha}_i)\|^2 
+\]</div>
+<p>over all linear subspaces of <span class="math notranslate nohighlight">\(\mathbb{R}^m\)</span> of dimension <span class="math notranslate nohighlight">\(k\)</span>. To solve this problem, which we refer to as the best approximating subspace problem<span class="math notranslate nohighlight">\(\idx{best approximating subspace problem}\xdi\)</span>, we make a series of observations.</p>
+<p><strong>KNOWLEDGE CHECK:</strong> Consider the data points <span class="math notranslate nohighlight">\(\boldsymbol{\alpha}_1 = (-1,1)\)</span> and <span class="math notranslate nohighlight">\(\boldsymbol{\alpha}_2 = (1,-1)\)</span>. For <span class="math notranslate nohighlight">\(k=1\)</span>, what is the solution of the best approximating subspace?</p>
+<p>a) <span class="math notranslate nohighlight">\(\mathcal{Z} = \{(x,y) \in \mathbb{R}^2 : y = x\}\)</span></p>
+<p>b) <span class="math notranslate nohighlight">\(\mathcal{Z} = \{(x,y) \in \mathbb{R}^2 : y = -x\}\)</span></p>
+<p>c) <span class="math notranslate nohighlight">\(\mathcal{Z} = \{(x,y) \in \mathbb{R}^2 : y = x + 1\}\)</span></p>
+<p>d) <span class="math notranslate nohighlight">\(\mathcal{Z} = \{(x,y) \in \mathbb{R}^2 : y = x - 1\}\)</span></p>
+<p>e) None of the above</p>
+<p><span class="math notranslate nohighlight">\(\checkmark\)</span></p>
+<p>The first observation gives a related, useful characterization of the optimal solution.</p>
+<p><strong>LEMMA</strong> <strong>(Best Subspace as Maximimization)</strong> <span class="math notranslate nohighlight">\(\idx{best subspace as maximimization lemma}\xdi\)</span> Let <span class="math notranslate nohighlight">\(\boldsymbol{\alpha}_i\)</span>, <span class="math notranslate nohighlight">\(i =1\ldots,n\)</span>, be vectors in <span class="math notranslate nohighlight">\(\mathbb{R}^m\)</span>. A linear subspace <span class="math notranslate nohighlight">\(\mathcal{Z}\)</span> of <span class="math notranslate nohighlight">\(\mathbb{R}^m\)</span> that minimizes</p>
+<div class="math notranslate nohighlight">
+\[
+\sum_{i=1}^n \|\boldsymbol{\alpha}_i - \mathrm{proj}_\mathcal{Z}(\boldsymbol{\alpha}_i)\|^2 
+\]</div>
+<p>over all linear subspaces of dimension at most <span class="math notranslate nohighlight">\(k\)</span> also maximizes</p>
+<div class="math notranslate nohighlight">
+\[
+\sum_{i=1}^n \|\mathrm{proj}_\mathcal{Z}(\boldsymbol{\alpha}_i)\|^2 
+\]</div>
+<p>over the same linear subspaces. And vice versa. <span class="math notranslate nohighlight">\(\flat\)</span></p>
+<p><em>Proof idea:</em> This is a straightforward application of the triangle inequality.</p>
+<p><em>Proof:</em> By <em>Pythagoras’ Theorem</em>,</p>
+<div class="math notranslate nohighlight">
+\[
+\|\boldsymbol{\alpha}_i - \mathrm{proj}_{\mathcal{Z}}(\boldsymbol{\alpha}_i)\|^2 + \|\mathrm{proj}_{\mathcal{Z}}(\boldsymbol{\alpha}_i)\|^2 
+=  \|\boldsymbol{\alpha}_i\|^2
+\]</div>
+<p>since, by the <em>Orthogonal Projection Theorem</em>, <span class="math notranslate nohighlight">\(\mathrm{proj}_{\mathcal{Z}}(\boldsymbol{\alpha}_i)\)</span> is orthogonal to <span class="math notranslate nohighlight">\(\boldsymbol{\alpha}_i - \mathrm{proj}_{\mathcal{Z}}(\boldsymbol{\alpha}_i)\)</span>. Rearranging,</p>
+<div class="math notranslate nohighlight">
+\[
+\|\boldsymbol{\alpha}_i - \mathrm{proj}_{\mathcal{Z}}(\boldsymbol{\alpha}_i)\|^2
+=  \|\boldsymbol{\alpha}_i\|^2 - \|\mathrm{proj}_{\mathcal{Z}}(\boldsymbol{\alpha}_i)\|^2.
+\]</div>
+<p>The result follows from the fact that the first term on the right-hand side does not depend on the choice of <span class="math notranslate nohighlight">\(\mathcal{Z}\)</span>. More specifically, optimizing over linear subspaces <span class="math notranslate nohighlight">\(\mathcal{Z}\)</span> of dimension <span class="math notranslate nohighlight">\(k\)</span>,</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+\min_{\mathcal{Z}} \sum_{i=1}^n \|\boldsymbol{\alpha}_i - \mathrm{proj}_\mathcal{Z}(\boldsymbol{\alpha}_i)\|^2
+&amp;= \min_{\mathcal{Z}} \sum_{i=1}^n \left\{\|\boldsymbol{\alpha}_i\|^2 - \|\mathrm{proj}_{\mathcal{Z}}(\boldsymbol{\alpha}_i)\|^2\right\}\\
+&amp;= \sum_{i=1}^n \|\boldsymbol{\alpha}_i\|^2 + \min_{\mathcal{Z}} \left\{- \sum_{i=1}^n\|\mathrm{proj}_{\mathcal{Z}}(\boldsymbol{\alpha}_i)\|^2\right\}\\
+&amp;= \sum_{i=1}^n \|\boldsymbol{\alpha}_i\|^2 - \max_{\mathcal{Z}} \sum_{i=1}^n \|\mathrm{proj}_{\mathcal{Z}}(\boldsymbol{\alpha}_i)\|^2.
+\end{align*}\]</div>
+<p><span class="math notranslate nohighlight">\(\square\)</span></p>
+<p>How do we specify a <span class="math notranslate nohighlight">\(k\)</span>-dimensional linear subspace? Through a basis of it, or – even better – an orthonormal basis. In the latter case, we also have an explicit formula for the orthogonal projection. And the dimension of the linear subspace is captured by the number of elements in the basis, by the <em>Dimension Theorem</em>. In other words, the best approximating subspace can be obtained by solving the problem</p>
+<div class="math notranslate nohighlight">
+\[
+\max_{\mathbf{w}_1,\ldots,\mathbf{w}_k} \sum_{i=1}^n \left\|\sum_{j=1}^k \langle \boldsymbol{\alpha}_i, \mathbf{w}_j \rangle \,\mathbf{w}_j\right\|^2
+\]</div>
+<p>over all orthonormal lists <span class="math notranslate nohighlight">\(\mathbf{w}_1,\ldots,\mathbf{w}_k\)</span> of length <span class="math notranslate nohighlight">\(k\)</span>. Our next observation rewrites the problem in matrix form.</p>
+<p><strong>LEMMA</strong> <strong>(Best Subpace in Matrix Form)</strong> <span class="math notranslate nohighlight">\(\idx{best subpace in matrix form lemma}\xdi\)</span> Consider the matrix <span class="math notranslate nohighlight">\(A \in \mathbb{R}^{n \times m}\)</span> with rows <span class="math notranslate nohighlight">\(\boldsymbol{\alpha}_i^T\)</span>. A solution to the best approximating subspace problem is obtained by solving</p>
+<div class="math notranslate nohighlight">
+\[
+\max_{\mathbf{w}_1,\ldots,\mathbf{w}_k} \sum_{j=1}^k \|A \mathbf{w}_j\|^2
+\]</div>
+<p>over all orthonormal lists <span class="math notranslate nohighlight">\(\mathbf{w}_1,\ldots,\mathbf{w}_k\)</span> of length <span class="math notranslate nohighlight">\(k\)</span>. <span class="math notranslate nohighlight">\(\flat\)</span></p>
+<p><em>Proof idea:</em> We start with the one-dimensional case. A one-dimensional space <span class="math notranslate nohighlight">\(\mathcal{Z}\)</span> is determined by a unit vector <span class="math notranslate nohighlight">\(\mathbf{w}_1\)</span>. The projection <span class="math notranslate nohighlight">\(\boldsymbol{\alpha}_i\)</span> onto the span of <span class="math notranslate nohighlight">\(\mathbf{w}_1\)</span> is given by the inner product formula <span class="math notranslate nohighlight">\(\langle \boldsymbol{\alpha}_i, \mathbf{w}_1 \rangle \,\mathbf{w}_1\)</span>. So</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+\sum_{i=1}^n \|\langle \boldsymbol{\alpha}_i, \mathbf{w}_1 \rangle \,\mathbf{w}_1 \|^2
+&amp;= \sum_{i=1}^n \langle \boldsymbol{\alpha}_i, \mathbf{w}_1 \rangle ^2\\
+&amp;= \sum_{i=1}^n (\boldsymbol{\alpha}_i^T \mathbf{w}_1)^2\\
+&amp;= \|A \mathbf{w}_1\|^2
+\end{align*}\]</div>
+<p>where, again, <span class="math notranslate nohighlight">\(A\)</span> is the matrix with rows <span class="math notranslate nohighlight">\(\boldsymbol{\alpha}_i ^T\)</span>, <span class="math notranslate nohighlight">\(i=1,\ldots, n\)</span>. Hence the solution to the one-dimensional problem is</p>
+<div class="math notranslate nohighlight">
+\[
+\mathbf{v}_1 \in \arg\max\{\|A \mathbf{w}_1\|^2:\|\mathbf{w}_1\| = 1\}.
+\]</div>
+<p>Here <span class="math notranslate nohighlight">\(\arg\max\)</span> means that <span class="math notranslate nohighlight">\(\mathbf{v}_1\)</span> is a vector <span class="math notranslate nohighlight">\(\mathbf{w}_1\)</span> that achieves the maximum. Note that there could be more than one such <span class="math notranslate nohighlight">\(\mathbf{w}_1\)</span>, so the right-hand side is a set containing all such solutions. By the <em>Extreme Value Theorem</em> (since the set <span class="math notranslate nohighlight">\(\{\mathbf{w}_1 : \|\mathbf{w}_1\| = 1\}\)</span> is closed and bounded, and since furthermore the function <span class="math notranslate nohighlight">\(\|A \mathbf{w}_1\|^2\)</span> is continuous in <span class="math notranslate nohighlight">\(\mathbf{w}_1\)</span>), there is at least one solution. Here we pick an arbitrary one.</p>
+<p><em>Proof:</em> For general <span class="math notranslate nohighlight">\(k\)</span>, we are looking for an orthonormal list <span class="math notranslate nohighlight">\(\mathbf{w}_1,\ldots,\mathbf{w}_k\)</span> of length <span class="math notranslate nohighlight">\(k\)</span> that maximizes</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+\sum_{i=1}^n \left\|\sum_{j=1}^k \langle \boldsymbol{\alpha}_i, \mathbf{w}_j \rangle \,\mathbf{w}_j\right\|^2
+&amp;= \sum_{i=1}^n \sum_{j=1}^k \langle \boldsymbol{\alpha}_i, \mathbf{w}_j \rangle ^2\\
+&amp;= \sum_{j=1}^k \left(\sum_{i=1}^n  (\boldsymbol{\alpha}_i^T \mathbf{w}_j)^2\right)\\
+&amp;= \sum_{j=1}^k \|A \mathbf{w}_j\|^2
+\end{align*}\]</div>
+<p>where <span class="math notranslate nohighlight">\(\mathcal{Z}\)</span> is the subspace spanned by <span class="math notranslate nohighlight">\(\mathbf{w}_1,\ldots,\mathbf{w}_k\)</span>. On the second line, we used the <em>Properties of Orthonormal Lists</em>. That proves the claim. <span class="math notranslate nohighlight">\(\square\)</span></p>
+<p>We show next that a simple algorithm solves this problem.</p>
+<p><strong>A greedy algorithm</strong> <span class="math notranslate nohighlight">\(\idx{greedy algorithm}\xdi\)</span> Remarkably, the problem admits a greedy solution. Before discussing this solution, we take a small detour and give a classical example. Indeed, <a class="reference external" href="https://en.wikipedia.org/wiki/Greedy_algorithm">greedy approaches</a> are a standard algorithmic tool for optimization problems. This is how Wikipedia describes them:</p>
+<blockquote>
+<div><p>A greedy algorithm is any algorithm that follows the problem-solving heuristic of making the locally optimal choice at each stage. In many problems, a greedy strategy does not produce an optimal solution, but a greedy heuristic can yield locally optimal solutions that approximate a globally optimal solution in a reasonable amount of time.</p>
+</div></blockquote>
+<p><strong>EXAMPLE:</strong> Suppose you are thief and you broke into an antique shop at night. You cannot steal every item in the store. You have estimated that you can carry 10 lbs worth of merchandise, and still run fast enough to get away. Suppose that there are 4 items of interest with the following weights and values</p>
+<table class="table">
+<thead>
+<tr class="row-odd"><th class="head text-center"><p>Item</p></th>
+<th class="head text-center"><p>Weight (lbs)</p></th>
+<th class="head text-center"><p>Value ($)</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-center"><p>1</p></td>
+<td class="text-center"><p>8</p></td>
+<td class="text-center"><p>1600</p></td>
+</tr>
+<tr class="row-odd"><td class="text-center"><p>2</p></td>
+<td class="text-center"><p>6</p></td>
+<td class="text-center"><p>1100</p></td>
+</tr>
+<tr class="row-even"><td class="text-center"><p>3</p></td>
+<td class="text-center"><p>4</p></td>
+<td class="text-center"><p>700</p></td>
+</tr>
+<tr class="row-odd"><td class="text-center"><p>4</p></td>
+<td class="text-center"><p>1</p></td>
+<td class="text-center"><p>100</p></td>
+</tr>
+</tbody>
+</table>
+<p>There is exactly one of each item. Which items do you take? The siren is blaring, and you cannot try every combination. A quick scheme is to first pick the item of greatest value, i.e., Item 1. Now your bag has 8 lbs of merchandise in it. Then you consider the remaining items and choose whichever has highest value among those that still fit, i.e., those that are 2 lbs or lighter. That leaves only one choice, Item 4. Then you go – with a total value of 1700.</p>
+<p>This is called a greedy or myopic strategy, because you chose the first item to maximize your profit without worrying about the constraints it imposes on future choice. Indeed, in this case, there is a better combination: you could have picked Items 2 and 3 with a total value of 1800.</p>
+<p>Other greedy schemes are possible here. A slightly more clever approach is to choose items of high <em>value per unit weight</em>, rather than considering value alone. But, that would not make a difference in this particular example (Try it!). <span class="math notranslate nohighlight">\(\lhd\)</span></p>
+<p>Going back to the approximating subspace problem, we derive a greedy solution for it. Recall that we are looking for a solution to</p>
+<div class="math notranslate nohighlight">
+\[
+\max_{\mathbf{w}_1,\ldots,\mathbf{w}_k} \|A \mathbf{w}_1\|^2 + \|A \mathbf{w}_2\|^2 + \cdots + \|A \mathbf{w}_k\|^2
+\]</div>
+<p>over all orthonormal lists <span class="math notranslate nohighlight">\(\mathbf{w}_1,\ldots,\mathbf{w}_k\)</span> of length <span class="math notranslate nohighlight">\(k\)</span>.</p>
+<p>In a greedy approach, we first solve for <span class="math notranslate nohighlight">\(\mathbf{w}_1\)</span> by itself, without worrying about constraints it will impose on the next steps. That is, we compute</p>
+<div class="math notranslate nohighlight">
+\[
+\mathbf{v}_1 \in \arg\max\{\|A \mathbf{w}_1\|^2:\|\mathbf{w}_1\| = 1\}.
+\]</div>
+<p>As indicated before, by the <em>Extreme Value Theorem</em>, such a <span class="math notranslate nohighlight">\(\mathbf{v}_1\)</span> exists, but may not be unique. Then, fixing <span class="math notranslate nohighlight">\(\mathbf{w}_1 = \mathbf{v}_1\)</span>, we consider all unit vectors <span class="math notranslate nohighlight">\(\mathbf{w}_2\)</span> orthogonal to <span class="math notranslate nohighlight">\(\mathbf{v}_1\)</span> and maximize the contribution of <span class="math notranslate nohighlight">\(\mathbf{w}_2\)</span> to the objective function. That is, we solve</p>
+<div class="math notranslate nohighlight">
+\[
+\mathbf{v}_2\in \arg\max
+\{\|A \mathbf{w}_2\|^2 :\|\mathbf{w}_2\| = 1,\ \langle \mathbf{w}_2, \mathbf{v}_1 \rangle = 0\}.
+\]</div>
+<p>Again, such a <span class="math notranslate nohighlight">\(\mathbf{v}_2\)</span> exists by the <em>Extreme Value Theorem</em>. Then proceeding by induction, for each <span class="math notranslate nohighlight">\(i = 3, \ldots, k\)</span>, we compute</p>
+<div class="math notranslate nohighlight">
+\[
+\mathbf{v}_i\in \arg\max
+\{\|A \mathbf{w}_i\|^2 :\|\mathbf{w}_i\| = 1, \ \langle \mathbf{w}_i, \mathbf{v}_j \rangle = 0, \forall j \leq i-1\}.
+\]</div>
+<p>A different way to write the constraint is</p>
+<div class="math notranslate nohighlight">
+\[
+\mathbf{v}_i\in \arg\max
+\{\|A \mathbf{w}_i\|^2 :\|\mathbf{w}_i\| = 1, \mathbf{w}_i \in \mathrm{span}(\mathbf{v}_1,\ldots,\mathrm{v}_{i-1})^\perp\}.
+\]</div>
+<p>While it is clear that, after <span class="math notranslate nohighlight">\(k\)</span> steps, this procedure constructs an orthonormal set of size <span class="math notranslate nohighlight">\(k\)</span>, it is far from obvious that it maximizes <span class="math notranslate nohighlight">\(\sum_{j=1}^k \|A \mathbf{v}_j\|^2\)</span> over all such sets. Remarkably it does. The claim – which requires a proof – is that the best <span class="math notranslate nohighlight">\(k\)</span>-dimensional approximating subspace is obtained by finding the best <span class="math notranslate nohighlight">\(1\)</span>-dimensional subspace, then the best <span class="math notranslate nohighlight">\(1\)</span>-dimensional subspace orthogonal to the first one, and so on.  This follows from the next theorem.</p>
+<p><strong>THEOREM</strong> <strong>(Greedy Finds Best Subspace)</strong> <span class="math notranslate nohighlight">\(\idx{greedy finds best subspace theorem}\xdi\)</span> Let <span class="math notranslate nohighlight">\(A \in \mathbb{R}^{n \times m}\)</span> be a matrix with rows <span class="math notranslate nohighlight">\(\boldsymbol{\alpha}_i^T\)</span>, <span class="math notranslate nohighlight">\(i=1,\ldots,n\)</span>. For any <span class="math notranslate nohighlight">\(k \leq m\)</span>, let <span class="math notranslate nohighlight">\(\mathbf{v}_1,\ldots,\mathbf{v}_k\)</span> be the greedy sequence constructed above. Then <span class="math notranslate nohighlight">\(\mathcal{Z}^* = \mathrm{span}(\mathbf{v}_1,\ldots,\mathbf{v}_k)\)</span> is a solution to the minimization problem</p>
+<div class="math notranslate nohighlight">
+\[
+\min \left\{
+\sum_{i=1}^n \|\boldsymbol{\alpha}_i - \mathrm{proj}_{\mathcal{Z}}(\boldsymbol{\alpha}_i)\|^2\ :\ \text{$\mathcal{Z}$ is a linear subspace of dimension $k$} 
+\right\}.
+\]</div>
+<p><span class="math notranslate nohighlight">\(\sharp\)</span></p>
+<p>Beyond the potential computational advantage of solving several lower-dimensional problems rather one larger-dimensional one, the greedy sequence has a more subtle property that is powerful. It allows us to solve the problem for all choices <span class="math notranslate nohighlight">\(k\)</span> of target dimension <em>simultaneously</em>. To explain, note that the largest <span class="math notranslate nohighlight">\(k\)</span> value, i.e. <span class="math notranslate nohighlight">\(k=m\)</span>, leads to a trivial problem. Indeed, the data points <span class="math notranslate nohighlight">\(\boldsymbol{\alpha}_i\)</span>, <span class="math notranslate nohighlight">\(i=1,\ldots,n\)</span>, already lie in an <span class="math notranslate nohighlight">\(m\)</span>-dimensional linear subspace, <span class="math notranslate nohighlight">\(\mathbb{R}^m\)</span> itself. So we can take <span class="math notranslate nohighlight">\(\mathcal{Z} = \mathbb{R}^m\)</span>, and we have an objective value of</p>
+<div class="math notranslate nohighlight">
+\[
+\sum_{i=1}^n \|\boldsymbol{\alpha}_i - \mathrm{proj}_{\mathcal{Z}}(\boldsymbol{\alpha}_i)\|^2
+= \sum_{i=1}^n \|\boldsymbol{\alpha}_i - \boldsymbol{\alpha}_i\|^2
+= 0,
+\]</div>
+<p>which clearly cannot be improved. So any orthonormal basis of <span class="math notranslate nohighlight">\(\mathbb{R}^m\)</span> will do. Say <span class="math notranslate nohighlight">\(\mathbf{e}_1,\ldots,\mathbf{e}_m\)</span>.</p>
+<p>On the other hand, the greedy sequence <span class="math notranslate nohighlight">\(\mathbf{v}_1,\ldots,\mathbf{v}_m\)</span> has a very special property. For any <span class="math notranslate nohighlight">\(k \leq m\)</span>, the <em>truncation</em> <span class="math notranslate nohighlight">\(\mathbf{v}_1,\ldots,\mathbf{v}_k\)</span> solves the approximating subspace problem in <span class="math notranslate nohighlight">\(k\)</span> dimensions. That follows immediately from the <em>Greedy Finds Best Subspace Theorem</em>. The basis <span class="math notranslate nohighlight">\(\mathbf{e}_1,\ldots,\mathbf{e}_m\)</span> (or any old basis of <span class="math notranslate nohighlight">\(\mathbb{R}^m\)</span> for that matter) does <em>not</em> have this property. The idea of truncation is very useful and plays an important role in many data science applications; we will come back to it later in this section and the next one.</p>
+<p>We sketch the proof of a weaker claim via the <em>Spectral Theorem</em>, an approach which reveals additional structure in the solution.</p>
+<p>We re-write the objective function as</p>
+<div class="math notranslate nohighlight">
+\[
+\sum_{j=1}^k \|A \mathbf{w}_j\|^2
+= \sum_{j=1}^k \mathbf{w}_j^T A^T A \mathbf{w}_j
+\]</div>
+<p>and we observe that <span class="math notranslate nohighlight">\(A^T A \in \mathbb{R}^{m \times m}\)</span> is a square, symmetric matrix (Why?). It is also positive, semidefinite (Why?). Hence, by the <em>Spectral Theorem</em>, the matrix <span class="math notranslate nohighlight">\(A^T A\)</span> has <span class="math notranslate nohighlight">\(m\)</span> orthonormal eigenvectors <span class="math notranslate nohighlight">\(\mathbf{q}_1, \ldots, \mathbf{q}_m \in \mathbb{R}^m\)</span> with corresponding real eigenvalues <span class="math notranslate nohighlight">\(\lambda_1 \geq \lambda_2 \geq \cdots \geq \lambda_m \geq 0\)</span>. This ordering of the eigenvalues will play a critical role. Moreover</p>
+<div class="math notranslate nohighlight">
+\[
+A^T A 
+= \sum_{i=1}^m \lambda_i \mathbf{q}_i \mathbf{q}_i^T.
+\]</div>
+<p>Plugging this in the objective we get</p>
+<div class="math notranslate nohighlight">
+\[
+\sum_{j=1}^k \|A \mathbf{w}_j\|^2
+= \sum_{j=1}^k \mathbf{w}_j^T \left(\sum_{i=1}^m \lambda_i \mathbf{q}_i \mathbf{q}_i^T\right) \mathbf{w}_j
+= \sum_{j=1}^k \sum_{i=1}^m \lambda_i (\mathbf{w}_j^T\mathbf{q}_i)^2.
+\]</div>
+<p>Here is the claim. While the greedy sequence <span class="math notranslate nohighlight">\(\mathbf{v}_1,\ldots,\mathbf{v}_k\)</span> is not in general unique, one can always choose <span class="math notranslate nohighlight">\(\mathbf{v}_i = \mathbf{q}_i\)</span> for all <span class="math notranslate nohighlight">\(i\)</span>. Moreover that particular choice indeed solves the <span class="math notranslate nohighlight">\(k\)</span>-dimensional best approximating subspace problem. We start with the case <span class="math notranslate nohighlight">\(k = 2\)</span>.</p>
+<p><em><strong>Eigenvectors form a greedy sequence:</strong></em> Recall that <span class="math notranslate nohighlight">\(\mathbf{v}_1\)</span> maximizes <span class="math notranslate nohighlight">\(\|A \mathbf{w}_1\|\)</span> over all unit vectors <span class="math notranslate nohighlight">\(\mathbf{w}_1\)</span>. Now note that, expanding over the eigenvectors (which form an orthonormal basis), we have</p>
+<div class="math notranslate nohighlight">
+\[
+\|A \mathbf{w}_1\|^2
+= \sum_{i=1}^m \lambda_i (\mathbf{w}_1^T\mathbf{q}_i)^2
+\]</div>
+<p>and</p>
+<div class="math notranslate nohighlight">
+\[
+\|\mathbf{w}_1\|^2
+= \sum_{i=1}^m (\mathbf{w}_1^T\mathbf{q}_i)^2
+= 1.
+\]</div>
+<p>Writing <span class="math notranslate nohighlight">\(x_i = (\mathbf{w}_1^T\mathbf{q}_i)^2\)</span>, this boils down to maximizing
+<span class="math notranslate nohighlight">\(\sum_{i=1}^m \lambda_i x_i\)</span> subject to the constraints <span class="math notranslate nohighlight">\(\sum_{i=1}^m x_i = 1\)</span> and <span class="math notranslate nohighlight">\(x_i \geq 0\)</span> for all <span class="math notranslate nohighlight">\(i\)</span>. But, under the constraints and the assumption on the ordering of the eigenvalues,</p>
+<div class="math notranslate nohighlight">
+\[
+\sum_{i=1}^m \lambda_i x_i
+\leq \lambda_1 \sum_{i=1}^m x_i
+= \lambda_1.
+\]</div>
+<p>Formally, we have shown that <span class="math notranslate nohighlight">\(\|A \mathbf{w}_1\|^2 \leq \lambda_1\)</span>, for any unit vector <span class="math notranslate nohighlight">\(\mathbf{w}_1\)</span>. Now, note that this upper bound is actually achieved by taking <span class="math notranslate nohighlight">\(\mathbf{v}_1 = \mathbf{w}_1 = \mathbf{q}_1\)</span>, which corresponds to <span class="math notranslate nohighlight">\(\mathbf{x} = (x_1,\ldots,x_m) = \mathbf{e}_1\)</span>.</p>
+<p>Given that choice, the vector <span class="math notranslate nohighlight">\(\mathbf{v}_2\)</span> maximizes <span class="math notranslate nohighlight">\(\|A \mathbf{w}_2\|\)</span> over all unit vectors <span class="math notranslate nohighlight">\(\mathbf{w}_2\)</span> such that further <span class="math notranslate nohighlight">\(\mathbf{w}_2^T\mathbf{v}_1 = \mathbf{w}_2^T\mathbf{q}_1 = 0\)</span>, where this time</p>
+<div class="math notranslate nohighlight">
+\[
+\|A \mathbf{w}_2\|^2
+= \sum_{i=1}^m \lambda_i (\mathbf{w}_2^T\mathbf{q}_i)^2
+= \sum_{i=2}^m \lambda_i (\mathbf{w}_2^T\mathbf{q}_i)^2
+\]</div>
+<p>and</p>
+<div class="math notranslate nohighlight">
+\[
+\|\mathbf{w}_2\|^2
+= \sum_{i=1}^m (\mathbf{w}_2^T\mathbf{q}_i)^2
+= \sum_{i=2}^m (\mathbf{w}_2^T\mathbf{q}_i)^2
+= 1.
+\]</div>
+<p>In both equations above, we used the orthogonality constraint. This reduces to the previous problem without the term depending on <span class="math notranslate nohighlight">\(\mathbf{q}_1\)</span>. The solution is otherwise the same, i.e., the optimal objective is <span class="math notranslate nohighlight">\(\lambda_2\)</span> and is achieved by taking <span class="math notranslate nohighlight">\(\mathbf{v}_2 = \mathbf{w}_2 = \mathbf{q}_2\)</span>.</p>
+<p><em><strong>Eigenvectors solve the approximating subspace problem:</strong></em> The approximating subspace problem for <span class="math notranslate nohighlight">\(k = 2\)</span> involves maximizing</p>
+<div class="math notranslate nohighlight">
+\[
+\|A \mathbf{w}_1\|^2 + \|A \mathbf{w}_2\|^2
+= \sum_{i=1}^m \lambda_i (\mathbf{w}_1^T\mathbf{q}_i)^2
++ \sum_{i=1}^m \lambda_i (\mathbf{w}_2^T\mathbf{q}_i)^2
+\]</div>
+<p>over orthonormal lists <span class="math notranslate nohighlight">\(\mathbf{w}_1, \mathbf{w}_2\)</span>. In particular, we require</p>
+<div class="math notranslate nohighlight">
+\[
+\|\mathbf{w}_1\|^2
+= \sum_{i=1}^m (\mathbf{w}_1^T\mathbf{q}_i)^2
+= 1.
+\]</div>
+<p>and</p>
+<div class="math notranslate nohighlight">
+\[
+\|\mathbf{w}_2\|^2
+= \sum_{i=1}^m (\mathbf{w}_2^T\mathbf{q}_i)^2
+= 1.
+\]</div>
+<p>Moreover, for each <span class="math notranslate nohighlight">\(i\)</span>, by definition of the orthogonal projection on the subspace <span class="math notranslate nohighlight">\(\mathcal{W} = \mathrm{span}(\mathbf{w}_1, \mathbf{w}_2)\)</span> and the <em>Properties of Orhtonormal Lists</em></p>
+<div class="math notranslate nohighlight">
+\[
+(\mathbf{w}_1^T\mathbf{q}_i)^2 + (\mathbf{w}_2^T\mathbf{q}_i)^2
+= \|\mathrm{proj}_{\mathcal{W}} \mathbf{q}_i\|^2
+\leq \|\mathbf{q}_i\|^2 = 1.
+\]</div>
+<p>(Prove the inequality!) Write <span class="math notranslate nohighlight">\(x_i = (\mathbf{w}_1^T\mathbf{q}_i)^2\)</span> and <span class="math notranslate nohighlight">\(y_i = (\mathbf{w}_2^T\mathbf{q}_i)^2\)</span>. The objective function can be written as <span class="math notranslate nohighlight">\(\sum_{i=1}^m \lambda_i (x_i + y_i)\)</span> and the constraints we have derived are <span class="math notranslate nohighlight">\(\sum_{i=1}^m x_i = \sum_{i=1}^m y_i = 1\)</span> and <span class="math notranslate nohighlight">\(x_i + y_i \leq 1\)</span> for all <span class="math notranslate nohighlight">\(i\)</span>. Also clearly <span class="math notranslate nohighlight">\(x_i, y_i \geq 0\)</span> for all <span class="math notranslate nohighlight">\(i\)</span>. So</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+\sum_{i=1}^m \lambda_i (x_i + y_i)
+&amp;= \lambda_1 (x_1 + y_1) + \lambda_2 (x_2 + y_2) + \sum_{i=3}^m \lambda_i (x_i + y_i)\\
+&amp;\leq  \lambda_1 (x_1 + y_1) + \lambda_2 (x_2 + y_2) + \lambda_2 \sum_{i=3}^m  (x_i + y_i)\\
+&amp;= \lambda_1 (x_1 + y_1) + \lambda_2 (x_2 + y_2) + \lambda_2 \left([1 - x_1 - x_2] + [1 - y_1 - y_2]\right)\\
+&amp;= (\lambda_1 - \lambda_2) (x_1 + y_1) + (\lambda_2 - \lambda_2) (x_2 + y_2) + 2 \lambda_2\\
+&amp;\leq \lambda_1 - \lambda_2 + 2 \lambda_2\\
+&amp;= \lambda_1 + \lambda_2.
+\end{align*}\]</div>
+<p>Formally, we have shown that <span class="math notranslate nohighlight">\(\|A \mathbf{w}_1\|^2 + \|A \mathbf{w}_2\|^2 \leq \lambda_1 + \lambda_2\)</span> for any orthonormal list <span class="math notranslate nohighlight">\(\mathbf{w}_1, \mathbf{w}_2\)</span>. That upper bound is achieved by taking <span class="math notranslate nohighlight">\(\mathbf{w}_1 = \mathbf{q}_1\)</span> and <span class="math notranslate nohighlight">\(\mathbf{w}_2 = \mathbf{q}_2\)</span>, proving the claim.</p>
+<p><strong>KNOWLEDGE CHECK:</strong> Proceed by induction to show that the claim holds for any <span class="math notranslate nohighlight">\(k\)</span>. <span class="math notranslate nohighlight">\(\checkmark\)</span></p>
+<p>Note that we have not entirely solved the best approximating subspace problem from a computational point of view, as we have not given an explicit procedure to construct a solution to the lower-dimensional subproblems, i.e., construct the eigenvectors. We have only shown that the solutions exist and have the right properties. We will take care of computational issues later in this chapter.</p>
+</section>
+<section id="from-approximating-subspaces-to-the-svd">
+<h2><span class="section-number">4.3.2. </span>From approximating subspaces to the SVD<a class="headerlink" href="#from-approximating-subspaces-to-the-svd" title="Link to this heading">#</a></h2>
+<p>While solving the approximating subspace problem in the previous section, we derived the building blocks of a matrix factorization that has found many applications, the <a class="reference external" href="https://en.wikipedia.org/wiki/Singular_value_decomposition">singular value decomposition (SVD)</a>. In this section, we define the SVD formally. We describe a simple method to compute it in the next section, where we also return to the application to dimensionality reduction.</p>
+<p><strong>Definition and existence of the SVD</strong> We now come to our main definition.</p>
+<p><strong>DEFINITION</strong> <strong>(Singular Value Decomposition)</strong> <span class="math notranslate nohighlight">\(\idx{singular value decomposition}\xdi\)</span> Let <span class="math notranslate nohighlight">\(A \in \mathbb{R}^{n\times m}\)</span> be a matrix. A singular value decomposition (SVD) of <span class="math notranslate nohighlight">\(A\)</span> is a matrix factorization</p>
+<div class="math notranslate nohighlight">
+\[
+A = U \Sigma V^T = \sum_{j=1}^r \sigma_j \mathbf{u}_j \mathbf{v}_j^T
+\]</div>
+<p>where the columns of <span class="math notranslate nohighlight">\(U \in \mathbb{R}^{n \times r}\)</span> and those of <span class="math notranslate nohighlight">\(V \in \mathbb{R}^{m \times r}\)</span> are orthonormal, and <span class="math notranslate nohighlight">\(\Sigma \in \mathbb{R}^{r \times r}\)</span> is a diagonal matrix. Here the <span class="math notranslate nohighlight">\(\mathbf{u}_j\)</span>s are the columns of <span class="math notranslate nohighlight">\(U\)</span> and are referred to as left singular vectors<span class="math notranslate nohighlight">\(\idx{singular vector}\xdi\)</span>. Similarly the <span class="math notranslate nohighlight">\(\mathbf{v}_j\)</span>s are the columns of <span class="math notranslate nohighlight">\(V\)</span> and are referred to as right singular vectors. The <span class="math notranslate nohighlight">\(\sigma_j\)</span>s, which are positive and in decreasing order, i.e.,</p>
+<div class="math notranslate nohighlight">
+\[
+\sigma_1 \geq \sigma_2 \geq \cdots \geq \sigma_r &gt; 0,
+\]</div>
+<p>are the diagonal elements of <span class="math notranslate nohighlight">\(\Sigma\)</span> and are referred to as singular values<span class="math notranslate nohighlight">\(\idx{singular value}\xdi\)</span>. <span class="math notranslate nohighlight">\(\natural\)</span></p>
+<p>To see where the equality <span class="math notranslate nohighlight">\(U \Sigma V^T = \sum_{j=1}^r \sigma_j \mathbf{u}_j \mathbf{v}_j^T\)</span> comes from,
+we break it up into two steps.</p>
+<ol class="arabic simple">
+<li><p>First note that the matrix product <span class="math notranslate nohighlight">\(U \Sigma\)</span> has columns <span class="math notranslate nohighlight">\(\sigma_1 \mathbf{u}_1,\ldots,\sigma_r \mathbf{u}_r\)</span>.</p></li>
+<li><p>The rows of <span class="math notranslate nohighlight">\(V^T\)</span> are the columns of <span class="math notranslate nohighlight">\(V\)</span> as row vectors.</p></li>
+<li><p>In terms of outer products, the matrix product <span class="math notranslate nohighlight">\(U \Sigma V^T = (U \Sigma) V^T\)</span> is the sum of the outer products of the columns of <span class="math notranslate nohighlight">\(U \Sigma\)</span> and of the rows of <span class="math notranslate nohighlight">\(V^T\)</span> (i.e., the columns of <span class="math notranslate nohighlight">\(V\)</span> as row vectors).</p></li>
+</ol>
+<p>That proves the equality.</p>
+<p><strong>KNOWLEDGE CHECK:</strong> Let <span class="math notranslate nohighlight">\(A \in \mathbb{R}^{n\times m}\)</span> be a matrix with SVD</p>
+<div class="math notranslate nohighlight">
+\[
+A = U \Sigma V^T = \sum_{j=1}^r \sigma_j \mathbf{u}_j \mathbf{v}_j^T.
+\]</div>
+<p>Which statement is true in general?</p>
+<p>a) <span class="math notranslate nohighlight">\(\mathrm{col}(A) = \mathrm{col}(V)\)</span></p>
+<p>b) <span class="math notranslate nohighlight">\(\mathrm{col}(A) = \mathrm{col}(V^T)\)</span></p>
+<p>c) <span class="math notranslate nohighlight">\(\mathrm{col}(A) = \mathrm{col}(U)\)</span></p>
+<p>d) <span class="math notranslate nohighlight">\(\mathrm{col}(A) = \mathrm{col}(U^T)\)</span></p>
+<p>e) <span class="math notranslate nohighlight">\(\mathrm{col}(A) = \mathrm{col}(\Sigma)\)</span></p>
+<p><span class="math notranslate nohighlight">\(\checkmark\)</span></p>
+<p>Remarkably, any matrix has an SVD.</p>
+<p><strong>THEOREM</strong> <strong>(Existence of an SVD)</strong> <span class="math notranslate nohighlight">\(\idx{existence of an SVD}\xdi\)</span> Any matrix <span class="math notranslate nohighlight">\(A \in \mathbb{R}^{n\times m}\)</span> has a singular value decomposition. <span class="math notranslate nohighlight">\(\sharp\)</span></p>
+<p>We give a proof via the <em>Spectral Theorem</em>.</p>
+<p><em>The construction:</em> Let <span class="math notranslate nohighlight">\(A \in \mathbb{R}^{n \times m}\)</span> and recall that <span class="math notranslate nohighlight">\(A^T A\)</span> is symmetric and positive semidefinite. Hence the latter has a spectral decomposition</p>
+<div class="math notranslate nohighlight">
+\[
+A^T A = Q \Lambda Q^T.
+\]</div>
+<p>Order the eigenvalues in decreasing order of absolute value <span class="math notranslate nohighlight">\(\lambda_1 \geq \cdots \geq \lambda_m \geq 0\)</span>. Assume that the eigenvalues <span class="math notranslate nohighlight">\(\lambda_1,\ldots,\lambda_r\)</span> are nonzero while <span class="math notranslate nohighlight">\(\lambda_{r+1} = \cdots = \lambda_m = 0\)</span>. Let <span class="math notranslate nohighlight">\(\mathbf{q}_1,\ldots,\mathbf{q}_n\)</span> be the corresponding eigenvectors. Let <span class="math notranslate nohighlight">\(Q_1 \in \mathbb{R}^{m \times r}\)</span> be the matrix whose columns are <span class="math notranslate nohighlight">\(\mathbf{q}_1,\ldots,\mathbf{q}_r\)</span> and <span class="math notranslate nohighlight">\(\Lambda_1 \in \mathbb{R}^{r \times r}\)</span> be the diagonal matrix with <span class="math notranslate nohighlight">\(\lambda_1,\ldots,\lambda_r\)</span> on its diagonal. Similarly, let <span class="math notranslate nohighlight">\(Q_2 \in \mathbb{R}^{m \times (m-r)}\)</span> be the matrix whose columns are <span class="math notranslate nohighlight">\(\mathbf{q}_{r+1},\ldots,\mathbf{q}_m\)</span> and <span class="math notranslate nohighlight">\(\Lambda_2 = \mathbf{0} \in \mathbb{R}^{(m-r) \times (m-r)}\)</span>.</p>
+<p>The matrix <span class="math notranslate nohighlight">\(A^T A\)</span>, which is comprised of all inner products of the data points, is known as a Gram matrix.</p>
+<p>We are now ready for our main claim.</p>
+<p><strong>THEOREM</strong> <strong>(SVD via Spectral Decomposition)</strong> <span class="math notranslate nohighlight">\(\idx{SVD via spectral decomposition}\xdi\)</span> Let <span class="math notranslate nohighlight">\(A \in \mathbb{R}^{n \times m}\)</span> and let <span class="math notranslate nohighlight">\(Q_1, \Lambda_1\)</span> be as above. Define</p>
+<div class="math notranslate nohighlight">
+\[
+U = A Q_1 \Lambda_1^{-1/2} \quad \text{and} \quad \Sigma = \Lambda_1^{1/2} \quad \text{and} \quad V = Q_1.
+\]</div>
+<p>Then <span class="math notranslate nohighlight">\(A = U \Sigma V^T\)</span> is a singular value decomposition of <span class="math notranslate nohighlight">\(A\)</span>. <span class="math notranslate nohighlight">\(\sharp\)</span></p>
+<p><em>Proof idea:</em> Check by hand that all properties of the SVD are satisfied by the construction above.</p>
+<p><em>Proof:</em> By construction, the columns of <span class="math notranslate nohighlight">\(V = Q_1\)</span> are orthonormal. The matrix <span class="math notranslate nohighlight">\(\Sigma = \Lambda_1^{1/2}\)</span> is diagonal and, because <span class="math notranslate nohighlight">\(A^T A\)</span> is positive semidefinite, the eigenvalues are non-negative. So it remains to prove two things: that the columns of <span class="math notranslate nohighlight">\(U\)</span> are orthonormal and, finally, that <span class="math notranslate nohighlight">\(A = U \Sigma V^T\)</span>.</p>
+<p><strong>KNOWLEDGE CHECK:</strong> Prove that</p>
+<p>a) <span class="math notranslate nohighlight">\(A^T A Q_1 = Q_1 \Lambda_1\)</span> and <span class="math notranslate nohighlight">\(A^T A Q_2 = Q_2 \Lambda_2 = \mathbf{0}\)</span>,</p>
+<p>b) <span class="math notranslate nohighlight">\(Q_1 Q_1^T + Q_2 Q_2^T = I_{m \times m}\)</span>.</p>
+<p><span class="math notranslate nohighlight">\(\checkmark\)</span></p>
+<p><strong>LEMMA</strong> <strong>(Step 1)</strong> The columns of <span class="math notranslate nohighlight">\(U\)</span> are orthonormal. <span class="math notranslate nohighlight">\(\flat\)</span></p>
+<p><em>Proof:</em> By direct computation,</p>
+<div class="math notranslate nohighlight">
+\[
+U^T U 
+= (A Q_1 \Lambda_1^{-1/2})^T A Q_1 \Lambda_1^{-1/2}
+= \Lambda_1^{-1/2} Q_1^T A^T A Q_1 \Lambda_1^{-1/2}.
+\]</div>
+<p>Because the columns of <span class="math notranslate nohighlight">\(Q_1\)</span> are eigenvectors of <span class="math notranslate nohighlight">\(A^T A\)</span>, we have that <span class="math notranslate nohighlight">\(A^T A Q_1 = Q_1 \Lambda_1\)</span>. Further those eigenvectors are orthonormal so that <span class="math notranslate nohighlight">\(Q_1^T Q_1 = I_{r \times r}\)</span>. Plugging above and simplifying gives</p>
+<div class="math notranslate nohighlight">
+\[
+\Lambda_1^{-1/2} Q_1^T A^T A Q_1 \Lambda_1^{-1/2}
+= \Lambda_1^{-1/2} Q_1^T Q_1 \Lambda_1 \Lambda_1^{-1/2}
+= \Lambda_1^{-1/2} I_{r \times r} \Lambda_1 \Lambda_1^{-1/2}
+= I_{r \times r},
+\]</div>
+<p>as claimed. <span class="math notranslate nohighlight">\(\square\)</span></p>
+<p><strong>LEMMA</strong> <strong>(Step 2)</strong> It holds that <span class="math notranslate nohighlight">\(A = U \Sigma V^T\)</span>. <span class="math notranslate nohighlight">\(\flat\)</span></p>
+<p><em>Proof:</em> By direct computation, we have</p>
+<div class="math notranslate nohighlight">
+\[
+U \Sigma V^T
+= A Q_1 \Lambda_1^{-1/2} \Lambda_1^{1/2} Q_1^T
+= A Q_1 Q_1^T.
+\]</div>
+<p>The matrix <span class="math notranslate nohighlight">\(Q_1 Q_1^T\)</span> is an orthogonal projection on the subspace spanned by the vectors <span class="math notranslate nohighlight">\(\mathbf{q}_1,\ldots,\mathbf{q}_r\)</span>. Similarly, the matrix <span class="math notranslate nohighlight">\(Q_2 Q_2^T\)</span> is an orthogonal projection on the orthogonal complement (spanned by <span class="math notranslate nohighlight">\(\mathbf{q}_{r+1},\ldots,\mathbf{q}_m\)</span>). Hence <span class="math notranslate nohighlight">\(Q_1 Q_1^T + Q_2 Q_2^T = I_{m \times m}\)</span>. Replacing above we get</p>
+<div class="math notranslate nohighlight">
+\[
+U \Sigma V^T
+= A (I_{n \times n} - Q_2 Q_2^T)
+= A - A Q_2 Q_2^T.
+\]</div>
+<p>Now note that for any <span class="math notranslate nohighlight">\(\mathbf{q}_i\)</span>, <span class="math notranslate nohighlight">\(i=r+1,\ldots,m\)</span>, we have <span class="math notranslate nohighlight">\(A^T A \mathbf{q}_i = \mathbf{0}\)</span>, so that <span class="math notranslate nohighlight">\(\mathbf{q}_i^T A^T A \mathbf{q}_i = \|A \mathbf{q}_i\|^2 = 0\)</span>. That implies that <span class="math notranslate nohighlight">\(A \mathbf{q}_i = \mathbf{0}\)</span> and further <span class="math notranslate nohighlight">\(A Q_2 = \mathbf{0}\)</span>. Substituting above concludes the proof. <span class="math notranslate nohighlight">\(\square\)</span></p>
+<p>That concludes the proof of the theorem. <span class="math notranslate nohighlight">\(\square\)</span></p>
+<p>We record the following important consequence.</p>
+<p><strong>LEMMA</strong> <strong>(SVD and Rank)</strong> <span class="math notranslate nohighlight">\(\idx{SVD and rank lemma}\xdi\)</span> Let <span class="math notranslate nohighlight">\(A \in \mathbb{R}^{n\times m}\)</span> have singular value decomposition <span class="math notranslate nohighlight">\(A = U \Sigma V^T\)</span> with <span class="math notranslate nohighlight">\(U \in \mathbb{R}^{n \times r}\)</span> and <span class="math notranslate nohighlight">\(V \in \mathbb{R}^{m \times r}\)</span>. Then the columns of <span class="math notranslate nohighlight">\(U\)</span> form an orthonormal basis of <span class="math notranslate nohighlight">\(\mathrm{col}(A)\)</span> and the columns of <span class="math notranslate nohighlight">\(V\)</span> form an orthonormal basis of <span class="math notranslate nohighlight">\(\mathrm{row}(A)\)</span>. In particular, the rank of <span class="math notranslate nohighlight">\(A\)</span> is <span class="math notranslate nohighlight">\(r\)</span>. <span class="math notranslate nohighlight">\(\flat\)</span></p>
+<p><em>Proof idea:</em> We use the SVD to show that the span of the columns of <span class="math notranslate nohighlight">\(U\)</span> is <span class="math notranslate nohighlight">\(\mathrm{col}(A)\)</span>, and similarly for <span class="math notranslate nohighlight">\(V\)</span>.</p>
+<p><em>Proof:</em> We first prove that any column of <span class="math notranslate nohighlight">\(A\)</span> can be written as a linear combination of the columns of <span class="math notranslate nohighlight">\(U\)</span>. Indeed, this follows immediately from the SVD by noting that for any canonical basis vector <span class="math notranslate nohighlight">\(\mathbf{e}_i \in \mathbb{R}^m\)</span> (which produces column <span class="math notranslate nohighlight">\(i\)</span> of <span class="math notranslate nohighlight">\(A\)</span> with <span class="math notranslate nohighlight">\(A \mathbf{e}_i\)</span>)</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+A \mathbf{e}_i
+=\left(\sum_{j=1}^r \sigma_j \mathbf{u}_j \mathbf{v}_j^T\right)\mathbf{e}_i
+= \sum_{j=1}^r (\sigma_j \mathbf{v}_j^T \mathbf{e}_i) \,\mathbf{u}_j.
+\end{align*}\]</div>
+<p>Vice versa, any column of <span class="math notranslate nohighlight">\(U\)</span> can be written as a linear combination of the columns of <span class="math notranslate nohighlight">\(A\)</span>. To see this, we use the orthonormality of the <span class="math notranslate nohighlight">\(\mathbf{v}_j\)</span>’s and the positivity of the singular values to obtain</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+A (\sigma_i^{-1} \mathbf{v}_i)
+= \sigma_i^{-1}\left(\sum_{j=1}^r \sigma_j \mathbf{u}_j \mathbf{v}_j^T\right)\mathbf{v}_i
+= \sigma_i^{-1} \sum_{j=1}^r (\sigma_j \mathbf{v}_j^T \mathbf{v}_i) \,\mathbf{u}_j
+= \sigma_i^{-1} (\sigma_i \mathbf{v}_i^T \mathbf{v}_i) \,\mathbf{u}_i
+= \mathbf{u}_i.
+\end{align*}\]</div>
+<p>That is, <span class="math notranslate nohighlight">\(\mathrm{col}(U) = \mathrm{col}(A)\)</span>. We have already shown that the columns of <span class="math notranslate nohighlight">\(U\)</span> are orthonormal. Since their span is <span class="math notranslate nohighlight">\(\mathrm{col}(A)\)</span>, they form an orthonormal basis of it. Applying the same argument to <span class="math notranslate nohighlight">\(A^T\)</span> gives the claim for <span class="math notranslate nohighlight">\(V\)</span> (try it!). <span class="math notranslate nohighlight">\(\square\)</span></p>
+<p><strong>EXAMPLE:</strong> Let</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+A = \begin{pmatrix}
+1 &amp; 0\\
+-1 &amp; 0
+\end{pmatrix}.
+\end{split}\]</div>
+<p>We compute its SVD. We have not (yet) seen a general recipe to compute the SVD by hand. But in this case it can be done (or guessed) using what we know about the SVD. Note first that <span class="math notranslate nohighlight">\(A\)</span> is not invertible. Indeed, its rows are a multiple of one another. In particular, they are not linearly independent. In fact, that tells us that the rank of <span class="math notranslate nohighlight">\(A\)</span> is <span class="math notranslate nohighlight">\(1\)</span>, the dimension of its row space. In the rank one case, computing the SVD boils down to writing the matrix <span class="math notranslate nohighlight">\(A\)</span> in outer product form</p>
+<div class="math notranslate nohighlight">
+\[
+A = \sigma_1 \mathbf{u}_1 \mathbf{v}_1^T
+\]</div>
+<p>where we require that <span class="math notranslate nohighlight">\(\sigma_1 &gt; 0\)</span> and that <span class="math notranslate nohighlight">\(\mathbf{u}_1, \mathbf{v}_1\)</span> are of unit norm.</p>
+<p>Recall that an outer product has columns that are all multiples of the same vector. Here because the second column of <span class="math notranslate nohighlight">\(A\)</span> is <span class="math notranslate nohighlight">\(\mathbf{0}\)</span>, it must be that the second component of <span class="math notranslate nohighlight">\(\mathbf{v}_1\)</span> is <span class="math notranslate nohighlight">\(0\)</span>. To be of unit norm, its first component must be <span class="math notranslate nohighlight">\(1\)</span> or <span class="math notranslate nohighlight">\(-1\)</span>. (The choice here does not matter because multiply all left and right singular vectors by <span class="math notranslate nohighlight">\(-1\)</span> produces another SVD.) We choose <span class="math notranslate nohighlight">\(1\)</span>, i.e., we let</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\mathbf{v}_1 
+= \begin{pmatrix}
+1\\
+0
+\end{pmatrix}.
+\end{split}\]</div>
+<p>That vector is indeed an orthonormal basis of the row space of <span class="math notranslate nohighlight">\(A\)</span>. Then we need</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\sigma_1 \mathbf{u}_1 = \begin{pmatrix}
+1\\
+-1
+\end{pmatrix}.
+\end{split}\]</div>
+<p>For <span class="math notranslate nohighlight">\(\mathbf{u}_1\)</span> to be of unit norm, we must have</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\mathbf{u}_1 = \begin{pmatrix}
+1/\sqrt{2}\\
+-1/\sqrt{2}
+\end{pmatrix}
+\quad
+\text{and}
+\quad
+\sigma_1 = \sqrt{2}.
+\end{split}\]</div>
+<p>Observe that <span class="math notranslate nohighlight">\(\mathbf{u}_1\)</span> is indeed an orthonormal basis of the column space of <span class="math notranslate nohighlight">\(A\)</span>. <span class="math notranslate nohighlight">\(\lhd\)</span></p>
+<p>One might hope that the SVD of a symmetric matrix generates identical left and right singular vectors. However that is not the case.</p>
+<p><strong>EXAMPLE:</strong> It can be shown that an SVD of <span class="math notranslate nohighlight">\(A = (-1)\)</span> is <span class="math notranslate nohighlight">\(A = (1)\,(1)\,(-1)\)</span>. That is, <span class="math notranslate nohighlight">\(\mathbf{u}_1 = (1)\)</span> and <span class="math notranslate nohighlight">\(\mathbf{v} = (-1)\)</span>. <span class="math notranslate nohighlight">\(\lhd\)</span></p>
+<p>We collect in the next lemma some relationships between the singular vectors and singular values that will be used repeatedly. It also further clarifies the connection between the SVD of <span class="math notranslate nohighlight">\(A\)</span> and the spectral decomposition of <span class="math notranslate nohighlight">\(A^T A\)</span> and <span class="math notranslate nohighlight">\(A A^T\)</span>.</p>
+<p><strong>LEMMA</strong> <strong>(SVD Relations)</strong> <span class="math notranslate nohighlight">\(\idx{SVD relations}\xdi\)</span> Let
+<span class="math notranslate nohighlight">\(A = \sum_{j=1}^r \sigma_j \mathbf{u}_j \mathbf{v}_j^T\)</span>
+be an SVD of <span class="math notranslate nohighlight">\(A \in \mathbb{R}^{n \times m}\)</span> with <span class="math notranslate nohighlight">\(\sigma_1 \geq \sigma_2 \geq \cdots \geq \sigma_r &gt; 0\)</span>. Then, for <span class="math notranslate nohighlight">\(i=1,\ldots,r\)</span>,</p>
+<div class="math notranslate nohighlight">
+\[
+A \mathbf{v}_i = \sigma_i \mathbf{u}_i,
+\qquad
+A^T \mathbf{u}_i = \sigma_i \mathbf{v}_i,
+\qquad
+\|A \mathbf{v}_i\| = \sigma_i,
+\qquad 
+\|A^T \mathbf{u}_i\| = \sigma_i.
+\]</div>
+<p>A fortiori</p>
+<div class="math notranslate nohighlight">
+\[
+A^T A \mathbf{v}_i = \sigma_i^2 \mathbf{v}_i,
+\qquad 
+A A^T \mathbf{u}_i = \sigma_i^2 \mathbf{u}_i.
+\]</div>
+<p>and, for <span class="math notranslate nohighlight">\(j \neq i\)</span>,</p>
+<div class="math notranslate nohighlight">
+\[
+\langle A \mathbf{v}_i, A \mathbf{v}_j \rangle = 0,
+\qquad
+\langle A^T \mathbf{u}_i, A^T \mathbf{u}_j \rangle = 0.
+\]</div>
+<p><span class="math notranslate nohighlight">\(\flat\)</span></p>
+<p>We previously established the existence of an SVD via the spectral decomposition of <span class="math notranslate nohighlight">\(A^T A\)</span>. The previous lemma shows that in fact, in any SVD, the <span class="math notranslate nohighlight">\(\mathbf{v}_i\)</span>s are orthonormal eigenvectors of <span class="math notranslate nohighlight">\(A^T A\)</span>. They do not form an orthonormal basis of the full space <span class="math notranslate nohighlight">\(\mathbb{R}^m\)</span> however, as the rank <span class="math notranslate nohighlight">\(r\)</span> can be strictly smaller than <span class="math notranslate nohighlight">\(m\)</span>. But observe that any vector <span class="math notranslate nohighlight">\(\mathbf{w}\)</span> orthogonal to <span class="math notranslate nohighlight">\(\mathrm{span}(\mathbf{v}_1,\ldots,\mathbf{v}_r)\)</span> is such that</p>
+<div class="math notranslate nohighlight">
+\[
+A\mathbf{w} = \sum_{j=1}^r \sigma_j \mathbf{u}_j \mathbf{v}_j^T\mathbf{w}
+= \mathbf{0}
+\]</div>
+<p>and, a fortiori,</p>
+<div class="math notranslate nohighlight">
+\[
+A^T A \mathbf{w} = \mathbf{0}.
+\]</div>
+<p>So <span class="math notranslate nohighlight">\(\mathbf{w}\)</span> is in fact an eigenvector of <span class="math notranslate nohighlight">\(A^T A\)</span> with eigenvalue <span class="math notranslate nohighlight">\(0\)</span>. Let <span class="math notranslate nohighlight">\(\mathbf{v}_{r+1}, \ldots, \mathbf{v}_m\)</span> be any orthonormal basis of <span class="math notranslate nohighlight">\(\mathrm{span}(\mathbf{v}_1,\ldots,\mathbf{v}_r)^\perp\)</span>. Then <span class="math notranslate nohighlight">\(\mathbf{v}_1,\ldots,\mathbf{v}_m\)</span> is an orthonormal basis of eigenvectors of <span class="math notranslate nohighlight">\(A^T A\)</span>.</p>
+<p>The lemma also shows that the <span class="math notranslate nohighlight">\(\mathbf{u}_i\)</span>s are orthonormal eigenvectors of <span class="math notranslate nohighlight">\(A A^T\)</span>!</p>
+<p><strong>Full vs. compact SVD</strong> What we have introduced above is in fact referred to as a <a class="reference external" href="https://en.wikipedia.org/wiki/Singular_value_decomposition#Compact_SVD">compact SVD</a>. In contrast, in a <a class="reference external" href="https://en.wikipedia.org/wiki/Singular_value_decomposition">full SVD</a><span class="math notranslate nohighlight">\(\idx{full SVD}\xdi\)</span>, the matrices <span class="math notranslate nohighlight">\(U\)</span> and <span class="math notranslate nohighlight">\(V\)</span> are square and orthogonal, and the matrix <span class="math notranslate nohighlight">\(\Sigma\)</span> is diagonal, but may not be square and may have zeros on the diagonal. In other words, in that case, the columns of <span class="math notranslate nohighlight">\(U \in \mathbb{R}^{n \times n}\)</span> form an orthonormal basis of <span class="math notranslate nohighlight">\(\mathbb{R}^n\)</span> and the columns of <span class="math notranslate nohighlight">\(V \in \mathbb{R}^{m \times m}\)</span> form an orthonormal basis of <span class="math notranslate nohighlight">\(\mathbb{R}^m\)</span>.</p>
+<p><strong>Figure:</strong> SVD in full form (<a class="reference external" href="https://commons.wikimedia.org/wiki/File:Singular_value_decomposition_visualisation.svg">Source</a>)</p>
+<p><img alt="SVD" src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c8/Singular_value_decomposition_visualisation.svg/412px-Singular_value_decomposition_visualisation.svg.png" /></p>
+<p><span class="math notranslate nohighlight">\(\bowtie\)</span></p>
+<p>Let <span class="math notranslate nohighlight">\(A = U_1 \Sigma_1 V_1^T\)</span> be a compact SVD. Complete the columns of <span class="math notranslate nohighlight">\(U_1\)</span> into an orthonormal basis of <span class="math notranslate nohighlight">\(\mathbb{R}^n\)</span> and let <span class="math notranslate nohighlight">\(U_2\)</span> be the matrix whose columns are the additional basis vectors. Similary, complete the columns of <span class="math notranslate nohighlight">\(V_1\)</span> into an orthonormal basis of <span class="math notranslate nohighlight">\(\mathbb{R}^m\)</span> and let <span class="math notranslate nohighlight">\(V_2\)</span> be the matrix whose columns are the additional basis vectors. Then a full SVD is given by</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+U = \begin{pmatrix}
+U_1 &amp; U_2
+\end{pmatrix}
+\quad
+V = \begin{pmatrix}
+V_1 &amp; V_2
+\end{pmatrix}
+\quad
+\Sigma
+= \begin{pmatrix}
+\Sigma_1 &amp; \mathbf{0}_{r \times (m-r)}\\
+\mathbf{0}_{(n-r)\times r} &amp; \mathbf{0}_{(n-r)\times (m-r)}
+\end{pmatrix}.
+\end{split}\]</div>
+<p>By the <em>SVD and Rank Lemma</em>, the columns of <span class="math notranslate nohighlight">\(U_1\)</span> form an orthonormal basis of <span class="math notranslate nohighlight">\(\mathrm{col}(A)\)</span>. Because <span class="math notranslate nohighlight">\(\mathrm{col}(A)^\perp = \mathrm{null}(A^T)\)</span>, the columns of <span class="math notranslate nohighlight">\(U_2\)</span> form an orthonormal basis of <span class="math notranslate nohighlight">\(\mathrm{null}(A^T)\)</span>. Similarly, the columns of <span class="math notranslate nohighlight">\(V_1\)</span> form an orthonormal basis of <span class="math notranslate nohighlight">\(\mathrm{col}(A^T)\)</span>. Because <span class="math notranslate nohighlight">\(\mathrm{col}(A^T)^\perp = \mathrm{null}(A)\)</span>, the columns of <span class="math notranslate nohighlight">\(V_2\)</span> form an orthonormal basis of <span class="math notranslate nohighlight">\(\mathrm{null}(A)\)</span>. Hence, a full SVD provides an orthonormal basis for all four fundamental subspaces of <span class="math notranslate nohighlight">\(A\)</span>.</p>
+<p>Vice versa, given a full SVD <span class="math notranslate nohighlight">\(A = U \Sigma V^T\)</span>, the compact SVD can be obtained by keeping only the square submatrix of <span class="math notranslate nohighlight">\(\Sigma\)</span> with stricly positive diagonal entries, together with the corresponding columns of <span class="math notranslate nohighlight">\(U\)</span> and <span class="math notranslate nohighlight">\(V\)</span>.</p>
+<p><strong>Figure:</strong> Different variants of the SVD (<a class="reference external" href="https://commons.wikimedia.org/wiki/File:Reduced_Singular_Value_Decompositions.svg">Source</a>)</p>
+<p><img alt="ReducedSVD" src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c4/Reduced_Singular_Value_Decompositions.svg/233px-Reduced_Singular_Value_Decompositions.svg.png" /></p>
+<p><span class="math notranslate nohighlight">\(\bowtie\)</span></p>
+<p><strong>EXAMPLE:</strong> <strong>(continued)</strong> Let again</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+A = \begin{pmatrix}
+1 &amp; 0\\
+-1 &amp; 0
+\end{pmatrix}.
+\end{split}\]</div>
+<p>We previously computed its compact SVD</p>
+<div class="math notranslate nohighlight">
+\[
+A = \sigma_1 \mathbf{u}_1 \mathbf{v}_1^T
+\]</div>
+<p>where</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\mathbf{u}_1 = \begin{pmatrix}
+1/\sqrt{2}\\
+-1/\sqrt{2}
+\end{pmatrix},
+\quad
+\quad
+\mathbf{v}_1 
+= \begin{pmatrix}
+1\\
+0
+\end{pmatrix},
+\quad
+\text{and}
+\quad
+\sigma_1 = \sqrt{2}.
+\end{split}\]</div>
+<p>We now compute a full SVD. For this, we need to complete the bases. We can choose</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\mathbf{u}_2 = \begin{pmatrix}
+1/\sqrt{2}\\
+1/\sqrt{2}
+\end{pmatrix},
+\quad
+\quad
+\mathbf{v}_2 
+= \begin{pmatrix}
+0\\
+1
+\end{pmatrix},
+\quad
+\text{and}
+\quad
+\sigma_2 = 0.
+\end{split}\]</div>
+<p>Then, a full SVD is given by</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+U = \begin{pmatrix}
+1/\sqrt{2} &amp; 1/\sqrt{2}\\
+-1/\sqrt{2} &amp; 1/\sqrt{2}
+\end{pmatrix},
+\quad
+\quad
+V
+= \begin{pmatrix}
+1 &amp; 0\\
+0 &amp; 1
+\end{pmatrix},
+\quad
+\text{and}
+\quad
+\Sigma = \begin{pmatrix}
+\sqrt{2} &amp; 0\\
+0 &amp; 0
+\end{pmatrix}.
+\end{split}\]</div>
+<p>Indeed, <span class="math notranslate nohighlight">\(A = U \Sigma V^T\)</span> (check it!). <span class="math notranslate nohighlight">\(\lhd\)</span></p>
+<p>The full SVD also has a natural geometric interpretation. To quote [Sol, p. 133]:</p>
+<blockquote>
+<div><p>The SVD provides a complete geometric characterization of the action of <span class="math notranslate nohighlight">\(A\)</span>. Since <span class="math notranslate nohighlight">\(U\)</span> and <span class="math notranslate nohighlight">\(V\)</span> are orthogonal, they have no effect on lengths and angles; as a diagonal matrix, <span class="math notranslate nohighlight">\(\Sigma\)</span> scales individual coordinate axes. Since the SVD always exists, all matrices <span class="math notranslate nohighlight">\(A \in \mathbb{R}^{n \times m}\)</span> are a composition of an isometry, a scale in each coordinate, and a second isometry.</p>
+</div></blockquote>
+<p><strong>Figure:</strong> Geometric interpretation of the SVD (<a class="reference external" href="https://commons.wikimedia.org/wiki/File:Singular-Value-Decomposition.svg">Source</a>)</p>
+<p><img alt="Geometric meaning" src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/bb/Singular-Value-Decomposition.svg/531px-Singular-Value-Decomposition.svg.png" /></p>
+<p><span class="math notranslate nohighlight">\(\bowtie\)</span></p>
+<p><strong>Coming full circle: solving the approximating subspace problem via the SVD</strong> Think of the rows <span class="math notranslate nohighlight">\(\boldsymbol{\alpha}_i^T\)</span> of a matrix <span class="math notranslate nohighlight">\(A \in \mathbb{R}^{n \times m}\)</span> as a collection of <span class="math notranslate nohighlight">\(n\)</span> data points in <span class="math notranslate nohighlight">\(\mathbb{R}^m\)</span>. Let</p>
+<div class="math notranslate nohighlight">
+\[
+A = \sum_{j=1}^r \sigma_j \mathbf{u}_j \mathbf{v}_j^T
+\]</div>
+<p>be a (compact) SVD of <span class="math notranslate nohighlight">\(A\)</span>. Fix <span class="math notranslate nohighlight">\(k \leq \mathrm{rk}(A)\)</span>. We are looking for a linear subspace <span class="math notranslate nohighlight">\(\mathcal{Z}\)</span> that minimizes</p>
+<div class="math notranslate nohighlight">
+\[
+\sum_{i=1}^n \|\boldsymbol{\alpha}_i - \mathrm{proj}_\mathcal{Z}(\boldsymbol{\alpha}_i)\|^2 
+\]</div>
+<p>over all linear subspaces of <span class="math notranslate nohighlight">\(\mathbb{R}^m\)</span> of dimension at most <span class="math notranslate nohighlight">\(k\)</span>. By the observations above, a solution is given by</p>
+<div class="math notranslate nohighlight">
+\[
+\mathcal{Z}
+= \mathrm{span}(\mathbf{v}_1,\ldots,\mathbf{v}_k).
+\]</div>
+<p>By the proofs of the <em>Best Subspace as Maximization</em> and <em>Best Subspace in Matrix Form</em> lemmas, the objective value achieved is</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+\sum_{i=1}^n \|\boldsymbol{\alpha}_i - \mathrm{proj}_\mathcal{Z}(\boldsymbol{\alpha}_i)\|^2 
+&amp;= \sum_{i=1}^n \|\boldsymbol{\alpha}_i\|^2 - \sum_{j=1}^k \|A\mathbf{v}_j\|^2\\
+&amp;= \sum_{i=1}^n \|\boldsymbol{\alpha}_i\|^2 - \sum_{j=1}^k \sigma_j^2.
+\end{align*}\]</div>
+<p>So the singular value <span class="math notranslate nohighlight">\(\sigma_j\)</span> associated to the right singular vector <span class="math notranslate nohighlight">\(\mathbf{v}_j\)</span> captures its contribution to the fit of the approximating subspace. The larger the singular value, the larger the contribution.</p>
+<p>To obtain a low-dimensional embedding of our original datasets, we compute <span class="math notranslate nohighlight">\(\mathbf{z}_i := \mathrm{proj}_\mathcal{Z}(\boldsymbol{\alpha}_i)\)</span> for each <span class="math notranslate nohighlight">\(i\)</span> as follows (in row form)</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+\mathbf{z}_i^T
+&amp;= \sum_{j=1}^k \langle \boldsymbol{\alpha}_i, \mathbf{v}_j\rangle \,\mathbf{v}_j^T\\
+&amp;= \sum_{j=1}^k \boldsymbol{\alpha}_i^T \mathbf{v}_j \mathbf{v}_j^T\\
+&amp;= A_{i,\cdot} V_{(k)} V_{(k)}^T,
+\end{align*}\]</div>
+<p>where <span class="math notranslate nohighlight">\(V_{(k)}\)</span> is the matrix with the first <span class="math notranslate nohighlight">\(k\)</span> columns of <span class="math notranslate nohighlight">\(V\)</span>. Let <span class="math notranslate nohighlight">\(Z\)</span> be the matrix with rows <span class="math notranslate nohighlight">\(\mathbf{z}_i^T\)</span>. Then we have</p>
+<div class="math notranslate nohighlight">
+\[
+Z = A V_{(k)} V_{(k)}^T = U_{(k)} \Sigma_{(k)} V_{(k)}^T
+= \sum_{j=1}^k \sigma_j \mathbf{u}_j \mathbf{v}_j^T,
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(U_{(k)}\)</span> is the matrix with the first <span class="math notranslate nohighlight">\(k\)</span> columns of <span class="math notranslate nohighlight">\(U\)</span>, and <span class="math notranslate nohighlight">\(\Sigma_{(k)}\)</span> is the matrix with the first <span class="math notranslate nohighlight">\(k\)</span> rows and columns of <span class="math notranslate nohighlight">\(\Sigma\)</span>. Indeed, recall that <span class="math notranslate nohighlight">\(A \mathbf{v}_j = \sigma_j \mathbf{u}_j\)</span>, or in matrix form <span class="math notranslate nohighlight">\(A V_{(k)} = U_{(k)} \Sigma_{(k)}\)</span>. The rightmost expression for <span class="math notranslate nohighlight">\(Z\)</span> reveals that it is in fact a truncated SVD. We can interpret the rows of <span class="math notranslate nohighlight">\(U_{(k)} \Sigma_{(k)}\)</span> as the coefficients of each data point in the basis <span class="math notranslate nohighlight">\(\mathbf{v}_1,\ldots,\mathbf{v}_k\)</span>. Those coefficients provide the desired low-dimensional representation.</p>
+<p>We can re-write the objective function in a more compact matrix form by using the Frobenius norm as follows</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+\sum_{i=1}^n \|\boldsymbol{\alpha}_i - \mathrm{proj}_\mathcal{Z}(\boldsymbol{\alpha}_i)\|^2 
+&amp;= \sum_{i=1}^n \|\boldsymbol{\alpha}_i - \mathbf{z}_i\|^2
+= \sum_{i=1}^n \|\boldsymbol{\alpha}_i^T - \mathbf{z}_i^T\|^2
+= \|A - Z\|_F^2.
+\end{align*}\]</div>
+<p>We note that the matrix <span class="math notranslate nohighlight">\(Z\)</span> has rank smaller or equal than <span class="math notranslate nohighlight">\(k\)</span>. Indeed, all of its rows lie in the optimal subspace <span class="math notranslate nohighlight">\(\mathcal{Z}\)</span>, which has dimension <span class="math notranslate nohighlight">\(k\)</span> by construction. We will see later that <span class="math notranslate nohighlight">\(Z\)</span> is the best approximation to <span class="math notranslate nohighlight">\(A\)</span> among all rank-<span class="math notranslate nohighlight">\(k\)</span> matrices under the Frobenius norm, that is,</p>
+<div class="math notranslate nohighlight">
+\[
+\|A - Z\|_F
+\leq \|A - B\|_F
+\]</div>
+<p>for any matrix <span class="math notranslate nohighlight">\(B\)</span> of rank at most <span class="math notranslate nohighlight">\(k\)</span>.</p>
+<p><em><strong>Self-assessment quiz</strong></em> <em>(with help from Claude, Gemini, and ChatGPT)</em></p>
+<p><strong>1</strong> Let <span class="math notranslate nohighlight">\(\alpha_1, \dots, \alpha_n\)</span> be data points in <span class="math notranslate nohighlight">\(\mathbb{R}^m\)</span>. What is the objective of the best approximating subspace problem?</p>
+<p>a) To find a linear subspace <span class="math notranslate nohighlight">\(Z\)</span> of <span class="math notranslate nohighlight">\(\mathbb{R}^m\)</span> that minimizes the sum of the distances between the <span class="math notranslate nohighlight">\(\alpha_i\)</span>’s and <span class="math notranslate nohighlight">\(Z\)</span>.</p>
+<p>b) To find a linear subspace <span class="math notranslate nohighlight">\(Z\)</span> of <span class="math notranslate nohighlight">\(\mathbb{R}^m\)</span> that minimizes the sum of the squared distances between the <span class="math notranslate nohighlight">\(\alpha_i\)</span>’s and their orthogonal projections onto <span class="math notranslate nohighlight">\(Z\)</span>.</p>
+<p>c) To find a linear subspace <span class="math notranslate nohighlight">\(Z\)</span> of <span class="math notranslate nohighlight">\(\mathbb{R}^m\)</span> that maximizes the sum of the squared norms of the orthogonal projections of the <span class="math notranslate nohighlight">\(\alpha_i\)</span>’s onto <span class="math notranslate nohighlight">\(Z\)</span>.</p>
+<p>d) Both b and c.</p>
+<p><strong>2</strong> Consider the data points <span class="math notranslate nohighlight">\(\alpha_1 = (-2,2)\)</span> and <span class="math notranslate nohighlight">\(\alpha_2 = (3,-3)\)</span>. For <span class="math notranslate nohighlight">\(k=1\)</span>, what is the solution of the best approximating subspace problem?</p>
+<p>a) <span class="math notranslate nohighlight">\(Z = \{(x,y) \in \mathbb{R}^2 : y = x\}\)</span></p>
+<p>b) <span class="math notranslate nohighlight">\(Z = \{(x,y) \in \mathbb{R}^2 : y = -x\}\)</span></p>
+<p>c) <span class="math notranslate nohighlight">\(Z = \{(x,y) \in \mathbb{R}^2 : y = x+1\}\)</span></p>
+<p>d) <span class="math notranslate nohighlight">\(Z = \{(x,y) \in \mathbb{R}^2 : y = x-1\}\)</span></p>
+<p><strong>3</strong> Which of the following is true about the SVD of a matrix <span class="math notranslate nohighlight">\(A\)</span>?</p>
+<p>a) The SVD of <span class="math notranslate nohighlight">\(A\)</span> is unique.</p>
+<p>b) The left singular vectors of <span class="math notranslate nohighlight">\(A\)</span> are the eigenvectors of <span class="math notranslate nohighlight">\(A^TA\)</span>.</p>
+<p>c) The right singular vectors of <span class="math notranslate nohighlight">\(A\)</span> are the eigenvectors of <span class="math notranslate nohighlight">\(AA^T\)</span>.</p>
+<p>d) Both b and c.</p>
+<p><strong>4</strong> Let <span class="math notranslate nohighlight">\(A = U \Sigma V^T\)</span> be an SVD of <span class="math notranslate nohighlight">\(A\)</span>. Which of the following is true?</p>
+<p>a) <span class="math notranslate nohighlight">\(A v_i = \sigma_i u_i\)</span> for all <span class="math notranslate nohighlight">\(i\)</span>.</p>
+<p>b) <span class="math notranslate nohighlight">\(A^T u_i = \sigma_i v_i\)</span> for all <span class="math notranslate nohighlight">\(i\)</span>.</p>
+<p>c) <span class="math notranslate nohighlight">\(\|Av_i\| = \sigma_i\)</span> for all <span class="math notranslate nohighlight">\(i\)</span>.</p>
+<p>d) All of the above.</p>
+<p><strong>5</strong> The columns of <span class="math notranslate nohighlight">\(U\)</span> in the compact SVD form an orthonormal basis for:</p>
+<p>a) <span class="math notranslate nohighlight">\(\mathrm{col}(A)\)</span></p>
+<p>b) <span class="math notranslate nohighlight">\(\mathrm{row}(A)\)</span></p>
+<p>c) <span class="math notranslate nohighlight">\(\mathrm{null}(A)\)</span></p>
+<p>d) <span class="math notranslate nohighlight">\(\mathrm{null}(A^T)\)</span></p>
+<p>Answer for 1: d. Justification: The text defines the best approximating subspace problem as minimizing the sum of squared distances between the data points and their projections onto the subspace, and it also states a lemma that this problem is equivalent to maximizing the sum of squared norms of the projections.</p>
+<p>Answer for 2: b. Justification: By symmetry, the best approximating line must pass through the origin and bisect the angle between the two points. This is the line <span class="math notranslate nohighlight">\(y=-x\)</span>.</p>
+<p>Answer for 3: c and d. Justification: The SVD is not unique in general. The other two statements are true and are mentioned in the text.</p>
+<p>Answer for 4: d. Justification: This is a lemma stated in the text.</p>
+<p>Answer for 5: a. Justification: The text states in the SVD and Rank Lemma: “the columns of <span class="math notranslate nohighlight">\(U\)</span> form an orthonormal basis of <span class="math notranslate nohighlight">\(\mathrm{col}(A)\)</span>”.</p>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./chap03_svd/03_svd"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="../02_spectral/roch-mmids-svd-spectral.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title"><span class="section-number">4.2. </span>Background: review of matrix rank  and spectral decomposition</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="../04_power/roch-mmids-svd-power.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title"><span class="section-number">4.4. </span>Power iteration</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#an-objective-an-algorithm-and-a-guarantee">4.3.1. An objective, an algorithm, and a guarantee</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#from-approximating-subspaces-to-the-svd">4.3.2. From approximating subspaces to the SVD</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Sebastien Roch
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2024.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

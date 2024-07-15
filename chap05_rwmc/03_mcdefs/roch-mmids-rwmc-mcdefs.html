@@ -1,0 +1,1131 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>7.2. Background: elements of finite Markov chains &#8212; MMiDS Textbook</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.5.1/css/all.min.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.1/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.1/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.1/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b76e3c8a" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=384b581d" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=87e54e7c" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae" />
+  <script src="../../_static/vendor/fontawesome/6.5.1/js/all.min.js?digest=8d27b9dea8ad943066ae"></script>
+
+    <script src="../../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?v=efea14e4"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../_static/design-tabs.js?v=f930bc37"></script>
+    <script async="async" src="https://www.googletagmanager.com/gtag/js?id=G-P5E8DW088F"></script>
+    <script>
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){ dataLayer.push(arguments); }
+                gtag('js', new Date());
+                gtag('config', 'G-P5E8DW088F');
+            </script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){ dataLayer.push(arguments); }
+                gtag('js', new Date());
+                gtag('config', 'G-P5E8DW088F');
+            </script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'chap05_rwmc/03_mcdefs/roch-mmids-rwmc-mcdefs';</script>
+    <link rel="canonical" href="https://mmids-textbook.github.io/chap05_rwmc/03_mcdefs/roch-mmids-rwmc-mcdefs.html" />
+    <link rel="icon" href="https://mmids-textbook.github.io/favicon-32x32.png"/>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="7.3. Limit behavior 1: stationary distributions" href="../04_stat/roch-mmids-rwmc-stat.html" />
+    <link rel="prev" title="7.1. Motivating example: discovering mathematical topics" href="../01_motiv/roch-mmids-rwmc-motiv.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a id="pst-skip-link" class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+
+<a class="navbar-brand logo" href="../../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/mmids-cover-small.jpg" class="logo__image only-light" alt="MMiDS Textbook - Home"/>
+    <script>document.write(`<img src="../../_static/mmids-cover-small.jpg" class="logo__image only-dark" alt="MMiDS Textbook - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../index.html">
+                    <b>MATHEMATICAL METHODS in DATA SCIENCE (with Python)</b>
+                </a>
+            </li>
+        </ul>
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../chap01_intro/00_intro/roch-mmids-intro-intro.html">1. Introduction: a first data science problem</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../chap01_intro/01_motiv/roch-mmids-intro-motiv.html">1.1. Motivating example: identifying penguin species</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap01_intro/02_review/roch-mmids-intro-review.html">1.2. Background: quick refresher of matrix algebra, differential calculus, and elementary probability</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap01_intro/03_clustering/roch-mmids-intro-clustering.html">1.3. Clustering: an objective, an algorithm and a guarantee</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap01_intro/04_highdim/roch-mmids-intro-highdim.html">1.4. Some observations about high-dimensional data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap01_intro/exercises/roch-mmids-intro-exercises.html">1.5. Exercises</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap01_intro/05_adv/roch-mmids-intro-adv.html">1.6. Online suppplementary material</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../chap02_ls/00_intro/roch-mmids-ls-intro.html">2. Least squares: geometric, algebraic, and numerical aspects</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../chap02_ls/01_motiv/roch-mmids-ls-motiv.html">2.1. Motivating example: predicting sales</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap02_ls/02_subspaces/roch-mmids-ls-spaces.html">2.2. Background: review of vector spaces and matrix inverses</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap02_ls/03_orthog/roch-mmids-ls-orthog.html">2.3. Geometry of least squares: the orthogonal projection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap02_ls/04_qr/roch-mmids-ls-qr.html">2.4. QR decomposition and Householder transformations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap02_ls/05_regression/roch-mmids-ls-regression.html">2.5. Application: regression analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap02_ls/exercises/roch-mmids-ls-exercises.html">2.6. Exercises</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap02_ls/06_adv/roch-mmids-ls-adv.html">2.7. Online suppplementary material</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../chap06_opt/00_intro/roch-mmids-opt-intro.html">3. Optimization theory and algorithms</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-3"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../chap06_opt/01_motiv/roch-mmids-opt-motiv.html">3.1. Motivating example:  analyzing customer satisfaction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap06_opt/02_several/roch-mmids-opt-several.html">3.2. Background: review of differentiable functions of several variables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap06_opt/03_optimality/roch-mmids-opt-optimality.html">3.3. Optimality conditions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap06_opt/03part2_convexity/roch-mmids-opt-convexity.html">3.4. Convexity</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap06_opt/04_gd/roch-mmids-opt-gd.html">3.5. Gradient descent and its convergence analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap06_opt/04part2_logistic/roch-mmids-opt-logistic.html">3.6. Application: logistic regression</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap06_opt/exercises/roch-mmids-opt-exercises.html">3.7. Exercises</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap06_opt/06_adv/roch-mmids-opt-adv.html">3.8. Online suppplementary material</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../chap03_svd/00_intro/roch-mmids-svd-intro.html">4. Singular value decomposition</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-4"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../chap03_svd/01_motiv/roch-mmids-svd-motiv.html">4.1. Motivating example: visualizing viral evolution</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap03_svd/02_spectral/roch-mmids-svd-spectral.html">4.2. Background: review of matrix rank  and spectral decomposition</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap03_svd/03_svd/roch-mmids-svd-svd.html">4.3. Approximating subspaces and the SVD</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap03_svd/04_power/roch-mmids-svd-power.html">4.4. Power iteration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap03_svd/05_pca/roch-mmids-svd-pca.html">4.5. Application: principal components analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap03_svd/06_further/roch-mmids-svd-further.html">4.6. Further applications of the SVD: low-rank approximations and ridge regression</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap03_svd/exercises/roch-mmids-svd-exercises.html">4.7. Exercises</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap03_svd/07_adv/roch-mmids-svd-adv.html">4.8. Online suppplementary material</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../chap04_specgraph/00_intro/roch-mmids-specgraph-intro.html">5. Spectral graph theory</a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-5"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../chap04_specgraph/01_motiv/roch-mmids-specgraph-motiv.html">5.1. Motivating example: uncovering social groups</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap04_specgraph/02_graph/roch-mmids-specgraph-graph.html">5.2. Background: basic concepts in graph theory</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap04_specgraph/03_extremal/roch-mmids-specgraph-extremal.html">5.3. Variational characterization of eigenvalues</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap04_specgraph/04_laplacian/roch-mmids-specgraph-laplacian.html">5.4. Spectral properties of the Laplacian matrix</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap04_specgraph/05_partitioning/roch-mmids-specgraph-partitioning.html">5.5. Application: graph partitioning via spectral clustering</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap04_specgraph/05part2_sbm/roch-mmids-specgraph-sbm.html">5.6. Erdős-Rényi random graph and stochastic blockmodel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap04_specgraph/exercises/roch-mmids-specgraph-exercises.html">5.7. Exercises</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap04_specgraph/06_adv/roch-mmids-specgraph-adv.html">5.8. Online supplementary material</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../chap07_prob/00_intro/roch-mmids-prob-intro.html">6. Probabilistic models: from simple to complex</a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-6"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../chap07_prob/01_motiv/roch-mmids-prob-motiv.html">6.1. Motivating example: tracking location</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap07_prob/02_parametric/roch-mmids-prob-parametric.html">6.2. Background: introduction to parametric families and maximum likelihood estimation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap07_prob/03_joint/roch-mmids-prob-joint.html">6.3. Modeling more complex dependencies 1: using conditional independence</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap07_prob/03part2_em/roch-mmids-prob-em.html">6.4. Modeling more complex dependencies 2: marginalizing out an unobserved variable</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap07_prob/04_kalman/roch-mmids-prob-kalman.html">6.5. Application: linear-Gaussian models and Kalman filtering</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap07_prob/exercises/roch-mmids-prob-exercises.html">6.6. Exercises</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap07_prob/06_adv/roch-mmids-prob-adv.html">6.7. Online supplementary material</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="../00_intro/roch-mmids-rwmc-intro.html">7. Random walks on graphs and Markov chains</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-7"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../01_motiv/roch-mmids-rwmc-motiv.html">7.1. Motivating example: discovering mathematical topics</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">7.2. Background: elements of finite Markov chains</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../04_stat/roch-mmids-rwmc-stat.html">7.3. Limit behavior 1: stationary distributions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../04part2_mclimit/roch-mmids-rwmc-mclimit.html">7.4. Limit behavior 2: convergence to equilibrium</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../05_pagerank/roch-mmids-rwmc-pagerank.html">7.5. Application: random walks on graphs and PageRank</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../05part2_gibbs/roch-mmids-rwmc-gibbs.html">7.6. Further applications: Gibbs sampling and generating images</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../exercises/roch-mmids-rwmc-exercises.html">7.7. Exercises</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../06_adv/roch-mmids-rwmc-adv.html">7.8. Online supplementary material</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../chap08_nn/00_intro/roch-mmids-nn-intro.html">8. Neural networks, backpropagation and stochastic gradient descent</a><input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-8"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../chap08_nn/01_motiv/roch-mmids-nn-motiv.html">8.1. Motivating example:  classifying natural images</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap08_nn/02_chain/roch-mmids-nn-chain.html">8.2. Background: Jacobian, chain rule, and a brief introduction to automatic differentiation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap08_nn/03_backprop/roch-mmids-nn-backprop.html">8.3. Building blocks of AI 1: backpropagation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap08_nn/04_sgd/roch-mmids-nn-sgd.html">8.4. Building blocks of AI 2: stochastic gradient descent</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap08_nn/05_nn/roch-mmids-nn-nn.html">8.5. Building blocks of AI 3: neural networks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap08_nn/exercises/roch-mmids-nn-exercises.html">8.6. Exercises</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap08_nn/06_adv/roch-mmids-nn-adv.html">8.7. Online supplementary material</a></li>
+</ul>
+</li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/MMiDS-textbook/MMiDS-textbook.github.io" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/MMiDS-textbook/MMiDS-textbook.github.io/issues/new?title=Issue%20on%20page%20%2Fchap05_rwmc/03_mcdefs/roch-mmids-rwmc-mcdefs.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/chap05_rwmc/03_mcdefs/roch-mmids-rwmc-mcdefs.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Background: elements of finite Markov chains</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#basic-definitions">7.2.1. Basic definitions</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#time-homogeneous-case-transition-matrix">7.2.2. Time-homogeneous case: transition matrix</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <p><span class="math notranslate nohighlight">\(\newcommand{\bmu}{\boldsymbol{\mu}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bSigma}{\boldsymbol{\Sigma}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bfbeta}{\boldsymbol{\beta}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bflambda}{\boldsymbol{\lambda}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bgamma}{\boldsymbol{\gamma}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bsigma}{{\boldsymbol{\sigma}}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bpi}{\boldsymbol{\pi}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\btheta}{{\boldsymbol{\theta}}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bphi}{\boldsymbol{\phi}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\balpha}{\boldsymbol{\alpha}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\blambda}{\boldsymbol{\lambda}}\)</span>
+<span class="math notranslate nohighlight">\(\renewcommand{\P}{\mathbb{P}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\E}{\mathbb{E}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\indep}{\perp\!\!\!\perp} \newcommand{\bx}{\mathbf{x}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bp}{\mathbf{p}}\)</span>
+<span class="math notranslate nohighlight">\(\renewcommand{\bx}{\mathbf{x}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bX}{\mathbf{X}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\by}{\mathbf{y}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bY}{\mathbf{Y}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bz}{\mathbf{z}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bZ}{\mathbf{Z}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bw}{\mathbf{w}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bW}{\mathbf{W}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bv}{\mathbf{v}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bV}{\mathbf{V}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bfg}{\mathbf{g}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bfh}{\mathbf{h}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\horz}{\rule[.5ex]{2.5ex}{0.5pt}}\)</span>
+<span class="math notranslate nohighlight">\(\renewcommand{\S}{\mathcal{S}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\X}{\mathcal{X}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\var}{\mathrm{Var}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\pa}{\mathrm{pa}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\Z}{\mathcal{Z}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bh}{\mathbf{h}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bb}{\mathbf{b}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bc}{\mathbf{c}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\cE}{\mathcal{E}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\cP}{\mathcal{P}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bbeta}{\boldsymbol{\beta}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bLambda}{\boldsymbol{\Lambda}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\cov}{\mathrm{Cov}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bfk}{\mathbf{k}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\idx}[1]{}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\xdi}{}\)</span></p>
+<section id="background-elements-of-finite-markov-chains">
+<h1><span class="section-number">7.2. </span>Background: elements of finite Markov chains<a class="headerlink" href="#background-elements-of-finite-markov-chains" title="Link to this heading">#</a></h1>
+<p>As we mentioned, we are interested in analyzing the behavior of a random walk “diffusing” on a graph. Before we develop such techniques, it will be worthwhile to cast them in the more general framework of discrete-time Markov chains on a finite state space. Indeed Markov chains have many more applications in data science.</p>
+<section id="basic-definitions">
+<h2><span class="section-number">7.2.1. </span>Basic definitions<a class="headerlink" href="#basic-definitions" title="Link to this heading">#</a></h2>
+<p>A discrete-time Markov chain<span class="math notranslate nohighlight">\(\idx{Markov chain}\xdi\)</span> is a stochastic process<span class="math notranslate nohighlight">\(\idx{stochastic process}\xdi\)</span>, i.e., a collection of random variables in this case indexed by time. We assume that the random variables take values in a common finite state space <span class="math notranslate nohighlight">\(\S\)</span>. What makes it “Markovian” is that “it forgets the past” in the sense that “its future only depends on its present state.” More formally:</p>
+<p><strong>DEFINITION</strong> <strong>(Discrete-Time Markov Chain)</strong> The sequence of random variables <span class="math notranslate nohighlight">\((X_t)_{t \geq 0} = (X_0, X_1, X_2, \ldots)\)</span> taking values in the finite state space <span class="math notranslate nohighlight">\(\S\)</span> is a Markov chain if: for all <span class="math notranslate nohighlight">\(t \geq 1\)</span> and all <span class="math notranslate nohighlight">\(x_0,x_1,\ldots,x_t \in \S\)</span></p>
+<div class="math notranslate nohighlight">
+\[
+(*)\qquad\P[X_t = x_t\,|\,X_{t-1} = x_{t-1}, X_{t-2} = x_{t-2},\ldots,X_0 = x_0]
+= \P[X_t = x_t\,|\,X_{t-1} = x_{t-1}]
+\]</div>
+<p>provided the conditional probabilities are well-defined. <span class="math notranslate nohighlight">\(\natural\)</span></p>
+<p>To be clear, the event in the conditioning is</p>
+<div class="math notranslate nohighlight">
+\[
+\{X_{t-1} = x_{t-1}, X_{t-2} = x_{t-2},\ldots,X_0 = x_0\}
+= \{X_{t-1} = x_{t-1}\} \cap \{X_{t-2} = x_{t-2}\} \cap \cdots \cap \{X_0 = x_0\}.
+\]</div>
+<p>It will sometimes be convenient to assume that the common state space <span class="math notranslate nohighlight">\(\S\)</span> is of the form <span class="math notranslate nohighlight">\([m] = \{1,\ldots,m\}\)</span>.</p>
+<p><strong>EXAMPLE:</strong> <strong>(Weather Model)</strong> Here is a simple weather model. Every day is either <span class="math notranslate nohighlight">\(\mathrm{Dry}\)</span> or <span class="math notranslate nohighlight">\(\mathrm{Wet}\)</span>. We model the transitions as Markovian; intuitively, we assume that tomorrow’s weather only depends - in a random fashion independent of the past - on today’s weather. Say the weather changes with <span class="math notranslate nohighlight">\(25\%\)</span> chance. More formally, let <span class="math notranslate nohighlight">\(X_t \in \mathcal{S}\)</span> be the weather on day <span class="math notranslate nohighlight">\(t\)</span> with <span class="math notranslate nohighlight">\(\mathcal{S} = \{\mathrm{Dry}, \mathrm{Wet}\}\)</span>. Assume that <span class="math notranslate nohighlight">\(X_0 = \mathrm{Dry}\)</span> and let <span class="math notranslate nohighlight">\((Z_t)_{t \geq 0}\)</span> be an i.i.d. (i.e., independent, identically distributed) sequence of random variables taking values in <span class="math notranslate nohighlight">\(\{\mathrm{Same}, \mathrm{Change}\}\)</span> satisfying</p>
+<div class="math notranslate nohighlight">
+\[
+\mathbb{P}[Z_t = \mathrm{Same}] = 1 - \mathbb{P}[Z_t = \mathrm{Change}] = 3/4.
+\]</div>
+<p>Then define for all <span class="math notranslate nohighlight">\(t \geq 0\)</span></p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+X_{t+1}
+= f(X_t, Z_t)
+= \begin{cases}
+X_t &amp; \text{if $Z_t = \mathrm{Same}$},\\
+\mathrm{Wet} &amp; \text{if $X_t = \mathrm{Dry}$ and $Z_t = \mathrm{Change}$},\\
+\mathrm{Dry} &amp; \text{if $X_t = \mathrm{Wet}$ and $Z_t = \mathrm{Change}$}.
+\end{cases}
+\end{split}\]</div>
+<p>We claim that <span class="math notranslate nohighlight">\((X_t)_{t \geq 0}\)</span> is a Markov chain. We use two observations:</p>
+<p>1- By composition,</p>
+<div class="math notranslate nohighlight">
+\[
+X_1 = f(X_0, Z_0),
+\]</div>
+<div class="math notranslate nohighlight">
+\[
+X_2 = f(X_1,Z_1) = f(f(X_0,Z_0),Z_1),
+\]</div>
+<div class="math notranslate nohighlight">
+\[
+X_3 = f(X_2,Z_2) = f(f(X_1,Z_1),Z_2) = f(f(f(X_0,Z_0),Z_1),Z_2),
+\]</div>
+<p>and, more generally,</p>
+<div class="math notranslate nohighlight">
+\[
+X_t
+= f(X_{t-1},Z_{t-1})
+= f(f(X_{t-2},Z_{t-2}),Z_{t-1})
+= f(f(\cdots f(f(X_0,Z_0),Z_1),\cdots),Z_{t-1})
+\]</div>
+<p>is a deterministic function of <span class="math notranslate nohighlight">\(X_0 = \mathrm{Dry}\)</span> and <span class="math notranslate nohighlight">\(Z_0,\ldots,Z_{t-1}\)</span>.</p>
+<p>2- For any <span class="math notranslate nohighlight">\(x_1,\ldots,x_t \in \S\)</span>, there is precisely one value of <span class="math notranslate nohighlight">\(z \in \{\mathrm{Same}, \mathrm{Change}\}\)</span> such that <span class="math notranslate nohighlight">\(x_t = f(x_{t-1}, z)\)</span>, i.e., if <span class="math notranslate nohighlight">\(x_t = x_{t-1}\)</span> we must have <span class="math notranslate nohighlight">\(z = \mathrm{Same}\)</span> and if <span class="math notranslate nohighlight">\(x_t \neq x_{t-1}\)</span> we must have <span class="math notranslate nohighlight">\(z = \mathrm{Change}\)</span>.</p>
+<p>Fix <span class="math notranslate nohighlight">\(x_0 = \mathrm{Dry}\)</span>. For any <span class="math notranslate nohighlight">\(x_1,\ldots,x_t \in \S\)</span>, letting <span class="math notranslate nohighlight">\(z\)</span> be as in Observation 2,</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+&amp;\P[X_t = x_t\,|\,X_{t-1} = x_{t-1}, X_{t-2} = x_{t-2},\ldots,X_0 = x_0]\\
+&amp;= \P[f(X_{t-1}, Z_{t-1}) = x_t \,|\, X_{t-1} = x_{t-1}, X_{t-2} = x_{t-2},\ldots,X_0 = x_0]\\
+&amp;= \P[f(x_{t-1}, Z_{t-1}) = x_t \,|\, X_{t-1} = x_{t-1}, X_{t-2} = x_{t-2},\ldots,X_0 = x_0]\\
+&amp;= \P[Z_{t-1} = z \,|\, X_{t-1} = x_{t-1}, X_{t-2} = x_{t-2},\ldots,X_0 = x_0]\\
+&amp;= \P[Z_{t-1} = z],
+\end{align*}\]</div>
+<p>where we used that <span class="math notranslate nohighlight">\(Z_{t-1}\)</span> is independent of <span class="math notranslate nohighlight">\(Z_{t-2},\ldots,Z_0\)</span> and <span class="math notranslate nohighlight">\(X_0\)</span> (which is deterministic), and therefore is independent of <span class="math notranslate nohighlight">\(X_{t-1},\ldots,X_0\)</span> by Observation 1. The same argument shows that</p>
+<div class="math notranslate nohighlight">
+\[
+\P[X_t = x_t\,|\,X_{t-1} = x_{t-1}]
+= \P[Z_{t-1} = z],
+\]</div>
+<p>and that proves the claim.</p>
+<p>More generally, one can pick <span class="math notranslate nohighlight">\(X_0\)</span> according to an initial distribution, independently from the sequence <span class="math notranslate nohighlight">\((Z_t)_{t \geq 0}\)</span>. The argument above can be adapted to this case. <span class="math notranslate nohighlight">\(\lhd\)</span></p>
+<p><strong>EXAMPLE:</strong> <strong>(Random Walk on the Petersen Graph)</strong> Let <span class="math notranslate nohighlight">\(G = (V,E)\)</span> be the Petersen graph. Each vertex <span class="math notranslate nohighlight">\(i\)</span> has degree <span class="math notranslate nohighlight">\(3\)</span>, that is, it has three neighbors which we denote <span class="math notranslate nohighlight">\(v_{i,1}, v_{i,2}, v_{i,3}\)</span> in some arbitrary order. For instance, denoting the vertices by <span class="math notranslate nohighlight">\(1,\ldots, 10\)</span> as above, vertex <span class="math notranslate nohighlight">\(9\)</span> has neighbors <span class="math notranslate nohighlight">\(v_{9,1} = 4, v_{9,2} = 6, v_{9,3} = 7\)</span>.</p>
+<p>We consider the following random walk on <span class="math notranslate nohighlight">\(G\)</span>. We start at <span class="math notranslate nohighlight">\(X_0 = 1\)</span>. Then, for each <span class="math notranslate nohighlight">\(t\geq 0\)</span>, we let <span class="math notranslate nohighlight">\(X_{t+1}\)</span> be a uniformly chosen neighbor of <span class="math notranslate nohighlight">\(X_t\)</span>, independently of the previous history. That is, we jump at random from neighbor to neighbor. Formally, fix <span class="math notranslate nohighlight">\(X_0 = 1\)</span> and let <span class="math notranslate nohighlight">\((Z_t)_{t \geq 0}\)</span> be an i.i.d. sequence of random variables taking values in <span class="math notranslate nohighlight">\(\{1,2,3\}\)</span> satisfying</p>
+<div class="math notranslate nohighlight">
+\[
+\mathbb{P}[Z_t = 1] = \mathbb{P}[Z_t = 2] = \mathbb{P}[Z_t = 3] = 1/3.
+\]</div>
+<p>Then define, for all <span class="math notranslate nohighlight">\(t \geq 0\)</span>,
+<span class="math notranslate nohighlight">\(
+X_{t+1}
+= f(X_t, Z_t)
+= v_{i,Z_t}
+\)</span>
+if <span class="math notranslate nohighlight">\(X_t = v_i\)</span>.</p>
+<p>By an argument similar to the previous example, <span class="math notranslate nohighlight">\((X_t)_{t \geq 0}\)</span> is a Markov chain.
+Also as in the previous example, one can pick <span class="math notranslate nohighlight">\(X_0\)</span> according to an initial distribution, independently from the sequence <span class="math notranslate nohighlight">\((Z_t)_{t \geq 0}\)</span>. <span class="math notranslate nohighlight">\(\lhd\)</span></p>
+<p>There are various useful generalizations of the condition <span class="math notranslate nohighlight">\((*)\)</span> in the definition of a Markov chain. These are all special cases of what is referred to as the <em>Markov Property</em><span class="math notranslate nohighlight">\(\idx{Markov property}\xdi\)</span> which can be summarized as: the past and the future are independent given the present. We record a version general enough for us here. Let <span class="math notranslate nohighlight">\((X_t)_{t \geq 0}\)</span> be a Markov chain on the state space <span class="math notranslate nohighlight">\(\mathcal{S}\)</span>. For any integer <span class="math notranslate nohighlight">\(h \geq 0\)</span>, <span class="math notranslate nohighlight">\(x_{t-1}\in \mathcal{S}\)</span> and subsets <span class="math notranslate nohighlight">\(\mathcal{P} \subseteq \mathcal{S}^{t-1}\)</span>, <span class="math notranslate nohighlight">\(\mathcal{F} \subseteq \mathcal{S}^{h+1}\)</span> of state sequences of length <span class="math notranslate nohighlight">\(t-1\)</span> and <span class="math notranslate nohighlight">\(h+1\)</span> respectively, it holds that</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+\P[(X_t,\ldots,X_{t+h}) \in \mathcal{F}\,|\,X_{t-1} = x_{t-1}, (X_0,\ldots,X_{t-2}) \in \mathcal{P}]
+&amp;= \P[(X_t,\ldots,X_{t+h}) \in \mathcal{F}\,|\,X_{t-1} = x_{t-1}].
+\end{align*}\]</div>
+<p>One important implication of the <em>Markov Property</em> is that the distribution of a sample path, i.e., an event of the form <span class="math notranslate nohighlight">\(\{X_0 = x_0, X_1 = x_1, \ldots, X_T = x_T\}\)</span>, simplifies considerably.</p>
+<p><strong>THEOREM</strong> <strong>(Distribution of a Sample Path)</strong> <span class="math notranslate nohighlight">\(\idx{distribution of a sample path}\xdi\)</span> For any <span class="math notranslate nohighlight">\(x_0, x_1, \ldots, x_T \in \mathcal{S}\)</span>,</p>
+<div class="math notranslate nohighlight">
+\[
+\P[X_0 = x_0, X_1 = x_1, \ldots, X_T = x_T]
+= \P[X_0 = x_0] \,\prod_{t=1}^T \,\P[X_t = x_t\,|\,X_{t-1} = x_{t-1}].
+\]</div>
+<p><span class="math notranslate nohighlight">\(\sharp\)</span></p>
+<p><em>Proof idea:</em> We use the <em>Multiplication Rule</em> and the <em>Markov Property</em>.</p>
+<p><em>Proof:</em> We first apply the <em>Multiplication Rule</em></p>
+<div class="math notranslate nohighlight">
+\[
+\P\left[\cap_{i=1}^r A_i\right]
+= \prod_{i=1}^r \P\left[A_i \,\middle|\, \cap_{j=1}^{i-1} A_j \right].
+\]</div>
+<p>with <span class="math notranslate nohighlight">\(A_i = \{X_{i-1} = x_{i-1}\}\)</span> and <span class="math notranslate nohighlight">\(r = T+1\)</span>. That gives</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+&amp;\P[X_0 = x_0, X_1 = x_1, \ldots, X_T = x_T]\\
+&amp;= \P[X_0 = x_0] \,\prod_{t=1}^T \P[X_t = x_t\,|\,X_{t-1} = x_{t-1},
+\ldots, X_0 = x_0].
+\end{align*}\]</div>
+<p>Then we use the <em>Markov Property</em> to simplify each term in the product. <span class="math notranslate nohighlight">\(\square\)</span></p>
+<p><strong>EXAMPLE:</strong> <strong>(Weather Model, continued)</strong> Going back to the Weather Model from a previous example, fix <span class="math notranslate nohighlight">\(x_0 = \mathrm{Dry}\)</span> and <span class="math notranslate nohighlight">\(x_1,\ldots,x_t \in \S\)</span>. Then, by the <em>Distribution of a Sample Path</em>,</p>
+<div class="math notranslate nohighlight">
+\[
+\P[X_0 = x_0, X_1 = x_1, \ldots, X_T = x_T]
+= \P[X_0 = x_0] \,\prod_{t=1}^T \,\P[X_t = x_t\,|\,X_{t-1} = x_{t-1}].
+\]</div>
+<p>By assumption <span class="math notranslate nohighlight">\(\P[X_0 = x_0] = 1\)</span>. Moreover, we have previously shown that</p>
+<div class="math notranslate nohighlight">
+\[
+\P[X_t = x_t\,|\,X_{t-1} = x_{t-1}]
+= \P[Z_{t-1} = z_{t-1}],
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(z_{t-1} = \mathrm{Same}\)</span> if <span class="math notranslate nohighlight">\(x_t = x_{t-1}\)</span> and <span class="math notranslate nohighlight">\(z_{t-1} = \mathrm{Change}\)</span> if <span class="math notranslate nohighlight">\(x_t \neq x_{t-1}\)</span>.</p>
+<p>Hence, using the distribution of <span class="math notranslate nohighlight">\(Z_t\)</span>,</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\P[X_t = x_t\,|\,X_{t-1} = x_{t-1}]
+= \begin{cases}
+3/4 &amp; \text{if $x_t = x_{t-1}$},\\
+1/4 &amp; \text{if $x_t \neq x_{t-1}$}.
+\end{cases}
+\end{split}\]</div>
+<p>Let <span class="math notranslate nohighlight">\(n_T = |\{0 &lt; t \leq T : x_t = x_{t-1}\}|\)</span> be the number of transitions without change. Then,</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+\P[X_0 = x_0, X_1 = x_1, \ldots, X_T = x_T]
+&amp;= \P[X_0 = x_0] \,\prod_{t=1}^T \,\P[X_t = x_t\,|\,X_{t-1} = x_{t-1}]\\
+&amp;= \prod_{t=1}^T\P[Z_{t-1} = z_{t-1}]\\
+&amp;= (3/4)^{n_T} (1/4)^{T - n_T}.
+\end{align*}\]</div>
+<p><span class="math notranslate nohighlight">\(\lhd\)</span></p>
+<p>It will be useful later on to observe that the <em>Distribution of a Sample Path</em> generalizes to</p>
+<div class="math notranslate nohighlight">
+\[
+\P[X_{s+1} = x_{s+1}, X_{s+2} = x_{s+2}, \ldots, X_T = x_T\,|\,X_s = x_s]
+= \prod_{t=s+1}^T \,\P[X_t = x_t\,|\,X_{t-1} = x_{t-1}].
+\]</div>
+<p>Based on the <em>Distribution of a Sample Path</em>, in order to specify the distribution of the process it suffices to specify</p>
+<ol class="arabic simple">
+<li><p>the <em>initial distribution</em><span class="math notranslate nohighlight">\(\idx{initial distribution}\xdi\)</span> <span class="math notranslate nohighlight">\(\mu_x := \P[X_0 = x]\)</span> for all <span class="math notranslate nohighlight">\(x\)</span>; and</p></li>
+<li><p>the <em>transition probabilities</em><span class="math notranslate nohighlight">\(\idx{transition probability}\xdi\)</span> <span class="math notranslate nohighlight">\(\P[X_{t+1} = x\,|\,X_{t} = x']\)</span> for all <span class="math notranslate nohighlight">\(t\)</span>, <span class="math notranslate nohighlight">\(x\)</span>, <span class="math notranslate nohighlight">\(x'\)</span>.</p></li>
+</ol>
+</section>
+<section id="time-homogeneous-case-transition-matrix">
+<h2><span class="section-number">7.2.2. </span>Time-homogeneous case: transition matrix<a class="headerlink" href="#time-homogeneous-case-transition-matrix" title="Link to this heading">#</a></h2>
+<p>It is common to further assume that the process is <em>time-homogeneous</em><span class="math notranslate nohighlight">\(\idx{time-homogeneous process}\xdi\)</span>, which means that the transition probabilities do not depend on <span class="math notranslate nohighlight">\(t\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[
+\P[X_{t+1} =x\,|\,X_{t} = x']
+= \P[X_1 =x\,|\,X_{0} = x']
+=: p_{x',x},
+\quad \forall t=1,\ldots
+\]</div>
+<p>where the last equality is a definition. We can then collect the transition probabilities into a matrix.</p>
+<p><strong>DEFINITION</strong> <strong>(Transition Matrix)</strong> <span class="math notranslate nohighlight">\(\idx{transition matrix}\xdi\)</span> The matrix</p>
+<div class="math notranslate nohighlight">
+\[
+P = (p_{x',x})_{x,x' \in \S}
+\]</div>
+<p>is called the transition matrix of the chain. <span class="math notranslate nohighlight">\(\natural\)</span></p>
+<p>We also let <span class="math notranslate nohighlight">\(\mu_{x} = \P[X_0 = x]\)</span> and we think of <span class="math notranslate nohighlight">\(\bmu = (\mu_{x})_{x \in \S}\)</span> as a vector. The convention in Markov chain theory is to think of probability distributions such as <span class="math notranslate nohighlight">\(\bmu\)</span> as <em>row vectors</em>. We will see later why it simplifies the notation somewhat.</p>
+<p><strong>EXAMPLE:</strong> <strong>(Weather Model, continued)</strong> Going back to the weather model, let us number the states as follows: <span class="math notranslate nohighlight">\(1 = \mathrm{Dry}\)</span> and <span class="math notranslate nohighlight">\(2 = \mathrm{Wet}\)</span>. Then the transition matrix is</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+P
+= \begin{pmatrix}
+3/4 &amp; 1/4\\
+1/4 &amp; 3/4
+\end{pmatrix}.
+\end{split}\]</div>
+<p><span class="math notranslate nohighlight">\(\lhd\)</span></p>
+<p><strong>EXAMPLE:</strong> <strong>(Random Walk on the Petersen Graph, continued)</strong> Consider again the random walk on the Petersen graph <span class="math notranslate nohighlight">\(G = (V,E)\)</span>. We number the vertices <span class="math notranslate nohighlight">\(1, 2,\ldots, 10\)</span>. To compute the transition matrix, we list for each vertex its neighbors and put the value <span class="math notranslate nohighlight">\(1/3\)</span> in the corresponding columns. For instance, vertex <span class="math notranslate nohighlight">\(1\)</span> has neighbors <span class="math notranslate nohighlight">\(2\)</span>, <span class="math notranslate nohighlight">\(5\)</span> and <span class="math notranslate nohighlight">\(6\)</span>, so row <span class="math notranslate nohighlight">\(1\)</span> has <span class="math notranslate nohighlight">\(1/3\)</span> in columns <span class="math notranslate nohighlight">\(2\)</span>, <span class="math notranslate nohighlight">\(5\)</span>, and <span class="math notranslate nohighlight">\(6\)</span>. And so on.</p>
+<p>We get:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+P = \begin{pmatrix}
+0 &amp; 1/3 &amp; 0 &amp; 0 &amp; 1/3 &amp; 1/3 &amp; 0 &amp; 0 &amp; 0 &amp; 0\\
+1/3 &amp; 0 &amp; 1/3 &amp; 0 &amp; 0 &amp; 0 &amp; 1/3 &amp; 0 &amp; 0 &amp; 0\\
+0 &amp; 1/3 &amp; 0 &amp; 1/3 &amp; 0 &amp; 0 &amp; 0 &amp; 1/3 &amp; 0 &amp; 0\\
+0 &amp; 0 &amp; 1/3 &amp; 0 &amp; 1/3 &amp; 0 &amp; 0 &amp; 0 &amp; 1/3 &amp; 0\\
+1/3 &amp; 0 &amp; 0 &amp; 1/3 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 1/3\\
+1/3 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 1/3 &amp; 1/3 &amp; 0\\
+0 &amp; 1/3 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 1/3 &amp; 1/3\\
+0 &amp; 0 &amp; 1/3 &amp; 0 &amp; 0 &amp; 1/3 &amp; 0 &amp; 0 &amp; 0 &amp; 1/3\\
+0 &amp; 0 &amp; 0 &amp; 1/3 &amp; 0 &amp; 1/3 &amp; 1/3 &amp; 0 &amp; 0 &amp; 0\\
+0 &amp; 0 &amp; 0 &amp; 0 &amp; 1/3 &amp; 0 &amp; 1/3 &amp; 1/3 &amp; 0 &amp; 0
+\end{pmatrix}
+\end{split}\]</div>
+<p>We have already encountered a matrix that encodes the neighbors of each vertex, the adjacency matrix. Here we can recover the transition matrix by multiplying the adjacency matrix by <span class="math notranslate nohighlight">\(1/3\)</span>. <span class="math notranslate nohighlight">\(\lhd\)</span></p>
+<p>Transition matrices have a very special structure.</p>
+<p><strong>THEOREM</strong> <strong>(Transition Matrix is Stochastic)</strong> <span class="math notranslate nohighlight">\(\idx{transition matrix is stochastic theorem}\xdi\)</span> The transition matrix <span class="math notranslate nohighlight">\(P\)</span> is a stochastic matrix<span class="math notranslate nohighlight">\(\idx{stochastic matrix}\xdi\)</span>, that is, all its entries are nonnegative and all its rows sum to one. <span class="math notranslate nohighlight">\(\sharp\)</span></p>
+<p><em>Proof:</em> Indeed,</p>
+<div class="math notranslate nohighlight">
+\[
+\sum_{x \in \S} p_{x',x} = \sum_{x \in \S} \P[X_1 = x\,|\,X_{0} = x'] = \P[X_1 \in \S \,|\,X_{0} = x'] = 1
+\]</div>
+<p>by the properties of the conditional probability. <span class="math notranslate nohighlight">\(\square\)</span></p>
+<p>In matrix form, the condition can be stated as <span class="math notranslate nohighlight">\(P \mathbf{1} = \mathbf{1}\)</span>, where <span class="math notranslate nohighlight">\(\mathbf{1}\)</span> is an all-one vector of the appropriate size.</p>
+<p>We have seen that any transition matrix is stochastic. Conversely, any stochastic matrix is the transition matrix of a Markov chain. That is, we can specify a Markov chain by choosing the number of states <span class="math notranslate nohighlight">\(n\)</span>, an initial distribution over <span class="math notranslate nohighlight">\(\mathcal{S} = [n]\)</span> and a stochastic matrix <span class="math notranslate nohighlight">\(P \in \mathbb{R}^{n\times n}\)</span>. Row <span class="math notranslate nohighlight">\(i\)</span> of <span class="math notranslate nohighlight">\(P\)</span> stipulates the probability distribution of the next state given that we are currently at state <span class="math notranslate nohighlight">\(i\)</span>.</p>
+<p><strong>EXAMPLE:</strong> <strong>(Robot Vacuum)</strong> Suppose a robot vacuum roams around a large mansion with the following rooms: <span class="math notranslate nohighlight">\(1=\mathrm{Study}\)</span>, <span class="math notranslate nohighlight">\(2=\mathrm{Hall}\)</span>, <span class="math notranslate nohighlight">\(3=\mathrm{Lounge}\)</span>, <span class="math notranslate nohighlight">\(4=\mathrm{Library}\)</span>, <span class="math notranslate nohighlight">\(5=\mathrm{Billiard\ Room}\)</span>, <span class="math notranslate nohighlight">\(6=\mathrm{Dining\ Room}\)</span>, <span class="math notranslate nohighlight">\(7=\mathrm{Conservatory}\)</span>, <span class="math notranslate nohighlight">\(8=\mathrm{Ball\ Room}\)</span>, <span class="math notranslate nohighlight">\(9=\mathrm{Kitchen}\)</span>.</p>
+<p><strong>Figure:</strong> A wrench (<em>Credit:</em> Made with <a class="reference external" href="https://www.midjourney.com/">Midjourney</a>)</p>
+<p><img alt="Roomba" src="../../_images/Roomba_and_a_wrench-small.png" /></p>
+<p><span class="math notranslate nohighlight">\(\bowtie\)</span></p>
+<p>Once it is done cleaning a room, it moves to another one nearby according to the following stochastic matrix (check it is stochastic!):</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+P = \begin{pmatrix}
+0 &amp; 0.8 &amp; 0 &amp; 0.2 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0\\
+0.3 &amp; 0 &amp; 0.2 &amp; 0 &amp; 0 &amp; 0.5 &amp; 0 &amp; 0 &amp; 0\\
+0 &amp; 0.6 &amp; 0 &amp; 0 &amp; 0 &amp; 0.4 &amp; 0 &amp; 0 &amp; 0\\
+0.1 &amp; 0.1 &amp; 0 &amp; 0 &amp; 0.8 &amp; 0 &amp; 0 &amp; 0 &amp; 0\\
+0 &amp; 0 &amp; 0 &amp; 0.25 &amp; 0 &amp; 0 &amp; 0.75 &amp; 0 &amp; 0\\
+0 &amp; 0.15 &amp; 0.15 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0.35 &amp; 0.35\\
+0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 1 &amp; 0\\
+0 &amp; 0 &amp; 0 &amp; 0 &amp; 0.3 &amp; 0.4 &amp; 0.2 &amp; 0 &amp; 0.1\\
+0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 1 &amp; 0 &amp; 0 &amp; 0
+\end{pmatrix}
+\end{split}\]</div>
+<p>Suppose the initial distribution <span class="math notranslate nohighlight">\(\bmu\)</span> is uniform over the state space and let <span class="math notranslate nohighlight">\(X_t\)</span> be the room the vacuum is in at iteration <span class="math notranslate nohighlight">\(t\)</span>. Then <span class="math notranslate nohighlight">\((X_t)_{t\geq 0}\)</span> is a Markov chain. Unlike our previous examples, <span class="math notranslate nohighlight">\(P\)</span> is not symmetric. In particular, its rows sum to <span class="math notranslate nohighlight">\(1\)</span> but its columns do not. (Check it!) <span class="math notranslate nohighlight">\(\lhd\)</span></p>
+<p>When both rows and columns sum to <span class="math notranslate nohighlight">\(1\)</span>, we say that <span class="math notranslate nohighlight">\(P\)</span> is doubly stochastic.</p>
+<p>With the notation just introduced, the distribution of a sample path simplifies further to</p>
+<div class="math notranslate nohighlight">
+\[
+\P[X_0 = x_0, X_1 = x_1, \ldots, X_T = x_T]
+= \mu_{x_0} \prod_{t=1}^T p_{x_{t-1},x_t}.
+\]</div>
+<p>This formula has a remarkable consequence. The marginal distribution of <span class="math notranslate nohighlight">\(X_s\)</span> is a matrix power of <span class="math notranslate nohighlight">\(P\)</span>. As usual, we denote by <span class="math notranslate nohighlight">\(P^s\)</span> the <span class="math notranslate nohighlight">\(s\)</span>-th matrix power of <span class="math notranslate nohighlight">\(P\)</span>. Recall also that <span class="math notranslate nohighlight">\(\bmu\)</span> is a row vector.</p>
+<p><strong>THEOREM</strong> <strong>(Time Marginals)</strong> <span class="math notranslate nohighlight">\(\idx{time marginals theorem}\xdi\)</span> For any <span class="math notranslate nohighlight">\(s \geq 1\)</span> and <span class="math notranslate nohighlight">\(x_s \in \S\)</span></p>
+<div class="math notranslate nohighlight">
+\[
+\P[X_s = x_s]
+= \left(\bmu P^s\right)_{x_s}.
+\]</div>
+<p><span class="math notranslate nohighlight">\(\sharp\)</span></p>
+<p><em>Proof idea:</em> The idea is to think of <span class="math notranslate nohighlight">\(\P[X_s = x_s]\)</span> as the time <span class="math notranslate nohighlight">\(s\)</span> marginal over all trajectories up to time <span class="math notranslate nohighlight">\(s\)</span> – quantities we know how to compute the probabilities of. Then we use the <em>Distribution of a Sample Path</em> and “pushe the sums in.” This is easier seen on a simple case. We do the case <span class="math notranslate nohighlight">\(s=2\)</span> first.</p>
+<p>Summing over all trajectories up to time <span class="math notranslate nohighlight">\(2\)</span>,</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+&amp;\P[X_2 = x_2]\\
+&amp;= \sum_{x_0 \in \S} \sum_{x_{1} \in \S}
+\P[X_0 = x_0, X_1 = x_1, X_2 = x_2]\\
+&amp;= \sum_{x_0 \in \S} \sum_{x_{1} \in \S}
+\mu_{x_0} p_{x_{0},x_1} p_{x_{1},x_2}.
+\end{align*}\]</div>
+<p>where we used the <em>Distribution of a Sample Path</em>.</p>
+<p>Pushing the sum over <span class="math notranslate nohighlight">\(x_1\)</span> in, this becomes</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+&amp;= \sum_{x_0 \in \S} 
+\mu_{x_0} \sum_{x_{1} \in \S} p_{x_{0},x_1} p_{x_{1},x_2}\\
+&amp;= \sum_{x_0 \in \S} 
+\mu_{x_0} (P^2)_{x_{0},x_2},
+\end{align*}\]</div>
+<p>where we recognized the definition of a matrix product – here <span class="math notranslate nohighlight">\(P^2\)</span>. The result then follows.</p>
+<p><em>Proof:</em> For any <span class="math notranslate nohighlight">\(s\)</span>, by definition of a marginal,</p>
+<div class="math notranslate nohighlight">
+\[
+\P[X_s = x_s]
+= \sum_{x_0, \ldots, x_{s-1} \in \S}
+\P[X_0 = x_0, X_1 = x_1,\ldots,X_{s-1} = x_{s-1}, X_s = x_s].
+\]</div>
+<p>Using the <em>Distribution of a Sample Path</em> in the time-homogeneous case, this evaluates to</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+\P[X_s = x_s]
+&amp;= \sum_{x_0, \ldots, x_{s-1} \in \S}
+\mu_{x_0} \prod_{t=1}^s p_{x_{t-1},x_t}.
+\end{align*}\]</div>
+<p>The sum can be simplified by pushing the individual sums as far into the summand as possible</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+&amp;\sum_{x_0, \ldots, x_{s-1} \in \S} \mu_{x_0} \prod_{t=1}^{s} p_{x_{t-1},x_t}\\
+&amp; \quad = \sum_{x_0 \in \S} \mu_{x_0} \sum_{x_{1} \in \S} p_{x_{0},x_{1}} \cdots \sum_{x_{s-2} \in \S} p_{x_{s-3},x_{s-2}} \sum_{x_{s-1} \in \S}  p_{x_{s-2},x_{s-1}} \,p_{x_{s-1},x_s}\\
+&amp; \quad = \sum_{x_0 \in \S} \mu_{x_0} \sum_{x_{1} \in \S} p_{x_{0},x_{1}} \cdots \sum_{x_{s-2} \in \S} p_{x_{s-3},x_{s-2}} \, \left(P^2\right)_{x_{s-2}, x_s} \\
+&amp; \quad = \sum_{x_0 \in \S} \mu_{x_0} \sum_{x_{1} \in \S} p_{x_{0},x_{1}} \cdots \sum_{x_{s-3} \in \S} p_{x_{s-4},x_{s-3}} \, \left(P^3\right)_{x_{s-3}, x_s} \\
+&amp; \quad = \cdots \\
+&amp; \quad = \left(\bmu P^s\right)_{x_s},
+\end{align*}\]</div>
+<p>where on the second line we recognized the innermost sum as a matrix product, then proceeded by induction. <span class="math notranslate nohighlight">\(\square\)</span></p>
+<p>The special case <span class="math notranslate nohighlight">\(\bmu = \mathbf{e}_x^T\)</span> gives that for any <span class="math notranslate nohighlight">\(x, y \in [n]\)</span></p>
+<div class="math notranslate nohighlight">
+\[
+\P[X_s = y\,|\,X_0 = x]
+= (\mu P^s)_y
+= (\mathbf{e}_x^T P^s)_y
+= P^s_{x,y}.
+\]</div>
+<p><strong>EXAMPLE:</strong> <strong>(Weather Model, continued)</strong> Suppose day <span class="math notranslate nohighlight">\(0\)</span> is <span class="math notranslate nohighlight">\(\mathrm{Dry}\)</span>, that is, the initial distribution is <span class="math notranslate nohighlight">\(\bmu = (1,0)\)</span>. What is the probability that it is <span class="math notranslate nohighlight">\(\mathrm{Wet}\)</span> on day <span class="math notranslate nohighlight">\(2\)</span>? We apply the formula above to get <span class="math notranslate nohighlight">\(\P[X_2 = 2]
+= \left(\bmu P^2\right)_{2}\)</span>. Note that</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+\bmu P^2
+&amp;= (1,0)  
+\begin{pmatrix}
+3/4 &amp; 1/4\\
+1/4 &amp; 3/4
+\end{pmatrix}
+\begin{pmatrix}
+3/4 &amp; 1/4\\
+1/4 &amp; 3/4
+\end{pmatrix}\\
+&amp;= (3/4,1/4)
+\begin{pmatrix}
+3/4 &amp; 1/4\\
+1/4 &amp; 3/4
+\end{pmatrix}\\
+&amp;= (10/16,6/16)\\
+&amp;= (5/8,3/8).
+\end{align*}\]</div>
+<p>So the answer is <span class="math notranslate nohighlight">\(3/8\)</span>. <span class="math notranslate nohighlight">\(\lhd\)</span></p>
+<p>It will be useful later on to observe that the <em>Time Marginals Theorem</em> generalizes to</p>
+<div class="math notranslate nohighlight">
+\[
+\P[X_t = x_t\,|\,X_s = x_s]
+= (P^{t-s})_{x_s,x_t},
+\]</div>
+<p>for <span class="math notranslate nohighlight">\(s \leq t\)</span>.</p>
+<p>In the time-homogeneous case, an alternative way to represent a transition matrix is with a directed graph showing all possible transitions.</p>
+<p><strong>DEFINITION</strong> <strong>(Transition Graph)</strong> <span class="math notranslate nohighlight">\(\idx{transition graph}\xdi\)</span> Let <span class="math notranslate nohighlight">\((X_t)_{t \geq 0}\)</span> be a Markov chain over the state space <span class="math notranslate nohighlight">\(\mathcal{S} = [n]\)</span> with transition matrix <span class="math notranslate nohighlight">\(P = (p_{i,j})_{i,j=1}^{n}\)</span>. The transition graph (or state transition diagram) of <span class="math notranslate nohighlight">\((X_t)_{t \geq 0}\)</span> is a directed graph with vertices <span class="math notranslate nohighlight">\([n]\)</span> and a directed edge from <span class="math notranslate nohighlight">\(i\)</span> to <span class="math notranslate nohighlight">\(j\)</span> if and only if <span class="math notranslate nohighlight">\(p_{i,j} &gt; 0\)</span>. We often associate a weight <span class="math notranslate nohighlight">\(p_{i,j}\)</span> to that edge. <span class="math notranslate nohighlight">\(\natural\)</span></p>
+<p><strong>NUMERICAL CORNER:</strong> Returning to our <em>Robot Vacuum Example</em>, the transition graph of the chain can be obtained by thinking of <span class="math notranslate nohighlight">\(P\)</span> as the weighted adjacency matrix of the transition graph.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">P_robot</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">0</span><span class="p">,</span> <span class="mf">0.8</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
+                    <span class="p">[</span><span class="mf">0.3</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
+                    <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mf">0.6</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mf">0.4</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
+                    <span class="p">[</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mf">0.8</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
+                    <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mf">0.25</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mf">0.75</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
+                    <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mf">0.15</span><span class="p">,</span> <span class="mf">0.15</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mf">0.35</span><span class="p">,</span> <span class="mf">0.35</span><span class="p">],</span>
+                    <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
+                    <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">,</span> <span class="mf">0.4</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">],</span>
+                    <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]])</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>We define a graph from its adjancency matrix. See <a class="reference external" href="https://networkx.org/documentation/stable/reference/generated/networkx.convert_matrix.from_numpy_array.html"><code class="docutils literal notranslate"><span class="pre">networkx.from_numpy_array()</span></code></a>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">G_robot</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">from_numpy_array</span><span class="p">(</span><span class="n">P_robot</span><span class="p">,</span> <span class="n">create_using</span><span class="o">=</span><span class="n">nx</span><span class="o">.</span><span class="n">DiGraph</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Drawing edge weights on a directed graph in a readable fashion is not straighforward. We will not do this here.</p>
+<div class="cell tag_hide-input docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell source</span>
+<span class="expanded">Hide code cell source</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">n_robot</span> <span class="o">=</span> <span class="n">P_robot</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">nx</span><span class="o">.</span><span class="n">draw_networkx</span><span class="p">(</span><span class="n">G_robot</span><span class="p">,</span> <span class="n">pos</span><span class="o">=</span><span class="n">nx</span><span class="o">.</span><span class="n">circular_layout</span><span class="p">(</span><span class="n">G_robot</span><span class="p">),</span> 
+                 <span class="n">labels</span><span class="o">=</span><span class="p">{</span><span class="n">i</span><span class="p">:</span> <span class="n">i</span><span class="o">+</span><span class="mi">1</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_robot</span><span class="p">)},</span> 
+                 <span class="n">node_color</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">,</span> <span class="n">font_color</span><span class="o">=</span><span class="s1">&#39;white&#39;</span><span class="p">,</span> 
+                 <span class="n">connectionstyle</span><span class="o">=</span><span class="s1">&#39;arc3, rad = 0.2&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s1">&#39;off&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</details>
+<div class="cell_output docutils container">
+<img alt="../../_images/24ac5833010ea9c314c5d729415ea334e6107433d0347a20f7438a609ef1cb53.png" src="../../_images/24ac5833010ea9c314c5d729415ea334e6107433d0347a20f7438a609ef1cb53.png" />
+</div>
+</div>
+<p><span class="math notranslate nohighlight">\(\unlhd\)</span></p>
+<p>Once we have specified a transition matrix (and an initial distribution), we can simulate the corresponding Markov chain. This is useful to compute (approximately) probabilities of complex events through the law of large numbers. Here is some code to generate one sample path up to some given time <span class="math notranslate nohighlight">\(T\)</span>. We assume that the state space is <span class="math notranslate nohighlight">\([n]\)</span>. We use <a class="reference external" href="https://numpy.org/doc/stable/reference/random/generated/numpy.random.Generator.choice.html"><code class="docutils literal notranslate"><span class="pre">rng.choice</span></code></a> to generate each transition.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">SamplePath</span><span class="p">(</span><span class="n">rng</span><span class="p">,</span> <span class="n">mu</span><span class="p">,</span> <span class="n">P</span><span class="p">,</span> <span class="n">T</span><span class="p">):</span>
+    
+    <span class="n">n</span> <span class="o">=</span> <span class="n">mu</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">T</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">T</span><span class="o">+</span><span class="mi">1</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">X</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">a</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">start</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="n">stop</span><span class="o">=</span><span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="p">),</span><span class="n">p</span><span class="o">=</span><span class="n">mu</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">X</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">a</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">start</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="n">stop</span><span class="o">=</span><span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="p">),</span><span class="n">p</span><span class="o">=</span><span class="n">P</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">X</span><span class="p">[</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">-</span><span class="mi">1</span><span class="p">),:])</span>
+            
+    <span class="k">return</span> <span class="n">X</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p><strong>NUMERICAL CORNER:</strong> Let’s try with our <em>Robot Vacuum</em>. We take the initial distribution to be the uniform distribution.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">seed</span> <span class="o">=</span> <span class="mi">535</span>
+<span class="n">rng</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">(</span><span class="n">seed</span><span class="p">)</span>
+<span class="n">mu</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">n_robot</span><span class="p">)</span> <span class="o">/</span> <span class="n">n_robot</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">SamplePath</span><span class="p">(</span><span class="n">rng</span><span class="p">,</span> <span class="n">mu</span><span class="p">,</span> <span class="n">P_robot</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[9. 6. 3. 6. 8. 6. 2. 1. 2. 6. 8.]
+</pre></div>
+</div>
+</div>
+</div>
+<p>For example, we can use a simulation to approximate the expected number of times that room <span class="math notranslate nohighlight">\(9\)</span> is visited up to time <span class="math notranslate nohighlight">\(10\)</span>. To do this, we run the simulation a large number of times (say <span class="math notranslate nohighlight">\(1000\)</span>) and count the average number of visits to <span class="math notranslate nohighlight">\(9\)</span>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">z</span> <span class="o">=</span> <span class="mi">9</span>
+<span class="n">N_samples</span> <span class="o">=</span> <span class="mi">1000</span>
+<span class="n">visits_to_z</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">N_samples</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N_samples</span><span class="p">):</span>
+    <span class="n">visits_to_z</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">count_nonzero</span><span class="p">(</span><span class="n">SamplePath</span><span class="p">(</span><span class="n">rng</span><span class="p">,</span> <span class="n">mu</span><span class="p">,</span> <span class="n">P_robot</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span> <span class="o">==</span> <span class="n">z</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">visits_to_z</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1.193
+</pre></div>
+</div>
+</div>
+</div>
+<p><span class="math notranslate nohighlight">\(\unlhd\)</span></p>
+<p><strong>CHAT &amp; LEARN</strong> Markov Decision Processes (MDPs) are a framework for modeling decision making in situations where outcomes are partly random and partly under the control of a decision maker. Ask your favorite AI chatbot to explain the basic components of an MDP and how they relate to Markov chains. Discuss some applications of MDPs, such as in robotics or game theory. <span class="math notranslate nohighlight">\(\ddagger\)</span></p>
+<p><em><strong>Self-assessment quiz</strong></em> <em>(with help from Claude, Gemini, and ChatGPT)</em></p>
+<p><strong>1</strong> Which of the following is true about the transition matrix <span class="math notranslate nohighlight">\(P\)</span> of a Markov chain?</p>
+<p>a) All entries of <span class="math notranslate nohighlight">\(P\)</span> are non-negative, and all columns sum to one.</p>
+<p>b) All entries of <span class="math notranslate nohighlight">\(P\)</span> are non-negative, and all rows sum to one.</p>
+<p>c) All entries of <span class="math notranslate nohighlight">\(P\)</span> are non-negative, and both rows and columns sum to one.</p>
+<p>d) All entries of <span class="math notranslate nohighlight">\(P\)</span> are non-negative, and either rows or columns sum to one, but not both.</p>
+<p><strong>2</strong> What is the Markov property?</p>
+<p>a) The past and future are independent.</p>
+<p>b) The past and future are independent given the present.</p>
+<p>c) The present and future are independent given the past.</p>
+<p>d) The past, present, and future are all independent.</p>
+<p><strong>3</strong> Consider a Markov chain <span class="math notranslate nohighlight">\((X_t)_{t \ge 0}\)</span> on state space <span class="math notranslate nohighlight">\(S\)</span>. Which of the following equations is a direct consequence of the Markov property?</p>
+<p>a) <span class="math notranslate nohighlight">\(\mathbb{P}[X_{t+1} = x_{t+1} | X_t = x_t] = \mathbb{P}[X_{t+1} = x_{t+1}]\)</span></p>
+<p>b) <span class="math notranslate nohighlight">\(\mathbb{P}[X_{t+1} = x_{t+1} | X_t = x_t, X_{t-1} = x_{t-1}] = \mathbb{P}[X_{t+1} = x_{t+1} | X_t = x_t]\)</span></p>
+<p>c) <span class="math notranslate nohighlight">\(\mathbb{P}[X_{t+1} = x_{t+1} | X_t = x_t] = \mathbb{P}[X_{t+1} = x_{t+1} | X_0 = x_0]\)</span></p>
+<p>d) <span class="math notranslate nohighlight">\(\mathbb{P}[X_{t+1} = x_{t+1} | X_t = x_t, X_{t-1} = x_{t-1}] = \mathbb{P}[X_{t+1} = x_{t+1}]\)</span></p>
+<p><strong>4</strong> Consider a Markov chain <span class="math notranslate nohighlight">\((X_t)_{t\geq0}\)</span> with transition matrix <span class="math notranslate nohighlight">\(P\)</span> and initial distribution <span class="math notranslate nohighlight">\(\mu\)</span>. Which of the following is true about the distribution of a sample path <span class="math notranslate nohighlight">\((X_0, X_1, \ldots, X_T)\)</span>?</p>
+<p>a) <span class="math notranslate nohighlight">\(P[X_0 = x_0, X_1 = x_1, \ldots, X_T = x_T] = \mu_{x_0} \prod_{t=1}^T p_{x_{t-1},x_t}\)</span></p>
+<p>b) <span class="math notranslate nohighlight">\(P[X_0 = x_0, X_1 = x_1, \ldots, X_T = x_T] = \mu_{x_0} \sum_{t=1}^T p_{x_{t-1},x_t}\)</span></p>
+<p>c) <span class="math notranslate nohighlight">\(P[X_0 = x_0, X_1 = x_1, \ldots, X_T = x_T] = \prod_{t=0}^T \mu_{x_t}\)</span></p>
+<p>d) <span class="math notranslate nohighlight">\(P[X_0 = x_0, X_1 = x_1, \ldots, X_T = x_T] = \sum_{t=0}^T \mu_{x_t}\)</span></p>
+<p><strong>5</strong> In the random walk on the Petersen graph example, if the current state is vertex 9, what is the probability of transitioning to vertex 4 in the next step?</p>
+<p>a) 0</p>
+<p>b) 1/10</p>
+<p>c) 1/3</p>
+<p>d) 1</p>
+<p>Answer for 1: b. Justification: The text states that “the transition matrix <span class="math notranslate nohighlight">\(P\)</span> is a stochastic matrix, that is, all its entries are nonnegative and all its rows sum to one.”</p>
+<p>Answer for 2: b. Justification: The text summarizes the Markov property as “the past and the future are independent given the present.”</p>
+<p>Answer for 3: b. Justification: This is a direct statement of the Markov property, where the future state <span class="math notranslate nohighlight">\(X_{t+1}\)</span> depends only on the present state <span class="math notranslate nohighlight">\(X_t\)</span> and not on the past state <span class="math notranslate nohighlight">\(X_{t-1}\)</span>.</p>
+<p>Answer for 4: a. Justification: The text states the Distribution of a Sample Path Theorem:
+$<span class="math notranslate nohighlight">\(P[X_0 = x_0, X_1 = x_1, \ldots, X_T = x_T] = \mu_{x_0} \prod_{t=1}^T p_{x_{t-1},x_t}.\)</span>$</p>
+<p>Answer for 5: c. Justification: In the Petersen graph, each vertex has 3 neighbors, and the random walk chooses one uniformly at random.</p>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./chap05_rwmc/03_mcdefs"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="../01_motiv/roch-mmids-rwmc-motiv.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title"><span class="section-number">7.1. </span>Motivating example: discovering mathematical topics</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="../04_stat/roch-mmids-rwmc-stat.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title"><span class="section-number">7.3. </span>Limit behavior 1: stationary distributions</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#basic-definitions">7.2.1. Basic definitions</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#time-homogeneous-case-transition-matrix">7.2.2. Time-homogeneous case: transition matrix</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Sebastien Roch
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2024.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

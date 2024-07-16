@@ -1,0 +1,1485 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>7.5. Application: random walks on graphs and PageRank &#8212; MMiDS Textbook</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.5.1/css/all.min.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.1/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.1/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.1/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b76e3c8a" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=384b581d" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css?v=be8a1c11" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=87e54e7c" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae" />
+  <script src="../../_static/vendor/fontawesome/6.5.1/js/all.min.js?digest=8d27b9dea8ad943066ae"></script>
+
+    <script src="../../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?v=efea14e4"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../_static/design-tabs.js?v=f930bc37"></script>
+    <script async="async" src="https://www.googletagmanager.com/gtag/js?id=G-P5E8DW088F"></script>
+    <script>
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){ dataLayer.push(arguments); }
+                gtag('js', new Date());
+                gtag('config', 'G-P5E8DW088F');
+            </script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){ dataLayer.push(arguments); }
+                gtag('js', new Date());
+                gtag('config', 'G-P5E8DW088F');
+            </script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'chap07_rwmc/05_pagerank/roch-mmids-rwmc-pagerank';</script>
+    <link rel="canonical" href="https://mmids-textbook.github.io/chap07_rwmc/05_pagerank/roch-mmids-rwmc-pagerank.html" />
+    <link rel="icon" href="https://mmids-textbook.github.io/favicon-32x32.png"/>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="7.6. Further applications: Gibbs sampling and generating images" href="../06_gibbs/roch-mmids-rwmc-gibbs.html" />
+    <link rel="prev" title="7.4. Limit behavior 2: convergence to equilibrium" href="../04_mclimit/roch-mmids-rwmc-mclimit.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a id="pst-skip-link" class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+
+<a class="navbar-brand logo" href="../../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/mmids-cover-small.jpg" class="logo__image only-light" alt="MMiDS Textbook - Home"/>
+    <script>document.write(`<img src="../../_static/mmids-cover-small.jpg" class="logo__image only-dark" alt="MMiDS Textbook - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../index.html">
+                    <b>MATHEMATICAL METHODS in DATA SCIENCE (with Python)</b>
+                </a>
+            </li>
+        </ul>
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../chap01_intro/00_intro/roch-mmids-intro-intro.html">1. Introduction: a first data science problem</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../chap01_intro/01_motiv/roch-mmids-intro-motiv.html">1.1. Motivating example: identifying penguin species</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap01_intro/02_review/roch-mmids-intro-review.html">1.2. Background: quick refresher of matrix algebra, differential calculus, and elementary probability</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap01_intro/03_clustering/roch-mmids-intro-clustering.html">1.3. Clustering: an objective, an algorithm and a guarantee</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap01_intro/04_highdim/roch-mmids-intro-highdim.html">1.4. Some observations about high-dimensional data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap01_intro/exercises/roch-mmids-intro-exercises.html">1.5. Exercises</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap01_intro/supp/roch-mmids-intro-supp.html">1.6. Online suppplementary material</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../chap02_ls/00_intro/roch-mmids-ls-intro.html">2. Least squares: geometric, algebraic, and numerical aspects</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../chap02_ls/01_motiv/roch-mmids-ls-motiv.html">2.1. Motivating example: predicting sales</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap02_ls/02_spaces/roch-mmids-ls-spaces.html">2.2. Background: review of vector spaces and matrix inverses</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap02_ls/03_orthog/roch-mmids-ls-orthog.html">2.3. Geometry of least squares: the orthogonal projection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap02_ls/04_qr/roch-mmids-ls-qr.html">2.4. QR decomposition and Householder transformations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap02_ls/05_regression/roch-mmids-ls-regression.html">2.5. Application: regression analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap02_ls/exercises/roch-mmids-ls-exercises.html">2.6. Exercises</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap02_ls/supp/roch-mmids-ls-supp.html">2.7. Online suppplementary material</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../chap03_opt/00_intro/roch-mmids-opt-intro.html">3. Optimization theory and algorithms</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-3"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../chap03_opt/01_motiv/roch-mmids-opt-motiv.html">3.1. Motivating example:  analyzing customer satisfaction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap03_opt/02_several/roch-mmids-opt-several.html">3.2. Background: review of differentiable functions of several variables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap03_opt/03_optimality/roch-mmids-opt-optimality.html">3.3. Optimality conditions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap03_opt/04_convexity/roch-mmids-opt-convexity.html">3.4. Convexity</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap03_opt/05_gd/roch-mmids-opt-gd.html">3.5. Gradient descent and its convergence analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap03_opt/06_logistic/roch-mmids-opt-logistic.html">3.6. Application: logistic regression</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap03_opt/exercises/roch-mmids-opt-exercises.html">3.7. Exercises</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap03_opt/supp/roch-mmids-opt-supp.html">3.8. Online suppplementary material</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../chap04_svd/00_intro/roch-mmids-svd-intro.html">4. Singular value decomposition</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-4"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../chap04_svd/01_motiv/roch-mmids-svd-motiv.html">4.1. Motivating example: visualizing viral evolution</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap04_svd/02_spectral/roch-mmids-svd-spectral.html">4.2. Background: review of matrix rank  and spectral decomposition</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap04_svd/03_svd/roch-mmids-svd-svd.html">4.3. Approximating subspaces and the SVD</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap04_svd/04_power/roch-mmids-svd-power.html">4.4. Power iteration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap04_svd/05_pca/roch-mmids-svd-pca.html">4.5. Application: principal components analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap04_svd/06_further/roch-mmids-svd-further.html">4.6. Further applications of the SVD: low-rank approximations and ridge regression</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap04_svd/exercises/roch-mmids-svd-exercises.html">4.7. Exercises</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap04_svd/supp/roch-mmids-svd-supp.html">4.8. Online suppplementary material</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../chap05_specgraph/00_intro/roch-mmids-specgraph-intro.html">5. Spectral graph theory</a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-5"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../chap05_specgraph/01_motiv/roch-mmids-specgraph-motiv.html">5.1. Motivating example: uncovering social groups</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap05_specgraph/02_graph/roch-mmids-specgraph-graph.html">5.2. Background: basic concepts in graph theory</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap05_specgraph/03_extremal/roch-mmids-specgraph-extremal.html">5.3. Variational characterization of eigenvalues</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap05_specgraph/04_laplacian/roch-mmids-specgraph-laplacian.html">5.4. Spectral properties of the Laplacian matrix</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap05_specgraph/05_partitioning/roch-mmids-specgraph-partitioning.html">5.5. Application: graph partitioning via spectral clustering</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap05_specgraph/06_sbm/roch-mmids-specgraph-sbm.html">5.6. Erdős-Rényi random graph and stochastic blockmodel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap05_specgraph/exercises/roch-mmids-specgraph-exercises.html">5.7. Exercises</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap05_specgraph/supp/roch-mmids-specgraph-supp.html">5.8. Online supplementary material</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../chap06_prob/00_intro/roch-mmids-prob-intro.html">6. Probabilistic models: from simple to complex</a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-6"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../chap06_prob/01_motiv/roch-mmids-prob-motiv.html">6.1. Motivating example: tracking location</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap06_prob/02_parametric/roch-mmids-prob-parametric.html">6.2. Background: introduction to parametric families and maximum likelihood estimation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap06_prob/03_joint/roch-mmids-prob-joint.html">6.3. Modeling more complex dependencies 1: using conditional independence</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap06_prob/04_em/roch-mmids-prob-em.html">6.4. Modeling more complex dependencies 2: marginalizing out an unobserved variable</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap06_prob/05_kalman/roch-mmids-prob-kalman.html">6.5. Application: linear-Gaussian models and Kalman filtering</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap06_prob/exercises/roch-mmids-prob-exercises.html">6.6. Exercises</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap06_prob/supp/roch-mmids-prob-supp.html">6.7. Online supplementary material</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="../00_intro/roch-mmids-rwmc-intro.html">7. Random walks on graphs and Markov chains</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-7"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../01_motiv/roch-mmids-rwmc-motiv.html">7.1. Motivating example: discovering mathematical topics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../02_mcdefs/roch-mmids-rwmc-mcdefs.html">7.2. Background: elements of finite Markov chains</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../03_stat/roch-mmids-rwmc-stat.html">7.3. Limit behavior 1: stationary distributions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../04_mclimit/roch-mmids-rwmc-mclimit.html">7.4. Limit behavior 2: convergence to equilibrium</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">7.5. Application: random walks on graphs and PageRank</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../06_gibbs/roch-mmids-rwmc-gibbs.html">7.6. Further applications: Gibbs sampling and generating images</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../exercises/roch-mmids-rwmc-exercises.html">7.7. Exercises</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../supp/roch-mmids-rwmc-supp.html">7.8. Online supplementary material</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../chap08_nn/00_intro/roch-mmids-nn-intro.html">8. Neural networks, backpropagation and stochastic gradient descent</a><input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-8"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../chap08_nn/01_motiv/roch-mmids-nn-motiv.html">8.1. Motivating example:  classifying natural images</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap08_nn/02_chain/roch-mmids-nn-chain.html">8.2. Background: Jacobian, chain rule, and a brief introduction to automatic differentiation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap08_nn/03_backprop/roch-mmids-nn-backprop.html">8.3. Building blocks of AI 1: backpropagation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap08_nn/04_sgd/roch-mmids-nn-sgd.html">8.4. Building blocks of AI 2: stochastic gradient descent</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap08_nn/05_nn/roch-mmids-nn-nn.html">8.5. Building blocks of AI 3: neural networks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap08_nn/exercises/roch-mmids-nn-exercises.html">8.6. Exercises</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap08_nn/supp/roch-mmids-nn-supp.html">8.7. Online supplementary material</a></li>
+</ul>
+</li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/MMiDS-textbook/MMiDS-textbook.github.io" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/MMiDS-textbook/MMiDS-textbook.github.io/issues/new?title=Issue%20on%20page%20%2Fchap07_rwmc/05_pagerank/roch-mmids-rwmc-pagerank.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/chap07_rwmc/05_pagerank/roch-mmids-rwmc-pagerank.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Application: random walks on graphs and PageRank</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#random-walk-on-a-graph">7.5.1. Random walk on a graph</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pagerank">7.5.2. PageRank</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#personalized-pagerank">7.5.3. Personalized PageRank</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <p><span class="math notranslate nohighlight">\(\newcommand{\bmu}{\boldsymbol{\mu}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bSigma}{\boldsymbol{\Sigma}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bfbeta}{\boldsymbol{\beta}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bflambda}{\boldsymbol{\lambda}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bgamma}{\boldsymbol{\gamma}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bsigma}{{\boldsymbol{\sigma}}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bpi}{\boldsymbol{\pi}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\btheta}{{\boldsymbol{\theta}}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bphi}{\boldsymbol{\phi}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\balpha}{\boldsymbol{\alpha}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\blambda}{\boldsymbol{\lambda}}\)</span>
+<span class="math notranslate nohighlight">\(\renewcommand{\P}{\mathbb{P}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\E}{\mathbb{E}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\indep}{\perp\!\!\!\perp} \newcommand{\bx}{\mathbf{x}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bp}{\mathbf{p}}\)</span>
+<span class="math notranslate nohighlight">\(\renewcommand{\bx}{\mathbf{x}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bX}{\mathbf{X}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\by}{\mathbf{y}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bY}{\mathbf{Y}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bz}{\mathbf{z}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bZ}{\mathbf{Z}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bw}{\mathbf{w}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bW}{\mathbf{W}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bv}{\mathbf{v}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bV}{\mathbf{V}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bfg}{\mathbf{g}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bfh}{\mathbf{h}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\horz}{\rule[.5ex]{2.5ex}{0.5pt}}\)</span>
+<span class="math notranslate nohighlight">\(\renewcommand{\S}{\mathcal{S}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\X}{\mathcal{X}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\var}{\mathrm{Var}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\pa}{\mathrm{pa}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\Z}{\mathcal{Z}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bh}{\mathbf{h}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bb}{\mathbf{b}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bc}{\mathbf{c}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\cE}{\mathcal{E}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\cP}{\mathcal{P}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bbeta}{\boldsymbol{\beta}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bLambda}{\boldsymbol{\Lambda}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\cov}{\mathrm{Cov}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bfk}{\mathbf{k}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\idx}[1]{}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\xdi}{}\)</span></p>
+<section id="application-random-walks-on-graphs-and-pagerank">
+<h1><span class="section-number">7.5. </span>Application: random walks on graphs and PageRank<a class="headerlink" href="#application-random-walks-on-graphs-and-pagerank" title="Link to this heading">#</a></h1>
+<p>As we mentioned earlier in this chapter, a powerful way to extract information about the structure of a network is to analyze the behavior of a walker randomly “diffusing” on it.</p>
+<section id="random-walk-on-a-graph">
+<h2><span class="section-number">7.5.1. </span>Random walk on a graph<a class="headerlink" href="#random-walk-on-a-graph" title="Link to this heading">#</a></h2>
+<p>We first specialize the theory of the previous section to random walks on graphs. We start with the case of digraphs. The undirected case leads to useful simplifications.</p>
+<p><strong>Directed case</strong> We first define a random walk on a digraph.</p>
+<p><strong>DEFINITION</strong> <strong>(Random Walk on a Digraph)</strong> <span class="math notranslate nohighlight">\(\idx{random walk on a graph}\xdi\)</span> Let <span class="math notranslate nohighlight">\(G = (V,E)\)</span> be a directed graph. If a vertex does not have an outgoing edge (i.e., an edge with it as its source), add a self-loop to it. A random walk on <span class="math notranslate nohighlight">\(G\)</span> is a time-homogeneous Markov chain <span class="math notranslate nohighlight">\((X_t)_{t \geq 0}\)</span> with state space <span class="math notranslate nohighlight">\(\mathcal{S} = V\)</span> and transition probabilities</p>
+<div class="math notranslate nohighlight">
+\[
+p_{i,j} = \P[X_{t+1} = j\,|\,X_{t} = i] = \frac{1}{\delta^+(i)},
+\qquad
+\forall i \in V, j \in N^+(i),
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(\delta^+(i)\)</span> is the out-degree of <span class="math notranslate nohighlight">\(i\)</span>, i.e., the number of outgoing edges and <span class="math notranslate nohighlight">\(N^+(i) = \{j \in V:(i,j) \in E\}\)</span>. <span class="math notranslate nohighlight">\(\natural\)</span></p>
+<p>In words, at each step, we choose an outgoing edge from the current state uniformly at random. Choosing a self-loop (i.e., an edge of the form <span class="math notranslate nohighlight">\((i,i)\)</span>) means staying where we are.</p>
+<p>Let <span class="math notranslate nohighlight">\(G = (V,E)\)</span> be a digraph with <span class="math notranslate nohighlight">\(n = |V|\)</span> vertices. Without loss of generality, we let the vertex set be <span class="math notranslate nohighlight">\([n] = \{1,\ldots,n\}\)</span>. The adjacency matrix of <span class="math notranslate nohighlight">\(G\)</span> is denoted as <span class="math notranslate nohighlight">\(A\)</span>. We define the out-degree matrix <span class="math notranslate nohighlight">\(D\)</span> as the diagonal matrix with diagonal entries <span class="math notranslate nohighlight">\(\delta^+(i)\)</span>, <span class="math notranslate nohighlight">\(i=1,\ldots,n\)</span>. That is,</p>
+<div class="math notranslate nohighlight">
+\[
+D = \mathrm{diag}(A \mathbf{1}).
+\]</div>
+<p><strong>LEMMA</strong> <strong>(Transition Matrix in Terms of Adjacency)</strong> <span class="math notranslate nohighlight">\(\idx{transition matrix in terms of adjacency}\xdi\)</span> The transition matrix of random walk on <span class="math notranslate nohighlight">\(G\)</span> satisfying the conditions of the definition above is</p>
+<div class="math notranslate nohighlight">
+\[
+P = D^{-1} A.
+\]</div>
+<p><span class="math notranslate nohighlight">\(\flat\)</span></p>
+<p><em>Proof:</em> The formula follows immediately from the definition. <span class="math notranslate nohighlight">\(\square\)</span></p>
+<p>We specialize irreducibility to the case of random walk on a digraph.</p>
+<p><strong>LEMMA</strong> <strong>(Irreducibility)</strong> <span class="math notranslate nohighlight">\(\idx{irreducibility lemma}\xdi\)</span> Let <span class="math notranslate nohighlight">\(G = (V,E)\)</span> be a digraph. Random walk on <span class="math notranslate nohighlight">\(G\)</span> is irreducible if and only if <span class="math notranslate nohighlight">\(G\)</span> is strongly connected. <span class="math notranslate nohighlight">\(\flat\)</span></p>
+<p><em>Proof:</em> Simply note that the transition graph of the walk is <span class="math notranslate nohighlight">\(G\)</span> itself. We have seen previously that irreducibility is equivalent to the transition graph being strongly connected. <span class="math notranslate nohighlight">\(\square\)</span></p>
+<p>In the undirected case, more structure emerges as we detail next.</p>
+<p><strong>Undirected case</strong> Specializing the previous definitions and observations to undirected graphs, we get the following.</p>
+<p>It will be convenient to allow self-loops, i.e., entry <span class="math notranslate nohighlight">\(a_{i,i}\)</span> of the adjacency matrix can be <span class="math notranslate nohighlight">\(1\)</span> for some <span class="math notranslate nohighlight">\(i\)</span>.</p>
+<p><strong>DEFINITION</strong> <strong>(Random Walk on a Graph)</strong> <span class="math notranslate nohighlight">\(\idx{random walk on a graph}\xdi\)</span> Let <span class="math notranslate nohighlight">\(G = (V,E)\)</span> be a graph. If a vertex is isolated, add a self-loop to it. A random walk on <span class="math notranslate nohighlight">\(G\)</span> is a time-homogeneous Markov chain <span class="math notranslate nohighlight">\((X_t)_{t \geq 0}\)</span> with state space <span class="math notranslate nohighlight">\(\mathcal{S} = V\)</span> and transition probabilities</p>
+<div class="math notranslate nohighlight">
+\[
+p_{i,j} = \P[X_{t+1} = j\,|\,X_{t} = i] = \frac{1}{\delta(i)},
+\qquad
+\forall i \in V, j \in N(i)
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(\delta(i)\)</span> is the degree of <span class="math notranslate nohighlight">\(i\)</span> and <span class="math notranslate nohighlight">\(N(i) = \{j \in V: \{i,j\} \in E\}\)</span>. <span class="math notranslate nohighlight">\(\natural\)</span></p>
+<p>As we have seen previously, the transition matrix of random walk on <span class="math notranslate nohighlight">\(G\)</span> satisfying the conditions of the definition above is
+<span class="math notranslate nohighlight">\(
+P = D^{-1} A,
+\)</span>
+where <span class="math notranslate nohighlight">\(D = \mathrm{diag}(A \mathbf{1})\)</span> is the degree matrix.</p>
+<p>For instance, we have previously derived the transition matrix for random walk on the Petersen graph.</p>
+<p>We specialize irreducibility to the case of random walk on a graph.</p>
+<p><strong>LEMMA</strong> <strong>(Irreducibility)</strong> <span class="math notranslate nohighlight">\(\idx{irreducibility lemma}\xdi\)</span> Let <span class="math notranslate nohighlight">\(G = (V,E)\)</span> be a graph. Random walk on <span class="math notranslate nohighlight">\(G\)</span> is irreducible if and only if <span class="math notranslate nohighlight">\(G\)</span> is connected. <span class="math notranslate nohighlight">\(\flat\)</span></p>
+<p><em>Proof:</em> We only prove one direction. Suppose <span class="math notranslate nohighlight">\(G\)</span> is connected. Then between any two vertices <span class="math notranslate nohighlight">\(i\)</span> and <span class="math notranslate nohighlight">\(j\)</span> there is a sequence of vertices <span class="math notranslate nohighlight">\(z_0 = i, z_1, \ldots, z_r = j\)</span> such that <span class="math notranslate nohighlight">\(\{z_{\ell-1},z_\ell\} \in E\)</span> for all <span class="math notranslate nohighlight">\(\ell = 1,\ldots,r\)</span>. In particular, <span class="math notranslate nohighlight">\(w_{z_{\ell-1},z_\ell} &gt; 0\)</span> which implies <span class="math notranslate nohighlight">\(p_{z_{\ell-1},z_\ell} &gt; 0\)</span>. That proves irreducibility. <span class="math notranslate nohighlight">\(\square\)</span></p>
+<p>By the previous lemma and the <em>Existence of a Stationary Distribution</em>, provided <span class="math notranslate nohighlight">\(G\)</span> is connected, it has a unique stationary distribution. It turns out to be straightforward to compute it as we see in the next subsection.</p>
+<p><strong>Reversible chains</strong> A Markov chain is said to be reversible if it satisfies the detailed balance conditions.</p>
+<p><strong>DEFINITION</strong> <strong>(Reversibility)</strong> <span class="math notranslate nohighlight">\(\idx{reversible}\xdi\)</span> A transition matrix <span class="math notranslate nohighlight">\(P = (p_{i,j})_{i,j=1}^n\)</span> is reversible with respect to a probability distribution <span class="math notranslate nohighlight">\(\bpi = (\pi_i)_{i=1}^n\)</span> if it satisfies the so-called detailed balance conditions</p>
+<div class="math notranslate nohighlight">
+\[
+\pi_i p_{i,j} = \pi_j p_{j,i}, \qquad \forall i,j. 
+\]</div>
+<p><span class="math notranslate nohighlight">\(\natural\)</span></p>
+<p>The next theorem explains why this definition is useful to us.</p>
+<p><strong>THEOREM</strong> <strong>(Reversibility and Stationarity)</strong> <span class="math notranslate nohighlight">\(\idx{reversibility and stationarity theorem}\xdi\)</span>  Let <span class="math notranslate nohighlight">\(P = (p_{i,j})_{i,j=1}^n\)</span> be a transition matrix reversible with respect to a probability distribution <span class="math notranslate nohighlight">\(\bpi = (\pi_i)_{i=1}^n\)</span>. Then <span class="math notranslate nohighlight">\(\bpi\)</span> is a stationary distribution of <span class="math notranslate nohighlight">\(P\)</span>. <span class="math notranslate nohighlight">\(\sharp\)</span></p>
+<p><em>Proof idea:</em> Just check the definition.</p>
+<p><em>Proof:</em> For any <span class="math notranslate nohighlight">\(j\)</span>, by the definition of reversibility,</p>
+<div class="math notranslate nohighlight">
+\[
+\sum_{i} \pi_i p_{i,j}
+= \sum_{i} \pi_j p_{j,i}
+= \pi_j \sum_{i}  p_{j,i}
+= \pi_j,
+\]</div>
+<p>where we used that <span class="math notranslate nohighlight">\(P\)</span> is stochastic in the last equality. <span class="math notranslate nohighlight">\(\square\)</span></p>
+<p>We return to random walk on a weighted graph. We show that it is reversible and derive the stationary dsitribution.</p>
+<p><strong>THEOREM</strong> <strong>(Stationary Distribution on a Graph)</strong> <span class="math notranslate nohighlight">\(\idx{stationary distribution on a graph}\xdi\)</span> Let <span class="math notranslate nohighlight">\(G = (V,E)\)</span> be a graph. Assume further that <span class="math notranslate nohighlight">\(G\)</span> is connected. Then the unique stationary distribution of random walk on <span class="math notranslate nohighlight">\(G\)</span> is given by</p>
+<div class="math notranslate nohighlight">
+\[
+\pi_i = \frac{\delta(i)}{\sum_{i \in V} \delta(i)}, \qquad \forall i \in V.
+\]</div>
+<p><span class="math notranslate nohighlight">\(\sharp\)</span></p>
+<p><em>Proof idea:</em> We prove this in two parts. We first argue that <span class="math notranslate nohighlight">\(\bpi = (\pi_i)_{i \in V}\)</span> is indeed a probability distribution. Then we show that the transition matrix <span class="math notranslate nohighlight">\(P\)</span> is reversible with respect to <span class="math notranslate nohighlight">\(\bpi\)</span>.</p>
+<p><em>Proof:</em> We first show that <span class="math notranslate nohighlight">\(\bpi = (\pi_v)_{v \in V}\)</span> is a probability distribution. Its entries are non-negative by definition. Further</p>
+<div class="math notranslate nohighlight">
+\[
+\sum_{i \in V} \pi_i
+= \sum_{i \in V}\frac{\delta(i)}{\sum_{i \in V} \delta(i)}
+= \frac{\sum_{i \in V} \delta(i)}{\sum_{i \in V} \delta(i)}
+= 1.
+\]</div>
+<p>It remains to establish reversibility. For any <span class="math notranslate nohighlight">\(i, j\)</span>, by definition,</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+\pi_i p_{i,j}
+&amp;= \frac{\delta(i)}{\sum_{i \in V} \delta(i)} \frac{w_{i,j}}{\sum_{k} w_{i,k}}\\
+&amp;= \frac{\delta(i)}{\sum_{i \in V} \delta(i)} \frac{w_{i,j}}{\delta(i)}\\
+&amp;= \frac{1}{\sum_{i \in V} \delta(i)} w_{i,j}.
+\end{align*}\]</div>
+<p>Changing the roles of <span class="math notranslate nohighlight">\(i\)</span> and <span class="math notranslate nohighlight">\(j\)</span> gives the same expression since <span class="math notranslate nohighlight">\(w_{j,i} = w_{i,j}\)</span>. <span class="math notranslate nohighlight">\(\square\)</span></p>
+</section>
+<section id="pagerank">
+<h2><span class="section-number">7.5.2. </span>PageRank<a class="headerlink" href="#pagerank" title="Link to this heading">#</a></h2>
+<p>One is often interested in identifying central nodes in a network. Intuitively, they should correspond to entities (e.g., individuals or webpages depending on the network) that are particularly influential or authoritative. There are many ways of uncovering such nodes. Formally one defines a notion of <a class="reference external" href="https://en.wikipedia.org/wiki/Centrality">node centrality</a><span class="math notranslate nohighlight">\(\idx{node centrality}\xdi\)</span>, which ranks nodes by importance. Here we focus on one important such notion, PageRank. We will see that it is closely related to random walks on graphs.</p>
+<p><strong>A notion of centrality for directed graphs</strong> We start with the directed case.</p>
+<p>Let <span class="math notranslate nohighlight">\(G = (V,E)\)</span> be a digraph on <span class="math notranslate nohighlight">\(n\)</span> vertices. We seek to associate a measure of importance to each vertex. We will denote this (row) vector by</p>
+<div class="math notranslate nohighlight">
+\[
+\mathbf{PR}
+= (\mathrm{PR}_1, \ldots, \mathrm{PR}_n),
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(\mathrm{PR}\)</span> stands for PageRank<span class="math notranslate nohighlight">\(\idx{PageRank}\xdi\)</span>.</p>
+<p>We posit that each vertex has a certain amount of influence associated to it and that it distributes that influence equally among the neighbors it points to. We seek a vector <span class="math notranslate nohighlight">\(\mathbf{z} = (z_1,\ldots,z_n)\)</span> that satisfies an equation of the form</p>
+<div class="math notranslate nohighlight">
+\[
+z_i 
+= \sum_{j \in N^-(i)} z_j \frac{1}{\delta^+(j)},
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(\delta^+(j) = |N^+(j)|\)</span> is the out-degree of <span class="math notranslate nohighlight">\(j\)</span> and <span class="math notranslate nohighlight">\(N^-(i)\)</span> is the set of vertices <span class="math notranslate nohighlight">\(j\)</span> with an edge <span class="math notranslate nohighlight">\((j,i)\)</span>. Observe that we explicitly take into account the direction of the edges. We think of an edge <span class="math notranslate nohighlight">\((j,i)\)</span> as an indication that <span class="math notranslate nohighlight">\(j\)</span> values <span class="math notranslate nohighlight">\(i\)</span>.</p>
+<ul class="simple">
+<li><p>On the web for instance, a link towards a page indicates that the destination page has information of value. Quoting <a class="reference external" href="https://en.wikipedia.org/wiki/PageRank">Wikipedia</a>:</p></li>
+</ul>
+<blockquote>
+<div><p>PageRank works by counting the number and quality of links to a page to determine a rough estimate of how important the website is. The underlying assumption is that more important websites are likely to receive more links from other websites.</p>
+</div></blockquote>
+<ul class="simple">
+<li><p>On Twitter, following an account is an indication that the latter is of interest.</p></li>
+</ul>
+<p>We have already encountered this set of equations. Consider random walk on the directed graph <span class="math notranslate nohighlight">\(G\)</span> (where a self-loop is added to each vertex without an outgoing edge). That is, at every step, we pick an outgoing edge of the current state uniformly at random. Then the transition matrix is</p>
+<div class="math notranslate nohighlight">
+\[
+P = D^{-1} A,
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(D\)</span> is the diagonal matrix with the out-degrees on its diagonal.</p>
+<p>A stationary distribution <span class="math notranslate nohighlight">\(\bpi = (\pi_1,\ldots,\pi_n)\)</span> is a row vector satisfying in this case</p>
+<div class="math notranslate nohighlight">
+\[
+\pi_i
+= \sum_{j=1}^n \pi_j p_{j,i}
+= \sum_{j \in N^-(i)} \pi_j \frac{1}{\delta^+(j)}.
+\]</div>
+<p>So <span class="math notranslate nohighlight">\(\mathbf{z}\)</span> is stationary distribution of random walk on <span class="math notranslate nohighlight">\(G\)</span>.</p>
+<p>If the graph <span class="math notranslate nohighlight">\(G\)</span> is strongly connected, we know that there is a unique stationary distribution by the <em>Existence of a Stationary Distribution</em>. In many real-world digraphs, however, that assumption is not satisfied. To ensure that a meaningful solution can still be found, we modify the walk slightly.</p>
+<p>To make the walk irreducible, we add a small probability at each step of landing at a uniformly chosen node. This is sometimes referred to as <em>teleporting</em>. That is, we define the transition matrix</p>
+<div class="math notranslate nohighlight">
+\[
+Q = \alpha P + (1-\alpha) \frac{1}{n} \mathbf{1} \mathbf{1}^T, 
+\]</div>
+<p>for some <span class="math notranslate nohighlight">\(\alpha \in (0,1)\)</span> known as the damping factor (or teleporting parameter). A typical choice is <span class="math notranslate nohighlight">\(\alpha = 0.85\)</span>.</p>
+<p>Note that <span class="math notranslate nohighlight">\(\frac{1}{n} \mathbf{1} \mathbf{1}^T\)</span> is a stochastic matrix. Indeed,</p>
+<div class="math notranslate nohighlight">
+\[
+\frac{1}{n} \mathbf{1} \mathbf{1}^T \mathbf{1}
+= \frac{1}{n} \mathbf{1} n
+= \mathbf{1}.
+\]</div>
+<p>Hence, <span class="math notranslate nohighlight">\(Q\)</span> is a stochastic matrix (as a convex combination of stochastic matrices).</p>
+<p>Moreover, <span class="math notranslate nohighlight">\(Q\)</span> is clearly irreducible since it is strictly positive. That is, for any <span class="math notranslate nohighlight">\(x, y \in [n]\)</span>, one can reach <span class="math notranslate nohighlight">\(y\)</span> from <span class="math notranslate nohighlight">\(x\)</span> in a single step</p>
+<div class="math notranslate nohighlight">
+\[
+Q_{x,y} = \alpha P_{x,y} + (1-\alpha) \frac{1}{n} &gt; 0.
+\]</div>
+<p>This also holds for <span class="math notranslate nohighlight">\(x = y\)</span> so the chain is lazy.</p>
+<p>Finally, we define <span class="math notranslate nohighlight">\(\mathbf{PR}\)</span> as the unique stationary distribution of <span class="math notranslate nohighlight">\(Q = (q_{i,j})_{i,j=1}^n\)</span>, that is, the solution to</p>
+<div class="math notranslate nohighlight">
+\[
+\mathrm{PR}_i
+= \sum_{j=1}^n \mathrm{PR}_j \, q_{j,i},
+\]</div>
+<p>with <span class="math notranslate nohighlight">\(\mathbf{PR} \geq 0\)</span></p>
+<div class="math notranslate nohighlight">
+\[
+\sum_{i=1}^n \mathrm{PR}_i = 1.
+\]</div>
+<p>Quoting <a class="reference external" href="https://en.wikipedia.org/wiki/PageRank">Wikipedia</a>:</p>
+<blockquote>
+<div><p>The formula uses a model of a random surfer who reaches their target site after several clicks, then switches to a random page. The PageRank value of a page reflects the chance that the random surfer will land on that page by clicking on a link. It can be understood as a Markov chain in which the states are pages, and the transitions are the links between pages – all of which are all equally probable.</p>
+</div></blockquote>
+<p>Here is an implementation of the PageRank algorithm. We will need a function that takes as input an adjacency matrix <span class="math notranslate nohighlight">\(A\)</span> and returns the corresponding transition matrix <span class="math notranslate nohighlight">\(P\)</span>. Some vertices have no outgoing links. To avoid dividing by <span class="math notranslate nohighlight">\(0\)</span>, we add a self-loop to <em>all vertices with out-degree <span class="math notranslate nohighlight">\(0\)</span></em>. We <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.fill_diagonal.html"><code class="docutils literal notranslate"><span class="pre">numpy.fill_diagonal</span></code></a> for this purpose.</p>
+<p>Also, because the adjacency matrix and the vector of out-degrees have different shapes, we turn <code class="docutils literal notranslate"><span class="pre">out_deg</span></code> into a column vector using <a class="reference external" href="https://numpy.org/doc/stable/reference/constants.html#numpy.newaxis"><code class="docutils literal notranslate"><span class="pre">numpy.newaxis</span></code></a> to ensure that the division is <a class="reference external" href="https://numpy.org/doc/stable/user/basics.broadcasting.html#broadcastable-arrays">done one column at a time</a>. (There are many ways of doing this, <a class="reference external" href="https://stackoverflow.com/questions/18522216/multiplying-across-in-a-numpy-array">but some are slower than others</a>.)</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">transition_from_adjacency</span><span class="p">(</span><span class="n">A</span><span class="p">):</span>
+    
+    <span class="n">n</span> <span class="o">=</span> <span class="n">A</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">sinks</span> <span class="o">=</span> <span class="p">(</span><span class="n">A</span> <span class="o">@</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">n</span><span class="p">))</span> <span class="o">==</span> <span class="mf">0.</span>
+    <span class="n">P</span> <span class="o">=</span> <span class="n">A</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+    <span class="n">np</span><span class="o">.</span><span class="n">fill_diagonal</span><span class="p">(</span><span class="n">P</span><span class="p">,</span> <span class="n">sinks</span><span class="p">)</span>
+    <span class="n">out_deg</span> <span class="o">=</span> <span class="n">P</span> <span class="o">@</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+    <span class="n">P</span> <span class="o">=</span> <span class="n">P</span> <span class="o">/</span> <span class="n">out_deg</span><span class="p">[:,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">]</span>
+    
+    <span class="k">return</span> <span class="n">P</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>The following function adds the damping factor. Here <code class="docutils literal notranslate"><span class="pre">mu</span></code> will be the uniform distribution. It gets added (after scaling by <code class="docutils literal notranslate"><span class="pre">1-alpha</span></code>) one row at a time to <code class="docutils literal notranslate"><span class="pre">P</span></code> (again after scaling by <code class="docutils literal notranslate"><span class="pre">alpha</span></code>). This time we do not need to reshape <code class="docutils literal notranslate"><span class="pre">mu</span></code>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">add_damping</span><span class="p">(</span><span class="n">P</span><span class="p">,</span> <span class="n">alpha</span><span class="p">,</span> <span class="n">mu</span><span class="p">):</span>
+    <span class="n">Q</span> <span class="o">=</span> <span class="n">alpha</span> <span class="o">*</span> <span class="n">P</span> <span class="o">+</span> <span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">alpha</span><span class="p">)</span> <span class="o">*</span> <span class="n">mu</span>
+    <span class="k">return</span> <span class="n">Q</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>When computing PageRank, we take the transpose of <span class="math notranslate nohighlight">\(Q\)</span> to turn multiplication from the left into multiplication from the right.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">pagerank</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.85</span><span class="p">,</span> <span class="n">max_iter</span><span class="o">=</span><span class="mi">100</span><span class="p">):</span>
+    
+    <span class="n">n</span> <span class="o">=</span> <span class="n">A</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">mu</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">n</span><span class="p">)</span><span class="o">/</span><span class="n">n</span>
+    <span class="n">P</span> <span class="o">=</span> <span class="n">transition_from_adjacency</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
+    <span class="n">Q</span> <span class="o">=</span> <span class="n">add_damping</span><span class="p">(</span><span class="n">P</span><span class="p">,</span> <span class="n">alpha</span><span class="p">,</span> <span class="n">mu</span><span class="p">)</span>
+    <span class="n">v</span> <span class="o">=</span> <span class="n">mu</span>
+    <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">max_iter</span><span class="p">):</span>
+        <span class="n">v</span> <span class="o">=</span> <span class="n">Q</span><span class="o">.</span><span class="n">T</span> <span class="o">@</span> <span class="n">v</span>
+    
+    <span class="k">return</span> <span class="n">v</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p><strong>NUMERICAL CORNER:</strong> Let’s try a star with edges pointing out. Along the way, we check that our functions work how we expect them to.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">n</span> <span class="o">=</span> <span class="mi">8</span>
+<span class="n">G_outstar</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">DiGraph</span><span class="p">()</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">n</span><span class="p">):</span>
+    <span class="n">G_outstar</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="n">i</span><span class="p">)</span>
+
+<span class="n">nx</span><span class="o">.</span><span class="n">draw_networkx</span><span class="p">(</span><span class="n">G_outstar</span><span class="p">,</span> <span class="n">labels</span><span class="o">=</span><span class="p">{</span><span class="n">i</span><span class="p">:</span> <span class="n">i</span><span class="o">+</span><span class="mi">1</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">)},</span> 
+                 <span class="n">node_color</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">,</span> <span class="n">font_color</span><span class="o">=</span><span class="s1">&#39;white&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s1">&#39;off&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/bc6bbf267c85a31d8c837505e656162f022e09005677484a52fb4347f04c5d7c.png" src="../../_images/bc6bbf267c85a31d8c837505e656162f022e09005677484a52fb4347f04c5d7c.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">A_outstar</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">adjacency_matrix</span><span class="p">(</span><span class="n">G_outstar</span><span class="p">)</span><span class="o">.</span><span class="n">toarray</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">A_outstar</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[[0 1 1 1 1 1 1 1]
+ [0 0 0 0 0 0 0 0]
+ [0 0 0 0 0 0 0 0]
+ [0 0 0 0 0 0 0 0]
+ [0 0 0 0 0 0 0 0]
+ [0 0 0 0 0 0 0 0]
+ [0 0 0 0 0 0 0 0]
+ [0 0 0 0 0 0 0 0]]
+</pre></div>
+</div>
+</div>
+</div>
+<p>We compute the matrices <span class="math notranslate nohighlight">\(P\)</span> and <span class="math notranslate nohighlight">\(Q\)</span>. We use <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.set_printoptions.html"><code class="docutils literal notranslate"><span class="pre">numpy.set_printoptions</span></code></a> to condense the output.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">P_outstar</span> <span class="o">=</span> <span class="n">transition_from_adjacency</span><span class="p">(</span><span class="n">A_outstar</span><span class="p">)</span>
+<span class="n">np</span><span class="o">.</span><span class="n">set_printoptions</span><span class="p">(</span><span class="n">formatter</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;float&#39;</span><span class="p">:</span> <span class="s1">&#39;</span><span class="si">{: 0.3f}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">})</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">P_outstar</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[[ 0.000  0.143  0.143  0.143  0.143  0.143  0.143  0.143]
+ [ 0.000  1.000  0.000  0.000  0.000  0.000  0.000  0.000]
+ [ 0.000  0.000  1.000  0.000  0.000  0.000  0.000  0.000]
+ [ 0.000  0.000  0.000  1.000  0.000  0.000  0.000  0.000]
+ [ 0.000  0.000  0.000  0.000  1.000  0.000  0.000  0.000]
+ [ 0.000  0.000  0.000  0.000  0.000  1.000  0.000  0.000]
+ [ 0.000  0.000  0.000  0.000  0.000  0.000  1.000  0.000]
+ [ 0.000  0.000  0.000  0.000  0.000  0.000  0.000  1.000]]
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">alpha</span> <span class="o">=</span> <span class="mf">0.85</span>
+<span class="n">mu</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">n</span><span class="p">)</span><span class="o">/</span><span class="n">n</span>
+<span class="n">Q_outstar</span> <span class="o">=</span> <span class="n">add_damping</span><span class="p">(</span><span class="n">P_outstar</span><span class="p">,</span> <span class="n">alpha</span><span class="p">,</span> <span class="n">mu</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">Q_outstar</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[[ 0.019  0.140  0.140  0.140  0.140  0.140  0.140  0.140]
+ [ 0.019  0.869  0.019  0.019  0.019  0.019  0.019  0.019]
+ [ 0.019  0.019  0.869  0.019  0.019  0.019  0.019  0.019]
+ [ 0.019  0.019  0.019  0.869  0.019  0.019  0.019  0.019]
+ [ 0.019  0.019  0.019  0.019  0.869  0.019  0.019  0.019]
+ [ 0.019  0.019  0.019  0.019  0.019  0.869  0.019  0.019]
+ [ 0.019  0.019  0.019  0.019  0.019  0.019  0.869  0.019]
+ [ 0.019  0.019  0.019  0.019  0.019  0.019  0.019  0.869]]
+</pre></div>
+</div>
+</div>
+</div>
+<p>While it is tempting to guess that <span class="math notranslate nohighlight">\(1\)</span> is the most central node of the network, no edge actually points to it. In this case, the center of the star has a low PageRank value.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">pagerank</span><span class="p">(</span><span class="n">A_outstar</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[ 0.019  0.140  0.140  0.140  0.140  0.140  0.140  0.140]
+</pre></div>
+</div>
+</div>
+</div>
+<p>We then try a star with edges pointing in.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">n</span> <span class="o">=</span> <span class="mi">8</span>
+<span class="n">G_instar</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">DiGraph</span><span class="p">()</span>
+<span class="n">G_instar</span><span class="o">.</span><span class="n">add_node</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">n</span><span class="p">):</span>
+    <span class="n">G_instar</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span>
+    
+<span class="n">nx</span><span class="o">.</span><span class="n">draw_networkx</span><span class="p">(</span><span class="n">G_instar</span><span class="p">,</span> <span class="n">labels</span><span class="o">=</span><span class="p">{</span><span class="n">i</span><span class="p">:</span> <span class="n">i</span><span class="o">+</span><span class="mi">1</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">)},</span> 
+                 <span class="n">node_color</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">,</span> <span class="n">font_color</span><span class="o">=</span><span class="s1">&#39;white&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s1">&#39;off&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/64c4a304e07cda044890719c17f223626b86404e0726cbf1bfc407856874ded0.png" src="../../_images/64c4a304e07cda044890719c17f223626b86404e0726cbf1bfc407856874ded0.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">A_instar</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">adjacency_matrix</span><span class="p">(</span><span class="n">G_instar</span><span class="p">)</span><span class="o">.</span><span class="n">toarray</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">A_instar</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[[0 0 0 0 0 0 0 0]
+ [1 0 0 0 0 0 0 0]
+ [1 0 0 0 0 0 0 0]
+ [1 0 0 0 0 0 0 0]
+ [1 0 0 0 0 0 0 0]
+ [1 0 0 0 0 0 0 0]
+ [1 0 0 0 0 0 0 0]
+ [1 0 0 0 0 0 0 0]]
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">P_instar</span> <span class="o">=</span> <span class="n">transition_from_adjacency</span><span class="p">(</span><span class="n">A_instar</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">P_instar</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[[ 1.000  0.000  0.000  0.000  0.000  0.000  0.000  0.000]
+ [ 1.000  0.000  0.000  0.000  0.000  0.000  0.000  0.000]
+ [ 1.000  0.000  0.000  0.000  0.000  0.000  0.000  0.000]
+ [ 1.000  0.000  0.000  0.000  0.000  0.000  0.000  0.000]
+ [ 1.000  0.000  0.000  0.000  0.000  0.000  0.000  0.000]
+ [ 1.000  0.000  0.000  0.000  0.000  0.000  0.000  0.000]
+ [ 1.000  0.000  0.000  0.000  0.000  0.000  0.000  0.000]
+ [ 1.000  0.000  0.000  0.000  0.000  0.000  0.000  0.000]]
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">Q_instar</span> <span class="o">=</span> <span class="n">add_damping</span><span class="p">(</span><span class="n">P_instar</span><span class="p">,</span> <span class="n">alpha</span><span class="p">,</span> <span class="n">mu</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">Q_instar</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[[ 0.869  0.019  0.019  0.019  0.019  0.019  0.019  0.019]
+ [ 0.869  0.019  0.019  0.019  0.019  0.019  0.019  0.019]
+ [ 0.869  0.019  0.019  0.019  0.019  0.019  0.019  0.019]
+ [ 0.869  0.019  0.019  0.019  0.019  0.019  0.019  0.019]
+ [ 0.869  0.019  0.019  0.019  0.019  0.019  0.019  0.019]
+ [ 0.869  0.019  0.019  0.019  0.019  0.019  0.019  0.019]
+ [ 0.869  0.019  0.019  0.019  0.019  0.019  0.019  0.019]
+ [ 0.869  0.019  0.019  0.019  0.019  0.019  0.019  0.019]]
+</pre></div>
+</div>
+</div>
+</div>
+<p>In this case, the center of the star does indeed have a high PageRank value.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">pagerank</span><span class="p">(</span><span class="n">A_instar</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[ 0.869  0.019  0.019  0.019  0.019  0.019  0.019  0.019]
+</pre></div>
+</div>
+</div>
+</div>
+<p><span class="math notranslate nohighlight">\(\unlhd\)</span></p>
+<p><strong>A notion of centrality for undirected graphs</strong> We can apply PageRank<span class="math notranslate nohighlight">\(\idx{PageRank}\xdi\)</span> in the undirected case as well.</p>
+<p>Consider random walk on the undirected graph <span class="math notranslate nohighlight">\(G\)</span>. That is, at every step, we pick a neighbor of the current state uniformly at random. If needed, add a self-loop to any isolated vertex. Then the transition matrix is</p>
+<div class="math notranslate nohighlight">
+\[
+P = D^{-1} A,
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(D\)</span> is the degree matrix and <span class="math notranslate nohighlight">\(A\)</span> is the adjacency matrix. A stationary distribution <span class="math notranslate nohighlight">\(\bpi = (\pi_1,\ldots,\pi_n)\)</span> is a row vector satisfying in this case</p>
+<div class="math notranslate nohighlight">
+\[
+\pi_i
+= \sum_{j=1}^n \pi_j p_{j,i}
+= \sum_{j \in N(i)} \pi_j \frac{1}{\delta(j)}.
+\]</div>
+<p>We already know the solution to this system of equations. In the connected case without damping, the unique stationary distribution of random walk on <span class="math notranslate nohighlight">\(G\)</span> is given by</p>
+<div class="math notranslate nohighlight">
+\[
+\pi_i = \frac{\delta(i)}{\sum_{i \in V} \delta(i)}, \qquad \forall i \in V.
+\]</div>
+<p>In words, the centrality of a node is directly proportional to its degree, i.e., how many neighbors it has. Up to the scaling factor, this is known as <a class="reference external" href="https://en.wikipedia.org/wiki/Centrality#Degree_centrality">degree centrality</a><span class="math notranslate nohighlight">\(\idx{degree centrality}\xdi\)</span>.</p>
+<p>For a general undirected graph that may not be connected, we can use a damping factor to enforce irreducibility. We add a small probability at each step of landing at a uniformly chosen node. That is, we define the transition matrix</p>
+<div class="math notranslate nohighlight">
+\[
+Q = \alpha P + (1-\alpha) \frac{1}{n} \mathbf{1} \mathbf{1}^T, 
+\]</div>
+<p>for some <span class="math notranslate nohighlight">\(\alpha \in (0,1)\)</span> known as the damping factor. We define the PageRank vector <span class="math notranslate nohighlight">\(\mathbf{PR}\)</span> as the unique stationary distribution of <span class="math notranslate nohighlight">\(Q = (q_{i,j})_{i,j=1}^n\)</span>, that is, the solution to</p>
+<div class="math notranslate nohighlight">
+\[
+\mathrm{PR}_i
+= \sum_{j=1}^n \mathrm{PR}_j \, q_{j,i},
+\]</div>
+<p>with <span class="math notranslate nohighlight">\(\mathbf{PR} \geq 0\)</span></p>
+<div class="math notranslate nohighlight">
+\[
+\sum_{i=1}^n \mathrm{PR}_i = 1.
+\]</div>
+<p><strong>NUMERICAL CORNER:</strong> We revisit the star example in the undirected case.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">n</span> <span class="o">=</span> <span class="mi">8</span>
+<span class="n">G_star</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">Graph</span><span class="p">()</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">n</span><span class="p">):</span>
+    <span class="n">G_star</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="n">i</span><span class="p">)</span>
+    
+<span class="n">nx</span><span class="o">.</span><span class="n">draw_networkx</span><span class="p">(</span><span class="n">G_star</span><span class="p">,</span> <span class="n">labels</span><span class="o">=</span><span class="p">{</span><span class="n">i</span><span class="p">:</span> <span class="n">i</span><span class="o">+</span><span class="mi">1</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">)},</span> 
+                 <span class="n">node_color</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">,</span> <span class="n">font_color</span><span class="o">=</span><span class="s1">&#39;white&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s1">&#39;off&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/f350dab62197e0d86f26e92c5cb3a5c670e1286ed76dbbaa7331e76a128df412.png" src="../../_images/f350dab62197e0d86f26e92c5cb3a5c670e1286ed76dbbaa7331e76a128df412.png" />
+</div>
+</div>
+<p>We first compute the PageRank vector without damping. Here the random walk is periodic (Why?) so power iteration may fail (Try it!). Instead, we use a small amount of damping and increase the number of iterations.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">A_star</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">adjacency_matrix</span><span class="p">(</span><span class="n">G_star</span><span class="p">)</span><span class="o">.</span><span class="n">toarray</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">A_star</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[[0 1 1 1 1 1 1 1]
+ [1 0 0 0 0 0 0 0]
+ [1 0 0 0 0 0 0 0]
+ [1 0 0 0 0 0 0 0]
+ [1 0 0 0 0 0 0 0]
+ [1 0 0 0 0 0 0 0]
+ [1 0 0 0 0 0 0 0]
+ [1 0 0 0 0 0 0 0]]
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">pagerank</span><span class="p">(</span><span class="n">A_star</span><span class="p">,</span> <span class="n">max_iter</span><span class="o">=</span><span class="mi">10000</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.999</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[ 0.500  0.071  0.071  0.071  0.071  0.071  0.071  0.071]
+</pre></div>
+</div>
+</div>
+</div>
+<p>The PageRank value for the center node is indeed roughly <span class="math notranslate nohighlight">\(7\)</span> times larger than the other ones, as can be expected from the ratio of their degrees.</p>
+<p>We try again with more damping. This time the ratio of PageRank values is not quite the same as the ratio of degrees, but the center node continues to have a higher value than the other nodes.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">pagerank</span><span class="p">(</span><span class="n">A_star</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[ 0.470  0.076  0.076  0.076  0.076  0.076  0.076  0.076]
+</pre></div>
+</div>
+</div>
+</div>
+<p><span class="math notranslate nohighlight">\(\unlhd\)</span></p>
+<p><strong>CHAT &amp; LEARN</strong> There are many other centrality measures besides PageRank, such as betweenness centrality, closeness centrality, and eigenvector centrality. Ask your favorite AI chatbot to explain these measures and discuss their similarities and differences with PageRank. <span class="math notranslate nohighlight">\(\ddagger\)</span></p>
+</section>
+<section id="personalized-pagerank">
+<h2><span class="section-number">7.5.3. </span>Personalized PageRank<a class="headerlink" href="#personalized-pagerank" title="Link to this heading">#</a></h2>
+<p>We return to <a class="reference external" href="https://mathworld.wolfram.com">MathWorld</a> dataset. Recall that each page of MathWorld concerns a particular mathematical concept. In a section entitled “SEE ALSO”, other related mathematical concepts are listed with a link to their MathWorld page. Our goal is to identify “central” vertices in the resulting graph.</p>
+<p><strong>Figure:</strong> Platonic solids (<em>Credit:</em> Made with <a class="reference external" href="https://www.midjourney.com/">Midjourney</a>)</p>
+<p><img alt="Platonic solids" src="../../_images/small-platonic_solids.png" /></p>
+<p><span class="math notranslate nohighlight">\(\bowtie\)</span></p>
+<p><strong>NUMERICAL CORNER:</strong> We load the dataset again.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data_edges</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;mathworld-adjacency.csv&#39;</span><span class="p">)</span>
+<span class="n">data_edges</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>from</th>
+      <th>to</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>0</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>1</td>
+      <td>47</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>1</td>
+      <td>404</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>1</td>
+      <td>2721</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>2</td>
+      <td>0</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<p>The second file contains the titles of the pages.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data_titles</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;mathworld-titles.csv&#39;</span><span class="p">)</span>
+<span class="n">data_titles</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>title</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>Alexander's Horned Sphere</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>Exotic Sphere</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>Antoine's Horned Sphere</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>Flat</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>Poincaré Manifold</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<p>We construct the graph by adding the edges one by one. We first convert <code class="docutils literal notranslate"><span class="pre">df_edges</span></code> into a Numpy array.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">edgelist</span> <span class="o">=</span> <span class="n">data_edges</span><span class="p">[[</span><span class="s1">&#39;from&#39;</span><span class="p">,</span><span class="s1">&#39;to&#39;</span><span class="p">]]</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">edgelist</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[[    0     2]
+ [    1    47]
+ [    1   404]
+ ...
+ [12361 12306]
+ [12361 12310]
+ [12361 12360]]
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">n</span> <span class="o">=</span> <span class="mi">12362</span>
+<span class="n">G_mw</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">empty_graph</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">create_using</span><span class="o">=</span><span class="n">nx</span><span class="o">.</span><span class="n">DiGraph</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">edgelist</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
+    <span class="n">G_mw</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="n">edgelist</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span> <span class="n">edgelist</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="mi">1</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>To apply PageRank, we construct the adjacency matric of the graph. We also define a vector of title pages.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">A_mw</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">adjacency_matrix</span><span class="p">(</span><span class="n">G_mw</span><span class="p">)</span><span class="o">.</span><span class="n">toarray</span><span class="p">()</span>
+<span class="n">titles_mw</span> <span class="o">=</span> <span class="n">data_titles</span><span class="p">[</span><span class="s1">&#39;title&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">()</span>
+<span class="n">pr_mw</span> <span class="o">=</span> <span class="n">pagerank</span><span class="p">(</span><span class="n">A_mw</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>We use <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.argsort.html"><code class="docutils literal notranslate"><span class="pre">numpy.argsort</span></code></a> to identify the pages with highest scores. We apply it to <code class="docutils literal notranslate"><span class="pre">-pr_mw</span></code> to sort from the highest to lowest value.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">top_pages</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="o">-</span><span class="n">pr_mw</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>The top 25 topics are:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">titles_mw</span><span class="p">[</span><span class="n">top_pages</span><span class="p">[:</span><span class="mi">25</span><span class="p">]])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&#39;Sphere&#39; &#39;Circle&#39; &#39;Prime Number&#39; &#39;Aleksandrov-Čech Cohomology&#39;
+ &#39;Centroid Hexagon&#39; &#39;Group&#39; &#39;Fourier Transform&#39; &#39;Tree&#39; &#39;Splitting Field&#39;
+ &#39;Archimedean Solid&#39; &#39;Normal Distribution&#39; &#39;Integer Sequence Primes&#39;
+ &#39;Perimeter Polynomial&#39; &#39;Polygon&#39; &#39;Finite Group&#39; &#39;Large Number&#39;
+ &#39;Riemann Zeta Function&#39; &#39;Chebyshev Approximation Formula&#39; &#39;Vector&#39; &#39;Ring&#39;
+ &#39;Fibonacci Number&#39; &#39;Conic Section&#39; &#39;Fourier Series&#39; &#39;Derivative&#39;
+ &#39;Gamma Function&#39;]
+</pre></div>
+</div>
+</div>
+</div>
+<p>We indeed get a list of central concepts in mathematics – including several we have encountered previously such as <code class="docutils literal notranslate"><span class="pre">Normal</span> <span class="pre">Distribution</span></code>, <code class="docutils literal notranslate"><span class="pre">Tree</span></code>, <code class="docutils literal notranslate"><span class="pre">Vector</span></code> or <code class="docutils literal notranslate"><span class="pre">Derivative</span></code>.</p>
+<p><span class="math notranslate nohighlight">\(\unlhd\)</span></p>
+<p>There is a variant of PageRank, referred to as Personalized PageRank (PPR)<span class="math notranslate nohighlight">\(\idx{Personalized PageRank}\xdi\)</span>, which aims to tailor the outcome to specific interests. This is accomplished from a simple change to the algorithm. When teleporting, rather than jumping to a uniformly random page, we instead jump to an arbitrary distribution which is meant to capture some specific interests. In the context of the web for instance, this distribution might be uniform over someone’s bookmarks.</p>
+<p>We adapt <code class="docutils literal notranslate"><span class="pre">pagerank</span></code> as follows:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">ppr</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">mu</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.85</span><span class="p">,</span> <span class="n">max_iter</span><span class="o">=</span><span class="mi">100</span><span class="p">):</span>
+    <span class="n">n</span> <span class="o">=</span> <span class="n">A</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">P</span> <span class="o">=</span> <span class="n">transition_from_adjacency</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
+    <span class="n">Q</span> <span class="o">=</span> <span class="n">add_damping</span><span class="p">(</span><span class="n">P</span><span class="p">,</span> <span class="n">alpha</span><span class="p">,</span> <span class="n">mu</span><span class="p">)</span>
+    <span class="n">v</span> <span class="o">=</span> <span class="n">mu</span>
+    <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">max_iter</span><span class="p">):</span>
+        <span class="n">v</span> <span class="o">=</span> <span class="n">Q</span><span class="o">.</span><span class="n">T</span> <span class="o">@</span> <span class="n">v</span>
+    <span class="k">return</span> <span class="n">v</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p><strong>NUMERICAL CORNER:</strong> To test PPR, consider the distribution concentrated on a single topic <code class="docutils literal notranslate"><span class="pre">Normal</span> <span class="pre">Distribution</span></code>. This is topic number <code class="docutils literal notranslate"><span class="pre">1270</span></code>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">argwhere</span><span class="p">(</span><span class="n">titles_mw</span> <span class="o">==</span> <span class="s1">&#39;Normal Distribution&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1270
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">mu</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+<span class="n">mu</span><span class="p">[</span><span class="mi">1270</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>We now run PPR and list the top 25 pages.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ppr_mw</span> <span class="o">=</span> <span class="n">ppr</span><span class="p">(</span><span class="n">A_mw</span><span class="p">,</span> <span class="n">mu</span><span class="p">)</span>
+<span class="n">top_pers_pages</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="o">-</span><span class="n">ppr_mw</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>The top 25 topics are:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">titles_mw</span><span class="p">[</span><span class="n">top_pers_pages</span><span class="p">[:</span><span class="mi">25</span><span class="p">]])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&#39;Normal Distribution&#39; &#39;Pearson System&#39; &#39;Logit Transformation&#39; &#39;z-Score&#39;
+ &#39;Erf&#39; &#39;Central Limit Theorem&#39; &#39;Bivariate Normal Distribution&#39;
+ &#39;Normal Ratio Distribution&#39; &#39;Normal Sum Distribution&#39;
+ &#39;Normal Distribution Function&#39; &#39;Gaussian Function&#39;
+ &#39;Standard Normal Distribution&#39; &#39;Normal Product Distribution&#39;
+ &#39;Binomial Distribution&#39; &#39;Tetrachoric Function&#39; &#39;Ratio Distribution&#39;
+ &#39;Kolmogorov-Smirnov Test&#39; &#39;Box-Muller Transformation&#39; &#39;Galton Board&#39;
+ &#39;Fisher-Behrens Problem&#39; &#39;Erfc&#39; &#39;Normal Difference Distribution&#39;
+ &#39;Half-Normal Distribution&#39; &#39;Inverse Gaussian Distribution&#39;
+ &#39;Error Function Distribution&#39;]
+</pre></div>
+</div>
+</div>
+</div>
+<p>This indeed returns various statistical concepts, particularly related to the normal dsitribution.</p>
+<p><span class="math notranslate nohighlight">\(\unlhd\)</span></p>
+<p><strong>CHAT &amp; LEARN</strong> The PageRank algorithm has been adapted for various applications beyond web search, such as ranking scientific papers, analyzing social networks, and even ranking sports teams [<a class="reference external" href="https://arxiv.org/abs/1407.5107">Gle</a>]. Ask your favorite AI chatbot to discuss some of these applications and how the PageRank algorithm is modified for each case. <span class="math notranslate nohighlight">\(\ddagger\)</span></p>
+<p><em><strong>Self-assessment quiz</strong></em> <em>(with help from Claude, Gemini, and ChatGPT)</em></p>
+<p><strong>1</strong> Consider a random walk on the following graph:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">G</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">Graph</span><span class="p">()</span>
+<span class="n">G</span><span class="o">.</span><span class="n">add_edges_from</span><span class="p">([(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">)])</span>
+</pre></div>
+</div>
+<p>What is the transition matrix for this random walk?</p>
+<p>a)</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{bmatrix} 1/3 &amp; 1/3 &amp; 1/3 \\ 1/3 &amp; 1/3 &amp; 1/3 \\ 1/3 &amp; 1/3 &amp; 1/3 \end{bmatrix}
+\end{split}\]</div>
+<p>b)</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{bmatrix} 0 &amp; 1/2 &amp; 1/2 \\ 1/2 &amp; 0 &amp; 1/2 \\ 1/2 &amp; 1/2 &amp; 0 \end{bmatrix}
+\end{split}\]</div>
+<p>c)</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{bmatrix} 1 &amp; 0 &amp; 0 \\ 0 &amp; 1 &amp; 0 \\ 0 &amp; 0 &amp; 1 \end{bmatrix}
+\end{split}\]</div>
+<p>d)</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{bmatrix} 0 &amp; 1 &amp; 0 \\ 0 &amp; 0 &amp; 1 \\ 1 &amp; 0 &amp; 0 \end{bmatrix}
+\end{split}\]</div>
+<p><strong>2</strong> In a random walk on a directed graph, the transition probability from vertex <span class="math notranslate nohighlight">\(i\)</span> to vertex <span class="math notranslate nohighlight">\(j\)</span> is given by:</p>
+<p>a) <span class="math notranslate nohighlight">\(p_{i,j} = \frac{1}{\delta^-(j)}\)</span> for all <span class="math notranslate nohighlight">\(j \in N^-(i)\)</span></p>
+<p>b) <span class="math notranslate nohighlight">\(p_{i,j} = \frac{1}{\delta^+(j)}\)</span> for all <span class="math notranslate nohighlight">\(j \in N^+(i)\)</span></p>
+<p>c) <span class="math notranslate nohighlight">\(p_{i,j} = \frac{1}{\delta^-(i)}\)</span> for all <span class="math notranslate nohighlight">\(j \in N^-(i)\)</span></p>
+<p>d) <span class="math notranslate nohighlight">\(p_{i,j} = \frac{1}{\delta^+(i)}\)</span> for all <span class="math notranslate nohighlight">\(j \in N^+(i)\)</span></p>
+<p><strong>3</strong> The transition matrix <span class="math notranslate nohighlight">\(P\)</span> of a random walk on a directed graph can be expressed in terms of the adjacency matrix <span class="math notranslate nohighlight">\(A\)</span> as:</p>
+<p>a) <span class="math notranslate nohighlight">\(P = AD^{-1}\)</span></p>
+<p>b) <span class="math notranslate nohighlight">\(P = A^TD^{-1}\)</span></p>
+<p>c) <span class="math notranslate nohighlight">\(P = D^{-1}A\)</span></p>
+<p>d) <span class="math notranslate nohighlight">\(P = D^{-1}A^T\)</span></p>
+<p><strong>4</strong> In a random walk on an undirected graph, the stationary distribution <span class="math notranslate nohighlight">\(\pi\)</span> satisfies:</p>
+<p>a) <span class="math notranslate nohighlight">\(\pi_i = \frac{\delta^+(i)}{\sum_{j \in V} \delta^+(j)}\)</span> for all <span class="math notranslate nohighlight">\(i \in V\)</span></p>
+<p>b) <span class="math notranslate nohighlight">\(\pi_i = \frac{1}{\delta(i)}\)</span> for all <span class="math notranslate nohighlight">\(i \in V\)</span></p>
+<p>c) <span class="math notranslate nohighlight">\(\pi_i = \frac{1}{|V|}\)</span> for all <span class="math notranslate nohighlight">\(i \in V\)</span></p>
+<p>d) <span class="math notranslate nohighlight">\(\pi_i = \frac{\delta(i)}{\sum_{j \in V} \delta(j)}\)</span> for all <span class="math notranslate nohighlight">\(i \in V\)</span></p>
+<p><strong>5</strong> Personalized PageRank differs from standard PageRank in that:</p>
+<p>a) It considers the user’s browsing history</p>
+<p>b) It jumps to a non-uniform distribution when teleporting</p>
+<p>c) It uses a different damping factor</p>
+<p>d) It only considers a subset of the graph</p>
+<p>Answer for 1: b. Justification: Each node has a degree of 2, and the probability of transitioning to each neighbor is 1/2.</p>
+<p>Answer for 2: d. Justification: The text states, “In words, at each step, we choose an outgoing edge from the current state uniformly at random,” which corresponds to the transition probability <span class="math notranslate nohighlight">\(p_{i,j} = \frac{1}{\delta^+(i)}\)</span> for all <span class="math notranslate nohighlight">\(j \in N^+(i)\)</span>, where <span class="math notranslate nohighlight">\(\delta^+(i)\)</span> is the out-degree of vertex <span class="math notranslate nohighlight">\(i\)</span> and <span class="math notranslate nohighlight">\(N^+(i)\)</span> is the set of vertices with an edge from <span class="math notranslate nohighlight">\(i\)</span>.</p>
+<p>Answer for 3: c. Justification: The text states, “The transition matrix of random walk on <span class="math notranslate nohighlight">\(G\)</span> satisfying the conditions of the definition above is <span class="math notranslate nohighlight">\(P = D^{-1}A\)</span>, where <span class="math notranslate nohighlight">\(D\)</span> is the out-degree matrix.”</p>
+<p>Answer for 4: d. Justification: The text states, “In the connected case without damping, the unique stationary distribution of random walk on <span class="math notranslate nohighlight">\(G\)</span> is given by <span class="math notranslate nohighlight">\(\pi_i = \frac{\delta(i)}{\sum_{i \in V} \delta(i)}, \forall i \in V\)</span>.”</p>
+<p>Answer for 5: b. Justification: The text states, “When teleporting, rather than jumping to a uniformly random page, we instead jump to an arbitrary distribution <span class="math notranslate nohighlight">\(\mu\)</span> which is meant to capture some specific interests.”</p>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./chap07_rwmc/05_pagerank"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="../04_mclimit/roch-mmids-rwmc-mclimit.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title"><span class="section-number">7.4. </span>Limit behavior 2: convergence to equilibrium</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="../06_gibbs/roch-mmids-rwmc-gibbs.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title"><span class="section-number">7.6. </span>Further applications: Gibbs sampling and generating images</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#random-walk-on-a-graph">7.5.1. Random walk on a graph</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pagerank">7.5.2. PageRank</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#personalized-pagerank">7.5.3. Personalized PageRank</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Sebastien Roch
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2024.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

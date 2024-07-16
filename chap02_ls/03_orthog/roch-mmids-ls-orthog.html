@@ -1,0 +1,1504 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>2.3. Geometry of least squares: the orthogonal projection &#8212; MMiDS Textbook</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.5.1/css/all.min.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.1/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.1/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.1/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b76e3c8a" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=384b581d" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css?v=be8a1c11" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=87e54e7c" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae" />
+  <script src="../../_static/vendor/fontawesome/6.5.1/js/all.min.js?digest=8d27b9dea8ad943066ae"></script>
+
+    <script src="../../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?v=efea14e4"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../_static/design-tabs.js?v=f930bc37"></script>
+    <script async="async" src="https://www.googletagmanager.com/gtag/js?id=G-P5E8DW088F"></script>
+    <script>
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){ dataLayer.push(arguments); }
+                gtag('js', new Date());
+                gtag('config', 'G-P5E8DW088F');
+            </script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){ dataLayer.push(arguments); }
+                gtag('js', new Date());
+                gtag('config', 'G-P5E8DW088F');
+            </script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'chap02_ls/03_orthog/roch-mmids-ls-orthog';</script>
+    <link rel="canonical" href="https://mmids-textbook.github.io/chap02_ls/03_orthog/roch-mmids-ls-orthog.html" />
+    <link rel="icon" href="https://mmids-textbook.github.io/favicon-32x32.png"/>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="2.4. QR decomposition and Householder transformations" href="../04_qr/roch-mmids-ls-qr.html" />
+    <link rel="prev" title="2.2. Background: review of vector spaces and matrix inverses" href="../02_spaces/roch-mmids-ls-spaces.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a id="pst-skip-link" class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+
+<a class="navbar-brand logo" href="../../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/mmids-cover-small.jpg" class="logo__image only-light" alt="MMiDS Textbook - Home"/>
+    <script>document.write(`<img src="../../_static/mmids-cover-small.jpg" class="logo__image only-dark" alt="MMiDS Textbook - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../index.html">
+                    <b>MATHEMATICAL METHODS in DATA SCIENCE (with Python)</b>
+                </a>
+            </li>
+        </ul>
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../chap01_intro/00_intro/roch-mmids-intro-intro.html">1. Introduction: a first data science problem</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../chap01_intro/01_motiv/roch-mmids-intro-motiv.html">1.1. Motivating example: identifying penguin species</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap01_intro/02_review/roch-mmids-intro-review.html">1.2. Background: quick refresher of matrix algebra, differential calculus, and elementary probability</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap01_intro/03_clustering/roch-mmids-intro-clustering.html">1.3. Clustering: an objective, an algorithm and a guarantee</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap01_intro/04_highdim/roch-mmids-intro-highdim.html">1.4. Some observations about high-dimensional data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap01_intro/exercises/roch-mmids-intro-exercises.html">1.5. Exercises</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap01_intro/supp/roch-mmids-intro-supp.html">1.6. Online suppplementary material</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="../00_intro/roch-mmids-ls-intro.html">2. Least squares: geometric, algebraic, and numerical aspects</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../01_motiv/roch-mmids-ls-motiv.html">2.1. Motivating example: predicting sales</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../02_spaces/roch-mmids-ls-spaces.html">2.2. Background: review of vector spaces and matrix inverses</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">2.3. Geometry of least squares: the orthogonal projection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../04_qr/roch-mmids-ls-qr.html">2.4. QR decomposition and Householder transformations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../05_regression/roch-mmids-ls-regression.html">2.5. Application: regression analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../exercises/roch-mmids-ls-exercises.html">2.6. Exercises</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../supp/roch-mmids-ls-supp.html">2.7. Online suppplementary material</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../chap03_opt/00_intro/roch-mmids-opt-intro.html">3. Optimization theory and algorithms</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-3"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../chap03_opt/01_motiv/roch-mmids-opt-motiv.html">3.1. Motivating example:  analyzing customer satisfaction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap03_opt/02_several/roch-mmids-opt-several.html">3.2. Background: review of differentiable functions of several variables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap03_opt/03_optimality/roch-mmids-opt-optimality.html">3.3. Optimality conditions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap03_opt/04_convexity/roch-mmids-opt-convexity.html">3.4. Convexity</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap03_opt/05_gd/roch-mmids-opt-gd.html">3.5. Gradient descent and its convergence analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap03_opt/06_logistic/roch-mmids-opt-logistic.html">3.6. Application: logistic regression</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap03_opt/exercises/roch-mmids-opt-exercises.html">3.7. Exercises</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap03_opt/supp/roch-mmids-opt-supp.html">3.8. Online suppplementary material</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../chap04_svd/00_intro/roch-mmids-svd-intro.html">4. Singular value decomposition</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-4"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../chap04_svd/01_motiv/roch-mmids-svd-motiv.html">4.1. Motivating example: visualizing viral evolution</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap04_svd/02_spectral/roch-mmids-svd-spectral.html">4.2. Background: review of matrix rank  and spectral decomposition</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap04_svd/03_svd/roch-mmids-svd-svd.html">4.3. Approximating subspaces and the SVD</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap04_svd/04_power/roch-mmids-svd-power.html">4.4. Power iteration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap04_svd/05_pca/roch-mmids-svd-pca.html">4.5. Application: principal components analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap04_svd/06_further/roch-mmids-svd-further.html">4.6. Further applications of the SVD: low-rank approximations and ridge regression</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap04_svd/exercises/roch-mmids-svd-exercises.html">4.7. Exercises</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap04_svd/supp/roch-mmids-svd-supp.html">4.8. Online suppplementary material</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../chap05_specgraph/00_intro/roch-mmids-specgraph-intro.html">5. Spectral graph theory</a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-5"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../chap05_specgraph/01_motiv/roch-mmids-specgraph-motiv.html">5.1. Motivating example: uncovering social groups</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap05_specgraph/02_graph/roch-mmids-specgraph-graph.html">5.2. Background: basic concepts in graph theory</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap05_specgraph/03_extremal/roch-mmids-specgraph-extremal.html">5.3. Variational characterization of eigenvalues</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap05_specgraph/04_laplacian/roch-mmids-specgraph-laplacian.html">5.4. Spectral properties of the Laplacian matrix</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap05_specgraph/05_partitioning/roch-mmids-specgraph-partitioning.html">5.5. Application: graph partitioning via spectral clustering</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap05_specgraph/06_sbm/roch-mmids-specgraph-sbm.html">5.6. Erdős-Rényi random graph and stochastic blockmodel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap05_specgraph/exercises/roch-mmids-specgraph-exercises.html">5.7. Exercises</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap05_specgraph/supp/roch-mmids-specgraph-supp.html">5.8. Online supplementary material</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../chap06_prob/00_intro/roch-mmids-prob-intro.html">6. Probabilistic models: from simple to complex</a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-6"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../chap06_prob/01_motiv/roch-mmids-prob-motiv.html">6.1. Motivating example: tracking location</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap06_prob/02_parametric/roch-mmids-prob-parametric.html">6.2. Background: introduction to parametric families and maximum likelihood estimation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap06_prob/03_joint/roch-mmids-prob-joint.html">6.3. Modeling more complex dependencies 1: using conditional independence</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap06_prob/04_em/roch-mmids-prob-em.html">6.4. Modeling more complex dependencies 2: marginalizing out an unobserved variable</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap06_prob/05_kalman/roch-mmids-prob-kalman.html">6.5. Application: linear-Gaussian models and Kalman filtering</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap06_prob/exercises/roch-mmids-prob-exercises.html">6.6. Exercises</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap06_prob/supp/roch-mmids-prob-supp.html">6.7. Online supplementary material</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../chap07_rwmc/00_intro/roch-mmids-rwmc-intro.html">7. Random walks on graphs and Markov chains</a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-7"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../chap07_rwmc/01_motiv/roch-mmids-rwmc-motiv.html">7.1. Motivating example: discovering mathematical topics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap07_rwmc/02_mcdefs/roch-mmids-rwmc-mcdefs.html">7.2. Background: elements of finite Markov chains</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap07_rwmc/03_stat/roch-mmids-rwmc-stat.html">7.3. Limit behavior 1: stationary distributions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap07_rwmc/04_mclimit/roch-mmids-rwmc-mclimit.html">7.4. Limit behavior 2: convergence to equilibrium</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap07_rwmc/05_pagerank/roch-mmids-rwmc-pagerank.html">7.5. Application: random walks on graphs and PageRank</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap07_rwmc/06_gibbs/roch-mmids-rwmc-gibbs.html">7.6. Further applications: Gibbs sampling and generating images</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap07_rwmc/exercises/roch-mmids-rwmc-exercises.html">7.7. Exercises</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap07_rwmc/supp/roch-mmids-rwmc-supp.html">7.8. Online supplementary material</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../chap08_nn/00_intro/roch-mmids-nn-intro.html">8. Neural networks, backpropagation and stochastic gradient descent</a><input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-8"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../chap08_nn/01_motiv/roch-mmids-nn-motiv.html">8.1. Motivating example:  classifying natural images</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap08_nn/02_chain/roch-mmids-nn-chain.html">8.2. Background: Jacobian, chain rule, and a brief introduction to automatic differentiation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap08_nn/03_backprop/roch-mmids-nn-backprop.html">8.3. Building blocks of AI 1: backpropagation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap08_nn/04_sgd/roch-mmids-nn-sgd.html">8.4. Building blocks of AI 2: stochastic gradient descent</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap08_nn/05_nn/roch-mmids-nn-nn.html">8.5. Building blocks of AI 3: neural networks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap08_nn/exercises/roch-mmids-nn-exercises.html">8.6. Exercises</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap08_nn/supp/roch-mmids-nn-supp.html">8.7. Online supplementary material</a></li>
+</ul>
+</li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/MMiDS-textbook/MMiDS-textbook.github.io" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/MMiDS-textbook/MMiDS-textbook.github.io/issues/new?title=Issue%20on%20page%20%2Fchap02_ls/03_orthog/roch-mmids-ls-orthog.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/chap02_ls/03_orthog/roch-mmids-ls-orthog.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Geometry of least squares: the orthogonal projection</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#a-key-concept-orthogonality">2.3.1. A key concept: orthogonality</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#orthogonal-projection">2.3.2. Orthogonal projection</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#orthogonal-complement">2.3.3. Orthogonal complement</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overdetermined-systems">2.3.4. Overdetermined systems</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <p><span class="math notranslate nohighlight">\(\newcommand{\bmu}{\boldsymbol{\mu}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bSigma}{\boldsymbol{\Sigma}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bfbeta}{\boldsymbol{\beta}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bflambda}{\boldsymbol{\lambda}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bgamma}{\boldsymbol{\gamma}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bsigma}{{\boldsymbol{\sigma}}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bpi}{\boldsymbol{\pi}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\btheta}{{\boldsymbol{\theta}}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bphi}{\boldsymbol{\phi}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\balpha}{\boldsymbol{\alpha}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\blambda}{\boldsymbol{\lambda}}\)</span>
+<span class="math notranslate nohighlight">\(\renewcommand{\P}{\mathbb{P}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\E}{\mathbb{E}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\indep}{\perp\!\!\!\perp} \newcommand{\bx}{\mathbf{x}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bp}{\mathbf{p}}\)</span>
+<span class="math notranslate nohighlight">\(\renewcommand{\bx}{\mathbf{x}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bX}{\mathbf{X}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\by}{\mathbf{y}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bY}{\mathbf{Y}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bz}{\mathbf{z}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bZ}{\mathbf{Z}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bw}{\mathbf{w}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bW}{\mathbf{W}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bv}{\mathbf{v}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bV}{\mathbf{V}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bfg}{\mathbf{g}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bfh}{\mathbf{h}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\horz}{\rule[.5ex]{2.5ex}{0.5pt}}\)</span>
+<span class="math notranslate nohighlight">\(\renewcommand{\S}{\mathcal{S}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\X}{\mathcal{X}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\var}{\mathrm{Var}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\pa}{\mathrm{pa}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\Z}{\mathcal{Z}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bh}{\mathbf{h}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bb}{\mathbf{b}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bc}{\mathbf{c}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\cE}{\mathcal{E}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\cP}{\mathcal{P}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bbeta}{\boldsymbol{\beta}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bLambda}{\boldsymbol{\Lambda}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\cov}{\mathrm{Cov}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bfk}{\mathbf{k}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\idx}[1]{}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\xdi}{}\)</span></p>
+<section id="geometry-of-least-squares-the-orthogonal-projection">
+<h1><span class="section-number">2.3. </span>Geometry of least squares: the orthogonal projection<a class="headerlink" href="#geometry-of-least-squares-the-orthogonal-projection" title="Link to this heading">#</a></h1>
+<p>We consider the following problem: we are given <span class="math notranslate nohighlight">\(A \in \mathbb{R}^{n\times m}\)</span> an <span class="math notranslate nohighlight">\(n\times m\)</span> matrix and <span class="math notranslate nohighlight">\(\mathbf{b} \in \mathbb{R}^n\)</span> a vector. We are looking to solve the system <span class="math notranslate nohighlight">\(A \mathbf{x} \approx \mathbf{b}\)</span>. In the special case where <span class="math notranslate nohighlight">\(A\)</span> is invertible, a unique exact solution exists. In general, however, a solution may not exist or may not be unique. We focus here on the over-determined case where the former situation generically occurs. We begin by rewieving the concept of orthogonality.</p>
+<section id="a-key-concept-orthogonality">
+<h2><span class="section-number">2.3.1. </span>A key concept: orthogonality<a class="headerlink" href="#a-key-concept-orthogonality" title="Link to this heading">#</a></h2>
+<p>Orthogonality plays a key role in linear algebra for data science thanks to its computational properties and its connection to the least-squares problem.</p>
+<p><strong>DEFINITION</strong> <strong>(Orthogonality)</strong> <span class="math notranslate nohighlight">\(\idx{orthogonality}\xdi\)</span> Vectors <span class="math notranslate nohighlight">\(\mathbf{u}\)</span> and <span class="math notranslate nohighlight">\(\mathbf{v}\)</span> in <span class="math notranslate nohighlight">\(\mathbb{R}^n\)</span> (as column vectors) are orthogonal if their inner product is zero</p>
+<div class="math notranslate nohighlight">
+\[
+\langle \mathbf{u}, \mathbf{v} \rangle 
+=\mathbf{u}^T \mathbf{v}
+= \sum_{i=1}^n u_i v_i 
+= 0.
+\]</div>
+<p><span class="math notranslate nohighlight">\(\natural\)</span></p>
+<p>Orthogonality has important implications. The following classical result will be useful below. Throughout, we use <span class="math notranslate nohighlight">\(\|\mathbf{u}\|\)</span> for the Euclidean norm of <span class="math notranslate nohighlight">\(\mathbf{u}\)</span>.</p>
+<p><strong>THEOREM</strong> <strong>(Pythagoras)</strong> <span class="math notranslate nohighlight">\(\idx{Pythagoras' theorem}\xdi\)</span> Let <span class="math notranslate nohighlight">\(\mathbf{u}, \mathbf{v} \in \mathbb{R}^n\)</span> be orthogonal. Then
+<span class="math notranslate nohighlight">\(\|\mathbf{u} + \mathbf{v}\|^2 = \|\mathbf{u}\|^2 + \|\mathbf{v}\|^2\)</span>. <span class="math notranslate nohighlight">\(\sharp\)</span></p>
+<p><em>Proof:</em> Using <span class="math notranslate nohighlight">\(\|\mathbf{w}\|^2 = \langle \mathbf{w}, \mathbf{w}\rangle\)</span>, we get</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+\|\mathbf{u} + \mathbf{v}\|^2
+&amp;= \langle \mathbf{u} + \mathbf{v}, \mathbf{u} + \mathbf{v}\rangle\\
+&amp;= \langle \mathbf{u}, \mathbf{u}\rangle
++ 2 \,\langle \mathbf{u}, \mathbf{v}\rangle
++ \langle \mathbf{v}, \mathbf{v}\rangle\\
+&amp;= \|\mathbf{u}\|^2 + \|\mathbf{v}\|^2.
+\end{align*}\]</div>
+<p><span class="math notranslate nohighlight">\(\square\)</span></p>
+<p>An application of <em>Pythagoras’ Theorem</em> is a proof of the <em>Cauchy-Schwarz Inequality</em>.</p>
+<p><em>Proof:</em> <em>(Cauchy-Schwarz)</em> <span class="math notranslate nohighlight">\(\idx{Cauchy-Schwarz inequality}\xdi\)</span> Let <span class="math notranslate nohighlight">\(\mathbf{q} = \frac{\mathbf{v}}{\|\mathbf{v}\|}\)</span> be the unit vector in the direction of <span class="math notranslate nohighlight">\(\mathbf{v}\)</span>. We want to show <span class="math notranslate nohighlight">\(|\langle \mathbf{u}, \mathbf{q}\rangle| \leq \|\mathbf{u}\|\)</span>. Decompose <span class="math notranslate nohighlight">\(\mathbf{u}\)</span> as follows:</p>
+<div class="math notranslate nohighlight">
+\[
+\mathbf{u} 
+= \left\langle \mathbf{u}, \mathbf{q}\right\rangle \mathbf{q}
++ \left\{\mathbf{u} - \left\langle \mathbf{u}, \mathbf{q}\right\rangle \mathbf{q}\right\}.
+\]</div>
+<p>The two terms on the right-hand side are orthogonal:</p>
+<div class="math notranslate nohighlight">
+\[
+\left\langle
+\left\langle \mathbf{u}, \mathbf{q}\right\rangle \mathbf{q},
+\mathbf{u} - \left\langle \mathbf{u}, \mathbf{q}\right\rangle \mathbf{q}
+\right\rangle
+= \left\langle \mathbf{u}, \mathbf{q}\right\rangle^2  - 
+\left\langle \mathbf{u}, \mathbf{q}\right\rangle^2 \left\langle \mathbf{q}, \mathbf{q}\right\rangle
+= 0.
+\]</div>
+<p>So <em>Pythagoras</em> gives</p>
+<div class="math notranslate nohighlight">
+\[
+\|\mathbf{u}\|^2
+= \left\|\left\langle \mathbf{u}, \mathbf{q}\right\rangle \mathbf{q}\right\|^2
++ \left\|\mathbf{u} - \left\langle \mathbf{u}, \mathbf{q}\right\rangle \mathbf{q}\right\|^2
+\geq \left\|\left\langle \mathbf{u}, \mathbf{q}\right\rangle \mathbf{q}\right\|^2
+= \left\langle \mathbf{u}, \mathbf{q}\right\rangle^2.
+\]</div>
+<p>Taking a square root gives the claim. <span class="math notranslate nohighlight">\(\square\)</span></p>
+<p><strong>Orthonormal basis expansion</strong> To begin to see the power of orthogonality, consider the following. A list of vectors <span class="math notranslate nohighlight">\(\{\mathbf{u}_1,\ldots,\mathbf{u}_m\}\)</span> is an orthonormal list if the <span class="math notranslate nohighlight">\(\mathbf{u}_i\)</span>’s are pairwise orthogonal and each has norm 1, that is, for all <span class="math notranslate nohighlight">\(i\)</span> and all <span class="math notranslate nohighlight">\(j \neq i\)</span>, we have <span class="math notranslate nohighlight">\(\|\mathbf{u}_i\| = 1\)</span> and <span class="math notranslate nohighlight">\(\langle \mathbf{u}_i, \mathbf{u}_j \rangle = 0\)</span>. Alternatively,</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\langle \mathbf{u}_i, \mathbf{u}_j \rangle
+= \begin{cases}
+1 &amp; \text{if $i=j$}\\
+0 &amp; \text{if $i\neq j$}.
+\end{cases}
+\end{split}\]</div>
+<p><strong>LEMMA</strong> <strong>(Properties of Orthonormal Lists)</strong> <span class="math notranslate nohighlight">\(\idx{properties of orthonormal lists}\xdi\)</span> Let <span class="math notranslate nohighlight">\(\{\mathbf{u}_1,\ldots,\mathbf{u}_m\}\)</span> be an orthonormal list. Then:</p>
+<ol class="arabic simple">
+<li><p>for any <span class="math notranslate nohighlight">\(\alpha_j \in \mathbb{R}\)</span>, <span class="math notranslate nohighlight">\(j=1,\ldots,m\)</span>, we have</p></li>
+</ol>
+<div class="math notranslate nohighlight">
+\[
+\left\|\sum_{j=1}^m \alpha_j \mathbf{u}_j\right\|^2 = \sum_{j=1}^m \alpha_j^2,
+\]</div>
+<ol class="arabic simple" start="2">
+<li><p>the vectors <span class="math notranslate nohighlight">\(\{\mathbf{u}_1,\ldots,\mathbf{u}_m\}\)</span> are linearly independent.</p></li>
+</ol>
+<p><span class="math notranslate nohighlight">\(\flat\)</span></p>
+<p><em>Proof:</em> For 1., using that <span class="math notranslate nohighlight">\(\|\mathbf{x}\|^2 = \langle \mathbf{x}, \mathbf{x} \rangle\)</span>, we have</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+\left\|\sum_{j=1}^m \alpha_j \mathbf{u}_j\right\|^2
+&amp;= \left\langle
+\sum_{i=1}^m \alpha_i \mathbf{u}_i, \sum_{j=1}^m \alpha_j \mathbf{u}_j
+\right\rangle\\
+&amp;= \sum_{i=1}^m \alpha_i \left\langle
+ \mathbf{u}_i, \sum_{j=1}^m \alpha_j \mathbf{u}_j
+\right\rangle\\
+&amp;= \sum_{i=1}^m \sum_{j=1}^m \alpha_i \alpha_j \left\langle
+ \mathbf{u}_i,  \mathbf{u}_j
+\right\rangle\\
+&amp;= \sum_{i=1}^m \alpha_i^2
+\end{align*}\]</div>
+<p>where we used orthonormality in the last equation, that is, <span class="math notranslate nohighlight">\(\langle
+ \mathbf{u}_i,  \mathbf{u}_j \rangle\)</span> is <span class="math notranslate nohighlight">\(1\)</span> if <span class="math notranslate nohighlight">\(i=j\)</span> and <span class="math notranslate nohighlight">\(0\)</span> otherwise.</p>
+<p>For 2., suppose <span class="math notranslate nohighlight">\(\sum_{i=1}^m \beta_i \mathbf{u}_i = \mathbf{0}\)</span>, then we must have by 1. that <span class="math notranslate nohighlight">\(\sum_{i=1}^m \beta_i^2 = 0\)</span>. That implies <span class="math notranslate nohighlight">\(\beta_i = 0\)</span> for all <span class="math notranslate nohighlight">\(i\)</span>. Hence the <span class="math notranslate nohighlight">\(\mathbf{u}_i\)</span>’s are linearly independent. <span class="math notranslate nohighlight">\(\square\)</span></p>
+<p>Given a basis <span class="math notranslate nohighlight">\(\{\mathbf{u}_1,\ldots,\mathbf{u}_m\}\)</span> of <span class="math notranslate nohighlight">\(U\)</span>, we know that: for any <span class="math notranslate nohighlight">\(\mathbf{w} \in U\)</span>, <span class="math notranslate nohighlight">\(\mathbf{w} = \sum_{i=1}^m \alpha_i \mathbf{u}_i\)</span> for some <span class="math notranslate nohighlight">\(\alpha_i\)</span>’s. It is not immediately obvious in general how to find the <span class="math notranslate nohighlight">\(\alpha_i\)</span>’s. In the orthonormal case, however, there is a formula. We say that the basis <span class="math notranslate nohighlight">\(\{\mathbf{u}_1,\ldots,\mathbf{u}_m\}\)</span> is orthonormal if it forms an orthonormal list.</p>
+<p><strong>THEOREM</strong> <strong>(Orthonormal Expansion)</strong> <span class="math notranslate nohighlight">\(\idx{orthonormal expansion theorem}\xdi\)</span> Let <span class="math notranslate nohighlight">\(\mathbf{q}_1,\ldots,\mathbf{q}_m\)</span> be an orthonormal basis of <span class="math notranslate nohighlight">\(U\)</span> and let <span class="math notranslate nohighlight">\(\mathbf{w} \in U\)</span>. Then</p>
+<div class="math notranslate nohighlight">
+\[
+\mathbf{w}
+= \sum_{j=1}^m \langle \mathbf{w}, \mathbf{q}_j\rangle \,\mathbf{q}_j.
+\]</div>
+<p><span class="math notranslate nohighlight">\(\sharp\)</span></p>
+<p><em>Proof:</em> Because <span class="math notranslate nohighlight">\(\mathbf{w} \in U\)</span>, <span class="math notranslate nohighlight">\(\mathbf{w} = \sum_{i=1}^m \alpha_i \mathbf{q}_i\)</span> for some <span class="math notranslate nohighlight">\(\alpha_i\)</span>. Take the inner product with <span class="math notranslate nohighlight">\(\mathbf{q}_j\)</span> and use orthonormality:</p>
+<div class="math notranslate nohighlight">
+\[
+\langle \mathbf{w}, \mathbf{q}_j\rangle 
+= \left\langle \sum_{i=1}^m \alpha_i \mathbf{q}_i, \mathbf{q}_j\right\rangle 
+= \sum_{i=1}^m \alpha_i \langle \mathbf{q}_i, \mathbf{q}_j\rangle 
+= \alpha_j.
+\]</div>
+<p>Hence, we have determined all <span class="math notranslate nohighlight">\(\alpha_j\)</span>’s in the basis expansion of <span class="math notranslate nohighlight">\(\mathbf{w}\)</span>. <span class="math notranslate nohighlight">\(\square\)</span></p>
+<p><strong>EXAMPLE:</strong> Consider again the linear subspace <span class="math notranslate nohighlight">\(W = \mathrm{span}(\mathbf{w}_1,\mathbf{w}_2,\mathbf{w}_3)\)</span>, where <span class="math notranslate nohighlight">\(\mathbf{w}_1 = (1,0,1)\)</span>, <span class="math notranslate nohighlight">\(\mathbf{w}_2 = (0,1,1)\)</span>, and <span class="math notranslate nohighlight">\(\mathbf{w}_3 = (1,-1,0)\)</span>. We have shown that in fact</p>
+<div class="math notranslate nohighlight">
+\[
+\mathrm{span}(\mathbf{w}_1,\mathbf{w}_2,\mathbf{w}_3) = \mathrm{span}(\mathbf{w}_1,\mathbf{w}_2).
+\]</div>
+<p>as <span class="math notranslate nohighlight">\(\mathbf{w}_1,\mathbf{w}_2\)</span> form a basis of <span class="math notranslate nohighlight">\(W\)</span>. On the other hand,</p>
+<div class="math notranslate nohighlight">
+\[
+\langle\mathbf{w}_1,\mathbf{w}_2\rangle
+= (1)(0) + (0)(1) + (1)(1) = 0 + 0 + 1 = 1 \neq 0
+\]</div>
+<p>so this basis is not orthonormal. Indeed, an orthonormal list is necessarily an independent list, but the opposite may not hold.</p>
+<p>To produce an orthonormal basis of <span class="math notranslate nohighlight">\(W\)</span>, we can first proceed by normalizing <span class="math notranslate nohighlight">\(\mathbf{w}_1\)</span></p>
+<div class="math notranslate nohighlight">
+\[
+\mathbf{q}_1 
+= \frac{\mathbf{w}_1}{\|\mathbf{w}_1\|}
+= \frac{\mathbf{w}_1}{\sqrt{1^2 + 0^2 + 1^2}}
+= \frac{1}{\sqrt{2}} \mathbf{w}_1.
+\]</div>
+<p>Then <span class="math notranslate nohighlight">\(\|\mathbf{q}_1\| = 1\)</span> since, in general, by homogeneity of the norm</p>
+<div class="math notranslate nohighlight">
+\[
+\left\|\frac{\mathbf{w}_1}{\|\mathbf{w}_1\|}\right\|
+= \frac{1}{\|\mathbf{w}_1\|} \|\mathbf{w}_1\| = 1.
+\]</div>
+<p>We then seek a second basis vector. It must satisfy two conditions in this case:</p>
+<ul class="simple">
+<li><p>it must be of unit norm and be orthogonal to <span class="math notranslate nohighlight">\(\mathbf{q}_1\)</span>; and</p></li>
+<li><p><span class="math notranslate nohighlight">\(\mathbf{w}_2\)</span> must be a linear combination of <span class="math notranslate nohighlight">\(\mathbf{q}_1\)</span> and <span class="math notranslate nohighlight">\(\mathbf{q}_2\)</span>.</p></li>
+</ul>
+<p>The latter condition guarantees that <span class="math notranslate nohighlight">\(\mathrm{span}(\mathbf{q}_1,\mathbf{q}_2) = \mathrm{span}(\mathbf{w}_1,\mathbf{w}_2)\)</span>. (Formally, that would imply only that <span class="math notranslate nohighlight">\(\mathrm{span}(\mathbf{w}_1,\mathbf{w}_2) \subseteq \mathrm{span}(\mathbf{q}_1,\mathbf{q}_2)\)</span>. In this case, it is easy to see that the containment must go in the opposite direction as well. Why?)</p>
+<p>The first condition translates into</p>
+<div class="math notranslate nohighlight">
+\[
+1 = \|\mathbf{q}_2\|^2
+= q_{21}^2 + q_{22}^2 + q_{23}^2,
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(\mathbf{q}_2 = (q_{21}, q_{22}, q_{23})\)</span>, and</p>
+<div class="math notranslate nohighlight">
+\[
+0 = \langle\mathbf{q}_1, \mathbf{q}_2\rangle = \frac{1}{\sqrt{2}}\left[1\cdot q_{21} + 0 \cdot q_{22} + 1 \cdot q_{23}\right] = \frac{1}{\sqrt{2}}\left[q_{21} + q_{23}\right].
+\]</div>
+<p>That is, simplifying the second display and plugging into the first, <span class="math notranslate nohighlight">\(q_{23} = -q_{21}\)</span> and <span class="math notranslate nohighlight">\(q_{22} = \sqrt{1 - 2 q_{21}^2}\)</span>.</p>
+<p>The second condition translates into: there is <span class="math notranslate nohighlight">\(\beta_1, \beta_2 \in \mathbb{R}\)</span> such that</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\mathbf{w}_2 
+= \begin{pmatrix}
+0 \\
+1 \\
+1
+\end{pmatrix}
+=
+\beta_1 \mathbf{q}_1 + \beta_2 \mathbf{q}_2
+= \beta_1 
+\frac{1}{\sqrt{2}}
+\begin{pmatrix}
+1 \\
+0 \\
+1
+\end{pmatrix}
++
+\beta_2
+\begin{pmatrix}
+q_{21} \\
+\sqrt{1-2 q_{21}^2} \\
+-q_{21}
+\end{pmatrix}.
+\end{split}\]</div>
+<p>The first entry gives <span class="math notranslate nohighlight">\(\beta_1/\sqrt{2} + \beta_2 q_{21} = 0\)</span> while the third entry gives
+<span class="math notranslate nohighlight">\(\beta_1/\sqrt{2} - \beta_2 q_{21} = 1\)</span>. Adding up the equations gives <span class="math notranslate nohighlight">\(\beta_1 = 1/\sqrt{2}\)</span>. Plugging back into the first one gives <span class="math notranslate nohighlight">\(\beta_2 = -1/(2q_{21})\)</span>. Returning to the equation for <span class="math notranslate nohighlight">\(\mathbf{w}_2\)</span>, we get from the second entry</p>
+<div class="math notranslate nohighlight">
+\[
+1 = - \frac{1}{2 q_{21}} \sqrt{1 - 2 q_{21}^2}.
+\]</div>
+<p>Rearranging and taking a square, we want the negative solution to</p>
+<div class="math notranslate nohighlight">
+\[
+4 q_{21}^2 = 1 - 2 q_{21}^2,
+\]</div>
+<p>that is, <span class="math notranslate nohighlight">\(q_{21} = - 1/\sqrt{6}\)</span>. Finally, we get <span class="math notranslate nohighlight">\(q_{23} = - q_{21} = 1/\sqrt{6}\)</span> and
+<span class="math notranslate nohighlight">\(q_{22} = \sqrt{1 - 2 q_{21}^2} = \sqrt{1 - 1/3} = \sqrt{2/3} = 2/\sqrt{6}\)</span>.</p>
+<p>To summarize, we have</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\mathbf{q}_1
+= \frac{1}{\sqrt{2}} \begin{pmatrix}
+1\\
+0\\
+1
+\end{pmatrix},
+\quad
+\mathbf{q}_2
+= \frac{1}{\sqrt{6}} \begin{pmatrix}
+-1\\
+2\\
+1
+\end{pmatrix}.
+\end{split}\]</div>
+<p>We confirm that</p>
+<div class="math notranslate nohighlight">
+\[
+\langle \mathbf{q}_1, \mathbf{q}_2\rangle
+= \frac{1}{\sqrt{2}\sqrt{6}}[(1)(-1) + (0)(2) + (1)(1)]
+= 0
+\]</div>
+<p>and</p>
+<div class="math notranslate nohighlight">
+\[
+\|\mathbf{q}_2\|^2
+= \left(-\frac{1}{\sqrt{6}}\right)^2 
++ \left(\frac{2}{\sqrt{6}}\right)^2 
++ \left(\frac{1}{\sqrt{6}}\right)^2
+= \frac{1}{6} + \frac{4}{6} + \frac{1}{6}
+= 1.
+\]</div>
+<p>We can use the <em>Orthonormal Expansion Theorem</em> to write <span class="math notranslate nohighlight">\(\mathbf{w}_2\)</span> as a linear combination of <span class="math notranslate nohighlight">\(\mathbf{q}_1\)</span> and <span class="math notranslate nohighlight">\(\mathbf{q}_2\)</span>. The inner products are</p>
+<div class="math notranslate nohighlight">
+\[
+\langle
+\mathbf{w}_2, \mathbf{q}_1
+\rangle
+= 0 \left(\frac{1}{\sqrt{2}}\right)
++ 1 \left(\frac{0}{\sqrt{2}}\right)
++ 1 \left(\frac{1}{\sqrt{2}}\right)
+= \frac{1}{\sqrt{2}},
+\]</div>
+<div class="math notranslate nohighlight">
+\[
+\langle
+\mathbf{w}_2, \mathbf{q}_2
+\rangle
+= 0 \left(-\frac{1}{\sqrt{6}}\right)
++ 1 \left(\frac{2}{\sqrt{6}}\right)
++ 1 \left(\frac{1}{\sqrt{6}}\right)
+= \frac{3}{\sqrt{6}}.
+\]</div>
+<p>So</p>
+<div class="math notranslate nohighlight">
+\[
+\mathbf{w}_2
+= \frac{1}{\sqrt{2}} \mathbf{q}_1 + \frac{3}{\sqrt{6}} \mathbf{q}_2.
+\]</div>
+<p>Check it! Try <span class="math notranslate nohighlight">\(\mathbf{w}_3\)</span>. <span class="math notranslate nohighlight">\(\lhd\)</span></p>
+<p><strong>Gram-Schmidt</strong> We have shown that working with orthonormal bases is desirable. What if we do not have one? We could try to construct one by hand as we did in the previous example. But there are better ways. We review the <a class="reference external" href="https://en.wikipedia.org/wiki/Gram%E2%80%93Schmidt_process">Gram-Schmidt algorithm</a> in an upcoming section, which will imply that every linear subspace has an orthonormal basis. That is, we will prove the following theorem.</p>
+<p><strong>THEOREM</strong> <strong>(Gram-Schmidt)</strong> <span class="math notranslate nohighlight">\(\idx{Gram-Schmidt theorem}\xdi\)</span> Let <span class="math notranslate nohighlight">\(\mathbf{a}_1,\ldots,\mathbf{a}_m\)</span> be linearly independent. Then there exists an orthonormal basis <span class="math notranslate nohighlight">\(\mathbf{q}_1,\ldots,\mathbf{q}_m\)</span> of
+<span class="math notranslate nohighlight">\(\mathrm{span}(\mathbf{a}_1,\ldots,\mathbf{a}_m)\)</span>. <span class="math notranslate nohighlight">\(\sharp\)</span></p>
+<p>But, first, we will need to define the orthogonal projection, which will play a key role in our applications. This is done in the next section.</p>
+</section>
+<section id="orthogonal-projection">
+<h2><span class="section-number">2.3.2. </span>Orthogonal projection<a class="headerlink" href="#orthogonal-projection" title="Link to this heading">#</a></h2>
+<p>To solve the overdetermined case, i.e., when <span class="math notranslate nohighlight">\(n &gt; m\)</span>, we consider the following more general problem first. We have a linear subspace <span class="math notranslate nohighlight">\(U \subseteq \mathbb{R}^n\)</span> and a vector <span class="math notranslate nohighlight">\(\mathbf{v} \notin U\)</span>. We want to find the vector <span class="math notranslate nohighlight">\(\mathbf{p}\)</span> in <span class="math notranslate nohighlight">\(U\)</span> that is closest to <span class="math notranslate nohighlight">\(\mathbf{v}\)</span> in Euclidean norm, that is, we want to solve</p>
+<div class="math notranslate nohighlight">
+\[
+\min_{\mathbf{p} \in U} \|\mathbf{p} - \mathbf{v}\|.
+\]</div>
+<p><strong>EXAMPLE:</strong> Consider the two-dimensional case with a one-dimensional subspace, say <span class="math notranslate nohighlight">\(U = \mathrm{span}(\mathbf{u_1})\)</span> with <span class="math notranslate nohighlight">\(\|\mathbf{u}_1\|=1\)</span>. The geometrical intuition is in the following figure. The solution <span class="math notranslate nohighlight">\(\mathbf{p} = \mathbf{v}^*\)</span> has the property that the difference <span class="math notranslate nohighlight">\(\mathbf{v} - \mathbf{v}^*\)</span> makes a right angle with <span class="math notranslate nohighlight">\(\mathbf{u}_1\)</span>, that is, it is orthogonal to it.</p>
+<!--TEX
+**Figure:** Orthogonal projection on a line ([Source](https://commons.wikimedia.org/wiki/File:Linalg_projection_4.png))
+
+![Orthogonal projection on a line](https://upload.wikimedia.org/wikipedia/commons/1/17/Linalg_projection_4.png)
+
+$\bowtie$
+--><p>Letting <span class="math notranslate nohighlight">\(\mathbf{v}^* = \alpha^* \,\mathbf{u}_1\)</span>, the geometrical condition above translates into</p>
+<div class="math notranslate nohighlight">
+\[
+0
+= \langle \mathbf{u}_1, \mathbf{v} - \mathbf{v}^* \rangle 
+= \langle \mathbf{u}_1, \mathbf{v} - \alpha^* \,\mathbf{u}_1 \rangle 
+= \langle \mathbf{u}_1, \mathbf{v} \rangle 
+- \alpha^* \,\langle \mathbf{u}_1, \mathbf{u}_1 \rangle 
+= \langle \mathbf{u}_1, \mathbf{v} \rangle - \alpha^*
+\]</div>
+<p>so</p>
+<div class="math notranslate nohighlight">
+\[
+\mathbf{v}^* = \langle \mathbf{u}_1, \mathbf{v} \rangle \,\mathbf{u}_1.
+\]</div>
+<p>By <em>Pythagoras’ Theorem</em>, we then have for any <span class="math notranslate nohighlight">\(\alpha \in \mathbb{R}\)</span></p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+\|\mathbf{v}
+- \alpha \,\mathbf{u}_1\|^2 
+&amp;= \|\mathbf{v}- \mathbf{v}^*
++ \mathbf{v}^* - \alpha \,\mathbf{u}_1\|^2\\
+&amp;= \|\mathbf{v}- \mathbf{v}^*
++ (\alpha^* - \alpha) \,\mathbf{u}_1\|^2\\
+&amp;= \|\mathbf{v}- \mathbf{v}^*\|^2
++ \| (\alpha^* - \alpha) \,\mathbf{u}_1\|^2\\
+&amp;\geq \|\mathbf{v}- \mathbf{v}^*\|^2,
+\end{align*}\]</div>
+<p>where we used that <span class="math notranslate nohighlight">\(\mathbf{v} - \mathbf{v}^*\)</span> is orthogonal to <span class="math notranslate nohighlight">\(\mathbf{u}_1\)</span> (and therefore <span class="math notranslate nohighlight">\((\alpha^* - \alpha) \mathbf{u}_1\)</span>) on the third line.</p>
+<p>That confirms the optimality of <span class="math notranslate nohighlight">\(\mathbf{v}^*\)</span>. The argument in this example carries through in higher dimension, as we show next. <span class="math notranslate nohighlight">\(\lhd\)</span></p>
+<p><strong>DEFINITION</strong> <strong>(Orthogonal Projection on an Orthonormal List)</strong> <span class="math notranslate nohighlight">\(\idx{orthogonal projection on an orthonormal list}\xdi\)</span> Let <span class="math notranslate nohighlight">\(\mathbf{q}_1,\ldots,\mathbf{q}_m\)</span> be an orthonormal list. The orthogonal projection of <span class="math notranslate nohighlight">\(\mathbf{v} \in \mathbb{R}^n\)</span> on <span class="math notranslate nohighlight">\(\{\mathbf{q}_i\}_{i=1}^m\)</span> is defined as</p>
+<div class="math notranslate nohighlight">
+\[
+\mathrm{proj}_{\{\mathbf{q}_i\}_{i=1}^m} \mathbf{v}
+= \sum_{j=1}^m \langle \mathbf{v}, \mathbf{q}_j \rangle \,\mathbf{q}_j.
+\]</div>
+<p><span class="math notranslate nohighlight">\(\natural\)</span></p>
+<p><strong>THEOREM</strong> <strong>(Orthogonal Projection)</strong> <span class="math notranslate nohighlight">\(\idx{orthogonal projection theorem}\xdi\)</span> Let <span class="math notranslate nohighlight">\(U \subseteq V\)</span> be a linear subspace and let <span class="math notranslate nohighlight">\(\mathbf{v} \in \mathbb{R}^n\)</span>. Then:</p>
+<p>a) There exists a unique solution <span class="math notranslate nohighlight">\(\mathbf{p}^*\)</span> to</p>
+<div class="math notranslate nohighlight">
+\[
+\min_{\mathbf{p} \in U} \|\mathbf{p} - \mathbf{v}\|.
+\]</div>
+<p>We denote it by <span class="math notranslate nohighlight">\(\mathbf{p}^* = \mathrm{proj}_U \mathbf{v}\)</span> and refer to it as the orthogonal projection of <span class="math notranslate nohighlight">\(\mathbf{v}\)</span> onto <span class="math notranslate nohighlight">\(U\)</span>.</p>
+<p>b) The solution <span class="math notranslate nohighlight">\(\mathbf{p}^*\)</span> is characterized geometrically by</p>
+<div class="math notranslate nohighlight">
+\[
+(*) \qquad \left\langle \mathbf{v} - \mathbf{p}^*,  \mathbf{u}\right\rangle =0,
+\quad \forall \mathbf{u} \in U.
+\]</div>
+<p>c) For any orthonormal basis <span class="math notranslate nohighlight">\(\mathbf{q}_1,\ldots,\mathbf{q}_m\)</span>  of <span class="math notranslate nohighlight">\(U\)</span>,</p>
+<div class="math notranslate nohighlight">
+\[
+\mathrm{proj}_U \mathbf{v} = \mathrm{proj}_{\{\mathbf{q}_i\}_{i=1}^m} \mathbf{v}.
+\]</div>
+<p><span class="math notranslate nohighlight">\(\sharp\)</span></p>
+<p><em>Proof:</em> Let <span class="math notranslate nohighlight">\(\mathbf{p}^*\)</span> be any vector in <span class="math notranslate nohighlight">\(U\)</span> satisfying <span class="math notranslate nohighlight">\((*)\)</span>. We show first that it necessarily satisfies</p>
+<div class="math notranslate nohighlight">
+\[
+(**) \qquad \|\mathbf{p}^* - \mathbf{v}\| \leq \|\mathbf{p} - \mathbf{v}\|,
+\quad \forall \mathbf{p} \in U.
+\]</div>
+<p>Note that for any <span class="math notranslate nohighlight">\(\mathbf{p} \in U\)</span> the vector <span class="math notranslate nohighlight">\(\mathbf{u} = \mathbf{p} - \mathbf{p}^*\)</span> is also in <span class="math notranslate nohighlight">\(U\)</span>. Hence by <span class="math notranslate nohighlight">\((*)\)</span> and <em>Pythagoras</em>,</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+\|\mathbf{p} - \mathbf{v}\|^2
+&amp;= \|\mathbf{p} - \mathbf{p}^* + \mathbf{p}^* - \mathbf{v}\|^2\\
+&amp;= \|\mathbf{p} - \mathbf{p}^*\|^2 + \|\mathbf{p}^* - \mathbf{v}\|^2\\
+&amp;\geq \|\mathbf{p}^* - \mathbf{v}\|^2.
+\end{align*}\]</div>
+<p>Furthermore, equality holds only if <span class="math notranslate nohighlight">\(\|\mathbf{p} - \mathbf{p}^*\|^2 = 0\)</span> which holds only if <span class="math notranslate nohighlight">\(\mathbf{p} = \mathbf{p}^*\)</span> by the point-separating property of the Euclidean norm. Hence, if such a vector <span class="math notranslate nohighlight">\(\mathbf{p}^*\)</span> exists, it is unique.</p>
+<p>It remains to show that there is at least one vector in <span class="math notranslate nohighlight">\(U\)</span> satisfying <span class="math notranslate nohighlight">\((*)\)</span>. By the <em>Gram-Schmidt Theorem</em>, the linear subspace <span class="math notranslate nohighlight">\(U\)</span> has an orthonormal basis <span class="math notranslate nohighlight">\(\mathbf{q}_1,\ldots,\mathbf{q}_m\)</span>. By definition, <span class="math notranslate nohighlight">\(\mathrm{proj}_{\{\mathbf{q}_i\}_{i=1}^m} \mathbf{v} \in \mathrm{span}(\{\mathbf{q}_i\}_{i=1}^m) = U\)</span>. We show that <span class="math notranslate nohighlight">\(\mathrm{proj}_{\{\mathbf{q}_i\}_{i=1}^m} \mathbf{v}\)</span> satisfies <span class="math notranslate nohighlight">\((*)\)</span>. We can write any <span class="math notranslate nohighlight">\(\mathbf{u} \in U\)</span> as
+<span class="math notranslate nohighlight">\(\sum_{i=1}^m \alpha_i \mathbf{q}_i\)</span> with <span class="math notranslate nohighlight">\(\alpha_i = \langle \mathbf{u}, \mathbf{q}_i \rangle\)</span>. So, using this representation, we get</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+\left\langle \mathbf{v} - \sum_{j=1}^m \langle \mathbf{v}, \mathbf{q}_j \rangle \,\mathbf{q}_j, \sum_{i=1}^m \alpha_i \mathbf{q}_i \right\rangle
+&amp;= \sum_{j=1}^m \langle \mathbf{v}, \mathbf{q}_j \rangle \,\alpha_j 
+- \sum_{j=1}^m \sum_{i=1}^m \alpha_i \langle \mathbf{v}, \mathbf{q}_j \rangle
+ \langle \mathbf{q}_j, \mathbf{q}_i \rangle\\
+&amp;= \sum_{j=1}^m \langle \mathbf{v}, \mathbf{q}_j \rangle \,\alpha_j 
+- \sum_{j=1}^m \alpha_j \langle \mathbf{v}, \mathbf{q}_j \rangle\\ 
+&amp;= 0,
+\end{align*}\]</div>
+<p>where we used the orthonormality of the <span class="math notranslate nohighlight">\(\mathbf{q}_j\)</span>’s on the second line.  <span class="math notranslate nohighlight">\(\square\)</span></p>
+<p><strong>EXAMPLE:</strong> <strong>(continued)</strong> Consider again the linear subspace <span class="math notranslate nohighlight">\(W = \mathrm{span}(\mathbf{w}_1,\mathbf{w}_2,\mathbf{w}_3)\)</span>, where <span class="math notranslate nohighlight">\(\mathbf{w}_1 = (1,0,1)\)</span>, <span class="math notranslate nohighlight">\(\mathbf{w}_2 = (0,1,1)\)</span>, and <span class="math notranslate nohighlight">\(\mathbf{w}_3 = (1,-1,0)\)</span>. We have shown that</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\mathbf{q}_1
+= \frac{1}{\sqrt{2}} \begin{pmatrix}
+1\\
+0\\
+1
+\end{pmatrix},
+\quad
+\mathbf{q}_2
+= \frac{1}{\sqrt{6}} \begin{pmatrix}
+-1\\
+2\\
+1
+\end{pmatrix},
+\end{split}\]</div>
+<p>is an orthonormal basis. Let <span class="math notranslate nohighlight">\(\mathbf{w}_4 = (0,0,2)\)</span>. It is immediate that <span class="math notranslate nohighlight">\(\mathbf{w}_4 \notin \mathrm{span}(\mathbf{w}_1,\mathbf{w}_2)\)</span> since vectors in that span are of the form <span class="math notranslate nohighlight">\((x,y,x+y)\)</span> for some <span class="math notranslate nohighlight">\(x,y \in \mathbb{R}\)</span>.</p>
+<p>We can however compute the orthogonal projection <span class="math notranslate nohighlight">\(\mathbf{w}_4\)</span> onto <span class="math notranslate nohighlight">\(W\)</span>. The inner products are</p>
+<div class="math notranslate nohighlight">
+\[
+\langle
+\mathbf{w}_4, \mathbf{q}_1
+\rangle
+= 0 \left(\frac{1}{\sqrt{2}}\right)
++ 0 \left(\frac{0}{\sqrt{2}}\right)
++ 2 \left(\frac{1}{\sqrt{2}}\right)
+= \frac{2}{\sqrt{2}},
+\]</div>
+<div class="math notranslate nohighlight">
+\[
+\langle
+\mathbf{w}_4, \mathbf{q}_2
+\rangle
+= 0 \left(-\frac{1}{\sqrt{6}}\right)
++ 0 \left(\frac{2}{\sqrt{6}}\right)
++ 2 \left(\frac{1}{\sqrt{6}}\right)
+= \frac{2}{\sqrt{6}}.
+\]</div>
+<p>So</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\mathrm{proj}_W \mathbf{w}_4
+= \frac{2}{\sqrt{2}} \mathbf{q}_1 + \frac{2}{\sqrt{6}} \mathbf{q}_2
+= \begin{pmatrix}
+2/3\\
+2/3\\
+4/3
+\end{pmatrix}.
+\end{split}\]</div>
+<p>As a sanity check, note that <span class="math notranslate nohighlight">\(\mathbf{w}_4 \in W\)</span> since its third entry is equal to the sum of its first two entries. <span class="math notranslate nohighlight">\(\lhd\)</span></p>
+<p>The map <span class="math notranslate nohighlight">\(\mathrm{proj}_U\)</span> is linear, that is, <span class="math notranslate nohighlight">\(\mathrm{proj}_U (\alpha \,\mathbf{x} + \mathbf{y}) = \alpha \,\mathrm{proj}_U \mathbf{x} + \mathrm{proj}_U\mathbf{y}\)</span> for all <span class="math notranslate nohighlight">\(\alpha \in \mathbb{R}\)</span> and <span class="math notranslate nohighlight">\(\mathbf{x}, \mathbf{y} \in \mathbb{R}^n\)</span>. Indeed,</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+\mathrm{proj}_U(\alpha \,\mathbf{x} + \mathbf{y})
+&amp;= \sum_{j=1}^m \langle \alpha \,\mathbf{x} + \mathbf{y}, \mathbf{q}_j \rangle \,\mathbf{q}_j\\
+&amp;= \sum_{j=1}^m \left\{\alpha \, \langle \mathbf{x}, \mathbf{q}_j \rangle 
++ \langle \mathbf{y}, \mathbf{q}_j \rangle\right\} 
+\mathbf{q}_j\\
+&amp;= \alpha \,\mathrm{proj}_U \mathbf{x} + \mathrm{proj}_U \mathbf{y}.
+\end{align*}\]</div>
+<p>Any linear map from <span class="math notranslate nohighlight">\(\mathbb{R}^n\)</span> to <span class="math notranslate nohighlight">\(\mathbb{R}^n\)</span> can be encoded as an <span class="math notranslate nohighlight">\(n \times n\)</span> matrix <span class="math notranslate nohighlight">\(P\)</span>.</p>
+<p>Let</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+Q =
+\begin{pmatrix}
+| &amp;  &amp; | \\
+\mathbf{q}_1 &amp; \ldots &amp; \mathbf{q}_m \\
+| &amp;  &amp; | 
+\end{pmatrix}
+\end{split}\]</div>
+<p>and note that computing</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+Q^T \mathbf{v}
+= 
+\begin{pmatrix}
+\langle \mathbf{v}, \mathbf{q}_1 \rangle \\
+\cdots \\
+\langle \mathbf{v}, \mathbf{q}_m \rangle
+\end{pmatrix}
+\end{split}\]</div>
+<p>lists the coefficients in the expansion of <span class="math notranslate nohighlight">\(\mathrm{proj}_U \mathbf{v}\)</span> over the basis <span class="math notranslate nohighlight">\(\mathbf{q}_1,\ldots,\mathbf{q}_m\)</span>.</p>
+<p>Hence we see that</p>
+<div class="math notranslate nohighlight">
+\[
+P
+= 
+Q Q^T.
+\]</div>
+<p>Indeed, for any vector <span class="math notranslate nohighlight">\(\mathbf{v}\)</span>,</p>
+<div class="math notranslate nohighlight">
+\[
+P \mathbf{v} 
+= Q Q^T \mathbf{v} 
+= Q [Q^T \mathbf{v}].
+\]</div>
+<p>So the output is a linear combination of the columns of <span class="math notranslate nohighlight">\(Q\)</span> (i.e., the <span class="math notranslate nohighlight">\(\mathbf{q}_i\)</span>’s) where the coefficients are the entries of the vector in square brackets <span class="math notranslate nohighlight">\(Q^T \mathbf{v}\)</span>.</p>
+<p><strong>EXAMPLE:</strong> <strong>(continued)</strong> Consider again the linear subspace <span class="math notranslate nohighlight">\(W = \mathrm{span}(\mathbf{w}_1,\mathbf{w}_2,\mathbf{w}_3)\)</span>, where <span class="math notranslate nohighlight">\(\mathbf{w}_1 = (1,0,1)\)</span>, <span class="math notranslate nohighlight">\(\mathbf{w}_2 = (0,1,1)\)</span>, and <span class="math notranslate nohighlight">\(\mathbf{w}_3 = (1,-1,0)\)</span>, with orthonormal basis</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\mathbf{q}_1
+= \frac{1}{\sqrt{2}} \begin{pmatrix}
+1\\
+0\\
+1
+\end{pmatrix},
+\quad
+\mathbf{q}_2
+= \frac{1}{\sqrt{6}} \begin{pmatrix}
+-1\\
+2\\
+1
+\end{pmatrix}.
+\end{split}\]</div>
+<p>Then orthogonal projection onto <span class="math notranslate nohighlight">\(W\)</span> can be written in matrix form as follows. The matrix <span class="math notranslate nohighlight">\(Q\)</span> is</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+Q
+= \begin{pmatrix}
+1/\sqrt{2} &amp; -1/\sqrt{6}\\
+0 &amp; 2/\sqrt{6}\\
+1/\sqrt{2} &amp; 1/\sqrt{6}
+\end{pmatrix}.
+\end{split}\]</div>
+<p>Then</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+Q Q^T
+&amp;= \begin{pmatrix}
+1/\sqrt{2} &amp; -1/\sqrt{6}\\
+0 &amp; 2/\sqrt{6}\\
+1/\sqrt{2} &amp; 1/\sqrt{6}
+\end{pmatrix}
+\begin{pmatrix}
+1/\sqrt{2} &amp; 0 &amp; 1/\sqrt{2}\\
+-1/\sqrt{6} &amp; 2/\sqrt{6} &amp; 1/\sqrt{6}
+\end{pmatrix}\\
+&amp;= \begin{pmatrix}
+2/3 &amp; -1/3 &amp; 1/3\\
+-1/3 &amp; 2/3 &amp; 1/3\\
+1/3 &amp; 1/3 &amp; 2/3
+\end{pmatrix}.
+\end{align*}\]</div>
+<p>So the projection of <span class="math notranslate nohighlight">\(\mathbf{w}_4 = (0,0,2)\)</span> is</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{pmatrix}
+2/3 &amp; -1/3 &amp; 1/3\\
+-1/3 &amp; 2/3 &amp; 1/3\\
+1/3 &amp; 1/3 &amp; 2/3
+\end{pmatrix}
+\begin{pmatrix}
+0\\
+0\\
+2
+\end{pmatrix}
+=
+\begin{pmatrix}
+2/3\\
+2/3\\
+4/3
+\end{pmatrix},
+\end{split}\]</div>
+<p>as previously computed. <span class="math notranslate nohighlight">\(\lhd\)</span></p>
+<p>The matrix <span class="math notranslate nohighlight">\(P= Q Q^T\)</span> is not to be confused with</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+Q^T Q
+=
+\begin{pmatrix}
+\langle \mathbf{q}_1, \mathbf{q}_1 \rangle &amp; \cdots &amp; \langle \mathbf{q}_1, \mathbf{q}_m \rangle \\
+\langle \mathbf{q}_2, \mathbf{q}_1 \rangle &amp; \cdots &amp; \langle \mathbf{q}_2, \mathbf{q}_m \rangle \\
+\vdots &amp; \ddots &amp; \vdots \\
+\langle \mathbf{q}_m, \mathbf{q}_1 \rangle &amp; \cdots &amp; \langle \mathbf{q}_m, \mathbf{q}_m \rangle
+\end{pmatrix}
+= I_{m \times m}
+\end{split}\]</div>
+<p>where <span class="math notranslate nohighlight">\(I_{m \times m}\)</span> denotes the <span class="math notranslate nohighlight">\(m \times m\)</span> identity matrix.</p>
+<p><strong>EXAMPLE:</strong> Let <span class="math notranslate nohighlight">\(\mathbf{q}_1,\ldots,\mathbf{q}_n\)</span> be an orthonormal basis of <span class="math notranslate nohighlight">\(\mathbb{R}^n\)</span> and form the matrix</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+Q =
+\begin{pmatrix}
+| &amp;  &amp; | \\
+\mathbf{q}_1 &amp; \ldots &amp; \mathbf{q}_n \\
+| &amp;  &amp; | 
+\end{pmatrix}.
+\end{split}\]</div>
+<p>We show that <span class="math notranslate nohighlight">\(Q^{-1} = Q^T\)</span>.</p>
+<p>By the definition of matrix multiplication, recall that</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+Q^T Q
+=
+\begin{pmatrix}
+\langle \mathbf{q}_1, \mathbf{q}_1 \rangle &amp; \cdots &amp; \langle \mathbf{q}_1, \mathbf{q}_n \rangle \\
+\langle \mathbf{q}_2, \mathbf{q}_1 \rangle &amp; \cdots &amp; \langle \mathbf{q}_2, \mathbf{q}_n \rangle \\
+\vdots &amp; \ddots &amp; \vdots \\
+\langle \mathbf{q}_n, \mathbf{q}_1 \rangle &amp; \cdots &amp; \langle \mathbf{q}_n, \mathbf{q}_n \rangle
+\end{pmatrix}
+= I_{n \times n}
+\end{split}\]</div>
+<p>where <span class="math notranslate nohighlight">\(I_{n \times n}\)</span> denotes the <span class="math notranslate nohighlight">\(n \times n\)</span> identity matrix. This of course follows from the fact that the <span class="math notranslate nohighlight">\(\mathbf{q}_i\)</span>’s are orthonormal.</p>
+<p>In the other direction, we claim that <span class="math notranslate nohighlight">\(Q Q^T = I_{n \times n}\)</span> as well. Indeed the matrix <span class="math notranslate nohighlight">\(Q Q^T\)</span> is the orthogonal projection on the span of the <span class="math notranslate nohighlight">\(\mathbf{q}_i\)</span>’s, that is, <span class="math notranslate nohighlight">\(\mathbb{R}^n\)</span>. By the <em>Orthogonal Projection Theorem</em>, the orthogonal projection <span class="math notranslate nohighlight">\(Q Q^T \mathbf{v}\)</span> finds the closest vector to <span class="math notranslate nohighlight">\(\mathbf{v}\)</span> in the span of the <span class="math notranslate nohighlight">\(\mathbf{q}_i\)</span>’s. But that span contains all vectors, including <span class="math notranslate nohighlight">\(\mathbf{v}\)</span>, so we must have <span class="math notranslate nohighlight">\(Q Q^T \mathbf{v} = \mathbf{v}\)</span>. Since this holds for all <span class="math notranslate nohighlight">\(\mathbf{v} \in \mathbb{R}^n\)</span>, the matrix <span class="math notranslate nohighlight">\(Q Q^T\)</span> is the identity map and we have proved the claim. <span class="math notranslate nohighlight">\(\lhd\)</span></p>
+<p>Matrices that satisfy</p>
+<div class="math notranslate nohighlight">
+\[
+Q^T Q = Q Q^T = I_{n \times n}
+\]</div>
+<p>are called orthogonal matrices.</p>
+<p><strong>DEFINITION</strong> <strong>(Orthogonal Matrix)</strong> <span class="math notranslate nohighlight">\(\idx{orthogonal matrix}\xdi\)</span> A square matrix <span class="math notranslate nohighlight">\(Q \in \mathbb{R}^{m\times m}\)</span> is orthogonal if <span class="math notranslate nohighlight">\(Q^T Q = Q Q^T = I_{m \times m}\)</span>. <span class="math notranslate nohighlight">\(\natural\)</span></p>
+<p><strong>KNOWLEDGE CHECK:</strong> Let <span class="math notranslate nohighlight">\(\mathcal{Z}\)</span> be a linear subspace of <span class="math notranslate nohighlight">\(\mathbb{R}^n\)</span> and let <span class="math notranslate nohighlight">\(\mathbf{v} \in \mathbb{R}^n\)</span>. Show that</p>
+<div class="math notranslate nohighlight">
+\[
+\|\mathrm{proj}_{\mathcal{Z}}\mathbf{v}\|_2 \leq \|\mathbf{v}\|_2.
+\]</div>
+<p>[<em>Hint:</em> Use the geometric characterization.] <span class="math notranslate nohighlight">\(\checkmark\)</span></p>
+</section>
+<section id="orthogonal-complement">
+<h2><span class="section-number">2.3.3. </span>Orthogonal complement<a class="headerlink" href="#orthogonal-complement" title="Link to this heading">#</a></h2>
+<p>Before returning to overdetermined systems, we take a little detour to derive a consequence of the orthogonal projection that will be useful later. The <em>Orthogonal Projection Theorem</em> implies that any <span class="math notranslate nohighlight">\(\mathbf{v} \in \mathbb{R}^n\)</span> can be decomposed into its orthogonal projection onto <span class="math notranslate nohighlight">\(U\)</span> and a vector orthogonal to it.</p>
+<p><strong>DEFINITION</strong> <strong>(Orthogonal Complement)</strong> <span class="math notranslate nohighlight">\(\idx{orthogonal complement}\xdi\)</span> Let <span class="math notranslate nohighlight">\(U \subseteq \mathbb{R}^n\)</span> be a linear subspace. The orthogonal complement of <span class="math notranslate nohighlight">\(U\)</span>, denoted <span class="math notranslate nohighlight">\(U^\perp\)</span>, is defined as</p>
+<div class="math notranslate nohighlight">
+\[
+U^\perp
+=
+\{\mathbf{w} \in \mathbb{R}^n\,:\, \langle \mathbf{w}, \mathbf{u}\rangle = 0, 
+\forall \mathbf{u} \in U\}.
+\]</div>
+<p><span class="math notranslate nohighlight">\(\natural\)</span></p>
+<p><strong>EXAMPLE:</strong> Continuing a previous example, we compute the orthogonal complement of the linear subspace <span class="math notranslate nohighlight">\(W = \mathrm{span}(\mathbf{w}_1,\mathbf{w}_2,\mathbf{w}_3)\)</span>, where <span class="math notranslate nohighlight">\(\mathbf{w}_1 = (1,0,1)\)</span>, <span class="math notranslate nohighlight">\(\mathbf{w}_2 = (0,1,1)\)</span>, and <span class="math notranslate nohighlight">\(\mathbf{w}_3 = (1,-1,0)\)</span>. One way to proceed is to find all vectors that are orthogonal to the orthonormal basis</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\mathbf{q}_1
+= \frac{1}{\sqrt{2}} \begin{pmatrix}
+1\\
+0\\
+1
+\end{pmatrix},
+\quad
+\mathbf{q}_2
+= \frac{1}{\sqrt{6}} \begin{pmatrix}
+-1\\
+2\\
+1
+\end{pmatrix}.
+\end{split}\]</div>
+<p>We require</p>
+<div class="math notranslate nohighlight">
+\[
+0 = \langle
+\mathbf{u}, \mathbf{q}_1
+\rangle
+= u_1 \left(\frac{1}{\sqrt{2}}\right)
++ u_2 \left(\frac{0}{\sqrt{2}}\right)
++ u_3 \left(\frac{1}{\sqrt{2}}\right)
+= \frac{u_1 + u_3}{\sqrt{2}},
+\]</div>
+<div class="math notranslate nohighlight">
+\[
+0= \langle
+\mathbf{u}, \mathbf{q}_2
+\rangle
+= u_1 \left(-\frac{1}{\sqrt{6}}\right)
++ u_2 \left(\frac{2}{\sqrt{6}}\right)
++ u_3 \left(\frac{1}{\sqrt{6}}\right)
+= \frac{-u_1 + 2 u_2 + u_3}{\sqrt{6}}.
+\]</div>
+<p>The first equation implies <span class="math notranslate nohighlight">\(u_3 = -u_1\)</span>, which after replacing into the second equation and rearranging gives <span class="math notranslate nohighlight">\(u_2 = u_1\)</span>.</p>
+<p>So all vectors of the form <span class="math notranslate nohighlight">\((u_1,u_1,-u_1)^T\)</span> for some <span class="math notranslate nohighlight">\(u_1 \in \mathbb{R}\)</span> are orthogonal to all of <span class="math notranslate nohighlight">\(W\)</span>. This is a one-dimensional linear subspace. We can choose an orthonormal basis by finding a solution to</p>
+<div class="math notranslate nohighlight">
+\[
+1 = (u_1)^2 + (u_1)^2 + (-u_1)^2 = 3 u_1^2, 
+\]</div>
+<p>Take <span class="math notranslate nohighlight">\(u_1 = 1/\sqrt{3}\)</span>, that is, let</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\mathbf{q}_3
+= \frac{1}{\sqrt{3}} \begin{pmatrix}
+1\\
+1\\
+-1
+\end{pmatrix}.
+\end{split}\]</div>
+<p>Then we have</p>
+<div class="math notranslate nohighlight">
+\[
+W^\perp
+= \mathrm{span}(\mathbf{q}_3).
+\]</div>
+<p><span class="math notranslate nohighlight">\(\lhd\)</span></p>
+<p><strong>LEMMA</strong> <strong>(Orthogonal Decomposition)</strong> <span class="math notranslate nohighlight">\(\idx{orthogonal decomposition lemma}\xdi\)</span> Let <span class="math notranslate nohighlight">\(U \subseteq \mathbb{R}^n\)</span> be a linear subspace and let <span class="math notranslate nohighlight">\(\mathbf{v} \in \mathbb{R}^n\)</span>. Then <span class="math notranslate nohighlight">\(\mathbf{v}\)</span> can be decomposed as <span class="math notranslate nohighlight">\(\mathrm{proj}_U \mathbf{v} + (\mathbf{v} - \mathrm{proj}_U\mathbf{v})\)</span> where <span class="math notranslate nohighlight">\(\mathrm{proj}_U \mathbf{v} \in U\)</span> and <span class="math notranslate nohighlight">\((\mathbf{v} - \mathrm{proj}_U \mathbf{v}) \in U^\perp\)</span>. Moreover, this decomposition is unique in the following sense: if <span class="math notranslate nohighlight">\(\mathbf{v} = \mathbf{u} + \mathbf{u}^\perp\)</span> with <span class="math notranslate nohighlight">\(\mathbf{u} \in U\)</span> and <span class="math notranslate nohighlight">\(\mathbf{u}^\perp \in U^\perp\)</span>, then <span class="math notranslate nohighlight">\(\mathbf{u} = \mathrm{proj}_U \mathbf{v}\)</span> and <span class="math notranslate nohighlight">\(\mathbf{u}^\perp = \mathbf{v} - \mathrm{proj}_U \mathbf{v}\)</span>. <span class="math notranslate nohighlight">\(\flat\)</span></p>
+<p><em>Proof:</em> The first part is an immediate consequence of the <em>Orthogonal Projection Theorem</em>. For the second part, assume <span class="math notranslate nohighlight">\(\mathbf{v} = \mathbf{u} + \mathbf{u}^\perp\)</span> with <span class="math notranslate nohighlight">\(\mathbf{u} \in U\)</span> and <span class="math notranslate nohighlight">\(\mathbf{u}^\perp \in U^\perp\)</span>. Subtracting <span class="math notranslate nohighlight">\(\mathbf{v} = \mathrm{proj}_U \mathbf{v} + (\mathbf{v} - \mathrm{proj}_U\mathbf{v})\)</span>, we see that</p>
+<div class="math notranslate nohighlight">
+\[
+(*) \qquad \mathbf{0} = \mathbf{w}_1 + \mathbf{w}_2
+\]</div>
+<p>with</p>
+<div class="math notranslate nohighlight">
+\[
+\mathbf{w}_1 = \mathbf{u} - \mathrm{proj}_U \mathbf{v} \in U,
+\qquad 
+\mathbf{w}_2 = \mathbf{u}^\perp - (\mathbf{v} - \mathrm{proj}_U\mathbf{v}) \in U^\perp.
+\]</div>
+<p>If <span class="math notranslate nohighlight">\(\mathbf{w}_1 = \mathbf{w}_2 = \mathbf{0}\)</span>, we are done. Otherwise, they must both be nonzero by <span class="math notranslate nohighlight">\((*)\)</span>. Further, by the <em>Properties of Orthonormal Lists</em>, <span class="math notranslate nohighlight">\(\mathbf{w}_1\)</span> and <span class="math notranslate nohighlight">\(\mathbf{w}_2\)</span> must be linearly independent. But this is contradicted by the fact that <span class="math notranslate nohighlight">\(\mathbf{w}_2 = - \mathbf{w}_1\)</span> by <span class="math notranslate nohighlight">\((*)\)</span>. <span class="math notranslate nohighlight">\(\square\)</span></p>
+<p><strong>Figure:</strong> Orthogonal decomposition (<a class="reference external" href="https://commons.wikimedia.org/wiki/File:Orthogonal_Decomposition_qtl1.svg">Source</a>)</p>
+<p><img alt="Orthogonal decomposition" src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/12/Orthogonal_Decomposition_qtl1.svg/640px-Orthogonal_Decomposition_qtl1.svg.png" /></p>
+<p><span class="math notranslate nohighlight">\(\bowtie\)</span></p>
+<p>Formally, the <em>Orthogonal Decomposition Lemma</em> states that <span class="math notranslate nohighlight">\(\mathbb{R}^n\)</span> is a direct sum of any linear subspace <span class="math notranslate nohighlight">\(U\)</span> and of its orthogonal complement <span class="math notranslate nohighlight">\(U^\perp\)</span>: that is, any vector <span class="math notranslate nohighlight">\(\mathbf{v} \in \mathbb{R}^n\)</span> can be written uniquely as <span class="math notranslate nohighlight">\(\mathbf{v} = \mathbf{u} + \mathbf{u}^\perp\)</span> with <span class="math notranslate nohighlight">\(\mathbf{u} \in U\)</span> and <span class="math notranslate nohighlight">\(\mathbf{u}^\perp \in U^\perp\)</span>. This is denoted <span class="math notranslate nohighlight">\(\mathbb{R}^n = U \oplus U^\perp\)</span>.</p>
+<p>Let <span class="math notranslate nohighlight">\(\mathbf{a}_1,\ldots,\mathbf{a}_\ell\)</span> be an orthonormal basis of <span class="math notranslate nohighlight">\(U\)</span> and <span class="math notranslate nohighlight">\(\mathbf{b}_1,\ldots,\mathbf{b}_k\)</span> be an orthonormal basis of <span class="math notranslate nohighlight">\(U^\perp\)</span>. By definition of the orthogonal complement, the list</p>
+<div class="math notranslate nohighlight">
+\[
+\mathcal{L} = \{\mathbf{a}_1,\ldots,\mathbf{a}_\ell, \mathbf{b}_1,\ldots,\mathbf{b}_k\}
+\]</div>
+<p>is orthonormal, so it forms a basis of its span. Because any vector in <span class="math notranslate nohighlight">\(\mathbb{R}^n\)</span> can be written as a sum of a vector from <span class="math notranslate nohighlight">\(U\)</span> and a vector from <span class="math notranslate nohighlight">\(U^\perp\)</span>, all of <span class="math notranslate nohighlight">\(\mathbb{R}^n\)</span> is in the span of <span class="math notranslate nohighlight">\(\mathcal{L}\)</span>. It follows from the <em>Dimension Theorem</em> that <span class="math notranslate nohighlight">\(n = \ell + k\)</span>, that is,</p>
+<div class="math notranslate nohighlight">
+\[
+\mathrm{dim}(U) + \mathrm{dim}(U^\perp) = n.
+\]</div>
+</section>
+<section id="overdetermined-systems">
+<h2><span class="section-number">2.3.4. </span>Overdetermined systems<a class="headerlink" href="#overdetermined-systems" title="Link to this heading">#</a></h2>
+<p>In this section, we discuss the least-squares problem. Let again <span class="math notranslate nohighlight">\(A \in \mathbb{R}^{n\times m}\)</span> be an <span class="math notranslate nohighlight">\(n\times m\)</span> matrix with linearly independent columns and let <span class="math notranslate nohighlight">\(\mathbf{b} \in \mathbb{R}^n\)</span> be a vector. We are looking to solve the system</p>
+<div class="math notranslate nohighlight">
+\[
+A \mathbf{x} \approx \mathbf{b}.
+\]</div>
+<p>If <span class="math notranslate nohighlight">\(n=m\)</span>, we can use the matrix inverse to solve the system, as discussed in the previous subsection. But we are interested in the overdetermined case, i.e. when <span class="math notranslate nohighlight">\(n &gt; m\)</span>: there are more equations than variables. We cannot use the matrix inverse then. Indeed, because the columns do not span all of <span class="math notranslate nohighlight">\(\mathbb{R}^n\)</span>, there is a vector <span class="math notranslate nohighlight">\(\mathbf{b} \in \mathbb{R}^n\)</span> that is not in the column space of <span class="math notranslate nohighlight">\(A\)</span>.</p>
+<p>A natural way to make sense of the overdetermined problem is to cast it as the <a class="reference external" href="https://en.wikipedia.org/wiki/Least_squares">linear least squares problem</a><span class="math notranslate nohighlight">\(\idx{least squares problem}\xdi\)</span></p>
+<div class="math notranslate nohighlight">
+\[
+\min_{\mathbf{x} \in \mathbb{R}^m} \|A \mathbf{x} - \mathbf{b}\|.
+\]</div>
+<p>In words, we look for the best-fitting solution under the Euclidean norm. Equivalently, writing</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+A =
+\begin{pmatrix}
+| &amp;  &amp; | \\
+\mathbf{a}_1 &amp; \ldots &amp; \mathbf{a}_m \\
+| &amp;  &amp; | 
+\end{pmatrix}
+=
+\begin{pmatrix}
+a_{11} &amp; \cdots &amp; a_{1m} \\
+a_{21} &amp; \cdots &amp; a_{2m} \\
+\vdots &amp; \ddots &amp; \vdots \\
+a_{n1} &amp; \cdots &amp; a_{nm}
+\end{pmatrix}
+\quad
+\text{and}
+\quad
+\mathbf{b}
+=
+\begin{pmatrix}
+b_1 \\
+\vdots \\
+b_n
+\end{pmatrix}
+\end{split}\]</div>
+<p>we seek a linear combination of the columns of <span class="math notranslate nohighlight">\(A\)</span> that minimizes the objective</p>
+<div class="math notranslate nohighlight">
+\[
+\left\|\,\sum_{j=1}^m x_j \mathbf{a}_j - \mathbf{b}\,\right\|^2
+= \sum_{i=1}^n \left(
+\sum_{j=1}^m  a_{ij} x_j - b_i
+\right)^2.
+\]</div>
+<p>We have already solved a closely related problem when we introduced the orthogonal projection. We make the connection explicit next.</p>
+<p><strong>THEOREM</strong> <strong>(Normal Equations)</strong> <span class="math notranslate nohighlight">\(\idx{normal equations}\xdi\)</span> Let <span class="math notranslate nohighlight">\(A \in \mathbb{R}^{n\times m}\)</span> be an <span class="math notranslate nohighlight">\(n\times m\)</span> matrix with <span class="math notranslate nohighlight">\(n \geq m\)</span> and let <span class="math notranslate nohighlight">\(\mathbf{b} \in \mathbb{R}^n\)</span> be a vector. A solution <span class="math notranslate nohighlight">\(\mathbf{x}^*\)</span> to the linear least squares problem</p>
+<div class="math notranslate nohighlight">
+\[
+\min_{\mathbf{x} \in \mathbb{R}^m} \|A \mathbf{x} - \mathbf{b}\|
+\]</div>
+<p>satisfies the normal equations</p>
+<div class="math notranslate nohighlight">
+\[
+A^T A \mathbf{x}^* = A^T \mathbf{b}.
+\]</div>
+<p>If further the columns of <span class="math notranslate nohighlight">\(A\)</span> are linearly independent, then there exists a unique solution <span class="math notranslate nohighlight">\(\mathbf{x}^*\)</span>. <span class="math notranslate nohighlight">\(\sharp\)</span></p>
+<p><em>Proof idea:</em> Apply our characterization of the orthogonal projection onto the column space of <span class="math notranslate nohighlight">\(A\)</span>.</p>
+<p><em>Proof:</em> Let <span class="math notranslate nohighlight">\(U = \mathrm{col}(A) = \mathrm{span}(\mathbf{a}_1,\ldots,\mathbf{a}_m)\)</span>. By the <em>Orthogonal Projection Theorem</em>, the orthogonal projection <span class="math notranslate nohighlight">\(\mathbf{p}^* = \mathrm{proj}_{U} \mathbf{b}\)</span> of <span class="math notranslate nohighlight">\(\mathbf{b}\)</span> onto <span class="math notranslate nohighlight">\(U\)</span> is the unique, closest vector to <span class="math notranslate nohighlight">\(\mathbf{b}\)</span> in <span class="math notranslate nohighlight">\(U\)</span>, that is,</p>
+<div class="math notranslate nohighlight">
+\[
+\mathbf{p}^* = \arg\min_{\mathbf{p} \in U} \|\mathbf{p} - \mathbf{b}\|. 
+\]</div>
+<p>Because <span class="math notranslate nohighlight">\(\mathbf{p}^*\)</span> is in <span class="math notranslate nohighlight">\(U = \mathrm{col}(A)\)</span>, it must be of the form <span class="math notranslate nohighlight">\(\mathbf{p}^* = A \mathbf{x}^*\)</span>. This establishes that <span class="math notranslate nohighlight">\(\mathbf{x}^*\)</span> is a solution to the linear least squares problem in the statement.</p>
+<p><em>Important observation:</em> while we have shown that <span class="math notranslate nohighlight">\(\mathbf{p}^*\)</span> is unique (by the <em>Orthogonal Projection Theorem</em>), it is not clear at all that <span class="math notranslate nohighlight">\(\mathbf{x}^*\)</span> (i.e., the linear combination of columns of <span class="math notranslate nohighlight">\(A\)</span> corresponding to <span class="math notranslate nohighlight">\(\mathbf{p}^*\)</span>) is unique. By the <em>Orthogonal Projection Theorem</em>, it must satisfy <span class="math notranslate nohighlight">\(\langle \mathbf{b} - A \mathbf{x}^*, \mathbf{u}\rangle = 0\)</span> for all <span class="math notranslate nohighlight">\(\mathbf{u} \in U\)</span>. Because the columns <span class="math notranslate nohighlight">\(\mathbf{a}_i\)</span> are in <span class="math notranslate nohighlight">\(U\)</span>, that implies that</p>
+<div class="math notranslate nohighlight">
+\[
+0 = \langle \mathbf{b} - A \mathbf{x}^*, \mathbf{a}_i\rangle 
+= \mathbf{a}_i^T (\mathbf{b} - A \mathbf{x}^*) ,\qquad \forall i\in [m].
+\]</div>
+<p>Stacking up these equations gives in matrix form</p>
+<div class="math notranslate nohighlight">
+\[
+A^T (\mathbf{b} - A\mathbf{x}^*) = \mathbf{0},
+\]</div>
+<p>as claimed.</p>
+<p>We have seen in a previous example that, when <span class="math notranslate nohighlight">\(A\)</span> has full column rank, the matrix <span class="math notranslate nohighlight">\(A^T A\)</span> is invertible. That implies the uniqueness claim. <span class="math notranslate nohighlight">\(\square\)</span></p>
+<p><strong>NUMERICAL CORNER:</strong> To solve a linear system in Numpy, use <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.linalg.solve.html"><code class="docutils literal notranslate"><span class="pre">numpy.linalg.solve</span></code></a>. As an example, we consider the overdetermined system with</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+A = \begin{pmatrix}
+1 &amp; 0\\
+0 &amp; 1\\
+1 &amp; 1
+\end{pmatrix}
+\quad
+\text{and}
+\quad
+\mathbf{b} = \begin{pmatrix}
+0\\
+0\\
+2
+\end{pmatrix}.
+\end{split}\]</div>
+<p>We use <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.T.html"><code class="docutils literal notranslate"><span class="pre">numpy.ndarray.T</span></code></a> for the transpose.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">w1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="mf">1.</span><span class="p">])</span>
+<span class="n">w2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.</span><span class="p">,</span> <span class="mf">1.</span><span class="p">,</span> <span class="mf">1.</span><span class="p">])</span>
+<span class="n">A</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">stack</span><span class="p">((</span><span class="n">w1</span><span class="p">,</span> <span class="n">w2</span><span class="p">),</span><span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">b</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="mf">2.</span><span class="p">])</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">LA</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="n">A</span><span class="o">.</span><span class="n">T</span> <span class="o">@</span> <span class="n">A</span><span class="p">,</span> <span class="n">A</span><span class="o">.</span><span class="n">T</span> <span class="o">@</span> <span class="n">b</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[0.66666667 0.66666667]
+</pre></div>
+</div>
+</div>
+</div>
+<p>We can also use <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.linalg.lstsq.html"><code class="docutils literal notranslate"><span class="pre">numpy.linalg.lstsq</span></code></a> directly on the overdetermined system to compute the least-square solution.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">x</span> <span class="o">=</span> <span class="n">LA</span><span class="o">.</span><span class="n">lstsq</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">rcond</span><span class="o">=</span><span class="kc">None</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[0.66666667 0.66666667]
+</pre></div>
+</div>
+</div>
+</div>
+<p><span class="math notranslate nohighlight">\(\unlhd\)</span></p>
+<p><em><strong>Self-assessment quiz</strong></em> <em>(with help from Claude, Gemini, and ChatGPT)</em></p>
+<p><strong>1</strong> Let <span class="math notranslate nohighlight">\(\mathbf{q}_1, \dots, \mathbf{q}_m\)</span> be an orthonormal list of vectors in <span class="math notranslate nohighlight">\(\mathbb{R}^n\)</span>. Which of the following is the orthogonal projection of a vector <span class="math notranslate nohighlight">\(\mathbf{v} \in \mathbb{R}^n\)</span> onto <span class="math notranslate nohighlight">\(\mathrm{span}(\mathbf{q}_1, \dots, \mathbf{q}_m)\)</span>?</p>
+<p>a) <span class="math notranslate nohighlight">\(\sum_{i=1}^m \mathbf{q}_i\)</span></p>
+<p>b) <span class="math notranslate nohighlight">\(\sum_{i=1}^m \langle \mathbf{v}, \mathbf{q}_i \rangle\)</span></p>
+<p>c) <span class="math notranslate nohighlight">\(\sum_{i=1}^m \langle \mathbf{v}, \mathbf{q}_i \rangle \mathbf{q}_i\)</span></p>
+<p>d) <span class="math notranslate nohighlight">\(\sum_{i=1}^m \langle \mathbf{q}_i, \mathbf{q}_i \rangle \mathbf{v}\)</span></p>
+<p><strong>2</strong> According to the Normal Equations Theorem, what condition must a solution <span class="math notranslate nohighlight">\(x^*\)</span> to the linear least squares problem satisfy?</p>
+<p>a) <span class="math notranslate nohighlight">\(A^T Ax^* = b\)</span></p>
+<p>b) <span class="math notranslate nohighlight">\(A^T Ax^* = A^T b\)</span></p>
+<p>c) <span class="math notranslate nohighlight">\(Ax^* = A^T b\)</span></p>
+<p>d) <span class="math notranslate nohighlight">\(Ax^* = b\)</span></p>
+<p><strong>3</strong> Which property characterizes the orthogonal projection <span class="math notranslate nohighlight">\(\mathrm{proj}_U \mathbf{v}\)</span> of a vector <span class="math notranslate nohighlight">\(\mathbf{v}\)</span> onto a subspace <span class="math notranslate nohighlight">\(U\)</span>?</p>
+<p>a) <span class="math notranslate nohighlight">\(\mathbf{v} - \mathrm{proj}_U \mathbf{v}\)</span> is a scalar multiple of <span class="math notranslate nohighlight">\(\mathbf{v}\)</span>.</p>
+<p>b) <span class="math notranslate nohighlight">\(\mathbf{v} - \mathrm{proj}_U \mathbf{v}\)</span> is orthogonal to <span class="math notranslate nohighlight">\(\mathbf{v}\)</span>.</p>
+<p>c) <span class="math notranslate nohighlight">\(\mathbf{v} - \mathrm{proj}_U \mathbf{v}\)</span> is orthogonal to <span class="math notranslate nohighlight">\(U\)</span>.</p>
+<p>d) <span class="math notranslate nohighlight">\(\mathrm{proj}_U \mathbf{v}\)</span> is always the zero vector.</p>
+<p><strong>4</strong> What is the interpretation of the linear least squares problem <span class="math notranslate nohighlight">\(A\mathbf{x} \approx \mathbf{b}\)</span> in terms of the column space of <span class="math notranslate nohighlight">\(A\)</span>?</p>
+<p>a) Finding the exact solution <span class="math notranslate nohighlight">\(\mathbf{x}\)</span> such that <span class="math notranslate nohighlight">\(A\mathbf{x} = \mathbf{b}\)</span>.</p>
+<p>b) Finding the vector <span class="math notranslate nohighlight">\(\mathbf{x}\)</span> that makes the linear combination <span class="math notranslate nohighlight">\(A\mathbf{x}\)</span> of the columns of <span class="math notranslate nohighlight">\(A\)</span> as close as possible to <span class="math notranslate nohighlight">\(\mathbf{b}\)</span> in Euclidean norm.</p>
+<p>c) Finding the orthogonal projection of <span class="math notranslate nohighlight">\(\mathbf{b}\)</span> onto the column space of <span class="math notranslate nohighlight">\(A\)</span>.</p>
+<p>d) Finding the orthogonal complement of the column space of <span class="math notranslate nohighlight">\(A\)</span>.</p>
+<p><strong>5</strong> Which matrix equation must hold true for a matrix <span class="math notranslate nohighlight">\(Q\)</span> to be orthogonal?</p>
+<p>a) <span class="math notranslate nohighlight">\(Q Q^T = 0\)</span>.</p>
+<p>b) <span class="math notranslate nohighlight">\(Q Q^T = I\)</span>.</p>
+<p>c) <span class="math notranslate nohighlight">\(Q^T Q = 0\)</span>.</p>
+<p>d) <span class="math notranslate nohighlight">\(Q^T = Q\)</span>.</p>
+<p>Answer for 1: c. Justification: This is the definition of the orthogonal projection onto an orthonormal list given in the text.</p>
+<p>Answer for 2: b. Justification: The Normal Equations Theorem states that a solution <span class="math notranslate nohighlight">\(x^*\)</span> to the linear least squares problem satisfies <span class="math notranslate nohighlight">\(A^T Ax^* = A^T b\)</span>.</p>
+<p>Answer for 3: c. Justification: The text states that the orthogonal projection <span class="math notranslate nohighlight">\(\mathrm{proj}_U \mathbf{v}\)</span> has the property that “the difference <span class="math notranslate nohighlight">\(\mathbf{v} - \mathrm{proj}_U \mathbf{v}\)</span> is orthogonal to <span class="math notranslate nohighlight">\(U\)</span>.”</p>
+<p>Answer for 4: b. Justification: The text defines the linear least squares problem as seeking a linear combination of the columns of <span class="math notranslate nohighlight">\(A\)</span> that minimizes the distance to <span class="math notranslate nohighlight">\(\mathbf{b}\)</span> in Euclidean norm.</p>
+<p>Answer for 5: b. Justification: The text defines an orthogonal matrix as a square matrix <span class="math notranslate nohighlight">\(Q\)</span> such that <span class="math notranslate nohighlight">\(Q Q^T = I\)</span>.</p>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./chap02_ls/03_orthog"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="../02_spaces/roch-mmids-ls-spaces.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title"><span class="section-number">2.2. </span>Background: review of vector spaces and matrix inverses</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="../04_qr/roch-mmids-ls-qr.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title"><span class="section-number">2.4. </span>QR decomposition and Householder transformations</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#a-key-concept-orthogonality">2.3.1. A key concept: orthogonality</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#orthogonal-projection">2.3.2. Orthogonal projection</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#orthogonal-complement">2.3.3. Orthogonal complement</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overdetermined-systems">2.3.4. Overdetermined systems</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Sebastien Roch
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2024.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

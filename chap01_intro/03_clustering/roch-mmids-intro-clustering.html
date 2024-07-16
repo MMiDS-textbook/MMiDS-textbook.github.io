@@ -1,0 +1,1564 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>1.3. Clustering: an objective, an algorithm and a guarantee &#8212; MMiDS Textbook</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.5.1/css/all.min.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.1/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.1/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.1/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b76e3c8a" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=384b581d" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css?v=be8a1c11" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=87e54e7c" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae" />
+  <script src="../../_static/vendor/fontawesome/6.5.1/js/all.min.js?digest=8d27b9dea8ad943066ae"></script>
+
+    <script src="../../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?v=efea14e4"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../_static/design-tabs.js?v=f930bc37"></script>
+    <script async="async" src="https://www.googletagmanager.com/gtag/js?id=G-P5E8DW088F"></script>
+    <script>
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){ dataLayer.push(arguments); }
+                gtag('js', new Date());
+                gtag('config', 'G-P5E8DW088F');
+            </script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){ dataLayer.push(arguments); }
+                gtag('js', new Date());
+                gtag('config', 'G-P5E8DW088F');
+            </script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'chap01_intro/03_clustering/roch-mmids-intro-clustering';</script>
+    <link rel="canonical" href="https://mmids-textbook.github.io/chap01_intro/03_clustering/roch-mmids-intro-clustering.html" />
+    <link rel="icon" href="https://mmids-textbook.github.io/favicon-32x32.png"/>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="1.4. Some observations about high-dimensional data" href="../04_highdim/roch-mmids-intro-highdim.html" />
+    <link rel="prev" title="1.2. Background: quick refresher of matrix algebra, differential calculus, and elementary probability" href="../02_review/roch-mmids-intro-review.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a id="pst-skip-link" class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+
+<a class="navbar-brand logo" href="../../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/mmids-cover-small.jpg" class="logo__image only-light" alt="MMiDS Textbook - Home"/>
+    <script>document.write(`<img src="../../_static/mmids-cover-small.jpg" class="logo__image only-dark" alt="MMiDS Textbook - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../index.html">
+                    <b>MATHEMATICAL METHODS in DATA SCIENCE (with Python)</b>
+                </a>
+            </li>
+        </ul>
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="../00_intro/roch-mmids-intro-intro.html">1. Introduction: a first data science problem</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../01_motiv/roch-mmids-intro-motiv.html">1.1. Motivating example: identifying penguin species</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../02_review/roch-mmids-intro-review.html">1.2. Background: quick refresher of matrix algebra, differential calculus, and elementary probability</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">1.3. Clustering: an objective, an algorithm and a guarantee</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../04_highdim/roch-mmids-intro-highdim.html">1.4. Some observations about high-dimensional data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../exercises/roch-mmids-intro-exercises.html">1.5. Exercises</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../supp/roch-mmids-intro-supp.html">1.6. Online suppplementary material</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../chap02_ls/00_intro/roch-mmids-ls-intro.html">2. Least squares: geometric, algebraic, and numerical aspects</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../chap02_ls/01_motiv/roch-mmids-ls-motiv.html">2.1. Motivating example: predicting sales</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap02_ls/02_spaces/roch-mmids-ls-spaces.html">2.2. Background: review of vector spaces and matrix inverses</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap02_ls/03_orthog/roch-mmids-ls-orthog.html">2.3. Geometry of least squares: the orthogonal projection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap02_ls/04_qr/roch-mmids-ls-qr.html">2.4. QR decomposition and Householder transformations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap02_ls/05_regression/roch-mmids-ls-regression.html">2.5. Application: regression analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap02_ls/exercises/roch-mmids-ls-exercises.html">2.6. Exercises</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap02_ls/supp/roch-mmids-ls-supp.html">2.7. Online suppplementary material</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../chap03_opt/00_intro/roch-mmids-opt-intro.html">3. Optimization theory and algorithms</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-3"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../chap03_opt/01_motiv/roch-mmids-opt-motiv.html">3.1. Motivating example:  analyzing customer satisfaction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap03_opt/02_several/roch-mmids-opt-several.html">3.2. Background: review of differentiable functions of several variables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap03_opt/03_optimality/roch-mmids-opt-optimality.html">3.3. Optimality conditions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap03_opt/04_convexity/roch-mmids-opt-convexity.html">3.4. Convexity</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap03_opt/05_gd/roch-mmids-opt-gd.html">3.5. Gradient descent and its convergence analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap03_opt/06_logistic/roch-mmids-opt-logistic.html">3.6. Application: logistic regression</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap03_opt/exercises/roch-mmids-opt-exercises.html">3.7. Exercises</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap03_opt/supp/roch-mmids-opt-supp.html">3.8. Online suppplementary material</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../chap04_svd/00_intro/roch-mmids-svd-intro.html">4. Singular value decomposition</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-4"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../chap04_svd/01_motiv/roch-mmids-svd-motiv.html">4.1. Motivating example: visualizing viral evolution</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap04_svd/02_spectral/roch-mmids-svd-spectral.html">4.2. Background: review of matrix rank  and spectral decomposition</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap04_svd/03_svd/roch-mmids-svd-svd.html">4.3. Approximating subspaces and the SVD</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap04_svd/04_power/roch-mmids-svd-power.html">4.4. Power iteration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap04_svd/05_pca/roch-mmids-svd-pca.html">4.5. Application: principal components analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap04_svd/06_further/roch-mmids-svd-further.html">4.6. Further applications of the SVD: low-rank approximations and ridge regression</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap04_svd/exercises/roch-mmids-svd-exercises.html">4.7. Exercises</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap04_svd/supp/roch-mmids-svd-supp.html">4.8. Online suppplementary material</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../chap05_specgraph/00_intro/roch-mmids-specgraph-intro.html">5. Spectral graph theory</a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-5"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../chap05_specgraph/01_motiv/roch-mmids-specgraph-motiv.html">5.1. Motivating example: uncovering social groups</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap05_specgraph/02_graph/roch-mmids-specgraph-graph.html">5.2. Background: basic concepts in graph theory</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap05_specgraph/03_extremal/roch-mmids-specgraph-extremal.html">5.3. Variational characterization of eigenvalues</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap05_specgraph/04_laplacian/roch-mmids-specgraph-laplacian.html">5.4. Spectral properties of the Laplacian matrix</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap05_specgraph/05_partitioning/roch-mmids-specgraph-partitioning.html">5.5. Application: graph partitioning via spectral clustering</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap05_specgraph/06_sbm/roch-mmids-specgraph-sbm.html">5.6. Erdős-Rényi random graph and stochastic blockmodel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap05_specgraph/exercises/roch-mmids-specgraph-exercises.html">5.7. Exercises</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap05_specgraph/supp/roch-mmids-specgraph-supp.html">5.8. Online supplementary material</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../chap06_prob/00_intro/roch-mmids-prob-intro.html">6. Probabilistic models: from simple to complex</a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-6"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../chap06_prob/01_motiv/roch-mmids-prob-motiv.html">6.1. Motivating example: tracking location</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap06_prob/02_parametric/roch-mmids-prob-parametric.html">6.2. Background: introduction to parametric families and maximum likelihood estimation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap06_prob/03_joint/roch-mmids-prob-joint.html">6.3. Modeling more complex dependencies 1: using conditional independence</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap06_prob/04_em/roch-mmids-prob-em.html">6.4. Modeling more complex dependencies 2: marginalizing out an unobserved variable</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap06_prob/05_kalman/roch-mmids-prob-kalman.html">6.5. Application: linear-Gaussian models and Kalman filtering</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap06_prob/exercises/roch-mmids-prob-exercises.html">6.6. Exercises</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap06_prob/supp/roch-mmids-prob-supp.html">6.7. Online supplementary material</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../chap07_rwmc/00_intro/roch-mmids-rwmc-intro.html">7. Random walks on graphs and Markov chains</a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-7"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../chap07_rwmc/01_motiv/roch-mmids-rwmc-motiv.html">7.1. Motivating example: discovering mathematical topics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap07_rwmc/02_mcdefs/roch-mmids-rwmc-mcdefs.html">7.2. Background: elements of finite Markov chains</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap07_rwmc/03_stat/roch-mmids-rwmc-stat.html">7.3. Limit behavior 1: stationary distributions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap07_rwmc/04_mclimit/roch-mmids-rwmc-mclimit.html">7.4. Limit behavior 2: convergence to equilibrium</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap07_rwmc/05_pagerank/roch-mmids-rwmc-pagerank.html">7.5. Application: random walks on graphs and PageRank</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap07_rwmc/06_gibbs/roch-mmids-rwmc-gibbs.html">7.6. Further applications: Gibbs sampling and generating images</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap07_rwmc/exercises/roch-mmids-rwmc-exercises.html">7.7. Exercises</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap07_rwmc/supp/roch-mmids-rwmc-supp.html">7.8. Online supplementary material</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../chap08_nn/00_intro/roch-mmids-nn-intro.html">8. Neural networks, backpropagation and stochastic gradient descent</a><input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-8"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../chap08_nn/01_motiv/roch-mmids-nn-motiv.html">8.1. Motivating example:  classifying natural images</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap08_nn/02_chain/roch-mmids-nn-chain.html">8.2. Background: Jacobian, chain rule, and a brief introduction to automatic differentiation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap08_nn/03_backprop/roch-mmids-nn-backprop.html">8.3. Building blocks of AI 1: backpropagation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap08_nn/04_sgd/roch-mmids-nn-sgd.html">8.4. Building blocks of AI 2: stochastic gradient descent</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap08_nn/05_nn/roch-mmids-nn-nn.html">8.5. Building blocks of AI 3: neural networks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap08_nn/exercises/roch-mmids-nn-exercises.html">8.6. Exercises</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap08_nn/supp/roch-mmids-nn-supp.html">8.7. Online supplementary material</a></li>
+</ul>
+</li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/MMiDS-textbook/MMiDS-textbook.github.io" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/MMiDS-textbook/MMiDS-textbook.github.io/issues/new?title=Issue%20on%20page%20%2Fchap01_intro/03_clustering/roch-mmids-intro-clustering.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/chap01_intro/03_clustering/roch-mmids-intro-clustering.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Clustering: an objective, an algorithm and a guarantee</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-k-means-objective">1.3.1. The k-means objective</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#lloyds-algorithm-and-its-analysis">1.3.2. Lloyd’s algorithm and its analysis</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#matrix-form-of-k-means-clustering">1.3.3. Matrix form of k-means clustering</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <p><span class="math notranslate nohighlight">\(\newcommand{\bmu}{\boldsymbol{\mu}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bSigma}{\boldsymbol{\Sigma}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bfbeta}{\boldsymbol{\beta}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bflambda}{\boldsymbol{\lambda}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bgamma}{\boldsymbol{\gamma}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bsigma}{{\boldsymbol{\sigma}}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bpi}{\boldsymbol{\pi}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\btheta}{{\boldsymbol{\theta}}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bphi}{\boldsymbol{\phi}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\balpha}{\boldsymbol{\alpha}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\blambda}{\boldsymbol{\lambda}}\)</span>
+<span class="math notranslate nohighlight">\(\renewcommand{\P}{\mathbb{P}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\E}{\mathbb{E}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\indep}{\perp\!\!\!\perp} \newcommand{\bx}{\mathbf{x}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bp}{\mathbf{p}}\)</span>
+<span class="math notranslate nohighlight">\(\renewcommand{\bx}{\mathbf{x}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bX}{\mathbf{X}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\by}{\mathbf{y}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bY}{\mathbf{Y}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bz}{\mathbf{z}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bZ}{\mathbf{Z}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bw}{\mathbf{w}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bW}{\mathbf{W}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bv}{\mathbf{v}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bV}{\mathbf{V}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bfg}{\mathbf{g}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bfh}{\mathbf{h}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\horz}{\rule[.5ex]{2.5ex}{0.5pt}}\)</span>
+<span class="math notranslate nohighlight">\(\renewcommand{\S}{\mathcal{S}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\X}{\mathcal{X}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\var}{\mathrm{Var}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\pa}{\mathrm{pa}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\Z}{\mathcal{Z}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bh}{\mathbf{h}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bb}{\mathbf{b}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bc}{\mathbf{c}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\cE}{\mathcal{E}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\cP}{\mathcal{P}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bbeta}{\boldsymbol{\beta}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bLambda}{\boldsymbol{\Lambda}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\cov}{\mathrm{Cov}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bfk}{\mathbf{k}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\idx}[1]{}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\xdi}{}\)</span></p>
+<section id="clustering-an-objective-an-algorithm-and-a-guarantee">
+<h1><span class="section-number">1.3. </span>Clustering: an objective, an algorithm and a guarantee<a class="headerlink" href="#clustering-an-objective-an-algorithm-and-a-guarantee" title="Link to this heading">#</a></h1>
+<p>Consider the following fundamental problem in data science.</p>
+<p><em>The input:</em> We are given <span class="math notranslate nohighlight">\(n\)</span> vectors <span class="math notranslate nohighlight">\(\mathbf{x}_1,\ldots,\mathbf{x}_n\)</span> in <span class="math notranslate nohighlight">\(\mathbb{R}^d\)</span>.</p>
+<p>Our goal is to find a good clustering<span class="math notranslate nohighlight">\(\idx{clustering}\xdi\)</span>: loosely speaking, we want to partition these data points into <span class="math notranslate nohighlight">\(k\)</span> disjoint subsets – or clusters – with small pairwise distances within clusters and large pairwise distances across clusters. To make this rather vague problem more precise, we consider a specific objective function known as the <span class="math notranslate nohighlight">\(k\)</span>-means objective. Our approach here will be typical of how one might approach a mathematical data science problem. We will first formulate the problem as an optimization problem, then derive an algorithm to solve it, and finally provide some rigorous guarantees about the output.</p>
+<p><strong>Figure:</strong> Data points forming three clusters (<a class="reference external" href="https://commons.wikimedia.org/wiki/File:Cluster-2.svg">Source</a>)</p>
+<p><img alt="Data points forming three clusters" src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c8/Cluster-2.svg/640px-Cluster-2.svg.png" /></p>
+<p><span class="math notranslate nohighlight">\(\bowtie\)</span></p>
+<p><em>The output:</em> But first, we need to define precisely what we are trying to extract from the data. What is the mathematical structure of the solution sought? Fix a number of clusters <span class="math notranslate nohighlight">\(k\)</span>. Formally, we define a clustering as a partition.</p>
+<p><strong>DEFINITION</strong> <strong>(Partition)</strong> <span class="math notranslate nohighlight">\(\idx{partition}\xdi\)</span> A partition of <span class="math notranslate nohighlight">\([n] = \{1,\ldots,n\}\)</span> of size <span class="math notranslate nohighlight">\(k\)</span> is a collection of non-empty subsets <span class="math notranslate nohighlight">\(C_1,\ldots,C_k \subseteq [n]\)</span> that:</p>
+<ul class="simple">
+<li><p>are pairwise disjoint, i.e., <span class="math notranslate nohighlight">\(C_i \cap C_j = \emptyset\)</span>, <span class="math notranslate nohighlight">\(\forall i \neq j\)</span></p></li>
+<li><p>cover all of <span class="math notranslate nohighlight">\([n]\)</span>, i.e., <span class="math notranslate nohighlight">\(\cup_{i=1}^k C_i = [n]\)</span>.</p></li>
+</ul>
+<p><span class="math notranslate nohighlight">\(\natural\)</span></p>
+<p><strong>EXAMPLE:</strong> Suppose we are given <span class="math notranslate nohighlight">\(8\)</span> data points in <span class="math notranslate nohighlight">\(\mathbb{R}^2\)</span> as follows:</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+&amp;\mathbf{x}_1 = \begin{pmatrix}1\\0\end{pmatrix},
+\mathbf{x}_2 = \begin{pmatrix}-2\\0\end{pmatrix},
+\mathbf{x}_3 = \begin{pmatrix}-2\\1\end{pmatrix},
+\mathbf{x}_4 = \begin{pmatrix}1\\-3\end{pmatrix},\\
+&amp;\mathbf{x}_5 = \begin{pmatrix}-10\\10\end{pmatrix},
+\mathbf{x}_6 = \begin{pmatrix}2\\-2\end{pmatrix},
+\mathbf{x}_7 = \begin{pmatrix}-3\\1\end{pmatrix},
+\mathbf{x}_8 = \begin{pmatrix}3\\-1\end{pmatrix}.
+\end{align*}\]</div>
+<p>So here <span class="math notranslate nohighlight">\(n=8\)</span> and <span class="math notranslate nohighlight">\(d = 2\)</span>. Assume we look for <span class="math notranslate nohighlight">\(k = 3\)</span> clusters. Then a valid clustering would be for instance:</p>
+<div class="math notranslate nohighlight">
+\[
+C_1 = \{1, 4, 6, 8\}, C_2 = \{2, 3, 7\}, C_3 = \{5\},
+\]</div>
+<p>which corresponds to assigning data points <span class="math notranslate nohighlight">\(\mathbf{x}_1, \mathbf{x}_4, \mathbf{x}_6, \mathbf{x}_8\)</span> to the first cluster, data points <span class="math notranslate nohighlight">\(\mathbf{x}_2, \mathbf{x}_3, \mathbf{x}_7\)</span> to the second cluster and data point <span class="math notranslate nohighlight">\(\mathbf{x}_5\)</span> to the third cluster. Note in particular that the sets <span class="math notranslate nohighlight">\(C_1, C_2, C_3\)</span> satisfy the conditions of a partition, i.e., they are disjoint and cover all of <span class="math notranslate nohighlight">\([8] = \{1,2,\ldots,8\}\)</span>. Or put differently, each data point is assigned to one and exactly one cluster. <span class="math notranslate nohighlight">\(\lhd\)</span></p>
+<p>We number the clusters <span class="math notranslate nohighlight">\(C_1,\ldots,C_k\)</span> for notational convenience, but their order is meaningless. Two partitions are the same if they are the same family of subsets. E.g., in the previous example,
+<span class="math notranslate nohighlight">\(C_1 = \{1, 4, 6, 8\}, C_2 = \{2, 3, 7\}, C_3 = \{5\}\)</span> and <span class="math notranslate nohighlight">\(C_1 = \{5\}, C_2 = \{1, 4, 6, 8\}, C_3 = \{2, 3, 7\}\)</span> are equivalent clusterings.</p>
+<section id="the-k-means-objective">
+<h2><span class="section-number">1.3.1. </span>The k-means objective<a class="headerlink" href="#the-k-means-objective" title="Link to this heading">#</a></h2>
+<p>Under the <span class="math notranslate nohighlight">\(k\)</span>-means objective<span class="math notranslate nohighlight">\(\idx{k-means objective}\xdi\)</span>, the “cost” of <span class="math notranslate nohighlight">\(C_1,\ldots,C_k\)</span> is defined as</p>
+<div class="math notranslate nohighlight">
+\[
+\mathcal{G}(C_1,\ldots,C_k) = \min_{\boldsymbol{\mu}_1,\ldots,\boldsymbol{\mu}_k \in \mathbb{R}^d} 
+\sum_{i=1}^k \sum_{j \in C_i} \|\mathbf{x}_j - \boldsymbol{\mu}_i\|^2.
+\]</div>
+<p>Here <span class="math notranslate nohighlight">\(\boldsymbol{\mu}_i \in \mathbb{R}^d\)</span> is the representative – or center – of cluster <span class="math notranslate nohighlight">\(C_i\)</span>. Note that <span class="math notranslate nohighlight">\(\boldsymbol{\mu}_i\)</span> need not be one of the <span class="math notranslate nohighlight">\(\mathbf{x}_j\)</span>’s.</p>
+<p>Our goal is to find a partition <span class="math notranslate nohighlight">\(C_1,\ldots,C_k\)</span> that minimizes <span class="math notranslate nohighlight">\(\mathcal{G}(C_1,\ldots,C_k)\)</span>, i.e., solves the problem</p>
+<div class="math notranslate nohighlight">
+\[
+\min_{C_1,\ldots,C_k} \mathcal{G}(C_1,\ldots,C_k)
+\]</div>
+<p>over all partitions of <span class="math notranslate nohighlight">\([n]\)</span> of size <span class="math notranslate nohighlight">\(k\)</span>. This is a finite optimization problem, as there are only a finite number of such partitions. Note, however, that the objective function itself is an optimization problem over <span class="math notranslate nohighlight">\(\mathbb{R}^d \times \cdots \times \mathbb{R}^{d}\)</span>, that is, <span class="math notranslate nohighlight">\(k\)</span> copies of <span class="math notranslate nohighlight">\(\mathbb{R}^d\)</span>.</p>
+<p>To quote <a class="reference external" href="https://en.wikipedia.org/wiki/Cluster_analysis#Centroid-based_clustering">Wikipedia</a>:</p>
+<blockquote>
+<div><p>In centroid-based clustering, clusters are represented by a central vector, which may not necessarily be a member of the data set. When the number of clusters is fixed to k, k-means clustering gives a formal definition as an optimization problem: find the k cluster centers and assign the objects to the nearest cluster center, such that the squared distances from the cluster are minimized.</p>
+</div></blockquote>
+<p><strong>KNOWLEDGE CHECK:</strong> Is it possible for a global solution of the <span class="math notranslate nohighlight">\(k\)</span>-means clustering problem to contain an empty cluster? <span class="math notranslate nohighlight">\(\checkmark\)</span></p>
+<p>In general, the problem is <a class="reference external" href="https://en.wikipedia.org/wiki/NP-hardness">NP-hard</a><span class="math notranslate nohighlight">\(\idx{NP-hardness}\xdi\)</span>, that is, roughly speaking no “fast” algorithm is expected to exist to solve it. Lloyd’s algorithm (also referred to as the <span class="math notranslate nohighlight">\(k\)</span>-means algorithm) is a popular heuristic. It is based on the idea that the following two sub-problems are easy to solve:</p>
+<ol class="arabic simple">
+<li><p>finding the optimal representatives for a fixed partition;</p></li>
+<li><p>finding the optimal partition for a fixed set of representatives.</p></li>
+</ol>
+<p>One then alternates between the two (perhaps until progress falls below a tolerance). This is reasonable since our goal, as we pointed out above, is to solve the minimization problem</p>
+<div class="math notranslate nohighlight">
+\[
+\min_{C_1,\ldots,C_k} \min_{\boldsymbol{\mu}_1,\ldots,\boldsymbol{\mu}_k \in \mathbb{R}^d} 
+\sum_{i=1}^k \sum_{j \in C_i} \|\mathbf{x}_j - \boldsymbol{\mu}_i\|^2
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(C_1,\ldots,C_k\)</span> ranges over all partitions of <span class="math notranslate nohighlight">\([n]\)</span> of size <span class="math notranslate nohighlight">\(k\)</span>. Fixing partition <span class="math notranslate nohighlight">\(C_1,\ldots,C_k\)</span> and miniminizing over <span class="math notranslate nohighlight">\(\boldsymbol{\mu}_1,\ldots,\boldsymbol{\mu}_k \in \mathbb{R}^d\)</span> corresponds to solving the first problem above, while fixing <span class="math notranslate nohighlight">\(\boldsymbol{\mu}_1,\ldots,\boldsymbol{\mu}_k \in \mathbb{R}^d\)</span> and miniminizing over partitions <span class="math notranslate nohighlight">\(C_1,\ldots,C_k\)</span> corresponds to solving the second problem.</p>
+<p><strong>CHAT &amp; LEARN</strong> Ask your favorite AI chatbot about the differences between <span class="math notranslate nohighlight">\(k\)</span>-means, <span class="math notranslate nohighlight">\(k\)</span>-medians, and <span class="math notranslate nohighlight">\(k\)</span>-medoids clustering. <span class="math notranslate nohighlight">\(\ddagger\)</span></p>
+<p><strong>Some useful optimization results</strong> To analyze the Lloyd’s algorithm, we will rely on a few basic observations.</p>
+<p><em>Minimizing a quadratic function:</em> To elaborate on the first step above, we review an elementary fact about <a class="reference external" href="https://en.wikipedia.org/wiki/Quadratic_function">quadratic functions</a>.Consider the function</p>
+<div class="math notranslate nohighlight">
+\[
+q(x) = a x^2 + b x + c.
+\]</div>
+<p>When <span class="math notranslate nohighlight">\(a &gt; 0\)</span>, <span class="math notranslate nohighlight">\(q\)</span> has a unique minimum.</p>
+<p><strong>LEMMA</strong> <strong>(Minimum of a Quadratic Function)</strong> <span class="math notranslate nohighlight">\(\idx{minimum of a quadratic function}\xdi\)</span> Let <span class="math notranslate nohighlight">\(q(x) = a x^2 + b x + c\)</span> where <span class="math notranslate nohighlight">\(a &gt; 0\)</span> and <span class="math notranslate nohighlight">\(x \in \mathbb{R}\)</span>. The unique global minimum of <span class="math notranslate nohighlight">\(q\)</span> is attained at</p>
+<div class="math notranslate nohighlight">
+\[
+x^* = -\frac{b}{2a}.
+\]</div>
+<p><span class="math notranslate nohighlight">\(\flat\)</span></p>
+<p><em>Proof:</em> By the <em>First-Order Necessary Optimality Condition</em>, a global minimizer of <span class="math notranslate nohighlight">\(q\)</span> (which is necessarily a local minimizer) satisfies the condition</p>
+<div class="math notranslate nohighlight">
+\[
+\frac{\mathrm{d}}{\mathrm{d}x} q(x) = 2 a x + b = 0,
+\]</div>
+<p>whose unique solution is</p>
+<div class="math notranslate nohighlight">
+\[
+x^*= -\frac{b}{2a}.
+\]</div>
+<p>To see that <span class="math notranslate nohighlight">\(x^*\)</span> is indeed a global minimizer, we re-write <span class="math notranslate nohighlight">\(q\)</span> as</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+q(x) 
+&amp;= a \left(x^2 + 2 \left[\frac{b}{2a}\right] x\right) + c\\
+&amp;= a \left(x^2 + 2 \left[\frac{b}{2a}\right] x + \left[\frac{b}{2a}\right]^2\right) - a \left[\frac{b}{2a}\right]^2 + c\\
+&amp;= a (x - x^*)^2 + \left[c - \frac{b^2}{4a}\right].
+\end{align*}\]</div>
+<p>Clearly, any other <span class="math notranslate nohighlight">\(x\)</span> gives a higher value for <span class="math notranslate nohighlight">\(q\)</span>. The step on the second line above is called <a class="reference external" href="https://en.wikipedia.org/wiki/Completing_the_square"><em>Completing the Square</em></a>. <span class="math notranslate nohighlight">\(\square\)</span></p>
+<!--ONLINE ONLY
+
+**NUMERICAL CORNER:** Here's a numerical example. We first define a quadratic function.
+
+def q(a, b, c, x):
+    return a * (x ** 2) + b * x + c
+    
+We plot it for different values of the coefficients. Note that the $x$ and $y$ axes are on different scales. 
+
+x = np.linspace(-2, 2, 100)
+plt.plot(x, q(2, 4, -1, x))
+plt.plot(x, q(2, -4, 4, x))
+plt.plot(x, q(-2, 0, 4, x))
+plt.legend(['$y_1$', '$y_2$', '$y_3$'])
+plt.show()
+
+$\unlhd$
+
+--><p><em>Optimizing an additively separable function:</em> Functions that can be written as the sum of disjoint sets of coordinates arise commonly in optimization and have convenient “separability” properties.</p>
+<p>For vectors <span class="math notranslate nohighlight">\(\mathbf{x}_i \in \mathbb{R}^{d_i}\)</span>, <span class="math notranslate nohighlight">\(i \in [\ell]\)</span>, with <span class="math notranslate nohighlight">\(\sum_{i=1}^\ell = d_i\)</span>, their concatenation is denoted as <span class="math notranslate nohighlight">\((\mathbf{x}_1, \ldots, \mathbf{x}_\ell) \in \mathbb{R}^d\)</span>. That is the vector obtained by concatenating the coordinates of <span class="math notranslate nohighlight">\(\mathbf{x}_1, \ldots, \mathbf{x}_\ell\)</span> into a single vector. A different way to see this is that <span class="math notranslate nohighlight">\((\mathbf{x}_1, \ldots, \mathbf{x}_\ell)\)</span> is a block vector with blocks <span class="math notranslate nohighlight">\(\mathbf{x}_1, \ldots, \mathbf{x}_\ell\)</span>. For example, if <span class="math notranslate nohighlight">\(\mathbf{x}_1 = (1, 2)\)</span> and <span class="math notranslate nohighlight">\(\mathbf{x}_2 = (-1, -3, -5)\)</span>, then <span class="math notranslate nohighlight">\((\mathbf{x}_1,\mathbf{x}_2) = (1, 2, -1, -3, -5)\)</span>.</p>
+<p><strong>LEMMA</strong> <strong>(Optimizing a Separable Function)</strong> <span class="math notranslate nohighlight">\(\idx{optimizing a separable function lemma}\xdi\)</span> Assume that <span class="math notranslate nohighlight">\(\mathbf{z} \in \mathbb{R}^d\)</span> can be broken up into subvectors <span class="math notranslate nohighlight">\(\mathbf{x}_i \in \mathbb{R}^{d_i}\)</span>, <span class="math notranslate nohighlight">\(i \in [\ell]\)</span>, with <span class="math notranslate nohighlight">\(\sum_{i=1}^\ell = d_i\)</span> as follows <span class="math notranslate nohighlight">\(\mathbf{z}
+= (\mathbf{x}_1, \ldots, \mathbf{x}_\ell)\)</span>. Suppose that the real-valued function <span class="math notranslate nohighlight">\(h : \mathbb{R}^d \to \mathbb{R}\)</span> can be written in the additively separable form</p>
+<div class="math notranslate nohighlight">
+\[
+h(\mathbf{z})
+= f_1(\mathbf{x}_1) + \cdots + f_\ell(\mathbf{x}_\ell),
+\]</div>
+<p>for a collection of functions <span class="math notranslate nohighlight">\(f_i : \mathbb{R}^{d_i} \to \mathbb{R}\)</span>, <span class="math notranslate nohighlight">\(i \in [\ell]\)</span>. If, for each <span class="math notranslate nohighlight">\(i \in [\ell]\)</span>, <span class="math notranslate nohighlight">\(\mathbf{x}_i^*\)</span> is a global minimum of <span class="math notranslate nohighlight">\(f_i\)</span>, then
+<span class="math notranslate nohighlight">\(\mathbf{z}^* = (\mathbf{x}_1^*, \ldots, \mathbf{x}_\ell^*)\)</span> is a global minimum of <span class="math notranslate nohighlight">\(h\)</span>. <span class="math notranslate nohighlight">\(\flat\)</span></p>
+<p><em>Proof idea:</em> Each term in the sum defining <span class="math notranslate nohighlight">\(h\)</span> depends on a separate set of coordinates and therefore is unaffected by the choices made in other terms.</p>
+<p><em>Proof:</em> Let <span class="math notranslate nohighlight">\(\mathbf{z}
+= (\mathbf{x}_1, \ldots, \mathbf{x}_\ell)\)</span>.
+Since <span class="math notranslate nohighlight">\(\mathbf{x}_i^*\)</span> is a global minimum of <span class="math notranslate nohighlight">\(f_i\)</span>, it holds that <span class="math notranslate nohighlight">\(f_i(\mathbf{x}_i^*) \leq f_i(\mathbf{x}_i)\)</span>, for all <span class="math notranslate nohighlight">\(i\)</span>. Hence,</p>
+<div class="math notranslate nohighlight">
+\[
+h(\mathbf{z}^*)
+= f_1(\mathbf{x}_1^*) + \cdots + f_\ell(\mathbf{x}_\ell^*)
+\leq
+f_1(\mathbf{x}_1) + \cdots + f_\ell(\mathbf{x}_\ell) = h(\mathbf{z}).
+\]</div>
+<p>Since <span class="math notranslate nohighlight">\(\mathbf{z}\)</span> is arbitrary, we have proved the claim. <span class="math notranslate nohighlight">\(\square\)</span></p>
+<p><em>Composing with a non-decreasing function:</em> Recall that a real-valued function <span class="math notranslate nohighlight">\(f\)</span> of a single variable is non-decreasing if</p>
+<div class="math notranslate nohighlight">
+\[
+x \leq y \implies f(x) \leq f(y).
+\]</div>
+<p><strong>LEMMA</strong> <strong>(Composing with a Non-Decreasing Function)</strong> <span class="math notranslate nohighlight">\(\idx{composing with a non-decreasing function lemma}\xdi\)</span> Let <span class="math notranslate nohighlight">\(f : \mathbb{R} \to \mathbb{R}\)</span> be non-decreasing, let <span class="math notranslate nohighlight">\(g : \mathbb{R}^d \to \mathbb{R}\)</span>, and define <span class="math notranslate nohighlight">\(h(\mathbf{x}) = f(g(\mathbf{x}))\)</span>. If <span class="math notranslate nohighlight">\(\mathbf{x}^*\)</span> is a global minimum of <span class="math notranslate nohighlight">\(g\)</span>, then it is also a global minimum of <span class="math notranslate nohighlight">\(h\)</span>. <span class="math notranslate nohighlight">\(\flat\)</span></p>
+<p><em>Proof idea:</em> This just follows from applying the definitions.</p>
+<p><em>Proof:</em> Let <span class="math notranslate nohighlight">\(\mathbf{x} \in \mathbb{R}^d\)</span>. Because <span class="math notranslate nohighlight">\(\mathbf{x}^*\)</span> is a global minimum of <span class="math notranslate nohighlight">\(g\)</span>, <span class="math notranslate nohighlight">\(g(\mathbf{x}^*)
+\leq g(\mathbf{x})\)</span>. Further, since <span class="math notranslate nohighlight">\(f\)</span> is non-decreasing,</p>
+<div class="math notranslate nohighlight">
+\[
+h(\mathbf{x}^*)
+=
+f(g(\mathbf{x}^*))
+\leq f(g(\mathbf{x}))
+=
+h(\mathbf{x}).
+\]</div>
+<p>Since <span class="math notranslate nohighlight">\(\mathbf{x}\)</span> is arbitrary, we have proved the claim. <span class="math notranslate nohighlight">\(\square\)</span></p>
+<p><strong>Sub-problem 1: finding the optimal representatives</strong> We denote by <span class="math notranslate nohighlight">\(|C_i|\)</span> the number of elements in <span class="math notranslate nohighlight">\(C_i\)</span>.</p>
+<p><strong>EXAMPLE:</strong> <strong>(continued)</strong> Continuing the example above, the sizes of the clusters are respectively <span class="math notranslate nohighlight">\(|C_1| = 4, |C_2| = 3, |C_3| = 1\)</span>. Note in particulat that <span class="math notranslate nohighlight">\(|C_1| + |C_2| + |C_3| = 8 = n\)</span>, as follows from the fact that <span class="math notranslate nohighlight">\(C_1, C_2, C_3\)</span> is a partition. <span class="math notranslate nohighlight">\(\lhd\)</span></p>
+<p><strong>LEMMA</strong> <strong>(Optimal Representatives)</strong> <span class="math notranslate nohighlight">\(\idx{optimal representatives lemma}\xdi\)</span> Fix a partition <span class="math notranslate nohighlight">\(C_1,\ldots,C_k\)</span>. The optimal representatives under the objective</p>
+<div class="math notranslate nohighlight">
+\[
+G(C_1,\ldots,C_k; \boldsymbol{\mu}_1, \ldots, \boldsymbol{\mu}_k)
+= \sum_{i=1}^k \sum_{j \in C_i} \|\mathbf{x}_j - \boldsymbol{\mu}_i\|^2,
+\]</div>
+<p>are the <a class="reference external" href="https://en.wikipedia.org/wiki/Centroid">centroids</a><span class="math notranslate nohighlight">\(\idx{centroid}\xdi\)</span></p>
+<div class="math notranslate nohighlight">
+\[
+\boldsymbol{\mu}_i^* = \frac{1}{|C_i|} \sum_{j\in C_i} \mathbf{x}_j.
+\]</div>
+<p><span class="math notranslate nohighlight">\(\flat\)</span></p>
+<p><em>Proof idea:</em> The objective <span class="math notranslate nohighlight">\(G\)</span> can be written as a sum, where each term is a quadratic function in one component of one of the <span class="math notranslate nohighlight">\(\boldsymbol{\mu}_i\)</span>’s. Each of these terms is minimized by the average of the corresponding components of the <span class="math notranslate nohighlight">\(\mathbf{x}_j\)</span>’s belonging <span class="math notranslate nohighlight">\(C_i\)</span>.</p>
+<p><strong>EXAMPLE:</strong> <strong>(continued)</strong> Continuing with the previous example, we compute the optimal representatives for the fixed partition <span class="math notranslate nohighlight">\(C_1, C_2, C_3\)</span> above. We get</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+\boldsymbol{\mu}_1^*
+&amp;= \frac{1}{4}[\mathbf{x}_1 + \mathbf{x}_4 + \mathbf{x}_6 + \mathbf{x}_8]\\
+&amp;= \frac{1}{4}\left[\begin{pmatrix}1\\0\end{pmatrix} +
+\begin{pmatrix}1\\-3\end{pmatrix} +
+\begin{pmatrix}2\\-2\end{pmatrix} +
+\begin{pmatrix}3\\-1\end{pmatrix}
+\right]
+= \begin{pmatrix}7/4\\-3/2\end{pmatrix},\\
+\boldsymbol{\mu}_2^*
+&amp;= \frac{1}{3}[\mathbf{x}_2 + \mathbf{x}_3 + \mathbf{x}_7]\\
+&amp;= \frac{1}{3}\left[\begin{pmatrix}-2\\0\end{pmatrix}+
+\begin{pmatrix}-2\\1\end{pmatrix}+
+\begin{pmatrix}-3\\1\end{pmatrix}
+\right]
+= \begin{pmatrix}-7/3\\2/3\end{pmatrix},\\
+\boldsymbol{\mu}_3^*
+&amp;= \frac{1}{1}[\mathbf{x}_5]
+= \begin{pmatrix}-10\\10\end{pmatrix}.
+\end{align*}\]</div>
+<p><span class="math notranslate nohighlight">\(\lhd\)</span></p>
+<p><em>Proof:</em> <em>(Optimal Representatives)</em> Using the notation <span class="math notranslate nohighlight">\(\mathbf{x}_j = (x_{j1},\ldots,x_{jd})^T\)</span> and similarly for <span class="math notranslate nohighlight">\(\boldsymbol{\mu}_i\)</span>, note that we can expand the <span class="math notranslate nohighlight">\(k\)</span>-means objective as</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+\sum_{i=1}^k \sum_{j \in C_i} \|\mathbf{x}_j - \boldsymbol{\mu}_i\|^2
+&amp;= \sum_{i=1}^k \sum_{j \in C_i} \sum_{m=1}^d (x_{jm} - \mu_{im})^2\\
+&amp;= \sum_{i=1}^k \sum_{m=1}^d \left[\sum_{j \in C_i} (x_{jm} - \mu_{im})^2\right].
+\end{align*}\]</div>
+<p>The expression in square brackets is a quadratic function in <span class="math notranslate nohighlight">\(\mu_{im}\)</span></p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+q_{im}(\mu_{im})
+&amp;= \sum_{j \in C_i} (x_{jm} - \mu_{im})^2\\
+&amp;= \left\{\sum_{j \in C_i} x_{jm}^2\right\} + \left\{- 2 \sum_{j \in C_i} x_{jm}\right\} \mu_{im}  + \left\{|C_i| \right\} \mu_{im}^2.
+\end{align*}\]</div>
+<p>Therefore, by the formula for the <em>Minimum of a Quadratic Function</em>,
+is minimized at</p>
+<div class="math notranslate nohighlight">
+\[
+\mu_{im}^* 
+= - \frac{- 2 \sum_{j \in C_i} x_{jm}}{2 |C_i|}
+= \frac{1}{|C_i|} \sum_{j \in C_i} x_{jm}.
+\]</div>
+<p>Since each term <span class="math notranslate nohighlight">\(q_{im}(\mu_{im})\)</span> in the sum over <span class="math notranslate nohighlight">\(i, m\)</span> making up the objective function <span class="math notranslate nohighlight">\(G\)</span> is minimized at <span class="math notranslate nohighlight">\(\boldsymbol{\mu}_1^*,\ldots, \boldsymbol{\mu}_k^*\)</span>, so is <span class="math notranslate nohighlight">\(G\)</span> by <em>Optimizing a Separable Function</em>. <span class="math notranslate nohighlight">\(\square\)</span></p>
+<p>That the squared norm decomposes into a sum over the coordinates (which the norm itself doesn’t because of the square root) is one reason why it is convenient to use here, as was perhaps apparent in this last proof.</p>
+<p><strong>Sub-problem 2: finding the optimal partition</strong> Given <span class="math notranslate nohighlight">\(n\)</span> vectors <span class="math notranslate nohighlight">\(\mathbf{x}_1,\ldots,\mathbf{x}_n\)</span> in <span class="math notranslate nohighlight">\(\mathbb{R}^d\)</span> and a partition <span class="math notranslate nohighlight">\(C_1, \ldots, C_k \subseteq [n]\)</span>, it will be useful to have some notation for the corresponding cluster assignment: we define <span class="math notranslate nohighlight">\(c(j) = i\)</span> if <span class="math notranslate nohighlight">\(j \in C_i\)</span>.</p>
+<p><strong>EXAMPLE:</strong> <strong>(continued)</strong> Continuing the example above, the clusters <span class="math notranslate nohighlight">\(C_1 = \{1, 4, 6, 8\}, C_2 = \{2, 3, 7\}, C_3 = \{5\}\)</span> correspond to the assignment</p>
+<div class="math notranslate nohighlight">
+\[
+c(1) = 1, c(2) = 2, c(3) = 2, c(4) = 1, c(5) = 3, c(6) = 1, c(7) = (2), c(8) = 1. 
+\]</div>
+<p><span class="math notranslate nohighlight">\(\lhd\)</span></p>
+<p><strong>LEMMA</strong> <strong>(Optimal Clustering)</strong> <span class="math notranslate nohighlight">\(\idx{optimal clustering lemma}\xdi\)</span> Fix the representatives <span class="math notranslate nohighlight">\(\boldsymbol{\mu}_1,\ldots,\boldsymbol{\mu}_k\)</span>. An optimal partition under  the objective</p>
+<div class="math notranslate nohighlight">
+\[
+G(C_1,\ldots,C_k; \boldsymbol{\mu}_1, \ldots, \boldsymbol{\mu}_k)
+= \sum_{i=1}^k \sum_{j \in C_i} \|\mathbf{x}_j - \boldsymbol{\mu}_i\|^2,
+\]</div>
+<p>is obtained as follows. For each <span class="math notranslate nohighlight">\(j\)</span>, find the <span class="math notranslate nohighlight">\(\boldsymbol{\mu}_i\)</span> that minimizes <span class="math notranslate nohighlight">\(\|\mathbf{x}_j - \boldsymbol{\mu}_i\|\)</span> (picking one arbitrarily in the case of ties) and assign <span class="math notranslate nohighlight">\(\mathbf{x}_j\)</span> to <span class="math notranslate nohighlight">\(C_i\)</span> (i.e., add <span class="math notranslate nohighlight">\(j\)</span> to <span class="math notranslate nohighlight">\(C_i\)</span>). <span class="math notranslate nohighlight">\(\flat\)</span></p>
+<p><em>Proof:</em> If <span class="math notranslate nohighlight">\(c\)</span> is the cluster assignment associated to <span class="math notranslate nohighlight">\(C_1,\ldots,C_k\)</span>, then we can re-write the objective as</p>
+<div class="math notranslate nohighlight">
+\[
+\sum_{i=1}^k \sum_{j \in C_i} \|\mathbf{x}_j - \boldsymbol{\mu}_i\|^2
+= \sum_{j=1}^n \|\mathbf{x}_j - \boldsymbol{\mu}_{c(j)}\|^2,
+\]</div>
+<p>By definition, when the <span class="math notranslate nohighlight">\(\boldsymbol{\mu}_i\)</span>’s are fixed, each term in the sum on the right-hand side is minimized separately by the assignment in the statement. Hence so is the sum itself by the <em>Optimizing a Separable Function Lemma</em>. Note that we used the fact that the square root (and the square) is non-decreasing to conclude that minimizing <span class="math notranslate nohighlight">\(\|\mathbf{x}_j - \boldsymbol{\mu}_i\|^2\)</span> or its square root <span class="math notranslate nohighlight">\(\|\mathbf{x}_j - \boldsymbol{\mu}_i\|\)</span> are equivalent by the <em>Composing with a Non-Decreasing Function Lemma</em>. <span class="math notranslate nohighlight">\(\square\)</span></p>
+<p><strong>EXAMPLE:</strong> <strong>(continued)</strong> Continuing the example above, suppose that we choose representatives</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\boldsymbol{\mu}_1 = \begin{pmatrix}-2\\1\end{pmatrix},
+\boldsymbol{\mu}_2 = \begin{pmatrix}2\\-1\end{pmatrix},
+\boldsymbol{\mu}_3 = \begin{pmatrix}-10\\10\end{pmatrix}.
+\end{split}\]</div>
+<p>Then we find the cluster assignment of <span class="math notranslate nohighlight">\(\mathbf{x}_1\)</span> by computing its squared distance to each representative:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\|\mathbf{x}_1 - \boldsymbol{\mu}_1\|
+= \left\|\begin{pmatrix}1\\0\end{pmatrix} - \begin{pmatrix}-2\\1\end{pmatrix}\right\|
+= \sqrt{(1-(-2))^2 + (0-1)^2}
+= \sqrt{10},
+\end{split}\]</div>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\|\mathbf{x}_1 - \boldsymbol{\mu}_2\|
+= \left\|\begin{pmatrix}1\\0\end{pmatrix} - \begin{pmatrix}2\\-1\end{pmatrix}\right\|
+= \sqrt{(1-2)^2 + (0-(-1))^2}
+= \sqrt{2},
+\end{split}\]</div>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\|\mathbf{x}_1 - \boldsymbol{\mu}_3\|
+= \left\|\begin{pmatrix}1\\0\end{pmatrix} - \begin{pmatrix}-10\\10\end{pmatrix}\right\|
+= \sqrt{(1-(-10))^2 + (0-10)^2}
+= \sqrt{221}.
+\end{split}\]</div>
+<p>The minimum is achieved for <span class="math notranslate nohighlight">\(\boldsymbol{\mu}_2\)</span> so we assign <span class="math notranslate nohighlight">\(\mathbf{x}_1\)</span> to <span class="math notranslate nohighlight">\(C_2\)</span>, i.e., <span class="math notranslate nohighlight">\(1 \in C_2\)</span> and <span class="math notranslate nohighlight">\(c(1) = 2\)</span>. <span class="math notranslate nohighlight">\(\lhd\)</span></p>
+</section>
+<section id="lloyds-algorithm-and-its-analysis">
+<h2><span class="section-number">1.3.2. </span>Lloyd’s algorithm and its analysis<a class="headerlink" href="#lloyds-algorithm-and-its-analysis" title="Link to this heading">#</a></h2>
+<p>We are now ready to describe Lloyd’s algorithm<span class="math notranslate nohighlight">\(\idx{Lloyd's algorithm}\xdi\)</span>. We start from a random assignment of clusters. (An alternative <a class="reference external" href="https://en.wikipedia.org/wiki/K-means_clustering#Initialization_methods">initialization strategy</a> is to choose <span class="math notranslate nohighlight">\(k\)</span> representatives at random among the data points.) We then alternate between the optimal choices in the lemmas. In lieu of pseudo-code, we write out the algorithm in Python. We will use this approach throughout the book.</p>
+<p>The input <code class="docutils literal notranslate"><span class="pre">X</span></code> is assumed to be a collection of <span class="math notranslate nohighlight">\(n\)</span> vectors <span class="math notranslate nohighlight">\(\mathbf{x}_1, \ldots, \mathbf{x}_n \in \mathbb{R}^d\)</span> stacked into a matrix, with one row for each data point. The other input, <code class="docutils literal notranslate"><span class="pre">k</span></code>, is the desired number of clusters. There is an optional input <code class="docutils literal notranslate"><span class="pre">maxiter</span></code> for the maximum number of iterations, which is set to <span class="math notranslate nohighlight">\(5\)</span> by default.</p>
+<p>We first define separate functions for the two main steps. To find the minimum of an array, we use the function <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.argmin.html"><code class="docutils literal notranslate"><span class="pre">numpy.argmin</span></code></a>. We also use <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.linalg.norm.html"><code class="docutils literal notranslate"><span class="pre">numpy.linalg.norm</span></code></a> to compute the Euclidean distance.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">opt_reps</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">assign</span><span class="p">):</span>
+    <span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">d</span><span class="p">)</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">shape</span>
+    <span class="n">reps</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">k</span><span class="p">,</span> <span class="n">d</span><span class="p">))</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">k</span><span class="p">):</span>
+        <span class="n">in_i</span> <span class="o">=</span> <span class="p">[</span><span class="n">j</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">)</span> <span class="k">if</span> <span class="n">assign</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">==</span> <span class="n">i</span><span class="p">]</span>             
+        <span class="n">reps</span><span class="p">[</span><span class="n">i</span><span class="p">,:]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">X</span><span class="p">[</span><span class="n">in_i</span><span class="p">,:],</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">in_i</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">reps</span>
+
+<span class="k">def</span> <span class="nf">opt_clust</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">reps</span><span class="p">):</span>
+    <span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">d</span><span class="p">)</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">shape</span>
+    <span class="n">dist</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+    <span class="n">assign</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+        <span class="n">dist_to_i</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">LA</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">X</span><span class="p">[</span><span class="n">j</span><span class="p">,:]</span> <span class="o">-</span> <span class="n">reps</span><span class="p">[</span><span class="n">i</span><span class="p">,:])</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">k</span><span class="p">)])</span>
+        <span class="n">assign</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmin</span><span class="p">(</span><span class="n">dist_to_i</span><span class="p">)</span>
+        <span class="n">dist</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">dist_to_i</span><span class="p">[</span><span class="n">assign</span><span class="p">[</span><span class="n">j</span><span class="p">]]</span>
+    <span class="n">G</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">dist</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">G</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">assign</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>The main function follows. Below, <code class="docutils literal notranslate"><span class="pre">rng.integers(0,k,n)</span></code> is an array of <code class="docutils literal notranslate"><span class="pre">n</span></code> uniformly chosen integers between <code class="docutils literal notranslate"><span class="pre">0</span></code> and <code class="docutils literal notranslate"><span class="pre">k-1</span></code> (inclusive). See <a class="reference external" href="https://numpy.org/doc/stable/reference/random/generated/numpy.random.Generator.integers.html">random.Generator.integers</a> for details. Recall that throughout, when defining a function that uses a random number generator (RNG), we initialize the RNG outside the function and pass the RNG to it. It allows us to maintain control over the random number generation process at a higher level and ensures consistent results across multiple runs.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">kmeans</span><span class="p">(</span><span class="n">rng</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">maxiter</span><span class="o">=</span><span class="mi">5</span><span class="p">):</span>
+    <span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">d</span><span class="p">)</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">shape</span>
+    <span class="n">assign</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">integers</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="n">k</span><span class="p">,</span><span class="n">n</span><span class="p">)</span>
+    <span class="n">reps</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">k</span><span class="p">,</span> <span class="n">d</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">)</span>
+    <span class="k">for</span> <span class="nb">iter</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">maxiter</span><span class="p">):</span>
+        <span class="n">reps</span> <span class="o">=</span> <span class="n">opt_reps</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">assign</span><span class="p">)</span> 
+        <span class="n">assign</span> <span class="o">=</span> <span class="n">opt_clust</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">reps</span><span class="p">)</span> 
+    <span class="k">return</span> <span class="n">assign</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p><strong>NUMERICAL CORNER:</strong> We apply our implementation of <span class="math notranslate nohighlight">\(k\)</span>-means to the example above. We fix <code class="docutils literal notranslate"><span class="pre">k</span></code> to <span class="math notranslate nohighlight">\(3\)</span>. Here the data matrix <code class="docutils literal notranslate"><span class="pre">X</span></code> is the following:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">seed</span> <span class="o">=</span> <span class="mi">535</span>
+<span class="n">rng</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">(</span><span class="n">seed</span><span class="p">)</span>
+<span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">],[</span><span class="o">-</span><span class="mf">2.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">],[</span><span class="o">-</span><span class="mf">2.</span><span class="p">,</span><span class="mf">1.</span><span class="p">],[</span><span class="mf">1.</span><span class="p">,</span><span class="o">-</span><span class="mf">3.</span><span class="p">],</span>
+              <span class="p">[</span><span class="o">-</span><span class="mf">10.</span><span class="p">,</span><span class="mf">10.</span><span class="p">],[</span><span class="mf">2.</span><span class="p">,</span><span class="o">-</span><span class="mf">2.</span><span class="p">],[</span><span class="o">-</span><span class="mf">3.</span><span class="p">,</span><span class="mf">1.</span><span class="p">],[</span><span class="mf">3.</span><span class="p">,</span><span class="o">-</span><span class="mf">1.</span><span class="p">]])</span>
+<span class="n">assign</span> <span class="o">=</span> <span class="n">kmeans</span><span class="p">(</span><span class="n">rng</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>162.7
+74.8611111111111
+9.083333333333334
+9.083333333333334
+9.083333333333334
+</pre></div>
+</div>
+</div>
+</div>
+<p>We vizualize the output by coloring the points according to their cluster assignment.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">X</span><span class="p">[:,</span><span class="mi">0</span><span class="p">],</span> <span class="n">X</span><span class="p">[:,</span><span class="mi">1</span><span class="p">],</span> <span class="n">s</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="n">assign</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;brg&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">axis</span><span class="p">([</span><span class="o">-</span><span class="mi">11</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="o">-</span><span class="mi">4</span><span class="p">,</span><span class="mi">11</span><span class="p">])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/e7e854f6aa7dae4163afda1f7133ba9ff63c329096918813745cfd41d7281f79.png" src="../../_images/e7e854f6aa7dae4163afda1f7133ba9ff63c329096918813745cfd41d7281f79.png" />
+</div>
+</div>
+<p>We can compute the final representatives (optimal for the final assignment) by using the subroutine <code class="docutils literal notranslate"><span class="pre">opt_reps</span></code>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">opt_reps</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">assign</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[[ -2.33333333   0.66666667]
+ [  1.75        -1.5       ]
+ [-10.          10.        ]]
+</pre></div>
+</div>
+</div>
+</div>
+<p>Each row is the center of the corresponding cluster. Note these match with the ones we previously computed. Indeed, the clustering is the same (although not necessarily in the same order).</p>
+<p><strong>TRY IT!</strong> Modify <code class="docutils literal notranslate"><span class="pre">kmeans</span></code> to take a tolerance <code class="docutils literal notranslate"><span class="pre">tol</span></code> as input and stop when the improvement in objective value <code class="docutils literal notranslate"><span class="pre">G</span></code> falls below the tolerance. (<a class="reference external" href="https://colab.research.google.com/github/MMiDS-textbook/MMiDS-textbook.github.io/blob/main/just_the_code/roch_mmids_chap_intro_notebook.ipynb">Open in Colab</a>)</p>
+<p><span class="math notranslate nohighlight">\(\unlhd\)</span></p>
+<p><img alt="Evolution of the assignment for -means clustering on data generated by a mixture of spherical Gaussians with variance  and respective means  and . The crosses show the cluster representatives. The objective value is shown as . (With help from Claude; inspired by (Source).)" src="../../_images/kmeans-iterations.png" /></p>
+<p><strong>KNOWLEDGE CHECK:</strong> Suppose we have infinite computational resources and run Lloyd’s algorithm forever, do you think it will necessarily converge to a global minimum? If your answer is no, can you think of an alternative algorithm that is guaranteed to output a global minimum provided enough computational resources? <span class="math notranslate nohighlight">\(\checkmark\)</span></p>
+<p>Lloyd’s algorithm is only a heuristic. In particular, it is not guaranteed to find the global minimum of the <span class="math notranslate nohighlight">\(k\)</span>-means objective. However, it is guaranteed to improve the objective at every iteration, or more precisely, not to make it worse.</p>
+<p><strong>THEOREM</strong> <strong>(Convergence of <span class="math notranslate nohighlight">\(k\)</span>-means cost)</strong> <span class="math notranslate nohighlight">\(\idx{convergence of k-means cost theorem}\xdi\)</span> The sequence of objective function values produced by the <span class="math notranslate nohighlight">\(k\)</span>-means algorithm is non-increasing. <span class="math notranslate nohighlight">\(\sharp\)</span></p>
+<p><em>Proof idea:</em> By the <em>Optimal Representatives Lemma</em> and the <em>Optimal Clustering Lemma</em>, each step does not increase the objective.</p>
+<p><em>Proof:</em> Let <span class="math notranslate nohighlight">\(C_1',\ldots,C_k'\)</span> be the current clusters, with representatives <span class="math notranslate nohighlight">\(\boldsymbol{\mu}_1',\ldots,\boldsymbol{\mu}_k'\)</span>. After Step 1, the new representatives are <span class="math notranslate nohighlight">\(\boldsymbol{\mu}_1'',\ldots,\boldsymbol{\mu}_k''\)</span>. By the <em>Optimal Representatives Lemma</em>, they satisfy</p>
+<div class="math notranslate nohighlight">
+\[
+\sum_{i=1}^k \sum_{j \in C_i'} \|\mathbf{x}_j - \boldsymbol{\mu}_i''\|^2
+\leq \sum_{i=1}^k \sum_{j \in C_i'} \|\mathbf{x}_j - \boldsymbol{\mu}_i'\|^2.
+\]</div>
+<p>After Step 2, the new clusters are <span class="math notranslate nohighlight">\(C_1'',\ldots,C_k''\)</span>. By the <em>Optimal Clustering Lemma</em>, they satisfy</p>
+<div class="math notranslate nohighlight">
+\[
+\sum_{i=1}^k \sum_{j \in C_i''} \|\mathbf{x}_j - \boldsymbol{\mu}_i''\|^2
+\leq \sum_{i=1}^k \sum_{j \in C_i'} \|\mathbf{x}_j - \boldsymbol{\mu}_i''\|^2.
+\]</div>
+<p>Combining these two inequalities gives</p>
+<div class="math notranslate nohighlight">
+\[
+\sum_{i=1}^k \sum_{j \in C_i''} \|\mathbf{x}_j - \boldsymbol{\mu}_i''\|^2
+\leq \sum_{i=1}^k \sum_{j \in C_i'} \|\mathbf{x}_j - \boldsymbol{\mu}_i'\|^2,
+\]</div>
+<p>as claimed. <span class="math notranslate nohighlight">\(\square\)</span></p>
+<p>The sequence of objective values is monotone and bounded from below by <span class="math notranslate nohighlight">\(0\)</span>. <a class="reference external" href="https://en.wikipedia.org/wiki/Monotone_convergence_theorem#Convergence_of_a_monotone_sequence_of_real_numbers">Hence it converges</a>. Note that the limit depends on the starting point.</p>
+<p><strong>CHAT &amp; LEARN</strong> AI chatbots can serve as great personal tutors, especially when it comes to coding which they often excel at. In particular, they can provide additional information about the code in this book. Just copy-paste a piece of code and ask “What is this code doing?” Don’t hesitate to ask follow-up questions. <a class="reference external" href="https://chat.openai.com/share/66f9e704-c8e8-4489-9ab6-8e57740cab3b">Here is an example using ChatGPT</a>.</p>
+<p><em>Warning:</em> As you probably know, AI chatbots can be wrong so assess what they tell you with a critical mind and/or double-check with other sources (e.g., package documentation). <span class="math notranslate nohighlight">\(\ddagger\)</span></p>
+<!--ONLINE ONLY
+
+*Prompt engineering:* [Finding the right prompt](https://en.wikipedia.org/wiki/Prompt_engineering), or series of prompts, can make a big difference. It can also produce unusual answers. Here is an explanation of the $k$-means algorithm in the style of Shakespeare via ChatGPT:
+
+> **Scene: The Realm of Numerica, in the Enchanted Forest of Analysis**
+> 
+> *Enter LORD VECTOR, LADY PARTITION, and an assembly of WHISPERING WINDS*
+> 
+> LORD VECTOR (a majestic entity): 
+> 
+> Hearken, Whispering Winds, scattered far and wide, 
+> 
+> I am Lord Vector, your anchor and your guide. 
+> 
+> In clusters, you must settle, by my call and by my side, 
+> 
+> To me, you'll draw nigh, in unity, abide. 
+> 
+> LADY PARTITION (a sage enchantress):
+> 
+> And I, Lady Partition, with vision clear and keen,
+> 
+> Determine where amongst the clusters each of you shall lean.
+> 
+> With Lord Vector, a ballet we compose, with steps so fine,
+> 
+> To sort, to gather, to align, under a sign divine.
+> 
+> WHISPERING WIND 1:
+> 
+> But how, noble Vector, wilt thou find thy rightful stead?
+> 
+> In this expanse diverse, how set thy bed?
+> 
+> LORD VECTOR:
+> 
+> Through cycles and through wisdom, I seek my sacred ground,
+> 
+> Where the sum of all distances to me is least found.
+> 
+> From your essence, I emerge, an average pure and sound,
+> 
+> A beacon most true, by which I am crowned.
+> 
+> WHISPERING WIND 2:
+> 
+> And Lady Partition, how do we seek our kin,
+> 
+> In this multitude, how does our journey begin?
+> 
+> LADY PARTITION:
+> 
+> By measure and affinity, to your closest Lord Vector, you'll gravitate,
+> 
+> To him, your allegiance, you'll consecrate.
+> 
+> In groups, you'll assemble, by likeness you're drawn,
+> 
+> A collective symphony, from dusk till dawn.
+> 
+> 
+> *LORD VECTOR and LADY PARTITION assume their roles, guiding the WHISPERING WINDS to move and regroup.*
+> 
+> 
+> LORD VECTOR:
+> 
+> Observe now how I traverse, as your allegiances refine,
+> 
+> A center more apt, in this spell of mine.
+> 
+> LADY PARTITION:
+> 
+> And as you drift, dear winds, to your Lords true,
+> 
+> A closer union we construe, a balance anew.
+> 
+> 
+> *The WHISPERING WINDS shuffle and align, moving from one cluster to another, as LORD VECTOR adjusts his position with grace.*
+> 
+> 
+> WHISPERING WIND 3:
+> 
+> At length, I perceive, where I am to dwell,
+> 
+> With peers akin, in cluster well.
+> 
+> 
+> LORD VECTOR:
+> 
+> So we dance and weave, 'til stillness we achieve,
+> 
+> When each wind has settled, and we, in relief.
+> 
+> 
+> LADY PARTITION:
+> 
+> Thus, optimal clusters come forth, vivid and serene,
+> 
+> With centers well placed, a sight unseen.
+> 
+> 
+> *The WHISPERING WINDS now rest peacefully in clusters around their LORD VECTORS, the Enchanted Forest of Analysis a testament to their orderly ballet.*
+> 
+> 
+> LORD VECTOR & LADY PARTITION (together):
+> 
+> Our task here concludes, with harmony and grace,
+> 
+> The K-means enchantment, a solution embraced.
+> 
+> 
+> *Exeunt omnes, as the WHISPERING WINDS repose in unity around their LORD VECTORS, the realm of Numerica reflecting their harmonious dance.*
+> 
+> 
+> **End of Scene**
+
+--><p><strong>NUMERICAL CORNER:</strong> We will test our implementation of <span class="math notranslate nohighlight">\(k\)</span>-means on the penguins dataset introduced earlier in the chapter. We first extract the columns and combine them into a data matrix <code class="docutils literal notranslate"><span class="pre">X</span></code>. As we did previously, we also remove the rows with missing values.</p>
+<p><strong>Figure:</strong> Which penguin species? (<em>Credit:</em> Made with <a class="reference external" href="https://www.midjourney.com/">Midjourney</a>)</p>
+<p><img alt="Penguins on a glacier" src="../../_images/three_penguins_on_a_glacier-small.png" /></p>
+<p><span class="math notranslate nohighlight">\(\bowtie\)</span></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;penguins-measurements.csv&#39;</span><span class="p">)</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">dropna</span><span class="p">()</span>
+<span class="n">X</span> <span class="o">=</span> <span class="n">data</span><span class="p">[[</span><span class="s1">&#39;bill_length_mm&#39;</span><span class="p">,</span> <span class="s1">&#39;bill_depth_mm&#39;</span><span class="p">,</span> 
+        <span class="s1">&#39;flipper_length_mm&#39;</span><span class="p">,</span> <span class="s1">&#39;body_mass_g&#39;</span><span class="p">]]</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>We  visualize a two-dimensional slice of the data.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">X</span><span class="p">[:,</span><span class="mi">1</span><span class="p">],</span> <span class="n">X</span><span class="p">[:,</span><span class="mi">3</span><span class="p">],</span> <span class="n">s</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="s1">&#39;k&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;bill_depth_mm&#39;</span><span class="p">),</span> <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;body_mass_g&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/183ae0420fe139de7184640ca2fe198918f3aff7d4cabdd57969de2b971f71d3.png" src="../../_images/183ae0420fe139de7184640ca2fe198918f3aff7d4cabdd57969de2b971f71d3.png" />
+</div>
+</div>
+<p>Observe that the features have quite different scales (tens versus thousands in the plot above). In such a case, it is common to standardize the data so that each feature has roughly the same scale. For each column of <code class="docutils literal notranslate"><span class="pre">X</span></code>, we subtract its empirical mean and divide by its empirical standard deviation.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">mean</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">std</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">X</span> <span class="o">=</span> <span class="p">(</span><span class="n">X</span> <span class="o">-</span> <span class="n">mean</span><span class="p">)</span> <span class="o">/</span> <span class="n">std</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Now we run Lloyd’s algorithm with <span class="math notranslate nohighlight">\(k=2\)</span> clusters.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">assign</span> <span class="o">=</span> <span class="n">kmeans</span><span class="p">(</span><span class="n">rng</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1338.2046936914157
+820.9361062178352
+603.8787658966849
+575.2587351391593
+567.7837494880662
+</pre></div>
+</div>
+</div>
+</div>
+<p>We vizualize the output as we did before, but this time coloring the data points by their cluster assignment.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">X</span><span class="p">[:,</span><span class="mi">1</span><span class="p">],</span> <span class="n">X</span><span class="p">[:,</span><span class="mi">3</span><span class="p">],</span> <span class="n">s</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="n">assign</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;brg&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;bill_depth (standardized)&#39;</span><span class="p">),</span> <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;body_mass (standardized)&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/89b0243e5c50f6794323247a82da3055b271f7d09ff055e5fb60ed91bf26eda9.png" src="../../_images/89b0243e5c50f6794323247a82da3055b271f7d09ff055e5fb60ed91bf26eda9.png" />
+</div>
+</div>
+<p>This clustering looks quite good. Nevertheless recall that:</p>
+<ol class="arabic simple">
+<li><p>in this plot we are looking at only two of the four variables while <span class="math notranslate nohighlight">\(k\)</span>-means uses all of them,</p></li>
+<li><p>we are not guaranteed to find the best solution,</p></li>
+<li><p>our objective function is somewhat arbitrary, and</p></li>
+<li><p>it is not clear what the right choice of <span class="math notranslate nohighlight">\(k\)</span> is.</p></li>
+</ol>
+<p>In fact, the original dataset contained the correct answer, as provided by biologists. Despite what the figure above may lead us to believe, there are in reality three separate species. So let us try with <span class="math notranslate nohighlight">\(k=3\)</span> clusters.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">assign</span> <span class="o">=</span> <span class="n">kmeans</span><span class="p">(</span><span class="n">rng</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1312.344945158482
+577.1700837839458
+428.50397345437966
+392.2616692426171
+383.3452894259011
+</pre></div>
+</div>
+</div>
+</div>
+<p>The output does not seem quite right.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">X</span><span class="p">[:,</span><span class="mi">1</span><span class="p">],</span> <span class="n">X</span><span class="p">[:,</span><span class="mi">3</span><span class="p">],</span> <span class="n">s</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="n">assign</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;brg&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;bill_depth (standardized)&#39;</span><span class="p">),</span> <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;body_mass (standardized)&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/c8d91d4b3247df9a31499678e4c131330d51a6309ee882a954e609fce2322cec.png" src="../../_images/c8d91d4b3247df9a31499678e4c131330d51a6309ee882a954e609fce2322cec.png" />
+</div>
+</div>
+<p>But, remembering the warnings mentioned previously, let us look at a different two-dimensional slice.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">X</span><span class="p">[:,</span><span class="mi">0</span><span class="p">],</span> <span class="n">X</span><span class="p">[:,</span><span class="mi">3</span><span class="p">],</span> <span class="n">s</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="n">assign</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;brg&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;bill_length (standardized)&#39;</span><span class="p">),</span> <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;body_mass (standardized)&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/63162edcf9fc75fe129cb59a2ec358c84db0c9847466da62c428a8b195826287.png" src="../../_images/63162edcf9fc75fe129cb59a2ec358c84db0c9847466da62c428a8b195826287.png" />
+</div>
+</div>
+<p>Let us load up the truth and compare. We only keep those samples that were not removed because of missing values (see <a class="reference external" href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.iloc.html"><code class="docutils literal notranslate"><span class="pre">pandas.DataFrame.iloc</span></code></a>).</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data_truth</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;penguins-species.csv&#39;</span><span class="p">)</span> 
+<span class="n">data_truth</span> <span class="o">=</span> <span class="n">data_truth</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">data</span><span class="o">.</span><span class="n">index</span><span class="p">]</span>
+<span class="n">data_truth</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>species</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>Adelie</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>Adelie</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>Adelie</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>Adelie</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>Adelie</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<p>The species are:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">species</span> <span class="o">=</span> <span class="n">data_truth</span><span class="p">[</span><span class="s1">&#39;species&#39;</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">species</span><span class="o">.</span><span class="n">unique</span><span class="p">())</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&#39;Adelie&#39; &#39;Chinstrap&#39; &#39;Gentoo&#39;]
+</pre></div>
+</div>
+</div>
+</div>
+<p>To plot the outcome, we color the species blue-green-red using a <a class="reference external" href="https://docs.python.org/3/tutorial/datastructures.html#dictionaries">dictionary</a>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">species2color_dict</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;Adelie&#39;</span><span class="p">:</span> <span class="s1">&#39;blue&#39;</span><span class="p">,</span> <span class="s1">&#39;Chinstrap&#39;</span><span class="p">:</span> <span class="s1">&#39;lime&#39;</span><span class="p">,</span> <span class="s1">&#39;Gentoo&#39;</span><span class="p">:</span> <span class="s1">&#39;red&#39;</span><span class="p">}</span>
+<span class="n">truth</span> <span class="o">=</span> <span class="p">[</span><span class="n">species2color_dict</span><span class="p">[</span><span class="n">a</span><span class="p">]</span> <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">species</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Finally, we can compare the output to the truth. The match is quite good – but certainly not perfect.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">f</span><span class="p">,</span> <span class="p">(</span><span class="n">ax1</span><span class="p">,</span> <span class="n">ax2</span><span class="p">)</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">sharex</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">sharey</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mf">6.5</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+<span class="n">ax1</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">X</span><span class="p">[:,</span><span class="mi">0</span><span class="p">],</span> <span class="n">X</span><span class="p">[:,</span><span class="mi">3</span><span class="p">],</span> <span class="n">s</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="n">truth</span><span class="p">)</span>
+<span class="n">ax1</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;truth&#39;</span><span class="p">)</span>
+<span class="n">ax2</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">X</span><span class="p">[:,</span><span class="mi">0</span><span class="p">],</span> <span class="n">X</span><span class="p">[:,</span><span class="mi">3</span><span class="p">],</span> <span class="n">s</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="n">assign</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;brg&#39;</span><span class="p">)</span>
+<span class="n">ax2</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;kmeans&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/c2e70a5a0abae24fac30a712ffee2c28062243613570aa9d3667f998e0d48ab8.png" src="../../_images/c2e70a5a0abae24fac30a712ffee2c28062243613570aa9d3667f998e0d48ab8.png" />
+</div>
+</div>
+<p>Determining the appropriate number of clusters is not a straighforward problem. To quote <a class="reference external" href="https://en.wikipedia.org/wiki/Determining_the_number_of_clusters_in_a_data_set">Wikipedia</a>:</p>
+<blockquote>
+<div><p>The correct choice of <span class="math notranslate nohighlight">\(k\)</span> is often ambiguous, with interpretations depending on the shape and scale of the distribution of points in a data set and the desired clustering resolution of the user. In addition, increasing <span class="math notranslate nohighlight">\(k\)</span> without penalty will always reduce the amount of error in the resulting clustering, to the extreme case of zero error if each data point is considered its own cluster (i.e., when <span class="math notranslate nohighlight">\(k\)</span> equals the number of data points, <span class="math notranslate nohighlight">\(n\)</span>). Intuitively then, the optimal choice of <span class="math notranslate nohighlight">\(k\)</span> will strike a balance between maximum compression of the data using a single cluster, and maximum accuracy by assigning each data point to its own cluster. If an appropriate value of <span class="math notranslate nohighlight">\(k\)</span> is not apparent from prior knowledge of the properties of the data set, it must be chosen somehow. There are several categories of methods for making this decision.</p>
+</div></blockquote>
+<p>In practice, <a class="reference external" href="https://en.wikipedia.org/wiki/Determining_the_number_of_clusters_in_a_data_set">several heuristics</a> are in use. Other approaches to clustering, e.g. <a class="reference external" href="https://en.wikipedia.org/wiki/DBSCAN">DBSCAN</a> and <a class="reference external" href="https://en.wikipedia.org/wiki/Hierarchical_clustering">hierarchical clustering</a>, do not require a number of clusters as input.</p>
+<p><strong>TRY IT!</strong> Run the analysis again, but this time <em>without the standardization step</em>. What do you observe? Is one feature more influential on the final output than the others? Why do you think that is? (<a class="reference external" href="https://colab.research.google.com/github/MMiDS-textbook/MMiDS-textbook.github.io/blob/main/just_the_code/roch_mmids_chap_intro_notebook.ipynb">Open in Colab</a>)</p>
+<p><span class="math notranslate nohighlight">\(\unlhd\)</span></p>
+</section>
+<section id="matrix-form-of-k-means-clustering">
+<h2><span class="section-number">1.3.3. </span>Matrix form of k-means clustering<a class="headerlink" href="#matrix-form-of-k-means-clustering" title="Link to this heading">#</a></h2>
+<p>In this section, we show that the <span class="math notranslate nohighlight">\(k\)</span>-means clustering objective can be written in matrix form. We start with some notation and definitions that will be useful throughout.</p>
+<p>As we indicated before, for a collection of <span class="math notranslate nohighlight">\(n\)</span> data vectors <span class="math notranslate nohighlight">\(\mathbf{x}_1, \ldots, \mathbf{x}_n\)</span> in <span class="math notranslate nohighlight">\(\mathbb{R}^d\)</span>, it is often convenient to stack them up into a matrix</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+X =
+\begin{bmatrix}
+\mathbf{x}_1^T \\
+\mathbf{x}_2^T \\
+\vdots \\
+\mathbf{x}_n^T \\
+\end{bmatrix}
+=
+\begin{bmatrix}
+x_{11} &amp; x_{12} &amp; \cdots &amp; x_{1d} \\
+x_{21} &amp; x_{22} &amp; \cdots &amp; x_{2d} \\
+\vdots &amp; \vdots &amp; \ddots &amp; \vdots \\
+x_{n1} &amp; x_{n2} &amp; \cdots &amp; x_{nd} \\
+\end{bmatrix}.
+\end{split}\]</div>
+<p>We can do the same with cluster representatives. Given <span class="math notranslate nohighlight">\(\boldsymbol{\mu}_1,\ldots,\boldsymbol{\mu}_k\)</span> also in <span class="math notranslate nohighlight">\(\mathbb{R}^d\)</span>, we form the matrix</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+U =
+\begin{bmatrix}
+\boldsymbol{\mu}_1^T \\
+\boldsymbol{\mu}_2^T \\
+\vdots \\
+\boldsymbol{\mu}_k^T \\
+\end{bmatrix}
+=
+\begin{bmatrix}
+\mu_{11} &amp; \mu_{12} &amp; \cdots &amp; \mu_{1d} \\
+\mu_{21} &amp; \mu_{22} &amp; \cdots &amp; \mu_{2d} \\
+\vdots &amp; \vdots &amp; \ddots &amp; \vdots \\
+\mu_{k1} &amp; \mu_{k2} &amp; \cdots &amp; \mu_{kd} \\
+\end{bmatrix}.
+\end{split}\]</div>
+<p>Perhaps less obviously, cluster assignments can also be encoded in matrix form. Recall that, given a partition <span class="math notranslate nohighlight">\(C_1,\ldots,C_k\)</span> of <span class="math notranslate nohighlight">\([n]\)</span>, we define <span class="math notranslate nohighlight">\(c(j) = i\)</span> if <span class="math notranslate nohighlight">\(j \in C_i\)</span>. For <span class="math notranslate nohighlight">\(j=1,\ldots,n\)</span> and <span class="math notranslate nohighlight">\(\ell=1,\ldots,k\)</span>, set <span class="math notranslate nohighlight">\(Z_{j\ell} = 1\)</span> if <span class="math notranslate nohighlight">\(c(j) = \ell\)</span> and <span class="math notranslate nohighlight">\(0\)</span> otherwise, and let <span class="math notranslate nohighlight">\(Z\)</span> be the <span class="math notranslate nohighlight">\(n \times k\)</span> matrix with entries <span class="math notranslate nohighlight">\(Z = [Z_{j\ell}]_{j,\ell}\)</span>. That is, row <span class="math notranslate nohighlight">\(j\)</span> has exactly one entry with value <span class="math notranslate nohighlight">\(1\)</span>, corresponding to the assigned cluster <span class="math notranslate nohighlight">\(c(j)\)</span> of data point <span class="math notranslate nohighlight">\(\mathbf{x}_j\)</span>, and all other entries <span class="math notranslate nohighlight">\(0\)</span>.</p>
+<p>With this notation, the representative of the cluster assigned to data point <span class="math notranslate nohighlight">\(\mathbf{x}_j\)</span> is obtained through a matrix product</p>
+<div class="math notranslate nohighlight">
+\[
+\boldsymbol{\mu}_{c(j)}^T 
+= \sum_{\ell = 1}^k Z_{j\ell} \boldsymbol{\mu}_{\ell}^T
+= \sum_{\ell = 1}^k Z_{j\ell} U_{\ell,\cdot}
+= \left(Z U\right)_{j,\cdot}
+\]</div>
+<p>where we used that the <span class="math notranslate nohighlight">\(j\)</span>-th row of a matrix product is a linear combination of the rows of the second matrix, where the coefficients are the entries on the <span class="math notranslate nohighlight">\(j\)</span>-th row of the first one.</p>
+<p><strong>EXAMPLE:</strong> <strong>(continued)</strong> Continuing with our previous example, the clusters
+<span class="math notranslate nohighlight">\(
+C_1 = \{1, 4, 6, 8\}, C_2 = \{2, 3, 7\}, C_3 = \{5\}
+\)</span>
+are encoded as the matrix</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+Z 
+= \begin{bmatrix}
+1 &amp; 0 &amp; 0\\
+0 &amp; 1 &amp; 0\\
+0 &amp; 1 &amp; 0\\
+1 &amp; 0 &amp; 0\\
+0 &amp; 0 &amp; 1\\
+1 &amp; 0 &amp; 0\\
+0 &amp; 1 &amp; 0\\
+1 &amp; 0 &amp; 0
+\end{bmatrix}.
+\end{split}\]</div>
+<p>Suppose again that the representatives are</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\boldsymbol{\mu}_1 = \begin{pmatrix}-2\\1\end{pmatrix},
+\boldsymbol{\mu}_2 = \begin{pmatrix}2\\-1\end{pmatrix},
+\boldsymbol{\mu}_3 = \begin{pmatrix}-10\\10\end{pmatrix}.
+\end{split}\]</div>
+<p>The corresponding matrix <span class="math notranslate nohighlight">\(U\)</span> is then</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+U 
+= 
+\begin{bmatrix}
+-2 &amp; 1\\
+2 &amp; -1\\
+-10 &amp; 10
+\end{bmatrix}.
+\end{split}\]</div>
+<p>Hence multiplying <span class="math notranslate nohighlight">\(Z\)</span> and <span class="math notranslate nohighlight">\(U\)</span> produces a matrix where each row is the representative of the assigned cluster of the corresponding data point</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+ZU 
+= 
+\begin{bmatrix}
+1 &amp; 0 &amp; 0\\
+0 &amp; 1 &amp; 0\\
+0 &amp; 1 &amp; 0\\
+1 &amp; 0 &amp; 0\\
+0 &amp; 0 &amp; 1\\
+1 &amp; 0 &amp; 0\\
+0 &amp; 1 &amp; 0\\
+1 &amp; 0 &amp; 0
+\end{bmatrix}
+\,
+\begin{bmatrix}
+-2 &amp; 1\\
+2 &amp; -1\\
+-10 &amp; 10
+\end{bmatrix}
+= 
+\begin{bmatrix}
+-2 &amp; 1\\
+2 &amp; -1\\
+2 &amp; -1\\
+-2 &amp; 1\\
+-10 &amp; 10\\
+-2 &amp; 1\\
+2 &amp; -1\\
+-2 &amp; 1
+\end{bmatrix}.
+\end{split}\]</div>
+<p><span class="math notranslate nohighlight">\(\lhd\)</span></p>
+<p>Recall that the Frobenius norm of an <span class="math notranslate nohighlight">\(n \times m\)</span> matrix <span class="math notranslate nohighlight">\(A \in \mathbb{R}^{n \times m}\)</span> is defined as</p>
+<div class="math notranslate nohighlight">
+\[
+\|A\|_F
+= \sqrt{\sum_{i=1}^n \sum_{j=1}^m A_{ij}^2}.
+\]</div>
+<p>Using the row notation, it can be written as the sum of the squared Euclidean norms of the rows</p>
+<div class="math notranslate nohighlight">
+\[
+\|A\|_F^2 = \sum_{i=1}^n \|A_{i,\cdot}\|_2^2.
+\]</div>
+<p>For two matrices <span class="math notranslate nohighlight">\(A, B \in \mathbb{R}^{n \times m}\)</span>, the Frobenius norm of their difference <span class="math notranslate nohighlight">\(\|A - B\|_F\)</span> can be interpreted as a distance between <span class="math notranslate nohighlight">\(A\)</span> and <span class="math notranslate nohighlight">\(B\)</span>, that is, a measure of how dissimilar they are.</p>
+<p>Finally, we return to the <span class="math notranslate nohighlight">\(k\)</span>-means objective. Using the notation introduced in this section and the equivalent formula for the objective <span class="math notranslate nohighlight">\(G\)</span> derived the proof of the <em>Optimal Clustering Lemma</em>, we note that</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+G(C_1,\ldots,C_k; \boldsymbol{\mu}_1, \ldots, \boldsymbol{\mu}_k)
+&amp;= \sum_{i=1}^n \|\mathbf{x}_i - \boldsymbol{\mu}_{c(i)}\|^2\\
+&amp;= \sum_{i=1}^n \sum_{\ell=1}^d \left(x_{i\ell} - (Z U)_{i\ell}\right)^2\\
+&amp;= \|X - Z U \|^2_F,
+\end{align*}\]</div>
+<p>where we used the definition of the Frobenius norm.</p>
+<p>In other words, minimizing the <span class="math notranslate nohighlight">\(k\)</span>-means objective is equivalent to finding a matrix factorization of the form <span class="math notranslate nohighlight">\(ZU\)</span> that is a good fit to the data matrix <span class="math notranslate nohighlight">\(X\)</span> in Frobenius norm. This formulation expresses in a more compact form the idea of representing <span class="math notranslate nohighlight">\(X\)</span> as a combination of a small number of representatives. Matrix factorization will come back repeatedly in this course.</p>
+<p><em><strong>Self-assessment quiz</strong></em> <em>(with help from Claude, Gemini, and ChatGPT)</em></p>
+<p><strong>1</strong> Which of these is NOT a property of a valid partition <span class="math notranslate nohighlight">\(C_1, \ldots, C_k\)</span> in the context of <span class="math notranslate nohighlight">\(k\)</span>-means?</p>
+<p>a) The subsets are pairwise disjoint</p>
+<p>b) The subsets cover all data points</p>
+<p>c) Each subset is non-empty</p>
+<p>d) Each subset contains an equal number of points</p>
+<p><strong>2</strong> In the <span class="math notranslate nohighlight">\(k\)</span>-means objective function, what does the variable <span class="math notranslate nohighlight">\(\boldsymbol{\mu}_i\)</span> represent?</p>
+<p>a) The centroid of cluster <span class="math notranslate nohighlight">\(i\)</span></p>
+<p>b) The number of points in cluster <span class="math notranslate nohighlight">\(i\)</span></p>
+<p>c) The distance between clusters <span class="math notranslate nohighlight">\(i\)</span> and <span class="math notranslate nohighlight">\(j\)</span></p>
+<p>d) The assignment of point <span class="math notranslate nohighlight">\(j\)</span> to a cluster</p>
+<p><strong>3</strong> The <span class="math notranslate nohighlight">\(k\)</span>-means objective function is a measure of what?</p>
+<p>a) The total number of clusters.</p>
+<p>b) The average distance between data points.</p>
+<p>c) The sum of squared distances between each data point and its assigned cluster center.</p>
+<p>d) The maximum distance between any two cluster centers.</p>
+<p><strong>4</strong> What is a key property of the sequence of objective function values produced by the <span class="math notranslate nohighlight">\(k\)</span>-means algorithm?</p>
+<p>a) It is strictly decreasing</p>
+<p>b) It is non-increasing</p>
+<p>c) It is strictly increasing</p>
+<p>d) It alternates between two values</p>
+<p><strong>5</strong> What is the interpretation of the matrix <span class="math notranslate nohighlight">\(Z\)</span> in the matrix formulation of <span class="math notranslate nohighlight">\(k\)</span>-means?</p>
+<p>a) It represents the cluster centers.</p>
+<p>b) It represents the distances between data points.</p>
+<p>c) It encodes the cluster assignments of each data point.</p>
+<p>d) It represents the covariance matrix of the data.</p>
+<p>Answer for 1: d. Justification: “Formally, we define a clustering as a partition. A partition of <span class="math notranslate nohighlight">\([n] = {1,\ldots,n}\)</span> of size <span class="math notranslate nohighlight">\(k\)</span> is a collection of non-empty subsets <span class="math notranslate nohighlight">\(C_1,\ldots,C_k \subseteq [n]\)</span> that: are pairwise disjoint, i.e., <span class="math notranslate nohighlight">\(C_i \cap C_j = \emptyset\)</span>, <span class="math notranslate nohighlight">\(\forall i \neq j\)</span>; cover all of <span class="math notranslate nohighlight">\([n]\)</span>, i.e., <span class="math notranslate nohighlight">\(\cup_{i=1}^k C_i = [n]\)</span>.” No requirement for equal-sized subsets is mentioned.</p>
+<p>Answer for 2: a. Justification: “Here <span class="math notranslate nohighlight">\(\boldsymbol{\mu}_i \in \mathbb{R}^d\)</span> is the representative – or center – of cluster <span class="math notranslate nohighlight">\(C_i\)</span>.”</p>
+<p>Answer for 3: c. Justification: The <span class="math notranslate nohighlight">\(k\)</span>-means objective is defined in the text as minimizing the sum of squared distances between data points and their assigned cluster centers.</p>
+<p>Answer for 4: b. Justification: “The sequence of objective function values produced by the <span class="math notranslate nohighlight">\(k\)</span>-means algorithm is non-increasing.”</p>
+<p>Answer for 5: c. Justification: The text defines <span class="math notranslate nohighlight">\(Z\)</span> as a matrix where “each row has exactly one entry with value 1, corresponding to the assigned cluster of data point.”</p>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./chap01_intro/03_clustering"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="../02_review/roch-mmids-intro-review.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title"><span class="section-number">1.2. </span>Background: quick refresher of matrix algebra, differential calculus, and elementary probability</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="../04_highdim/roch-mmids-intro-highdim.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title"><span class="section-number">1.4. </span>Some observations about high-dimensional data</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-k-means-objective">1.3.1. The k-means objective</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#lloyds-algorithm-and-its-analysis">1.3.2. Lloyd’s algorithm and its analysis</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#matrix-form-of-k-means-clustering">1.3.3. Matrix form of k-means clustering</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Sebastien Roch
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2024.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

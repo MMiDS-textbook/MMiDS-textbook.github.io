@@ -1,0 +1,1144 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>5.4. Spectral properties of the Laplacian matrix &#8212; MMiDS Textbook</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.5.1/css/all.min.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.1/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.1/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.1/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b76e3c8a" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=384b581d" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css?v=be8a1c11" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=87e54e7c" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae" />
+  <script src="../../_static/vendor/fontawesome/6.5.1/js/all.min.js?digest=8d27b9dea8ad943066ae"></script>
+
+    <script src="../../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?v=efea14e4"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../_static/design-tabs.js?v=f930bc37"></script>
+    <script async="async" src="https://www.googletagmanager.com/gtag/js?id=G-P5E8DW088F"></script>
+    <script>
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){ dataLayer.push(arguments); }
+                gtag('js', new Date());
+                gtag('config', 'G-P5E8DW088F');
+            </script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){ dataLayer.push(arguments); }
+                gtag('js', new Date());
+                gtag('config', 'G-P5E8DW088F');
+            </script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'chap05_specgraph/04_laplacian/roch-mmids-specgraph-laplacian';</script>
+    <link rel="canonical" href="https://mmids-textbook.github.io/chap05_specgraph/04_laplacian/roch-mmids-specgraph-laplacian.html" />
+    <link rel="icon" href="https://mmids-textbook.github.io/favicon-32x32.png"/>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="5.5. Application: graph partitioning via spectral clustering" href="../05_partitioning/roch-mmids-specgraph-partitioning.html" />
+    <link rel="prev" title="5.3. Variational characterization of eigenvalues" href="../03_extremal/roch-mmids-specgraph-extremal.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a id="pst-skip-link" class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+
+<a class="navbar-brand logo" href="../../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/mmids-cover-small.jpg" class="logo__image only-light" alt="MMiDS Textbook - Home"/>
+    <script>document.write(`<img src="../../_static/mmids-cover-small.jpg" class="logo__image only-dark" alt="MMiDS Textbook - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../index.html">
+                    <b>MATHEMATICAL METHODS in DATA SCIENCE (with Python)</b>
+                </a>
+            </li>
+        </ul>
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../chap01_intro/00_intro/roch-mmids-intro-intro.html">1. Introduction: a first data science problem</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../chap01_intro/01_motiv/roch-mmids-intro-motiv.html">1.1. Motivating example: identifying penguin species</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap01_intro/02_review/roch-mmids-intro-review.html">1.2. Background: quick refresher of matrix algebra, differential calculus, and elementary probability</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap01_intro/03_clustering/roch-mmids-intro-clustering.html">1.3. Clustering: an objective, an algorithm and a guarantee</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap01_intro/04_highdim/roch-mmids-intro-highdim.html">1.4. Some observations about high-dimensional data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap01_intro/exercises/roch-mmids-intro-exercises.html">1.5. Exercises</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap01_intro/supp/roch-mmids-intro-supp.html">1.6. Online suppplementary material</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../chap02_ls/00_intro/roch-mmids-ls-intro.html">2. Least squares: geometric, algebraic, and numerical aspects</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../chap02_ls/01_motiv/roch-mmids-ls-motiv.html">2.1. Motivating example: predicting sales</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap02_ls/02_spaces/roch-mmids-ls-spaces.html">2.2. Background: review of vector spaces and matrix inverses</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap02_ls/03_orthog/roch-mmids-ls-orthog.html">2.3. Geometry of least squares: the orthogonal projection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap02_ls/04_qr/roch-mmids-ls-qr.html">2.4. QR decomposition and Householder transformations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap02_ls/05_regression/roch-mmids-ls-regression.html">2.5. Application: regression analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap02_ls/exercises/roch-mmids-ls-exercises.html">2.6. Exercises</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap02_ls/supp/roch-mmids-ls-supp.html">2.7. Online suppplementary material</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../chap03_opt/00_intro/roch-mmids-opt-intro.html">3. Optimization theory and algorithms</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-3"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../chap03_opt/01_motiv/roch-mmids-opt-motiv.html">3.1. Motivating example:  analyzing customer satisfaction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap03_opt/02_several/roch-mmids-opt-several.html">3.2. Background: review of differentiable functions of several variables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap03_opt/03_optimality/roch-mmids-opt-optimality.html">3.3. Optimality conditions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap03_opt/04_convexity/roch-mmids-opt-convexity.html">3.4. Convexity</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap03_opt/05_gd/roch-mmids-opt-gd.html">3.5. Gradient descent and its convergence analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap03_opt/06_logistic/roch-mmids-opt-logistic.html">3.6. Application: logistic regression</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap03_opt/exercises/roch-mmids-opt-exercises.html">3.7. Exercises</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap03_opt/supp/roch-mmids-opt-supp.html">3.8. Online suppplementary material</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../chap04_svd/00_intro/roch-mmids-svd-intro.html">4. Singular value decomposition</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-4"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../chap04_svd/01_motiv/roch-mmids-svd-motiv.html">4.1. Motivating example: visualizing viral evolution</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap04_svd/02_spectral/roch-mmids-svd-spectral.html">4.2. Background: review of matrix rank  and spectral decomposition</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap04_svd/03_svd/roch-mmids-svd-svd.html">4.3. Approximating subspaces and the SVD</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap04_svd/04_power/roch-mmids-svd-power.html">4.4. Power iteration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap04_svd/05_pca/roch-mmids-svd-pca.html">4.5. Application: principal components analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap04_svd/06_further/roch-mmids-svd-further.html">4.6. Further applications of the SVD: low-rank approximations and ridge regression</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap04_svd/exercises/roch-mmids-svd-exercises.html">4.7. Exercises</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap04_svd/supp/roch-mmids-svd-supp.html">4.8. Online suppplementary material</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="../00_intro/roch-mmids-specgraph-intro.html">5. Spectral graph theory</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-5"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../01_motiv/roch-mmids-specgraph-motiv.html">5.1. Motivating example: uncovering social groups</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../02_graph/roch-mmids-specgraph-graph.html">5.2. Background: basic concepts in graph theory</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../03_extremal/roch-mmids-specgraph-extremal.html">5.3. Variational characterization of eigenvalues</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">5.4. Spectral properties of the Laplacian matrix</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../05_partitioning/roch-mmids-specgraph-partitioning.html">5.5. Application: graph partitioning via spectral clustering</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../06_sbm/roch-mmids-specgraph-sbm.html">5.6. Erdős-Rényi random graph and stochastic blockmodel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../exercises/roch-mmids-specgraph-exercises.html">5.7. Exercises</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../supp/roch-mmids-specgraph-supp.html">5.8. Online supplementary material</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../chap06_prob/00_intro/roch-mmids-prob-intro.html">6. Probabilistic models: from simple to complex</a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-6"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../chap06_prob/01_motiv/roch-mmids-prob-motiv.html">6.1. Motivating example: tracking location</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap06_prob/02_parametric/roch-mmids-prob-parametric.html">6.2. Background: introduction to parametric families and maximum likelihood estimation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap06_prob/03_joint/roch-mmids-prob-joint.html">6.3. Modeling more complex dependencies 1: using conditional independence</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap06_prob/04_em/roch-mmids-prob-em.html">6.4. Modeling more complex dependencies 2: marginalizing out an unobserved variable</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap06_prob/05_kalman/roch-mmids-prob-kalman.html">6.5. Application: linear-Gaussian models and Kalman filtering</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap06_prob/exercises/roch-mmids-prob-exercises.html">6.6. Exercises</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap06_prob/supp/roch-mmids-prob-supp.html">6.7. Online supplementary material</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../chap07_rwmc/00_intro/roch-mmids-rwmc-intro.html">7. Random walks on graphs and Markov chains</a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-7"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../chap07_rwmc/01_motiv/roch-mmids-rwmc-motiv.html">7.1. Motivating example: discovering mathematical topics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap07_rwmc/02_mcdefs/roch-mmids-rwmc-mcdefs.html">7.2. Background: elements of finite Markov chains</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap07_rwmc/03_stat/roch-mmids-rwmc-stat.html">7.3. Limit behavior 1: stationary distributions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap07_rwmc/04_mclimit/roch-mmids-rwmc-mclimit.html">7.4. Limit behavior 2: convergence to equilibrium</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap07_rwmc/05_pagerank/roch-mmids-rwmc-pagerank.html">7.5. Application: random walks on graphs and PageRank</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap07_rwmc/06_gibbs/roch-mmids-rwmc-gibbs.html">7.6. Further applications: Gibbs sampling and generating images</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap07_rwmc/exercises/roch-mmids-rwmc-exercises.html">7.7. Exercises</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap07_rwmc/supp/roch-mmids-rwmc-supp.html">7.8. Online supplementary material</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../chap08_nn/00_intro/roch-mmids-nn-intro.html">8. Neural networks, backpropagation and stochastic gradient descent</a><input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-8"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../chap08_nn/01_motiv/roch-mmids-nn-motiv.html">8.1. Motivating example:  classifying natural images</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap08_nn/02_chain/roch-mmids-nn-chain.html">8.2. Background: Jacobian, chain rule, and a brief introduction to automatic differentiation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap08_nn/03_backprop/roch-mmids-nn-backprop.html">8.3. Building blocks of AI 1: backpropagation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap08_nn/04_sgd/roch-mmids-nn-sgd.html">8.4. Building blocks of AI 2: stochastic gradient descent</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap08_nn/05_nn/roch-mmids-nn-nn.html">8.5. Building blocks of AI 3: neural networks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap08_nn/exercises/roch-mmids-nn-exercises.html">8.6. Exercises</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap08_nn/supp/roch-mmids-nn-supp.html">8.7. Online supplementary material</a></li>
+</ul>
+</li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/MMiDS-textbook/MMiDS-textbook.github.io" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/MMiDS-textbook/MMiDS-textbook.github.io/issues/new?title=Issue%20on%20page%20%2Fchap05_specgraph/04_laplacian/roch-mmids-specgraph-laplacian.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/chap05_specgraph/04_laplacian/roch-mmids-specgraph-laplacian.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Spectral properties of the Laplacian matrix</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#eigenvalues-of-the-laplacian-matrix-first-observations">5.4.1. Eigenvalues of the Laplacian matrix: first observations</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#laplacian-matrix-and-connectivity">5.4.2. Laplacian matrix and connectivity</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#variational-characterization-of-second-laplacian-eigenvalue">5.4.3. Variational characterization of second Laplacian eigenvalue</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <p><span class="math notranslate nohighlight">\(\newcommand{\bmu}{\boldsymbol{\mu}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bSigma}{\boldsymbol{\Sigma}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bfbeta}{\boldsymbol{\beta}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bflambda}{\boldsymbol{\lambda}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bgamma}{\boldsymbol{\gamma}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bsigma}{{\boldsymbol{\sigma}}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bpi}{\boldsymbol{\pi}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\btheta}{{\boldsymbol{\theta}}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bphi}{\boldsymbol{\phi}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\balpha}{\boldsymbol{\alpha}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\blambda}{\boldsymbol{\lambda}}\)</span>
+<span class="math notranslate nohighlight">\(\renewcommand{\P}{\mathbb{P}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\E}{\mathbb{E}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\indep}{\perp\!\!\!\perp} \newcommand{\bx}{\mathbf{x}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bp}{\mathbf{p}}\)</span>
+<span class="math notranslate nohighlight">\(\renewcommand{\bx}{\mathbf{x}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bX}{\mathbf{X}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\by}{\mathbf{y}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bY}{\mathbf{Y}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bz}{\mathbf{z}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bZ}{\mathbf{Z}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bw}{\mathbf{w}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bW}{\mathbf{W}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bv}{\mathbf{v}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bV}{\mathbf{V}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bfg}{\mathbf{g}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bfh}{\mathbf{h}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\horz}{\rule[.5ex]{2.5ex}{0.5pt}}\)</span>
+<span class="math notranslate nohighlight">\(\renewcommand{\S}{\mathcal{S}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\X}{\mathcal{X}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\var}{\mathrm{Var}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\pa}{\mathrm{pa}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\Z}{\mathcal{Z}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bh}{\mathbf{h}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bb}{\mathbf{b}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bc}{\mathbf{c}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\cE}{\mathcal{E}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\cP}{\mathcal{P}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bbeta}{\boldsymbol{\beta}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bLambda}{\boldsymbol{\Lambda}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\cov}{\mathrm{Cov}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bfk}{\mathbf{k}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\idx}[1]{}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\xdi}{}\)</span></p>
+<section id="spectral-properties-of-the-laplacian-matrix">
+<h1><span class="section-number">5.4. </span>Spectral properties of the Laplacian matrix<a class="headerlink" href="#spectral-properties-of-the-laplacian-matrix" title="Link to this heading">#</a></h1>
+<p>In this section, we look at the spectral properties of the Laplacian of a graph.</p>
+<section id="eigenvalues-of-the-laplacian-matrix-first-observations">
+<h2><span class="section-number">5.4.1. </span>Eigenvalues of the Laplacian matrix: first observations<a class="headerlink" href="#eigenvalues-of-the-laplacian-matrix-first-observations" title="Link to this heading">#</a></h2>
+<p>Let <span class="math notranslate nohighlight">\(G = (V, E)\)</span> be a graph with <span class="math notranslate nohighlight">\(n = |V|\)</span> vertices. Two observations:</p>
+<p>1- Since the Laplacian matrix <span class="math notranslate nohighlight">\(L\)</span> of <span class="math notranslate nohighlight">\(G\)</span> is symmetric, by the <em>Spectral Theorem</em>, it has a spectral decomposition</p>
+<div class="math notranslate nohighlight">
+\[
+L = \sum_{i=1}^n \mu_i \mathbf{y}_i \mathbf{y}_i^T
+\]</div>
+<p>where the <span class="math notranslate nohighlight">\(\mathbf{y}_i\)</span>’s form an orthonormal basis of <span class="math notranslate nohighlight">\(\mathbb{R}^n\)</span>.</p>
+<p>2- Further, because <span class="math notranslate nohighlight">\(L\)</span> is positive semidefinite, the eigenvalues are nonnegative. By convention, we assume</p>
+<div class="math notranslate nohighlight">
+\[
+0 \leq \mu_1 \leq \mu_2 \leq \cdots \leq \mu_n.
+\]</div>
+<p>Another observation:</p>
+<p><strong>LEMMA</strong> Let <span class="math notranslate nohighlight">\(G = (V, E)\)</span> be a graph with <span class="math notranslate nohighlight">\(n = |V|\)</span> vertices and Laplacian matrix <span class="math notranslate nohighlight">\(L\)</span>. The constant unit vector</p>
+<div class="math notranslate nohighlight">
+\[
+\mathbf{y}_1 
+= 
+\frac{1}{\sqrt{n}} (1, \ldots, 1)^T
+\]</div>
+<p>is an eigenvector of <span class="math notranslate nohighlight">\(L\)</span> with eigenvalue <span class="math notranslate nohighlight">\(0\)</span>. <span class="math notranslate nohighlight">\(\flat\)</span></p>
+<p><em>Proof:</em> Let <span class="math notranslate nohighlight">\(B\)</span> be an oriented incidence matrix of <span class="math notranslate nohighlight">\(G\)</span> recall that <span class="math notranslate nohighlight">\(L = B B^T\)</span>. By construction <span class="math notranslate nohighlight">\(B^T \mathbf{y}_1 = \mathbf{0}\)</span> since each column of <span class="math notranslate nohighlight">\(B\)</span> has exactly one <span class="math notranslate nohighlight">\(1\)</span> and one <span class="math notranslate nohighlight">\(-1\)</span>. So <span class="math notranslate nohighlight">\(L \mathbf{y}_1 = B B^T \mathbf{y}_1 = \mathbf{0}\)</span> as claimed. <span class="math notranslate nohighlight">\(\square\)</span></p>
+<p>In general, the constant vector may not be the only eigenvector with eigenvalue one.</p>
+<p><strong>NUMERICAL CORNER:</strong> One use of the spectral decomposition of the Laplacian matrix is in graph drawing<span class="math notranslate nohighlight">\(\idx{graph drawing}\xdi\)</span>. We illustrate this next. Given a graph <span class="math notranslate nohighlight">\(G = (V, E)\)</span>, it is not clear a priori how to draw it in the plane since the only information available are adjacencies of vertices. One approach is just to position the vertices at random. The function <a class="reference external" href="https://networkx.org/documentation/stable/reference/generated/networkx.drawing.nx_pylab.draw.html"><code class="docutils literal notranslate"><span class="pre">networkx.draw()</span></code></a> or <a class="reference external" href="https://networkx.org/documentation/stable/reference/generated/networkx.drawing.nx_pylab.draw_networkx.html#networkx.drawing.nx_pylab.draw_networkx"><code class="docutils literal notranslate"><span class="pre">networkx.draw_networkx()</span></code></a>can take as input different <a class="reference external" href="https://networkx.org/documentation/stable/reference/drawing.html#module-networkx.drawing.layout">graph layout</a> functions that return an <span class="math notranslate nohighlight">\(x\)</span> and <span class="math notranslate nohighlight">\(y\)</span>-coordinate for each vertex.</p>
+<p>We will test this on a grid graph. We use <a class="reference external" href="https://networkx.org/documentation/stable/reference/generated/networkx.generators.lattice.grid_2d_graph.html"><code class="docutils literal notranslate"><span class="pre">grid_2d_graph()</span></code></a> to construct such a graph.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">G</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">grid_2d_graph</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span><span class="mi">7</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>One layout approach is to choose random locations for the nodes. Specifically, for every node, a position is generated by choosing each coordinate uniformly at random on the interval <span class="math notranslate nohighlight">\([0,1]\)</span>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">nx</span><span class="o">.</span><span class="n">draw_networkx</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">pos</span><span class="o">=</span><span class="n">nx</span><span class="o">.</span><span class="n">random_layout</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">535</span><span class="p">),</span> <span class="n">with_labels</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> 
+                 <span class="n">node_size</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">node_color</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s1">&#39;off&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/eacb128396fa1fa41e3c7b9398478b3e2f020fc67bd512a29eb57ab111bd3a59.png" src="../../_images/eacb128396fa1fa41e3c7b9398478b3e2f020fc67bd512a29eb57ab111bd3a59.png" />
+</div>
+</div>
+<p>Clearly, this is hard to read.</p>
+<p>Another approach is to map the vertices to two eigenvectors, similarly to what we did for dimensionality reduction. The eigenvector associated to <span class="math notranslate nohighlight">\(\mu_1\)</span> is constant and therefore not useful for drawing. We try the next two. We use the Laplacian matrix. This is done using <a class="reference external" href="https://networkx.org/documentation/stable/reference/generated/networkx.drawing.layout.spectral_layout.html#networkx.drawing.layout.spectral_layout"><code class="docutils literal notranslate"><span class="pre">spectral_layout()</span></code></a>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">nx</span><span class="o">.</span><span class="n">draw_networkx</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">pos</span><span class="o">=</span><span class="n">nx</span><span class="o">.</span><span class="n">spectral_layout</span><span class="p">(</span><span class="n">G</span><span class="p">),</span> <span class="n">with_labels</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> 
+                 <span class="n">node_size</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">node_color</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s1">&#39;off&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/310100670eaea5d1ddc0cd0bc340e826f633b07654a7a0f5e23d7e0a585b389f.png" src="../../_images/310100670eaea5d1ddc0cd0bc340e826f633b07654a7a0f5e23d7e0a585b389f.png" />
+</div>
+</div>
+<p>Interestingly, the outcome is provides a much more natural drawing of the graph, revealing its underlying structure as a grid. We will come back later to try to explain this, after we have developed further understanding of the spectral properties of the Laplacian matrix.</p>
+<p><span class="math notranslate nohighlight">\(\unlhd\)</span></p>
+</section>
+<section id="laplacian-matrix-and-connectivity">
+<h2><span class="section-number">5.4.2. </span>Laplacian matrix and connectivity<a class="headerlink" href="#laplacian-matrix-and-connectivity" title="Link to this heading">#</a></h2>
+<p>As we indicated before, the Laplacian matrix contains information about the connectedness of <span class="math notranslate nohighlight">\(G\)</span>. We elaborate on a first concrete connection here. But first we will need a useful form of the Laplaican quadratic form <span class="math notranslate nohighlight">\(\mathbf{x}^T L \mathbf{x}\)</span> which enters in the variational charaterization of the eigenvalues.</p>
+<p><strong>LEMMA</strong> <strong>(Laplacian Quadratic Form)</strong> <span class="math notranslate nohighlight">\(\idx{Laplacian quadratic form lemma}\xdi\)</span> Let <span class="math notranslate nohighlight">\(G = (V, E)\)</span> be a graph with <span class="math notranslate nohighlight">\(n = |V|\)</span> vertices and Laplacian matrix <span class="math notranslate nohighlight">\(L\)</span>. We have the following formula for the Laplacian quadratic form</p>
+<div class="math notranslate nohighlight">
+\[
+\mathbf{x}^T L \mathbf{x}
+= \sum_{e = \{i,j\} \in E} (x_i - x_j)^2
+\]</div>
+<p>for any <span class="math notranslate nohighlight">\(\mathbf{x} = (x_1, \ldots, x_n)^T \in \mathbb{R}^n\)</span>. <span class="math notranslate nohighlight">\(\flat\)</span></p>
+<p>Here is intuitive way of interpreting this lemma. If one thinks of <span class="math notranslate nohighlight">\(\mathbf{x} = (x_1, \ldots, x_n)^T \in \mathbb{R}^n\)</span> as a real-valued function over the vertices (i.e., it associates a real value <span class="math notranslate nohighlight">\(x_i\)</span> to vertex <span class="math notranslate nohighlight">\(i\)</span> for each <span class="math notranslate nohighlight">\(i\)</span>), then the Laplacian quadratic form measures how “smooth” the function is over the graph in the following sense. A small value of <span class="math notranslate nohighlight">\(\mathbf{x}^T L \mathbf{x}\)</span> indicates that adjacent vertices tend to get assigned close values.</p>
+<p><em>Proof:</em> Let <span class="math notranslate nohighlight">\(B\)</span> be an oriented incidence matrix of <span class="math notranslate nohighlight">\(G\)</span>. We have that <span class="math notranslate nohighlight">\(L = B B^T\)</span>. Thus, for any <span class="math notranslate nohighlight">\(\mathbf{x}\)</span>, we have <span class="math notranslate nohighlight">\((B^T \mathbf{x})_k = x_v - x_u\)</span> if the edge <span class="math notranslate nohighlight">\(e_k = \{u, v\}\)</span> is oriented as <span class="math notranslate nohighlight">\((u,v)\)</span> under <span class="math notranslate nohighlight">\(B\)</span>. That implies</p>
+<div class="math notranslate nohighlight">
+\[
+\mathbf{x}^T L \mathbf{x}
+= \mathbf{x}^T B B^T \mathbf{x}
+= \|B^T \mathbf{x}\|^2
+= \sum_{e = \{i,j\} \in E} (x_i - x_j)^2.
+\]</div>
+<p>Since the latter is always nonnegative, it also implies that <span class="math notranslate nohighlight">\(L\)</span> is positive semidefinite. <span class="math notranslate nohighlight">\(\square\)</span></p>
+<p>We are now ready to derive connectivity consequences. Recall that, for any graph <span class="math notranslate nohighlight">\(G\)</span>, the Laplacian eigenvalue <span class="math notranslate nohighlight">\(\mu_1 = 0\)</span>.</p>
+<p><strong>LEMMA</strong> <strong>(Laplacian and Connectivity)</strong> <span class="math notranslate nohighlight">\(\idx{Laplacian and connectivity lemma}\xdi\)</span> If <span class="math notranslate nohighlight">\(G\)</span> is connected, then the Laplacian eigenvalue <span class="math notranslate nohighlight">\(\mu_2 &gt; 0\)</span>. <span class="math notranslate nohighlight">\(\flat\)</span></p>
+<p><em>Proof:</em> Let <span class="math notranslate nohighlight">\(G = (V, E)\)</span> with <span class="math notranslate nohighlight">\(n = |V|\)</span> and let <span class="math notranslate nohighlight">\(L = \sum_{i=1}^n \mu_i \mathbf{y}_i \mathbf{y}_i^T\)</span> be a spectral decomposition of its Laplacian <span class="math notranslate nohighlight">\(L\)</span> with <span class="math notranslate nohighlight">\(0 = \mu_1 \leq \cdots \leq \mu_n\)</span>. Suppose by way of contradiction that <span class="math notranslate nohighlight">\(\mu_2 = 0\)</span>. Any eigenvector <span class="math notranslate nohighlight">\(\mathbf{y} = (y_{1}, \ldots, y_{n})^T\)</span> with <span class="math notranslate nohighlight">\(0\)</span> eigenvalue satisfies <span class="math notranslate nohighlight">\(L \mathbf{y} = \mathbf{0}\)</span> by definition. By the <em>Laplacian Quadratic Form  Lemma</em> then</p>
+<div class="math notranslate nohighlight">
+\[
+0 
+= \mathbf{y}^T L \mathbf{y}
+= \sum_{e = \{i, j\} \in E} (y_{i} - y_{j})^2.
+\]</div>
+<p>1- In order for this to hold, it must be that any two adjacent vertices <span class="math notranslate nohighlight">\(i\)</span> and <span class="math notranslate nohighlight">\(j\)</span> have <span class="math notranslate nohighlight">\(y_{i} = y_{j}\)</span>. That is, <span class="math notranslate nohighlight">\(\{i,j\} \in E\)</span> implies <span class="math notranslate nohighlight">\(y_i = y_j\)</span>.</p>
+<p>2- Furthermore, because <span class="math notranslate nohighlight">\(G\)</span> is connected, between any two of its vertices <span class="math notranslate nohighlight">\(u\)</span> and <span class="math notranslate nohighlight">\(v\)</span> - adjacent or not - there is a path <span class="math notranslate nohighlight">\(u = w_0 \sim \cdots \sim w_k = v\)</span> along which the <span class="math notranslate nohighlight">\(y_{w}\)</span>’s must be the same. Thus <span class="math notranslate nohighlight">\(\mathbf{y}\)</span> is a constant vector.</p>
+<p>But that is a contradiction since the eigenvectors <span class="math notranslate nohighlight">\(\mathbf{y}_1, \ldots, \mathbf{y}_n\)</span> are in fact linearly independent, so that <span class="math notranslate nohighlight">\(\mathbf{y}_1\)</span> and <span class="math notranslate nohighlight">\(\mathbf{y}_2\)</span> cannot both be a constant vector. <span class="math notranslate nohighlight">\(\square\)</span></p>
+<p>The quantity <span class="math notranslate nohighlight">\(\mu_2\)</span> is sometimes referred to as the <a class="reference external" href="https://mathworld.wolfram.com/AlgebraicConnectivity.html">algebraic connectivity</a><span class="math notranslate nohighlight">\(\idx{algebraic connectivity}\xdi\)</span> of the graph. The corresponding eigenvector, <span class="math notranslate nohighlight">\(\mathbf{y}_2\)</span>, is known as the <a class="reference external" href="https://mathworld.wolfram.com/FiedlerVector.html">Fiedler vector</a><span class="math notranslate nohighlight">\(\idx{Fiedler vector}\xdi\)</span>.</p>
+<p>We state the following (more general) converse result without proof.</p>
+<p><strong>LEMMA</strong> If <span class="math notranslate nohighlight">\(\mu_{k+1}\)</span> is the smallest nonzero Laplacian eigenvalue of <span class="math notranslate nohighlight">\(G\)</span>, then <span class="math notranslate nohighlight">\(G\)</span> has <span class="math notranslate nohighlight">\(k\)</span> connected components. <span class="math notranslate nohighlight">\(\flat\)</span></p>
+<p>We will be interested in more quantitative results of this type. Before proceeding, we start with a simple observation. By our proof of the <em>Spectral Theorem</em>, the largest eigenvalue <span class="math notranslate nohighlight">\(\mu_n\)</span> of the Laplacian matrix <span class="math notranslate nohighlight">\(L\)</span> is the solution to the optimization problem</p>
+<div class="math notranslate nohighlight">
+\[
+\mu_n = \max\{\langle \mathbf{x}, L \mathbf{x}\rangle:\|\mathbf{x}\| = 1\}.
+\]</div>
+<p>Such extremal characterization is useful in order to bound the eigenvalue <span class="math notranslate nohighlight">\(\mu_n\)</span>, since any choice of <span class="math notranslate nohighlight">\(\mathbf{x}\)</span> with <span class="math notranslate nohighlight">\(\|\mathbf{x}\| =1\)</span> gives a lower bound through the quantity <span class="math notranslate nohighlight">\(\langle \mathbf{x}, L \mathbf{x}\rangle\)</span>. That perspective will be key to our application to graph partitioning.</p>
+<p>For now, we give a simple consequence.</p>
+<p><strong>LEMMA</strong> <strong>(Laplacian and Maximum Degree)</strong> <span class="math notranslate nohighlight">\(\idx{Laplacian and maximum degree lemma}\xdi\)</span> Let <span class="math notranslate nohighlight">\(G = (V, E)\)</span> be a graph with maximum degree <span class="math notranslate nohighlight">\(\bar{\delta}\)</span>. Let <span class="math notranslate nohighlight">\(\mu_n\)</span> be the largest eigenvalue of its Laplacian matrix <span class="math notranslate nohighlight">\(L\)</span>. Then</p>
+<div class="math notranslate nohighlight">
+\[
+\bar{\delta}+1 \leq \mu_n \leq 2 \bar{\delta}.
+\]</div>
+<p><span class="math notranslate nohighlight">\(\flat\)</span></p>
+<p><em>Proof idea:</em> As explained before the statement of the lemma, for the lower bound it suffices to find a good test unit vector <span class="math notranslate nohighlight">\(\mathbf{x}\)</span> to plug into <span class="math notranslate nohighlight">\(\langle \mathbf{x}, L \mathbf{x}\rangle\)</span>. A clever choice does the trick.</p>
+<p><em>Proof:</em> We start with the lower bound. Let <span class="math notranslate nohighlight">\(u \in V\)</span> be a vertex with degree <span class="math notranslate nohighlight">\(\bar{\delta}\)</span>. Let <span class="math notranslate nohighlight">\(\mathbf{z}\)</span> be the vector with entries</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+z_i 
+=
+\begin{cases}
+\bar{\delta} &amp; \text{if $i = u$}\\
+-1 &amp; \text{if $\{i,u\} \in E$}\\
+0 &amp; \text{o.w.}
+\end{cases}
+\end{split}\]</div>
+<p>and let <span class="math notranslate nohighlight">\(\mathbf{x}\)</span> be the unit vector <span class="math notranslate nohighlight">\(\mathbf{z}/\|\mathbf{z}\|\)</span>. By definition of the degree of <span class="math notranslate nohighlight">\(u\)</span>, <span class="math notranslate nohighlight">\(\|\mathbf{z}\|^2 = \bar{\delta}^2 + \bar{\delta}(-1)^2 = \bar{\delta}(\bar{\delta}+1)\)</span>. Using the <em>Laplacian Quadratic Form Lemma</em>,</p>
+<div class="math notranslate nohighlight">
+\[
+\langle \mathbf{z}, L \mathbf{z}\rangle
+=
+\sum_{e = \{i, j\} \in E} (z_i - z_j)^2
+\geq
+\sum_{i: \{i, u\} \in E} (z_i - z_u)^2
+=
+\sum_{i: \{i, u\} \in E} (-1 - \bar{\delta})^2
+= \bar{\delta} (\bar{\delta}+1)^2
+\]</div>
+<p>where we restricted the sum to those edges incident with <span class="math notranslate nohighlight">\(u\)</span> and used the fact that all terms in the sum are nonnegative. Finally</p>
+<div class="math notranslate nohighlight">
+\[
+\langle \mathbf{x}, L \mathbf{x}\rangle
+= \left\langle \frac{\mathbf{z}}{\|\mathbf{z}\|}, 
+L \frac{\mathbf{z}}{\|\mathbf{z}\|}\right\rangle
+= \frac{1}{\|\mathbf{z}\|^2} \langle \mathbf{z}, L \mathbf{z}\rangle
+= \frac{\bar{\delta} (\bar{\delta}+1)^2}{\bar{\delta}(\bar{\delta}+1)}
+= \bar{\delta}+1
+\]</div>
+<p>so that</p>
+<div class="math notranslate nohighlight">
+\[
+\mu_n 
+= \max\{\langle \mathbf{x}', L \mathbf{x}'\rangle:\|\mathbf{x}'\| = 1\}
+\geq \langle \mathbf{x}, L \mathbf{x}\rangle
+= \bar{\delta}+1
+\]</div>
+<p>as claimed.</p>
+<p>We proceed with the lower bound. For any unit vector <span class="math notranslate nohighlight">\(\mathbf{x}\)</span>,</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+\langle \mathbf{x}, L \mathbf{x}\rangle
+&amp;= \sum_{i,j} L_{ij} x_i x_j\\
+&amp;\leq \sum_{i,j} |L_{ij}| |x_i| |x_j|\\
+&amp;= \sum_{i,j} (D_{ij} + A_{ij})  |x_i| |x_j|\\
+&amp;= \sum_{i} \delta(i) \,x_i^2 
++ \sum_{i,j} A_{ij}  |x_i| |x_j|.
+\end{align*}\]</div>
+<p>By the <em>Cauchy-Schwarz inequality</em>, this is</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+&amp;\leq \bar{\delta}
++ \sum_{i} \left(
+\sum_j A_{ij}^2 x_i^2\right) \left(\sum_j x_j^2\right)\\
+&amp;= \bar{\delta}
++ \sum_{i} x_i^2 \left(
+\sum_j A_{ij} \right)\\
+&amp;= \bar{\delta}
++ \sum_{i} \delta(i) \,x_i^2\\
+&amp;\leq 2\bar{\delta}.
+\end{align*}\]</div>
+<p><span class="math notranslate nohighlight">\(\square\)</span></p>
+<p><strong>NUMERICAL CORNER:</strong> We construct a graph with two connected components and check the results above. We work directly with the adjacency matrix.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">A</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> 
+              <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> 
+              <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> 
+              <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> 
+              <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]])</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[[0 1 1 0 0]
+ [1 0 1 0 0]
+ [1 1 0 0 0]
+ [0 0 0 0 1]
+ [0 0 0 1 0]]
+</pre></div>
+</div>
+</div>
+</div>
+<p>Note the block structure.</p>
+<p>The degrees can be obtained by summing the rows of the adjacency matrix.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">degrees</span> <span class="o">=</span> <span class="n">A</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">degrees</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[2 2 2 1 1]
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">D</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">diag</span><span class="p">(</span><span class="n">degrees</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">D</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[[2 0 0 0 0]
+ [0 2 0 0 0]
+ [0 0 2 0 0]
+ [0 0 0 1 0]
+ [0 0 0 0 1]]
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">L</span> <span class="o">=</span> <span class="n">D</span> <span class="o">-</span> <span class="n">A</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">L</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[[ 2 -1 -1  0  0]
+ [-1  2 -1  0  0]
+ [-1 -1  2  0  0]
+ [ 0  0  0  1 -1]
+ [ 0  0  0 -1  1]]
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">LA</span><span class="o">.</span><span class="n">eigvals</span><span class="p">(</span><span class="n">L</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[ 3.00000000e+00 -3.77809194e-16  3.00000000e+00  2.00000000e+00
+  0.00000000e+00]
+</pre></div>
+</div>
+</div>
+</div>
+<p>Observe that (up to numerical error) there are two <span class="math notranslate nohighlight">\(0\)</span> eigenvalues and that the largest eigenvalue is greater or equal than the maximum degree plus one.</p>
+<p>To compute the Laplacian matrix, one can also use the function <code class="docutils literal notranslate"><span class="pre">laplacian_matrix()</span></code>. For example, the Laplacian of the Petersen graph is the following:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">G</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">petersen_graph</span><span class="p">()</span>
+<span class="n">L</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">laplacian_matrix</span><span class="p">(</span><span class="n">G</span><span class="p">)</span><span class="o">.</span><span class="n">toarray</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">L</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[[ 3 -1  0  0 -1 -1  0  0  0  0]
+ [-1  3 -1  0  0  0 -1  0  0  0]
+ [ 0 -1  3 -1  0  0  0 -1  0  0]
+ [ 0  0 -1  3 -1  0  0  0 -1  0]
+ [-1  0  0 -1  3  0  0  0  0 -1]
+ [-1  0  0  0  0  3  0 -1 -1  0]
+ [ 0 -1  0  0  0  0  3  0 -1 -1]
+ [ 0  0 -1  0  0 -1  0  3  0 -1]
+ [ 0  0  0 -1  0 -1 -1  0  3  0]
+ [ 0  0  0  0 -1  0 -1 -1  0  3]]
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">LA</span><span class="o">.</span><span class="n">eigvals</span><span class="p">(</span><span class="n">L</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[ 5.00000000e+00  2.00000000e+00 -2.80861083e-17  5.00000000e+00
+  5.00000000e+00  2.00000000e+00  2.00000000e+00  5.00000000e+00
+  2.00000000e+00  2.00000000e+00]
+</pre></div>
+</div>
+</div>
+</div>
+<p><span class="math notranslate nohighlight">\(\unlhd\)</span></p>
+</section>
+<section id="variational-characterization-of-second-laplacian-eigenvalue">
+<h2><span class="section-number">5.4.3. </span>Variational characterization of second Laplacian eigenvalue<a class="headerlink" href="#variational-characterization-of-second-laplacian-eigenvalue" title="Link to this heading">#</a></h2>
+<p>The definition <span class="math notranslate nohighlight">\(A \mathbf{x} = \lambda \mathbf{x}\)</span> is perhaps not the best way to understand why the eigenvectors of the Laplacian matrix are useful. Instead the following application of the <em>Courant-Fischer theorem</em><span class="math notranslate nohighlight">\(\idx{Courant-Fischer theorem}\xdi\)</span> provides much insight, as we will see in the rest of this chapter.</p>
+<p><strong>THEOREM</strong> <strong>(Variational Characterization of <span class="math notranslate nohighlight">\(\mu_2\)</span>)</strong> <span class="math notranslate nohighlight">\(\idx{variational characterization of the algebraic connectivity}\xdi\)</span> Let <span class="math notranslate nohighlight">\(G = (V, E)\)</span> be a graph with <span class="math notranslate nohighlight">\(n = |V|\)</span> vertices. Assume the Laplacian <span class="math notranslate nohighlight">\(L\)</span> of <span class="math notranslate nohighlight">\(G\)</span> has spectral decomposition <span class="math notranslate nohighlight">\(L = \sum_{i=1}^n \mu_i \mathbf{y}_i \mathbf{y}_i^T\)</span> with <span class="math notranslate nohighlight">\(0 = \mu_1 \leq \mu_2 \leq \cdots \leq \mu_n\)</span> and <span class="math notranslate nohighlight">\(\mathbf{y}_1 = \frac{1}{\sqrt{n}}(1,\ldots,1)^T\)</span>. Then</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+\mu_2 
+= \min\Bigg\{
+&amp;\sum_{\{i, j\} \in E}(x_i - x_j)^2 \,: \\ 
+&amp;\,\mathbf{x} = (x_1, \ldots, x_n)^T \in \mathbb{R}^n, 
+\sum_{i=1}^n x_i = 0, \sum_{j = 1}^n x_j^2=1
+\Bigg\}.
+\end{align*}\]</div>
+<p>Taking <span class="math notranslate nohighlight">\(\mathbf{x} = \mathbf{y}_2\)</span> achieves this minimum. <span class="math notranslate nohighlight">\(\sharp\)</span></p>
+<p><em>Proof:</em> By the <em>Courant-Fischer theorem</em>,</p>
+<div class="math notranslate nohighlight">
+\[
+\mu_2 
+= \min_{\mathbf{0} \neq \mathbf{u} \in \mathcal{V}_{n-1}} \mathcal{R}_L(\mathbf{u}),
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(\mathcal{V}_{n-1} 
+= \mathrm{span}(\mathbf{y}_2, \ldots,  \mathbf{y}_n)
+= \mathrm{span}(\mathbf{y}_1)^\perp\)</span>. Observe that, because we reverse the order of the eigenvalues compared to the convention used in the <em>Courant-Fischer theorem</em>, we must adapt the definition of <span class="math notranslate nohighlight">\(\mathcal{V}_{n-1}\)</span> slightly. Moreover we know that <span class="math notranslate nohighlight">\(\mathcal{R}_L(\mathbf{y}_2) = \mu_2\)</span>. We make a simple transformation of the problem.</p>
+<p>We claim that</p>
+<div class="math notranslate nohighlight">
+\[
+\mu_2
+= \min\left\{\langle \mathbf{x}, L \mathbf{x}\rangle\,:\ \|\mathbf{x}\|=1, \langle \mathbf{x}, \mathbf{y}_1\rangle = 0 \right\}. \qquad (*)
+\]</div>
+<p>Indeed, if <span class="math notranslate nohighlight">\(\mathbf{u} \in \mathrm{span}(\mathbf{y}_1)^\perp\)</span> has unit norm, i.e., <span class="math notranslate nohighlight">\(\|\mathbf{u}\| = 1\)</span>, then</p>
+<div class="math notranslate nohighlight">
+\[
+\mathcal{R}_L(\mathbf{u})
+= \frac{\langle \mathbf{u}, L \mathbf{u}\rangle}{\langle \mathbf{u},\mathbf{u}\rangle}
+= \frac{\langle \mathbf{u}, L \mathbf{u}\rangle}{\|\mathbf{u}\|^2}
+= \langle \mathbf{u}, L \mathbf{u}\rangle.
+\]</div>
+<p>In other words, we shown that</p>
+<div class="math notranslate nohighlight">
+\[
+\min_{\mathbf{0} \neq \mathbf{u} \in \mathcal{V}_{n-1}} \mathcal{R}_L(\mathbf{u})
+\leq \min\left\{\langle \mathbf{x}, L \mathbf{x}\rangle\,:\ \|\mathbf{x}\|=1, \langle \mathbf{x}, \mathbf{y}_1\rangle = 0 \right\}.
+\]</div>
+<p>To prove the other direction, for any <span class="math notranslate nohighlight">\(\mathbf{u} \neq \mathbf{0}\)</span>, we can normalize it by defining <span class="math notranslate nohighlight">\(\mathbf{x} = \mathbf{u}/\|\mathbf{u}\|\)</span> and we note that</p>
+<div class="math notranslate nohighlight">
+\[
+\mathcal{R}_L(\mathbf{u})
+= \frac{\langle \mathbf{u}, L \mathbf{u}\rangle}{\langle \mathbf{u},\mathbf{u}\rangle}
+= \frac{\langle \mathbf{u}, L \mathbf{u}\rangle}{\|\mathbf{u}\|^2}
+= \left\langle \frac{\mathbf{u}}{\|\mathbf{u}\|}, L \frac{\mathbf{u}}{\|\mathbf{u}\|}\right\rangle
+= \langle \mathbf{x}, L \mathbf{x}\rangle.
+\]</div>
+<p>Moreover <span class="math notranslate nohighlight">\(\langle \mathbf{u}, \mathbf{y}_1\rangle = 0\)</span> if only if <span class="math notranslate nohighlight">\(\langle \mathbf{x}, \mathbf{y}_1\rangle = 0\)</span>. That establishes <span class="math notranslate nohighlight">\((*)\)</span>, since any objective value achieved in the original formulation can be achieved in the new one.</p>
+<p>Using that <span class="math notranslate nohighlight">\(\mathbf{y}_1 = \frac{1}{\sqrt{n}}(1,\ldots,1)^T\)</span>, the condition <span class="math notranslate nohighlight">\(\langle \mathbf{x}, \mathbf{y}_1 \rangle = 0\)</span>, i.e., <span class="math notranslate nohighlight">\(\sum_{i=1}^n (x_i/\sqrt{n}) = 0\)</span>, is equivalent to <span class="math notranslate nohighlight">\(\sum_{i=1}^n x_i = 0\)</span>. Similary, the condition <span class="math notranslate nohighlight">\(\|\mathbf{x}\|=1\)</span> is equivalent, after squaring each side, to <span class="math notranslate nohighlight">\(\sum_{j=1}^n x_j^2 = 1\)</span>.</p>
+<p>Finally, the claim follows from the <em>Laplacian Quadratic Form Lemma</em>. <span class="math notranslate nohighlight">\(\square\)</span></p>
+<p>One application of this extremal characterization is the graph drawing heuristic we described previously. Consider the entries of the second Laplacian eigenvector <span class="math notranslate nohighlight">\(\mathbf{y}_2\)</span>. Its entries are centered around <span class="math notranslate nohighlight">\(0\)</span> by the condition <span class="math notranslate nohighlight">\(\langle \mathbf{y}_1, \mathbf{y}_2\rangle  = 0\)</span>. Because it minimizes the following quantity over all centered unit vectors,</p>
+<div class="math notranslate nohighlight">
+\[
+\sum_{\{i, j\} \in E} (x_i - x_j)^2
+\]</div>
+<p>the eigenvector <span class="math notranslate nohighlight">\(\mathbf{y}_2\)</span> tends to assign similar coordinates to adjacent vertices. A similar reasoning applies to the third Laplacian eigenvector, which in addition is orthogonal to the second one. So coordinates based on the second third Laplacian eigenvectors should be expected to position adjacent vertices close-by and hence minimizing the need for long-range edges in the vizualization. In particular, it reveals some of the underlying Euclidean geometry of the graph, as the next example shows.</p>
+<p><strong>NUMERICAL CORNER:</strong> This is perhaps easiest to see on a path graph. Recall that <code class="docutils literal notranslate"><span class="pre">NetworkX</span></code> numbers vertices <span class="math notranslate nohighlight">\(0,\ldots,n-1\)</span>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">G</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">path_graph</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>We plot the second Laplacian eigenvector (i.e., the eigenvector of the Laplacian matrix corresponding to the second smallest eigenvalue). We use <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.argsort.html"><code class="docutils literal notranslate"><span class="pre">numpy.argsort()</span></code></a> to find the index of the second smallest eigenvalue. Because indices start at <code class="docutils literal notranslate"><span class="pre">0</span></code>, we want entry <code class="docutils literal notranslate"><span class="pre">1</span></code> of the output of <code class="docutils literal notranslate"><span class="pre">np.argsort()</span></code>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">L</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">laplacian_matrix</span><span class="p">(</span><span class="n">G</span><span class="p">)</span><span class="o">.</span><span class="n">toarray</span><span class="p">()</span>
+<span class="n">w</span><span class="p">,</span> <span class="n">v</span> <span class="o">=</span> <span class="n">LA</span><span class="o">.</span><span class="n">eigh</span><span class="p">(</span><span class="n">L</span><span class="p">)</span>
+<span class="n">y2</span> <span class="o">=</span> <span class="n">v</span><span class="p">[:,</span><span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">w</span><span class="p">)[</span><span class="mi">1</span><span class="p">]]</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">y2</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="s1">&#39;k&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/ebf54cb000cff4cc7689ae9ba0d38be0b31de47c4ef844bc491220d0c8f6cc65.png" src="../../_images/ebf54cb000cff4cc7689ae9ba0d38be0b31de47c4ef844bc491220d0c8f6cc65.png" />
+</div>
+</div>
+<p><span class="math notranslate nohighlight">\(\unlhd\)</span></p>
+<p><strong>EXAMPLE:</strong> <strong>(Two-Component Graph)</strong> Let <span class="math notranslate nohighlight">\(G=(V,E)\)</span> be a graph with two connected components <span class="math notranslate nohighlight">\(\emptyset \neq V_1, V_2 \subseteq V\)</span>. By the properties of connected components, we have <span class="math notranslate nohighlight">\(V_1 \cap V_2 = \emptyset\)</span> and <span class="math notranslate nohighlight">\(V_1 \cup V_2 = V\)</span>. Assume the Laplacian <span class="math notranslate nohighlight">\(L\)</span> of <span class="math notranslate nohighlight">\(G\)</span> has spectral decomposition <span class="math notranslate nohighlight">\(L = \sum_{i=1}^n \mu_i \mathbf{y}_i \mathbf{y}_i^T\)</span> with <span class="math notranslate nohighlight">\(0 = \mu_1 \leq \mu_2 \leq \cdots \leq \mu_n\)</span> and <span class="math notranslate nohighlight">\(\mathbf{y}_1 = \frac{1}{\sqrt{n}}(1,\ldots,1)^T\)</span>. We claimed earlier that for such a graph <span class="math notranslate nohighlight">\(\mu_2 = 0\)</span>. We prove this here using the <em>Variational Characterization of <span class="math notranslate nohighlight">\(\mu_2\)</span></em></p>
+<div class="math notranslate nohighlight">
+\[
+\mu_2 
+= \min\left\{
+\sum_{\{u, v\} \in E} (x_u - x_v)^2 \,:\,
+\mathbf{x} = (x_1, \ldots, x_n)^T \in \mathbb{R}^n, \sum_{u=1}^n x_u = 0, \sum_{u = 1}^n x_u^2=1
+\right\}.
+\]</div>
+<p>Based on this characterization, it suffices to find a vector <span class="math notranslate nohighlight">\(\mathbf{x}\)</span> satisfying <span class="math notranslate nohighlight">\(\sum_{u=1}^n x_u = 0\)</span> and <span class="math notranslate nohighlight">\(\sum_{u = 1}^n x_u^2=1\)</span> such that <span class="math notranslate nohighlight">\(\sum_{\{u, v\} \in E} (x_u - x_v)^2 = 0\)</span>. Indeed, since <span class="math notranslate nohighlight">\(\mu_2 \geq 0\)</span> and any such <span class="math notranslate nohighlight">\(\mathbf{x}\)</span> gives an upper bound on <span class="math notranslate nohighlight">\(\mu_2\)</span>, we then necessarily have that <span class="math notranslate nohighlight">\(\mu_2 = 0\)</span>.</p>
+<p>For <span class="math notranslate nohighlight">\(\sum_{\{u, v\} \in E} (x_u - x_v)^2\)</span> to be <span class="math notranslate nohighlight">\(0\)</span>, one might be tempted to take a constant vector <span class="math notranslate nohighlight">\(\mathbf{x}\)</span>. But then we could not satisfy <span class="math notranslate nohighlight">\(\sum_{u=1}^n x_u = 0\)</span> and <span class="math notranslate nohighlight">\(\sum_{u = 1}^n x_u^2=1\)</span> simultaneously. Instead, we modify this guess slightly. Because the graph has two connected components, there is no edge between <span class="math notranslate nohighlight">\(V_1\)</span> and <span class="math notranslate nohighlight">\(V_2\)</span>. Hence we can assign a different value to each component and still get <span class="math notranslate nohighlight">\(\sum_{\{u, v\} \in E} (x_u - x_v)^2 = 0\)</span>. So we look for a vector <span class="math notranslate nohighlight">\(\mathbf{x} = (x_1, \ldots, x_n)^T\)</span> of the form</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+x_u = \begin{cases}
+\alpha, &amp; \text{if $u \in V_1$,}\\
+\beta, &amp; \text{if $u \in V_2$.}
+\end{cases}
+\end{split}\]</div>
+<p>To satisfy the constraints on <span class="math notranslate nohighlight">\(\mathbf{x}\)</span>, we require</p>
+<div class="math notranslate nohighlight">
+\[
+\sum_{u=1}^n x_u
+= \sum_{u \in V_1} \alpha + \sum_{u \in V_2} \beta
+= |V_1| \alpha + |V_2| \beta
+= 0,
+\]</div>
+<p>and</p>
+<div class="math notranslate nohighlight">
+\[
+\sum_{u=1}^n x_u^2
+= \sum_{u \in V_1} \alpha^2 + \sum_{u \in V_2} \beta^2
+= |V_1| \alpha^2 + |V_2| \beta^2
+= 1.
+\]</div>
+<p>Replacing the first equation in the second one, we get</p>
+<div class="math notranslate nohighlight">
+\[
+|V_1| \left(\frac{-|V_2|\beta}{|V_1|}\right)^2 + |V_2| \beta^2
+= \frac{|V_2|^2 \beta^2}{|V_1|} + |V_2| \beta^2
+= 1,
+\]</div>
+<p>or</p>
+<div class="math notranslate nohighlight">
+\[
+\beta^2 = \frac{|V_1|}{|V_2|(|V_2| + |V_1|)} = \frac{|V_1|}{n |V_2|}. 
+\]</div>
+<p>Take</p>
+<div class="math notranslate nohighlight">
+\[
+\beta
+= - \sqrt{\frac{|V_1|}{n |V_2|}},
+\qquad
+\alpha = \frac{-|V_2|\beta}{|V_1|} = \sqrt{\frac{|V_2|}{n |V_1|}}.
+\]</div>
+<p>The vector <span class="math notranslate nohighlight">\(\mathbf{x}\)</span> we constructed is in fact an eigenvector of <span class="math notranslate nohighlight">\(L\)</span>. Indeed, let <span class="math notranslate nohighlight">\(B\)</span> be an oriented incidence matrix of <span class="math notranslate nohighlight">\(G\)</span>. Then, for <span class="math notranslate nohighlight">\(e_k = \{u,v\}\)</span>, <span class="math notranslate nohighlight">\((B^T \mathbf{x})_k\)</span> is either <span class="math notranslate nohighlight">\(x_u - x_v\)</span> or <span class="math notranslate nohighlight">\(x_v - x_u\)</span>. In both cases, that is <span class="math notranslate nohighlight">\(0\)</span>. So <span class="math notranslate nohighlight">\(L \mathbf{x} = B B^T \mathbf{x} = \mathbf{0}\)</span>, that is, <span class="math notranslate nohighlight">\(\mathbf{x}\)</span> is an eigenvector of <span class="math notranslate nohighlight">\(L\)</span> with eigenvalue <span class="math notranslate nohighlight">\(0\)</span>.</p>
+<p>We have shown that <span class="math notranslate nohighlight">\(\mu_2 = 0\)</span> when <span class="math notranslate nohighlight">\(G\)</span> has two connected components. A slight modification of this argument shows that <span class="math notranslate nohighlight">\(\mu_2 = 0\)</span> whenever <span class="math notranslate nohighlight">\(G\)</span> is not connected. <span class="math notranslate nohighlight">\(\lhd\)</span></p>
+<p><em><strong>Self-assessment quiz</strong></em> <em>(with help from Claude, Gemini, and ChatGPT)</em></p>
+<p><strong>1</strong> Which of the following is NOT a property of the Laplacian matrix <span class="math notranslate nohighlight">\(L\)</span> of a graph <span class="math notranslate nohighlight">\(G\)</span>?</p>
+<p>a) <span class="math notranslate nohighlight">\(L\)</span> is symmetric.</p>
+<p>b) <span class="math notranslate nohighlight">\(L\)</span> is positive semidefinite.</p>
+<p>c) The constant unit vector <span class="math notranslate nohighlight">\(\frac{1}{\sqrt{n}}(1,\ldots,1)^T\)</span> is an eigenvector of <span class="math notranslate nohighlight">\(L\)</span> with eigenvalue 0.</p>
+<p>d) <span class="math notranslate nohighlight">\(L\)</span> is positive definite.</p>
+<p><strong>2</strong> Which vector is known as the Fiedler vector?</p>
+<p>a) The eigenvector corresponding to the largest eigenvalue of the Laplacian matrix.</p>
+<p>b) The eigenvector corresponding to the smallest eigenvalue of the Laplacian matrix.</p>
+<p>c) The eigenvector corresponding to the second smallest eigenvalue of the Laplacian matrix.</p>
+<p>d) The eigenvector corresponding to the average of all eigenvalues of the Laplacian matrix.</p>
+<p><strong>3</strong> For a connected graph <span class="math notranslate nohighlight">\(G\)</span>, which of the following statements about the second smallest eigenvalue <span class="math notranslate nohighlight">\(\mu_2\)</span> of its Laplacian matrix is true?</p>
+<p>a) <span class="math notranslate nohighlight">\(\mu_2 = 0\)</span></p>
+<p>b) <span class="math notranslate nohighlight">\(\mu_2 &lt; 0\)</span></p>
+<p>c) <span class="math notranslate nohighlight">\(\mu_2 &gt; 0\)</span></p>
+<p>d) The value of <span class="math notranslate nohighlight">\(\mu_2\)</span> cannot be determined without additional information.</p>
+<p><strong>4</strong> The Laplacian quadratic form <span class="math notranslate nohighlight">\(x^T L x\)</span> for a graph <span class="math notranslate nohighlight">\(G\)</span> with Laplacian matrix <span class="math notranslate nohighlight">\(L\)</span> can be written as:</p>
+<div class="math notranslate nohighlight">
+\[
+x^T L x = \sum_{\{i,j\} \in E} (x_i - x_j)^2.
+\]</div>
+<p>What does this quadratic form measure?</p>
+<p>a) The average distance between vertices in the graph.</p>
+<p>b) The number of connected components in the graph.</p>
+<p>c) The “smoothness” of the function <span class="math notranslate nohighlight">\(x\)</span> over the graph.</p>
+<p>d) The degree of each vertex in the graph.</p>
+<p><strong>5</strong> The Laplacian matrix <span class="math notranslate nohighlight">\(L\)</span> of a graph <span class="math notranslate nohighlight">\(G\)</span> can be decomposed as <span class="math notranslate nohighlight">\(L = B B^T\)</span>, where <span class="math notranslate nohighlight">\(B\)</span> is an oriented incidence matrix. What does this decomposition imply about <span class="math notranslate nohighlight">\(L\)</span>?</p>
+<p>a) <span class="math notranslate nohighlight">\(L\)</span> is positive definite</p>
+<p>b) <span class="math notranslate nohighlight">\(L\)</span> is symmetric and positive semidefinite</p>
+<p>c) <span class="math notranslate nohighlight">\(L\)</span> is antisymmetric</p>
+<p>d) <span class="math notranslate nohighlight">\(L\)</span> is a diagonal matrix</p>
+<p>Answer for 1: d. Justification: The text states that “because <span class="math notranslate nohighlight">\(L\)</span> is positive semidefinite, the eigenvalues are nonnegative,” but it does not claim that <span class="math notranslate nohighlight">\(L\)</span> is positive definite.</p>
+<p>Answer for 2: c. Justification: The text refers to the eigenvector corresponding to <span class="math notranslate nohighlight">\(\mu_2\)</span> (the second smallest eigenvalue) as the Fiedler vector.</p>
+<p>Answer for 3: c. Justification: The text proves that “If <span class="math notranslate nohighlight">\(G\)</span> is connected, then the Laplacian eigenvalue <span class="math notranslate nohighlight">\(\mu_2 &gt; 0\)</span>.”</p>
+<p>Answer for 4: c. Justification: The text states that “the Laplacian quadratic form measures how ‘smooth’ the function <span class="math notranslate nohighlight">\(x\)</span> is over the graph in the following sense. A small value of <span class="math notranslate nohighlight">\(x^T L x\)</span> indicates that adjacent vertices tend to get assigned close values.”</p>
+<p>Answer for 5: b. Justification: The text states, “Let <span class="math notranslate nohighlight">\(B\)</span> be an oriented incidence matrix of <span class="math notranslate nohighlight">\(G\)</span>. By construction, <span class="math notranslate nohighlight">\(L = B B^T\)</span>. This implies that <span class="math notranslate nohighlight">\(L\)</span> is symmetric and positive semidefinite.”</p>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./chap05_specgraph/04_laplacian"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="../03_extremal/roch-mmids-specgraph-extremal.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title"><span class="section-number">5.3. </span>Variational characterization of eigenvalues</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="../05_partitioning/roch-mmids-specgraph-partitioning.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title"><span class="section-number">5.5. </span>Application: graph partitioning via spectral clustering</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#eigenvalues-of-the-laplacian-matrix-first-observations">5.4.1. Eigenvalues of the Laplacian matrix: first observations</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#laplacian-matrix-and-connectivity">5.4.2. Laplacian matrix and connectivity</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#variational-characterization-of-second-laplacian-eigenvalue">5.4.3. Variational characterization of second Laplacian eigenvalue</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Sebastien Roch
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2024.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

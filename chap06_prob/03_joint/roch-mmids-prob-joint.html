@@ -1,0 +1,1233 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>6.3. Modeling more complex dependencies 1: using conditional independence &#8212; MMiDS Textbook</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.5.1/css/all.min.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.1/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.1/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.1/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b76e3c8a" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=384b581d" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css?v=be8a1c11" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=87e54e7c" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae" />
+  <script src="../../_static/vendor/fontawesome/6.5.1/js/all.min.js?digest=8d27b9dea8ad943066ae"></script>
+
+    <script src="../../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?v=efea14e4"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../_static/design-tabs.js?v=f930bc37"></script>
+    <script async="async" src="https://www.googletagmanager.com/gtag/js?id=G-P5E8DW088F"></script>
+    <script>
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){ dataLayer.push(arguments); }
+                gtag('js', new Date());
+                gtag('config', 'G-P5E8DW088F');
+            </script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){ dataLayer.push(arguments); }
+                gtag('js', new Date());
+                gtag('config', 'G-P5E8DW088F');
+            </script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'chap06_prob/03_joint/roch-mmids-prob-joint';</script>
+    <link rel="canonical" href="https://mmids-textbook.github.io/chap06_prob/03_joint/roch-mmids-prob-joint.html" />
+    <link rel="icon" href="https://mmids-textbook.github.io/favicon-32x32.png"/>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="6.4. Modeling more complex dependencies 2: marginalizing out an unobserved variable" href="../04_em/roch-mmids-prob-em.html" />
+    <link rel="prev" title="6.2. Background: introduction to parametric families and maximum likelihood estimation" href="../02_parametric/roch-mmids-prob-parametric.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a id="pst-skip-link" class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+
+<a class="navbar-brand logo" href="../../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/mmids-cover-small.jpg" class="logo__image only-light" alt="MMiDS Textbook - Home"/>
+    <script>document.write(`<img src="../../_static/mmids-cover-small.jpg" class="logo__image only-dark" alt="MMiDS Textbook - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../index.html">
+                    <b>MATHEMATICAL METHODS in DATA SCIENCE (with Python)</b>
+                </a>
+            </li>
+        </ul>
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../chap01_intro/00_intro/roch-mmids-intro-intro.html">1. Introduction: a first data science problem</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../chap01_intro/01_motiv/roch-mmids-intro-motiv.html">1.1. Motivating example: identifying penguin species</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap01_intro/02_review/roch-mmids-intro-review.html">1.2. Background: quick refresher of matrix algebra, differential calculus, and elementary probability</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap01_intro/03_clustering/roch-mmids-intro-clustering.html">1.3. Clustering: an objective, an algorithm and a guarantee</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap01_intro/04_highdim/roch-mmids-intro-highdim.html">1.4. Some observations about high-dimensional data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap01_intro/exercises/roch-mmids-intro-exercises.html">1.5. Exercises</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap01_intro/supp/roch-mmids-intro-supp.html">1.6. Online suppplementary material</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../chap02_ls/00_intro/roch-mmids-ls-intro.html">2. Least squares: geometric, algebraic, and numerical aspects</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../chap02_ls/01_motiv/roch-mmids-ls-motiv.html">2.1. Motivating example: predicting sales</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap02_ls/02_spaces/roch-mmids-ls-spaces.html">2.2. Background: review of vector spaces and matrix inverses</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap02_ls/03_orthog/roch-mmids-ls-orthog.html">2.3. Geometry of least squares: the orthogonal projection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap02_ls/04_qr/roch-mmids-ls-qr.html">2.4. QR decomposition and Householder transformations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap02_ls/05_regression/roch-mmids-ls-regression.html">2.5. Application: regression analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap02_ls/exercises/roch-mmids-ls-exercises.html">2.6. Exercises</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap02_ls/supp/roch-mmids-ls-supp.html">2.7. Online suppplementary material</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../chap03_opt/00_intro/roch-mmids-opt-intro.html">3. Optimization theory and algorithms</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-3"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../chap03_opt/01_motiv/roch-mmids-opt-motiv.html">3.1. Motivating example:  analyzing customer satisfaction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap03_opt/02_several/roch-mmids-opt-several.html">3.2. Background: review of differentiable functions of several variables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap03_opt/03_optimality/roch-mmids-opt-optimality.html">3.3. Optimality conditions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap03_opt/04_convexity/roch-mmids-opt-convexity.html">3.4. Convexity</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap03_opt/05_gd/roch-mmids-opt-gd.html">3.5. Gradient descent and its convergence analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap03_opt/06_logistic/roch-mmids-opt-logistic.html">3.6. Application: logistic regression</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap03_opt/exercises/roch-mmids-opt-exercises.html">3.7. Exercises</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap03_opt/supp/roch-mmids-opt-supp.html">3.8. Online suppplementary material</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../chap04_svd/00_intro/roch-mmids-svd-intro.html">4. Singular value decomposition</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-4"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../chap04_svd/01_motiv/roch-mmids-svd-motiv.html">4.1. Motivating example: visualizing viral evolution</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap04_svd/02_spectral/roch-mmids-svd-spectral.html">4.2. Background: review of matrix rank  and spectral decomposition</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap04_svd/03_svd/roch-mmids-svd-svd.html">4.3. Approximating subspaces and the SVD</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap04_svd/04_power/roch-mmids-svd-power.html">4.4. Power iteration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap04_svd/05_pca/roch-mmids-svd-pca.html">4.5. Application: principal components analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap04_svd/06_further/roch-mmids-svd-further.html">4.6. Further applications of the SVD: low-rank approximations and ridge regression</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap04_svd/exercises/roch-mmids-svd-exercises.html">4.7. Exercises</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap04_svd/supp/roch-mmids-svd-supp.html">4.8. Online suppplementary material</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../chap05_specgraph/00_intro/roch-mmids-specgraph-intro.html">5. Spectral graph theory</a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-5"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../chap05_specgraph/01_motiv/roch-mmids-specgraph-motiv.html">5.1. Motivating example: uncovering social groups</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap05_specgraph/02_graph/roch-mmids-specgraph-graph.html">5.2. Background: basic concepts in graph theory</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap05_specgraph/03_extremal/roch-mmids-specgraph-extremal.html">5.3. Variational characterization of eigenvalues</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap05_specgraph/04_laplacian/roch-mmids-specgraph-laplacian.html">5.4. Spectral properties of the Laplacian matrix</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap05_specgraph/05_partitioning/roch-mmids-specgraph-partitioning.html">5.5. Application: graph partitioning via spectral clustering</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap05_specgraph/06_sbm/roch-mmids-specgraph-sbm.html">5.6. Erdős-Rényi random graph and stochastic blockmodel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap05_specgraph/exercises/roch-mmids-specgraph-exercises.html">5.7. Exercises</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap05_specgraph/supp/roch-mmids-specgraph-supp.html">5.8. Online supplementary material</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="../00_intro/roch-mmids-prob-intro.html">6. Probabilistic models: from simple to complex</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-6"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../01_motiv/roch-mmids-prob-motiv.html">6.1. Motivating example: tracking location</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../02_parametric/roch-mmids-prob-parametric.html">6.2. Background: introduction to parametric families and maximum likelihood estimation</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">6.3. Modeling more complex dependencies 1: using conditional independence</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../04_em/roch-mmids-prob-em.html">6.4. Modeling more complex dependencies 2: marginalizing out an unobserved variable</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../05_kalman/roch-mmids-prob-kalman.html">6.5. Application: linear-Gaussian models and Kalman filtering</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../exercises/roch-mmids-prob-exercises.html">6.6. Exercises</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../supp/roch-mmids-prob-supp.html">6.7. Online supplementary material</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../chap07_rwmc/00_intro/roch-mmids-rwmc-intro.html">7. Random walks on graphs and Markov chains</a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-7"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../chap07_rwmc/01_motiv/roch-mmids-rwmc-motiv.html">7.1. Motivating example: discovering mathematical topics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap07_rwmc/02_mcdefs/roch-mmids-rwmc-mcdefs.html">7.2. Background: elements of finite Markov chains</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap07_rwmc/03_stat/roch-mmids-rwmc-stat.html">7.3. Limit behavior 1: stationary distributions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap07_rwmc/04_mclimit/roch-mmids-rwmc-mclimit.html">7.4. Limit behavior 2: convergence to equilibrium</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap07_rwmc/05_pagerank/roch-mmids-rwmc-pagerank.html">7.5. Application: random walks on graphs and PageRank</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap07_rwmc/06_gibbs/roch-mmids-rwmc-gibbs.html">7.6. Further applications: Gibbs sampling and generating images</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap07_rwmc/exercises/roch-mmids-rwmc-exercises.html">7.7. Exercises</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap07_rwmc/supp/roch-mmids-rwmc-supp.html">7.8. Online supplementary material</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../chap08_nn/00_intro/roch-mmids-nn-intro.html">8. Neural networks, backpropagation and stochastic gradient descent</a><input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-8"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../chap08_nn/01_motiv/roch-mmids-nn-motiv.html">8.1. Motivating example:  classifying natural images</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap08_nn/02_chain/roch-mmids-nn-chain.html">8.2. Background: Jacobian, chain rule, and a brief introduction to automatic differentiation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap08_nn/03_backprop/roch-mmids-nn-backprop.html">8.3. Building blocks of AI 1: backpropagation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap08_nn/04_sgd/roch-mmids-nn-sgd.html">8.4. Building blocks of AI 2: stochastic gradient descent</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap08_nn/05_nn/roch-mmids-nn-nn.html">8.5. Building blocks of AI 3: neural networks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap08_nn/exercises/roch-mmids-nn-exercises.html">8.6. Exercises</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap08_nn/supp/roch-mmids-nn-supp.html">8.7. Online supplementary material</a></li>
+</ul>
+</li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/MMiDS-textbook/MMiDS-textbook.github.io" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/MMiDS-textbook/MMiDS-textbook.github.io/issues/new?title=Issue%20on%20page%20%2Fchap06_prob/03_joint/roch-mmids-prob-joint.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/chap06_prob/03_joint/roch-mmids-prob-joint.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Modeling more complex dependencies 1: using conditional independence</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#review-of-conditioning">6.3.1. Review of conditioning</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-basic-configurations">6.3.2. The basic configurations</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#example-naive-bayes">6.3.3. Example: Naive Bayes</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <p><span class="math notranslate nohighlight">\(\newcommand{\bmu}{\boldsymbol{\mu}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bSigma}{\boldsymbol{\Sigma}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bfbeta}{\boldsymbol{\beta}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bflambda}{\boldsymbol{\lambda}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bgamma}{\boldsymbol{\gamma}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bsigma}{{\boldsymbol{\sigma}}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bpi}{\boldsymbol{\pi}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\btheta}{{\boldsymbol{\theta}}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bphi}{\boldsymbol{\phi}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\balpha}{\boldsymbol{\alpha}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\blambda}{\boldsymbol{\lambda}}\)</span>
+<span class="math notranslate nohighlight">\(\renewcommand{\P}{\mathbb{P}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\E}{\mathbb{E}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\indep}{\perp\!\!\!\perp} \newcommand{\bx}{\mathbf{x}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bp}{\mathbf{p}}\)</span>
+<span class="math notranslate nohighlight">\(\renewcommand{\bx}{\mathbf{x}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bX}{\mathbf{X}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\by}{\mathbf{y}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bY}{\mathbf{Y}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bz}{\mathbf{z}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bZ}{\mathbf{Z}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bw}{\mathbf{w}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bW}{\mathbf{W}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bv}{\mathbf{v}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bV}{\mathbf{V}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bfg}{\mathbf{g}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bfh}{\mathbf{h}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\horz}{\rule[.5ex]{2.5ex}{0.5pt}}\)</span>
+<span class="math notranslate nohighlight">\(\renewcommand{\S}{\mathcal{S}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\X}{\mathcal{X}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\var}{\mathrm{Var}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\pa}{\mathrm{pa}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\Z}{\mathcal{Z}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bh}{\mathbf{h}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bb}{\mathbf{b}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bc}{\mathbf{c}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\cE}{\mathcal{E}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\cP}{\mathcal{P}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bbeta}{\boldsymbol{\beta}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bLambda}{\boldsymbol{\Lambda}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\cov}{\mathrm{Cov}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bfk}{\mathbf{k}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\idx}[1]{}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\xdi}{}\)</span></p>
+<section id="modeling-more-complex-dependencies-1-using-conditional-independence">
+<h1><span class="section-number">6.3. </span>Modeling more complex dependencies 1: using conditional independence<a class="headerlink" href="#modeling-more-complex-dependencies-1-using-conditional-independence" title="Link to this heading">#</a></h1>
+<p>In this section, we discuss the first of two standard techniques for constructing joint distributions from simpler building blocks: (1) imposing conditional independence relations and (2) marginalizing out an unobserved random variable. Combining them produces a large class of models known as probabilistic graphical models, which we do not discuss in generality. As before, we make our rigorous derivations in the finite support case, but these can be adapted to the continuous or hybrid cases.</p>
+<section id="review-of-conditioning">
+<h2><span class="section-number">6.3.1. </span>Review of conditioning<a class="headerlink" href="#review-of-conditioning" title="Link to this heading">#</a></h2>
+<p>We first review the concept of conditioning, which generally plays a key role in probabilistic modeling and reasoning.</p>
+<p><strong>Conditional probability</strong> We start with events. Throughout, we work on a fixed probability space <span class="math notranslate nohighlight">\((\Omega, \mathcal{F}, \P)\)</span>, which we assume is discrete, i.e., the number of elements in <span class="math notranslate nohighlight">\(\Omega\)</span> is countable.</p>
+<p><strong>DEFINITION</strong> <strong>(Conditional Probability)</strong> <span class="math notranslate nohighlight">\(\idx{conditional probability}\xdi\)</span> Let <span class="math notranslate nohighlight">\(A\)</span> and <span class="math notranslate nohighlight">\(B\)</span> be two events with <span class="math notranslate nohighlight">\(\mathbb{P}[B] &gt; 0\)</span>. The conditional probability of <span class="math notranslate nohighlight">\(A\)</span> given <span class="math notranslate nohighlight">\(B\)</span> is defined as</p>
+<div class="math notranslate nohighlight">
+\[
+\P[A|B] = \frac{\P[A \cap B]}{\P[B]}.
+\]</div>
+<p><span class="math notranslate nohighlight">\(\natural\)</span></p>
+<p>The intuitive interpretation goes something like this: knowing that event <span class="math notranslate nohighlight">\(B\)</span> has occurred, the updated probability of observing <span class="math notranslate nohighlight">\(A\)</span> is the probability of its restriction to <span class="math notranslate nohighlight">\(B\)</span> properly normalized to reflect that outcomes outside <span class="math notranslate nohighlight">\(B\)</span> have updated probability <span class="math notranslate nohighlight">\(0\)</span>.</p>
+<!--
+This is illustrated next.
+
+![Conditional probability](https://courses.cs.cornell.edu/cs2800/wiki/images/3/3b/Conditional-probability.svg)
+
+([Source](https://courses.cs.cornell.edu/cs2800/wiki/index.php/File:Conditional-probability.svg))
+--><p>Conditional probabilities generally behave like “unconditional” probabilities.</p>
+<p>Independence can be characterized in terms of conditional probability. In words, <span class="math notranslate nohighlight">\(A\)</span> and <span class="math notranslate nohighlight">\(B\)</span> are independent if conditioning on one of them having taken place does not change the probability of the other occurring.</p>
+<p><strong>LEMMA</strong> Let <span class="math notranslate nohighlight">\(A\)</span> and <span class="math notranslate nohighlight">\(B\)</span> be two events of positive probability. Then <span class="math notranslate nohighlight">\(A\)</span> and <span class="math notranslate nohighlight">\(B\)</span> are independent, which we will denote as <span class="math notranslate nohighlight">\(A \indep B\)</span>, if and only if <span class="math notranslate nohighlight">\(\P[A|B] = \P[A]\)</span> and <span class="math notranslate nohighlight">\(\P[B|A] = \P[B]\)</span>. <span class="math notranslate nohighlight">\(\flat\)</span></p>
+<p><em>Proof:</em> If <span class="math notranslate nohighlight">\(A\)</span> and <span class="math notranslate nohighlight">\(B\)</span> are independent, then c which implies</p>
+<div class="math notranslate nohighlight">
+\[
+\P[A|B] = \frac{\P[A \cap B]}{\P[B]} = \frac{\P[A] \P[B]}{\P[B]} = \P[A].
+\]</div>
+<p>In the other direction,</p>
+<div class="math notranslate nohighlight">
+\[
+\P[A] = \P[A|B] = \frac{\P[A \cap B]}{\P[B]}
+\]</div>
+<p>implies <span class="math notranslate nohighlight">\(\P[A|B] = \frac{\P[A \cap B]}{\P[B]}\)</span> after rearranging. <span class="math notranslate nohighlight">\(\square\)</span></p>
+<p>The conditional probability is often used in three fundamental ways, which we recall next. Proofs can be found in most probability textbooks.</p>
+<ul class="simple">
+<li><p><strong>Multiplication Rule:</strong> <span class="math notranslate nohighlight">\(\idx{multiplication rule}\xdi\)</span> For any collection of events <span class="math notranslate nohighlight">\(A_1,\ldots,A_r\)</span>,</p></li>
+</ul>
+<div class="math notranslate nohighlight">
+\[
+\P\left[\cap_{i=1}^r A_i\right]
+= \prod_{i=1}^r \P\left[A_i \,\middle|\, \cap_{j=1}^{i-1} A_j \right].
+\]</div>
+<ul class="simple">
+<li><p><strong>Law of Total Probability:</strong> <span class="math notranslate nohighlight">\(\idx{law of total probability}\xdi\)</span> For any event <span class="math notranslate nohighlight">\(B\)</span> and any <a class="reference external" href="https://en.wikipedia.org/wiki/Partition_of_a_set#Definition_and_Notation">partition</a><span class="math notranslate nohighlight">\(\idx{partition}\xdi\)</span> <span class="math notranslate nohighlight">\(A_1,\ldots,A_r\)</span> of <span class="math notranslate nohighlight">\(\Omega\)</span>,</p></li>
+</ul>
+<div class="math notranslate nohighlight">
+\[
+\P[B] 
+= \sum_{i=1}^r \P[B|A_i] \P[A_i].
+\]</div>
+<ul class="simple">
+<li><p><strong>Bayes’ Rule:</strong> <span class="math notranslate nohighlight">\(\idx{Bayes' yule}\xdi\)</span> For any events <span class="math notranslate nohighlight">\(A\)</span> and <span class="math notranslate nohighlight">\(B\)</span> with positive probability,</p></li>
+</ul>
+<div class="math notranslate nohighlight">
+\[
+\P[A|B]
+= \frac{\P[B|A]\P[A]}{\P[B]}.
+\]</div>
+<p>It is implicit that all formulas above hold provided all conditional probabilities are well-defined.</p>
+<p><strong>Conditioning on a random variable</strong> Conditional probabilities extend naturally to random variables. If <span class="math notranslate nohighlight">\(X\)</span> is a discrete random variable, we let <span class="math notranslate nohighlight">\(p_X\)</span> be its probability mass function and <span class="math notranslate nohighlight">\(\S_X\)</span> be its support, that is, the set of values where it has positive probability. Then we can for instance condition on the event <span class="math notranslate nohighlight">\(\{X = x\}\)</span> for any <span class="math notranslate nohighlight">\(x \in \S_X\)</span>.</p>
+<p>We define next the conditional probability mass function.</p>
+<p><strong>DEFINITION</strong> <strong>(Conditional Probability Mass Function)</strong> Let <span class="math notranslate nohighlight">\(X\)</span> and <span class="math notranslate nohighlight">\(Y\)</span> be discrete random variables with joint probability mass function <span class="math notranslate nohighlight">\(p_{X, Y}\)</span> and marginals <span class="math notranslate nohighlight">\(p_X\)</span> and <span class="math notranslate nohighlight">\(p_Y\)</span>. The conditional probability mass function<span class="math notranslate nohighlight">\(\idx{conditional probability mass function}\xdi\)</span> of <span class="math notranslate nohighlight">\(X\)</span> given <span class="math notranslate nohighlight">\(Y\)</span> is defined as</p>
+<div class="math notranslate nohighlight">
+\[
+p_{X|Y}(x|y) := P[X=x|Y=y]  = \frac{p_{X,Y}(x,y)}{p_Y(y)}
+\]</div>
+<p>which is defined for all <span class="math notranslate nohighlight">\(x \in \S_X\)</span> and <span class="math notranslate nohighlight">\(y \in \S_Y\)</span>. <span class="math notranslate nohighlight">\(\natural\)</span></p>
+<p>The conditional expectation can then be defined in a natural way as the expectation over the conditional probability mass function.</p>
+<p><strong>DEFINITION</strong> <strong>(Conditional Expectation)</strong> <span class="math notranslate nohighlight">\(\idx{conditional expectation}\xdi\)</span> Let <span class="math notranslate nohighlight">\(X\)</span> and <span class="math notranslate nohighlight">\(Y\)</span> be discrete random variables where <span class="math notranslate nohighlight">\(X\)</span> takes real values and has a finite mean. The conditional expectation of <span class="math notranslate nohighlight">\(X\)</span> given <span class="math notranslate nohighlight">\(Y = y\)</span> is given by</p>
+<div class="math notranslate nohighlight">
+\[
+\E[X|Y=y] = \sum_{x \in \S_X} x\, p_{X|Y}(x|y). 
+\]</div>
+<p><span class="math notranslate nohighlight">\(\natural\)</span></p>
+<p>More generally, for a function <span class="math notranslate nohighlight">\(f\)</span> over the range of <span class="math notranslate nohighlight">\(X\)</span>, we can define</p>
+<div class="math notranslate nohighlight">
+\[
+\E[f(X)|Y=y] = \sum_{x \in \S_X} f(x)\, p_{X|Y}(x|y). 
+\]</div>
+<p>We mention one useful formula: the <em>Law of Total Expectation</em><span class="math notranslate nohighlight">\(\idx{law of total expectation}\xdi\)</span>, the expectation version of the <em>Law of Total Probability</em>. It reads</p>
+<div class="math notranslate nohighlight">
+\[
+\E[f(X)] = \sum_{y \in \S_Y} \E[f(X)|Y=y] \,p_Y(y).
+\]</div>
+<p><strong>Conditional expectation as least-squares estimator</strong> Thinking of <span class="math notranslate nohighlight">\(\E[X|Y=y]\)</span> as a function of <span class="math notranslate nohighlight">\(y\)</span> leads to a fundamental characterization of the conditional expectation.</p>
+<p><strong>THEOREM</strong> Let <span class="math notranslate nohighlight">\(X\)</span> and <span class="math notranslate nohighlight">\(Y\)</span> be discrete random variables where <span class="math notranslate nohighlight">\(X\)</span> takes real values and has a finite variance. Then the conditional expectation <span class="math notranslate nohighlight">\(h(y) = \E[X|Y=y]\)</span> minimizes the least squares criterion</p>
+<div class="math notranslate nohighlight">
+\[
+\min_{h} \E\left[(X - h(Y))^2\right]
+\]</div>
+<p>where the minimum is over all real-valued functions of <span class="math notranslate nohighlight">\(y\)</span>. <span class="math notranslate nohighlight">\(\sharp\)</span></p>
+<p><em>Proof:</em> Think of <span class="math notranslate nohighlight">\(h(y)\)</span> as a vector <span class="math notranslate nohighlight">\(\mathbf{h} = (h_y)_{y \in \S_Y}\)</span>, indexed by <span class="math notranslate nohighlight">\(\S_Y\)</span> (which is countable by assumption), with <span class="math notranslate nohighlight">\(h_y = h(y) \in \mathbb{R}\)</span>. Then</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+\mathcal{L}(\mathbf{h})
+&amp;=\E\left[(X - h(Y))^2\right]\\
+&amp;= \sum_{x\in \S_X} \sum_{y \in \S_Y} (x - h_y)^2 p_{X,Y}(x,y)\\
+&amp;= \sum_{y \in \S_Y} \left[\sum_{x\in \S_X}  (x - h_y)^2 p_{X,Y}(x,y)\right].
+\end{align*}\]</div>
+<p>Expanding the sum in the square brackets (which we denote <span class="math notranslate nohighlight">\(q_y\)</span> and think of as a function of <span class="math notranslate nohighlight">\(h_y\)</span>) gives</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+q_y(h_y)
+&amp;:= \sum_{x\in \S_X}  (x - h_y)^2 p_{X,Y}(x,y)\\
+&amp;= \sum_{x\in \S_X}  [x^2 - 2 x h_y + h_y^2] \,p_{X,Y}(x,y)\\
+&amp;= \left\{\sum_{x\in \S_X} x^2 p_{X,Y}(x,y)\right\}
++ \left\{- 2 \sum_{x\in \S_X} x p_{X,Y}(x,y)\right\} h_y
++ \left\{p_Y(y)\right\} h_y^2.
+\end{align*}\]</div>
+<p>By the <em>Miminizing a Quadratic Function Lemma</em>, the unique global minimum of <span class="math notranslate nohighlight">\(q_y(h_y)\)</span> - provided <span class="math notranslate nohighlight">\(p_Y(y) &gt; 0\)</span> - is attained at</p>
+<div class="math notranslate nohighlight">
+\[
+h_y 
+= - \frac{- 2 \sum_{x\in \S_X} x p_{X,Y}(x,y)}{2 p_Y(y)}.
+\]</div>
+<p>After rearranging, we get</p>
+<div class="math notranslate nohighlight">
+\[
+h_y 
+= \sum_{x\in \S_X}  x \frac{p_{X,Y}(x,y)}{p_Y(y)}
+= \sum_{x\in \S_X}  x p_{X|Y}(x|y)
+= \E[X|Y=y]
+\]</div>
+<p>as claimed. <span class="math notranslate nohighlight">\(\square\)</span></p>
+<p><strong>Conditional independence</strong> We begin with the definition.</p>
+<p><strong>DEFINITION</strong> <strong>(Conditional Independence)</strong> <span class="math notranslate nohighlight">\(\idx{conditional independence}\xdi\)</span> Let <span class="math notranslate nohighlight">\(A, B, C\)</span> be events such that <span class="math notranslate nohighlight">\(\P[C] &gt; 0\)</span>. Then <span class="math notranslate nohighlight">\(A\)</span> and <span class="math notranslate nohighlight">\(B\)</span> are conditionally independent given <span class="math notranslate nohighlight">\(C\)</span>, denoted <span class="math notranslate nohighlight">\(A \indep B | C\)</span>, if</p>
+<div class="math notranslate nohighlight">
+\[
+\P[A \cap B| C] = \P[A|C] \,\P[B|C].
+\]</div>
+<p><span class="math notranslate nohighlight">\(\natural\)</span></p>
+<p>In words, quoting [<a class="reference external" href="https://en.wikipedia.org/wiki/Conditional_independence">Wikipedia</a>]:</p>
+<blockquote>
+<div><p><span class="math notranslate nohighlight">\(A\)</span> and <span class="math notranslate nohighlight">\(B\)</span> are conditionally independent given <span class="math notranslate nohighlight">\(C\)</span> if and only if, given knowledge that <span class="math notranslate nohighlight">\(C\)</span> occurs, knowledge of whether <span class="math notranslate nohighlight">\(A\)</span> occurs provides no information on the likelihood of <span class="math notranslate nohighlight">\(B\)</span> occurring, and knowledge of whether <span class="math notranslate nohighlight">\(B\)</span> occurs provides no information on the likelihood of <span class="math notranslate nohighlight">\(A\)</span> occurring.</p>
+</div></blockquote>
+<p>In general, conditionally independent events are not (unconditionally) independent.</p>
+<p><strong>EXAMPLE:</strong> Imagine I have two six-sided dice. Die 1 has faces <span class="math notranslate nohighlight">\(\{1,3,5,7,9,11\}\)</span> and die 2 has faces <span class="math notranslate nohighlight">\(\{2, 4, 6, 8, 10, 12\}\)</span>. Suppose I perform the following experiment: I pick one of the two dice uniformly at random, and then I roll that die twice. Let <span class="math notranslate nohighlight">\(X_1\)</span> and <span class="math notranslate nohighlight">\(X_2\)</span> be the outcomes of the rolls. Consider the events <span class="math notranslate nohighlight">\(A = \{X_1 = 1\}\)</span>, <span class="math notranslate nohighlight">\(B = \{X_2 = 2\}\)</span>, and <span class="math notranslate nohighlight">\(C = \{\text{die 1 is picked}\}\)</span>. The events <span class="math notranslate nohighlight">\(A\)</span> and <span class="math notranslate nohighlight">\(B\)</span> are clearly dependent: if <span class="math notranslate nohighlight">\(A\)</span> occurs, then I know that die 1 was picked, and hence <span class="math notranslate nohighlight">\(B\)</span> cannot occur. Knowledge of one event provides information about the likelihood of the other event occurring. Formally, by the law of total probability,</p>
+<div class="math notranslate nohighlight">
+\[
+\P[A] 
+= \P[A|C]\P[C] + \P[A|C^c]\P[C^c]
+= \frac{1}{6}\frac{1}{2} + 0 \frac{1}{2}
+= \frac{1}{12}.
+\]</div>
+<p>Similarly <span class="math notranslate nohighlight">\(\P[B] = \frac{1}{12}\)</span>. Yet <span class="math notranslate nohighlight">\(\P[A \cap B] = 0 \neq \frac{1}{12} \frac{1}{12}\)</span>.</p>
+<p>On the other hand, we claim that <span class="math notranslate nohighlight">\(A\)</span> and <span class="math notranslate nohighlight">\(B\)</span> are conditionally independent given <span class="math notranslate nohighlight">\(C\)</span>. Again this is intuitively clear: once I pick a die, the two rolls are independent. For a given die choice, knowledge of one roll provides no information about the likelihood of the other roll. Note that the phrase “for a given die choice” is critical in the last statement. Formally, by our experiment, we have <span class="math notranslate nohighlight">\(\P[A|C] = 1/6\)</span>, <span class="math notranslate nohighlight">\(\P[B|C] = 0\)</span> and <span class="math notranslate nohighlight">\(\P[A \cap B|C] = 0\)</span>. So indeed</p>
+<div class="math notranslate nohighlight">
+\[
+\P[A \cap B| C] = \P[A|C] \,\P[B|C]
+\]</div>
+<p>as claimed. <span class="math notranslate nohighlight">\(\lhd\)</span></p>
+<p>See the exercises for further instances of the important principle that conditional probabilities satisfy the same rules as probabilities.</p>
+<p>Conditional independence is naturally extended to random vectors.</p>
+<p><strong>DEFINITION</strong> <strong>(Conditional Independence of Random Vectors)</strong> Let <span class="math notranslate nohighlight">\(\bX, \bY, \bW\)</span> be discrete random vectors. Then <span class="math notranslate nohighlight">\(\bX\)</span> and <span class="math notranslate nohighlight">\(\bY\)</span> are said to be conditionally independent given <span class="math notranslate nohighlight">\(\bW\)</span>, denoted <span class="math notranslate nohighlight">\(\bX \indep \bY | \bW\)</span>, if for all <span class="math notranslate nohighlight">\(\bx \in \S_\bX\)</span>, <span class="math notranslate nohighlight">\(\by \in \S_\bY\)</span> and <span class="math notranslate nohighlight">\(\bw \in \S_\bW\)</span></p>
+<div class="math notranslate nohighlight">
+\[
+\P[\bX = \bx, \bY = \by|\bW = \bw] 
+= \P[\bX = \bx |\bW = \bw] 
+\,\P[\bY = \by|\bW = \bw].
+\]</div>
+<p><span class="math notranslate nohighlight">\(\natural\)</span></p>
+<p>An important consequence is that we can drop the conditioning by the independent variable.</p>
+<p><strong>LEMMA</strong> <strong>(Role of Independence)</strong> <span class="math notranslate nohighlight">\(\idx{role of independence lemma}\xdi\)</span> Let <span class="math notranslate nohighlight">\(\bX, \bY, \bW\)</span> be discrete random vectors such that <span class="math notranslate nohighlight">\(\bX \indep \bY | \bW\)</span>. For all <span class="math notranslate nohighlight">\(\bx \in \S_\bX\)</span>, <span class="math notranslate nohighlight">\(\by \in \S_\bY\)</span> and <span class="math notranslate nohighlight">\(\bw \in \S_\bW\)</span>,</p>
+<div class="math notranslate nohighlight">
+\[
+\P[\bX = \bx | \bY=\by, \bW=\bw]
+= \P[\bX = \bx | \bW = \bw].
+\]</div>
+<p><span class="math notranslate nohighlight">\(\flat\)</span></p>
+<p><em>Proof:</em> In a previous exercise, we showed that <span class="math notranslate nohighlight">\(A \indep B | C\)</span> implies <span class="math notranslate nohighlight">\(\P[A | B\cap C] = \P[A | C]\)</span>. That implies the claim. <span class="math notranslate nohighlight">\(\square\)</span></p>
+<p><strong>CHAT &amp; LEARN</strong> The concept of conditional independence is closely related to the concept of d-separation in probabilistic graphical models. Ask your favorite AI chatbot to explain d-separation and how it can be used to determine conditional independence relationships in a directed acyclic graph. <span class="math notranslate nohighlight">\(\ddagger\)</span></p>
+</section>
+<section id="the-basic-configurations">
+<h2><span class="section-number">6.3.2. </span>The basic configurations<a class="headerlink" href="#the-basic-configurations" title="Link to this heading">#</a></h2>
+<p>A powerful approach for constructing complex probability distributions is the use of conditional independence. The case of three random variables exemplifies key probabilistic relationships. By the product rule, we can write</p>
+<div class="math notranslate nohighlight">
+\[
+\P[X=x, Y=y, Z=z]
+= \P[X=x] \,\P[Y=y|X=x] \,\P[Z=z | X=x, Y=y].
+\]</div>
+<p>This is conveniently represented through a digraph where the vertices are the variables. Recall that an arrow <span class="math notranslate nohighlight">\((i,j)\)</span>, from <span class="math notranslate nohighlight">\(i\)</span> to <span class="math notranslate nohighlight">\(j\)</span>, indicates that <span class="math notranslate nohighlight">\(i\)</span> is a parent of <span class="math notranslate nohighlight">\(j\)</span> and that <span class="math notranslate nohighlight">\(j\)</span> is a child of <span class="math notranslate nohighlight">\(i\)</span>. Let <span class="math notranslate nohighlight">\(\pa(i)\)</span> be the set of parents of <span class="math notranslate nohighlight">\(i\)</span>. The digraph <span class="math notranslate nohighlight">\(G = (V, E)\)</span> below encodes the following sampling scheme, referred as ancestral sampling:</p>
+<ol class="arabic simple">
+<li><p>First we pick <span class="math notranslate nohighlight">\(X\)</span> according to its marginal <span class="math notranslate nohighlight">\(\P[X=x]\)</span>. Note that <span class="math notranslate nohighlight">\(X\)</span> has no parent in <span class="math notranslate nohighlight">\(G\)</span>.</p></li>
+<li><p>Second we pick <span class="math notranslate nohighlight">\(Y\)</span> according to the CPD <span class="math notranslate nohighlight">\(\P[Y=y|X=x]\)</span>. Note that <span class="math notranslate nohighlight">\(X\)</span> is the only parent of <span class="math notranslate nohighlight">\(Y\)</span>.</p></li>
+<li><p>Finally we pick <span class="math notranslate nohighlight">\(Z\)</span> according to the CPD <span class="math notranslate nohighlight">\(\P[Z=z|X=x, Y=y]\)</span>. Note that the parents of <span class="math notranslate nohighlight">\(Z\)</span> are <span class="math notranslate nohighlight">\(X\)</span> and <span class="math notranslate nohighlight">\(Y\)</span>.</p></li>
+</ol>
+<!--TEX
+
+**Figure:** The full case
+
+![The full case](./figs/dgm-full1-small.png)
+
+$\bowtie$
+
+--><p>The graph above is acyclic, that is, it has no directed cycle. The variables <span class="math notranslate nohighlight">\(X, Y, Z\)</span> are in <a class="reference external" href="https://en.wikipedia.org/wiki/Topological_sorting">topological order</a><span class="math notranslate nohighlight">\(\idx{topological order}\xdi\)</span>, that is, all edges <span class="math notranslate nohighlight">\((i,j)\)</span> are such that <span class="math notranslate nohighlight">\(i\)</span> comes before <span class="math notranslate nohighlight">\(j\)</span> in that order.</p>
+<p>The same joint distribution can be represented by a different digraph if the product rule is used in a different order. For instance,</p>
+<div class="math notranslate nohighlight">
+\[
+\P[X=x, Y=y, Z=z]
+= \P[Z=z] \,\P[Y=y|Z=z] \,\P[X=x | Z=z, Y=y]
+\]</div>
+<p>is represented by the following digraph. A topological order this time is <span class="math notranslate nohighlight">\(Z, Y, X\)</span>.</p>
+<!--TEX
+
+**Figure:** Another full case
+
+![Another full case](./figs/dgm-full2-small.png)
+
+$\bowtie$
+
+--><p><strong>The fork</strong> <span class="math notranslate nohighlight">\(\idx{fork}\xdi\)</span> Removing edges in the first graph above encodes conditional independence relations. For instance, removing the edge from <span class="math notranslate nohighlight">\(Y\)</span> to <span class="math notranslate nohighlight">\(Z\)</span> gives the following graph, known as a fork. We denote this configuration as <span class="math notranslate nohighlight">\(Y \leftarrow X \rightarrow Z\)</span>.</p>
+<!--TEX
+
+**Figure:** The fork
+
+![The fork](./figs/dgm-fork-small.png)
+
+$\bowtie$
+
+--><p>The joint distribution simplifies as follows:</p>
+<div class="math notranslate nohighlight">
+\[
+\P[X=x, Y=y, Z=z]
+= \P[X=x] \,\P[Y=y|X=x] \,\P[Z=z | X=x].
+\]</div>
+<p>So, in this case, what has changed is that the CPD of <span class="math notranslate nohighlight">\(Z\)</span> does not depend on the value of <span class="math notranslate nohighlight">\(Y\)</span>. From the <em>Role of Independence</em> lemma, this corresponds to assuming the conditional independence <span class="math notranslate nohighlight">\(Z \indep Y|X\)</span>. Indeed, we can check that claim directly from the joint distribution</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+\P[Y= y, Z=z|X=x]
+&amp;= \frac{\P[X=x, Y= y, Z=z]}{\P[X=x]}\\
+&amp;= \frac{\P[X=x] \,\P[Y=y|X=x] \,\P[Z=z | X=x]}{\P[X=x]}\\
+&amp;= \P[Y=y|X=x] \,\P[Z=z | X=x]
+\end{align*}\]</div>
+<p>as claimed.</p>
+<p><strong>The chain</strong> <span class="math notranslate nohighlight">\(\idx{chain}\xdi\)</span> Removing the edge from <span class="math notranslate nohighlight">\(X\)</span> to <span class="math notranslate nohighlight">\(Z\)</span> gives the following graph, known as a chain (or pipe). We denote this configuration as <span class="math notranslate nohighlight">\(X \rightarrow Y \rightarrow Z\)</span>.</p>
+<!--TEX
+
+**Figure:** The chain
+
+![The chain](./figs/dgm-chain-small.png)
+
+$\bowtie$
+
+--><p>The joint distribution simplifies as follows:</p>
+<div class="math notranslate nohighlight">
+\[
+\P[X=x, Y=y, Z=z]
+= \P[X=x] \,\P[Y=y|X=x] \,\P[Z=z | Y=y].
+\]</div>
+<p>In this case, what has changed is that the CPD of <span class="math notranslate nohighlight">\(Z\)</span> does not depend on the value of <span class="math notranslate nohighlight">\(X\)</span>. Compare that to the fork. The corresponding conditional independence relation is <span class="math notranslate nohighlight">\(Z \indep X|Y\)</span>. Indeed, we can check that claim directly</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+\P[X= x, Z=z|Y=y]
+&amp;= \frac{\P[X=x, Y= y, Z=z]}{\P[Y=y]}\\
+&amp;= \frac{\P[X=x] \,\P[Y=y|X=x] \,\P[Z=z | Y=y]}{\P[Y=y]}
+\end{align*}\]</div>
+<p>Now we have to use <em>Bayes’ Rule</em> to get</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+&amp;= \frac{\P[X=x] \,\P[Y=y|X=x] \,\P[Z=z | Y=y]}{\P[Y=y]}\\
+&amp;= \frac{\P[Y=y|X=x]\,\P[X=x]}{\P[Y=y]} \P[Z=z | Y=y]\\
+&amp;= \P[X=x|Y=y] \,\P[Z=z | Y=y]
+\end{align*}\]</div>
+<p>as claimed.</p>
+<p>For any <span class="math notranslate nohighlight">\(x, y, z\)</span> where the joint probability is positive, we can re-write</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+&amp;\P[X=x, Y=y, Z=z]\\
+&amp;= \P[X=x] \,\P[Y=y|X=x] \,\P[Z=z | Y=y]\\
+&amp;= \P[Y=y] \,\P[X=x|Y=y] \,\P[Z=z | Y=y],
+\end{align*}\]</div>
+<p>where we used that</p>
+<div class="math notranslate nohighlight">
+\[
+\P[X=x, Y=y]
+= \P[X=x] \,\P[Y=y|X=x]
+= \P[Y=y] \,\P[X=x|Y=y]
+\]</div>
+<p>by definition of the conditional probability. In other words, we have shown that the chain <span class="math notranslate nohighlight">\(X \rightarrow Y \rightarrow Z\)</span> is in fact equivalent to the fork <span class="math notranslate nohighlight">\(X \leftarrow Y \rightarrow Z\)</span>. In particular, they both correspond to assuming the conditional independence relation <span class="math notranslate nohighlight">\(Z \indep X|Y\)</span>, although they capture a different way to sample the joint distribution.</p>
+<p><strong>The collider</strong> <span class="math notranslate nohighlight">\(\idx{collider}\xdi\)</span> Removing the edge from <span class="math notranslate nohighlight">\(X\)</span> to <span class="math notranslate nohighlight">\(Y\)</span> gives the following graph, known as a collider. We denote this configuration as <span class="math notranslate nohighlight">\(X \rightarrow Z \leftarrow Y\)</span>.</p>
+<!--TEX
+
+**Figure:** The collider
+
+![The collider](./figs/dgm-collider-small.png)
+
+$\bowtie$
+
+--><p>The joint distribution simplifies as follows:</p>
+<div class="math notranslate nohighlight">
+\[
+\P[X=x, Y=y, Z=z]
+= \P[X=x] \,\P[Y=y] \,\P[Z=z | X=x, Y=y].
+\]</div>
+<p>In this case, what has changed is that the CPD of <span class="math notranslate nohighlight">\(Y\)</span> does not depend on the value of <span class="math notranslate nohighlight">\(X\)</span>. Compare that to the fork and the chain. This time we have <span class="math notranslate nohighlight">\(X \indep Y\)</span>. Indeed, we can check that claim directly</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+\P[X= x, Y=y]
+&amp;= \sum_{z \in \S_z} \P[X=x, Y=y, Z=z]\\
+&amp;=  \sum_{z \in \S_z} \P[X=x] \,\P[Y=y] \,\P[Z=z | X=x, Y=y]\\
+&amp;= \P[X=x] \,\P[Y=y]
+\end{align*}\]</div>
+<p>as claimed. In particular, the collider cannot be reframed as a chain or fork as its underlying assumption is stronger.</p>
+<p>Perhaps counter-intuitively, conditioning on <span class="math notranslate nohighlight">\(Z\)</span> makes <span class="math notranslate nohighlight">\(X\)</span> and <span class="math notranslate nohighlight">\(Y\)</span> dependent in general. This is known as explaining away or Berkson’s Paradox.</p>
+</section>
+<section id="example-naive-bayes">
+<h2><span class="section-number">6.3.3. </span>Example: Naive Bayes<a class="headerlink" href="#example-naive-bayes" title="Link to this heading">#</a></h2>
+<p>The model-based justification we gave for logistic regression in the  subsection on generalized linear models used a so-called <a class="reference external" href="https://en.wikipedia.org/wiki/Discriminative_model">discriminative approach</a><span class="math notranslate nohighlight">\(\idx{discriminative model}\xdi\)</span>, where the conditional distribution of the target <span class="math notranslate nohighlight">\(y\)</span> given the features <span class="math notranslate nohighlight">\(\mathbf{x}\)</span> is specified – but not the full distribution of the data <span class="math notranslate nohighlight">\((\mathbf{x}, y)\)</span>. Here we give an example of the <a class="reference external" href="https://en.wikipedia.org/wiki/Generative_model">generative approach</a><span class="math notranslate nohighlight">\(\idx{generative model}\xdi\)</span>, which models the full distribution. For a discussion of the benefits and drawbacks of each approach, see for example <a class="reference external" href="https://en.wikipedia.org/wiki/Discriminative_model#Contrast_with_generative_model">here</a>.</p>
+<p>The Naive Bayes<span class="math notranslate nohighlight">\(\idx{Naive Bayes}\xdi\)</span> model is a simple discrete model for supervised learning. It is useful for document classification for instance, and we will use that terminology here to be concrete. We assume that a document has a single topic <span class="math notranslate nohighlight">\(C\)</span> from a list <span class="math notranslate nohighlight">\(\mathcal{C} = \{1, \ldots, K\}\)</span> with probability distribution <span class="math notranslate nohighlight">\(\pi_k = \P[C = k]\)</span>. There is a vocabulary of size <span class="math notranslate nohighlight">\(M\)</span> and we record the presence or absence of a word <span class="math notranslate nohighlight">\(m\)</span> in the document with a Bernoulli variable <span class="math notranslate nohighlight">\(X_m \in \{0,1\}\)</span>, where <span class="math notranslate nohighlight">\(p_{k,m} = \P[X_m = 1|C = k]\)</span>. We denote by <span class="math notranslate nohighlight">\(\bX = (X_1, \ldots, X_M)\)</span> the corresponding vector.</p>
+<p>The conditional independence assumption comes next: we assume that, given a topic <span class="math notranslate nohighlight">\(C\)</span>, the word occurrences are independent. That is,</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+\P[\bX = \bx|C=k]
+&amp;= \prod_{m=1}^M \P[X_m = x_m|C = k]\\
+&amp;= \prod_{m=1}^M p_{k,m}^{x_m} (1-p_{k,m})^{1-x_m}.
+\end{align*}\]</div>
+<p>Finally, the joint distribution is</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+\P[C = k, \bX = \bx]
+&amp;= \P[\bX = \bx|C=k] \,\P[C=k]\\
+&amp;= \pi_k \prod_{m=1}^M p_{k,m}^{x_m} (1-p_{k,m})^{1-x_m}.
+\end{align*}\]</div>
+<p>Graphically, this is similar to a fork with <span class="math notranslate nohighlight">\(C\)</span> at its center and <span class="math notranslate nohighlight">\(M\)</span> prongs for the <span class="math notranslate nohighlight">\(X_m\)</span>s. This is represented using the so-called plate notation. The box with the <span class="math notranslate nohighlight">\(M\)</span> in the corner below indicates that <span class="math notranslate nohighlight">\(X_m\)</span> is repeated <span class="math notranslate nohighlight">\(M\)</span> times, all copies being conditionally independent given <span class="math notranslate nohighlight">\(C\)</span>.</p>
+<!--TEX
+
+**Figure:** Naive Bayes
+
+![Naives Bayes](./figs/dgm-naive-small.png)
+
+$\bowtie$
+
+--><p><img alt="Naives Bayes" src="../../_images/dgm_naive_networkx.png" /></p>
+<p><strong>Model fitting</strong> Before using the model for prediction, one must first fit the model from training data <span class="math notranslate nohighlight">\(\{\bx_i, c_i\}_{i=1}^n\)</span>. In this case, it means estimating the unknown parameters <span class="math notranslate nohighlight">\(\bpi\)</span> and <span class="math notranslate nohighlight">\(\{\bp_k\}_{k=1}^K\)</span>, where <span class="math notranslate nohighlight">\(\bp_k = (p_{k,1},\ldots, p_{k,M})\)</span>. For each <span class="math notranslate nohighlight">\(k, m\)</span> let</p>
+<div class="math notranslate nohighlight">
+\[
+N_{k,m} = \sum_{i=1}^n \mathbf{1}_{\{c_i = k\}} x_{i,m},
+\quad 
+N_{k} = \sum_{i=1}^n \mathbf{1}_{\{c_i = k\}}.
+\]</div>
+<p>We use maximum likelihood estimation which, recall, entails finding the parameters that maximize the probability of observing the data</p>
+<div class="math notranslate nohighlight">
+\[
+\mathcal{L}(\bpi, \{\bp_k\}; \{\bx_i, c_i\})
+= \prod_{i=1}^n \pi_{c_i} \prod_{m=1}^M p_{c_i, m}^{x_{i,m}} (1-p_{c_i, m})^{1-x_{i,m}}.
+\]</div>
+<p>Here, as usual, we assume that the samples are independent and identically distributed. We take a logarithm to turn the products into sums and consider the negative log-likelihood (NLL)</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+&amp; L_n(\bpi, \{\bp_k\}; \{\bx_i, c_i\})\\
+&amp;\quad = - \sum_{i=1}^n \log \pi_{c_i} - \sum_{i=1}^n \sum_{m=1}^M [x_{i,m} \log p_{c_{i}, m} + (1-x_{i,m}) \log (1-p_{c_i, m})]\\
+&amp;\quad = - \sum_{k=1}^K N_k \log \pi_k - \sum_{k=1}^K \sum_{m=1}^M [N_{k,m} \log p_{k,m} + (N_k-N_{k,m}) \log (1-p_{k,m})].
+\end{align*}\]</div>
+<p>The NLL can be broken up naturally into several terms that depend on different sets of parameters – and therefore can be optimized separately. First, there is a term that depends only on the <span class="math notranslate nohighlight">\(\pi_k\)</span>’s</p>
+<div class="math notranslate nohighlight">
+\[
+J_0(\bpi; \{\bx_i, c_i\}) = - \sum_{k=1}^K N_k \log \pi_k.
+\]</div>
+<p>The rest of the sum can be further split into <span class="math notranslate nohighlight">\(KM\)</span> terms, each depending only on <span class="math notranslate nohighlight">\(p_{km}\)</span> for a fixed <span class="math notranslate nohighlight">\(k\)</span> and m</p>
+<div class="math notranslate nohighlight">
+\[
+J_{k,m}(p_{k,m}; \{\bx_i, c_i\})
+= - N_{k,m} \log p_{k,m} - (N_k-N_{k,m}) \log (1-p_{k,m}).
+\]</div>
+<p>So</p>
+<div class="math notranslate nohighlight">
+\[
+L_n(\bpi, \{\bp_k\}; \{\bx_i, c_i\})
+= J_0(\bpi; \{\bx_i, c_i\}) + \sum_{k=1}^K \sum_{m=1}^M J_{k,m}(p_{k,m}; \{\bx_i, c_i\}).
+\]</div>
+<p>We minimize these terms separately. We assume that <span class="math notranslate nohighlight">\(N_k &gt; 0\)</span> for all <span class="math notranslate nohighlight">\(k\)</span>.</p>
+<p>We use a special case of maximum likelihood estimation, which we previously worked out in an example, where we consider the space of all probability distributions over a finite set. The maximum likelihood estimator in that case is given by the empirical frequencies. Notice that minimizing <span class="math notranslate nohighlight">\(J_0(\bpi; \{\bx_i, c_i\})\)</span> is precisely of this form: we observe <span class="math notranslate nohighlight">\(N_k\)</span> samples from class <span class="math notranslate nohighlight">\(k\)</span> and we seek the maximum likelihood estimator of, <span class="math notranslate nohighlight">\(\pi_k\)</span>, the probability of observing <span class="math notranslate nohighlight">\(k\)</span>. Hence the solution is simply</p>
+<div class="math notranslate nohighlight">
+\[
+\hat{\pi}_k = \frac{N_k}{N},
+\]</div>
+<p>for all <span class="math notranslate nohighlight">\(k\)</span>. Similarly, for each <span class="math notranslate nohighlight">\(k\)</span>, <span class="math notranslate nohighlight">\(m\)</span>, <span class="math notranslate nohighlight">\(J_{k,m}\)</span> is of that form as well. Here the states correspond to word <span class="math notranslate nohighlight">\(m\)</span> being present or absent in a document of class <span class="math notranslate nohighlight">\(k\)</span>, and we observe <span class="math notranslate nohighlight">\(N_{k,m}\)</span> documents of type <span class="math notranslate nohighlight">\(k\)</span> where the word <span class="math notranslate nohighlight">\(m\)</span> is present. So the solution is</p>
+<div class="math notranslate nohighlight">
+\[
+\hat{p}_{k,m} = \frac{N_{k,m}}{N_k}
+\]</div>
+<p>for all <span class="math notranslate nohighlight">\(k, m\)</span>.</p>
+<p><strong>Prediction</strong> To predict the class of a new document, it is natural to maximize over <span class="math notranslate nohighlight">\(k\)</span> the probability that <span class="math notranslate nohighlight">\(\{C=k\}\)</span> given <span class="math notranslate nohighlight">\(\{\bX = \bx\}\)</span>. By Bayes’ rule,</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+\P[C=k | \bX = \bx]
+&amp;= \frac{\P[C = k, \bX = \bx]}{\P[\bX = \bx]}\\
+&amp;= \frac{\pi_k \prod_{m=1}^M p_{k,m}^{x_m} (1-p_{k,m})^{1-x_m}}
+{\sum_{k'=1}^K \pi_{k'} \prod_{m=1}^M p_{k',m}^{x_m} (1-p_{k',m})^{1-x_m}}.
+\end{align*}\]</div>
+<p>As the denominator does not in fact depend on <span class="math notranslate nohighlight">\(k\)</span>, maximizing <span class="math notranslate nohighlight">\(\P[C=k | \bX = \bx]\)</span> boils down to maximizing the numerator <span class="math notranslate nohighlight">\(\pi_k \prod_{m=1}^M p_{k,m}^{x_m} (1-p_{k,m})^{1-x_m}\)</span>, which is straighforward to compute. Since the parameters are unknown, we use <span class="math notranslate nohighlight">\(\hat{\pi}_k\)</span> and <span class="math notranslate nohighlight">\(\hat{p}_{k,m}\)</span> in place of <span class="math notranslate nohighlight">\(\pi_k\)</span> and <span class="math notranslate nohighlight">\(p_{k,m}\)</span>. As we did previously, we take a negative logarithm – which has some numerical advantages – and we refer to it as the <em>score</em></p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+&amp;- \log\left(\pi_k \prod_{m=1}^M p_{k,m}^{x_m} (1-p_{k,m})^{1-x_m}\right)\\
+&amp;\qquad = -\log\pi_k - \sum_{m=1}^M [x_m \log p_{k,m} + (1-x_m) \log (1-p_{k,m})].
+\end{align*}\]</div>
+<p>More specifically, taking a negative logarithm turns out to be a good idea here because computing a product of probabilities can produce very small numbers that, when they fall beneath machine precision, are approximated by zero. This is called <a class="reference external" href="https://en.wikipedia.org/wiki/Arithmetic_underflow">underflow</a><span class="math notranslate nohighlight">\(\idx{underflow}\xdi\)</span>. By taking a negative logarithm, these probabilities are transformed into positive numbers of reasonable magnitude and the product becomes of sum of these. Moreover, because this transformation is monotone, we can use the transformed values directly to compute the optimal score, which is our ultimate goal in the prediction step.</p>
+<p><strong>CHAT &amp; LEARN</strong> Ask your favorite AI chatbot for more information on the issue of underflow, and its cousin overflow<span class="math notranslate nohighlight">\(\idx{overflow}\xdi\)</span>, in particular in the context of multiypling probabilities. <span class="math notranslate nohighlight">\(\ddagger\)</span></p>
+<p>While maximum likehood estimation has <a class="reference external" href="https://en.wikipedia.org/wiki/Maximum_likelihood_estimation#Properties">desirable theoretical properties</a>, it does suffer from <a class="reference external" href="https://towardsdatascience.com/parameter-inference-maximum-aposteriori-estimate-49f3cd98267a">overfitting</a>. If for instance a particular word <span class="math notranslate nohighlight">\(m\)</span> does not occur in any training document, then the probability of observing a new document that happens to contain that word is estimated to be <span class="math notranslate nohighlight">\(0\)</span> for any class (i.e., <span class="math notranslate nohighlight">\(\hat{p}_{k,m} = 0\)</span> for all <span class="math notranslate nohighlight">\(k\)</span> so that <span class="math notranslate nohighlight">\(\hat \pi_k \prod_{m=1}^M \hat{p}_{k,m}^{x_m} (1-\hat{p}_{k,m})^{1-x_m} = 0\)</span> for all <span class="math notranslate nohighlight">\(k\)</span>
+) and the maximization problem above is not well-defined.</p>
+<p>One approach to deal with this is <a class="reference external" href="https://en.wikipedia.org/wiki/Additive_smoothing">Laplace smoothing</a><span class="math notranslate nohighlight">\(\idx{Laplace smoothing}\xdi\)</span></p>
+<div class="math notranslate nohighlight">
+\[
+\bar{\pi}_k = \frac{N_k + \alpha}{N + K \alpha},
+\quad \bar{p}_{k,m} = \frac{N_{k,m} + \beta}{N_k + 2 \beta}
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(\alpha, \beta &gt; 0\)</span>, which can be justified using a Bayesian or regularization perspective.</p>
+<p>We implement the Naive Bayes model with Laplace smoothing.</p>
+<p>We encode the data into a table, where the rows are the classes and the columns are the features. The entries are the corresponding <span class="math notranslate nohighlight">\(N_{k,m}\)</span>s. In addition we provide the vector <span class="math notranslate nohighlight">\(N_k\)</span>, which is the last column above, and the value <span class="math notranslate nohighlight">\(N\)</span>, which is the sum of the entries of <span class="math notranslate nohighlight">\(N_k\)</span>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">nb_fit_table</span><span class="p">(</span><span class="n">N_km</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">1.</span><span class="p">,</span> <span class="n">beta</span><span class="o">=</span><span class="mf">1.</span><span class="p">):</span>
+    
+    <span class="n">K</span><span class="p">,</span> <span class="n">M</span> <span class="o">=</span> <span class="n">N_km</span><span class="o">.</span><span class="n">shape</span>
+    <span class="n">N_k</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">N_km</span><span class="p">,</span><span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">N</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">N_k</span><span class="p">)</span>
+    <span class="n">pi_k</span> <span class="o">=</span> <span class="p">(</span><span class="n">N_k</span><span class="o">+</span><span class="n">alpha</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">N</span><span class="o">+</span><span class="n">K</span><span class="o">*</span><span class="n">alpha</span><span class="p">)</span>
+    <span class="n">p_km</span> <span class="o">=</span> <span class="p">(</span><span class="n">N_km</span><span class="o">+</span><span class="n">beta</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">N_k</span><span class="p">[:,</span><span class="kc">None</span><span class="p">]</span><span class="o">+</span><span class="mi">2</span><span class="o">*</span><span class="n">beta</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">pi_k</span><span class="p">,</span> <span class="n">p_km</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>The next function computes the negative logarithm of <span class="math notranslate nohighlight">\(\pi_k \prod_{m=1}^M p_{k,m}^{x_m} (1-p_{k,m})^{1-x_m}\)</span>, that is, the score of <span class="math notranslate nohighlight">\(k\)</span>, and outputs a <span class="math notranslate nohighlight">\(k\)</span> achieving the minimum score.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">nb_predict</span><span class="p">(</span><span class="n">pi_k</span><span class="p">,</span> <span class="n">p_km</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">label_set</span><span class="p">):</span>
+   
+    <span class="n">K</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">pi_k</span><span class="p">)</span>
+    
+    <span class="n">score_k</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">K</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">K</span><span class="p">):</span>
+       
+        <span class="n">score_k</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">-=</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">pi_k</span><span class="p">[</span><span class="n">k</span><span class="p">])</span>
+        <span class="n">score_k</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">-=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">x</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">p_km</span><span class="p">[</span><span class="n">k</span><span class="p">,:])</span> 
+                               <span class="o">+</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">x</span><span class="p">)</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">p_km</span><span class="p">[</span><span class="n">k</span><span class="p">,:]))</span>
+
+    <span class="k">return</span> <span class="n">label_set</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">argmin</span><span class="p">(</span><span class="n">score_k</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)]</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p><strong>NUMERICAL CORNER:</strong> We use a simple example from <a class="reference external" href="https://towardsdatascience.com/all-about-naive-bayes-8e13cef044cf">Towards Data Science</a>:</p>
+<blockquote>
+<div><p><strong>Example:</strong> let’s say we have data on 1000 pieces of fruit. The fruit being a Banana, Orange or some other fruit and imagine we know 3 features of each fruit, whether it’s long or not, sweet or not and yellow or not, as displayed in the table below.</p>
+</div></blockquote>
+<table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Fruit</p></th>
+<th class="head"><p>Long</p></th>
+<th class="head"><p>Sweet</p></th>
+<th class="head"><p>Yellow</p></th>
+<th class="head"><p>Total</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Banana</p></td>
+<td><p>400</p></td>
+<td><p>350</p></td>
+<td><p>450</p></td>
+<td><p>500</p></td>
+</tr>
+<tr class="row-odd"><td><p>Orange</p></td>
+<td><p>0</p></td>
+<td><p>150</p></td>
+<td><p>300</p></td>
+<td><p>300</p></td>
+</tr>
+<tr class="row-even"><td><p>Other</p></td>
+<td><p>100</p></td>
+<td><p>150</p></td>
+<td><p>50</p></td>
+<td><p>200</p></td>
+</tr>
+<tr class="row-odd"><td><p>Total</p></td>
+<td><p>500</p></td>
+<td><p>650</p></td>
+<td><p>800</p></td>
+<td><p>1000</p></td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<div><p>[…] Which should provide enough evidence to predict the class of another fruit as it’s introduced.</p>
+</div></blockquote>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">N_km</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mf">400.</span><span class="p">,</span> <span class="mf">350.</span><span class="p">,</span> <span class="mf">450.</span><span class="p">],</span>
+                 <span class="p">[</span><span class="mf">0.</span><span class="p">,</span> <span class="mf">150.</span><span class="p">,</span> <span class="mf">300.</span><span class="p">],</span>
+                 <span class="p">[</span><span class="mf">100.</span><span class="p">,</span> <span class="mf">150.</span><span class="p">,</span> <span class="mf">50.</span><span class="p">]])</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>We run <code class="docutils literal notranslate"><span class="pre">nb_fit_table</span></code> on our simple dataset.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pi_k</span><span class="p">,</span> <span class="n">p_km</span> <span class="o">=</span> <span class="n">nb_fit_table</span><span class="p">(</span><span class="n">N_km</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">pi_k</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[0.61495136 0.23092678 0.15412186]
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">p_km</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[[0.33361065 0.29201331 0.37520799]
+ [0.00221239 0.3340708  0.6659292 ]
+ [0.33443709 0.5        0.16887417]]
+</pre></div>
+</div>
+</div>
+</div>
+<p>Continuing on with our previous example:</p>
+<blockquote>
+<div><p>So let’s say we’re given the features of a piece of fruit and we need to predict the class. If we’re told that the additional fruit is Long, Sweet and Yellow, we can classify it using the [prediction] formula and subbing in the values for each outcome, whether it’s a Banana, an Orange or Other Fruit. The one with the highest probability (score) being the winner.</p>
+</div></blockquote>
+<p>We run <code class="docutils literal notranslate"><span class="pre">nb_predict</span></code> on our dataset with the additional fruit from the quote above.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">label_set</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Banana&#39;</span><span class="p">,</span> <span class="s1">&#39;Orange&#39;</span><span class="p">,</span> <span class="s1">&#39;Other&#39;</span><span class="p">]</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">1.</span><span class="p">,</span> <span class="mf">1.</span><span class="p">])</span>
+<span class="n">nb_predict</span><span class="p">(</span><span class="n">pi_k</span><span class="p">,</span> <span class="n">p_km</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">label_set</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&#39;Banana&#39;
+</pre></div>
+</div>
+</div>
+</div>
+<p><span class="math notranslate nohighlight">\(\unlhd\)</span></p>
+<p><strong>CHAT &amp; LEARN</strong> Laplace smoothing is a special case of a more general technique known as Bayesian parameter estimation. Ask your favorite AI chatbot to explain Bayesian parameter estimation and how it relates to maximum likelihood estimation and Laplace smoothing. <span class="math notranslate nohighlight">\(\ddagger\)</span></p>
+<p><em><strong>Self-assessment quiz</strong></em> <em>(with help from Claude, Gemini, and ChatGPT)</em></p>
+<p><strong>1</strong> Which of the following statements is <strong>not</strong> true about conditional probability?</p>
+<p>a) <span class="math notranslate nohighlight">\(P[A|B] = \frac{P[A \cap B]}{P[B]}\)</span> for events <span class="math notranslate nohighlight">\(A\)</span> and <span class="math notranslate nohighlight">\(B\)</span> with <span class="math notranslate nohighlight">\(P[B] &gt; 0\)</span>.</p>
+<p>b) If <span class="math notranslate nohighlight">\(A\)</span> and <span class="math notranslate nohighlight">\(B\)</span> are independent, then <span class="math notranslate nohighlight">\(P[A|B] = P[A]\)</span>.</p>
+<p>c) Conditional probabilities can be used to express the multiplication rule and the law of total probability.</p>
+<p>d) <span class="math notranslate nohighlight">\(P[A|B] = P[B|A]\)</span> for any events <span class="math notranslate nohighlight">\(A\)</span> and <span class="math notranslate nohighlight">\(B\)</span>.</p>
+<p><strong>2</strong> Which of the following is the correct mathematical expression for the conditional independence of events <span class="math notranslate nohighlight">\(A\)</span> and <span class="math notranslate nohighlight">\(B\)</span> given event <span class="math notranslate nohighlight">\(C\)</span>, denoted as <span class="math notranslate nohighlight">\(A \perp\!\!\!\perp B \mid C\)</span>?</p>
+<p>a) <span class="math notranslate nohighlight">\(P[A \cap B \mid C] = P[A \mid C] + P[B \mid C]\)</span></p>
+<p>b) <span class="math notranslate nohighlight">\(P[A \cup B \mid C] = P[A \mid C] P[B \mid C]\)</span></p>
+<p>c) <span class="math notranslate nohighlight">\(P[A \cap B \mid C] = P[A \mid C] P[B \mid C]\)</span></p>
+<p>d) <span class="math notranslate nohighlight">\(P[A \mid B \cap C] = P[A \mid C]\)</span></p>
+<p><strong>3</strong> In the fork configuration <span class="math notranslate nohighlight">\(Y \leftarrow X \rightarrow Z\)</span>, which of the following conditional independence relations always holds?</p>
+<p>a) <span class="math notranslate nohighlight">\(X \perp\!\!\!\perp Y \mid Z\)</span></p>
+<p>b) <span class="math notranslate nohighlight">\(Y \perp\!\!\!\perp Z \mid X\)</span></p>
+<p>c) <span class="math notranslate nohighlight">\(X \perp\!\!\!\perp Z \mid Y\)</span></p>
+<p>d) <span class="math notranslate nohighlight">\(Y \perp\!\!\!\perp Z\)</span></p>
+<p><strong>4</strong> In the collider configuration <span class="math notranslate nohighlight">\(X \rightarrow Z \leftarrow Y\)</span>, which of the following conditional independence relations always holds?</p>
+<p>a) <span class="math notranslate nohighlight">\(X \perp\!\!\!\perp Y \mid Z\)</span></p>
+<p>b) <span class="math notranslate nohighlight">\(Y \perp\!\!\!\perp Z \mid X\)</span></p>
+<p>c) <span class="math notranslate nohighlight">\(X \perp\!\!\!\perp Z \mid Y\)</span></p>
+<p>d) <span class="math notranslate nohighlight">\(X \perp\!\!\!\perp Y\)</span></p>
+<p><strong>5</strong> Which of the following best describes the graphical representation of the Naive Bayes model for document classification?</p>
+<p>a) A chain with the topic variable at the center and word variables as the links.</p>
+<p>b) A collider with the topic variable at the center and word variables as the parents.</p>
+<p>c) A fork with the topic variable at the center and word variables as the prongs.</p>
+<p>d) A complete graph with edges between all pairs of variables.</p>
+<p>Answer for 1: d. Justification: In general, <span class="math notranslate nohighlight">\(P[A|B] \neq P[B|A]\)</span>. Bayes’ rule provides the correct relationship between these two conditional probabilities.</p>
+<p>Answer for 2: c. Justification: The text states, “Then <span class="math notranslate nohighlight">\(A\)</span> and <span class="math notranslate nohighlight">\(B\)</span> are conditionally independent given <span class="math notranslate nohighlight">\(C\)</span>, denoted <span class="math notranslate nohighlight">\(A \perp\!\!\!\perp B \mid C\)</span>, if <span class="math notranslate nohighlight">\(P[A \cap B \mid C] = P[A \mid C] P[B \mid C]\)</span>.”</p>
+<p>Answer for 3: b. Justification: The text states, “Removing the edge from <span class="math notranslate nohighlight">\(Y\)</span> to <span class="math notranslate nohighlight">\(Z\)</span> gives the following graph, known as a fork. We denote this configuration as <span class="math notranslate nohighlight">\(Y \leftarrow X \rightarrow Z\)</span>. […] The corresponding conditional independence relation is <span class="math notranslate nohighlight">\(Z \perp\!\!\!\perp Y \mid X\)</span>.”</p>
+<p>Answer for 4: d. Justification: The text states, “Removing the edge from <span class="math notranslate nohighlight">\(X\)</span> to <span class="math notranslate nohighlight">\(Y\)</span> gives the following graph, known as a collider. We denote this configuration as <span class="math notranslate nohighlight">\(X \rightarrow Z \leftarrow Y\)</span>. […] This time we have <span class="math notranslate nohighlight">\(X \perp\!\!\!\perp Y\)</span>.”</p>
+<p>Answer for 5: c. Justification: The text states, “Graphically, this is similar to a fork with <span class="math notranslate nohighlight">\(C\)</span> at its center and <span class="math notranslate nohighlight">\(M\)</span> prongs for the <span class="math notranslate nohighlight">\(X_m\)</span>s.”</p>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./chap06_prob/03_joint"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="../02_parametric/roch-mmids-prob-parametric.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title"><span class="section-number">6.2. </span>Background: introduction to parametric families and maximum likelihood estimation</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="../04_em/roch-mmids-prob-em.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title"><span class="section-number">6.4. </span>Modeling more complex dependencies 2: marginalizing out an unobserved variable</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#review-of-conditioning">6.3.1. Review of conditioning</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-basic-configurations">6.3.2. The basic configurations</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#example-naive-bayes">6.3.3. Example: Naive Bayes</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Sebastien Roch
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2024.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

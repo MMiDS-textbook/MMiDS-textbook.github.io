@@ -1,0 +1,1784 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>6.5. Application: linear-Gaussian models and Kalman filtering &#8212; MMiDS Textbook</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.5.1/css/all.min.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.1/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.1/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.1/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b76e3c8a" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=384b581d" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css?v=be8a1c11" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=87e54e7c" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae" />
+  <script src="../../_static/vendor/fontawesome/6.5.1/js/all.min.js?digest=8d27b9dea8ad943066ae"></script>
+
+    <script src="../../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?v=efea14e4"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../_static/design-tabs.js?v=f930bc37"></script>
+    <script async="async" src="https://www.googletagmanager.com/gtag/js?id=G-P5E8DW088F"></script>
+    <script>
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){ dataLayer.push(arguments); }
+                gtag('js', new Date());
+                gtag('config', 'G-P5E8DW088F');
+            </script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){ dataLayer.push(arguments); }
+                gtag('js', new Date());
+                gtag('config', 'G-P5E8DW088F');
+            </script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'chap06_prob/05_kalman/roch-mmids-prob-kalman';</script>
+    <link rel="canonical" href="https://mmids-textbook.github.io/chap06_prob/05_kalman/roch-mmids-prob-kalman.html" />
+    <link rel="icon" href="https://mmids-textbook.github.io/favicon-32x32.png"/>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="6.6. Exercises" href="../exercises/roch-mmids-prob-exercises.html" />
+    <link rel="prev" title="6.4. Modeling more complex dependencies 2: marginalizing out an unobserved variable" href="../04_em/roch-mmids-prob-em.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a id="pst-skip-link" class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+
+<a class="navbar-brand logo" href="../../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/mmids-cover-small.jpg" class="logo__image only-light" alt="MMiDS Textbook - Home"/>
+    <script>document.write(`<img src="../../_static/mmids-cover-small.jpg" class="logo__image only-dark" alt="MMiDS Textbook - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../index.html">
+                    <b>MATHEMATICAL METHODS in DATA SCIENCE (with Python)</b>
+                </a>
+            </li>
+        </ul>
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../chap01_intro/00_intro/roch-mmids-intro-intro.html">1. Introduction: a first data science problem</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../chap01_intro/01_motiv/roch-mmids-intro-motiv.html">1.1. Motivating example: identifying penguin species</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap01_intro/02_review/roch-mmids-intro-review.html">1.2. Background: quick refresher of matrix algebra, differential calculus, and elementary probability</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap01_intro/03_clustering/roch-mmids-intro-clustering.html">1.3. Clustering: an objective, an algorithm and a guarantee</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap01_intro/04_highdim/roch-mmids-intro-highdim.html">1.4. Some observations about high-dimensional data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap01_intro/exercises/roch-mmids-intro-exercises.html">1.5. Exercises</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap01_intro/supp/roch-mmids-intro-supp.html">1.6. Online suppplementary material</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../chap02_ls/00_intro/roch-mmids-ls-intro.html">2. Least squares: geometric, algebraic, and numerical aspects</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../chap02_ls/01_motiv/roch-mmids-ls-motiv.html">2.1. Motivating example: predicting sales</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap02_ls/02_spaces/roch-mmids-ls-spaces.html">2.2. Background: review of vector spaces and matrix inverses</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap02_ls/03_orthog/roch-mmids-ls-orthog.html">2.3. Geometry of least squares: the orthogonal projection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap02_ls/04_qr/roch-mmids-ls-qr.html">2.4. QR decomposition and Householder transformations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap02_ls/05_regression/roch-mmids-ls-regression.html">2.5. Application: regression analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap02_ls/exercises/roch-mmids-ls-exercises.html">2.6. Exercises</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap02_ls/supp/roch-mmids-ls-supp.html">2.7. Online suppplementary material</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../chap03_opt/00_intro/roch-mmids-opt-intro.html">3. Optimization theory and algorithms</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-3"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../chap03_opt/01_motiv/roch-mmids-opt-motiv.html">3.1. Motivating example:  analyzing customer satisfaction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap03_opt/02_several/roch-mmids-opt-several.html">3.2. Background: review of differentiable functions of several variables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap03_opt/03_optimality/roch-mmids-opt-optimality.html">3.3. Optimality conditions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap03_opt/04_convexity/roch-mmids-opt-convexity.html">3.4. Convexity</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap03_opt/05_gd/roch-mmids-opt-gd.html">3.5. Gradient descent and its convergence analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap03_opt/06_logistic/roch-mmids-opt-logistic.html">3.6. Application: logistic regression</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap03_opt/exercises/roch-mmids-opt-exercises.html">3.7. Exercises</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap03_opt/supp/roch-mmids-opt-supp.html">3.8. Online suppplementary material</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../chap04_svd/00_intro/roch-mmids-svd-intro.html">4. Singular value decomposition</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-4"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../chap04_svd/01_motiv/roch-mmids-svd-motiv.html">4.1. Motivating example: visualizing viral evolution</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap04_svd/02_spectral/roch-mmids-svd-spectral.html">4.2. Background: review of matrix rank  and spectral decomposition</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap04_svd/03_svd/roch-mmids-svd-svd.html">4.3. Approximating subspaces and the SVD</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap04_svd/04_power/roch-mmids-svd-power.html">4.4. Power iteration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap04_svd/05_pca/roch-mmids-svd-pca.html">4.5. Application: principal components analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap04_svd/06_further/roch-mmids-svd-further.html">4.6. Further applications of the SVD: low-rank approximations and ridge regression</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap04_svd/exercises/roch-mmids-svd-exercises.html">4.7. Exercises</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap04_svd/supp/roch-mmids-svd-supp.html">4.8. Online suppplementary material</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../chap05_specgraph/00_intro/roch-mmids-specgraph-intro.html">5. Spectral graph theory</a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-5"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../chap05_specgraph/01_motiv/roch-mmids-specgraph-motiv.html">5.1. Motivating example: uncovering social groups</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap05_specgraph/02_graph/roch-mmids-specgraph-graph.html">5.2. Background: basic concepts in graph theory</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap05_specgraph/03_extremal/roch-mmids-specgraph-extremal.html">5.3. Variational characterization of eigenvalues</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap05_specgraph/04_laplacian/roch-mmids-specgraph-laplacian.html">5.4. Spectral properties of the Laplacian matrix</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap05_specgraph/05_partitioning/roch-mmids-specgraph-partitioning.html">5.5. Application: graph partitioning via spectral clustering</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap05_specgraph/06_sbm/roch-mmids-specgraph-sbm.html">5.6. Erdős-Rényi random graph and stochastic blockmodel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap05_specgraph/exercises/roch-mmids-specgraph-exercises.html">5.7. Exercises</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap05_specgraph/supp/roch-mmids-specgraph-supp.html">5.8. Online supplementary material</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="../00_intro/roch-mmids-prob-intro.html">6. Probabilistic models: from simple to complex</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-6"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../01_motiv/roch-mmids-prob-motiv.html">6.1. Motivating example: tracking location</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../02_parametric/roch-mmids-prob-parametric.html">6.2. Background: introduction to parametric families and maximum likelihood estimation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../03_joint/roch-mmids-prob-joint.html">6.3. Modeling more complex dependencies 1: using conditional independence</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../04_em/roch-mmids-prob-em.html">6.4. Modeling more complex dependencies 2: marginalizing out an unobserved variable</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">6.5. Application: linear-Gaussian models and Kalman filtering</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../exercises/roch-mmids-prob-exercises.html">6.6. Exercises</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../supp/roch-mmids-prob-supp.html">6.7. Online supplementary material</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../chap07_rwmc/00_intro/roch-mmids-rwmc-intro.html">7. Random walks on graphs and Markov chains</a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-7"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../chap07_rwmc/01_motiv/roch-mmids-rwmc-motiv.html">7.1. Motivating example: discovering mathematical topics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap07_rwmc/02_mcdefs/roch-mmids-rwmc-mcdefs.html">7.2. Background: elements of finite Markov chains</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap07_rwmc/03_stat/roch-mmids-rwmc-stat.html">7.3. Limit behavior 1: stationary distributions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap07_rwmc/04_mclimit/roch-mmids-rwmc-mclimit.html">7.4. Limit behavior 2: convergence to equilibrium</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap07_rwmc/05_pagerank/roch-mmids-rwmc-pagerank.html">7.5. Application: random walks on graphs and PageRank</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap07_rwmc/06_gibbs/roch-mmids-rwmc-gibbs.html">7.6. Further applications: Gibbs sampling and generating images</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap07_rwmc/exercises/roch-mmids-rwmc-exercises.html">7.7. Exercises</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap07_rwmc/supp/roch-mmids-rwmc-supp.html">7.8. Online supplementary material</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../chap08_nn/00_intro/roch-mmids-nn-intro.html">8. Neural networks, backpropagation and stochastic gradient descent</a><input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-8"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../chap08_nn/01_motiv/roch-mmids-nn-motiv.html">8.1. Motivating example:  classifying natural images</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap08_nn/02_chain/roch-mmids-nn-chain.html">8.2. Background: Jacobian, chain rule, and a brief introduction to automatic differentiation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap08_nn/03_backprop/roch-mmids-nn-backprop.html">8.3. Building blocks of AI 1: backpropagation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap08_nn/04_sgd/roch-mmids-nn-sgd.html">8.4. Building blocks of AI 2: stochastic gradient descent</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap08_nn/05_nn/roch-mmids-nn-nn.html">8.5. Building blocks of AI 3: neural networks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap08_nn/exercises/roch-mmids-nn-exercises.html">8.6. Exercises</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap08_nn/supp/roch-mmids-nn-supp.html">8.7. Online supplementary material</a></li>
+</ul>
+</li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/MMiDS-textbook/MMiDS-textbook.github.io" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/MMiDS-textbook/MMiDS-textbook.github.io/issues/new?title=Issue%20on%20page%20%2Fchap06_prob/05_kalman/roch-mmids-prob-kalman.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/chap06_prob/05_kalman/roch-mmids-prob-kalman.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Application: linear-Gaussian models and Kalman filtering</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#multivariate-gaussians-marginals-and-conditionals">6.5.1. Multivariate Gaussians: marginals and conditionals</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#kalman-filter">6.5.2. Kalman filter</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#back-to-location-tracking">6.5.3. Back to location tracking</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <p><span class="math notranslate nohighlight">\(\newcommand{\bmu}{\boldsymbol{\mu}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bSigma}{\boldsymbol{\Sigma}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bfbeta}{\boldsymbol{\beta}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bflambda}{\boldsymbol{\lambda}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bgamma}{\boldsymbol{\gamma}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bsigma}{{\boldsymbol{\sigma}}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bpi}{\boldsymbol{\pi}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\btheta}{{\boldsymbol{\theta}}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bphi}{\boldsymbol{\phi}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\balpha}{\boldsymbol{\alpha}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\blambda}{\boldsymbol{\lambda}}\)</span>
+<span class="math notranslate nohighlight">\(\renewcommand{\P}{\mathbb{P}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\E}{\mathbb{E}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\indep}{\perp\!\!\!\perp} \newcommand{\bx}{\mathbf{x}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bp}{\mathbf{p}}\)</span>
+<span class="math notranslate nohighlight">\(\renewcommand{\bx}{\mathbf{x}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bX}{\mathbf{X}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\by}{\mathbf{y}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bY}{\mathbf{Y}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bz}{\mathbf{z}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bZ}{\mathbf{Z}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bw}{\mathbf{w}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bW}{\mathbf{W}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bv}{\mathbf{v}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bV}{\mathbf{V}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bfg}{\mathbf{g}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bfh}{\mathbf{h}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\horz}{\rule[.5ex]{2.5ex}{0.5pt}}\)</span>
+<span class="math notranslate nohighlight">\(\renewcommand{\S}{\mathcal{S}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\X}{\mathcal{X}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\var}{\mathrm{Var}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\pa}{\mathrm{pa}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\Z}{\mathcal{Z}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bh}{\mathbf{h}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bb}{\mathbf{b}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bc}{\mathbf{c}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\cE}{\mathcal{E}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\cP}{\mathcal{P}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bbeta}{\boldsymbol{\beta}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bLambda}{\boldsymbol{\Lambda}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\cov}{\mathrm{Cov}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bfk}{\mathbf{k}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\idx}[1]{}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\xdi}{}\)</span></p>
+<section id="application-linear-gaussian-models-and-kalman-filtering">
+<h1><span class="section-number">6.5. </span>Application: linear-Gaussian models and Kalman filtering<a class="headerlink" href="#application-linear-gaussian-models-and-kalman-filtering" title="Link to this heading">#</a></h1>
+<p>In this section, we illustrate the use of linear-Gaussian models for object tracking. We first give some background.</p>
+<section id="multivariate-gaussians-marginals-and-conditionals">
+<h2><span class="section-number">6.5.1. </span>Multivariate Gaussians: marginals and conditionals<a class="headerlink" href="#multivariate-gaussians-marginals-and-conditionals" title="Link to this heading">#</a></h2>
+<p>We will need the marginal and conditional densities of a multivariate Gaussian. We first need various formulas and results about block matrices.</p>
+<p><strong>Properties of block matrices</strong> Block matrices will play an important role. Recall that block matrices have a convenient algebra that mimics the usual matrix algebra.</p>
+<p>Consider a square block matrix with the same partitioning of the rows and columns, that is,</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+A 
+=
+\begin{pmatrix}
+A_{11} &amp; A_{12}\\
+A_{21} &amp; A_{22}
+\end{pmatrix}
+\end{split}\]</div>
+<p>where <span class="math notranslate nohighlight">\(A \in \mathbb{R}^{n \times n}\)</span>, <span class="math notranslate nohighlight">\(A_{ij} \in \mathbb{R}^{n_i \times n_i}\)</span> for <span class="math notranslate nohighlight">\(i = 1, 2\)</span> with the condition <span class="math notranslate nohighlight">\(n_1 + n_2 = n\)</span>. Then it is straightforward to check (try it!) that the transpose can be written as</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+A^T 
+=
+\begin{pmatrix}
+A_{11}^T &amp; A_{21}^T\\
+A_{12}^T &amp; A_{22}^T
+\end{pmatrix}.
+\end{split}\]</div>
+<p>In particular, if <span class="math notranslate nohighlight">\(A\)</span> is symmetric then <span class="math notranslate nohighlight">\(A_{11} = A_{11}^T\)</span>, <span class="math notranslate nohighlight">\(A_{22} = A_{22}^T\)</span> and <span class="math notranslate nohighlight">\(A_{21} = A_{12}^T\)</span>.</p>
+<p><strong>EXAMPLE:</strong> For instance, consider the <span class="math notranslate nohighlight">\(\mathbf{z} = (\mathbf{z}_1, \mathbf{z}_2)\)</span>, where <span class="math notranslate nohighlight">\(\mathbf{z}_1 \in \mathbb{R}^{n_1}\)</span> and <span class="math notranslate nohighlight">\(\mathbf{z}_2 \in \mathbb{R}^{n_2}\)</span>. We want to compute the quadratic form</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\mathbf{z}^T
+\begin{pmatrix}
+A_{11} &amp; A_{12}\\
+A_{12}^T &amp; A_{22}
+\end{pmatrix}
+\mathbf{z} 
+\end{split}\]</div>
+<p>where <span class="math notranslate nohighlight">\(A_{ij} \in \mathbb{R}^{n_i \times n_j}\)</span> for <span class="math notranslate nohighlight">\(i,j = 1, 2\)</span> with the conditions <span class="math notranslate nohighlight">\(n_1 + n_2 = n\)</span>, and <span class="math notranslate nohighlight">\(A_{11}^T = A_{11}\)</span> and <span class="math notranslate nohighlight">\(A_{22}^T = A_{22}\)</span>.</p>
+<p>We apply the block matrix product formula twice to get</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+&amp;(\mathbf{z}_1, \mathbf{z}_2)^T
+\begin{pmatrix}
+A_{11} &amp; A_{12}\\
+A_{12}^T &amp; A_{22}
+\end{pmatrix}
+(\mathbf{z}_1, \mathbf{z}_2)\\
+&amp;= 
+(\mathbf{z}_1, \mathbf{z}_2)^T
+\begin{pmatrix}
+A_{11} \mathbf{z}_1 + A_{12} \mathbf{z}_2\\
+A_{12}^T \mathbf{z}_1 + A_{22} \mathbf{z}_2
+\end{pmatrix}\\
+&amp;= \mathbf{z}_1^T A_{11} \mathbf{z}_1 
++ \mathbf{z}_1^T A_{12} \mathbf{z}_2
++ \mathbf{z}_2^T A_{12}^T \mathbf{z}_1 
++ \mathbf{z}_2^T A_{22} \mathbf{z}_2\\
+&amp;= \mathbf{z}_1^T A_{11} \mathbf{z}_1 
++ 2 \mathbf{z}_1^T A_{12} \mathbf{z}_2
++ \mathbf{z}_2^T A_{22} \mathbf{z}_2.
+\end{align*}\]</div>
+<p><span class="math notranslate nohighlight">\(\lhd\)</span></p>
+<p><strong>EXAMPLE:</strong> Let <span class="math notranslate nohighlight">\(A_{ii} \in \mathbb{R}^{n_i \times n_i}\)</span> for <span class="math notranslate nohighlight">\(i = 1, 2\)</span> be invertible. We claim that</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{pmatrix}
+A_{11} &amp; \mathbf{0}\\
+\mathbf{0} &amp; A_{22}
+\end{pmatrix}^{-1}
+= 
+\begin{pmatrix}
+A_{11}^{-1} &amp; \mathbf{0}\\
+\mathbf{0} &amp; A_{22}^{-1}
+\end{pmatrix}.
+\end{split}\]</div>
+<p>The matrix on the right-hand side is well-defined by the invertibility of <span class="math notranslate nohighlight">\(A_{11}\)</span> and <span class="math notranslate nohighlight">\(A_{22}\)</span>. We check the claim using the formula for matrix products of block matrices. The matrices above are block diagonal.</p>
+<p>Indeed, we obtain</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+&amp;\begin{pmatrix}
+A_{11} &amp; \mathbf{0}\\
+\mathbf{0} &amp; A_{22}
+\end{pmatrix}
+\begin{pmatrix}
+A_{11}^{-1} &amp; \mathbf{0}\\
+\mathbf{0} &amp; A_{22}^{-1}
+\end{pmatrix}\\
+&amp;=
+\begin{pmatrix}
+A_{11} A_{11}^{-1} + \mathbf{0} &amp; \mathbf{0} + \mathbf{0}\\
+\mathbf{0} + \mathbf{0} &amp; \mathbf{0} + A_{22} A_{22}^{-1}
+\end{pmatrix}
+=
+\begin{pmatrix}
+I_{n_1 \times n_1} &amp; \mathbf{0}\\
+\mathbf{0} &amp; I_{n_2 \times n_2}
+\end{pmatrix}
+=
+I_{n \times n}
+\end{align*}\]</div>
+<p>and similarly for the other direction. <span class="math notranslate nohighlight">\(\lhd\)</span></p>
+<p><strong>EXAMPLE:</strong> Let <span class="math notranslate nohighlight">\(A_{21} \in \mathbb{R}^{n_2 \times n_1}\)</span>. Then we claim that</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{pmatrix}
+I_{n_1 \times n_1} &amp; \mathbf{0}\\
+A_{21} &amp; I_{n_2 \times n_2}
+\end{pmatrix}^{-1}
+= 
+\begin{pmatrix}
+I_{n_1 \times n_1} &amp; \mathbf{0}\\
+- A_{21} &amp; I_{n_2 \times n_2}
+\end{pmatrix}.
+\end{split}\]</div>
+<p>A similar formula holds for the block upper triangular case. In particular, such matrices are invertible (which can be proved in other ways, for instance through determinants).</p>
+<p>It suffices to check:</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+&amp;\begin{pmatrix}
+I_{n_1 \times n_1} &amp; \mathbf{0}\\
+A_{21} &amp; I_{n_2 \times n_2}
+\end{pmatrix}
+\begin{pmatrix}
+I_{n_1 \times n_1} &amp; \mathbf{0}\\
+-A_{21} &amp; I_{n_2 \times n_2}
+\end{pmatrix}\\
+&amp;=
+\begin{pmatrix}
+I_{n_1 \times n_1} I_{n_1 \times n_1} + \mathbf{0} &amp; \mathbf{0} + \mathbf{0}\\
+A_{21} I_{n_1 \times n_1} + (-A_{21}) I_{n_1 \times n_1} &amp; \mathbf{0} + I_{n_2 \times n_2} I_{n_2 \times n_2}
+\end{pmatrix}
+=
+\begin{pmatrix}
+I_{n_1 \times n_1} &amp; \mathbf{0}\\
+\mathbf{0} &amp; I_{n_2 \times n_2}
+\end{pmatrix}
+=
+I_{n \times n}
+\end{align*}\]</div>
+<p>Taking a transpose gives a similar formula for the block upper triangular case. <span class="math notranslate nohighlight">\(\lhd\)</span></p>
+<p><strong>Inverting a block matrix</strong> We will need a classical formula for inverting a block matrix. We start with the concept of a Schur complement.</p>
+<p><strong>DEFINITION</strong> <strong>(Schur Complement)</strong> <span class="math notranslate nohighlight">\(\idx{Schur complement}\xdi\)</span> Consider the matrix <span class="math notranslate nohighlight">\(B \in \mathbb{R}^{n \times n}\)</span> in block form</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+B
+=
+\begin{pmatrix}
+B_{11} &amp; B_{12}\\
+B_{21} &amp; B_{22}
+\end{pmatrix}
+\end{split}\]</div>
+<p>where <span class="math notranslate nohighlight">\(B_{11} \in \mathbb{R}^{n_1 \times n_1}\)</span>, <span class="math notranslate nohighlight">\(B_{22} \in \mathbb{R}^{n - n_1 \times n - n_1}\)</span>, <span class="math notranslate nohighlight">\(B_{12} \in \mathbb{R}^{n_1 \times n - n_1}\)</span>, and <span class="math notranslate nohighlight">\(B_{21} \in \mathbb{R}^{n - n_1 \times n_1}\)</span>. Then, provided <span class="math notranslate nohighlight">\(B_{22}\)</span> is invertible, the Schur complement of the block <span class="math notranslate nohighlight">\(B_{22}\)</span> is defined as the matrix</p>
+<div class="math notranslate nohighlight">
+\[
+B/B_{22} := B_{11} - B_{12} B_{22}^{-1} B_{21}.
+\]</div>
+<p>Similarly, provided <span class="math notranslate nohighlight">\(B_{11}\)</span> is invertible,</p>
+<div class="math notranslate nohighlight">
+\[
+B/B_{11} := B_{22} - B_{21} B_{11}^{-1} B_{12}.
+\]</div>
+<p><span class="math notranslate nohighlight">\(\natural\)</span></p>
+<p><strong>LEMMA</strong> <strong>(Inverting a Block Matrix)</strong> <span class="math notranslate nohighlight">\(\idx{inverting a block matrix lemma}\xdi\)</span> Consider the matrix <span class="math notranslate nohighlight">\(B \in \mathbb{R}^{n \times n}\)</span> in block form as</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+B
+=
+\begin{pmatrix}
+B_{11} &amp; B_{12}\\
+B_{21} &amp; B_{22}
+\end{pmatrix}
+\end{split}\]</div>
+<p>where <span class="math notranslate nohighlight">\(B_{11} \in \mathbb{R}^{n_1 \times n_1}\)</span>, <span class="math notranslate nohighlight">\(B_{22} \in \mathbb{R}^{n - n_1 \times n - n_1}\)</span>, <span class="math notranslate nohighlight">\(B_{12} \in \mathbb{R}^{n_1 \times n - n_1}\)</span>, and <span class="math notranslate nohighlight">\(B_{21} \in \mathbb{R}^{n - n_1 \times n_1}\)</span>. Then, provided <span class="math notranslate nohighlight">\(B_{22}\)</span> is invertible,</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+B^{-1}
+= \begin{pmatrix}
+(B/B_{22})^{-1} &amp; - (B/B_{22})^{-1} B_{12} B_{22}^{-1}\\
+-  B_{22}^{-1} B_{21} (B/B_{22})^{-1} &amp; B_{22}^{-1} B_{21} (B/B_{22})^{-1} B_{12} B_{22}^{-1} + B_{22}^{-1}
+\end{pmatrix}.
+\end{split}\]</div>
+<p>Alternatively, provided <span class="math notranslate nohighlight">\(B_{11}\)</span> is invertible,</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+B^{-1}
+= \begin{pmatrix}
+B_{11}^{-1} B_{12} (B/B_{11})^{-1} B_{21} B_{11}^{-1} + B_{11}^{-1} &amp; -  B_{11}^{-1} B_{12} (B/B_{11})^{-1}\\
+- (B/B_{11})^{-1} B_{21} B_{11}^{-1}  &amp; 
+(B/B_{11})^{-1}
+\end{pmatrix}.
+\end{split}\]</div>
+<p><span class="math notranslate nohighlight">\(\flat\)</span></p>
+<p><em>Proof idea:</em> One way to prove this is to multiply <span class="math notranslate nohighlight">\(B\)</span> and <span class="math notranslate nohighlight">\(B^{-1}\)</span> and check that the identity matrix comes out (try it!). We give a longer proof that provides more insight into where the formula is coming from.</p>
+<p>The trick is to multiply <span class="math notranslate nohighlight">\(B\)</span> on the left and right by carefully chosen block triangular matrices with identity matrices on the diagonal (which we know are invertible by a previous example) to produce a block diagonal matrix with invertible matrices on the diagonal (which we know how to invert by a previous example).</p>
+<p><em>Proof:</em> We only prove the first formula. The proof is a calculation based on the formula for matrix products of block matrices. We will need that, if <span class="math notranslate nohighlight">\(C\)</span>, <span class="math notranslate nohighlight">\(D\)</span>, and <span class="math notranslate nohighlight">\(E\)</span> are invertible and of the same size, then <span class="math notranslate nohighlight">\((CDE)^{-1} = E^{-1} D^{-1} C^{-1}\)</span> (check it!).</p>
+<p>We make a series of observations.</p>
+<p>1- Our first step is to get a zero block in the upper right corner using an invertible matrix. Note that (recall that the order of multiplication matters here!)</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+&amp;\begin{pmatrix}
+I_{n_1 \times n_1} &amp; - B_{12} B_{22}^{-1}\\
+\mathbf{0} &amp; I_{n_2 \times n_2}
+\end{pmatrix}
+\begin{pmatrix}
+B_{11} &amp; B_{12}\\
+B_{21} &amp; B_{22}
+\end{pmatrix}\\
+&amp;= \begin{pmatrix}
+B_{11} - B_{12} B_{22}^{-1} B_{21} &amp; B_{12} - B_{12} B_{22}^{-1} B_{22}\\
+\mathbf{0} + B_{21} &amp; \mathbf{0} + B_{22}
+\end{pmatrix}
+= \begin{pmatrix}
+B/B_{22} &amp; \mathbf{0}\\
+B_{21} &amp; B_{22}
+\end{pmatrix}.
+\end{align*}\]</div>
+<p>2- Next we get a zero block in the bottom left corner. Then, starting from the final matrix in the last display,</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+&amp; \begin{pmatrix}
+B/B_{22} &amp; \mathbf{0}\\
+B_{21} &amp; B_{22}
+\end{pmatrix}
+\begin{pmatrix}
+I_{n_1 \times n_1} &amp; \mathbf{0}\\
+- B_{22}^{-1} B_{21}  &amp; I_{n_2 \times n_2}
+\end{pmatrix}\\
+&amp;= \begin{pmatrix}
+B/B_{22} + \mathbf{0} &amp; \mathbf{0} + \mathbf{0} \\
+B_{21} - B_{22} B_{22}^{-1} B_{21}  &amp; \mathbf{0} + B_{22}
+\end{pmatrix}
+= \begin{pmatrix}
+B/B_{22} &amp; \mathbf{0}\\
+\mathbf{0} &amp; B_{22}
+\end{pmatrix}.
+\end{align*}\]</div>
+<p>3- Combining the last two steps, we have shown that</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{pmatrix}
+I_{n_1 \times n_1} &amp; - B_{12} B_{22}^{-1}\\
+\mathbf{0} &amp; I_{n_2 \times n_2}
+\end{pmatrix}
+\begin{pmatrix}
+B_{11} &amp; B_{12}\\
+B_{21} &amp; B_{22}
+\end{pmatrix}
+\begin{pmatrix}
+I_{n_1 \times n_1} &amp; \mathbf{0}\\
+- B_{22}^{-1} B_{21}  &amp; I_{n_2 \times n_2}
+\end{pmatrix}
+=
+\begin{pmatrix}
+B/B_{22} &amp; \mathbf{0}\\
+\mathbf{0} &amp; B_{22}
+\end{pmatrix}.
+\end{split}\]</div>
+<p>Using the formula for the inverse of a product of three invertible matrices, we obtain</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+&amp;\begin{pmatrix}
+I_{n_1 \times n_1} &amp; \mathbf{0}\\
+- B_{22}^{-1} B_{21}  &amp; I_{n_2 \times n_2}
+\end{pmatrix}^{-1}
+\begin{pmatrix}
+B_{11} &amp; B_{12}\\
+B_{21} &amp; B_{22}
+\end{pmatrix}^{-1}
+\begin{pmatrix}
+I_{n_1 \times n_1} &amp; - B_{12} B_{22}^{-1}\\
+\mathbf{0} &amp; I_{n_2 \times n_2}
+\end{pmatrix}^{-1}\\
+&amp;=
+\begin{pmatrix}
+B/B_{22} &amp; \mathbf{0}\\
+\mathbf{0} &amp; B_{22}
+\end{pmatrix}^{-1}.
+\end{align*}\]</div>
+<p>4- Rearranging and using the formula for the inverse of a block diagonal matrix, we finally get</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+&amp;\begin{pmatrix}
+B_{11} &amp; B_{12}\\
+B_{21} &amp; B_{22}
+\end{pmatrix}^{-1}\\
+&amp;=
+\begin{pmatrix}
+I_{n_1 \times n_1} &amp; \mathbf{0}\\
+- B_{22}^{-1} B_{21}  &amp; I_{n_2 \times n_2}
+\end{pmatrix}
+\begin{pmatrix}
+B/B_{22} &amp; \mathbf{0}\\
+\mathbf{0} &amp; B_{22}
+\end{pmatrix}^{-1}
+\begin{pmatrix}
+I_{n_1 \times n_1} &amp; - B_{12} B_{22}^{-1}\\
+\mathbf{0} &amp; I_{n_2 \times n_2}
+\end{pmatrix}\\
+&amp;= \begin{pmatrix}
+I_{n_1 \times n_1} &amp; \mathbf{0}\\
+- B_{22}^{-1} B_{21}  &amp; I_{n_2 \times n_2}
+\end{pmatrix}
+\begin{pmatrix}
+(B/B_{22})^{-1} &amp; \mathbf{0}\\
+\mathbf{0} &amp; B_{22}^{-1}
+\end{pmatrix}
+\begin{pmatrix}
+I_{n_1 \times n_1} &amp; - B_{12} B_{22}^{-1}\\
+\mathbf{0} &amp; I_{n_2 \times n_2}
+\end{pmatrix}\\
+&amp;= \begin{pmatrix}
+I_{n_1 \times n_1} &amp; \mathbf{0}\\
+- B_{22}^{-1} B_{21}  &amp; I_{n_2 \times n_2}
+\end{pmatrix}
+\begin{pmatrix}
+(B/B_{22})^{-1} + \mathbf{0}&amp; - (B/B_{22})^{-1} B_{12} B_{22}^{-1} + \mathbf{0}\\
+\mathbf{0} + \mathbf{0} &amp; \mathbf{0} + B_{22}^{-1}
+\end{pmatrix}\\
+&amp;= \begin{pmatrix}
+I_{n_1 \times n_1} &amp; \mathbf{0}\\
+- B_{22}^{-1} B_{21}  &amp; I_{n_2 \times n_2}
+\end{pmatrix}
+\begin{pmatrix}
+(B/B_{22})^{-1} &amp; - (B/B_{22})^{-1} B_{12} B_{22}^{-1} \\
+\mathbf{0} &amp; B_{22}^{-1}
+\end{pmatrix}\\
+&amp;= \begin{pmatrix}
+(B/B_{22})^{-1} &amp; - (B/B_{22})^{-1} B_{12} B_{22}^{-1}\\
+-  B_{22}^{-1} B_{21} (B/B_{22})^{-1} &amp; B_{22}^{-1} B_{21} (B/B_{22})^{-1} B_{12} B_{22}^{-1} + B_{22}^{-1}
+\end{pmatrix},
+\end{align*}\]</div>
+<p>as claimed. <span class="math notranslate nohighlight">\(\square\)</span></p>
+<p><strong>The positive definite case</strong> In applying the inversion formula, it will be enough to restrict ourselves to the positive definite case, where the lemmas that follow guarantee the required invertibility conditions.</p>
+<p>First, recall:</p>
+<p><strong>LEMMA</strong> <strong>(Invertibility of Positive Definite Matrices)</strong> <span class="math notranslate nohighlight">\(\idx{invertibility of positive definite matrices}\xdi\)</span> Let <span class="math notranslate nohighlight">\(B \in \mathbb{R}^{n \times n}\)</span> be symmetric, positive definite. Then <span class="math notranslate nohighlight">\(B\)</span> is invertible. <span class="math notranslate nohighlight">\(\flat\)</span></p>
+<p><em>Proof:</em> For any <span class="math notranslate nohighlight">\(\mathbf{x} \neq \mathbf{0}\)</span>, it holds by positive definiteness that <span class="math notranslate nohighlight">\(\mathbf{x}^T B \mathbf{x} &gt; 0\)</span>. In particular, it must be that <span class="math notranslate nohighlight">\(\mathbf{x}^T B \mathbf{x} \neq 0\)</span> and therefore, by contradiction, <span class="math notranslate nohighlight">\(B \mathbf{x} \neq \mathbf{0}\)</span> (since for any <span class="math notranslate nohighlight">\(\mathbf{z}\)</span>, it holds that <span class="math notranslate nohighlight">\(\mathbf{z}^T \mathbf{0} = 0\)</span>). The claim follows from the <em>Equivalent Definition of Linear Independence</em>. <span class="math notranslate nohighlight">\(\square\)</span></p>
+<p>A principal submatrix is a square submatrix obtained by removing some rows and columns. Moreover we require that the set of row indices that remain is the same as the set of column indices that remain.</p>
+<p><strong>LEMMA</strong> <strong>(Principal Submatrices)</strong> <span class="math notranslate nohighlight">\(\idx{principal submatrices lemma}\xdi\)</span> Let <span class="math notranslate nohighlight">\(B \in \mathbb{R}^{n \times n}\)</span> be positive definite and let <span class="math notranslate nohighlight">\(Z \in \mathbb{R}^{n \times p}\)</span> have full column rank. Then <span class="math notranslate nohighlight">\(Z^T B Z\)</span> is positive definite. In particular all principal submatrices of positive definite matrices are positive definite. <span class="math notranslate nohighlight">\(\flat\)</span></p>
+<p><em>Proof:</em> If <span class="math notranslate nohighlight">\(\mathbf{x} \neq \mathbf{0}\)</span>, then <span class="math notranslate nohighlight">\(\mathbf{x}^T (Z^T B Z) \mathbf{x} = \mathbf{y}^T B \mathbf{y}\)</span>, where we defined <span class="math notranslate nohighlight">\(\mathbf{y} = Z \mathbf{x}\)</span>. Because <span class="math notranslate nohighlight">\(Z\)</span> has full column rank and <span class="math notranslate nohighlight">\(\mathbf{x} \neq \mathbf{0}\)</span>, it follows that <span class="math notranslate nohighlight">\(\mathbf{y} \neq \mathbf{0}\)</span> by the <em>Equivalent Definition of Linear Independence</em>. Hence, since <span class="math notranslate nohighlight">\(B \succ 0\)</span>, we have <span class="math notranslate nohighlight">\(\mathbf{y}^T B \mathbf{y} &gt; 0\)</span> which proves the first claim. For the second claim, take <span class="math notranslate nohighlight">\(Z\)</span> of the form <span class="math notranslate nohighlight">\((\mathbf{e}_{m_1}\ \mathbf{e}_{m_2}\ \ldots\ \mathbf{e}_{m_p})\)</span>, where the indices <span class="math notranslate nohighlight">\(m_1, \ldots, m_p\)</span> are distinct and increasing. The columns of <span class="math notranslate nohighlight">\(Z\)</span> are then linearly independent since they are distinct basis vectors. <span class="math notranslate nohighlight">\(\square\)</span></p>
+<p>To better understand the last claim in the proof, note that</p>
+<div class="math notranslate nohighlight">
+\[
+(Z^T B Z)_{i,j}
+= (Z^T)_{i,\cdot} B Z_{\cdot,j}
+= (Z_{\cdot,i})^T B Z_{\cdot,j}
+= \sum_{k=1}^n \sum_{\ell=1}^n Z_{k,i} B_{k,\ell} Z_{\ell,j}.
+\]</div>
+<p>So if the <span class="math notranslate nohighlight">\(i\)</span>-th column of <span class="math notranslate nohighlight">\(Z\)</span> is <span class="math notranslate nohighlight">\(\mathbf{e}_{m_i}\)</span> and the <span class="math notranslate nohighlight">\(j\)</span>-th column of <span class="math notranslate nohighlight">\(Z\)</span> is <span class="math notranslate nohighlight">\(\mathbf{e}_{m_j}\)</span>, then the rightmost summation picks up only one element, <span class="math notranslate nohighlight">\(B_{m_i, m_j}\)</span>. In other words, <span class="math notranslate nohighlight">\(Z^T B Z\)</span> is the principal submatrix of <span class="math notranslate nohighlight">\(B\)</span> corresponding to rows and columns <span class="math notranslate nohighlight">\(m_1, \ldots, m_p\)</span>.</p>
+<p><strong>KNOWLEDGE CHECK:</strong> Consider the matrices</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+A
+=
+\begin{pmatrix}
+1 &amp; 3 &amp; 0 &amp; 2\\
+2 &amp; 8 &amp; 4 &amp; 0\\
+6 &amp; 1 &amp; 1 &amp; 4\\
+3 &amp; 2 &amp; 0 &amp; 1
+\end{pmatrix}
+\qquad\text{and}\qquad
+Z
+=
+\begin{pmatrix}
+0 &amp; 0\\
+1 &amp; 0\\
+0 &amp; 0\\
+0 &amp; 1
+\end{pmatrix}
+\end{split}\]</div>
+<p>Which of the following matrices is <span class="math notranslate nohighlight">\(Z^T A Z\)</span>?</p>
+<p>a) <span class="math notranslate nohighlight">\(\begin{pmatrix}
+1 &amp; 0\\
+6 &amp; 1
+\end{pmatrix}\)</span></p>
+<p>b) <span class="math notranslate nohighlight">\(\begin{pmatrix}
+8 &amp; 0\\
+2 &amp; 1
+\end{pmatrix}\)</span></p>
+<p>c) <span class="math notranslate nohighlight">\(\begin{pmatrix}
+2 &amp; 8 &amp; 4 &amp; 0\\
+3 &amp; 2 &amp; 0 &amp; 1
+\end{pmatrix}\)</span></p>
+<p>d) <span class="math notranslate nohighlight">\(\begin{pmatrix}
+1 &amp; 0\\
+2 &amp; 4\\
+6 &amp; 1\\
+3 &amp; 0
+\end{pmatrix}\)</span></p>
+<p><span class="math notranslate nohighlight">\(\checkmark\)</span></p>
+<p><strong>LEMMA</strong> <strong>(Schur Complement)</strong> <span class="math notranslate nohighlight">\(\idx{Schur complement lemma}\xdi\)</span> Let <span class="math notranslate nohighlight">\(B \in \mathbb{R}^{n \times n}\)</span> be positive definite and write it in block form</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+B
+=
+\begin{pmatrix}
+B_{11} &amp; B_{12}\\
+B_{12}^T &amp; B_{22}
+\end{pmatrix}
+\end{split}\]</div>
+<p>where <span class="math notranslate nohighlight">\(B_{11} \in \mathbb{R}^{n_1 \times n_1}\)</span> and <span class="math notranslate nohighlight">\(B_{22} \in \mathbb{R}^{n - n_1 \times n - n_1}\)</span> are symmetric, and <span class="math notranslate nohighlight">\(B_{12} \in \mathbb{R}^{n_1 \times n - n_1}\)</span> . Then the Schur complement of the block <span class="math notranslate nohighlight">\(B_{11}\)</span>, i.e., the matrix <span class="math notranslate nohighlight">\(B/B_{11} := B_{22} - B_{12}^T B_{11}^{-1} B_{12}\)</span>, is well-defined, symmetric, and positive definite. The same holds for <span class="math notranslate nohighlight">\(B/B_{22} := B_{11} - B_{12} B_{22}^{-1} B_{12}^T\)</span>. <span class="math notranslate nohighlight">\(\flat\)</span></p>
+<p><em>Proof:</em> By the <em>Principal Submatrices Lemma</em>, <span class="math notranslate nohighlight">\(B_{11}\)</span> is positive definite. By the <em>Invertibility of Positive Definite Matrices</em>, <span class="math notranslate nohighlight">\(B_{11}\)</span> is therefore invertible. Hence the Schur complement is well defined. Moreover, it is symmetric since</p>
+<div class="math notranslate nohighlight">
+\[
+(B/B_{11})^T = B_{22}^T - (B_{12}^T B_{11}^{-1} B_{12})^T
+= B_{22} - B_{12}^T B_{11}^{-1} B_{12}
+= B/B_{11},
+\]</div>
+<p>by the symmetry of <span class="math notranslate nohighlight">\(B_{11}\)</span>, <span class="math notranslate nohighlight">\(B_{22}\)</span>, and <span class="math notranslate nohighlight">\(B_{11}^{-1}\)</span> (prove that last one!).</p>
+<p>For a non-zero <span class="math notranslate nohighlight">\(\mathbf{x} \in \mathbb{R}^{n_2}\)</span>, let</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\mathbf{z}
+= \begin{pmatrix}
+\mathbf{z}_1\\
+\mathbf{z}_2
+\end{pmatrix}
+= \begin{pmatrix}
+B_{11}^{-1} B_{12} \mathbf{x}\\
+- \mathbf{x}
+\end{pmatrix}.
+\end{split}\]</div>
+<p>The result then follows from the observation that</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+&amp;\mathbf{z}^T
+\begin{pmatrix}
+B_{11} &amp; B_{12}\\
+B_{12}^T &amp; B_{22}
+\end{pmatrix}
+\mathbf{z}\\
+&amp;= \mathbf{z}_1^T B_{11} \mathbf{z}_1 
++ 2 \mathbf{z}_1^T B_{12} \mathbf{z}_2
++ \mathbf{z}_2^T B_{22} \mathbf{z}_2\\
+&amp;= (B_{11}^{-1} B_{12} \mathbf{x})^T B_{11} B_{11}^{-1} B_{12} \mathbf{x} 
++ 2 (B_{11}^{-1} B_{12} \mathbf{x})^T B_{12} (- \mathbf{x})
++ (- \mathbf{x})^T B_{22} (- \mathbf{x})\\
+&amp;= \mathbf{x}^T B_{12}^T B_{11}^{-1} B_{12}\,\mathbf{x}
+- 2 \mathbf{x}^T B_{12}^T B_{11}^{-1} B_{12}\,\mathbf{x}
++ \mathbf{x}^T B_{22}\,\mathbf{x}\\
+&amp;= \mathbf{x}^T(B_{22} - B_{12}^T B_{11}^{-1} B_{12})\,\mathbf{x}.
+\end{align*}\]</div>
+<p><span class="math notranslate nohighlight">\(\square\)</span></p>
+<p><strong>Marginals and conditionals</strong> We are now ready to derive the distribution of marginals and conditionals of multivariate Gaussians<span class="math notranslate nohighlight">\(\idx{multivariate Gaussian}\xdi\)</span>. Recall that a multivariate Gaussian<span class="math notranslate nohighlight">\(\idx{multivariate normal}\xdi\)</span> vector <span class="math notranslate nohighlight">\(\mathbf{X} = (X_1,\ldots,X_d)\)</span> on <span class="math notranslate nohighlight">\(\mathbb{R}^d\)</span> with mean <span class="math notranslate nohighlight">\(\bmu \in \mathbb{R}^d\)</span> and positive definite covariance matrix <span class="math notranslate nohighlight">\(\bSigma \in \mathbb{R}^{d \times d}\)</span> has probability density function</p>
+<div class="math notranslate nohighlight">
+\[
+f_{\bmu, \bSigma}(\mathbf{x})
+= \frac{1}{(2\pi)^{d/2} \,|\bSigma|^{1/2}}
+\exp\left(-\frac{1}{2}(\mathbf{x} - \bmu)^T \bSigma^{-1} (\mathbf{x} - \bmu)\right).
+\]</div>
+<p>Recall that one way to compute <span class="math notranslate nohighlight">\(|\bSigma|\)</span> is as the product of all eigenvalues of <span class="math notranslate nohighlight">\(\bSigma\)</span> (with repeats). The matrix <span class="math notranslate nohighlight">\(\bLambda = \bSigma^{-1}\)</span> is called the precision matrix.</p>
+<p>Partition <span class="math notranslate nohighlight">\(\mathbf{X}\)</span> as the column vector <span class="math notranslate nohighlight">\((\mathbf{X}_1, \mathbf{X}_2)\)</span> where <span class="math notranslate nohighlight">\(\mathbf{X}_i \in \mathbb{R}^{d_i}\)</span>, <span class="math notranslate nohighlight">\(i=1,2\)</span>, with <span class="math notranslate nohighlight">\(d_1 + d_2 = d\)</span>. Similarly, consider the corresponding block vectors and matrices</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\bmu
+= \begin{pmatrix}
+\bmu_1\\
+\bmu_2
+\end{pmatrix}
+\qquad
+\bSigma
+=
+\begin{pmatrix}
+\bSigma_{11} &amp; \bSigma_{12}\\
+\bSigma_{21} &amp; \bSigma_{22}
+\end{pmatrix}
+\qquad
+\bLambda
+=
+\begin{pmatrix}
+\bLambda_{11} &amp; \bLambda_{12}\\
+\bLambda_{21} &amp; \bLambda_{22}
+\end{pmatrix}.
+\end{split}\]</div>
+<p>Note that by the symmetry of <span class="math notranslate nohighlight">\(\bSigma\)</span>, we have <span class="math notranslate nohighlight">\(\bSigma_{21} = \bSigma_{12}^T\)</span>. Furthemore, it can be proved that a symmetric, invertible matrix has a symmetric inverse (try it!) so that <span class="math notranslate nohighlight">\(\bLambda_{21} = \bLambda_{12}^T\)</span>.</p>
+<p>We seek to compute the marginals<span class="math notranslate nohighlight">\(\idx{marginal}\xdi\)</span> <span class="math notranslate nohighlight">\(f_{\mathbf{X}_1}(\mathbf{x}_1)\)</span>
+and <span class="math notranslate nohighlight">\(f_{\mathbf{X}_2}(\mathbf{x}_2)\)</span>, as well as the conditional density of <span class="math notranslate nohighlight">\(\mathbf{X}_1\)</span> given <span class="math notranslate nohighlight">\(\mathbf{X}_2\)</span>, which we denote as <span class="math notranslate nohighlight">\(f_{\mathbf{X}_1|\mathbf{X}_2}(\mathbf{x}_1|\mathbf{x}_2)\)</span>, and similarly <span class="math notranslate nohighlight">\(f_{\mathbf{X}_2|\mathbf{X}_1}(\mathbf{x}_2|\mathbf{x}_1)\)</span>.</p>
+<p>By the multiplication rule, the joint density <span class="math notranslate nohighlight">\(f_{\mathbf{X}_1,\mathbf{X}_2}(\mathbf{x}_1,\mathbf{x}_2)\)</span>
+can be decomposed as</p>
+<div class="math notranslate nohighlight">
+\[
+f_{\mathbf{X}_1,\mathbf{X}_2}(\mathbf{x}_1,\mathbf{x}_2)
+= f_{\mathbf{X}_1|\mathbf{X}_2}(\mathbf{x}_1|\mathbf{x}_2) f_{\mathbf{X}_2}(\mathbf{x}_2).
+\]</div>
+<p>We use the <em>Inverting a Block Matrix</em> lemma to rewrite <span class="math notranslate nohighlight">\(f_{\mathbf{X}_1,\mathbf{X}_2}(\mathbf{x}_1,\mathbf{x}_2)\)</span> in this form and “reveal” the marginal and conditional<span class="math notranslate nohighlight">\(\idx{conditional}\xdi\)</span> involved. Indeed, once the joint density is in this form, by integrating over <span class="math notranslate nohighlight">\(\mathbf{x}_1\)</span> we obtain that the marginal density of <span class="math notranslate nohighlight">\(\mathbf{X}_2\)</span> is <span class="math notranslate nohighlight">\(f_{\mathbf{X}_2}\)</span> and the conditional density of <span class="math notranslate nohighlight">\(\mathbf{X}_1\)</span> given <span class="math notranslate nohighlight">\(\mathbf{X}_2\)</span> is obtained by taking the ratio of the joint and the marginal.</p>
+<p>In fact, it will be easier to work with an expression derived in the proof of that lemma, specifically</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+&amp;\begin{pmatrix}
+\bSigma_{11} &amp; \bSigma_{12}\\
+\bSigma_{21} &amp; \bSigma_{22}
+\end{pmatrix}^{-1}\\
+&amp;= \begin{pmatrix}
+I_{d_1 \times d_1} &amp; \mathbf{0}\\
+- \bSigma_{22}^{-1} \bSigma_{12}^T  &amp; I_{d_2 \times d_2}
+\end{pmatrix}
+\begin{pmatrix}
+(\bSigma/\bSigma_{22})^{-1} &amp; \mathbf{0}\\
+\mathbf{0} &amp; \bSigma_{22}^{-1}
+\end{pmatrix}
+\begin{pmatrix}
+I_{d_1 \times d_1} &amp; - \bSigma_{12} \bSigma_{22}^{-1}\\
+\mathbf{0} &amp; I_{d_2 \times d_2}
+\end{pmatrix}.
+\end{align*}\]</div>
+<p>We will use the fact that the first matrix on the last line is the transpose of the third one (check it!).</p>
+<p>To evaluate the joint density, we need to expand the quadratic function <span class="math notranslate nohighlight">\((\mathbf{x} - \bmu)^T \bSigma^{-1} (\mathbf{x} - \bmu)\)</span> appearing in the exponential. We break this up in a few steps.</p>
+<p>1- Note first that</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{pmatrix}
+I_{d_1 \times d_1} &amp; - \bSigma_{12} \bSigma_{22}^{-1}\\
+\mathbf{0} &amp; I_{d_2 \times d_2}
+\end{pmatrix}
+\begin{pmatrix}
+\mathbf{x}_1 - \bmu_1\\
+\mathbf{x}_2 - \bmu_2
+\end{pmatrix}
+= \begin{pmatrix}
+(\mathbf{x}_1 - \bmu_1) - \bSigma_{12} \bSigma_{22}^{-1} (\mathbf{x}_2 - \bmu_2) \\
+\mathbf{x}_2 - \bmu_2
+\end{pmatrix}
+\end{split}\]</div>
+<p>and similarly for its transpose. We define</p>
+<div class="math notranslate nohighlight">
+\[
+\bmu_{1|2}(\mathbf{x}_2)
+:= \bmu_1 + \bSigma_{12} \bSigma_{22}^{-1} (\mathbf{x}_2 - \bmu_2).
+\]</div>
+<p>2- Plugging this back in the quadratic function, we get</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+&amp;(\mathbf{x} - \bmu)^T \bSigma^{-1} (\mathbf{x} - \bmu)\\
+&amp;= \begin{pmatrix}
+\mathbf{x}_1 - \bmu_{1|2}(\mathbf{x}_2) \\
+\mathbf{x}_2 - \bmu_2
+\end{pmatrix}^T
+\begin{pmatrix}
+(\bSigma/\bSigma_{22})^{-1} &amp; \mathbf{0}\\
+\mathbf{0} &amp; \bSigma_{22}^{-1}
+\end{pmatrix}
+\begin{pmatrix}
+\mathbf{x}_1 - \bmu_{1|2}(\mathbf{x}_2) \\
+\mathbf{x}_2 - \bmu_2
+\end{pmatrix}\\
+&amp;= (\mathbf{x}_1 - \bmu_{1|2}(\mathbf{x}_2))^T (\bSigma/\bSigma_{22})^{-1} (\mathbf{x}_1 - \bmu_{1|2}(\mathbf{x}_2))
++ (\mathbf{x}_2 - \bmu_2)^T \bSigma_{22}^{-1} (\mathbf{x}_2 - \bmu_2).
+\end{align*}\]</div>
+<p>Note that both terms have the same form as the original quadratic function.</p>
+<p>3- Going back to the density, we use <span class="math notranslate nohighlight">\(\propto\)</span> to indicate that the expression holds up to a constant not depending on <span class="math notranslate nohighlight">\(\mathbf{x}\)</span>. Using that exponential of a sum is the product of exponentials, we obtain</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+&amp;f_{\mathbf{X}_1,\mathbf{X}_2}(\mathbf{x}_1,\mathbf{x}_2)\\
+&amp;\propto \exp\left(-\frac{1}{2}(\mathbf{x} - \bmu)^T \bSigma^{-1} (\mathbf{x} - \bmu)\right)\\
+&amp;\propto \exp\left(-\frac{1}{2}(\mathbf{x}_1 - \bmu_{1|2}(\mathbf{x}_2))^T (\bSigma/\bSigma_{22})^{-1} (\mathbf{x}_1 - \bmu_{1|2}(\mathbf{x}_2))\right)\\ 
+&amp; \qquad \times \exp\left(-\frac{1}{2}(\mathbf{x}_2 - \bmu_2)^T \bSigma_{22}^{-1} (\mathbf{x}_2 - \bmu_2)\right).
+\end{align*}\]</div>
+<p>4- We have shown that</p>
+<div class="math notranslate nohighlight">
+\[
+f_{\mathbf{X}_1|\mathbf{X}_2}(\mathbf{x}_1|\mathbf{x}_2) 
+\propto \exp\left(-\frac{1}{2}(\mathbf{x}_1 - \bmu_{1|2}(\mathbf{x}_2))^T (\bSigma/\bSigma_{22})^{-1} (\mathbf{x}_1 - \bmu_{1|2}(\mathbf{x}_2))\right)
+\]</div>
+<p>and</p>
+<div class="math notranslate nohighlight">
+\[
+f_{\mathbf{X}_2}(\mathbf{x}_2)
+\propto \exp\left(-\frac{1}{2}(\mathbf{x}_2 - \bmu_2)^T \bSigma_{22}^{-1} (\mathbf{x}_2 - \bmu_2)\right).
+\]</div>
+<p>In other words, the marginal density of <span class="math notranslate nohighlight">\(\mathbf{X}_2\)</span> is multivariate Gaussian with mean <span class="math notranslate nohighlight">\(\bmu_2\)</span> and covariance <span class="math notranslate nohighlight">\(\bSigma_{22}\)</span>. The conditional density of <span class="math notranslate nohighlight">\(\mathbf{X}_1\)</span> given <span class="math notranslate nohighlight">\(\mathbf{X}_2\)</span> is multivariate Gaussian with mean <span class="math notranslate nohighlight">\(\bmu_{1|2}(\mathbf{X}_2)\)</span> and covariance <span class="math notranslate nohighlight">\(\bSigma/\bSigma_{22} =  \bSigma_{11} - \bSigma_{12} \bSigma_{22}^{-1} \bSigma_{12}^T\)</span>. We write this as</p>
+<div class="math notranslate nohighlight">
+\[
+\mathbf{X}_1|\mathbf{X}_2 \sim N_{d_1}(\bmu_{1|2}(\mathbf{X}_2), \bSigma/\bSigma_{22})
+\]</div>
+<p>and</p>
+<div class="math notranslate nohighlight">
+\[
+\mathbf{X}_2 \sim N_{d_2}(\bmu_2, \bSigma_{22}).
+\]</div>
+<p>Similarly, by exchanging the roles of <span class="math notranslate nohighlight">\(\mathbf{X}_1\)</span> and <span class="math notranslate nohighlight">\(\mathbf{X}_2\)</span>, we see that the marginal density of <span class="math notranslate nohighlight">\(\mathbf{X}_1\)</span> is multivariate Gaussian with mean <span class="math notranslate nohighlight">\(\bmu_1\)</span> and covariance <span class="math notranslate nohighlight">\(\bSigma_{11}\)</span>. The conditional density of <span class="math notranslate nohighlight">\(\mathbf{X}_2\)</span> given <span class="math notranslate nohighlight">\(\mathbf{X}_1\)</span> is multivariate Gaussian with mean <span class="math notranslate nohighlight">\(\bmu_{2|1}(\mathbf{X}_1) = \bmu_2 + \bSigma_{21} \bSigma_{11}^{-1} (\mathbf{X}_1 - \bmu_1)\)</span> and covariance <span class="math notranslate nohighlight">\(\bSigma/\bSigma_{11} = \bSigma_{22} - \bSigma_{12}^T \bSigma_{11}^{-1} \bSigma_{12}\)</span>.</p>
+<p><strong>KNOWLEDGE CHECK:</strong> Suppose <span class="math notranslate nohighlight">\((X_1, X_2)\)</span> is a bivariate Gaussian with mean <span class="math notranslate nohighlight">\((0,0)\)</span>, variances <span class="math notranslate nohighlight">\(2\)</span> and correlation coefficient <span class="math notranslate nohighlight">\(-1/2\)</span>. Conditioned on <span class="math notranslate nohighlight">\(X_2 = 1\)</span>, what is the mean of <span class="math notranslate nohighlight">\(X_1\)</span>?</p>
+<p>a) <span class="math notranslate nohighlight">\(1/2\)</span></p>
+<p>b) <span class="math notranslate nohighlight">\(-1/2\)</span></p>
+<p>c) <span class="math notranslate nohighlight">\(1\)</span></p>
+<p>d) <span class="math notranslate nohighlight">\(-1\)</span></p>
+<p><span class="math notranslate nohighlight">\(\checkmark\)</span></p>
+</section>
+<section id="kalman-filter">
+<h2><span class="section-number">6.5.2. </span>Kalman filter<a class="headerlink" href="#kalman-filter" title="Link to this heading">#</a></h2>
+<p>We consider a stochastic process<span class="math notranslate nohighlight">\(\idx{stochastic process}\xdi\)</span> <span class="math notranslate nohighlight">\(\{\bX_t\}_{t=0}^T\)</span> (i.e., a collection of random vectors – often indexed by time) with state space <span class="math notranslate nohighlight">\(\S = \mathbb{R}^{d_0}\)</span> of the following form</p>
+<div class="math notranslate nohighlight">
+\[
+\bX_{t+1} = F \,\bX_t + \bW_t
+\]</div>
+<p>where the <span class="math notranslate nohighlight">\(\bW_t\)</span>s are i.i.d. <span class="math notranslate nohighlight">\(N_{d_0}(\mathbf{0}, Q)\)</span> and <span class="math notranslate nohighlight">\(F\)</span> and <span class="math notranslate nohighlight">\(Q\)</span> are known <span class="math notranslate nohighlight">\(d_0 \times d_0\)</span> matrices. We denote the initial state by <span class="math notranslate nohighlight">\(\bX_0 \sim N_{d_0}(\bmu_0, \bSigma_0)\)</span>. We assume that the process <span class="math notranslate nohighlight">\(\{\bX_t\}_{t=1}^T\)</span> is not observed, but rather that an auxiliary observed process <span class="math notranslate nohighlight">\(\{\bY_t\}_{t=1}^T\)</span> with state space <span class="math notranslate nohighlight">\(\S = \mathbb{R}^{d}\)</span> satisfies</p>
+<div class="math notranslate nohighlight">
+\[
+\bY_t =   H\,\bX_t + \bV_t
+\]</div>
+<p>where the <span class="math notranslate nohighlight">\(\bV_t\)</span>s are i.i.d. <span class="math notranslate nohighlight">\(N_d(\mathbf{0}, R)\)</span> and <span class="math notranslate nohighlight">\(H \in \mathbb{R}^{d \times d_0}\)</span> and <span class="math notranslate nohighlight">\(R \in \mathbb{R}^{d \times d}\)</span> are known matrices. This is an example of a linear-Gaussian system<span class="math notranslate nohighlight">\(\idx{linear-Gaussian system}\xdi\)</span> (also known as linear-Gaussian state space model).</p>
+<p>Our goal is to infer the unobserved states given the observed process. Specifically, we look at the filtering problem. Quoting <a class="reference external" href="https://en.wikipedia.org/wiki/Hidden_Markov_model#Filtering">Wikipedia</a>:</p>
+<blockquote>
+<div><p>The task is to compute, given the model’s parameters and a sequence of observations, the distribution over hidden states of the last latent variable at the end of the sequence, i.e. to compute
+P(x(t)|y(1),…,y(t)). This task is normally used when the sequence of latent variables is thought of as the underlying states that a process moves through at a sequence of points of time, with corresponding observations at each point in time. Then, it is natural to ask about the state of the process at the end.</p>
+</div></blockquote>
+<p><strong>Key lemma</strong> Given the structure of the linear-Gaussian model, the following lemma will play a key role.</p>
+<p><strong>LEMMA</strong> <strong>(Linear-Gaussian System)</strong> <span class="math notranslate nohighlight">\(\idx{linear-Gaussian system lemma}\xdi\)</span> Let <span class="math notranslate nohighlight">\(\bW \sim N_{d}(\bmu, \bSigma)\)</span> and <span class="math notranslate nohighlight">\(\bW'|\bW \sim N_{d'}(A \,\bW, \bSigma')\)</span> where <span class="math notranslate nohighlight">\(A \in \mathbb{R}^{d' \times d}\)</span> is a deterministic matrix, and <span class="math notranslate nohighlight">\(\bSigma \in \mathbb{R}^{d \times d}\)</span> and <span class="math notranslate nohighlight">\(\bSigma' \in \mathbb{R}^{d' \times d'}\)</span> are positive definite. Then, <span class="math notranslate nohighlight">\((\bW, \bW')\)</span> is multivariate Gaussian with mean vector</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\bmu'' = 
+\begin{pmatrix}
+\bmu \\
+A\bmu
+\end{pmatrix}
+\end{split}\]</div>
+<p>and positive definite covariance matrix</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\bSigma''
+= 
+\begin{pmatrix}
+\bSigma &amp; \bSigma A^T\\
+A \bSigma &amp; A \bSigma A^T + \bSigma'
+\end{pmatrix}.
+\end{split}\]</div>
+<p><span class="math notranslate nohighlight">\(\flat\)</span></p>
+<p><strong>KNOWLEDGE CHECK:</strong> What are the dimensions of each block of <span class="math notranslate nohighlight">\(\bSigma''\)</span>? <span class="math notranslate nohighlight">\(\checkmark\)</span></p>
+<p><em>Proof:</em> We have</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+&amp;f_{\bW, \bW'}(\bw, \bw')\\
+&amp;= f_{\bW}(\bw) \, f_{\bW'|\bW}(\bw'|\bw)\\
+&amp;\propto \exp\left(-\frac{1}{2}(\bw - \bmu)^T \bSigma^{-1} (\bw - \bmu)\right)\\ 
+&amp; \qquad \times \exp\left(-\frac{1}{2}(\bw' - A \bw)^T (\bSigma')^{-1} (\bw' - A \bw)\right)\\
+&amp;\propto \exp\left(-\frac{1}{2}\left[(\bw - \bmu)^T \bSigma^{-1} (\bw - \bmu) + (\bw' - A \bw)^T (\bSigma')^{-1} (\bw' - A \bw)\right]\right).
+\end{align*}\]</div>
+<p>We re-write the quadratic function in square brackets in the exponent as follows</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+&amp;(\bw - \bmu)^T \bSigma^{-1} (\bw - \bmu) + (\bw' - A \bw)^T (\bSigma')^{-1} (\bw' - A \bw)\\
+&amp;=(\bw - \bmu)^T \bSigma^{-1} (\bw - \bmu)\\ 
+&amp; \qquad + ([\bw' - A\bmu] - A[\bw-\bmu])^T (\bSigma')^{-1} ([\bw' - A\bmu] - A[\bw-\bmu])\\
+&amp;=(\bw - \bmu)^T (A^T (\bSigma')^{-1} A + \bSigma^{-1}) (\bw - \bmu)\\ 
+&amp; \qquad - 2 (\bw-\bmu)^T A^T (\bSigma')^{-1} (\bw' - A\bmu)
++ (\bw' - A\bmu)^T (\bSigma')^{-1} (\bw' - A\bmu)\\
+&amp;= \begin{pmatrix}
+\bw - \bmu \\
+\bw' - A\bmu
+\end{pmatrix}^T
+\begin{pmatrix}
+A^T (\bSigma')^{-1} A + \bSigma^{-1} &amp; - A^T (\bSigma')^{-1}\\
+- (\bSigma')^{-1} A &amp; (\bSigma')^{-1}
+\end{pmatrix}
+\begin{pmatrix}
+\bw - \bmu \\
+\bw' - A\bmu
+\end{pmatrix}\\
+&amp;= \begin{pmatrix}
+\bw - \bmu \\
+\bw' - A\bmu
+\end{pmatrix}^T
+\bLambda''
+\begin{pmatrix}
+\bw - \bmu \\
+\bw' - A\bmu
+\end{pmatrix},
+\end{align*}\]</div>
+<p>where the last line defines <span class="math notranslate nohighlight">\(\bLambda''\)</span> and the second line shows that it is positive definite (why?). We have shown that <span class="math notranslate nohighlight">\((\bW, \bW')\)</span> is multivariate Gaussian with mean <span class="math notranslate nohighlight">\((\bmu, A\bmu)\)</span>.</p>
+<p>We use the <em>Inverting a Block Matrix Lemma</em> to invert <span class="math notranslate nohighlight">\(\bLambda''\)</span> and reveal the covariance matrix. (One could also compute the covariance directly; try it!) We break up <span class="math notranslate nohighlight">\(\bLambda''\)</span> into blocks</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\bLambda''
+=
+\begin{pmatrix}
+\bLambda''_{11} &amp; \bLambda''_{12}\\
+(\bLambda''_{12})^T &amp; \bLambda''_{22}
+\end{pmatrix}
+\end{split}\]</div>
+<p>where <span class="math notranslate nohighlight">\(\bLambda''_{11} \in \mathbb{R}^{d \times d}\)</span>, <span class="math notranslate nohighlight">\(\bLambda''_{22} \in \mathbb{R}^{d' \times d'}\)</span>, and <span class="math notranslate nohighlight">\(\bLambda''_{12} \in \mathbb{R}^{d \times d'}\)</span>. Recall that the inverse is</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+B^{-1}
+= \begin{pmatrix}
+(B/B_{22})^{-1} &amp; -(B/B_{22})^{-1} B_{12} B_{22}^{-1}\\
+-B_{22}^{-1} B_{12}^T (B/B_{22})^{-1} &amp; B_{22}^{-1} B_{12}^T (B/B_{22})^{-1} B_{12} B_{22}^{-1} + B_{22}^{-1}
+\end{pmatrix}
+\end{split}\]</div>
+<p>where here <span class="math notranslate nohighlight">\(B = \bLambda''\)</span>.</p>
+<p>The Schur complement is</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+\bLambda'' / \bLambda''_{22}
+&amp;= \bLambda''_{11} - \bLambda''_{12} (\bLambda''_{22})^{-1} (\bLambda''_{12})^T\\
+&amp;= A^T (\bSigma')^{-1} A + \bSigma^{-1}
+- (- A^T (\bSigma')^{-1}) ((\bSigma')^{-1})^{-1} (- A^T (\bSigma')^{-1})^T\\
+&amp;= A^T (\bSigma')^{-1} A + \bSigma^{-1}
+- A^T (\bSigma')^{-1} \bSigma' (\bSigma')^{-1} A\\
+&amp;= A^T (\bSigma')^{-1} A + \bSigma^{-1}
+- A^T (\bSigma')^{-1} A\\
+&amp;= \bSigma^{-1}.
+\end{align*}\]</div>
+<p>Hence <span class="math notranslate nohighlight">\((\bLambda'' / \bLambda''_{22})^{-1} = \bSigma\)</span>.</p>
+<p>Moreover,</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+- (\bLambda''/\bLambda''_{22})^{-1} \bLambda''_{12} (\bLambda''_{22})^{-1}
+&amp;= - \bSigma (- A^T (\bSigma')^{-1}) ((\bSigma')^{-1})^{-1}\\
+&amp;= \bSigma A^T (\bSigma')^{-1} \bSigma'\\
+&amp;= \bSigma A^T
+\end{align*}\]</div>
+<p>and</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+&amp;(\bLambda''_{22})^{-1} (\bLambda''_{12})^T (\bLambda''/\bLambda''_{22})^{-1} \bLambda''_{12} (\bLambda''_{22})^{-1} + (\bLambda''_{22})^{-1}\\
+&amp;= ((\bSigma')^{-1})^{-1} (- A^T (\bSigma')^{-1})^T \bSigma (-A^T (\bSigma')^{-1}) ((\bSigma')^{-1})^{-1} + ((\bSigma')^{-1})^{-1}\\
+&amp;= \bSigma' (\bSigma')^{-1} A \bSigma A^T (\bSigma')^{-1} \bSigma' + \bSigma'\\
+&amp;= A \bSigma A^T + \bSigma'.
+\end{align*}\]</div>
+<p>Plugging back into the formula for the inverse of a block matrix completes the proof. <span class="math notranslate nohighlight">\(\square\)</span></p>
+<p><strong>Joint distribution</strong> We extend our previous notation as follows: for two disjoint, finite collections of random vectors <span class="math notranslate nohighlight">\(\{\mathbf{U}_i\}_i\)</span> and <span class="math notranslate nohighlight">\(\{\mathbf{W}_j\}_j\)</span> defined on the same probability space, we let <span class="math notranslate nohighlight">\(f_{\{\mathbf{U}_i\}_i, \{\mathbf{W}_j\}_j}\)</span> be their joint density, <span class="math notranslate nohighlight">\(f_{\{\mathbf{U}_i\}_i | \{\mathbf{W}_j\}_j}\)</span> be the conditional density of <span class="math notranslate nohighlight">\(\{\mathbf{U}_i\}_i\)</span> given <span class="math notranslate nohighlight">\(\{\mathbf{W}_j\}_j\)</span>, and <span class="math notranslate nohighlight">\(f_{\{\mathbf{U}_i\}_i}\)</span> be the marginal density of <span class="math notranslate nohighlight">\(\{\mathbf{U}_i\}_i\)</span>. Formally, our goal is to compute</p>
+<div class="math notranslate nohighlight">
+\[
+f_{\bX_{t}|\bY_{1:t}} := f_{\{\bX_{t}\}|\{\bY_1,\ldots,\bY_{t}\}}
+\]</div>
+<p>recursively in <span class="math notranslate nohighlight">\(t\)</span>, where we define <span class="math notranslate nohighlight">\(\bY_{1:t} = \{\bY_1,\ldots,\bY_{t}\}\)</span>. We will see that all densities appearing in this calculation are multivariate Gaussians, and therefore keeping track of the means and covariances will suffice.</p>
+<p>Formally, we posit that the density of the full process (with both observed and unobserved parts) is</p>
+<div class="math notranslate nohighlight">
+\[
+f_{\bX_0}(\bx_0) \prod_{t=1}^{T} f_{\bX_{t}|\bX_{t-1}}(\bx_{t}|\bx_{t-1}) f_{\bY_{t}|\bX_{t}}(\by_{t}|\bx_{t})
+\]</div>
+<p>where the description of the model stipulates that</p>
+<div class="math notranslate nohighlight">
+\[
+\bX_{t}|\bX_{t-1} \sim N_{d_0}(F \,\bX_{t-1}, Q).
+\]</div>
+<p>and</p>
+<div class="math notranslate nohighlight">
+\[
+\bY_t|\bX_t \sim N_d(H\,\bX_t, R)
+\]</div>
+<p>for all <span class="math notranslate nohighlight">\(t \geq 1\)</span> and <span class="math notranslate nohighlight">\(\bX_0 \sim N_{d_0}(\bmu_0, \bSigma_0)\)</span>. We assume that <span class="math notranslate nohighlight">\(\bmu_0\)</span> and <span class="math notranslate nohighlight">\(\bSigma_0\)</span> are known. Applying the <em>Linear-Gaussian System Lemma</em>  inductively shows that the full process <span class="math notranslate nohighlight">\((\bX_{0:T}, \bY_{1:T})\)</span> is jointly multivariate Gaussian (try it!). In particular, all marginals and conditionals are multivariate Gaussians.</p>
+<p>Graphically, it can be represented as follows, where as before each variable is node and its conditional distribution depends only on its parent nodes.</p>
+<!--TEX
+
+**Figure:** Linear-Gaussian system ([Source](https://commons.wikimedia.org/wiki/File:Hmm_temporal_bayesian_net.svg))
+
+![HMM](https://upload.wikimedia.org/wikipedia/commons/thumb/8/83/Hmm_temporal_bayesian_net.svg/640px-Hmm_temporal_bayesian_net.svg.png)
+
+$\bowtie$
+
+--><p><strong>Conditional independence</strong> The stipulated form of the joint density of the full process implies many conditional independence relations. We will need the following two:</p>
+<p>1- <span class="math notranslate nohighlight">\(\bX_t\)</span> is conditionally independent of <span class="math notranslate nohighlight">\(\bY_{1:t-1}\)</span> given <span class="math notranslate nohighlight">\(\bX_{t-1}\)</span></p>
+<p>2- <span class="math notranslate nohighlight">\(\bY_t\)</span> is conditionally independent of <span class="math notranslate nohighlight">\(\bY_{1:t-1}\)</span> given <span class="math notranslate nohighlight">\(\bX_{t}\)</span>.</p>
+<p>We prove the first one and leave the second one as an exercise. In fact, we prove something stronger: <span class="math notranslate nohighlight">\(\bX_t\)</span> is conditionally independent of <span class="math notranslate nohighlight">\(\bX_{0:t-2}, \bY_{1:t-1}\)</span> given <span class="math notranslate nohighlight">\(\bX_{t-1}\)</span>.</p>
+<p>First, by integrating over <span class="math notranslate nohighlight">\(\by_T\)</span>, then <span class="math notranslate nohighlight">\(\bx_{T}\)</span>, then <span class="math notranslate nohighlight">\(\by_{T-1}\)</span>, then <span class="math notranslate nohighlight">\(\bx_{T-1}\)</span>, … , then <span class="math notranslate nohighlight">\(\by_t\)</span>, we see that the joint density of <span class="math notranslate nohighlight">\((\bX_{0:t}, \bY_{1:t-1})\)</span> is</p>
+<div class="math notranslate nohighlight">
+\[
+f_{\bX_0}(\bx_0) \left(\prod_{s=1}^{t-1} f_{\bX_{s}|\bX_{s-1}}(\bx_{s}|\bx_{s-1}) f_{\bY_{s}|\bX_{s}}(\by_{s}|\bx_{s})\right) f_{\bX_{t}|\bX_{t-1}}(\bx_{t}|\bx_{t-1}). 
+\]</div>
+<p>Similarly, the joint density of <span class="math notranslate nohighlight">\((\bX_{0:t-1}, \bY_{1:t-1})\)</span> is</p>
+<div class="math notranslate nohighlight">
+\[
+f_{\bX_0}(\bx_0) \left(\prod_{s=1}^{t-1} f_{\bX_{s}|\bX_{s-1}}(\bx_{s}|\bx_{s-1}) f_{\bY_{s}|\bX_{s}}(\by_{s}|\bx_{s})\right). 
+\]</div>
+<p>The conditional density given <span class="math notranslate nohighlight">\(\bX_{t-1}\)</span> is then obtained by dividing the first expression by the marginal density of <span class="math notranslate nohighlight">\(\bX_{t-1}\)</span></p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+&amp;\frac{f_{\bX_0}(\bx_0) \left(\prod_{s=1}^{t-1} f_{\bX_{s}|\bX_{s-1}}(\bx_{s}|\bx_{s-1}) f_{\bY_{s}|\bX_{s}}(\by_{s}|\bx_{s})\right) f_{\bX_{t}|\bX_{t-1}}(\bx_{t}|\bx_{t-1})}{f_{\bX_{t-1}}(\bx_{t-1})}\\
+&amp;= \frac{f_{\bX_0}(\bx_0) \left(\prod_{s=1}^{t-1} f_{\bX_{s}|\bX_{s-1}}(\bx_{s}|\bx_{s-1}) f_{\bY_{s}|\bX_{s}}(\by_{s}|\bx_{s})\right) f_{\bX_{t}|\bX_{t-1}}(\bx_{t}|\bx_{t-1})}{f_{\bX_{t-1}}(\bx_{t-1})}\\
+&amp;= \frac{f_{\bX_0}(\bx_0) \left(\prod_{s=1}^{t-1} f_{\bX_{s}|\bX_{s-1}}(\bx_{s}|\bx_{s-1}) f_{\bY_{s}|\bX_{s}}(\by_{s}|\bx_{s})\right) }{f_{\bX_{t-1}}(\bx_{t-1})}f_{\bX_{t}|\bX_{t-1}}(\bx_{t}|\bx_{t-1})\\
+&amp;= f_{\bX_{0:t-2}, \bY_{1:t-1}|\bX_{t-1}}(\bx_{0:t-2}, \by_{1:t-1}|\bx_{t-1}) f_{\bX_{t}|\bX_{t-1}}(\bx_{t}|\bx_{t-1})\\
+\end{align*}\]</div>
+<p>as claimed.</p>
+<p><strong>Algorithm</strong> <span class="math notranslate nohighlight">\(\idx{Kalman filter}\xdi\)</span> We give a recursive algorithm for solving the filtering problem, that is, for computing the mean vector and covariance matrix of the conditional density <span class="math notranslate nohighlight">\(f_{\bX_{t}|\bY_{1:t}}\)</span>.</p>
+<p><em>Initial step:</em> The first compute <span class="math notranslate nohighlight">\(f_{\bX_1|\bY_1}\)</span>. We do this through a series of observations which will generalize straightforwardly.</p>
+<p>1- We have <span class="math notranslate nohighlight">\(\bX_0 \sim N_{d_0}(\bmu_0, \bSigma_0)\)</span> and <span class="math notranslate nohighlight">\(\bX_{1}|\bX_{0} \sim N_{d_0}(F \,\bX_0, Q)\)</span>. So, by the <em>Linear-Gaussian System Lemma</em>, the joint vector <span class="math notranslate nohighlight">\((\bX_0, \bX_{1})\)</span> is multivariate Gaussian with mean vector <span class="math notranslate nohighlight">\((\bmu_0, F \bmu_0)\)</span> and covariance matrix</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{pmatrix}
+\bSigma_0 &amp; \bSigma_0 F^T\\
+F \bSigma_0 &amp; F \bSigma_0 F^T + Q
+\end{pmatrix}.
+\end{split}\]</div>
+<p>Hence the marginal density of <span class="math notranslate nohighlight">\(\bX_{1}\)</span> is multivariate Gaussian with mean vector <span class="math notranslate nohighlight">\(F \bmu_0\)</span> and covariance matrix</p>
+<div class="math notranslate nohighlight">
+\[
+P_0 := F \bSigma_0 F^T + Q.
+\]</div>
+<p>2- Combining the previous observation about the marginal density of <span class="math notranslate nohighlight">\(\bX_{1}\)</span> with the fact that <span class="math notranslate nohighlight">\(\bY_1|\bX_1 \sim N_d(H\,\bX_1, R)\)</span>, the <em>Linear-Gaussian System Lemma</em> says that <span class="math notranslate nohighlight">\((\bX_1, \bY_{1})\)</span> is multivariate Gaussian with mean vector <span class="math notranslate nohighlight">\((F \bmu_0, H F \bmu_0)\)</span> and covariance matrix</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{pmatrix}
+P_0 &amp; P_0 H^T\\
+H P_0 &amp; H P_0 H^T + R
+\end{pmatrix}.
+\end{split}\]</div>
+<p>Finally, define <span class="math notranslate nohighlight">\(K_1 := P_0 H^T (H P_0 H^T + R)^{-1}\)</span>. This new observation and the conditional density formula give that</p>
+<div class="math notranslate nohighlight">
+\[
+\bX_1|\bY_1 \sim N_d(\bmu_1, \bSigma_1)
+\]</div>
+<p>where we define</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+\bmu_1
+&amp;:= F \bmu_0 + P_0 H^T (H P_0 H^T + R)^{-1} (\mathbf{Y}_1 - H F \bmu_0)\\
+&amp;= F \bmu_0 + K_1 (\mathbf{Y}_1 - H F \bmu_0)
+\end{align*}\]</div>
+<p>and</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+\bSigma_1
+&amp;:= P_0 - P_0 H^T (H P_0 H^T + R)^{-1} H P_0\\
+&amp;= (I_{d_0 \times d_0} - K_1 H) P_0.
+\end{align*}\]</div>
+<p><em>General step:</em> Assuming by induction that <span class="math notranslate nohighlight">\(\bX_{t-1}|\bY_{1:t-1} \sim N_{d_0}(\bmu_{t-1}, \bSigma_{t-1})\)</span> where <span class="math notranslate nohighlight">\(\bmu_{t-1}\)</span> depends implicitly on <span class="math notranslate nohighlight">\(\bY_{1:t-1}\)</span> (but <span class="math notranslate nohighlight">\(\bSigma_{t-1}\)</span> does not), we deduce the next step. It mimics closely the initial step.</p>
+<p>1- Predict: We first “predict” <span class="math notranslate nohighlight">\(\bX_{t}\)</span> given <span class="math notranslate nohighlight">\(\bY_{1:t-1}\)</span>. We use the fact that <span class="math notranslate nohighlight">\(\bX_{t-1}|\bY_{1:t-1} \sim N_{d_0}(\bmu_{t-1}, \bSigma_{t-1})\)</span>. Moreover, we have that <span class="math notranslate nohighlight">\(\bX_{t}|\bX_{t-1} \sim N_{d_0}(F \,\bX_{t-1}, Q)\)</span> and that <span class="math notranslate nohighlight">\(\bX_t\)</span> is conditionally independent of <span class="math notranslate nohighlight">\(\bY_{1:t-1}\)</span> given <span class="math notranslate nohighlight">\(\bX_{t-1}\)</span>. So, <span class="math notranslate nohighlight">\(\bX_{t}|\{\bX_{t-1}, \bY_{1:t-1}\} \sim N_{d_0}(F \,\bX_{t-1}, Q)\)</span> by the <em>Role of Independence Lemma</em>. By the <em>Linear-Gaussian System Lemma</em>, the joint vector <span class="math notranslate nohighlight">\((\bX_{t-1}, \bX_{t})\)</span> conditioned on <span class="math notranslate nohighlight">\(\bY_{1:t-1}\)</span> is multivariate Gaussian with mean vector <span class="math notranslate nohighlight">\((\bmu_{t-1}, F \bmu_{t-1})\)</span> and covariance matrix</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{pmatrix}
+\bSigma_{t-1} &amp; \bSigma_{t-1} F^T\\
+F \bSigma_{t-1} &amp; F \bSigma_{t-1} F^T + Q
+\end{pmatrix}.
+\end{split}\]</div>
+<p>As a consequence, the conditional marginal density of <span class="math notranslate nohighlight">\(\bX_{t}\)</span> given <span class="math notranslate nohighlight">\(\bY_{1:t-1}\)</span> is multivariate Gaussian with mean vector <span class="math notranslate nohighlight">\(F \bmu_{t-1}\)</span> and covariance matrix</p>
+<div class="math notranslate nohighlight">
+\[
+P_{t-1} := F \bSigma_{t-1} F^T + Q.
+\]</div>
+<p>2- Update: Next we “update” our prediction of <span class="math notranslate nohighlight">\(\bX_{t}\)</span> using the new observation <span class="math notranslate nohighlight">\(\bY_{t}\)</span>. We have that <span class="math notranslate nohighlight">\(\bY_{t}|\bX_{t} \sim N_d(H\,\bX_{t}, R)\)</span> and that <span class="math notranslate nohighlight">\(\bY_t\)</span> is conditionally independent of <span class="math notranslate nohighlight">\(\bY_{1:t-1}\)</span> given <span class="math notranslate nohighlight">\(\bX_{t}\)</span>. So <span class="math notranslate nohighlight">\(\bY_{t}|\{\bX_{t}, \bY_{1:t-1}\} \sim N_d(H\,\bX_{t}, R)\)</span>  by the <em>Role of Independence</em> lemma. Combining this with the previous observation, the <em>Linear-Gaussian System</em> lemma says that <span class="math notranslate nohighlight">\((\bX_{t}, \bY_{t})\)</span> given <span class="math notranslate nohighlight">\(\bY_{1:t-1}\)</span> is multivariate Gaussian with mean vector <span class="math notranslate nohighlight">\((F \bmu_{t-1}, H F \bmu_{t-1})\)</span> and covariance matrix</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{pmatrix}
+P_{t-1} &amp; P_{t-1} H^T\\
+H P_{t-1} &amp; H P_{t-1} H^T + R
+\end{pmatrix}.
+\end{split}\]</div>
+<p>Finally, define <span class="math notranslate nohighlight">\(K_{t} := P_{t-1} H^T (H P_{t-1} H^T + R)^{-1}\)</span>. This new observation and the conditional density formula give that</p>
+<div class="math notranslate nohighlight">
+\[
+\bX_{t}|\{\bY_t, \bY_{1:t-1}\} = \bX_{t}|\bY_{1:t} \sim N_d(\bmu_{t}, \bSigma_{t})
+\]</div>
+<p>where we define</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+\bmu_{t}
+&amp;:= F \bmu_{t-1} + K_{t} (\mathbf{Y}_{t} - H F \bmu_{t-1})
+\end{align*}\]</div>
+<p>and</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+\bSigma_{t}
+&amp;= (I_{d_0 \times d_0} - K_{t} H) P_{t-1}.
+\end{align*}\]</div>
+<p><em>Summary:</em> Let <span class="math notranslate nohighlight">\(\bmu_t\)</span> and <span class="math notranslate nohighlight">\(\bSigma_t\)</span> be the mean and covariance matrix of <span class="math notranslate nohighlight">\(\bX_t\)</span> conditioned on <span class="math notranslate nohighlight">\(\bY_{1:t}\)</span>. The recursions for these quantities are the following:</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+\bmu_t 
+&amp;= F\,\bmu_{t-1} + K_{t} (\bY_{t} - H F \bmu_{t-1})\\
+\bSigma_t 
+&amp;= (I_{d_0 \times d_0} - K_t H) P_{t-1}
+\end{align*}\]</div>
+<p>where</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+P_{t-1} 
+&amp;= F \,\bSigma_{t-1} F^T + Q\\
+K_t 
+&amp;= P_{t-1} H^T (H P_{t-1} H^T + R)^{-1}
+\end{align*}\]</div>
+<p>This last matrix is known as the Kalman gain matrix. The vector <span class="math notranslate nohighlight">\(\bY_{t} - H F \bmu_{t-1}\)</span> is referred to as innovation; it compares the new observation <span class="math notranslate nohighlight">\(\bY_{t}\)</span> to its predicted expectation <span class="math notranslate nohighlight">\(H F \bmu_{t-1}\)</span> based on the previous observations. Hence, in some sense, the Kalman gain matrix<span class="math notranslate nohighlight">\(\idx{Kalman gain matrix}\xdi\)</span> represents the “weight” given to the observation at time <span class="math notranslate nohighlight">\(t\)</span> when updating the state estimate <span class="math notranslate nohighlight">\(\bmu_t\)</span>. The solution above is known as Kalman filtering.</p>
+<p><strong>CHAT &amp; LEARN</strong> Explore the concept of sequential Monte Carlo methods, also known as particle filters, as an alternative to the Kalman filter. Ask your favorite AI chatbot for an explanation and implementation of a particle filter. Try it on this dataset. (<a class="reference external" href="https://colab.research.google.com/github/MMiDS-textbook/MMiDS-textbook.github.io/blob/main/just_the_code/roch_mmids_chap_prob_notebook.ipynb">Open In Colab</a>) <span class="math notranslate nohighlight">\(\ddagger\)</span></p>
+</section>
+<section id="back-to-location-tracking">
+<h2><span class="section-number">6.5.3. </span>Back to location tracking<a class="headerlink" href="#back-to-location-tracking" title="Link to this heading">#</a></h2>
+<p>We apply Kalman filtering to location tracking. Returning to our cyborg corgi example, we imagine that we get noisy observations about its successive positions in a park. (Think of GPS measurements.) We seek to get a better estimate of its location using the method above.</p>
+<p><strong>Figure:</strong> Cyborg corgi (<em>Credit:</em> Made with <a class="reference external" href="https://www.midjourney.com/">Midjourney</a>)</p>
+<p><img alt="Cyborg corgi" src="../../_images/robot_corgi_in_a_park-small.png" /></p>
+<p><span class="math notranslate nohighlight">\(\bowtie\)</span></p>
+<p>We model the true location as a linear-Gaussian system over the 2d position <span class="math notranslate nohighlight">\((z_{1,t}, z_{2,t})_t\)</span> and velocity <span class="math notranslate nohighlight">\((\dot{z}_{1,t}, \dot{z}_{2,t})_t\)</span> sampled at <span class="math notranslate nohighlight">\(\Delta\)</span> intervals of time. Formally,</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\bX_t = (z_{1,t}, z_{2,t}, \dot{z}_{1,t}, \dot{z}_{2,t}),
+\quad
+F = \begin{pmatrix}
+1 &amp; 0 &amp; \Delta &amp; 0\\
+0 &amp; 1 &amp; 0 &amp; \Delta\\
+0 &amp; 0 &amp; 1 &amp; 0\\
+0 &amp; 0 &amp; 0 &amp; 1
+\end{pmatrix},
+\end{split}\]</div>
+<p>so the unobserved dynamics are</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{pmatrix}
+z_{1,t+1}\\ 
+z_{2,t+1}\\ 
+\dot{z}_{1,t+1}\\ 
+\dot{z}_{2,t+1}
+\end{pmatrix}
+= \bX_{t+1}
+= F \,\bX_t + \bW_t
+= 
+\begin{pmatrix}
+z_{1,t} + \Delta \dot{z}_{1,t} + W_{1,t}\\
+z_{2,t} + \Delta \dot{z}_{2,t} + W_{2,t}\\
+\dot{z}_{1,t} + \dot{W}_{1,t}\\
+\dot{z}_{2,t} + \dot{W}_{2,t}
+\end{pmatrix}
+\end{split}\]</div>
+<p>where the <span class="math notranslate nohighlight">\(\bW_t = (W_{1,t}, W_{2,t}, \dot{W}_{1,t}, \dot{W}_{2,t}) \sim N_{d_0}(\mathbf{0}, Q)\)</span> with <span class="math notranslate nohighlight">\(Q\)</span> known.</p>
+<p>In words, the velocity is unchanged, up to Gaussian perturbation. The position changes proportionally to the velocity in the corresponding dimension.</p>
+<p>The observations <span class="math notranslate nohighlight">\((\tilde{z}_{1,t}, \tilde{z}_{2,t})_t\)</span> are modeled as</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\bY_t = (\tilde{z}_{1,t}, \tilde{z}_{2,t}),
+\quad 
+H = \begin{pmatrix}
+1 &amp; 0 &amp; 0 &amp; 0\\
+0 &amp; 1 &amp; 0 &amp; 0\\
+\end{pmatrix}.
+\end{split}\]</div>
+<p>so the observed process satisfies</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{pmatrix}
+\tilde{z}_{1,t}\\ 
+\tilde{z}_{2,t}
+\end{pmatrix}
+= \bY_t
+= H\,\bX_t + \bV_t
+= 
+\begin{pmatrix}
+\tilde{z}_{1,t} + \tilde{V}_{1,t}\\ 
+\tilde{z}_{2,t} + \tilde{V}_{2,t}
+\end{pmatrix}
+\end{split}\]</div>
+<p>where the <span class="math notranslate nohighlight">\(\bV_t = (\tilde{V}_{1,t}, \tilde{V}_{2,t}) \sim N_d(\mathbf{0}, R)\)</span> with <span class="math notranslate nohighlight">\(R\)</span> known.</p>
+<p>In words, we only observe the positions, up to Gaussian noise.</p>
+<p><strong>Implementing the Kalman filter</strong> We implement the Kalman filter as described above with known covariance matrices. We take <span class="math notranslate nohighlight">\(\Delta = 1\)</span> for simplicity. The code is adapted from [<a class="reference external" href="https://github.com/probml">Mur</a>].</p>
+<p>We will test Kalman filtering on a simulated path drawn from the linear-Gaussian model above. The following function creates such a path and its noisy observations.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">lgSamplePath</span><span class="p">(</span><span class="n">rng</span><span class="p">,</span> <span class="n">ss</span><span class="p">,</span> <span class="n">os</span><span class="p">,</span> <span class="n">F</span><span class="p">,</span> <span class="n">H</span><span class="p">,</span> <span class="n">Q</span><span class="p">,</span> <span class="n">R</span><span class="p">,</span> <span class="n">init_mu</span><span class="p">,</span> <span class="n">init_Sig</span><span class="p">,</span> <span class="n">T</span><span class="p">):</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">ss</span><span class="p">,</span><span class="n">T</span><span class="p">))</span> 
+    <span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">os</span><span class="p">,</span><span class="n">T</span><span class="p">))</span>
+
+    <span class="n">x</span><span class="p">[:,</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">multivariate_normal</span><span class="p">(</span><span class="n">init_mu</span><span class="p">,</span> <span class="n">init_Sig</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">T</span><span class="p">):</span>
+        <span class="n">x</span><span class="p">[:,</span><span class="n">t</span><span class="p">]</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">multivariate_normal</span><span class="p">(</span><span class="n">F</span> <span class="o">@</span> <span class="n">x</span><span class="p">[:,</span><span class="n">t</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span><span class="n">Q</span><span class="p">)</span>
+        <span class="n">y</span><span class="p">[:,</span><span class="n">t</span><span class="p">]</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">multivariate_normal</span><span class="p">(</span><span class="n">H</span> <span class="o">@</span> <span class="n">x</span><span class="p">[:,</span><span class="n">t</span><span class="p">],</span><span class="n">R</span><span class="p">)</span>
+    
+    <span class="k">return</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p><strong>NUMERICAL CORNER:</strong> Here is an example. In the plots, the red dots are the noisy observations and the green crosses are the unobserved true path.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">seed</span> <span class="o">=</span> <span class="mi">535</span>
+<span class="n">rng</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">(</span><span class="n">seed</span><span class="p">)</span>
+<span class="n">ss</span> <span class="o">=</span> <span class="mi">4</span> <span class="c1"># state size</span>
+<span class="n">os</span> <span class="o">=</span> <span class="mi">2</span> <span class="c1"># observation size</span>
+<span class="n">F</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="mf">1.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">],</span>
+              <span class="p">[</span><span class="mf">0.</span><span class="p">,</span> <span class="mf">1.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="mf">1.</span><span class="p">],</span>
+              <span class="p">[</span><span class="mf">0.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="mf">1.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">],</span>
+              <span class="p">[</span><span class="mf">0.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="mf">1.</span><span class="p">]])</span> 
+<span class="n">H</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">],</span>
+              <span class="p">[</span><span class="mf">0.</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">]])</span>
+<span class="n">Q</span> <span class="o">=</span> <span class="mf">0.1</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">diag</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">ss</span><span class="p">))</span>
+<span class="n">R</span> <span class="o">=</span> <span class="mi">10</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">diag</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">os</span><span class="p">))</span>
+<span class="n">init_mu</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="mf">1.</span><span class="p">,</span> <span class="mf">1.</span><span class="p">])</span>
+<span class="n">init_Sig</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">diag</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">ss</span><span class="p">))</span>
+<span class="n">T</span> <span class="o">=</span> <span class="mi">50</span>
+<span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">lgSamplePath</span><span class="p">(</span><span class="n">rng</span><span class="p">,</span> <span class="n">ss</span><span class="p">,</span> <span class="n">os</span><span class="p">,</span> <span class="n">F</span><span class="p">,</span> <span class="n">H</span><span class="p">,</span> <span class="n">Q</span><span class="p">,</span> <span class="n">R</span><span class="p">,</span> <span class="n">init_mu</span><span class="p">,</span> <span class="n">init_Sig</span><span class="p">,</span> <span class="n">T</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>In the next plot (and throughout this section), the dots are the noisy observations. The unobserved true path is also shown as a dotted line.</p>
+<div class="cell tag_hide-input docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell source</span>
+<span class="expanded">Hide code cell source</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">y</span><span class="p">[</span><span class="mi">0</span><span class="p">,:],</span> <span class="n">y</span><span class="p">[</span><span class="mi">1</span><span class="p">,:],</span> <span class="n">s</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">,:],</span> <span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">,:],</span> <span class="n">c</span><span class="o">=</span><span class="s1">&#39;g&#39;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;dotted&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlim</span><span class="p">((</span><span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">y</span><span class="p">[</span><span class="mi">0</span><span class="p">,:])</span><span class="o">-</span><span class="mi">5</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">y</span><span class="p">[</span><span class="mi">0</span><span class="p">,:])</span><span class="o">+</span><span class="mi">5</span><span class="p">))</span> 
+<span class="n">plt</span><span class="o">.</span><span class="n">ylim</span><span class="p">((</span><span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">y</span><span class="p">[</span><span class="mi">1</span><span class="p">,:])</span><span class="o">-</span><span class="mi">5</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">y</span><span class="p">[</span><span class="mi">1</span><span class="p">,:])</span><span class="o">+</span><span class="mi">5</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</details>
+<div class="cell_output docutils container">
+<img alt="../../_images/95709e6e4833c0770655703d818e52d7686cca0e40d628be8db50dbd8562280a.png" src="../../_images/95709e6e4833c0770655703d818e52d7686cca0e40d628be8db50dbd8562280a.png" />
+</div>
+</div>
+<p><span class="math notranslate nohighlight">\(\unlhd\)</span></p>
+<p>The following function implements the Kalman filter. The full recursion is broken up into several steps. We use <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.linalg.inv.html"><code class="docutils literal notranslate"><span class="pre">numpy.linalg.inv</span></code></a> to compute the Kalman gain matrix. Below, <code class="docutils literal notranslate"><span class="pre">mu_pred</span></code> is <span class="math notranslate nohighlight">\(F \bmu_{t-1}\)</span> and <code class="docutils literal notranslate"><span class="pre">Sig_pred</span></code> is <span class="math notranslate nohighlight">\(P_{t-1} = F \bSigma_{t-1} F^T + Q\)</span>, which are the mean vector and covariance matrix of <span class="math notranslate nohighlight">\(\bX_{t}\)</span> given <span class="math notranslate nohighlight">\(\bY_{1:t-1}\)</span> as computed in the <em>Predict</em> step.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">kalmanUpdate</span><span class="p">(</span><span class="n">ss</span><span class="p">,</span> <span class="n">F</span><span class="p">,</span> <span class="n">H</span><span class="p">,</span> <span class="n">Q</span><span class="p">,</span> <span class="n">R</span><span class="p">,</span> <span class="n">y_t</span><span class="p">,</span> <span class="n">mu_prev</span><span class="p">,</span> <span class="n">Sig_prev</span><span class="p">):</span>
+    
+    <span class="n">mu_pred</span> <span class="o">=</span> <span class="n">F</span> <span class="o">@</span> <span class="n">mu_prev</span>
+    <span class="n">Sig_pred</span> <span class="o">=</span> <span class="n">F</span> <span class="o">@</span> <span class="n">Sig_prev</span> <span class="o">@</span> <span class="n">F</span><span class="o">.</span><span class="n">T</span> <span class="o">+</span> <span class="n">Q</span>
+    
+    <span class="n">e_t</span> <span class="o">=</span> <span class="n">y_t</span> <span class="o">-</span> <span class="n">H</span> <span class="o">@</span> <span class="n">mu_pred</span>
+    <span class="n">S</span> <span class="o">=</span> <span class="n">H</span> <span class="o">@</span> <span class="n">Sig_pred</span> <span class="o">@</span> <span class="n">H</span><span class="o">.</span><span class="n">T</span> <span class="o">+</span> <span class="n">R</span>
+    <span class="n">Sinv</span> <span class="o">=</span> <span class="n">LA</span><span class="o">.</span><span class="n">inv</span><span class="p">(</span><span class="n">S</span><span class="p">)</span>
+    <span class="n">K</span> <span class="o">=</span> <span class="n">Sig_pred</span> <span class="o">@</span> <span class="n">H</span><span class="o">.</span><span class="n">T</span> <span class="o">@</span> <span class="n">Sinv</span>
+    
+    <span class="n">mu_new</span> <span class="o">=</span> <span class="n">mu_pred</span> <span class="o">+</span> <span class="n">K</span> <span class="o">@</span> <span class="n">e_t</span>
+    <span class="n">Sig_new</span> <span class="o">=</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">diag</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">ss</span><span class="p">))</span> <span class="o">-</span> <span class="n">K</span> <span class="o">@</span> <span class="n">H</span><span class="p">)</span> <span class="o">@</span> <span class="n">Sig_pred</span>
+    
+    <span class="k">return</span> <span class="n">mu_new</span><span class="p">,</span> <span class="n">Sig_new</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">kalmanFilter</span><span class="p">(</span><span class="n">ss</span><span class="p">,</span> <span class="n">os</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">F</span><span class="p">,</span> <span class="n">H</span><span class="p">,</span> <span class="n">Q</span><span class="p">,</span> <span class="n">R</span><span class="p">,</span> <span class="n">init_mu</span><span class="p">,</span> <span class="n">init_Sig</span><span class="p">,</span> <span class="n">T</span><span class="p">):</span>
+    
+    <span class="n">mu</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">ss</span><span class="p">,</span> <span class="n">T</span><span class="p">))</span>
+    <span class="n">Sig</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">ss</span><span class="p">,</span> <span class="n">ss</span><span class="p">,</span> <span class="n">T</span><span class="p">))</span>
+    <span class="n">mu</span><span class="p">[:,</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">init_mu</span>
+    <span class="n">Sig</span><span class="p">[:,:,</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">init_Sig</span>
+    <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">T</span><span class="p">):</span>
+        <span class="n">mu</span><span class="p">[:,</span><span class="n">t</span><span class="p">],</span> <span class="n">Sig</span><span class="p">[:,:,</span><span class="n">t</span><span class="p">]</span> <span class="o">=</span> <span class="n">kalmanUpdate</span><span class="p">(</span><span class="n">ss</span><span class="p">,</span> <span class="n">F</span><span class="p">,</span> <span class="n">H</span><span class="p">,</span> <span class="n">Q</span><span class="p">,</span> <span class="n">R</span><span class="p">,</span> <span class="n">y</span><span class="p">[:,</span><span class="n">t</span><span class="p">],</span> <span class="n">mu</span><span class="p">[:,</span><span class="n">t</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">Sig</span><span class="p">[:,:,</span><span class="n">t</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+
+    <span class="k">return</span> <span class="n">mu</span><span class="p">,</span> <span class="n">Sig</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p><strong>NUMERICAL CORNER:</strong> We apply this to the location tracking example. The inferred states, or more precisely their estimated mean, are in blue. Note that we also inferred the velocity at each time point, but we are not plotting that information.</p>
+<div class="cell tag_hide-input docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell source</span>
+<span class="expanded">Hide code cell source</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">init_mu</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="mf">1.</span><span class="p">,</span> <span class="mf">1.</span><span class="p">])</span>
+<span class="n">init_Sig</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">diag</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">ss</span><span class="p">))</span>
+<span class="n">mu</span><span class="p">,</span> <span class="n">Sig</span> <span class="o">=</span> <span class="n">kalmanFilter</span><span class="p">(</span><span class="n">ss</span><span class="p">,</span> <span class="n">os</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">F</span><span class="p">,</span> <span class="n">H</span><span class="p">,</span> <span class="n">Q</span><span class="p">,</span> <span class="n">R</span><span class="p">,</span> <span class="n">init_mu</span><span class="p">,</span> <span class="n">init_Sig</span><span class="p">,</span> <span class="n">T</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">mu</span><span class="p">[</span><span class="mi">0</span><span class="p">,:],</span> <span class="n">mu</span><span class="p">[</span><span class="mi">1</span><span class="p">,:],</span> <span class="n">c</span><span class="o">=</span><span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;s&#39;</span><span class="p">,</span> <span class="n">markersize</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">y</span><span class="p">[</span><span class="mi">0</span><span class="p">,:],</span> <span class="n">y</span><span class="p">[</span><span class="mi">1</span><span class="p">,:],</span> <span class="n">s</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">,:],</span> <span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">,:],</span> <span class="n">c</span><span class="o">=</span><span class="s1">&#39;g&#39;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;dotted&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlim</span><span class="p">((</span><span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">y</span><span class="p">[</span><span class="mi">0</span><span class="p">,:])</span><span class="o">-</span><span class="mi">5</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">y</span><span class="p">[</span><span class="mi">0</span><span class="p">,:])</span><span class="o">+</span><span class="mi">5</span><span class="p">))</span> 
+<span class="n">plt</span><span class="o">.</span><span class="n">ylim</span><span class="p">((</span><span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">y</span><span class="p">[</span><span class="mi">1</span><span class="p">,:])</span><span class="o">-</span><span class="mi">5</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">y</span><span class="p">[</span><span class="mi">1</span><span class="p">,:])</span><span class="o">+</span><span class="mi">5</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</details>
+<div class="cell_output docutils container">
+<img alt="../../_images/e02f0b6f60d62184a55abac5acad7e7095782240ac114f41b4bfb141cb45fc62.png" src="../../_images/e02f0b6f60d62184a55abac5acad7e7095782240ac114f41b4bfb141cb45fc62.png" />
+</div>
+</div>
+<p>To quantify the improvement in the inferred means compared to the observations, we compute the mean squared error in both cases.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">dobs</span> <span class="o">=</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">1</span><span class="p">,:]</span> <span class="o">-</span> <span class="n">y</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">1</span><span class="p">,:]</span>
+<span class="n">mse_obs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">dobs</span><span class="o">**</span><span class="mi">2</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">mse_obs</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>22.891982252201856
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">dfilt</span> <span class="o">=</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">1</span><span class="p">,:]</span> <span class="o">-</span> <span class="n">mu</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">1</span><span class="p">,:]</span>
+<span class="n">mse_filt</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">dfilt</span><span class="o">**</span><span class="mi">2</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">mse_filt</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>9.778610100463018
+</pre></div>
+</div>
+</div>
+</div>
+<p>We indeed observe a substantial reduction.</p>
+<p><span class="math notranslate nohighlight">\(\unlhd\)</span></p>
+<p><strong>CHAT &amp; LEARN</strong> The Kalman filter assumes that the parameters of the state evolution and observation models are known. Ask your favorite AI chatbot about methods for estimating these parameters from data, such as the expectation-maximization algorithm or the variational Bayes approach. <span class="math notranslate nohighlight">\(\ddagger\)</span></p>
+<p><em><strong>Self-assessment quiz</strong></em> <em>(with help from Claude, Gemini, and ChatGPT)</em></p>
+<p><strong>1</strong> Which of the following is the Schur complement of the block <span class="math notranslate nohighlight">\(B_{11}\)</span> in the positive definite matrix <span class="math notranslate nohighlight">\(B = \begin{pmatrix} B_{11} &amp; B_{12} \\ B_{12}^T &amp; B_{22} \end{pmatrix}\)</span>?</p>
+<p>a) <span class="math notranslate nohighlight">\(B_{22} - B_{12}^T B_{11}^{-1} B_{12}\)</span></p>
+<p>b) <span class="math notranslate nohighlight">\(B_{11} - B_{12} B_{22}^{-1} B_{12}^T\)</span></p>
+<p>c) <span class="math notranslate nohighlight">\(B_{22}\)</span></p>
+<p>d) <span class="math notranslate nohighlight">\(B_{11}\)</span></p>
+<p><strong>2</strong> Which of the following is true about the Schur complement <span class="math notranslate nohighlight">\(B/B_{11}\)</span> of the block <span class="math notranslate nohighlight">\(B_{11}\)</span> in a positive definite matrix <span class="math notranslate nohighlight">\(B\)</span>?</p>
+<p>a) It is always symmetric.</p>
+<p>b) It is always positive definite.</p>
+<p>c) Both a and b.</p>
+<p>d) Neither a nor b.</p>
+<p><strong>3</strong> What is the conditional distribution of <span class="math notranslate nohighlight">\(X_1\)</span> given <span class="math notranslate nohighlight">\(X_2\)</span> in a multivariate Gaussian distribution?</p>
+<p>a) <span class="math notranslate nohighlight">\(X_1 | X_2 \sim \mathcal{N}(\mu_1 + \Sigma_{12}\Sigma_{22}^{-1}(X_2 - \mu_2), \Sigma_{11} - \Sigma_{12}\Sigma_{22}^{-1}\Sigma_{12}^T)\)</span></p>
+<p>b) <span class="math notranslate nohighlight">\(X_1 | X_2 \sim \mathcal{N}(\mu_1 - \Sigma_{12}\Sigma_{22}^{-1}(X_2 - \mu_2), \Sigma_{11} + \Sigma_{12}\Sigma_{22}^{-1}\Sigma_{12}^T)\)</span></p>
+<p>c) <span class="math notranslate nohighlight">\(X_1 | X_2 \sim \mathcal{N}(\mu_1 + \Sigma_{12}\Sigma_{22}^{-1}(X_2 - \mu_2), \Sigma_{11} + \Sigma_{12}\Sigma_{22}^{-1}\Sigma_{12}^T)\)</span></p>
+<p>d) <span class="math notranslate nohighlight">\(X_1 | X_2 \sim \mathcal{N}(\mu_1 - \Sigma_{12}\Sigma_{22}^{-1}(X_2 - \mu_2), \Sigma_{11} - \Sigma_{12}\Sigma_{22}^{-1}\Sigma_{12}^T)\)</span></p>
+<p><strong>4</strong> In a linear-Gaussian system, which of the following is true about the conditional independence relationships?</p>
+<p>a) <span class="math notranslate nohighlight">\(X_t\)</span> is conditionally independent of <span class="math notranslate nohighlight">\(Y_{1:t-1}\)</span> given <span class="math notranslate nohighlight">\(X_{t-1}\)</span>.</p>
+<p>b) <span class="math notranslate nohighlight">\(Y_t\)</span> is conditionally independent of <span class="math notranslate nohighlight">\(Y_{1:t-1}\)</span> given <span class="math notranslate nohighlight">\(X_t\)</span>.</p>
+<p>c) <span class="math notranslate nohighlight">\(X_t\)</span> is conditionally independent of <span class="math notranslate nohighlight">\(X_{t-2}\)</span> given <span class="math notranslate nohighlight">\(X_{t-1}\)</span>.</p>
+<p>d) All of the above.</p>
+<p><strong>5</strong> In the Kalman filter, what does the Kalman gain matrix <span class="math notranslate nohighlight">\(K_t\)</span> represent?</p>
+<p>a) The covariance matrix of the state estimate at time <span class="math notranslate nohighlight">\(t\)</span>.</p>
+<p>b) The covariance matrix of the observation at time <span class="math notranslate nohighlight">\(t\)</span>.</p>
+<p>c) The weight given to the observation at time <span class="math notranslate nohighlight">\(t\)</span> when updating the state estimate.</p>
+<p>d) The weight given to the previous state estimate when predicting the current state.</p>
+<p>Answer for 1: a. Justification: The text defines the Schur complement of <span class="math notranslate nohighlight">\(B_{11}\)</span> as <span class="math notranslate nohighlight">\(B / B_{11} := B_{22} - B_{12}^T B_{11}^{-1} B_{12}\)</span>.</p>
+<p>Answer for 2: c. Justification: The text states “the Schur complement of the block <span class="math notranslate nohighlight">\(B_{11}\)</span>, i.e., the matrix <span class="math notranslate nohighlight">\(B/B_{11} := B_{22} - B_{12}^T B_{11}^{-1} B_{12}\)</span>, is symmetric and positive definite.”</p>
+<p>Answer for 3: a. Justification: The conditional distribution of <span class="math notranslate nohighlight">\(X_1\)</span> given <span class="math notranslate nohighlight">\(X_2\)</span> is derived in the text as <span class="math notranslate nohighlight">\(X_1 | X_2 \sim \mathcal{N}(\mu_1 + \Sigma_{12}\Sigma_{22}^{-1}(X_2 - \mu_2), \Sigma_{11} - \Sigma_{12}\Sigma_{22}^{-1}\Sigma_{12}^T)\)</span>.</p>
+<p>Answer for 4: d. Justification: The text explicitly states these conditional independence relationships.</p>
+<p>Answer for 5: c. Justification: The text defines <span class="math notranslate nohighlight">\(K_t := P_{t-1} H^T (H P_{t-1} H^T + R)^{-1}\)</span> as the Kalman gain matrix, which is used to update the state estimate as <span class="math notranslate nohighlight">\(\mu_t := F \mu_{t-1} + K_t (Y_t - H F \mu_{t-1})\)</span>, where <span class="math notranslate nohighlight">\(K_t\)</span> weighs the innovation <span class="math notranslate nohighlight">\((Y_t - H F \mu_{t-1})\)</span>.</p>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./chap06_prob/05_kalman"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="../04_em/roch-mmids-prob-em.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title"><span class="section-number">6.4. </span>Modeling more complex dependencies 2: marginalizing out an unobserved variable</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="../exercises/roch-mmids-prob-exercises.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title"><span class="section-number">6.6. </span>Exercises</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#multivariate-gaussians-marginals-and-conditionals">6.5.1. Multivariate Gaussians: marginals and conditionals</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#kalman-filter">6.5.2. Kalman filter</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#back-to-location-tracking">6.5.3. Back to location tracking</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Sebastien Roch
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2024.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

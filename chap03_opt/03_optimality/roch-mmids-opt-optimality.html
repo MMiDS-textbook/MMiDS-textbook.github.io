@@ -1,0 +1,1489 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>3.3. Optimality conditions &#8212; MMiDS Textbook</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.5.1/css/all.min.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.1/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.1/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.1/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b76e3c8a" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=384b581d" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css?v=be8a1c11" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=87e54e7c" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae" />
+  <script src="../../_static/vendor/fontawesome/6.5.1/js/all.min.js?digest=8d27b9dea8ad943066ae"></script>
+
+    <script src="../../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?v=efea14e4"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../_static/design-tabs.js?v=f930bc37"></script>
+    <script async="async" src="https://www.googletagmanager.com/gtag/js?id=G-P5E8DW088F"></script>
+    <script>
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){ dataLayer.push(arguments); }
+                gtag('js', new Date());
+                gtag('config', 'G-P5E8DW088F');
+            </script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){ dataLayer.push(arguments); }
+                gtag('js', new Date());
+                gtag('config', 'G-P5E8DW088F');
+            </script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'chap03_opt/03_optimality/roch-mmids-opt-optimality';</script>
+    <link rel="canonical" href="https://mmids-textbook.github.io/chap03_opt/03_optimality/roch-mmids-opt-optimality.html" />
+    <link rel="icon" href="https://mmids-textbook.github.io/favicon-32x32.png"/>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="3.4. Convexity" href="../04_convexity/roch-mmids-opt-convexity.html" />
+    <link rel="prev" title="3.2. Background: review of differentiable functions of several variables" href="../02_several/roch-mmids-opt-several.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a id="pst-skip-link" class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+
+<a class="navbar-brand logo" href="../../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/mmids-cover-small.jpg" class="logo__image only-light" alt="MMiDS Textbook - Home"/>
+    <script>document.write(`<img src="../../_static/mmids-cover-small.jpg" class="logo__image only-dark" alt="MMiDS Textbook - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../index.html">
+                    <b>MATHEMATICAL METHODS in DATA SCIENCE (with Python)</b>
+                </a>
+            </li>
+        </ul>
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../chap01_intro/00_intro/roch-mmids-intro-intro.html">1. Introduction: a first data science problem</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../chap01_intro/01_motiv/roch-mmids-intro-motiv.html">1.1. Motivating example: identifying penguin species</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap01_intro/02_review/roch-mmids-intro-review.html">1.2. Background: quick refresher of matrix algebra, differential calculus, and elementary probability</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap01_intro/03_clustering/roch-mmids-intro-clustering.html">1.3. Clustering: an objective, an algorithm and a guarantee</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap01_intro/04_highdim/roch-mmids-intro-highdim.html">1.4. Some observations about high-dimensional data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap01_intro/exercises/roch-mmids-intro-exercises.html">1.5. Exercises</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap01_intro/supp/roch-mmids-intro-supp.html">1.6. Online suppplementary material</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../chap02_ls/00_intro/roch-mmids-ls-intro.html">2. Least squares: geometric, algebraic, and numerical aspects</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../chap02_ls/01_motiv/roch-mmids-ls-motiv.html">2.1. Motivating example: predicting sales</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap02_ls/02_spaces/roch-mmids-ls-spaces.html">2.2. Background: review of vector spaces and matrix inverses</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap02_ls/03_orthog/roch-mmids-ls-orthog.html">2.3. Geometry of least squares: the orthogonal projection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap02_ls/04_qr/roch-mmids-ls-qr.html">2.4. QR decomposition and Householder transformations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap02_ls/05_regression/roch-mmids-ls-regression.html">2.5. Application: regression analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap02_ls/exercises/roch-mmids-ls-exercises.html">2.6. Exercises</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap02_ls/supp/roch-mmids-ls-supp.html">2.7. Online suppplementary material</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="../00_intro/roch-mmids-opt-intro.html">3. Optimization theory and algorithms</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-3"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../01_motiv/roch-mmids-opt-motiv.html">3.1. Motivating example:  analyzing customer satisfaction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../02_several/roch-mmids-opt-several.html">3.2. Background: review of differentiable functions of several variables</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">3.3. Optimality conditions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../04_convexity/roch-mmids-opt-convexity.html">3.4. Convexity</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../05_gd/roch-mmids-opt-gd.html">3.5. Gradient descent and its convergence analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../06_logistic/roch-mmids-opt-logistic.html">3.6. Application: logistic regression</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../exercises/roch-mmids-opt-exercises.html">3.7. Exercises</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../supp/roch-mmids-opt-supp.html">3.8. Online suppplementary material</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../chap04_svd/00_intro/roch-mmids-svd-intro.html">4. Singular value decomposition</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-4"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../chap04_svd/01_motiv/roch-mmids-svd-motiv.html">4.1. Motivating example: visualizing viral evolution</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap04_svd/02_spectral/roch-mmids-svd-spectral.html">4.2. Background: review of matrix rank  and spectral decomposition</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap04_svd/03_svd/roch-mmids-svd-svd.html">4.3. Approximating subspaces and the SVD</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap04_svd/04_power/roch-mmids-svd-power.html">4.4. Power iteration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap04_svd/05_pca/roch-mmids-svd-pca.html">4.5. Application: principal components analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap04_svd/06_further/roch-mmids-svd-further.html">4.6. Further applications of the SVD: low-rank approximations and ridge regression</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap04_svd/exercises/roch-mmids-svd-exercises.html">4.7. Exercises</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap04_svd/supp/roch-mmids-svd-supp.html">4.8. Online suppplementary material</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../chap05_specgraph/00_intro/roch-mmids-specgraph-intro.html">5. Spectral graph theory</a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-5"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../chap05_specgraph/01_motiv/roch-mmids-specgraph-motiv.html">5.1. Motivating example: uncovering social groups</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap05_specgraph/02_graph/roch-mmids-specgraph-graph.html">5.2. Background: basic concepts in graph theory</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap05_specgraph/03_extremal/roch-mmids-specgraph-extremal.html">5.3. Variational characterization of eigenvalues</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap05_specgraph/04_laplacian/roch-mmids-specgraph-laplacian.html">5.4. Spectral properties of the Laplacian matrix</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap05_specgraph/05_partitioning/roch-mmids-specgraph-partitioning.html">5.5. Application: graph partitioning via spectral clustering</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap05_specgraph/06_sbm/roch-mmids-specgraph-sbm.html">5.6. Erdős-Rényi random graph and stochastic blockmodel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap05_specgraph/exercises/roch-mmids-specgraph-exercises.html">5.7. Exercises</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap05_specgraph/supp/roch-mmids-specgraph-supp.html">5.8. Online supplementary material</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../chap06_prob/00_intro/roch-mmids-prob-intro.html">6. Probabilistic models: from simple to complex</a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-6"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../chap06_prob/01_motiv/roch-mmids-prob-motiv.html">6.1. Motivating example: tracking location</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap06_prob/02_parametric/roch-mmids-prob-parametric.html">6.2. Background: introduction to parametric families and maximum likelihood estimation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap06_prob/03_joint/roch-mmids-prob-joint.html">6.3. Modeling more complex dependencies 1: using conditional independence</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap06_prob/04_em/roch-mmids-prob-em.html">6.4. Modeling more complex dependencies 2: marginalizing out an unobserved variable</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap06_prob/05_kalman/roch-mmids-prob-kalman.html">6.5. Application: linear-Gaussian models and Kalman filtering</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap06_prob/exercises/roch-mmids-prob-exercises.html">6.6. Exercises</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap06_prob/supp/roch-mmids-prob-supp.html">6.7. Online supplementary material</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../chap07_rwmc/00_intro/roch-mmids-rwmc-intro.html">7. Random walks on graphs and Markov chains</a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-7"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../chap07_rwmc/01_motiv/roch-mmids-rwmc-motiv.html">7.1. Motivating example: discovering mathematical topics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap07_rwmc/02_mcdefs/roch-mmids-rwmc-mcdefs.html">7.2. Background: elements of finite Markov chains</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap07_rwmc/03_stat/roch-mmids-rwmc-stat.html">7.3. Limit behavior 1: stationary distributions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap07_rwmc/04_mclimit/roch-mmids-rwmc-mclimit.html">7.4. Limit behavior 2: convergence to equilibrium</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap07_rwmc/05_pagerank/roch-mmids-rwmc-pagerank.html">7.5. Application: random walks on graphs and PageRank</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap07_rwmc/06_gibbs/roch-mmids-rwmc-gibbs.html">7.6. Further applications: Gibbs sampling and generating images</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap07_rwmc/exercises/roch-mmids-rwmc-exercises.html">7.7. Exercises</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap07_rwmc/supp/roch-mmids-rwmc-supp.html">7.8. Online supplementary material</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../chap08_nn/00_intro/roch-mmids-nn-intro.html">8. Neural networks, backpropagation and stochastic gradient descent</a><input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-8"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../chap08_nn/01_motiv/roch-mmids-nn-motiv.html">8.1. Motivating example:  classifying natural images</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap08_nn/02_chain/roch-mmids-nn-chain.html">8.2. Background: Jacobian, chain rule, and a brief introduction to automatic differentiation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap08_nn/03_backprop/roch-mmids-nn-backprop.html">8.3. Building blocks of AI 1: backpropagation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap08_nn/04_sgd/roch-mmids-nn-sgd.html">8.4. Building blocks of AI 2: stochastic gradient descent</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap08_nn/05_nn/roch-mmids-nn-nn.html">8.5. Building blocks of AI 3: neural networks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap08_nn/exercises/roch-mmids-nn-exercises.html">8.6. Exercises</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap08_nn/supp/roch-mmids-nn-supp.html">8.7. Online supplementary material</a></li>
+</ul>
+</li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/MMiDS-textbook/MMiDS-textbook.github.io" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/MMiDS-textbook/MMiDS-textbook.github.io/issues/new?title=Issue%20on%20page%20%2Fchap03_opt/03_optimality/roch-mmids-opt-optimality.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/chap03_opt/03_optimality/roch-mmids-opt-optimality.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Optimality conditions</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#first-order-conditions">3.3.1. First-order conditions</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#second-order-conditions">3.3.2. Second-order conditions</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#adding-equality-constraints">3.3.3. Adding equality constraints</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <p><span class="math notranslate nohighlight">\(\newcommand{\bmu}{\boldsymbol{\mu}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bSigma}{\boldsymbol{\Sigma}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bfbeta}{\boldsymbol{\beta}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bflambda}{\boldsymbol{\lambda}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bgamma}{\boldsymbol{\gamma}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bsigma}{{\boldsymbol{\sigma}}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bpi}{\boldsymbol{\pi}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\btheta}{{\boldsymbol{\theta}}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bphi}{\boldsymbol{\phi}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\balpha}{\boldsymbol{\alpha}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\blambda}{\boldsymbol{\lambda}}\)</span>
+<span class="math notranslate nohighlight">\(\renewcommand{\P}{\mathbb{P}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\E}{\mathbb{E}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\indep}{\perp\!\!\!\perp} \newcommand{\bx}{\mathbf{x}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bp}{\mathbf{p}}\)</span>
+<span class="math notranslate nohighlight">\(\renewcommand{\bx}{\mathbf{x}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bX}{\mathbf{X}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\by}{\mathbf{y}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bY}{\mathbf{Y}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bz}{\mathbf{z}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bZ}{\mathbf{Z}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bw}{\mathbf{w}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bW}{\mathbf{W}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bv}{\mathbf{v}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bV}{\mathbf{V}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bfg}{\mathbf{g}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bfh}{\mathbf{h}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\horz}{\rule[.5ex]{2.5ex}{0.5pt}}\)</span>
+<span class="math notranslate nohighlight">\(\renewcommand{\S}{\mathcal{S}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\X}{\mathcal{X}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\var}{\mathrm{Var}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\pa}{\mathrm{pa}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\Z}{\mathcal{Z}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bh}{\mathbf{h}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bb}{\mathbf{b}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bc}{\mathbf{c}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\cE}{\mathcal{E}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\cP}{\mathcal{P}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bbeta}{\boldsymbol{\beta}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bLambda}{\boldsymbol{\Lambda}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\cov}{\mathrm{Cov}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bfk}{\mathbf{k}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\idx}[1]{}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\xdi}{}\)</span></p>
+<section id="optimality-conditions">
+<h1><span class="section-number">3.3. </span>Optimality conditions<a class="headerlink" href="#optimality-conditions" title="Link to this heading">#</a></h1>
+<p>In this section, we derive optimality conditions for unconstrained continuous optimization problems.</p>
+<p>We will be interested in unconstrained optimization of the form:</p>
+<div class="math notranslate nohighlight">
+\[
+\min_{\mathbf{x} \in \mathbb{R}^d} f(\mathbf{x})
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(f : \mathbb{R}^d \to \mathbb{R}\)</span>. In this subsection, we define several notions of solution and derive characterizations.</p>
+<p>We have observed before that, in general, finding a global minimizer and certifying that one has been found can be difficult unless some special structure is present. Therefore weaker notions of solution are needed. We previously introduced the concept of a local minimizer. In words, <span class="math notranslate nohighlight">\(\mathbf{x}^*\)</span> is a local minimizer if there is open ball around <span class="math notranslate nohighlight">\(\mathbf{x}^*\)</span> where it attains the minimum value. The difference between global and local minimizers is illustrated in the next figure.</p>
+<section id="first-order-conditions">
+<h2><span class="section-number">3.3.1. </span>First-order conditions<a class="headerlink" href="#first-order-conditions" title="Link to this heading">#</a></h2>
+<p>Local minimizers can be characterized in terms of the gradient. We first define the concept of directional derivative.</p>
+<p><strong>Directional derivative</strong> Partial derivatives measure the rate of change of a function along the axes. More generally:</p>
+<p><strong>DEFINITION</strong> <strong>(Directional Derivative)</strong> <span class="math notranslate nohighlight">\(\idx{directional derivative}\xdi\)</span> Let <span class="math notranslate nohighlight">\(f : D \to \mathbb{R}\)</span> where <span class="math notranslate nohighlight">\(D \subseteq \mathbb{R}^d\)</span>, let <span class="math notranslate nohighlight">\(\mathbf{x}_0 = (x_{0,1},\ldots,x_{0,d}) \in D\)</span> be an interior point of <span class="math notranslate nohighlight">\(D\)</span> and let <span class="math notranslate nohighlight">\(\mathbf{v} = (v_1,\ldots,v_d) \in \mathbb{R}^d\)</span> be a nonzero vector. The directional derivative of <span class="math notranslate nohighlight">\(f\)</span> at <span class="math notranslate nohighlight">\(\mathbf{x}_0\)</span> in the direction <span class="math notranslate nohighlight">\(\mathbf{v}\)</span> is</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+\frac{\partial f (\mathbf{x}_0)}{\partial \mathbf{v}} 
+&amp;= \lim_{h \to 0} \frac{f(\mathbf{x}_0 + h \mathbf{v}) - f(\mathbf{x}_0)}{h}\\
+&amp;= \lim_{h \to 0} \frac{f(x_{0,1} + h v_1,\ldots,x_{0,d} + h v_d) - f(x_{0,1},\ldots,x_{0,d})}{h}
+\end{align*}\]</div>
+<p>provided the limit exists. <span class="math notranslate nohighlight">\(\natural\)</span></p>
+<p>Typically, <span class="math notranslate nohighlight">\(\mathbf{v}\)</span> is a unit vector.</p>
+<p>Note that taking <span class="math notranslate nohighlight">\(\mathbf{v} = \mathbf{e}_i\)</span> recovers the <span class="math notranslate nohighlight">\(i\)</span>-th partial derivative</p>
+<div class="math notranslate nohighlight">
+\[
+\frac{\partial f (\mathbf{x}_0)}{\partial \mathbf{e}_i} 
+= \lim_{h \to 0} \frac{f(\mathbf{x}_0 + h \mathbf{e}_i) - f(\mathbf{x}_0)}{h}
+= \frac{\partial f (\mathbf{x}_0)}{\partial x_i}.
+\]</div>
+<p>Conversely, a general directional derivative can be expressed in terms of the partial derivatives.</p>
+<p><strong>THEOREM</strong> <strong>(Directional Derivative and Gradient)</strong> <span class="math notranslate nohighlight">\(\idx{directional derivative and gradient theorem}\xdi\)</span> Let <span class="math notranslate nohighlight">\(f : D \to \mathbb{R}\)</span> where <span class="math notranslate nohighlight">\(D \subseteq \mathbb{R}^d\)</span>, let <span class="math notranslate nohighlight">\(\mathbf{x}_0 \in D\)</span> be an interior point of <span class="math notranslate nohighlight">\(D\)</span> and let <span class="math notranslate nohighlight">\(\mathbf{v} \in \mathbb{R}^d\)</span> be a vector. Assume that <span class="math notranslate nohighlight">\(f\)</span> is continuously differentiable at <span class="math notranslate nohighlight">\(\mathbf{x}_0\)</span>. Then the directional derivative of <span class="math notranslate nohighlight">\(f\)</span> at <span class="math notranslate nohighlight">\(\mathbf{x}_0\)</span> in the direction <span class="math notranslate nohighlight">\(\mathbf{v}\)</span> is given by</p>
+<div class="math notranslate nohighlight">
+\[
+\frac{\partial f (\mathbf{x}_0)}{\partial \mathbf{v}} 
+= \nabla f(\mathbf{x}_0)^T \mathbf{v}.
+\]</div>
+<p><span class="math notranslate nohighlight">\(\sharp\)</span></p>
+<p>Put differently, when <span class="math notranslate nohighlight">\(\mathbf{v}\)</span> is a unit vector, the directional derivative is the length of the orthogonal projection of the gradient onto <span class="math notranslate nohighlight">\(\mathbf{v}\)</span>.</p>
+<p><em>Proof idea:</em> To bring out the partial derivatives, we re-write the directional derivative as the derivative of a composition of <span class="math notranslate nohighlight">\(f\)</span> with an affine function. We then use the <em>Chain Rule</em>.</p>
+<p><em>Proof:</em> Consider the composition <span class="math notranslate nohighlight">\(\beta(h) = f(\boldsymbol{\alpha}(h))\)</span> where <span class="math notranslate nohighlight">\(\boldsymbol{\alpha}(h) = \mathbf{x}_0 + h \mathbf{v}\)</span>. Observe that <span class="math notranslate nohighlight">\(\boldsymbol{\alpha}(0)= \mathbf{x}_0\)</span> and <span class="math notranslate nohighlight">\(\beta(0)= f(\mathbf{x}_0)\)</span>. Then, by definition of the derivative,</p>
+<div class="math notranslate nohighlight">
+\[
+\frac{\mathrm{d} \beta(0)}{\mathrm{d} h}
+= \lim_{h \to 0} \frac{\beta(h) - \beta(0)}{h}
+= \lim_{h \to 0} \frac{f(\mathbf{x}_0 + h \mathbf{v}) - f(\mathbf{x}_0)}{h}
+= \frac{\partial f (\mathbf{x}_0)}{\partial \mathbf{v}}.
+\]</div>
+<p>Applying the <em>Chain Rule</em> and the parametric line example from the previous section, we arrive at</p>
+<div class="math notranslate nohighlight">
+\[
+\frac{\mathrm{d} \beta(0)}{\mathrm{d} h}
+= \nabla f(\boldsymbol{\alpha}(0))^T 
+\boldsymbol{\alpha}'(0)
+= \nabla f(\mathbf{x}_0)^T 
+\mathbf{v}.
+\]</div>
+<p><span class="math notranslate nohighlight">\(\square\)</span></p>
+<p><img alt="Contour plot of the function . At the point , the gradient and a directional derivative are shown (with the help from ChatGPT; converted and adapted from (Source))" src="../../_images/directional.png" /></p>
+<p><strong>KNOWLEDGE CHECK:</strong> Let <span class="math notranslate nohighlight">\(f : \mathbb{R}^2 \to \mathbb{R}\)</span> be continuously differentiable. Suppose that</p>
+<div class="math notranslate nohighlight">
+\[
+\frac{\partial f (\mathbf{x}_0)}{\partial \mathbf{v}} 
+= \frac{3}{\sqrt{5}} 
+\qquad 
+\text{and}
+\qquad
+\frac{\partial f (\mathbf{x}_0)}{\partial \mathbf{w}} 
+= \frac{5}{\sqrt{5}}
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(\mathbf{v} = (1,2)/\sqrt{5}\)</span> and <span class="math notranslate nohighlight">\(\mathbf{w} = (2,1)/\sqrt{5}\)</span>. Compute the gradient of <span class="math notranslate nohighlight">\(f\)</span> at <span class="math notranslate nohighlight">\(\mathbf{x}_0\)</span>. <span class="math notranslate nohighlight">\(\checkmark\)</span></p>
+<p><strong>Descent direction</strong> Earlier in the book, we proved a key insight about the derivative of a single-variable function <span class="math notranslate nohighlight">\(f\)</span> at a point <span class="math notranslate nohighlight">\(x_0\)</span>: it tells us where to find smaller values. We generalize the <em>Descent Direction Lemma</em> to the multivariable case.</p>
+<p>First, we observe that in the continuously differentiable case the directional derivative gives a criterion for descent directions.</p>
+<p><strong>LEMMA</strong> <strong>(Descent Direction and Directional Derivative)</strong> <span class="math notranslate nohighlight">\(\idx{descent direction and directional derivative lemma}\xdi\)</span> Let <span class="math notranslate nohighlight">\(f : \mathbb{R}^d \to \mathbb{R}\)</span> be continuously differentiable at <span class="math notranslate nohighlight">\(\mathbf{x}_0\)</span>. A vector <span class="math notranslate nohighlight">\(\mathbf{v}\)</span> is a descent direction for <span class="math notranslate nohighlight">\(f\)</span> at <span class="math notranslate nohighlight">\(\mathbf{x}_0\)</span> if</p>
+<div class="math notranslate nohighlight">
+\[
+\frac{\partial f (\mathbf{x}_0)}{\partial \mathbf{v}} 
+= \nabla f(\mathbf{x}_0)^T \mathbf{v}
+&lt; 0
+\]</div>
+<p>that is, if the directional derivative of <span class="math notranslate nohighlight">\(f\)</span> at <span class="math notranslate nohighlight">\(\mathbf{x}_0\)</span> in the direction <span class="math notranslate nohighlight">\(\mathbf{v}\)</span> is negative. <span class="math notranslate nohighlight">\(\flat\)</span></p>
+<p><em>Proof idea:</em> In anticipation of the proof of the second-order condition, we use the <em>Mean Value Theorem</em> to show that <span class="math notranslate nohighlight">\(f\)</span> takes smaller values in direction <span class="math notranslate nohighlight">\(\mathbf{v}\)</span>. A simpler proof based on the definition of the directional derivative is also possible (Try it!).</p>
+<p><em>Proof:</em> Suppose there is <span class="math notranslate nohighlight">\(\mathbf{v} \in \mathbb{R}^d\)</span> such that <span class="math notranslate nohighlight">\(\nabla f(\mathbf{x}_0)^T \mathbf{v} = -\eta &lt; 0\)</span>. For <span class="math notranslate nohighlight">\(\alpha &gt; 0\)</span>, the <em>Mean Value Theorem</em> implies that there is <span class="math notranslate nohighlight">\(\xi_\alpha \in (0,1)\)</span> such that</p>
+<div class="math notranslate nohighlight">
+\[
+f(\mathbf{x}_0 + \alpha \mathbf{v})
+= f(\mathbf{x}_0) + \nabla f(\mathbf{x}_0 + \xi_\alpha \alpha \mathbf{v})^T(\alpha \mathbf{v})
+= f(\mathbf{x}_0) + \alpha  \nabla f(\mathbf{x}_0 + \xi_\alpha \alpha \mathbf{v})^T \mathbf{v}.
+\]</div>
+<p>We want to show that the second term on the right-hand side is negative. We cannot immediately apply our condition on <span class="math notranslate nohighlight">\(\mathbf{v}\)</span> as the gradient in the previous equation is taken at <span class="math notranslate nohighlight">\(\mathbf{x}_0 + \xi_\alpha \alpha \mathbf{v}\)</span>, not <span class="math notranslate nohighlight">\(\mathbf{x}_0\)</span>.</p>
+<p>The gradient is continuous (in the sense that all its components are continuous). In particular, the function <span class="math notranslate nohighlight">\(\nabla f(\mathbf{x})^T \mathbf{v}\)</span> is continuous as a linear combination of continuous functions. By the definition of continuity, for any <span class="math notranslate nohighlight">\(\epsilon &gt; 0\)</span> – say <span class="math notranslate nohighlight">\(\epsilon = \eta/2\)</span> – there is <span class="math notranslate nohighlight">\(\delta &gt; 0\)</span> small enough such that all <span class="math notranslate nohighlight">\(\mathbf{x} \in B_\delta(\mathbf{x}_0)\)</span> satisfy</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+\left|\nabla f(\mathbf{x})^T \mathbf{v}
+- \nabla f(\mathbf{x}_0)^T \mathbf{v}\,\right|
+&amp;&lt; \epsilon = \eta/2.
+\end{align*}\]</div>
+<p>Take <span class="math notranslate nohighlight">\(\alpha^* &gt; 0\)</span> small enough that <span class="math notranslate nohighlight">\(\mathbf{x}_0 + \alpha^* \mathbf{v} \in B_\delta(\mathbf{x}_0)\)</span>. Then, for all <span class="math notranslate nohighlight">\(\alpha \in (0,\alpha^*)\)</span>, whatever <span class="math notranslate nohighlight">\(\xi_\alpha \in (0,1)\)</span> is, it holds that <span class="math notranslate nohighlight">\(\mathbf{x}_0 + \xi_\alpha \alpha \mathbf{v} \in B_\delta(\mathbf{x}_0)\)</span>. Hence,</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+\nabla f(\mathbf{x}_0 + \xi_\alpha \alpha \mathbf{v})^T \mathbf{v}
+&amp;= \nabla f(\mathbf{x}_0)^T \mathbf{v} + (\nabla f(\mathbf{x}_0 + \xi_\alpha \alpha \mathbf{v})^T \mathbf{v} - \nabla f(\mathbf{x}_0)^T \mathbf{v})\\
+&amp;\leq \nabla f(\mathbf{x}_0)^T \mathbf{v} + 
+\left|\nabla f(\mathbf{x}_0 + \xi_\alpha \alpha \mathbf{v})^T \mathbf{v} - \nabla f(\mathbf{x}_0)^T \mathbf{v}\,\right|\\
+&amp;&lt;  -\eta + \eta/2\\
+&amp;= - \eta/2 &lt; 0.
+\end{align*}\]</div>
+<p>by definition of <span class="math notranslate nohighlight">\(\eta\)</span>. That implies</p>
+<div class="math notranslate nohighlight">
+\[
+f(\mathbf{x}_0 + \alpha \mathbf{v})
+&lt; f(\mathbf{x}_0) - \alpha \eta/2 &lt; f(\mathbf{x}_0),
+\quad \forall \alpha \in (0,\alpha^*)
+\]</div>
+<p>and proves the claim. <span class="math notranslate nohighlight">\(\square\)</span></p>
+<p><strong>LEMMA</strong> <strong>(Descent Direction)</strong> <span class="math notranslate nohighlight">\(\idx{descent direction lemma}\xdi\)</span> Let <span class="math notranslate nohighlight">\(f : \mathbb{R}^d \to \mathbb{R}\)</span> be continuously differentiable at <span class="math notranslate nohighlight">\(\mathbf{x}_0\)</span> and assume that <span class="math notranslate nohighlight">\(\nabla f(\mathbf{x}_0) \neq 0\)</span>. Then <span class="math notranslate nohighlight">\(f\)</span> has a descent direction at <span class="math notranslate nohighlight">\(\mathbf{x}_0\)</span>. <span class="math notranslate nohighlight">\(\flat\)</span></p>
+<p><em>Proof:</em> Take <span class="math notranslate nohighlight">\(\mathbf{v} = - \nabla f(\mathbf{x}_0)\)</span>. Then <span class="math notranslate nohighlight">\(\nabla f(\mathbf{x}_0)^T \mathbf{v} = - \|\nabla f(\mathbf{x}_0)\|^2 &lt; 0\)</span> since <span class="math notranslate nohighlight">\(\nabla f(\mathbf{x}_0) \neq \mathbf{0}\)</span>. <span class="math notranslate nohighlight">\(\square\)</span></p>
+<p>This leads to the following fundamental result.</p>
+<p><strong>THEOREM</strong> <strong>(First-Order Necessary Optimality Condition)</strong> <span class="math notranslate nohighlight">\(\idx{first-order necessary optimality condition}\xdi\)</span> Let <span class="math notranslate nohighlight">\(f : \mathbb{R}^d \to \mathbb{R}\)</span> be continuously differentiable on <span class="math notranslate nohighlight">\(\mathbb{R}^d\)</span>. If <span class="math notranslate nohighlight">\(\mathbf{x}_0\)</span> is a local minimizer, then <span class="math notranslate nohighlight">\(\nabla f(\mathbf{x}_0) = \mathbf{0}\)</span>. <span class="math notranslate nohighlight">\(\sharp\)</span></p>
+<p><em>Proof idea:</em> In a descent direction, <span class="math notranslate nohighlight">\(f\)</span> decreases hence there cannot be one at a local minimizer.</p>
+<p><em>Proof:</em> We argue by contradiction. Suppose that <span class="math notranslate nohighlight">\(\nabla f(\mathbf{x}_0) \neq 0\)</span>. By the <em>Descent Direction Lemma</em>, there is a descent direction <span class="math notranslate nohighlight">\(\mathbf{v} \in \mathbb{R}^d\)</span> at <span class="math notranslate nohighlight">\(\mathbf{x}_0\)</span>. That implies</p>
+<div class="math notranslate nohighlight">
+\[
+f(\mathbf{x}_0 + \alpha \mathbf{v})
+&lt; f(\mathbf{x}_0), \quad \forall \alpha \in (0, \alpha^*) 
+\]</div>
+<p>for some <span class="math notranslate nohighlight">\(\alpha^* &gt; 0\)</span>. So every open ball around <span class="math notranslate nohighlight">\(\mathbf{x}_0\)</span> has a point achieving a smaller value than <span class="math notranslate nohighlight">\(f(\mathbf{x}_0)\)</span>. Thus <span class="math notranslate nohighlight">\(\mathbf{x}_0\)</span> is not a local minimizer, a contradiction. So it must be that <span class="math notranslate nohighlight">\(\nabla f(\mathbf{x}_0) = \mathbf{0}\)</span>. <span class="math notranslate nohighlight">\(\square\)</span></p>
+<p>A point satisfying the first-order necessary conditions is called a stationary point.</p>
+<p><strong>DEFINITION</strong> <strong>(Stationary Point)</strong> <span class="math notranslate nohighlight">\(\idx{stationary point}\xdi\)</span> Let <span class="math notranslate nohighlight">\(f : D \to \mathbb{R}\)</span> be continuously differentiable on an open set <span class="math notranslate nohighlight">\(D \subseteq \mathbb{R}^d\)</span>. If <span class="math notranslate nohighlight">\(\nabla f(\mathbf{x}_0) = \mathbf{0}\)</span>, we say that <span class="math notranslate nohighlight">\(\mathbf{x}_0 \in D\)</span> is a stationary point of <span class="math notranslate nohighlight">\(f\)</span>. <span class="math notranslate nohighlight">\(\natural\)</span></p>
+<p><strong>EXAMPLE:</strong> <strong>(Rayleight Quotient)</strong> Let <span class="math notranslate nohighlight">\(A \in \mathbb{R}^{d \times d}\)</span> be a symmetric matrix. The associated Rayleigh quotient<span class="math notranslate nohighlight">\(\idx{Rayleigh quotient}\xdi\)</span> is</p>
+<div class="math notranslate nohighlight">
+\[
+\mathcal{R}_A(\mathbf{u})
+= \frac{\langle \mathbf{u}, A \mathbf{u} \rangle}{\langle \mathbf{u}, \mathbf{u} \rangle}
+\]</div>
+<p>which is defined for any <span class="math notranslate nohighlight">\(\mathbf{u} = (u_1,\ldots,u_d) \neq \mathbf{0}\)</span> in <span class="math notranslate nohighlight">\(\mathbb{R}^{d}\)</span>. As a function from <span class="math notranslate nohighlight">\(\mathbb{R}^{d} \setminus \{\mathbf{0}\}\)</span> to <span class="math notranslate nohighlight">\(\mathbb{R}\)</span>, <span class="math notranslate nohighlight">\(\mathcal{R}_A(\mathbf{u})\)</span> is continuously differentiable. We find its stationary points.</p>
+<p>We use the <a class="reference external" href="https://en.wikipedia.org/wiki/Quotient_rule">quotient rule</a> and our previous results on the gradient of quadratic functions. Specifically, note that (using that <span class="math notranslate nohighlight">\(A\)</span> is symmetric)</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+\frac{\partial}{\partial u_i} \mathcal{R}_A(\mathbf{u})
+&amp;= \frac{\left(\frac{\partial}{\partial u_i} \langle \mathbf{u}, A \mathbf{u} \rangle\right) \langle \mathbf{u}, \mathbf{u} \rangle
+- \langle \mathbf{u}, A \mathbf{u} \rangle \left( \frac{\partial}{\partial u_i} \langle \mathbf{u}, \mathbf{u} \rangle\right)}{\langle \mathbf{u}, \mathbf{u} \rangle^2}\\
+&amp;= \frac{2\left(\frac{\partial}{\partial u_i} \frac{1}{2}\mathbf{u}^T A \mathbf{u}\right) \|\mathbf{u}\|^2
+- \mathbf{u}^T A \mathbf{u} \left( \frac{\partial}{\partial u_i} \sum_{j=1}^d u_j^2\right)}{\|\mathbf{u}\|^4}\\
+&amp;= \frac{2\left(A \mathbf{u}\right)_i \|\mathbf{u}\|^2
+- \mathbf{u}^T A \mathbf{u} \left( 2 u_i \right)}{\|\mathbf{u}\|^4}\\
+&amp;= \frac{2}{\|\mathbf{u}\|^2}\left\{\left(A \mathbf{u}\right)_i
+- \mathcal{R}_A(\mathbf{u}) u_i \right\}.
+\end{align*}\]</div>
+<p>In vector form this is</p>
+<div class="math notranslate nohighlight">
+\[
+\nabla \mathcal{R}_A(\mathbf{u})
+= \frac{2}{\|\mathbf{u}\|^2} \left\{A \mathbf{u}
+- \mathcal{R}_A(\mathbf{u}) \,\mathbf{u} \right\}.
+\]</div>
+<p>The stationary points satisfy <span class="math notranslate nohighlight">\(\nabla \mathcal{R}_A(\mathbf{u})
+= \mathbf{0}\)</span>, or after getting rid of the denominator and rearranging,</p>
+<div class="math notranslate nohighlight">
+\[
+A \mathbf{u}
+= \mathcal{R}_A(\mathbf{u}) \,\mathbf{u}.
+\]</div>
+<p>The solutions to this system are eigenvectors of <span class="math notranslate nohighlight">\(A\)</span>, that is, they satisfy <span class="math notranslate nohighlight">\(A\mathbf{u} = \lambda \mathbf{u}\)</span> for some eigenvalue <span class="math notranslate nohighlight">\(\lambda\)</span>. If <span class="math notranslate nohighlight">\(\mathbf{q}_i\)</span> is a unit eigenvector of <span class="math notranslate nohighlight">\(A\)</span> with eigenvalue <span class="math notranslate nohighlight">\(\lambda_i\)</span>, then we have that <span class="math notranslate nohighlight">\(\mathcal{R}_A(\mathbf{q}_i) = \lambda_i\)</span> (Check it!) and</p>
+<div class="math notranslate nohighlight">
+\[
+A \mathbf{q}_i
+= \mathcal{R}_A(\mathbf{q}_i) \,\mathbf{q}_i
+= \lambda_i \mathbf{q}_i.
+\]</div>
+<p>The eigenvectors of <span class="math notranslate nohighlight">\(A\)</span> are not in general local minimizers of its Rayleigh quotient. In fact one of them – the largest one – is a global maximizer! <span class="math notranslate nohighlight">\(\lhd\)</span></p>
+</section>
+<section id="second-order-conditions">
+<h2><span class="section-number">3.3.2. </span>Second-order conditions<a class="headerlink" href="#second-order-conditions" title="Link to this heading">#</a></h2>
+<p>Local minimizers can also be characterized in terms of the Hessian.</p>
+<p>We will make use of <em>Taylor’s Theorem</em>, a generalization of the <em>Mean Value Theorem</em> that provides polynomial approximations to a function around a point. We restrict ourselves to the case of a linear approximation with second-order error term, which will suffice for our purposes.</p>
+<p><strong>Taylor’s theorem</strong> We begin by reviewing the single-variable case, which we will use to prove the general verison.</p>
+<p><strong>THEOREM</strong> <strong>(Taylor)</strong> <span class="math notranslate nohighlight">\(\idx{Taylor's theorem}\xdi\)</span> Let <span class="math notranslate nohighlight">\(f: D \to \mathbb{R}\)</span> where <span class="math notranslate nohighlight">\(D \subseteq \mathbb{R}\)</span>. Suppose <span class="math notranslate nohighlight">\(f\)</span> has a continuous derivative on <span class="math notranslate nohighlight">\([a,b]\)</span> and that its second derivative exists on <span class="math notranslate nohighlight">\((a,b)\)</span>. Then for any <span class="math notranslate nohighlight">\(x \in [a, b]\)</span></p>
+<div class="math notranslate nohighlight">
+\[
+f(x)
+= f(a) + (x-a) f'(a) + \frac{1}{2} (x-a)^2 f''(\xi)
+\]</div>
+<p>for some <span class="math notranslate nohighlight">\(a &lt; \xi &lt; x\)</span>. <span class="math notranslate nohighlight">\(\sharp\)</span></p>
+<p>The third term on the right-hand side of <em>Taylor’s Theorem</em> is called the Lagrange remainder. It can be seen as an error term between <span class="math notranslate nohighlight">\(f(x)\)</span> and the linear approximation <span class="math notranslate nohighlight">\(f(a) + (x-a) f'(a)\)</span>. There are <a class="reference external" href="https://en.wikipedia.org/wiki/Taylor%27s_theorem#Explicit_formulas_for_the_remainder">other forms</a> for the remainder. The form we stated here is useful when one has a bound on the second derivative. Here is an example.</p>
+<p><strong>NUMERICAL CORNER:</strong> Consider <span class="math notranslate nohighlight">\(f(x) = e^x\)</span>. Then <span class="math notranslate nohighlight">\(f'(x) = f''(x) = e^x\)</span>. Suppose we are interested in approximating <span class="math notranslate nohighlight">\(f\)</span> in the interval <span class="math notranslate nohighlight">\([0,1]\)</span>. We take <span class="math notranslate nohighlight">\(a=0\)</span> and <span class="math notranslate nohighlight">\(b=1\)</span> in <em>Taylor’s Theorem</em>. The linear term is</p>
+<div class="math notranslate nohighlight">
+\[
+f(a) + (x-a) f'(a) = 1 + x e^0 = 1 + x.
+\]</div>
+<p>Then for any <span class="math notranslate nohighlight">\(x \in [0,1]\)</span></p>
+<div class="math notranslate nohighlight">
+\[
+f(x) = 1 + x + \frac{1}{2}x^2 e^{\xi_x}
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(\xi_x \in (0,1)\)</span> depends on <span class="math notranslate nohighlight">\(x\)</span>. We get a uniform bound on the error over <span class="math notranslate nohighlight">\([0,1]\)</span> by replacing <span class="math notranslate nohighlight">\(\xi_x\)</span> with its worst possible value over <span class="math notranslate nohighlight">\([0,1]\)</span></p>
+<div class="math notranslate nohighlight">
+\[
+|f(x) - (1+x)| \leq \frac{1}{2}x^2 e^{\xi_x} \leq \frac{e}{2} x^2.
+\]</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">100</span><span class="p">)</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+<span class="n">taylor</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">+</span> <span class="n">x</span>
+<span class="n">err</span> <span class="o">=</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="n">x</span><span class="o">**</span><span class="mi">2</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>If we plot the upper and lower bounds, we see that <span class="math notranslate nohighlight">\(f\)</span> indeed falls within them.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">,</span><span class="n">label</span><span class="o">=</span><span class="s1">&#39;f&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">taylor</span><span class="p">,</span><span class="n">label</span><span class="o">=</span><span class="s1">&#39;taylor&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">taylor</span><span class="o">-</span><span class="n">err</span><span class="p">,</span><span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;:&#39;</span><span class="p">,</span><span class="n">color</span><span class="o">=</span><span class="s1">&#39;green&#39;</span><span class="p">,</span><span class="n">label</span><span class="o">=</span><span class="s1">&#39;lower&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">taylor</span><span class="o">+</span><span class="n">err</span><span class="p">,</span><span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span><span class="n">color</span><span class="o">=</span><span class="s1">&#39;green&#39;</span><span class="p">,</span><span class="n">label</span><span class="o">=</span><span class="s1">&#39;upper&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/e92b4fa3e07f458ac2a758ae44e8dc4092c0007a17a77a742ab8d6f1daf08b13.png" src="../../_images/e92b4fa3e07f458ac2a758ae44e8dc4092c0007a17a77a742ab8d6f1daf08b13.png" />
+</div>
+</div>
+<p><span class="math notranslate nohighlight">\(\unlhd\)</span></p>
+<p>In the case of several variables, we again restrict ourselves to the second order. For the more general version, see e.g. <a class="reference external" href="https://en.wikipedia.org/wiki/Taylor's_theorem#Taylor's_theorem_for_multivariate_functions">Wikipedia</a>.</p>
+<p><strong>THEOREM</strong> <strong>(Taylor)</strong> <span class="math notranslate nohighlight">\(\idx{Taylor's theorem}\xdi\)</span> Let <span class="math notranslate nohighlight">\(f : D \to \mathbb{R}\)</span> where <span class="math notranslate nohighlight">\(D \subseteq \mathbb{R}^d\)</span>. Let <span class="math notranslate nohighlight">\(\mathbf{x}_0 \in D\)</span> and <span class="math notranslate nohighlight">\(\delta &gt; 0\)</span> be such that <span class="math notranslate nohighlight">\(B_\delta(\mathbf{x}_0) \subseteq D\)</span>. If <span class="math notranslate nohighlight">\(f\)</span> is twice continuously differentiable on <span class="math notranslate nohighlight">\(B_\delta(\mathbf{x}_0)\)</span>, then for any <span class="math notranslate nohighlight">\(\mathbf{x} \in B_\delta(\mathbf{x}_0)\)</span></p>
+<div class="math notranslate nohighlight">
+\[
+f(\mathbf{x})
+= f(\mathbf{x}_0) + \nabla f(\mathbf{x}_0)^T (\mathbf{x} - \mathbf{x}_0) 
++ \frac{1}{2} (\mathbf{x} - \mathbf{x}_0)^T 
+\,\mathbf{H}_f(\mathbf{x}_0 + \xi (\mathbf{x} - \mathbf{x}_0))
+\,(\mathbf{x} - \mathbf{x}_0),
+\]</div>
+<p>for some <span class="math notranslate nohighlight">\(\xi \in (0,1)\)</span>. <span class="math notranslate nohighlight">\(\sharp\)</span></p>
+<p>As in the single-variable case, we think of <span class="math notranslate nohighlight">\(f(\mathbf{x}_0) + \nabla f(\mathbf{x}_0)^T (\mathbf{x} - \mathbf{x}_0)\)</span> for fixed <span class="math notranslate nohighlight">\(\mathbf{x}_0\)</span> as a linear – or more accurately affine – approximation to <span class="math notranslate nohighlight">\(f\)</span> at <span class="math notranslate nohighlight">\(\mathbf{x}_0\)</span>. The third term on the right-hand side above quantifies the error of this approximation.</p>
+<p><em>Proof idea:</em> We apply the single-variable result to <span class="math notranslate nohighlight">\(\phi(t) = f(\boldsymbol{\alpha}(t))\)</span>. We use the <em>Chain Rule</em> to compute the needed derivatives.</p>
+<p><em>Proof:</em> Let <span class="math notranslate nohighlight">\(\mathbf{p} = \mathbf{x} - \mathbf{x}_0\)</span> and <span class="math notranslate nohighlight">\(\phi(t) = f(\boldsymbol{\alpha}(t))\)</span> where <span class="math notranslate nohighlight">\(\boldsymbol{\alpha}(t) = \mathbf{x}_0 + t \mathbf{p}\)</span>. Observe that <span class="math notranslate nohighlight">\(\phi(0) = f(\mathbf{x}_0)\)</span> and <span class="math notranslate nohighlight">\(\phi(1) = f(\mathbf{x})\)</span>. As observed in the proof of the <em>Mean Value Theorem</em>, <span class="math notranslate nohighlight">\(\phi'(t) = \nabla f(\boldsymbol{\alpha}(t))^T \mathbf{p}\)</span>. By the <em>Chain Rule</em> and our previous <em>Parametric Line Example</em>,</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+\phi''(t)
+&amp;= \frac{\mathrm{d}}{\mathrm{d} t}
+\left[\sum_{i=1}^d \frac{\partial f(\boldsymbol{\alpha}(t))}{\partial x_i} p_i \right]\\
+&amp;= 
+\sum_{i=1}^d \left(\nabla \frac{\partial f(\boldsymbol{\alpha}(t))}{\partial x_i}\right)^T \boldsymbol{\alpha}'(t) \,p_i \\
+&amp;= \sum_{i=1}^d \sum_{j=1}^d \frac{\partial^2 f(\boldsymbol{\alpha}(t))}{\partial x_j \partial x_i}  p_j p_i\\
+&amp;= \mathbf{p}^T 
+\,\mathbf{H}_f(\mathbf{x}_0 + t \mathbf{p})
+\,\mathbf{p}.
+\end{align*}\]</div>
+<p>In particular, <span class="math notranslate nohighlight">\(\phi\)</span> has continuous first and second derivatives on <span class="math notranslate nohighlight">\([0,1]\)</span>.</p>
+<p>By <em>Taylor’s Theorem</em> in the single-variable case</p>
+<div class="math notranslate nohighlight">
+\[
+\phi(t)
+= \phi(0) + t \phi'(0) + \frac{1}{2} t^2 \phi''(\xi)
+\]</div>
+<p>for some <span class="math notranslate nohighlight">\(\xi \in (0,t)\)</span>. Plugging in the expressions for <span class="math notranslate nohighlight">\(\phi(0)\)</span>, <span class="math notranslate nohighlight">\(\phi'(0)\)</span> and <span class="math notranslate nohighlight">\(\phi''(\xi)\)</span> and taking <span class="math notranslate nohighlight">\(t=1\)</span> gives the claim. <span class="math notranslate nohighlight">\(\square\)</span></p>
+<p><strong>EXAMPLE:</strong> Consider the function <span class="math notranslate nohighlight">\(f(x_1, x_2) = x_1 x_2 + x_1^2 + e^{x_1} \cos x_2\)</span>. We apply <em>Taylor’s Theorem</em> with <span class="math notranslate nohighlight">\(\mathbf{x}_0 = (0, 0)\)</span> and <span class="math notranslate nohighlight">\(\mathbf{x} = (x_1, x_2)\)</span>. The gradient is</p>
+<div class="math notranslate nohighlight">
+\[
+\nabla f(x_1, x_2) = (x_2 + 2 x_1 + e^{x_1} \cos x_2, x_1 - e^{x_1} \sin x_2 )
+\]</div>
+<p>and the Hessian is</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\mathbf{H}_f(x_1, x_2)
+= \begin{pmatrix}
+2 + e^{x_1} \cos x_2 &amp; 1 - e^{x_1} \sin x_2\\
+1 - e^{x_1} \sin x_2 &amp; - e^{x_1} \cos x_2 
+\end{pmatrix}.
+\end{split}\]</div>
+<p>So <span class="math notranslate nohighlight">\(f(0,0) = 1\)</span> and <span class="math notranslate nohighlight">\(\nabla f(0,0) = (1, 0)\)</span>. Thus,
+by <em>Taylor’s Theorem</em>, there is <span class="math notranslate nohighlight">\(\xi \in (0,1)\)</span> such that</p>
+<div class="math notranslate nohighlight">
+\[
+f(x_1, x_2)
+= 1 + x_1 
++ \frac{1}{2}[2 x_1^2 + 2 x_1 x_2 
++ (x_1^2 - x_2^2) \,e^{\xi x_1} \cos(\xi x_2)
+- 2 x_1 x_2 e^{\xi x_1} \sin(\xi x_2)].
+\]</div>
+<p><span class="math notranslate nohighlight">\(\lhd\)</span></p>
+<p><strong>Second directional derivative</strong> To control the error term in <em>Taylor’s Theorem</em>, it will be convenient to introduce a notion of second directional derivative.</p>
+<p><strong>DEFINITION</strong> <strong>(Second Directional Derivative)</strong> <span class="math notranslate nohighlight">\(\idx{second directional derivative}\xdi\)</span> Let <span class="math notranslate nohighlight">\(f : D \to \mathbb{R}\)</span> where <span class="math notranslate nohighlight">\(D \subseteq \mathbb{R}^d\)</span>, let <span class="math notranslate nohighlight">\(\mathbf{x}_0 \in D\)</span> be an interior point of <span class="math notranslate nohighlight">\(D\)</span> and let <span class="math notranslate nohighlight">\(\mathbf{v} \in \mathbb{R}^d\)</span> be a nonzero vector. The second directional derivative of <span class="math notranslate nohighlight">\(f\)</span> at <span class="math notranslate nohighlight">\(\mathbf{x}_0\)</span> in the direction <span class="math notranslate nohighlight">\(\mathbf{v}\)</span> is</p>
+<div class="math notranslate nohighlight">
+\[
+\frac{\partial^2 f (\mathbf{x}_0)}{\partial \mathbf{v}^2} 
+= \lim_{h \to 0} \frac{1}{h} \left[\frac{\partial f(\mathbf{x}_0 + h \mathbf{v})}{\partial \mathbf{v}} - \frac{\partial f(\mathbf{x}_0)}{\partial \mathbf{v}}\right]
+\]</div>
+<p>provided the limit exists. <span class="math notranslate nohighlight">\(\natural\)</span></p>
+<p>Typically, <span class="math notranslate nohighlight">\(\mathbf{v}\)</span> is a unit vector.</p>
+<p><strong>THEOREM</strong> <strong>(Second Directional Derivative and Hessian)</strong> <span class="math notranslate nohighlight">\(\idx{second directional derivative and Hessian theorem}\xdi\)</span> Let <span class="math notranslate nohighlight">\(f : D \to \mathbb{R}\)</span> where <span class="math notranslate nohighlight">\(D \subseteq \mathbb{R}^d\)</span>, let <span class="math notranslate nohighlight">\(\mathbf{x}_0 \in D\)</span> be an interior point of <span class="math notranslate nohighlight">\(D\)</span> and let <span class="math notranslate nohighlight">\(\mathbf{v} \in \mathbb{R}^d\)</span> be a vector. Assume that <span class="math notranslate nohighlight">\(f\)</span> is twice continuously differentiable at <span class="math notranslate nohighlight">\(\mathbf{x}_0\)</span>. Then the second directional derivative of <span class="math notranslate nohighlight">\(f\)</span> at <span class="math notranslate nohighlight">\(\mathbf{x}_0\)</span> in the direction <span class="math notranslate nohighlight">\(\mathbf{v}\)</span> is given by</p>
+<div class="math notranslate nohighlight">
+\[
+\frac{\partial^2 f (\mathbf{x}_0)}{\partial \mathbf{v}^2} 
+= \mathbf{v}^T H_f(\mathbf{x}_0) \,\mathbf{v}.
+\]</div>
+<p><span class="math notranslate nohighlight">\(\sharp\)</span></p>
+<p>Note the similarity to the quadratic term in <em>Taylor’s Theorem</em>.</p>
+<p><em>Proof idea:</em> We have already done this calculation in the proof of <em>Taylor’s Theorem</em>.</p>
+<p><em>Proof:</em> Then, by definition of the derivative,</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+\lim_{h \to 0} \frac{1}{h} \left[\frac{\partial f(\mathbf{x}_0 + h \mathbf{v})}{\partial \mathbf{v}} - \frac{\partial f(\mathbf{x}_0)}{\partial \mathbf{v}}\right]
+&amp;= \lim_{h \to 0} \frac{1}{h} \left[\nabla f(\mathbf{x}_0 + h \mathbf{v})^T \mathbf{v} - \nabla f(\mathbf{x}_0)^T \mathbf{v}\right]\\
+&amp;= \lim_{h \to 0} \frac{1}{h} \sum_{i=1}^n v_i \left[\frac{\partial f(\mathbf{x}_0 + h \mathbf{v})}{\partial x_i} - \frac{\partial f(\mathbf{x}_0)}{\partial x_i} \right]\\
+&amp;= \sum_{i=1}^n v_i \lim_{h \to 0} \frac{1}{h} \left[\frac{\partial f(\mathbf{x}_0 + h \mathbf{v})}{\partial x_i} - \frac{\partial f(\mathbf{x}_0)}{\partial x_i} \right]\\
+&amp;= \sum_{i=1}^n v_i \frac{\partial g_i (\mathbf{x}_0)}{\partial \mathbf{v}},
+\end{align*}\]</div>
+<p>where <span class="math notranslate nohighlight">\(g_i(\mathbf{x}_0) = \frac{\partial f(\mathbf{x}_0)}{\partial x_i}\)</span>. So</p>
+<div class="math notranslate nohighlight">
+\[
+\frac{\partial g_i (\mathbf{x}_0)}{\partial \mathbf{v}} 
+= \nabla g_i(\mathbf{x}_0)^T \mathbf{v}
+= \sum_{j=1}^n v_j \frac{\partial^2 f(\mathbf{x}_0)}{\partial x_i\partial x_j}
+\]</div>
+<p>by the <em>Directional Derivative and Gradient Theorem</em>. Plugging back above we get</p>
+<div class="math notranslate nohighlight">
+\[
+\frac{\partial^2 f (\mathbf{x}_0)}{\partial \mathbf{v}^2} 
+=  \sum_{i=1}^n v_i \sum_{j=1}^n v_j \frac{\partial^2 f(\mathbf{x}_0)}{\partial x_i\partial x_j}
+= \mathbf{v}^T H_f(\mathbf{x}_0) \,\mathbf{v}.
+\]</div>
+<p><span class="math notranslate nohighlight">\(\square\)</span></p>
+<p>So going back to <em>Taylor’s Theorem</em></p>
+<div class="math notranslate nohighlight">
+\[
+f(\mathbf{x})
+= f(\mathbf{x}_0) + \nabla f(\mathbf{x}_0)^T (\mathbf{x} - \mathbf{x}_0) 
++ \frac{1}{2} (\mathbf{x} - \mathbf{x}_0)^T 
+\,\mathbf{H}_f(\mathbf{x}_0 + \xi (\mathbf{x} - \mathbf{x}_0))
+\,(\mathbf{x} - \mathbf{x}_0),
+\]</div>
+<p>we see that the second term on the right-hand side is the directional derivative at <span class="math notranslate nohighlight">\(\mathbf{x}_0\)</span> in the direction <span class="math notranslate nohighlight">\(\mathbf{x} - \mathbf{x}_0\)</span> and that the third term is half of the second directional derivative at <span class="math notranslate nohighlight">\(\mathbf{x}_0 + \xi (\mathbf{x} - \mathbf{x}_0)\)</span> in the same direction.</p>
+<p><strong>Necessary condition</strong> When <span class="math notranslate nohighlight">\(f\)</span> is twice continuously differentiable, we get a necessary condition based on the Hessian.</p>
+<p><strong>THEOREM</strong> <strong>(Second-Order Necessary Optimality Condition)</strong> <span class="math notranslate nohighlight">\(\idx{second-order necessary optimality condition}\xdi\)</span> Let <span class="math notranslate nohighlight">\(f : \mathbb{R}^d \to \mathbb{R}\)</span> be twice continuously differentiable on <span class="math notranslate nohighlight">\(\mathbb{R}^d\)</span>. If <span class="math notranslate nohighlight">\(\mathbf{x}_0\)</span> is a local minimizer, then <span class="math notranslate nohighlight">\(\nabla f(\mathbf{x}_0) = \mathbf{0}\)</span> and <span class="math notranslate nohighlight">\(\mathbf{H}_f(\mathbf{x}_0)\)</span> is positive semidefinite. <span class="math notranslate nohighlight">\(\sharp\)</span></p>
+<p><em>Proof idea:</em> By <em>Taylor’s Theorem</em> and the <em>First-Order Necessary Optimality Condition</em>,</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+f(\mathbf{x}_0 + \alpha \mathbf{v})
+&amp;= f(\mathbf{x}_0) 
++ \nabla f(\mathbf{x}_0)^T(\alpha \mathbf{v})
++ \frac{1}{2}(\alpha \mathbf{v})^T \mathbf{H}_f(\mathbf{x}_0 + \xi_\alpha \alpha \mathbf{v}) (\alpha \mathbf{v})\\
+&amp;= f(\mathbf{x}_0) 
++ \frac{1}{2}\alpha^2 \mathbf{v}^T \mathbf{H}_f(\mathbf{x}_0 + \xi_\alpha \alpha \mathbf{v})\,\mathbf{v}.
+\end{align*}\]</div>
+<p>If <span class="math notranslate nohighlight">\(\mathbf{H}_f\)</span> is positive semidefinite in a neighborhood around <span class="math notranslate nohighlight">\(\mathbf{x}_0\)</span>, then the second term on the right-hand side is nonnegative, which is necessary for <span class="math notranslate nohighlight">\(\mathbf{x}_0\)</span> to be a local minimizer. Formally we argue  by contradiction: indeed, if <span class="math notranslate nohighlight">\(\mathbf{H}_f\)</span> is not positive semidefinite, then there must exists a direction in which the second directional derivative is negative; since the gradient is <span class="math notranslate nohighlight">\(\mathbf{0}\)</span> at <span class="math notranslate nohighlight">\(\mathbf{x}_0\)</span>, intuitively the directional derivative must become negative in that direction as well and the function must decrease.</p>
+<p><em>Proof:</em> We argue by contradiction. Suppose that <span class="math notranslate nohighlight">\(\mathbf{H}_f(\mathbf{x}_0)\)</span> is not positive semidefinite. By definition, there must be a unit vector <span class="math notranslate nohighlight">\(\mathbf{v}\)</span> such that</p>
+<div class="math notranslate nohighlight">
+\[
+\langle \mathbf{v}, \mathbf{H}_f(\mathbf{x}_0) \,\mathbf{v} \rangle = - \eta &lt; 0.
+\]</div>
+<p>That is, <span class="math notranslate nohighlight">\(\mathbf{v}\)</span> is a direction in which the second directional derivative is negative.</p>
+<p>For <span class="math notranslate nohighlight">\(\alpha &gt; 0\)</span>, <em>Taylor’s Theorem</em> implies that there is <span class="math notranslate nohighlight">\(\xi_\alpha \in (0,1)\)</span> such that</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+f(\mathbf{x}_0 + \alpha \mathbf{v})
+&amp;= f(\mathbf{x}_0) 
++ \nabla f(\mathbf{x}_0)^T(\alpha \mathbf{v})
++ \frac{1}{2} (\alpha \mathbf{v})^T \mathbf{H}_f(\mathbf{x}_0 + \xi_\alpha \alpha \mathbf{v}) (\alpha \mathbf{v})\\
+&amp;= f(\mathbf{x}_0) 
++ \frac{1}{2} \alpha^2 \mathbf{v}^T \mathbf{H}_f(\mathbf{x}_0 + \xi_\alpha \alpha \mathbf{v})\,\mathbf{v}
+\end{align*}\]</div>
+<p>where we used <span class="math notranslate nohighlight">\(\nabla f(\mathbf{x}_0) = \mathbf{0}\)</span> by the <em>First-Order Necessary Optimality Condition</em>. We want to show that the second term on the right-hand side is negative.</p>
+<p>The Hessian is continuous (in the sense that all its entries are continuous functions of <span class="math notranslate nohighlight">\(\mathbf{x}\)</span>). In particular, the second directional derivative <span class="math notranslate nohighlight">\(\mathbf{v}^T \mathbf{H}_f(\mathbf{x}) \,\mathbf{v}\)</span> is continuous as a linear combination of continuous functions. So, by definition of continuity, for any <span class="math notranslate nohighlight">\(\epsilon &gt; 0\)</span> – say <span class="math notranslate nohighlight">\(\epsilon = \eta/2\)</span> – there is <span class="math notranslate nohighlight">\(\delta &gt; 0\)</span> small enough that</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+\left| \mathbf{v}^T \mathbf{H}_f(\mathbf{x}) \,\mathbf{v}
+- \mathbf{v}^T \mathbf{H}_f(\mathbf{x}_0) \,\mathbf{v} \right| 
+&amp;&lt; \eta/2
+\end{align*}\]</div>
+<p>for all <span class="math notranslate nohighlight">\(\mathbf{x} \in B_\delta(\mathbf{x}_0)\)</span>.</p>
+<p>Take <span class="math notranslate nohighlight">\(\alpha^* &gt; 0\)</span> small enough that <span class="math notranslate nohighlight">\(\mathbf{x}_0 + \alpha^* \mathbf{v} \in B_\delta(\mathbf{x}_0)\)</span>. Then, for all <span class="math notranslate nohighlight">\(\alpha \in (0,\alpha^*)\)</span>, whatever <span class="math notranslate nohighlight">\(\xi_\alpha \in (0,1)\)</span> is, it holds that <span class="math notranslate nohighlight">\(\mathbf{x}_0 + \xi_\alpha \alpha \mathbf{v} \in B_\delta(\mathbf{x}_0)\)</span>. Hence,</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+\mathbf{v}^T \mathbf{H}_f(\mathbf{x}_0 + \xi_\alpha \alpha \mathbf{v}) \,\mathbf{v} 
+&amp;= \mathbf{v}^T \mathbf{H}_f(\mathbf{x}_0) \,\mathbf{v}  
++ (\mathbf{v}^T \mathbf{H}_f(\mathbf{x}_0 + \xi_\alpha \alpha \mathbf{v}) \,\mathbf{v}  
+- \mathbf{v}^T \mathbf{H}_f(\mathbf{x}_0) \,\mathbf{v} )\\
+&amp;\leq \mathbf{v}^T \mathbf{H}_f(\mathbf{x}_0) \,\mathbf{v}  
++ |\mathbf{v}^T \mathbf{H}_f(\mathbf{x}_0 + \xi_\alpha \alpha \mathbf{v}) \,\mathbf{v}  
+- \mathbf{v}^T \mathbf{H}_f(\mathbf{x}_0) \,\mathbf{v}|\\
+&amp;&lt; -\eta 
++ \eta/2\\
+&amp;&lt; - \eta/2 &lt; 0.
+\end{align*}\]</div>
+<p>by definition of <span class="math notranslate nohighlight">\(\eta\)</span>. That implies</p>
+<div class="math notranslate nohighlight">
+\[
+f(\mathbf{x}_0 + \alpha \mathbf{v})
+&lt; f(\mathbf{x}_0) - \alpha^2 \eta/4 &lt; f(\mathbf{x}_0). 
+\]</div>
+<p>Since this holds for all sufficiently small <span class="math notranslate nohighlight">\(\alpha\)</span>, every open ball around <span class="math notranslate nohighlight">\(\mathbf{x}_0\)</span> has a point achieving a lower value than <span class="math notranslate nohighlight">\(f(\mathbf{x}_0)\)</span>. Thus <span class="math notranslate nohighlight">\(\mathbf{x}_0\)</span> is not a local minimizer, a contradiction. So it must be that <span class="math notranslate nohighlight">\(\mathbf{H}_f(\mathbf{x}_0) \succeq \mathbf{0}\)</span>. <span class="math notranslate nohighlight">\(\square\)</span></p>
+<p><strong>Sufficient condition</strong> The necessary condition above is not in general sufficient, as the following example shows.</p>
+<p><strong>NUMERICAL CORNER:</strong> Let <span class="math notranslate nohighlight">\(f(x) = x^3\)</span>. Then <span class="math notranslate nohighlight">\(f'(x) = 3 x^2\)</span> and <span class="math notranslate nohighlight">\(f''(x) = 6 x\)</span> so that <span class="math notranslate nohighlight">\(f'(0) = 0\)</span> and <span class="math notranslate nohighlight">\(f''(0) \geq 0\)</span>. Hence <span class="math notranslate nohighlight">\(x=0\)</span> is a stationary point. But <span class="math notranslate nohighlight">\(x=0\)</span> is not a local minimizer. Indeed <span class="math notranslate nohighlight">\(f(0) = 0\)</span> but, for any <span class="math notranslate nohighlight">\(\delta &gt; 0\)</span>, <span class="math notranslate nohighlight">\(f(-\delta) &lt; 0\)</span>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">100</span><span class="p">)</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">x</span><span class="o">**</span><span class="mi">3</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="s1">&#39;k&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylim</span><span class="p">(</span><span class="o">-</span><span class="mi">5</span><span class="p">,</span><span class="mi">5</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/66f6bf799a7727557af1915953411e6b0d9840768aba23cd99041bfc127e39e5.png" src="../../_images/66f6bf799a7727557af1915953411e6b0d9840768aba23cd99041bfc127e39e5.png" />
+</div>
+</div>
+<p><span class="math notranslate nohighlight">\(\unlhd\)</span></p>
+<p>We give sufficient conditions for a point to be a local minimizer.</p>
+<p><strong>THEOREM</strong> <strong>(Second-Order Sufficient Optimality Condition)</strong> <span class="math notranslate nohighlight">\(\idx{second-order sufficient optimality condition}\xdi\)</span> Let <span class="math notranslate nohighlight">\(f : \mathbb{R}^d \to \mathbb{R}\)</span> be twice continuously differentiable on <span class="math notranslate nohighlight">\(\mathbb{R}^d\)</span>. If <span class="math notranslate nohighlight">\(\nabla f(\mathbf{x}_0) = \mathbf{0}\)</span> and <span class="math notranslate nohighlight">\(\mathbf{H}_f(\mathbf{x}_0)\)</span> is positive definite, then <span class="math notranslate nohighlight">\(\mathbf{x}_0\)</span> is a strict local minimizer. <span class="math notranslate nohighlight">\(\sharp\)</span></p>
+<p><em>Proof idea:</em> We use <em>Taylor’s Theorem</em> again. This time we use the positive definiteness of the Hessian to bound the value of the function from below.</p>
+<p>We will need a lemma.</p>
+<p><strong>LEMMA</strong> <strong>(Quadratic Form and Frobenius Norm)</strong> <span class="math notranslate nohighlight">\(\idx{quadratic form and Frobenius norm lemma}\xdi\)</span> Let <span class="math notranslate nohighlight">\(A = (a_{i,j})_{i,j}\)</span> and <span class="math notranslate nohighlight">\(B = (b_{i,j})_{i,j}\)</span> be matrices in <span class="math notranslate nohighlight">\(\mathbb{R}^{n \times m}\)</span>. For any unit vectors <span class="math notranslate nohighlight">\(\mathbf{u} \in \mathbb{R}^n\)</span> and <span class="math notranslate nohighlight">\(\mathbf{v} \in \mathbb{R}^m\)</span></p>
+<div class="math notranslate nohighlight">
+\[
+\left| 
+\mathbf{u}^T A \,\mathbf{v}
+- \mathbf{u}^T B \,\mathbf{v}
+\right|
+\leq
+\|A - B\|_F.
+\]</div>
+<p><span class="math notranslate nohighlight">\(\flat\)</span></p>
+<p><em>Proof:</em> By the <em>Cauchy-Schwarz inequality</em>,</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+\left| 
+\mathbf{u}^T A \,\mathbf{v}
+- \mathbf{u}^T B \,\mathbf{v}
+\right|
+&amp;=
+\left|
+\sum_{i=1}^n \sum_{j=1}^m u_i v_j (a_{i,j} - b_{i,j})
+\right|\\
+&amp;\leq \sqrt{\sum_{i=1}^n \sum_{j=1}^m u_i^2 v_j^2}
+\sqrt{\sum_{i=1}^n \sum_{j=1}^m (a_{i,j} - b_{i,j})^2}\\
+&amp;= \|A - B\|_F,
+\end{align*}\]</div>
+<p>where we used that <span class="math notranslate nohighlight">\(\mathbf{u}\)</span> and <span class="math notranslate nohighlight">\(\mathbf{v}\)</span> have unit norm on the last line. <span class="math notranslate nohighlight">\(\square\)</span></p>
+<p><em>Proof:</em> <em>(Second-Order Sufficient Optimality Condition)</em> By <em>Taylor’s Theorem</em>, for all unit vectors <span class="math notranslate nohighlight">\(\mathbf{v} \in \mathbb{R}^d\)</span> and <span class="math notranslate nohighlight">\(\alpha \in \mathbb{R}\)</span>, there is <span class="math notranslate nohighlight">\(\xi_{\alpha} \in (0,1)\)</span> such that</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+f(\mathbf{x}_0 + \alpha \mathbf{v})
+&amp;= f(\mathbf{x}_0) 
++ \nabla f(\mathbf{x}_0)^T(\alpha \mathbf{v})
++ \frac{1}{2}(\alpha \mathbf{v})^T \mathbf{H}_f(\mathbf{x}_0 + \xi_\alpha \alpha \mathbf{v}) (\alpha \mathbf{v})\\
+&amp;= f(\mathbf{x}_0) 
++ \frac{1}{2}\alpha^2 \mathbf{v}^T \mathbf{H}_f(\mathbf{x}_0 + \xi_\alpha \alpha \mathbf{v})\,\mathbf{v},
+\end{align*}\]</div>
+<p>where we used that <span class="math notranslate nohighlight">\(\nabla f(\mathbf{x}_0) = \mathbf{0}\)</span>. The second term on the last line is <span class="math notranslate nohighlight">\(0\)</span> at <span class="math notranslate nohighlight">\(\mathbf{v} = \mathbf{0}\)</span>. Our goal is to show that it is strictly positive (except at <span class="math notranslate nohighlight">\(\mathbf{0}\)</span>) in a neighborhood of <span class="math notranslate nohighlight">\(\mathbf{0}\)</span>.</p>
+<p>The set <span class="math notranslate nohighlight">\(\mathbb{S}^{d-1}\)</span> of unit vectors in <span class="math notranslate nohighlight">\(\mathbb{R}^d\)</span> is closed and bounded. The expression <span class="math notranslate nohighlight">\(\mathbf{v}^T \mathbf{H}_f(\mathbf{x}_0) \,\mathbf{v}\)</span>, viewed as a function of <span class="math notranslate nohighlight">\(\mathbf{v}\)</span>, is continuous since it is a polynomial. Hence, by the <em>Extreme Value Theorem</em>, it attains its minimum on <span class="math notranslate nohighlight">\(\mathbb{S}^{d-1}\)</span>. By our assumption that <span class="math notranslate nohighlight">\(\mathbf{H}_f(\mathbf{x}_0)\)</span> is positive definite, that minimum must be strictly positive, say <span class="math notranslate nohighlight">\(\mu &gt; 0\)</span>.</p>
+<p>By the <em>Quadratic Form and Frobenius Norm Lemma</em> (ignoring the absolute value),</p>
+<div class="math notranslate nohighlight">
+\[
+\mathbf{v}^T \mathbf{H}_f(\mathbf{x}_0) \,\mathbf{v}
+- \mathbf{v}^T \mathbf{H}_f(\mathbf{x}_0 + \mathbf{w})\,\mathbf{v}
+\leq 
+\|\mathbf{H}_f(\mathbf{x}_0)
+- \mathbf{H}_f(\mathbf{x}_0  + \mathbf{w})\|_F.
+\]</div>
+<p>The Frobenius norm above is continuous in <span class="math notranslate nohighlight">\(\mathbf{w}\)</span> as a composition of continuous functions. Moreover, we have at <span class="math notranslate nohighlight">\(\mathbf{w} = \mathbf{0}\)</span> that this Frobenius norm is <span class="math notranslate nohighlight">\(0\)</span>. Hence, by definition of continuity, for any <span class="math notranslate nohighlight">\(\epsilon &gt; 0\)</span> – say <span class="math notranslate nohighlight">\(\epsilon := \mu/2\)</span> – there is <span class="math notranslate nohighlight">\(\delta &gt; 0\)</span> such that <span class="math notranslate nohighlight">\(\mathbf{w} \in B_{\delta}(\mathbf{0})\)</span> implies <span class="math notranslate nohighlight">\(\|\mathbf{H}_f(\mathbf{x}_0) - \mathbf{H}_f(\mathbf{x}_0  + \mathbf{w})\|_F &lt; \epsilon = \mu/2\)</span>.</p>
+<p>Since <span class="math notranslate nohighlight">\(\mathbf{v}^T \mathbf{H}_f(\mathbf{x}_0) \,\mathbf{v} &gt; \mu\)</span>, the inequality in the previous display implies that</p>
+<div class="math notranslate nohighlight">
+\[
+\mathbf{v}^T \mathbf{H}_f(\mathbf{x}_0 + \mathbf{w})\,\mathbf{v}
+\geq \mathbf{v}^T \mathbf{H}_f(\mathbf{x}_0) \,\mathbf{v} - \|\mathbf{H}_f(\mathbf{x}_0)
+- \mathbf{H}_f(\mathbf{x}_0 + \mathbf{w})\|_F
+&gt; \frac{\mu}{2}.
+\]</div>
+<p>This holds for any unit vector <span class="math notranslate nohighlight">\(\mathbf{v}\)</span> and any <span class="math notranslate nohighlight">\(\mathbf{w} \in B_{\delta}(\mathbf{0})\)</span>.</p>
+<p>Going back to our Taylor expansion, for <span class="math notranslate nohighlight">\(\alpha &gt; 0\)</span> small enough (not depending on <span class="math notranslate nohighlight">\(\mathbf{v}\)</span>), it holds that <span class="math notranslate nohighlight">\(\mathbf{w} = \xi_\alpha \alpha \mathbf{v} \in B_{\delta}(\mathbf{0})\)</span> so that we get from the previous inequality</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+f(\mathbf{x}_0 + \alpha \mathbf{v})
+&amp;= f(\mathbf{x}_0) 
++ \frac{1}{2}\alpha^2 \mathbf{v}^T \mathbf{H}_f(\mathbf{x}_0 + \xi_\alpha \alpha \mathbf{v})\,\mathbf{v}\\
+&amp;&gt; f(\mathbf{x}_0) 
++ \frac{1}{4} \alpha^2 \mu \\
+&amp;&gt; f(\mathbf{x}_0).
+\end{align*}\]</div>
+<p>Therefore <span class="math notranslate nohighlight">\(\mathbf{x}_0\)</span> is a strict local minimizer. <span class="math notranslate nohighlight">\(\square\)</span></p>
+</section>
+<section id="adding-equality-constraints">
+<h2><span class="section-number">3.3.3. </span>Adding equality constraints<a class="headerlink" href="#adding-equality-constraints" title="Link to this heading">#</a></h2>
+<p>Until now, we have considered <em>unconstrained</em> optimization problems, that is, the variable <span class="math notranslate nohighlight">\(\mathbf{x}\)</span> can take any value in <span class="math notranslate nohighlight">\(\mathbb{R}^d\)</span>. However, it is common to impose conditions on <span class="math notranslate nohighlight">\(\mathbf{x}\)</span>. Hence, we consider the <em>constrained</em><span class="math notranslate nohighlight">\(\idx{constrained optimization}\xdi\)</span> minimization problem</p>
+<div class="math notranslate nohighlight">
+\[
+\min_{\mathbf{x} \in \mathscr{X}} f(\mathbf{x})
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(\mathscr{X} \subset \mathbb{R}^d\)</span>.</p>
+<p><strong>EXAMPLE:</strong> For instance, the entries of <span class="math notranslate nohighlight">\(\mathbf{x}\)</span> may have to satisfy certain bounds. In that case, we would have</p>
+<div class="math notranslate nohighlight">
+\[
+\mathscr{X} = \{\mathbf{x} = (x_1,\ldots,x_d) \in \mathbb{R}^d:x_i \in [a_i, b_i], \forall i\}
+\]</div>
+<p>for some constants <span class="math notranslate nohighlight">\(a_i &lt; b_i\)</span>, <span class="math notranslate nohighlight">\(i=1,\ldots,d\)</span>. <span class="math notranslate nohighlight">\(\lhd\)</span></p>
+<p>In this more general problem, the notion of global and local minimizer can be adapter straighforwardly. Note that we will assume that <span class="math notranslate nohighlight">\(f\)</span> is defined over all of <span class="math notranslate nohighlight">\(\mathbb{R}^d\)</span>. When <span class="math notranslate nohighlight">\(\mathbf{x} \in \mathscr{X}\)</span>, it is said to be feasible.</p>
+<p><strong>DEFINITION</strong> <strong>(Global minimizer)</strong> <span class="math notranslate nohighlight">\(\idx{global minimizer or maximizer}\xdi\)</span> Let <span class="math notranslate nohighlight">\(f : \mathbb{R}^d \to \mathbb{R}\)</span>. The point <span class="math notranslate nohighlight">\(\mathbf{x}^* \in \mathscr{X}\)</span> is a global minimizer of <span class="math notranslate nohighlight">\(f\)</span> over <span class="math notranslate nohighlight">\(\mathscr{X}\)</span> if</p>
+<div class="math notranslate nohighlight">
+\[
+f(\mathbf{x}) 
+\geq f(\mathbf{x}^*), \quad \forall \mathbf{x} \in \mathscr{X}. 
+\]</div>
+<p><span class="math notranslate nohighlight">\(\natural\)</span></p>
+<p><strong>DEFINITION</strong> <strong>(Local minimizer)</strong> <span class="math notranslate nohighlight">\(\idx{local minimizer or maximizer}\xdi\)</span> Let <span class="math notranslate nohighlight">\(f : \mathbb{R}^d \to \mathbb{R}\)</span>. The point <span class="math notranslate nohighlight">\(\mathbf{x}^* \in \mathscr{X}\)</span> is a local minimizer of <span class="math notranslate nohighlight">\(f\)</span> over <span class="math notranslate nohighlight">\(\mathscr{X}\)</span> if there is <span class="math notranslate nohighlight">\(\delta &gt; 0\)</span> such that</p>
+<div class="math notranslate nohighlight">
+\[
+f(\mathbf{x}) 
+\geq f(\mathbf{x}^*), \quad \forall \mathbf{x} \in (B_{\delta}(\mathbf{x}^*) \setminus \{\mathbf{x}^*\}) \cap \mathscr{X}. 
+\]</div>
+<p>If the inequality is strict, we say that <span class="math notranslate nohighlight">\(\mathbf{x}^*\)</span> is a strict local minimizer. <span class="math notranslate nohighlight">\(\natural\)</span></p>
+<p>In this subsection, we restrict ourselves to one important class of constraints: equality constraints. That is, we consider the minimization problem</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+&amp;\text{min} f(\mathbf{x})\\
+&amp;\text{s.t.}\ h_i(\mathbf{x}) = 0,\ \forall i \in [\ell]
+\end{align*}\]</div>
+<p>where s.t. stands for “subject to”. In other words, we only allow those <span class="math notranslate nohighlight">\(\mathbf{x}'s\)</span> such that <span class="math notranslate nohighlight">\(h_i(\mathbf{x}) = 0\)</span> for all <span class="math notranslate nohighlight">\(i\)</span>. Here <span class="math notranslate nohighlight">\(f : \mathbb{R}^d \to \mathbb{R}\)</span> and <span class="math notranslate nohighlight">\(h_i : \mathbb{R}^d \to \mathbb{R}\)</span>, <span class="math notranslate nohighlight">\(i\in [\ell]\)</span>. We will sometimes use the notation <span class="math notranslate nohighlight">\(\mathbf{h} : \mathbb{R}^d \to \mathbb{R}^\ell\)</span>, where <span class="math notranslate nohighlight">\(\mathbf{h}(\mathbf{x}) = (h_1(\mathbf{x}), \ldots, h_\ell(\mathbf{x}))\)</span>.</p>
+<p><strong>EXAMPLE:</strong> If we want to minimize <span class="math notranslate nohighlight">\(2 x_1^2 + 3 x_2^2\)</span> over all two-dimensional unit vectors <span class="math notranslate nohighlight">\(\mathbf{x} = (x_1, x_2)\)</span>, then we can let</p>
+<div class="math notranslate nohighlight">
+\[
+f(\mathbf{x}) = 2 x_1^2 + 3 x_2^2
+\]</div>
+<p>and</p>
+<div class="math notranslate nohighlight">
+\[
+h_1(\mathbf{x}) = 1 - x_1^2 - x_2^2 = 1 - \|\mathbf{x}\|^2.
+\]</div>
+<p>Observe that we could have chosen a different equality constraint to express the same minimization problem. <span class="math notranslate nohighlight">\(\lhd\)</span></p>
+<p>The following theorem generalizes the <em>First-Order Necessary Optimality Condition</em>. The proof is omitted.</p>
+<p><strong>THEOREM</strong> <strong>(Lagrange Multipliers)</strong> <span class="math notranslate nohighlight">\(\idx{Lagrange multipliers theorem}\xdi\)</span> Assume <span class="math notranslate nohighlight">\(f : \mathbb{R}^d \to \mathbb{R}\)</span> and <span class="math notranslate nohighlight">\(h_i : \mathbb{R}^d \to \mathbb{R}\)</span>, <span class="math notranslate nohighlight">\(i\in [\ell]\)</span>, are continuously differentiable. Let <span class="math notranslate nohighlight">\(\mathbf{x}^*\)</span> be a local minimizer of <span class="math notranslate nohighlight">\(f\)</span> s.t. <span class="math notranslate nohighlight">\(\mathbf{h}(\mathbf{x}) = \mathbf{0}\)</span>. Assume further that the vectors <span class="math notranslate nohighlight">\(\nabla h_i (\mathbf{x}^*)\)</span>, <span class="math notranslate nohighlight">\(i \in [\ell]\)</span>, are linearly independent. Then there exists a unique vector</p>
+<div class="math notranslate nohighlight">
+\[
+\blambda^* = (\lambda_1^*, \ldots, \lambda_\ell^*)
+\]</div>
+<p>satisfying</p>
+<div class="math notranslate nohighlight">
+\[
+\nabla f(\mathbf{x}^*)
++ \sum_{i=1}^\ell \lambda^*_i \nabla h_i(\mathbf{x}^*)
+= \mathbf{0}.
+\]</div>
+<p><span class="math notranslate nohighlight">\(\sharp\)</span></p>
+<p>The quantities <span class="math notranslate nohighlight">\(\lambda_1^*, \ldots, \lambda_\ell^*\)</span> are called Lagrange multipliers<span class="math notranslate nohighlight">\(\idx{Lagrange multipliers}\xdi\)</span>.</p>
+<p><strong>EXAMPLE:</strong> <strong>(continued)</strong> Returning to the previous example,</p>
+<div class="math notranslate nohighlight">
+\[
+\nabla f(\mathbf{x})
+= \left(
+\frac{\partial f(\mathbf{x})}{\partial x_1},
+\frac{\partial f(\mathbf{x})}{\partial x_2}
+\right)
+= (4 x_1, 6 x_2)
+\]</div>
+<p>and</p>
+<div class="math notranslate nohighlight">
+\[
+\nabla h_1(\mathbf{x})
+= \left(
+\frac{\partial h_1(\mathbf{x})}{\partial x_1},
+\frac{\partial h_1(\mathbf{x})}{\partial x_2}
+\right)
+= (- 2 x_1, - 2 x_2).
+\]</div>
+<p>The conditions in the theorem read</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+&amp;4 x_1 - 2 \lambda_1 x_1  = 0\\
+&amp;6 x_2 - 2 \lambda_1 x_2  = 0.
+\end{align*}\]</div>
+<p>The constraint <span class="math notranslate nohighlight">\(x_1^2 + x_2^2 = 1\)</span> must also be satisfied. Observe that the linear independence condition is automatically satisfied since there is only one constraint.</p>
+<p>There are several cases to consider.</p>
+<p>1- If neither <span class="math notranslate nohighlight">\(x_1\)</span> nor <span class="math notranslate nohighlight">\(x_2\)</span> is <span class="math notranslate nohighlight">\(0\)</span>, then the first equation gives <span class="math notranslate nohighlight">\(\lambda_1 = 2\)</span> while the second one gives <span class="math notranslate nohighlight">\(\lambda_1 = 3\)</span>. So that case cannot happen.</p>
+<p>2- If <span class="math notranslate nohighlight">\(x_1 = 0\)</span>, then <span class="math notranslate nohighlight">\(x_2 = 1\)</span> or <span class="math notranslate nohighlight">\(x_2 = -1\)</span> by the constraint and the second equation gives <span class="math notranslate nohighlight">\(\lambda_1 = 3\)</span> in either case.</p>
+<p>3- If <span class="math notranslate nohighlight">\(x_2 = 0\)</span>, then <span class="math notranslate nohighlight">\(x_1 = 1\)</span> or <span class="math notranslate nohighlight">\(x_1 = -1\)</span> by the constraint and the first equation gives <span class="math notranslate nohighlight">\(\lambda_1 = 2\)</span> in either case.</p>
+<p>Does any of these last four solutions, i.e., <span class="math notranslate nohighlight">\((x_1,x_2,\lambda_1) = (0,1,3)\)</span>, <span class="math notranslate nohighlight">\((x_1,x_2,\lambda_1) = (0,-1,3)\)</span>, <span class="math notranslate nohighlight">\((x_1,x_2,\lambda_1) = (1,0,2)\)</span> and <span class="math notranslate nohighlight">\((x_1,x_2,\lambda_1) = (-1,0,2)\)</span>, actually correspond to a local minimizer?</p>
+<p>This problem can be solved manually. Indeed, replace <span class="math notranslate nohighlight">\(x_2^2 = 1 - x_1^2\)</span> into the objective function to obtain</p>
+<div class="math notranslate nohighlight">
+\[
+2 x_1^2 + 3(1 - x_1^2)
+= -x_1^2 + 3.
+\]</div>
+<p>This is minimized for the largest value that <span class="math notranslate nohighlight">\(x_1^2\)</span> can take, namely when <span class="math notranslate nohighlight">\(x_1 = 1\)</span> or <span class="math notranslate nohighlight">\(x_1 = -1\)</span>. Indeed, we must have <span class="math notranslate nohighlight">\(0 \leq x_1^2 \leq x_1^2 + x_2^2 = 1\)</span>. So both <span class="math notranslate nohighlight">\((x_1, x_2) = (1,0)\)</span> and <span class="math notranslate nohighlight">\((x_1, x_2) = (-1,0)\)</span> are global minimizers. A fortiori, they must be local minimizers.</p>
+<p>What about <span class="math notranslate nohighlight">\((x_1,x_2) = (0,1)\)</span> and <span class="math notranslate nohighlight">\((x_1,x_2) = (0,-1)\)</span>? Arguing as above, they in fact correspond to global <em>maximizers</em> of the objective function. <span class="math notranslate nohighlight">\(\lhd\)</span></p>
+<p>Assume <span class="math notranslate nohighlight">\(\mathbf{x}\)</span> is feasible, that is, <span class="math notranslate nohighlight">\(\mathbf{h}(\mathbf{x}) = \mathbf{0}\)</span>. We let</p>
+<div class="math notranslate nohighlight">
+\[
+\mathscr{F}_{\mathbf{h}}(\mathbf{x})
+= 
+\left\{
+\mathbf{v} \in \mathbb{R}^d
+\,:\,
+\nabla h_i(\mathbf{x})^T \mathbf{v} = \mathbf{0},\ \forall i \in [\ell]
+\right\}
+\]</div>
+<p>be the (linear) subspace of first-order feasible directions<span class="math notranslate nohighlight">\(\idx{first-order feasible directions}\xdi\)</span> at <span class="math notranslate nohighlight">\(\mathbf{x}\)</span>. To explain the name, note that by a first-order Taylor expansion, if <span class="math notranslate nohighlight">\(\mathbf{v} \in \mathscr{F}_{\mathbf{h}}(\mathbf{x})\)</span> then it holds that</p>
+<div class="math notranslate nohighlight">
+\[
+h_i(\mathbf{x} + \delta \mathbf{v})
+\approx
+h_i(\mathbf{x}) + \delta \nabla h_i(\mathbf{x})^T \mathbf{v}
+= \mathbf{0}
+\]</div>
+<p>for all <span class="math notranslate nohighlight">\(i\)</span>.</p>
+<p>The theorem says that, if <span class="math notranslate nohighlight">\(\mathbf{x}^*\)</span> is a local minimizer, then the gradient of <span class="math notranslate nohighlight">\(f\)</span> is orthogonal to the set of first-order feasible directions at <span class="math notranslate nohighlight">\(\mathbf{x}^*\)</span>. Indeed, any <span class="math notranslate nohighlight">\(\mathbf{v} \in \mathscr{F}_{\mathbf{h}}(\mathbf{x}^*)\)</span> satisfies by the theorem that</p>
+<div class="math notranslate nohighlight">
+\[
+\nabla f(\mathbf{x}^*)^T \mathbf{v}
+= \left(- \sum_{i=1}^\ell \lambda^*_i \nabla h_i(\mathbf{x}^*)\right)^T \mathbf{v}
+= - \sum_{i=1}^\ell \lambda^*_i \nabla h_i(\mathbf{x}^*)^T \mathbf{v}
+= 0.
+\]</div>
+<p>Intuitively, following a first-order feasible direction does not improve the objective function</p>
+<div class="math notranslate nohighlight">
+\[
+f(\mathbf{x}^* + \alpha \mathbf{v})
+\approx
+f(\mathbf{x}^*)
++
+\alpha \nabla f(\mathbf{x}^*)^T \mathbf{v}
+= f(\mathbf{x}^*).
+\]</div>
+<p><strong>NUMERICAL CORNER:</strong> Returning to the previous example, the points satisfying <span class="math notranslate nohighlight">\(h_1(\mathbf{x}) = 0\)</span> sit on the circle of radius <span class="math notranslate nohighlight">\(1\)</span> around the origin. We have already seen that</p>
+<div class="math notranslate nohighlight">
+\[
+\nabla h_1(\mathbf{x})
+= \left(
+\frac{\partial h_1(\mathbf{x})}{\partial x_1},
+\frac{\partial h_1(\mathbf{x})}{\partial x_2}
+\right)
+= (- 2 x_1, - 2 x_2).
+\]</div>
+<p>Here is code illustrating the theorem (with help from ChatGPT). We first compute the function <span class="math notranslate nohighlight">\(h_1\)</span> at a grid of points using <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.meshgrid.html"><code class="docutils literal notranslate"><span class="pre">numpy.meshgrid</span></code></a>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">h1</span><span class="p">(</span><span class="n">x1</span><span class="p">,</span> <span class="n">x2</span><span class="p">):</span>
+    <span class="k">return</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">x1</span><span class="o">**</span><span class="mi">2</span> <span class="o">-</span> <span class="n">x2</span><span class="o">**</span><span class="mi">2</span>
+
+<span class="n">x1</span><span class="p">,</span> <span class="n">x2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mf">1.5</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">,</span> <span class="mi">400</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mf">1.5</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">,</span> <span class="mi">400</span><span class="p">)</span>
+<span class="n">X1</span><span class="p">,</span> <span class="n">X2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">meshgrid</span><span class="p">(</span><span class="n">x1</span><span class="p">,</span> <span class="n">x2</span><span class="p">)</span>
+<span class="n">H1</span> <span class="o">=</span> <span class="n">h1</span><span class="p">(</span><span class="n">X1</span><span class="p">,</span> <span class="n">X2</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>We use <a class="reference external" href="https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.contour.html"><code class="docutils literal notranslate"><span class="pre">matplotlib.pyplot.contour</span></code></a> to plot the constraint set as a <a class="reference external" href="https://en.wikipedia.org/wiki/Contour_line">contour line</a> (for the constant value <span class="math notranslate nohighlight">\(0\)</span>) of <span class="math notranslate nohighlight">\(h_1\)</span>. Gradients of <span class="math notranslate nohighlight">\(h_1\)</span> are plotted at a collection of <code class="docutils literal notranslate"><span class="pre">points</span></code> with the <a class="reference external" href="https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.quiver.html"><code class="docutils literal notranslate"><span class="pre">matplotlib.pyplot.quiver</span></code></a> function, which is used for plotting vectors as arrows. We see that the directions of first-order feasible directions are orthogonal to the arrows, and therefore are tangent to the constraint set.</p>
+<p>At those same <code class="docutils literal notranslate"><span class="pre">points</span></code>, we also plot the gradient of <span class="math notranslate nohighlight">\(f\)</span>, which recall is</p>
+<div class="math notranslate nohighlight">
+\[
+\nabla f(\mathbf{x})
+= \left(
+\frac{\partial f(\mathbf{x})}{\partial x_1},
+\frac{\partial f(\mathbf{x})}{\partial x_2}
+\right)
+= (4 x_1, 6 x_2).
+\]</div>
+<p>We make all gradients into unit vectors.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">contour</span><span class="p">(</span><span class="n">X1</span><span class="p">,</span> <span class="n">X2</span><span class="p">,</span> <span class="n">H1</span><span class="p">,</span> <span class="n">levels</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">colors</span><span class="o">=</span><span class="s1">&#39;b&#39;</span><span class="p">)</span>
+<span class="n">points</span> <span class="o">=</span> <span class="p">[(</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span><span class="o">/</span><span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="o">-</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span><span class="o">/</span><span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="mf">0.5</span><span class="p">,</span> <span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span><span class="o">/</span><span class="mi">2</span><span class="p">),</span>
+    <span class="p">(</span><span class="o">-</span><span class="mf">0.5</span><span class="p">,</span> <span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span><span class="o">/</span><span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)]</span>
+<span class="k">for</span> <span class="n">x1</span><span class="p">,</span> <span class="n">x2</span> <span class="ow">in</span> <span class="n">points</span><span class="p">:</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">quiver</span><span class="p">(</span><span class="n">x1</span><span class="p">,</span> <span class="n">x2</span><span class="p">,</span> <span class="o">-</span><span class="n">x1</span><span class="o">/</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">x1</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">x2</span><span class="o">**</span><span class="mi">2</span><span class="p">),</span> <span class="o">-</span><span class="n">x2</span><span class="o">/</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">x1</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">x2</span><span class="o">**</span><span class="mi">2</span><span class="p">),</span> 
+               <span class="n">scale</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;r&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">quiver</span><span class="p">(</span><span class="n">x1</span><span class="p">,</span> <span class="n">x2</span><span class="p">,</span> <span class="mi">4</span><span class="o">*</span><span class="n">x1</span><span class="o">/</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">16</span> <span class="o">*</span> <span class="n">x1</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="mi">36</span> <span class="o">*</span> <span class="n">x2</span><span class="o">**</span><span class="mi">2</span><span class="p">),</span> 
+               <span class="mi">6</span><span class="o">*</span><span class="n">x2</span><span class="o">/</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">16</span> <span class="o">*</span> <span class="n">x1</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="mi">36</span> <span class="o">*</span> <span class="n">x2</span><span class="o">**</span><span class="mi">2</span><span class="p">),</span> <span class="n">scale</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;lime&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/04ca11ce6d2f4b7e386896b83326a84e6c8da2156224fa80e9aa8fa2efd0a86f.png" src="../../_images/04ca11ce6d2f4b7e386896b83326a84e6c8da2156224fa80e9aa8fa2efd0a86f.png" />
+</div>
+</div>
+<p>We see that, at <span class="math notranslate nohighlight">\((-1,0)\)</span> and <span class="math notranslate nohighlight">\((1,0)\)</span>, the gradient is indeed orthogonal to the first-order feasible directions.</p>
+<p><span class="math notranslate nohighlight">\(\unlhd\)</span></p>
+<p>A feasible vector <span class="math notranslate nohighlight">\(\mathbf{x}\)</span> is said to be regular if the vectors <span class="math notranslate nohighlight">\(\nabla h_i (\mathbf{x}^*)\)</span>, <span class="math notranslate nohighlight">\(i \in [\ell]\)</span>, are linearly independent. We re-formulate the previous theorem in terms of the Lagrangian function, which is defined as</p>
+<div class="math notranslate nohighlight">
+\[
+L(\mathbf{x}, \blambda)
+= f(\mathbf{x}) + \sum_{i=1}^\ell \lambda_i h_i(\mathbf{x}),
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(\blambda = (\lambda_1,\ldots,\lambda_\ell)\)</span>. Then, by the theorem, a regular local minimizer satisfies</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+&amp;\nabla_{\mathbf{x}} L(\mathbf{x}, \blambda) = \mathbf{0}\\
+&amp;\nabla_{\blambda} L(\mathbf{x}, \blambda) = \mathbf{0}.
+\end{align*}\]</div>
+<p>Here the notation <span class="math notranslate nohighlight">\(\nabla_{\mathbf{x}}\)</span> (respectively <span class="math notranslate nohighlight">\(\nabla_{\blambda}\)</span>) indicates that we are taking the vector of partial derivatives with respect to only the variables in <span class="math notranslate nohighlight">\(\mathbf{x}\)</span> (respectively <span class="math notranslate nohighlight">\(\blambda\)</span>).</p>
+<p>To see that these equations hold, note that</p>
+<div class="math notranslate nohighlight">
+\[
+\nabla_{\mathbf{x}} L(\mathbf{x}, \blambda)
+= \nabla f(\mathbf{x}) + \sum_{i=1}^\ell \lambda_i \nabla h_i(\mathbf{x})
+\]</div>
+<p>and</p>
+<div class="math notranslate nohighlight">
+\[
+\nabla_{\blambda} L(\mathbf{x}, \blambda)
+= \mathbf{h}(\mathbf{x}).
+\]</div>
+<p>So <span class="math notranslate nohighlight">\(\nabla_{\mathbf{x}} L(\mathbf{x}, \blambda) = \mathbf{0}\)</span> is a restatement of the Lagrange multipliers condition and <span class="math notranslate nohighlight">\(\nabla_{\blambda} L(\mathbf{x}, \blambda) = \mathbf{0}\)</span> is a restatement of feasibility. Together, they form a system of <span class="math notranslate nohighlight">\(d + \ell\)</span> equations in <span class="math notranslate nohighlight">\(d + \ell\)</span> variables.</p>
+<p><strong>EXAMPLE:</strong> Consider the constrained minimization problem on <span class="math notranslate nohighlight">\(\mathbb{R}^3\)</span> where the objective function is</p>
+<div class="math notranslate nohighlight">
+\[
+f(\mathbf{x})
+= \frac{1}{2}(x_1^2 + x_2^2 + x_3^2)
+\]</div>
+<p>and the only constraint function is</p>
+<div class="math notranslate nohighlight">
+\[
+h_1(\mathbf{x}) = 3 - x_1 - x_2 - x_3.
+\]</div>
+<p>The gradients are</p>
+<div class="math notranslate nohighlight">
+\[
+\nabla f(\mathbf{x})
+= (x_1, x_2, x_3)
+\]</div>
+<p>and</p>
+<div class="math notranslate nohighlight">
+\[
+\nabla h_1(\mathbf{x})
+= (-1, -1, -1).
+\]</div>
+<p>In particular, regularity is always satisfied since there is only one non-zero vector to consider.</p>
+<p>So we are looking for solutions to the system of equations</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+&amp;x_1 - \lambda_1 = 0\\ 
+&amp;x_2 - \lambda_1 = 0\\ 
+&amp;x_3 - \lambda_1 = 0\\ 
+&amp;3 - x_1 - x_2 - x_3 = 0.
+\end{align*}\]</div>
+<p>The first three equations imply that <span class="math notranslate nohighlight">\(x_1 = x_2 = x_3 = \lambda\)</span>. Replacing in the fourth equation gives <span class="math notranslate nohighlight">\(3 - 3 \lambda_1 = 0\)</span> so <span class="math notranslate nohighlight">\(\lambda_1 = 1\)</span>. Hence, <span class="math notranslate nohighlight">\(x_1 = x_2 = x_3 = 1\)</span> and this is the only solution.</p>
+<p>So any local minimizer, if it exists, must be the vector <span class="math notranslate nohighlight">\((1,1,1)\)</span> with Lagrange multiplier <span class="math notranslate nohighlight">\(1\)</span>. How can we know for sure whether this is the case? <span class="math notranslate nohighlight">\(\lhd\)</span></p>
+<p>As in the unconstrained case, there are <em>sufficient</em> conditions. As in that case as well, they involve second-order derivatives. We give one such theorem next without proof.</p>
+<p><strong>THEOREM</strong> Assume <span class="math notranslate nohighlight">\(f : \mathbb{R}^d \to \mathbb{R}\)</span> and <span class="math notranslate nohighlight">\(h_i : \mathbb{R}^d \to \mathbb{R}\)</span>, <span class="math notranslate nohighlight">\(i\in [\ell]\)</span>, are twice continuously differentiable. Let <span class="math notranslate nohighlight">\(\mathbf{x}^* \in \mathbb{R}^d\)</span> and <span class="math notranslate nohighlight">\(\blambda^* \in \mathbb{R}^\ell\)</span> satisfy</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+\nabla f(\mathbf{x}^*) + \sum_{i=1}^\ell \lambda^*_i \nabla h_i(\mathbf{x}^*) &amp;= \mathbf{0}\\
+\mathbf{h}(\mathbf{x}^*) &amp;= \mathbf{0}
+\end{align*}\]</div>
+<p>and</p>
+<div class="math notranslate nohighlight">
+\[
+\mathbf{v}^T\left(
+\mathbf{H}_f(\mathbf{x}^*) + \sum_{i=1}^\ell \lambda^*_i \mathbf{H}_{h_i}(\mathbf{x}^*)
+\right) \mathbf{v} &gt; 0
+\]</div>
+<p>for all <span class="math notranslate nohighlight">\(\mathbf{v} \in \mathscr{F}_{\mathbf{h}}(\mathbf{x})\)</span>.</p>
+<p>Then <span class="math notranslate nohighlight">\(\mathbf{x}^*\)</span> a strict local minimizer of <span class="math notranslate nohighlight">\(f\)</span> s.t. <span class="math notranslate nohighlight">\(\mathbf{h}(\mathbf{x}) = \mathbf{0}\)</span>. <span class="math notranslate nohighlight">\(\sharp\)</span></p>
+<p><strong>EXAMPLE:</strong> <strong>(continued)</strong> We return to the previous example. We found a unique solution</p>
+<div class="math notranslate nohighlight">
+\[
+(x_1^*, x_2^*, x_3^*, \lambda_1^*)
+= (1,1,1,1)
+\]</div>
+<p>to the system</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+\nabla f(\mathbf{x}^*) + \sum_{i=1}^\ell \lambda^*_i \nabla h_i(\mathbf{x}^*) &amp;= \mathbf{0}\\
+\mathbf{h}(\mathbf{x}^*) &amp;= \mathbf{0}
+\end{align*}\]</div>
+<p>To check the second-order condition, we need the Hessians. It is straighforward to compute the second-order partial derivatives, which do not depend on <span class="math notranslate nohighlight">\(\mathbf{x}\)</span>. We obtain</p>
+<div class="math notranslate nohighlight">
+\[
+\mathbf{H}_{f}(\mathbf{x})
+= I_{3 \times 3}
+\]</div>
+<p>and</p>
+<div class="math notranslate nohighlight">
+\[
+\mathbf{H}_{h_1}(\mathbf{x})
+= \mathbf{0}_{3 \times 3}.
+\]</div>
+<p>So</p>
+<div class="math notranslate nohighlight">
+\[
+\mathbf{H}_f(\mathbf{x}^*) + \sum_{i=1}^\ell \lambda^*_i \mathbf{H}_{h_i}(\mathbf{x}^*)
+= I_{3 \times 3}
+\]</div>
+<p>and it follows that</p>
+<div class="math notranslate nohighlight">
+\[
+\mathbf{v}^T\left(
+\mathbf{H}_f(\mathbf{x}^*) + \sum_{i=1}^\ell \lambda^*_i \mathbf{H}_{h_i}(\mathbf{x}^*)
+\right) \mathbf{v}
+= \mathbf{v}^T I_{3 \times 3} \mathbf{v}
+= \|\mathbf{v}\|^2 &gt; 0
+\]</div>
+<p>for any non-zero vector, including those in <span class="math notranslate nohighlight">\(\mathscr{F}_{\mathbf{h}}(\mathbf{x})\)</span>.</p>
+<p>It follows from the previous theorem that <span class="math notranslate nohighlight">\(\mathbf{x}^*\)</span> is a strict local minimizer of the constrained problem. <span class="math notranslate nohighlight">\(\lhd\)</span></p>
+<p><em><strong>Self-assessment quiz</strong></em> <em>(with help from Claude, Gemini, and ChatGPT)</em></p>
+<p><strong>1</strong> Which of the following is the correct definition of a global minimizer <span class="math notranslate nohighlight">\(x^*\)</span> of a function <span class="math notranslate nohighlight">\(f: \mathbb{R}^d \to \mathbb{R}\)</span>?</p>
+<p>a) <span class="math notranslate nohighlight">\(f(x) \geq f(x^*)\)</span> for all <span class="math notranslate nohighlight">\(x\)</span> in some open ball around <span class="math notranslate nohighlight">\(x^*\)</span>.</p>
+<p>b) <span class="math notranslate nohighlight">\(f(x) \geq f(x^*)\)</span> for all <span class="math notranslate nohighlight">\(x \in \mathbb{R}^d\)</span>.</p>
+<p>c) <span class="math notranslate nohighlight">\(\nabla f(x^*) = 0\)</span>.</p>
+<p>d) <span class="math notranslate nohighlight">\(v^T H_f(x^*) v &gt; 0\)</span> for all <span class="math notranslate nohighlight">\(v \in \mathbb{R}^d\)</span>.</p>
+<p><strong>2</strong> Let <span class="math notranslate nohighlight">\(f: \mathbb{R}^d \to \mathbb{R}\)</span> be continuously differentiable at <span class="math notranslate nohighlight">\(x_0\)</span>. The directional derivative of <span class="math notranslate nohighlight">\(f\)</span> at <span class="math notranslate nohighlight">\(x_0\)</span> in the direction <span class="math notranslate nohighlight">\(v \in \mathbb{R}^d\)</span> is NOT given by:</p>
+<p>a) <span class="math notranslate nohighlight">\(\frac{\partial f(x_0)}{\partial v} = \nabla f(x_0)^T v\)</span>.</p>
+<p>b) <span class="math notranslate nohighlight">\(\frac{\partial f(x_0)}{\partial v} = v^T \nabla f(x_0)\)</span>.</p>
+<p>c) <span class="math notranslate nohighlight">\(\frac{\partial f(x_0)}{\partial v} = v^T H_f(x_0) v\)</span>.</p>
+<p>d) <span class="math notranslate nohighlight">\(\frac{\partial f(x_0)}{\partial v} = \lim_{h \to 0} \frac{f(x_0 + hv) - f(x_0)}{h}\)</span>.</p>
+<p><strong>3</strong> Let <span class="math notranslate nohighlight">\(f: \mathbb{R}^d \to \mathbb{R}\)</span> be twice continuously differentiable. If <span class="math notranslate nohighlight">\(\nabla f(x_0) = 0\)</span> and <span class="math notranslate nohighlight">\(H_f(x_0)\)</span> is positive definite, then <span class="math notranslate nohighlight">\(x_0\)</span> is:</p>
+<p>a) A global minimizer of <span class="math notranslate nohighlight">\(f\)</span>.</p>
+<p>b) A local minimizer of <span class="math notranslate nohighlight">\(f\)</span>, but not necessarily a strict local minimizer.</p>
+<p>c) A strict local minimizer of <span class="math notranslate nohighlight">\(f\)</span>.</p>
+<p>d) A saddle point of <span class="math notranslate nohighlight">\(f\)</span>.</p>
+<p><strong>4</strong> Consider the optimization problem <span class="math notranslate nohighlight">\(\min_x f(x)\)</span> subject to <span class="math notranslate nohighlight">\(h(x) = 0\)</span>, where <span class="math notranslate nohighlight">\(f: \mathbb{R}^d \to \mathbb{R}\)</span> and <span class="math notranslate nohighlight">\(h: \mathbb{R}^d \to \mathbb{R}^\ell\)</span> are continuously differentiable. Let <span class="math notranslate nohighlight">\(x^*\)</span> be a local minimizer and assume that the vectors <span class="math notranslate nohighlight">\(\nabla h_i(x^*), i \in [\ell]\)</span>, are linearly independent. According to the Lagrange Multipliers theorem, which of the following must be true?</p>
+<p>a) <span class="math notranslate nohighlight">\(\nabla f(x^*) = 0\)</span>.</p>
+<p>b) <span class="math notranslate nohighlight">\(\nabla f(x^*) + \sum_{i=1}^\ell \lambda_i^* \nabla h_i(x^*) = 0\)</span> for some <span class="math notranslate nohighlight">\(\lambda^* \in \mathbb{R}^\ell\)</span>.</p>
+<p>c) <span class="math notranslate nohighlight">\(h(x^*) = 0\)</span>.</p>
+<p>d) Both b and c.</p>
+<p><strong>5</strong> Which of the following is a correct statement of Taylor’s Theorem (to second order) for a twice continuously differentiable function <span class="math notranslate nohighlight">\(f: D \to \mathbb{R}\)</span>, where <span class="math notranslate nohighlight">\(D \subseteq \mathbb{R}^d\)</span>, at an interior point <span class="math notranslate nohighlight">\(x_0 \in D\)</span>?</p>
+<p>a) For any <span class="math notranslate nohighlight">\(x \in B_\delta(x_0)\)</span>, <span class="math notranslate nohighlight">\(f(x) = f(x_0) + \nabla f(x_0)^T (x - x_0) + \frac{1}{2}(x - x_0)^T Hf(x_0 + \xi(x - x_0))(x - x_0)\)</span> for some <span class="math notranslate nohighlight">\(\xi \in (0,1)\)</span>.</p>
+<p>b) For any <span class="math notranslate nohighlight">\(x \in B_\delta(x_0)\)</span>, <span class="math notranslate nohighlight">\(f(x) = f(x_0) + \nabla f(x_0 + \xi(x - x_0))^T (x - x_0) + \frac{1}{2}(x - x_0)^T Hf(x_0 + \xi(x - x_0))(x - x_0)\)</span>.</p>
+<p>c) For any <span class="math notranslate nohighlight">\(x \in B_\delta(x_0)\)</span>, <span class="math notranslate nohighlight">\(f(x) = f(x_0) + \nabla f(x_0 + \xi(x - x_0))^T (x - x_0)\)</span>.</p>
+<p>d) For any <span class="math notranslate nohighlight">\(x \in B_\delta(x_0)\)</span>, <span class="math notranslate nohighlight">\(f(x) = f(x_0) + \frac{1}{2}(x_0 + \xi(x - x_0))^T Hf(x_0)(x_0 + \xi(x - x_0))\)</span>.</p>
+<p>Answer for Q3.3.1: b. Justification: The text states that “The point <span class="math notranslate nohighlight">\(x^* \in \mathbb{R}^d\)</span> is a global minimizer of <span class="math notranslate nohighlight">\(f\)</span> over <span class="math notranslate nohighlight">\(\mathbb{R}^d\)</span> if <span class="math notranslate nohighlight">\(f(x) \geq f(x^*), \forall x \in \mathbb{R}^d\)</span>.”</p>
+<p>Answer for Q3.3.7: c. Justification: The text states the Directional Derivative from Gradient theorem: “Assume that <span class="math notranslate nohighlight">\(f\)</span> is continuously differentiable at <span class="math notranslate nohighlight">\(x_0\)</span>. Then the directional derivative of <span class="math notranslate nohighlight">\(f\)</span> at <span class="math notranslate nohighlight">\(x_0\)</span> in the direction <span class="math notranslate nohighlight">\(v\)</span> is given by <span class="math notranslate nohighlight">\(\frac{\partial f(x_0)}{\partial v} = \nabla f(x_0)^T v\)</span>.”</p>
+<p>Answer for Q3.3.9: c. Justification: The text states the Second-Order Sufficient Condition theorem: “If <span class="math notranslate nohighlight">\(\nabla f(x_0) = 0\)</span> and <span class="math notranslate nohighlight">\(H_f(x_0)\)</span> is positive definite, then <span class="math notranslate nohighlight">\(x_0\)</span> is a strict local minimizer.”</p>
+<p>Answer for Q3.3.12: d. Justification: The Lagrange Multipliers theorem states that under the given conditions, there exists a unique vector <span class="math notranslate nohighlight">\(\lambda^* = (\lambda_1^*, \ldots, \lambda_\ell^*)\)</span> satisfying <span class="math notranslate nohighlight">\(\nabla f(x^*) + \sum_{i=1}^\ell \lambda_i^* \nabla h_i(x^*) = 0\)</span> and <span class="math notranslate nohighlight">\(h(x^*) = 0\)</span>.</p>
+<p>Answer for Q3.3.14: a. Justification: This is the statement of Taylor’s Theorem as presented in the text.</p>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./chap03_opt/03_optimality"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="../02_several/roch-mmids-opt-several.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title"><span class="section-number">3.2. </span>Background: review of differentiable functions of several variables</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="../04_convexity/roch-mmids-opt-convexity.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title"><span class="section-number">3.4. </span>Convexity</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#first-order-conditions">3.3.1. First-order conditions</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#second-order-conditions">3.3.2. Second-order conditions</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#adding-equality-constraints">3.3.3. Adding equality constraints</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Sebastien Roch
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2024.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

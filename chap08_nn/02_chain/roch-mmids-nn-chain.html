@@ -1,0 +1,1548 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>8.2. Background: Jacobian, chain rule, and a brief introduction to automatic differentiation &#8212; MMiDS Textbook</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.5.1/css/all.min.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.1/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.1/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.1/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b76e3c8a" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=384b581d" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css?v=be8a1c11" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=87e54e7c" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae" />
+  <script src="../../_static/vendor/fontawesome/6.5.1/js/all.min.js?digest=8d27b9dea8ad943066ae"></script>
+
+    <script src="../../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?v=efea14e4"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../_static/design-tabs.js?v=f930bc37"></script>
+    <script async="async" src="https://www.googletagmanager.com/gtag/js?id=G-P5E8DW088F"></script>
+    <script>
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){ dataLayer.push(arguments); }
+                gtag('js', new Date());
+                gtag('config', 'G-P5E8DW088F');
+            </script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){ dataLayer.push(arguments); }
+                gtag('js', new Date());
+                gtag('config', 'G-P5E8DW088F');
+            </script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'chap08_nn/02_chain/roch-mmids-nn-chain';</script>
+    <link rel="canonical" href="https://mmids-textbook.github.io/chap08_nn/02_chain/roch-mmids-nn-chain.html" />
+    <link rel="icon" href="https://mmids-textbook.github.io/favicon-32x32.png"/>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="8.3. Building blocks of AI 1: backpropagation" href="../03_backprop/roch-mmids-nn-backprop.html" />
+    <link rel="prev" title="8.1. Motivating example: classifying natural images" href="../01_motiv/roch-mmids-nn-motiv.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a id="pst-skip-link" class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+
+<a class="navbar-brand logo" href="../../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/mmids-cover-small.jpg" class="logo__image only-light" alt="MMiDS Textbook - Home"/>
+    <script>document.write(`<img src="../../_static/mmids-cover-small.jpg" class="logo__image only-dark" alt="MMiDS Textbook - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../index.html">
+                    <b>MATHEMATICAL METHODS in DATA SCIENCE (with Python)</b>
+                </a>
+            </li>
+        </ul>
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../chap01_intro/00_intro/roch-mmids-intro-intro.html">1. Introduction: a first data science problem</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../chap01_intro/01_motiv/roch-mmids-intro-motiv.html">1.1. Motivating example: identifying penguin species</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap01_intro/02_review/roch-mmids-intro-review.html">1.2. Background: quick refresher of matrix algebra, differential calculus, and elementary probability</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap01_intro/03_clustering/roch-mmids-intro-clustering.html">1.3. Clustering: an objective, an algorithm and a guarantee</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap01_intro/04_highdim/roch-mmids-intro-highdim.html">1.4. Some observations about high-dimensional data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap01_intro/exercises/roch-mmids-intro-exercises.html">1.5. Exercises</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap01_intro/supp/roch-mmids-intro-supp.html">1.6. Online suppplementary material</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../chap02_ls/00_intro/roch-mmids-ls-intro.html">2. Least squares: geometric, algebraic, and numerical aspects</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../chap02_ls/01_motiv/roch-mmids-ls-motiv.html">2.1. Motivating example: predicting sales</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap02_ls/02_spaces/roch-mmids-ls-spaces.html">2.2. Background: review of vector spaces and matrix inverses</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap02_ls/03_orthog/roch-mmids-ls-orthog.html">2.3. Geometry of least squares: the orthogonal projection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap02_ls/04_qr/roch-mmids-ls-qr.html">2.4. QR decomposition and Householder transformations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap02_ls/05_regression/roch-mmids-ls-regression.html">2.5. Application: regression analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap02_ls/exercises/roch-mmids-ls-exercises.html">2.6. Exercises</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap02_ls/supp/roch-mmids-ls-supp.html">2.7. Online suppplementary material</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../chap03_opt/00_intro/roch-mmids-opt-intro.html">3. Optimization theory and algorithms</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-3"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../chap03_opt/01_motiv/roch-mmids-opt-motiv.html">3.1. Motivating example:  analyzing customer satisfaction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap03_opt/02_several/roch-mmids-opt-several.html">3.2. Background: review of differentiable functions of several variables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap03_opt/03_optimality/roch-mmids-opt-optimality.html">3.3. Optimality conditions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap03_opt/04_convexity/roch-mmids-opt-convexity.html">3.4. Convexity</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap03_opt/05_gd/roch-mmids-opt-gd.html">3.5. Gradient descent and its convergence analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap03_opt/06_logistic/roch-mmids-opt-logistic.html">3.6. Application: logistic regression</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap03_opt/exercises/roch-mmids-opt-exercises.html">3.7. Exercises</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap03_opt/supp/roch-mmids-opt-supp.html">3.8. Online suppplementary material</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../chap04_svd/00_intro/roch-mmids-svd-intro.html">4. Singular value decomposition</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-4"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../chap04_svd/01_motiv/roch-mmids-svd-motiv.html">4.1. Motivating example: visualizing viral evolution</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap04_svd/02_spectral/roch-mmids-svd-spectral.html">4.2. Background: review of matrix rank  and spectral decomposition</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap04_svd/03_svd/roch-mmids-svd-svd.html">4.3. Approximating subspaces and the SVD</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap04_svd/04_power/roch-mmids-svd-power.html">4.4. Power iteration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap04_svd/05_pca/roch-mmids-svd-pca.html">4.5. Application: principal components analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap04_svd/06_further/roch-mmids-svd-further.html">4.6. Further applications of the SVD: low-rank approximations and ridge regression</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap04_svd/exercises/roch-mmids-svd-exercises.html">4.7. Exercises</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap04_svd/supp/roch-mmids-svd-supp.html">4.8. Online suppplementary material</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../chap05_specgraph/00_intro/roch-mmids-specgraph-intro.html">5. Spectral graph theory</a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-5"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../chap05_specgraph/01_motiv/roch-mmids-specgraph-motiv.html">5.1. Motivating example: uncovering social groups</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap05_specgraph/02_graph/roch-mmids-specgraph-graph.html">5.2. Background: basic concepts in graph theory</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap05_specgraph/03_extremal/roch-mmids-specgraph-extremal.html">5.3. Variational characterization of eigenvalues</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap05_specgraph/04_laplacian/roch-mmids-specgraph-laplacian.html">5.4. Spectral properties of the Laplacian matrix</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap05_specgraph/05_partitioning/roch-mmids-specgraph-partitioning.html">5.5. Application: graph partitioning via spectral clustering</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap05_specgraph/06_sbm/roch-mmids-specgraph-sbm.html">5.6. Erdős-Rényi random graph and stochastic blockmodel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap05_specgraph/exercises/roch-mmids-specgraph-exercises.html">5.7. Exercises</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap05_specgraph/supp/roch-mmids-specgraph-supp.html">5.8. Online supplementary material</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../chap06_prob/00_intro/roch-mmids-prob-intro.html">6. Probabilistic models: from simple to complex</a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-6"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../chap06_prob/01_motiv/roch-mmids-prob-motiv.html">6.1. Motivating example: tracking location</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap06_prob/02_parametric/roch-mmids-prob-parametric.html">6.2. Background: introduction to parametric families and maximum likelihood estimation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap06_prob/03_joint/roch-mmids-prob-joint.html">6.3. Modeling more complex dependencies 1: using conditional independence</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap06_prob/04_em/roch-mmids-prob-em.html">6.4. Modeling more complex dependencies 2: marginalizing out an unobserved variable</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap06_prob/05_kalman/roch-mmids-prob-kalman.html">6.5. Application: linear-Gaussian models and Kalman filtering</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap06_prob/exercises/roch-mmids-prob-exercises.html">6.6. Exercises</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap06_prob/supp/roch-mmids-prob-supp.html">6.7. Online supplementary material</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../chap07_rwmc/00_intro/roch-mmids-rwmc-intro.html">7. Random walks on graphs and Markov chains</a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-7"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../chap07_rwmc/01_motiv/roch-mmids-rwmc-motiv.html">7.1. Motivating example: discovering mathematical topics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap07_rwmc/02_mcdefs/roch-mmids-rwmc-mcdefs.html">7.2. Background: elements of finite Markov chains</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap07_rwmc/03_stat/roch-mmids-rwmc-stat.html">7.3. Limit behavior 1: stationary distributions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap07_rwmc/04_mclimit/roch-mmids-rwmc-mclimit.html">7.4. Limit behavior 2: convergence to equilibrium</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap07_rwmc/05_pagerank/roch-mmids-rwmc-pagerank.html">7.5. Application: random walks on graphs and PageRank</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap07_rwmc/06_gibbs/roch-mmids-rwmc-gibbs.html">7.6. Further applications: Gibbs sampling and generating images</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap07_rwmc/exercises/roch-mmids-rwmc-exercises.html">7.7. Exercises</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap07_rwmc/supp/roch-mmids-rwmc-supp.html">7.8. Online supplementary material</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="../00_intro/roch-mmids-nn-intro.html">8. Neural networks, backpropagation and stochastic gradient descent</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-8"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../01_motiv/roch-mmids-nn-motiv.html">8.1. Motivating example:  classifying natural images</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">8.2. Background: Jacobian, chain rule, and a brief introduction to automatic differentiation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../03_backprop/roch-mmids-nn-backprop.html">8.3. Building blocks of AI 1: backpropagation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../04_sgd/roch-mmids-nn-sgd.html">8.4. Building blocks of AI 2: stochastic gradient descent</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../05_nn/roch-mmids-nn-nn.html">8.5. Building blocks of AI 3: neural networks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../exercises/roch-mmids-nn-exercises.html">8.6. Exercises</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../supp/roch-mmids-nn-supp.html">8.7. Online supplementary material</a></li>
+</ul>
+</li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/MMiDS-textbook/MMiDS-textbook.github.io" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/MMiDS-textbook/MMiDS-textbook.github.io/issues/new?title=Issue%20on%20page%20%2Fchap08_nn/02_chain/roch-mmids-nn-chain.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/chap08_nn/02_chain/roch-mmids-nn-chain.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Background: Jacobian, chain rule, and a brief introduction to automatic differentiation</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#more-matrix-algebra-hadamard-and-kronecker-products">8.2.1. More matrix algebra: Hadamard and Kronecker products</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#jacobian">8.2.2. Jacobian</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#generalization-of-the-chain-rule">8.2.3. Generalization of the Chain Rule</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#brief-introduction-to-automatic-differentiation-in-pytorch">8.2.4. Brief introduction to automatic differentiation in PyTorch</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <p><span class="math notranslate nohighlight">\(\newcommand{\bmu}{\boldsymbol{\mu}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bSigma}{\boldsymbol{\Sigma}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bfbeta}{\boldsymbol{\beta}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bflambda}{\boldsymbol{\lambda}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bgamma}{\boldsymbol{\gamma}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bsigma}{{\boldsymbol{\sigma}}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bpi}{\boldsymbol{\pi}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\btheta}{{\boldsymbol{\theta}}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bphi}{\boldsymbol{\phi}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\balpha}{\boldsymbol{\alpha}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\blambda}{\boldsymbol{\lambda}}\)</span>
+<span class="math notranslate nohighlight">\(\renewcommand{\P}{\mathbb{P}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\E}{\mathbb{E}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\indep}{\perp\!\!\!\perp} \newcommand{\bx}{\mathbf{x}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bp}{\mathbf{p}}\)</span>
+<span class="math notranslate nohighlight">\(\renewcommand{\bx}{\mathbf{x}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bX}{\mathbf{X}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\by}{\mathbf{y}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bY}{\mathbf{Y}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bz}{\mathbf{z}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bZ}{\mathbf{Z}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bw}{\mathbf{w}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bW}{\mathbf{W}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bv}{\mathbf{v}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bV}{\mathbf{V}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bfg}{\mathbf{g}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bfh}{\mathbf{h}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\horz}{\rule[.5ex]{2.5ex}{0.5pt}}\)</span>
+<span class="math notranslate nohighlight">\(\renewcommand{\S}{\mathcal{S}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\X}{\mathcal{X}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\var}{\mathrm{Var}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\pa}{\mathrm{pa}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\Z}{\mathcal{Z}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bh}{\mathbf{h}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bb}{\mathbf{b}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bc}{\mathbf{c}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\cE}{\mathcal{E}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\cP}{\mathcal{P}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bbeta}{\boldsymbol{\beta}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bLambda}{\boldsymbol{\Lambda}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\cov}{\mathrm{Cov}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bfk}{\mathbf{k}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\idx}[1]{}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\xdi}{}\)</span></p>
+<section id="background-jacobian-chain-rule-and-a-brief-introduction-to-automatic-differentiation">
+<h1><span class="section-number">8.2. </span>Background: Jacobian, chain rule, and a brief introduction to automatic differentiation<a class="headerlink" href="#background-jacobian-chain-rule-and-a-brief-introduction-to-automatic-differentiation" title="Link to this heading">#</a></h1>
+<p>We introduce the Jacobian of a vector-valued functions of several variables as well as the <em>Chain Rule</em> for this more general setting. We also give a brief introduction to automatic differentiation. Some required matrix algebra is also discussed.</p>
+<section id="more-matrix-algebra-hadamard-and-kronecker-products">
+<h2><span class="section-number">8.2.1. </span>More matrix algebra: Hadamard and Kronecker products<a class="headerlink" href="#more-matrix-algebra-hadamard-and-kronecker-products" title="Link to this heading">#</a></h2>
+<p>It will be convenient to introduce more matrix notation.</p>
+<p>First, we introduce the Hadamard product<span class="math notranslate nohighlight">\(\idx{Hadamard product}\xdi\)</span> and division<span class="math notranslate nohighlight">\(\idx{Hadamard division}\xdi\)</span>. The Hadamard product of two matrices (or vectors) of the same dimension, <span class="math notranslate nohighlight">\(A = (a_{i,j})_{i \in [n], j \in [m]}, B = (b_{i,j})_{i\in [n], j \in [m]} \in \mathbb{R}^{n \times m}\)</span>, is defined as the element-wise product</p>
+<div class="math notranslate nohighlight">
+\[
+A \odot B
+= (a_{i,j} b_{i,j})_{i\in [n], j \in [m]}.
+\]</div>
+<p>Similarly the Hadamard division is defined as the element-wise division</p>
+<div class="math notranslate nohighlight">
+\[
+A \oslash B
+= (a_{i,j} / b_{i,j})_{i\in [n], j \in [m]}
+\]</div>
+<p>where we assume that <span class="math notranslate nohighlight">\(b_{i,j} \neq 0\)</span> for all <span class="math notranslate nohighlight">\(i,j\)</span>.</p>
+<p><strong>EXAMPLE:</strong> <strong>(Illustration, continued)</strong> Continuing our previous illustrative example</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+  \begin{bmatrix}
+    1 &amp; 2 \\
+    3 &amp; 4 \\
+  \end{bmatrix} \odot
+  \begin{bmatrix}
+    0 &amp; 5 \\
+    6 &amp; 7 \\
+  \end{bmatrix}
+  =
+   \begin{bmatrix}
+    1 \times 0 &amp; 2 \times 5\\
+    3 \times 6 &amp; 4 \times 7\\
+  \end{bmatrix}
+  =
+   \begin{bmatrix}
+    0 &amp; 10\\
+    18 &amp; 28\\
+  \end{bmatrix}.
+\end{split}\]</div>
+<p><span class="math notranslate nohighlight">\(\lhd\)</span></p>
+<p>Recall that <span class="math notranslate nohighlight">\(\mathbf{1}\)</span> is the all-one vector and that, for <span class="math notranslate nohighlight">\(\mathbf{x} = (x_1,\ldots,x_n) \in \mathbb{R}^n\)</span>, <span class="math notranslate nohighlight">\(\mathrm{diag}(\mathbf{x}) \in \mathbb{R}^{n \times n}\)</span> is the diagonal matrix with diagonal entries <span class="math notranslate nohighlight">\(x_1,\ldots,x_n\)</span>.</p>
+<p><strong>LEMMA</strong> <strong>(Properties of the Hadamard Product)</strong> <span class="math notranslate nohighlight">\(\idx{properties of the Hadamard product}\xdi\)</span> Let <span class="math notranslate nohighlight">\(\mathbf{a} = (a_1,\ldots,a_n), \mathbf{b} = (b_1,\ldots,b_n), \mathbf{c} = (c_1,\ldots,c_n) \in \mathbb{R}^n\)</span>. Then the following hold:</p>
+<p>a) <span class="math notranslate nohighlight">\(\mathrm{diag}(\mathbf{a}) \, \mathbf{b} = \mathrm{diag}(\mathbf{a} \odot \mathbf{b})\)</span>;</p>
+<p>b) <span class="math notranslate nohighlight">\(\mathbf{a}^T(\mathbf{b} \odot \mathbf{c}) = \mathbf{1}^T(\mathbf{a} \odot \mathbf{b} \odot \mathbf{c})\)</span></p>
+<p>and, provided <span class="math notranslate nohighlight">\(a_i \neq 0\)</span> for all <span class="math notranslate nohighlight">\(i\)</span>, the following hold as well:</p>
+<p>c) <span class="math notranslate nohighlight">\(\mathrm{diag}(\mathbf{a}) \, (\mathbf{b} \oslash \mathbf{a}) = \mathrm{diag}(\mathbf{b})\)</span>;</p>
+<p>d) <span class="math notranslate nohighlight">\(\mathbf{a}^T \, (\mathbf{b} \oslash \mathbf{a}) = \mathbf{1}^T \mathbf{b}\)</span>.</p>
+<p><span class="math notranslate nohighlight">\(\flat\)</span></p>
+<p><em>Proof:</em> a) The product of a diagonal matrix and a vector produces a new vector whose original coordinates are multiplied by the corresponding diagonal entry. That proves the first claim.</p>
+<p>b) We have</p>
+<div class="math notranslate nohighlight">
+\[
+\mathbf{a}^T \, (\mathbf{b} \odot \mathbf{c})
+= \sum_{i=1}^n a_i (b_i c_i)
+= \mathbf{1}^T (\mathbf{a} \odot \mathbf{b} \odot \mathbf{c}).
+\]</div>
+<p>c) and d) follow respectively from a) and b).</p>
+<p><span class="math notranslate nohighlight">\(\square\)</span></p>
+<p>Second, we introduce the Kronecker product<span class="math notranslate nohighlight">\(\idx{Kronecker product}\xdi\)</span>. Let <span class="math notranslate nohighlight">\(A = (a_{i,j})_{i \in [n], j \in [m]} \in \mathbb{R}^{n \times m}\)</span> and <span class="math notranslate nohighlight">\(B = (b_{i,j})_{i \in [p], j \in [q]} \in \mathbb{R}^{p \times q}\)</span> be arbitrary matrices. Their Kronecker product, denoted <span class="math notranslate nohighlight">\(A \otimes B \in \mathbb{R}^{np \times mq}\)</span>, is the following matrix in block form</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+A \otimes B = 
+\begin{pmatrix}
+  a_{1,1} B &amp; \cdots &amp; a_{1,m} B \\
+             \vdots &amp; \ddots &amp;           \vdots \\
+  a_{n,1} B &amp; \cdots &amp; a_{n,m} B
+\end{pmatrix}.
+\end{split}\]</div>
+<p><strong>EXAMPLE:</strong> Here is a simple illustrative example from <a class="reference external" href="https://en.wikipedia.org/wiki/Kronecker_product#Examples">Wikipedia</a>:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+  \begin{bmatrix}
+    1 &amp; 2 \\
+    3 &amp; 4 \\
+  \end{bmatrix} \otimes
+  \begin{bmatrix}
+    0 &amp; 5 \\
+    6 &amp; 7 \\
+  \end{bmatrix} =
+  \begin{bmatrix}
+    1 \begin{bmatrix}
+      0 &amp; 5 \\
+      6 &amp; 7 \\
+    \end{bmatrix} &amp; 
+    2 \begin{bmatrix}
+      0 &amp; 5 \\
+      6 &amp; 7 \\
+    \end{bmatrix} \\
+    3 \begin{bmatrix}
+      0 &amp; 5 \\
+      6 &amp; 7 \\
+    \end{bmatrix} &amp; 
+    4 \begin{bmatrix}
+      0 &amp; 5 \\
+      6 &amp; 7 \\
+    \end{bmatrix} \\
+  \end{bmatrix} =
+  \begin{bmatrix}
+     0 &amp;  5 &amp;  0 &amp; 10 \\
+     6 &amp;  7 &amp; 12 &amp; 14 \\
+     0 &amp; 15 &amp;  0 &amp; 20 \\
+    18 &amp; 21 &amp; 24 &amp; 28
+  \end{bmatrix}.
+\end{split}\]</div>
+<p><span class="math notranslate nohighlight">\(\lhd\)</span></p>
+<p><strong>EXAMPLE:</strong> <strong>(Outer product)</strong> <span class="math notranslate nohighlight">\(\idx{outer product}\xdi\)</span> Here is another example we have encoutered previously, the outer product of two vectors <span class="math notranslate nohighlight">\(\mathbf{u} = (u_1,\ldots,u_n) \in \mathbb{R}^n\)</span> and <span class="math notranslate nohighlight">\(\mathbf{v} = (v_1,\ldots, v_m) \in \mathbb{R}^m\)</span>. Recall that the outer product is defined in block form as the <span class="math notranslate nohighlight">\(n \times m\)</span> matrix</p>
+<div class="math notranslate nohighlight">
+\[
+\mathbf{u} \mathbf{v}^T 
+= \begin{pmatrix}
+v_1 \mathbf{u} &amp; \cdots &amp; v_m \mathbf{u}
+\end{pmatrix}
+= \mathbf{v}^T \otimes \mathbf{u}.
+\]</div>
+<p>Equivalently,</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\mathbf{u} \mathbf{v}^T 
+= \begin{pmatrix}
+u_1 \mathbf{v}^T\\ \vdots\\ u_n \mathbf{v}^T
+\end{pmatrix}
+= \mathbf{u} \otimes \mathbf{v}^T.
+\end{split}\]</div>
+<p><span class="math notranslate nohighlight">\(\lhd\)</span></p>
+<p><strong>EXAMPLE:</strong> <strong>(continued)</strong> In the previous example the Kronecker product turned out to be commutative (i.e., we had <span class="math notranslate nohighlight">\(\mathbf{v}^T \otimes \mathbf{u} = \mathbf{u} \otimes \mathbf{v}^T\)</span>). This is not the case in general. Going back to the first example above, note that</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+   \begin{bmatrix}
+    0 &amp; 5 \\
+    6 &amp; 7 \\
+  \end{bmatrix}
+  \otimes
+   \begin{bmatrix}
+    1 &amp; 2 \\
+    3 &amp; 4 \\
+  \end{bmatrix}
+ =
+  \begin{bmatrix}
+    0 \begin{bmatrix}
+    1 &amp; 2 \\
+    3 &amp; 4 \\
+  \end{bmatrix} &amp; 
+    5 \begin{bmatrix}
+    1 &amp; 2 \\
+    3 &amp; 4 \\
+  \end{bmatrix} \\
+    6 \begin{bmatrix}
+    1 &amp; 2 \\
+    3 &amp; 4 \\
+  \end{bmatrix} &amp; 
+    7 \begin{bmatrix}
+    1 &amp; 2 \\
+    3 &amp; 4 \\
+  \end{bmatrix} \\
+  \end{bmatrix} =
+  \begin{bmatrix}
+     0 &amp;  0 &amp;  5 &amp; 10 \\
+     0 &amp;  0 &amp; 15 &amp; 20 \\
+     6 &amp; 12 &amp;  7 &amp; 14 \\
+    18 &amp; 24 &amp; 21 &amp; 28
+  \end{bmatrix}.
+\end{split}\]</div>
+<p>You can check that this is different from what we obtained in the opposite order. <span class="math notranslate nohighlight">\(\lhd\)</span></p>
+<p>The proof of the following lemma is left as an exercise.</p>
+<p><strong>LEMMA</strong> <strong>(Properties of the Kronecker Product)</strong> <span class="math notranslate nohighlight">\(\idx{properties of the Kronecker Product}\xdi\)</span> The Kronecker product has the following properties:</p>
+<p>a) If <span class="math notranslate nohighlight">\(B, C\)</span> are matrices of the same dimension</p>
+<div class="math notranslate nohighlight">
+\[
+A \otimes (B + C) = A \otimes B + A \otimes C
+\quad \text{and}\quad
+(B + C) \otimes A  = B \otimes A + C \otimes A.
+\]</div>
+<p>b) If <span class="math notranslate nohighlight">\(A, B, C, D\)</span> are matrices of such size that one can form the matrix products <span class="math notranslate nohighlight">\(AC\)</span> and <span class="math notranslate nohighlight">\(BD\)</span>, then</p>
+<div class="math notranslate nohighlight">
+\[
+(A \otimes B)\,(C \otimes D)
+= (AC) \otimes (BD).
+\]</div>
+<p>c) If <span class="math notranslate nohighlight">\(A, C\)</span> are matrices of the same dimension and <span class="math notranslate nohighlight">\(B, D\)</span> are matrices of the same dimension, then</p>
+<div class="math notranslate nohighlight">
+\[
+(A \otimes B)\odot(C \otimes D)
+= (A\odot C) \otimes (B\odot D).
+\]</div>
+<p>d) If <span class="math notranslate nohighlight">\(A,B\)</span> are invertible, then</p>
+<div class="math notranslate nohighlight">
+\[
+(A \otimes B)^{-1} 
+= A^{-1} \otimes B^{-1}.
+\]</div>
+<p>e) The transpose of <span class="math notranslate nohighlight">\(A \otimes B\)</span> is</p>
+<div class="math notranslate nohighlight">
+\[
+(A \otimes B)^T 
+= A^T \otimes B^T.
+\]</div>
+<p>f) If <span class="math notranslate nohighlight">\(\mathbf{u}\)</span> is a column vector and <span class="math notranslate nohighlight">\(A, B\)</span> are matrices of such size that one can form the matrix product <span class="math notranslate nohighlight">\(AB\)</span>, then</p>
+<div class="math notranslate nohighlight">
+\[
+(\mathbf{u} \otimes A) B
+= \mathbf{u} \otimes (AB)
+\quad\text{and}\quad
+(A \otimes \mathbf{u}) B
+= (AB) \otimes \mathbf{u}.
+\]</div>
+<p>Similarly,</p>
+<div class="math notranslate nohighlight">
+\[
+A \,(\mathbf{u}^T \otimes B)
+= \mathbf{u}^T \otimes (AB)
+\quad\text{and}\quad
+A \,(B \otimes \mathbf{u}^T)
+= (AB) \otimes \mathbf{u}^T.
+\]</div>
+<p><span class="math notranslate nohighlight">\(\flat\)</span></p>
+</section>
+<section id="jacobian">
+<h2><span class="section-number">8.2.2. </span>Jacobian<a class="headerlink" href="#jacobian" title="Link to this heading">#</a></h2>
+<p>Recall that the derivative of a function of a real variable is the rate of change of the function with respect to the change in the variable. A different way to put this is that <span class="math notranslate nohighlight">\(f'(x)\)</span> is the slope of the tangent line to <span class="math notranslate nohighlight">\(f\)</span> at <span class="math notranslate nohighlight">\(x\)</span>. Formally, one can approximate <span class="math notranslate nohighlight">\(f(x)\)</span> by a linear function in the neighborhood of <span class="math notranslate nohighlight">\(x\)</span> as follows</p>
+<div class="math notranslate nohighlight">
+\[
+f(x + h)
+= f(x)
++ f'(x) h 
++ r(h),
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(r(h)\)</span> is negligible compared to <span class="math notranslate nohighlight">\(h\)</span> in the sense that</p>
+<div class="math notranslate nohighlight">
+\[
+\lim_{h\to 0} \frac{r(h)}{h} = 0.
+\]</div>
+<p>Indeed, define</p>
+<div class="math notranslate nohighlight">
+\[
+r(h)
+= 
+f(x + h)
+- f(x)
+- f'(x) h.
+\]</div>
+<p>Then by definition of the derivative</p>
+<div class="math notranslate nohighlight">
+\[
+\lim_{h\to 0} \frac{r(h)}{h} 
+= \lim_{h\to 0} \frac{f(x + h)
+- f(x)
+- f'(x) h}{h} 
+= \lim_{h\to 0} \left[\frac{f(x + h)
+- f(x)}{h} - f'(x) \right]
+= 0.
+\]</div>
+<p>For vector-valued functions, we have the following generalization. Let <span class="math notranslate nohighlight">\(\mathbf{f} = (f_1, \ldots, f_m)  : D \to \mathbb{R}^m\)</span> where <span class="math notranslate nohighlight">\(D \subseteq \mathbb{R}^d\)</span> and let <span class="math notranslate nohighlight">\(\mathbf{x} \in D\)</span> be an interior point of <span class="math notranslate nohighlight">\(D\)</span>. We say that <span class="math notranslate nohighlight">\(\mathbf{f}\)</span> is diffentiable<span class="math notranslate nohighlight">\(\idx{diffentiable}\xdi\)</span> at <span class="math notranslate nohighlight">\(\mathbf{x}\)</span> if there exists a matrix <span class="math notranslate nohighlight">\(A \in \mathbb{R}^{m \times d}\)</span> such that</p>
+<div class="math notranslate nohighlight">
+\[
+\mathbf{f}(\mathbf{x}+\mathbf{h})
+= \mathbf{f}(\mathbf{x}) + A \mathbf{h} + \mathbf{r}(\mathbf{h})
+\]</div>
+<p>where</p>
+<div class="math notranslate nohighlight">
+\[
+\lim_{\mathbf{h} \to 0} \frac{\|\mathbf{r}(\mathbf{h})\|_2}{\|\mathbf{h}\|_2} = 0.
+\]</div>
+<p>The matrix <span class="math notranslate nohighlight">\(\mathbf{f}'(\mathbf{x}) = A\)</span>
+is called the differential<span class="math notranslate nohighlight">\(\idx{differential}\xdi\)</span> of <span class="math notranslate nohighlight">\(\mathbf{f}\)</span> at <span class="math notranslate nohighlight">\(\mathbf{x}\)</span>, and we see that the affine map <span class="math notranslate nohighlight">\(\mathbf{f}(\mathbf{x}) + A \mathbf{h}\)</span> provides an approximation of <span class="math notranslate nohighlight">\(\mathbf{f}\)</span> in the neighborhood of <span class="math notranslate nohighlight">\(\mathbf{x}\)</span>.</p>
+<p>We will not derive the full theory here. In the case where each component of <span class="math notranslate nohighlight">\(\mathbf{f}\)</span> has continuous partial derivatives in a neighborhood of <span class="math notranslate nohighlight">\(\mathbf{x}\)</span>, then the differential exists and is equal to the Jacobian, as defined next.</p>
+<p><strong>DEFINITION</strong> <strong>(Jacobian)</strong> <span class="math notranslate nohighlight">\(\idx{Jacobian}\xdi\)</span> Let <span class="math notranslate nohighlight">\(\mathbf{f} = (f_1, \ldots, f_m)  : D \to \mathbb{R}^m\)</span> where <span class="math notranslate nohighlight">\(D \subseteq \mathbb{R}^d\)</span> and let <span class="math notranslate nohighlight">\(\mathbf{x}_0 \in D\)</span> be an interior point of <span class="math notranslate nohighlight">\(D\)</span> where <span class="math notranslate nohighlight">\(\frac{\partial f_j (\mathbf{x}_0)}{\partial x_i}\)</span> exists for all <span class="math notranslate nohighlight">\(i, j\)</span>. The Jacobian of <span class="math notranslate nohighlight">\(\mathbf{f}\)</span> at <span class="math notranslate nohighlight">\(\mathbf{x}_0\)</span> is the <span class="math notranslate nohighlight">\(d \times m\)</span> matrix</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+J_{\mathbf{f}}(\mathbf{x}_0)
+= \begin{pmatrix}
+\frac{\partial f_1 (\mathbf{x}_0)}{\partial x_1}
+&amp;  \ldots &amp; \frac{\partial f_1 (\mathbf{x}_0)}{\partial x_d}\\
+\vdots &amp; \ddots &amp; \vdots\\
+\frac{\partial f_m (\mathbf{x}_0)}{\partial x_1}
+&amp;  \ldots &amp; \frac{\partial f_m (\mathbf{x}_0)}{\partial x_d}
+\end{pmatrix}.
+\end{split}\]</div>
+<p><span class="math notranslate nohighlight">\(\natural\)</span></p>
+<p><strong>THEOREM</strong> <strong>(Differential and Jacobian)</strong> <span class="math notranslate nohighlight">\(\idx{differential and Jacobian theorem}\xdi\)</span> Let <span class="math notranslate nohighlight">\(\mathbf{f} = (f_1, \ldots, f_m)  : D \to \mathbb{R}^m\)</span> where <span class="math notranslate nohighlight">\(D \subseteq \mathbb{R}^d\)</span> and let <span class="math notranslate nohighlight">\(\mathbf{x}_0 \in D\)</span> be an interior point of <span class="math notranslate nohighlight">\(D\)</span>. Assume that <span class="math notranslate nohighlight">\(\frac{\partial f_j (\mathbf{x}_0)}{\partial x_i}\)</span> exists and is continous is an open ball around <span class="math notranslate nohighlight">\(\mathbf{x}_0\)</span> for all <span class="math notranslate nohighlight">\(i, j\)</span>. Then the differential at <span class="math notranslate nohighlight">\(\mathbf{x}_0\)</span> is equal to the Jacobian of <span class="math notranslate nohighlight">\(\mathbf{f}\)</span> at <span class="math notranslate nohighlight">\(\mathbf{x}_0\)</span>. <span class="math notranslate nohighlight">\(\sharp\)</span></p>
+<p>Recall that for any <span class="math notranslate nohighlight">\(A, B\)</span> for which <span class="math notranslate nohighlight">\(AB\)</span> is well-defined it holds that <span class="math notranslate nohighlight">\(\|A B \|_F \leq \|A\|_F \|B\|_F\)</span>. This applies in particular when <span class="math notranslate nohighlight">\(B\)</span> is a column vector, in which case <span class="math notranslate nohighlight">\(\|B\|_F\)</span> is its Euclidean norm.</p>
+<p><em>Proof:</em> By the <em>Mean Value Theorem</em>, for each <span class="math notranslate nohighlight">\(i\)</span>, there is <span class="math notranslate nohighlight">\(\xi_{\mathbf{h},i} \in (0,1)\)</span> such that</p>
+<div class="math notranslate nohighlight">
+\[
+f_i(\mathbf{x}_0+\mathbf{h})
+= f_i(\mathbf{x}_0) + \nabla f_i(\mathbf{x}_0 + \xi_{\mathbf{h},i} \mathbf{h})^T \mathbf{h}. 
+\]</div>
+<p>Define</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\tilde{J}(\mathbf{h})
+= \begin{pmatrix}
+\frac{\partial f_1 (\mathbf{x}_0 + \xi_{\mathbf{h},1} \mathbf{h})}{\partial x_1}
+&amp;  \ldots &amp; \frac{\partial f_1 (\mathbf{x}_0 + \xi_{\mathbf{h},1} \mathbf{h})}{\partial x_d}\\
+\vdots &amp; \ddots &amp; \vdots\\
+\frac{\partial f_m (\mathbf{x}_0 + \xi_{\mathbf{h},m} \mathbf{h})}{\partial x_1}
+&amp;  \ldots &amp; \frac{\partial f_m (\mathbf{x}_0 + \xi_{\mathbf{h},m} \mathbf{h})}{\partial x_d}
+\end{pmatrix}.
+\end{split}\]</div>
+<p>Hence we have</p>
+<div class="math notranslate nohighlight">
+\[
+\mathbf{f}(\mathbf{x}_0+\mathbf{h})
+- \mathbf{f}(\mathbf{x}_0) - J_{\mathbf{f}}(\mathbf{x}_0)\,\mathbf{h}
+= \tilde{J}(\mathbf{h}) \,\mathbf{h} - J_{\mathbf{f}}(\mathbf{x}_0)\,\mathbf{h}
+= \left(\tilde{J}(\mathbf{h}) - J_{\mathbf{f}}(\mathbf{x}_0)\right)\,\mathbf{h}.
+\]</div>
+<p>Taking a limit as <span class="math notranslate nohighlight">\(\mathbf{h}\)</span> goes to <span class="math notranslate nohighlight">\(0\)</span>, we get</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+\lim_{\mathbf{h} \to 0} \frac{\|\mathbf{f}(\mathbf{x}_0+\mathbf{h})
+- \mathbf{f}(\mathbf{x}_0) - J_{\mathbf{f}}(\mathbf{x}_0)\,\mathbf{h}\|_2}{\|\mathbf{h}\|_2} 
+&amp;= \lim_{\mathbf{h} \to 0} \frac{\|\left(\tilde{J}(\mathbf{h}) - J_{\mathbf{f}}(\mathbf{x}_0)\right)\,\mathbf{h}\|_2}{\|\mathbf{h}\|_2}\\
+&amp;\leq \lim_{\mathbf{h} \to 0} \frac{\|\tilde{J}(\mathbf{h}) - J_{\mathbf{f}}(\mathbf{x}_0)\|_F \|\mathbf{h}\|_2}{\|\mathbf{h}\|_2}\\
+&amp;= 0,
+\end{align*}\]</div>
+<p>by continuity of the partial derivatives. <span class="math notranslate nohighlight">\(\square\)</span></p>
+<p><strong>EXAMPLE:</strong> An example of a vector-valued function is</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\mathbf{g}(x_1,x_2)
+=
+\begin{pmatrix}
+g_1(x_1,x_2)\\
+g_2(x_1,x_2)\\
+g_3(x_1,x_2)
+\end{pmatrix}
+=
+\begin{pmatrix}
+3 x_1^2\\
+x_2\\
+x_1 x_2
+\end{pmatrix}.
+\end{split}\]</div>
+<p>Its Jacobian is</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+J_{\mathbf{g}}(x_1, x_2)
+= \begin{pmatrix}
+\frac{\partial g_1 (x_1, x_2)}{\partial x_1}
+&amp;  \frac{\partial g_1 (x_1, x_2)}{\partial x_2}\\
+\frac{\partial g_2 (x_1, x_2)}{\partial x_1}
+&amp;  \frac{\partial g_2 (x_1, x_2)}{\partial x_2}\\
+\frac{\partial g_3 (x_1, x_2)}{\partial x_1}
+&amp;  \frac{\partial g_3 (x_1, x_2)}{\partial x_2}
+\end{pmatrix}
+= \begin{pmatrix}
+6 x_1
+&amp;  0\\
+0
+&amp;  1\\
+x_2
+&amp;  x_1
+\end{pmatrix}.
+\end{split}\]</div>
+<p><span class="math notranslate nohighlight">\(\lhd\)</span></p>
+<p><strong>EXAMPLE:</strong> <strong>(Gradient and Jacobian)</strong> For a continuously differentiable real-valued function <span class="math notranslate nohighlight">\(f : D \to \mathbb{R}\)</span>, the Jacobian reduces to the row vector</p>
+<div class="math notranslate nohighlight">
+\[
+J_{f}(\mathbf{x}_0)
+= \left(\frac{\partial f (\mathbf{x}_0)}{\partial x_1},  
+\ldots, 
+\frac{\partial f (\mathbf{x}_0)}{\partial x_d}\right)^T
+= \nabla f(\mathbf{x}_0)^T
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(\nabla f(\mathbf{x}_0)\)</span> is the gradient of <span class="math notranslate nohighlight">\(f\)</span> at <span class="math notranslate nohighlight">\(\mathbf{x}_0\)</span>. <span class="math notranslate nohighlight">\(\lhd\)</span></p>
+<p><strong>EXAMPLE:</strong> <strong>(Hessian and Jacobian)</strong> For a twice continuously differentiable real-valued function <span class="math notranslate nohighlight">\(f : D \to \mathbb{R}\)</span>, the Jacobian of its gradient is</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+J_{\nabla f}(\mathbf{x}_0)
+= \begin{pmatrix}
+\frac{\partial^2 f(\mathbf{x}_0)}{\partial x_1^2} 
+&amp; \cdots 
+&amp; \frac{\partial^2 f(\mathbf{x}_0)}{\partial x_d \partial x_1}\\
+\vdots &amp; \ddots &amp; \vdots\\
+\frac{\partial^2 f(\mathbf{x}_0)}{\partial x_1 \partial x_d} 
+&amp; \cdots 
+&amp; \frac{\partial^2 f(\mathbf{x}_0)}{\partial x_d^2}
+\end{pmatrix},
+\end{split}\]</div>
+<p>that is, the Hessian of <span class="math notranslate nohighlight">\(f\)</span> at <span class="math notranslate nohighlight">\(\mathbf{x}_0\)</span>. <span class="math notranslate nohighlight">\(\lhd\)</span></p>
+<p><strong>EXAMPLE:</strong> <strong>(Parametric Curve and Jacobian)</strong> Consider the parametric curve <span class="math notranslate nohighlight">\(\mathbf{g}(t) = (g_1(t), \ldots, g_d(t))^T \in \mathbb{R}^d\)</span> for <span class="math notranslate nohighlight">\(t\)</span> in some closed interval of <span class="math notranslate nohighlight">\(\mathbb{R}\)</span>. Assume that <span class="math notranslate nohighlight">\(\mathbf{g}(t)\)</span> is continuously differentiable at <span class="math notranslate nohighlight">\(t\)</span>, that is, each of its component is.</p>
+<p>Then</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+J_{\mathbf{g}}(t)
+= \begin{pmatrix}
+g_1'(t)\\
+\vdots\\
+g_m'(t)
+\end{pmatrix}
+= \mathbf{g}'(t).
+\end{split}\]</div>
+<p><span class="math notranslate nohighlight">\(\lhd\)</span></p>
+<p><strong>EXAMPLE:</strong> <strong>(Affine Map)</strong> Let <span class="math notranslate nohighlight">\(A \in \mathbb{R}^{m \times d}\)</span> and <span class="math notranslate nohighlight">\(\mathbf{b} = (b_1,\ldots,b_m)^T \in \mathbb{R}^{m}\)</span>. Define the vector-valued function <span class="math notranslate nohighlight">\(\mathbf{f} = (f_1, \ldots, f_m)  : \mathbb{R}^d \to \mathbb{R}^m\)</span> as</p>
+<div class="math notranslate nohighlight">
+\[
+\mathbf{f}(\mathbf{x})
+= A \mathbf{x} + \mathbf{b}.
+\]</div>
+<p>This is an affine map. Note in particular that, in the case <span class="math notranslate nohighlight">\(\mathbf{b} = \mathbf{0}\)</span> of a linear map,</p>
+<div class="math notranslate nohighlight">
+\[
+\mathbf{f}(\mathbf{x} + \mathbf{y}) 
+= A(\mathbf{x} + \mathbf{y}) 
+= A\mathbf{x} + A\mathbf{y} 
+= \mathbf{f}(\mathbf{x}) + \mathbf{f}(\mathbf{y}).
+\]</div>
+<p>Denote the rows of <span class="math notranslate nohighlight">\(A\)</span> by <span class="math notranslate nohighlight">\(\mathbf{a}_1^T,\ldots,\mathbf{a}_m^T\)</span>.</p>
+<p>We compute the Jacobian of <span class="math notranslate nohighlight">\(\mathbf{f}\)</span> at <span class="math notranslate nohighlight">\(\mathbf{x}\)</span>. Note that</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+\frac{\partial f_i (\mathbf{x})}{\partial x_j}
+&amp;= \frac{\partial}{\partial x_j}[\mathbf{a}_i^T \mathbf{x} + b_i]\\
+&amp;= \frac{\partial}{\partial x_j}\left[\sum_{\ell=1}^m a_{i,\ell} x_{\ell} + b_i\right]\\
+&amp;= a_{i,j}.
+\end{align*}\]</div>
+<p>So</p>
+<div class="math notranslate nohighlight">
+\[
+J_{\mathbf{f}}(\mathbf{x}) = A.
+\]</div>
+<p><span class="math notranslate nohighlight">\(\lhd\)</span></p>
+<p>The following important example is a less straightforward application of the Jacobian.</p>
+<p>It will be useful to introduce the vectorization <span class="math notranslate nohighlight">\(\mathrm{vec}(A) \in \mathbb{R}^{nm}\)</span> of a matrix <span class="math notranslate nohighlight">\(A = (a_{i,j})_{i,j} \in \mathbb{R}^{n \times m}\)</span> as the vector</p>
+<div class="math notranslate nohighlight">
+\[
+\mathrm{vec}(A)
+= (a_{1,1},\ldots,a_{n,1},a_{1,2},\ldots,a_{n,2},\ldots,a_{1,m},\ldots,a_{n,m}).
+\]</div>
+<p>That is, it is obtained by stacking the columns of <span class="math notranslate nohighlight">\(A\)</span> on top of each other.</p>
+<p><strong>EXAMPLE:</strong> <strong>(Jacobian of a Linear Map with Respect to its Matrix)</strong> We take a different tack on the previous example. In data science applications, it will be useful to compute the Jacobian of a linear map <span class="math notranslate nohighlight">\(X \mathbf{z}\)</span> – with respect to the matrix <span class="math notranslate nohighlight">\(X \in \mathbb{R}^{n \times m}\)</span>. Specifically, for a fixed <span class="math notranslate nohighlight">\(\mathbf{z} \in \mathbb{R}^{m}\)</span>, letting <span class="math notranslate nohighlight">\((\mathbf{x}^{(i)})^T\)</span> be the <span class="math notranslate nohighlight">\(i\)</span>-th row of <span class="math notranslate nohighlight">\(X\)</span> we define the function</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\mathbf{f}(\mathbf{x})
+= X \mathbf{z}
+= \begin{pmatrix}
+(\mathbf{x}^{(1)})^T\\
+\vdots\\
+(\mathbf{x}^{(n)})^T
+\end{pmatrix}
+\mathbf{z}
+= \begin{pmatrix}
+(\mathbf{x}^{(1)})^T \mathbf{z} \\
+\vdots\\
+(\mathbf{x}^{(n)})^T \mathbf{z}
+\end{pmatrix}
+\end{split}\]</div>
+<p>where <span class="math notranslate nohighlight">\(\mathbf{x} = \mathrm{vec}(X^T) = (\mathbf{x}^{(1)}, \ldots, \mathbf{x}^{(n)})\)</span>.</p>
+<p>To compute the Jacobian, let us look at its columns that correspond to the variables in <span class="math notranslate nohighlight">\(\mathbf{x}^{(k)}\)</span>, that is, columns <span class="math notranslate nohighlight">\(\alpha_k = (k-1) m + 1\)</span> to <span class="math notranslate nohighlight">\(\beta_k = k m\)</span>. Note that only the <span class="math notranslate nohighlight">\(k\)</span>-th component of <span class="math notranslate nohighlight">\(\mathbf{f}\)</span> depends on <span class="math notranslate nohighlight">\(\mathbf{x}^{(k)}\)</span>, so the rows <span class="math notranslate nohighlight">\(\neq k\)</span> of <span class="math notranslate nohighlight">\(J_{\mathbf{f}}(\mathbf{x})\)</span> are <span class="math notranslate nohighlight">\(0\)</span> for the corresponding columns.</p>
+<p>Row <span class="math notranslate nohighlight">\(k\)</span> on the other hand is <span class="math notranslate nohighlight">\(\mathbf{z}^T\)</span> from our previous formula for the gradient of an affine map. Hence one way to write the columns <span class="math notranslate nohighlight">\(\alpha_k\)</span> to <span class="math notranslate nohighlight">\(\beta_k\)</span> of <span class="math notranslate nohighlight">\(J_{\mathbf{f}}(\mathbf{x})\)</span> is <span class="math notranslate nohighlight">\(\mathbf{e}_k \mathbf{z}^T\)</span>, where here <span class="math notranslate nohighlight">\(\mathbf{e}_k \in \mathbb{R}^{n}\)</span> is the standard basis of <span class="math notranslate nohighlight">\(\mathbb{R}^{n}\)</span>.</p>
+<p>So <span class="math notranslate nohighlight">\(J_{\mathbf{f}}(\mathbf{x})\)</span> can be written in block form as</p>
+<div class="math notranslate nohighlight">
+\[
+J_{\mathbf{f}}(\mathbf{x})
+= \begin{pmatrix}
+\mathbf{e}_1 \mathbf{z}^T
+&amp; \cdots &amp; \mathbf{e}_{n}\mathbf{z}^T
+\end{pmatrix}
+= I_{n\times n} \otimes \mathbf{z}^T
+=: \mathbb{B}_{n}[\mathbf{z}],
+\]</div>
+<p>where the last equality is a definition. <span class="math notranslate nohighlight">\(\lhd\)</span></p>
+<p>We will need one more wrinkle.</p>
+<p><strong>EXAMPLE:</strong> <strong>(Jacobian of a Linear Map with Respect to its Input and Matrix)</strong> Consider again the linear map <span class="math notranslate nohighlight">\(X \mathbf{z}\)</span> – this time as a function of <em>both</em> the matrix <span class="math notranslate nohighlight">\(X \in \mathbb{R}^{n \times m}\)</span> and the vector <span class="math notranslate nohighlight">\(\mathbf{z} \in \mathbb{R}^{m}\)</span>. That is, letting again <span class="math notranslate nohighlight">\((\mathbf{x}^{(i)})^T\)</span> be the <span class="math notranslate nohighlight">\(i\)</span>-th row of <span class="math notranslate nohighlight">\(X\)</span>, we define the function</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\mathbf{g}(\mathbf{z}, \mathbf{x})
+= X \mathbf{z}
+= \begin{pmatrix}
+(\mathbf{x}^{(1)})^T\\
+\vdots\\
+(\mathbf{x}^{(n)})^T
+\end{pmatrix}
+\mathbf{z}
+= \begin{pmatrix}
+(\mathbf{x}^{(1)})^T \mathbf{z} \\
+\vdots\\
+(\mathbf{x}^{(n)})^T \mathbf{z}
+\end{pmatrix}
+\end{split}\]</div>
+<p>where as before <span class="math notranslate nohighlight">\(\mathbf{x} = \mathrm{vec}(X^T) = (\mathbf{x}^{(1)}, \ldots, \mathbf{x}^{(n)})\)</span>.</p>
+<p>To compute the Jacobian, we think of it as a block matrix and use the two previous example. The columns of <span class="math notranslate nohighlight">\(J_{\mathbf{f}}(\mathbf{z}, \mathbf{x})\)</span> corresponding to the variables in <span class="math notranslate nohighlight">\(\mathbf{z}\)</span>, that is, columns <span class="math notranslate nohighlight">\(1\)</span> to <span class="math notranslate nohighlight">\(m\)</span>, are</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+X
+=
+\begin{pmatrix}
+(\mathbf{x}^{(1)})^T\\
+\vdots\\
+(\mathbf{x}^{(n)})^T
+\end{pmatrix}
+=: \mathbb{A}_{n}[\mathbf{x}].
+\end{split}\]</div>
+<p>The columns of <span class="math notranslate nohighlight">\(J_{\mathbf{f}}(\mathbf{z}, \mathbf{x})\)</span> corresponding to the variables in <span class="math notranslate nohighlight">\(\mathbf{x}\)</span>, that is, columns <span class="math notranslate nohighlight">\(m + 1\)</span> to <span class="math notranslate nohighlight">\(m + nm\)</span>, are the matrix <span class="math notranslate nohighlight">\(\mathbb{B}_{n}[\mathbf{z}]\)</span>. Note that, in both <span class="math notranslate nohighlight">\(\mathbb{A}_{n}[\mathbf{x}]\)</span> and <span class="math notranslate nohighlight">\(\mathbb{B}_{n}[\mathbf{z}]\)</span>, the subscript <span class="math notranslate nohighlight">\(n\)</span> indicates the number of rows of the matrix. The number of columns is determined by <span class="math notranslate nohighlight">\(n\)</span> and the size of the input vector:</p>
+<ul class="simple">
+<li><p>the length of <span class="math notranslate nohighlight">\(\mathbf{x}\)</span> divided by <span class="math notranslate nohighlight">\(n\)</span> for <span class="math notranslate nohighlight">\(\mathbb{A}_{n}[\mathbf{x}]\)</span>;</p></li>
+<li><p>the length of <span class="math notranslate nohighlight">\(\mathbf{z}\)</span> multiplied by <span class="math notranslate nohighlight">\(n\)</span> for <span class="math notranslate nohighlight">\(\mathbb{B}_{n}[\mathbf{z}]\)</span>.</p></li>
+</ul>
+<p>So <span class="math notranslate nohighlight">\(J_{\mathbf{f}}(\mathbf{z}, \mathbf{x})\)</span> can be written in block form as</p>
+<div class="math notranslate nohighlight">
+\[
+J_{\mathbf{f}}(\mathbf{z}, \mathbf{x})
+= \begin{pmatrix}
+\mathbb{A}_{n}[\mathbf{x}] &amp;
+\mathbb{B}_{n}[\mathbf{z}]
+\end{pmatrix}.
+\]</div>
+<p><span class="math notranslate nohighlight">\(\lhd\)</span></p>
+<p><strong>EXAMPLE:</strong> <strong>(Elementwise Function)</strong> Let <span class="math notranslate nohighlight">\(f : D \to \mathbb{R}\)</span>, with <span class="math notranslate nohighlight">\(D \subseteq \mathbb{R}\)</span>, be a continuously differentiable real-valued function of a single variable. For <span class="math notranslate nohighlight">\(n \geq 2\)</span>, consider applying <span class="math notranslate nohighlight">\(f\)</span> to each entry of a vector <span class="math notranslate nohighlight">\(\mathbf{x} \in \mathbb{R}^n\)</span>, that is, let <span class="math notranslate nohighlight">\(\mathbf{f} : D^n \to \mathbb{R}^n\)</span> with</p>
+<div class="math notranslate nohighlight">
+\[
+\mathbf{f}(\mathbf{x})
+= (f_1(\mathbf{x}), \ldots, f_n(\mathbf{x}))
+= (f(x_1), \ldots, f(x_n)).
+\]</div>
+<p>The Jacobian of <span class="math notranslate nohighlight">\(\mathbf{f}\)</span> can be computed from <span class="math notranslate nohighlight">\(f'\)</span>, the derivative of the single-variable case. Indeed, letting <span class="math notranslate nohighlight">\(\mathbf{x} = (x_1,\ldots,x_n)\)</span> be such that <span class="math notranslate nohighlight">\(x_i\)</span> is an interior point of <span class="math notranslate nohighlight">\(D\)</span> for all <span class="math notranslate nohighlight">\(i\)</span>,</p>
+<div class="math notranslate nohighlight">
+\[
+\frac{\partial f_j(\mathbf{x})}{\partial x_j} 
+= f'(x_j),
+\]</div>
+<p>while for <span class="math notranslate nohighlight">\(\ell \neq j\)</span></p>
+<div class="math notranslate nohighlight">
+\[
+\frac{\partial f_\ell(\mathbf{x})}{\partial x_j} 
+=0,
+\]</div>
+<p>as <span class="math notranslate nohighlight">\(f_\ell(\mathbf{x})\)</span> does not in fact depend on <span class="math notranslate nohighlight">\(x_j\)</span>. In other words, the <span class="math notranslate nohighlight">\(j\)</span>-th column of the Jacobian is <span class="math notranslate nohighlight">\(f'(x_j) \,\mathbf{e}_j\)</span>, where again <span class="math notranslate nohighlight">\(\mathbf{e}_{j}\)</span> is the <span class="math notranslate nohighlight">\(j\)</span>-th standard basis vector in <span class="math notranslate nohighlight">\(\mathbb{R}^{n}\)</span>.</p>
+<p>So <span class="math notranslate nohighlight">\(J_{\mathbf{f}}(\mathbf{x})\)</span> is the diagonal matrix with diagonal entries <span class="math notranslate nohighlight">\(f'(x_j)\)</span>, <span class="math notranslate nohighlight">\(j=1, \ldots, n\)</span>, which we denote by</p>
+<div class="math notranslate nohighlight">
+\[
+J_{\mathbf{f}}(\mathbf{x})
+= \mathrm{diag}(f'(x_1),\ldots,f'(x_n)).
+\]</div>
+<p><span class="math notranslate nohighlight">\(\lhd\)</span></p>
+</section>
+<section id="generalization-of-the-chain-rule">
+<h2><span class="section-number">8.2.3. </span>Generalization of the Chain Rule<a class="headerlink" href="#generalization-of-the-chain-rule" title="Link to this heading">#</a></h2>
+<p>As we have seen, functions are often obtained from the composition of simpler ones. We will use the vector notation <span class="math notranslate nohighlight">\(\mathbf{h} = \mathbf{g} \circ \mathbf{f}\)</span> for the function <span class="math notranslate nohighlight">\(\mathbf{h}(\mathbf{x}) = \mathbf{g} (\mathbf{f} (\mathbf{x}))\)</span>.</p>
+<p><strong>LEMMA</strong> <strong>(Composition of Continuous Functions)</strong> <span class="math notranslate nohighlight">\(\idx{composition of continuous functions lemma}\xdi\)</span> Let <span class="math notranslate nohighlight">\(\mathbf{f} : D_1 \to \mathbb{R}^m\)</span>, where <span class="math notranslate nohighlight">\(D_1 \subseteq \mathbb{R}^d\)</span>, and let <span class="math notranslate nohighlight">\(\mathbf{g} : D_2 \to \mathbb{R}^p\)</span>, where <span class="math notranslate nohighlight">\(D_2 \subseteq \mathbb{R}^m\)</span>. Assume that <span class="math notranslate nohighlight">\(\mathbf{f}\)</span> is continuous at <span class="math notranslate nohighlight">\(\mathbf{x}_0\)</span> and that <span class="math notranslate nohighlight">\(\mathbf{g}\)</span> is continuous <span class="math notranslate nohighlight">\(\mathbf{f}(\mathbf{x}_0)\)</span>. Then <span class="math notranslate nohighlight">\(\mathbf{g} \circ \mathbf{f}\)</span> is continuous at <span class="math notranslate nohighlight">\(\mathbf{x}_0\)</span>. <span class="math notranslate nohighlight">\(\flat\)</span></p>
+<p>The <em>Chain Rule</em> gives a formula for the Jacobian of a composition.</p>
+<p><strong>THEOREM</strong> <strong>(Chain Rule)</strong> <span class="math notranslate nohighlight">\(\idx{chain rule}\xdi\)</span> Let <span class="math notranslate nohighlight">\(\mathbf{f} : D_1 \to \mathbb{R}^m\)</span>, where <span class="math notranslate nohighlight">\(D_1 \subseteq \mathbb{R}^d\)</span>, and let <span class="math notranslate nohighlight">\(\mathbf{g} : D_2 \to \mathbb{R}^p\)</span>, where <span class="math notranslate nohighlight">\(D_2 \subseteq \mathbb{R}^m\)</span>. Assume that <span class="math notranslate nohighlight">\(\mathbf{f}\)</span> is continuously differentiable at <span class="math notranslate nohighlight">\(\mathbf{x}_0\)</span>, an interior point of <span class="math notranslate nohighlight">\(D_1\)</span>, and that <span class="math notranslate nohighlight">\(\mathbf{g}\)</span> is continuously differentiable at <span class="math notranslate nohighlight">\(\mathbf{f}(\mathbf{x}_0)\)</span>, an interior point of <span class="math notranslate nohighlight">\(D_2\)</span>. Then</p>
+<div class="math notranslate nohighlight">
+\[
+J_{\mathbf{g} \circ \mathbf{f}}(\mathbf{x}_0)
+= J_{\mathbf{g}}(\mathbf{f}(\mathbf{x}_0))
+\,J_{\mathbf{f}}(\mathbf{x}_0)
+\]</div>
+<p>as a product of matrices. <span class="math notranslate nohighlight">\(\sharp\)</span></p>
+<p>Intuitively, the Jacobian provides a linear approximation of the function in the neighborhood of a point. The composition of linear maps corresponds to the product of the associated matrices. Similarly, the Jacobian of a composition is the product of the Jacobians.</p>
+<p><em>Proof:</em> To avoid confusion, we think of <span class="math notranslate nohighlight">\(\mathbf{f}\)</span> and <span class="math notranslate nohighlight">\(\mathbf{g}\)</span> as being functions of variables with different names, specifically,</p>
+<div class="math notranslate nohighlight">
+\[
+\mathbf{f}(\mathbf{x})
+= (f_1(x_1,\ldots,x_d),\ldots,f_m(x_1,\ldots,x_d))
+\]</div>
+<p>and</p>
+<div class="math notranslate nohighlight">
+\[
+\mathbf{g}(\mathbf{y})
+= (g_1(y_1,\ldots,y_m),\ldots,g_p(y_1,\ldots,y_m)).
+\]</div>
+<p>We apply the <em>Chain Rule</em> for a real-valued function over a parametric vector curve. That is, we think of</p>
+<div class="math notranslate nohighlight">
+\[
+h_i(\mathbf{x})
+= g_i(\mathbf{f}(\mathbf{x}))
+= g_i(f_1(x_1,\ldots,x_j,\ldots,x_d),\ldots,f_m(x_1,\ldots,x_j,\ldots,x_d))
+\]</div>
+<p>as <em>a function of <span class="math notranslate nohighlight">\(x_j\)</span> only</em> with all other <span class="math notranslate nohighlight">\(x_i\)</span>s fixed.</p>
+<p>We get that</p>
+<div class="math notranslate nohighlight">
+\[
+\frac{\partial h_i(\mathbf{x}_0)}{\partial x_j}
+= \sum_{k=1}^m \frac{\partial g_i(\mathbf{f}(\mathbf{x}_0))}
+{\partial y_k} \frac{\partial f_k(\mathbf{x}_0)}{\partial x_j}
+\]</div>
+<p>where, as before, the notation <span class="math notranslate nohighlight">\(\frac{\partial g_i}
+{\partial y_k}\)</span> indicates the partial derivative of <span class="math notranslate nohighlight">\(g_i\)</span> with respect to its <span class="math notranslate nohighlight">\(k\)</span>-th component. In matrix form, the claim follows. <span class="math notranslate nohighlight">\(\square\)</span></p>
+<p><strong>EXAMPLE:</strong> <strong>(Affine Map continued)</strong> Let <span class="math notranslate nohighlight">\(A \in \mathbb{R}^{m \times d}\)</span> and <span class="math notranslate nohighlight">\(\mathbf{b} \in \mathbb{R}^{m}\)</span>. Define again the vector-valued function <span class="math notranslate nohighlight">\(\mathbf{f}  : \mathbb{R}^d \to \mathbb{R}^m\)</span> as
+<span class="math notranslate nohighlight">\(\mathbf{f}(\mathbf{x}) = A \mathbf{x} + \mathbf{b}\)</span>.
+In addition, let <span class="math notranslate nohighlight">\(C \in \mathbb{R}^{p \times m}\)</span> and <span class="math notranslate nohighlight">\(\mathbf{d} \in \mathbb{R}^{p}\)</span>, define <span class="math notranslate nohighlight">\(\mathbf{g}  : \mathbb{R}^m \to \mathbb{R}^p\)</span> as
+<span class="math notranslate nohighlight">\(\mathbf{g}(\mathbf{y}) = C \mathbf{y} + \mathbf{d}\)</span>.</p>
+<p>Then</p>
+<div class="math notranslate nohighlight">
+\[
+J_{\mathbf{g} \circ \mathbf{f}}(\mathbf{x})
+= J_{\mathbf{g}}(\mathbf{f}(\mathbf{x}))
+\,J_{\mathbf{f}}(\mathbf{x})
+= C A,
+\]</div>
+<p>for all <span class="math notranslate nohighlight">\(\mathbf{x} \in \mathbb{R}^d\)</span>.</p>
+<p>This is consistent with the observation that</p>
+<div class="math notranslate nohighlight">
+\[
+\mathbf{g} \circ \mathbf{f} (\mathbf{x})
+= \mathbf{g} (\mathbf{f} (\mathbf{x}))
+= C( A\mathbf{x} + \mathbf{b} ) + \mathbf{d}
+= CA \mathbf{x} + (C\mathbf{b} + \mathbf{d}).
+\]</div>
+<p><span class="math notranslate nohighlight">\(\lhd\)</span></p>
+<p><strong>EXAMPLE:</strong> Suppose we want to compute the gradient of the function</p>
+<div class="math notranslate nohighlight">
+\[
+f(x_1, x_2)
+= 3 x_1^2 
++ x_2
++ \exp(x_1 x_2).
+\]</div>
+<p>We could apply the <em>Chain Rule</em> directly, but to illustrate the perspective that is coming up, we think of <span class="math notranslate nohighlight">\(f\)</span> as a composition of “simpler” vector-valued functions. Specifically, let</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\mathbf{g}(x_1,x_2)
+=
+\begin{pmatrix}
+3 x_1^2\\
+x_2\\
+x_1 x_2
+\end{pmatrix}
+\qquad
+h(y_1,y_2,y_3)
+=
+y_1 + y_2 + \exp(y_3).
+\end{split}\]</div>
+<p>Then <span class="math notranslate nohighlight">\(f(x_1, x_2) = h(\mathbf{g}(x_1, x_2)) = h \circ \mathbf{g}(x_1, x_2)\)</span>.</p>
+<p>By the <em>Chain Rule</em>, we can compute the gradient of <span class="math notranslate nohighlight">\(f\)</span> by first computing the Jacobians of <span class="math notranslate nohighlight">\(\mathbf{g}\)</span> and <span class="math notranslate nohighlight">\(h\)</span>. We have already computed the Jacobian of <span class="math notranslate nohighlight">\(\mathbf{g}\)</span></p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+J_{\mathbf{g}}(x_1, x_2)
+= \begin{pmatrix}
+6 x_1
+&amp;  0\\
+0
+&amp;  1\\
+x_2
+&amp;  x_1
+\end{pmatrix}.
+\end{split}\]</div>
+<p>The Jacobian of <span class="math notranslate nohighlight">\(h\)</span> is</p>
+<div class="math notranslate nohighlight">
+\[
+J_h(y_1, y_2, y_3)
+=
+\begin{pmatrix}
+\frac{\partial h(y_1, y_2, y_3)}{\partial y_1}
+&amp;  \frac{\partial h(y_1, y_2, y_3)}{\partial y_2}
+&amp; \frac{\partial h(y_1, y_2, y_3)}{\partial y_3}
+\end{pmatrix}
+=
+\begin{pmatrix}
+1
+&amp; 1
+&amp; \exp(y_3)
+\end{pmatrix}.
+\]</div>
+<p>The <em>Chain Rule</em> stipulates that</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+\nabla f(x_1, x_2)^T
+&amp;= J_f(x_1, x_2)\\
+&amp;= J_h(\mathbf{g}(x_1,x_2)) \, J_{\mathbf{g}}(x_1, x_2)\\
+&amp;= \begin{pmatrix}
+1
+&amp; 1
+&amp; \exp(g_3(x_1, x_2))
+\end{pmatrix}
+\begin{pmatrix}
+6 x_1
+&amp;  0\\
+0
+&amp;  1\\
+x_2
+&amp;  x_1
+\end{pmatrix}\\
+&amp;= \begin{pmatrix}
+1
+&amp; 1
+&amp; \exp(x_1 x_2)
+\end{pmatrix}
+\begin{pmatrix}
+6 x_1
+&amp;  0\\
+0
+&amp;  1\\
+x_2
+&amp;  x_1
+\end{pmatrix}\\
+&amp;= \begin{pmatrix}
+6 x_1 + x_2 \exp(x_1 x_2)
+&amp; 1 + x_1 \exp(x_1 x_2)
+\end{pmatrix}.
+\end{align*}\]</div>
+<p>You can check directly (i.e., without the composition) that this is indeed the correct gradient (transposed).</p>
+<p>Alternatively, it is instructive to “expand” the <em>Chain Rule</em> as we did in its proof. Specifically,</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+\frac{\partial f (x_1, x_2)}{\partial x_1} 
+&amp;= \sum_{i=1}^3 \frac{\partial h(\mathbf{g}(x_1,x_2))}{\partial y_i} \frac{\partial g_i (x_1, x_2)}{\partial x_1}\\
+&amp;= \frac{\partial h(\mathbf{g}(x_1,x_2))}{\partial y_1} \frac{\partial g_1 (x_1, x_2)}{\partial x_1}
++ \frac{\partial h(\mathbf{g}(x_1,x_2))}{\partial y_2} \frac{\partial g_2 (x_1, x_2)}{\partial x_1}
++ \frac{\partial h(\mathbf{g}(x_1,x_2))}{\partial y_3} \frac{\partial g_3 (x_1, x_2)}{\partial x_1}\\
+&amp;= 1 \cdot 6x_1 + 1 \cdot 0 + \exp(g_3(x_1, x_2)) \cdot x_2\\
+&amp;= 6 x_1 + x_2 \exp(x_1 x_2).
+\end{align*}\]</div>
+<p>Note that this corresponds to multiplying <span class="math notranslate nohighlight">\(J_h(\mathbf{g}(x_1,x_2))\)</span> by the first column of <span class="math notranslate nohighlight">\(J_{\mathbf{g}}(x_1, x_2)\)</span>.</p>
+<p>Similarly</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+\frac{\partial f (x_1, x_2)}{\partial x_2} 
+&amp;= \sum_{i=1}^3 \frac{\partial h(\mathbf{g}(x_1,x_2))}{\partial y_i} \frac{\partial g_i (x_1, x_2)}{\partial x_2}\\
+&amp;= \frac{\partial h(\mathbf{g}(x_1,x_2))}{\partial y_1} \frac{\partial g_1 (x_1, x_2)}{\partial x_2}
++ \frac{\partial h(\mathbf{g}(x_1,x_2))}{\partial y_2} \frac{\partial g_2 (x_1, x_2)}{\partial x_2}
++ \frac{\partial h(\mathbf{g}(x_1,x_2))}{\partial y_3} \frac{\partial g_3 (x_1, x_2)}{\partial x_2}\\
+&amp;= 1 \cdot 0 + 1 \cdot 1 + \exp(g_3(x_1, x_2)) \cdot x_1\\
+&amp;= 1 + x_1 \exp(x_1 x_2).
+\end{align*}\]</div>
+<p>This corresponds to multiplying <span class="math notranslate nohighlight">\(J_h(\mathbf{g}(x_1,x_2))\)</span> by the second column of <span class="math notranslate nohighlight">\(J_{\mathbf{g}}(x_1, x_2)\)</span>. <span class="math notranslate nohighlight">\(\lhd\)</span></p>
+<p><strong>CHAT &amp; LEARN</strong> The Jacobian determinant has important applications in change of variables for multivariable integrals. Ask your favorite AI chatbot to explain this application and provide an example of using the Jacobian determinant in a change of variables for a double integral. <span class="math notranslate nohighlight">\(\ddagger\)</span></p>
+</section>
+<section id="brief-introduction-to-automatic-differentiation-in-pytorch">
+<h2><span class="section-number">8.2.4. </span>Brief introduction to automatic differentiation in PyTorch<a class="headerlink" href="#brief-introduction-to-automatic-differentiation-in-pytorch" title="Link to this heading">#</a></h2>
+<p>We illustrate the use of <a class="reference external" href="https://en.wikipedia.org/wiki/Automatic_differentiation">automatic differentiation</a><span class="math notranslate nohighlight">\(\idx{automatic differentiation}\xdi\)</span> to compute gradients in PyTorch.</p>
+<p>Quoting <a class="reference external" href="https://en.wikipedia.org/wiki/Automatic_differentiation">Wikipedia</a>:</p>
+<blockquote>
+<div><p>In mathematics and computer algebra, automatic differentiation (AD), also called algorithmic differentiation or computational differentiation, is a set of techniques to numerically evaluate the derivative of a function specified by a computer program. AD exploits the fact that every computer program, no matter how complicated, executes a sequence of elementary arithmetic operations (addition, subtraction, multiplication, division, etc.) and elementary functions (exp, log, sin, cos, etc.). By applying the chain rule repeatedly to these operations, derivatives of arbitrary order can be computed automatically, accurately to working precision, and using at most a small constant factor more arithmetic operations than the original program. Automatic differentiation is distinct from symbolic differentiation and numerical differentiation (the method of finite differences). Symbolic differentiation can lead to inefficient code and faces the difficulty of converting a computer program into a single expression, while numerical differentiation can introduce round-off errors in the discretization process and cancellation.</p>
+</div></blockquote>
+<p><strong>Automatic differentiation in PyTorch</strong> We will use <a class="reference external" href="https://pytorch.org/tutorials/">PyTorch</a>. It uses <a class="reference external" href="https://pytorch.org/tutorials/beginner/basics/tensorqs_tutorial.html">tensors</a><span class="math notranslate nohighlight">\(\idx{tensor}\xdi\)</span>, which in many ways behave similarly to Numpy arrays. See <a class="reference external" href="https://pytorch.org/tutorials/beginner/basics/autogradqs_tutorial.html">here</a> for a quick introduction. We first initialize the tensors. Here each tensor corresponds to a single real variable. With the option <a class="reference external" href="https://pytorch.org/docs/stable/generated/torch.Tensor.requires_grad.html#torch.Tensor.requires_grad"><code class="docutils literal notranslate"><span class="pre">requires_grad=True</span></code></a>, we indicate that these are variables with respect to which a gradient will be taken later. We initialize the tensors at the values where the derivatives will be computed. If derivatives need to be computed at different values, we need to repeat this process. The function <a class="reference external" href="https://pytorch.org/docs/stable/generated/torch.Tensor.backward.html"><code class="docutils literal notranslate"><span class="pre">.backward()</span></code></a> computes the gradient using backpropagation, to which we will return later. The partial derivatives are accessed with <a class="reference external" href="https://pytorch.org/docs/stable/generated/torch.Tensor.grad.html"><code class="docutils literal notranslate"><span class="pre">.grad</span></code></a>.</p>
+<p><strong>NUMERICAL CORNER:</strong> This is better understood through an example.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">x1</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">requires_grad</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">x2</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="mf">2.0</span><span class="p">,</span> <span class="n">requires_grad</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>We define the function. Note that we use
+<a class="reference external" href="https://pytorch.org/docs/stable/generated/torch.exp.html"><code class="docutils literal notranslate"><span class="pre">torch.exp</span></code></a>, the PyTorch implementation of the (element-wise) exponential function. Moreover, as in NumPy, PyTorch allows the use of <code class="docutils literal notranslate"><span class="pre">**</span></code> for <a class="reference external" href="https://pytorch.org/docs/stable/generated/torch.pow.html">taking a power</a>. <a class="reference external" href="https://pytorch.org/docs/stable/name_inference.html">Here</a> is a list of operations on tensors in PyTorch.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">f</span> <span class="o">=</span> <span class="mi">3</span> <span class="o">*</span> <span class="p">(</span><span class="n">x1</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span> <span class="o">+</span> <span class="n">x2</span> <span class="o">+</span> <span class="n">torch</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">x1</span> <span class="o">*</span> <span class="n">x2</span><span class="p">)</span>
+
+<span class="n">f</span><span class="o">.</span><span class="n">backward</span><span class="p">()</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">x1</span><span class="o">.</span><span class="n">grad</span><span class="p">)</span>  <span class="c1"># df/dx</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">x2</span><span class="o">.</span><span class="n">grad</span><span class="p">)</span>  <span class="c1"># df/dy</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>tensor(20.7781)
+tensor(8.3891)
+</pre></div>
+</div>
+</div>
+</div>
+<p>The input parameters can also be vectors, which allows to consider functions of large numbers of variables. Here we use <a class="reference external" href="https://pytorch.org/docs/stable/generated/torch.sum.html#torch.sum"><code class="docutils literal notranslate"><span class="pre">torch.sum</span></code></a> for taking a sum of the arguments.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">z</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">2.</span><span class="p">,</span> <span class="mf">3.</span><span class="p">],</span> <span class="n">requires_grad</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="n">g</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">z</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>
+<span class="n">g</span><span class="o">.</span><span class="n">backward</span><span class="p">()</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">z</span><span class="o">.</span><span class="n">grad</span><span class="p">)</span>  <span class="c1"># gradient is (2 z_1, 2 z_2, 2 z_3)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>tensor([2., 4., 6.])
+</pre></div>
+</div>
+</div>
+</div>
+<p>Here is another typical example in a data science context.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">X</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>  <span class="c1"># Random dataset (features)</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([[</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="mf">1.</span><span class="p">]])</span>  <span class="c1"># Dataset (labels)</span>
+<span class="n">theta</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">requires_grad</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>  <span class="c1"># Parameter assignment</span>
+
+<span class="n">predict</span> <span class="o">=</span> <span class="n">X</span> <span class="o">@</span> <span class="n">theta</span>  <span class="c1"># Classifier with parameter vector theta</span>
+<span class="n">loss</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">sum</span><span class="p">((</span><span class="n">predict</span> <span class="o">-</span> <span class="n">y</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>  <span class="c1"># Loss function</span>
+<span class="n">loss</span><span class="o">.</span><span class="n">backward</span><span class="p">()</span>  <span class="c1"># Compute gradients</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">theta</span><span class="o">.</span><span class="n">grad</span><span class="p">)</span>  <span class="c1"># gradient of loss</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>tensor([[ 3.6615],
+        [27.0129]])
+</pre></div>
+</div>
+</div>
+</div>
+<p><strong>CHAT &amp; LEARN</strong> Ask your favorite AI chatbot to explain how to compute a second derivative using PyTorch (it’s bit tricky). Ask for code that you can apply to the previous examples. (<a class="reference external" href="https://colab.research.google.com/github/MMiDS-textbook/MMiDS-textbook.github.io/blob/main/just_the_code/roch_mmids_chap_nn_notebook.ipynb">Open In Colab</a>) <span class="math notranslate nohighlight">\(\ddagger\)</span></p>
+<p><span class="math notranslate nohighlight">\(\unlhd\)</span></p>
+<p><strong>Implementing gradient descent in PyTorch</strong> Rather than explicitly specifying the gradient function, we could use PyTorch to compute it automatically. This is done next. Note that the descent update is done within <a class="reference external" href="https://pytorch.org/docs/stable/generated/torch.no_grad.html"><code class="docutils literal notranslate"><span class="pre">with</span> <span class="pre">torch.no_grad()</span></code></a>, which ensures that the update operation itself is not tracked for gradient computation. Here the input <code class="docutils literal notranslate"><span class="pre">x0</span></code> as well as the output <code class="docutils literal notranslate"><span class="pre">xk.numpy(force=True)</span></code> are Numpy arrays. The function <a class="reference external" href="https://pytorch.org/docs/stable/generated/torch.Tensor.numpy.html"><code class="docutils literal notranslate"><span class="pre">torch.Tensor.numpy()</span></code></a> converts a PyTorch tensor to a Numpy array (see the documentation for an explanation of the <code class="docutils literal notranslate"><span class="pre">force=True</span></code> option). Also, quoting ChatGPT:</p>
+<blockquote>
+<div><p>In the given code, <code class="docutils literal notranslate"><span class="pre">.item()</span></code> is used to extract the scalar value from a tensor. In PyTorch, when you perform operations on tensors, you get back tensors as results, even if the result is a single scalar value. <code class="docutils literal notranslate"><span class="pre">.item()</span></code> is used to extract this scalar value from the tensor.</p>
+</div></blockquote>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">gd_with_ad</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">x0</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">1e-3</span><span class="p">,</span> <span class="n">niters</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="mf">1e6</span><span class="p">)):</span>
+    <span class="n">xk</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">x0</span><span class="p">,</span> <span class="n">requires_grad</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">float</span><span class="p">)</span>
+    
+    <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">niters</span><span class="p">):</span>
+        <span class="n">value</span> <span class="o">=</span> <span class="n">f</span><span class="p">(</span><span class="n">xk</span><span class="p">)</span>
+        <span class="n">value</span><span class="o">.</span><span class="n">backward</span><span class="p">()</span>
+
+        <span class="k">with</span> <span class="n">torch</span><span class="o">.</span><span class="n">no_grad</span><span class="p">():</span>  
+            <span class="n">xk</span> <span class="o">-=</span> <span class="n">alpha</span> <span class="o">*</span> <span class="n">xk</span><span class="o">.</span><span class="n">grad</span>
+
+        <span class="n">xk</span><span class="o">.</span><span class="n">grad</span><span class="o">.</span><span class="n">zero_</span><span class="p">()</span>
+
+    <span class="k">return</span> <span class="n">xk</span><span class="o">.</span><span class="n">numpy</span><span class="p">(</span><span class="n">force</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span> <span class="n">f</span><span class="p">(</span><span class="n">xk</span><span class="p">)</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p><strong>NUMERICAL CORNER:</strong> We revisit a previous example.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">f</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">x</span><span class="o">**</span><span class="mi">3</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">gd_with_ad</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">niters</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="mf">1e4</span><span class="p">)))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array(0.03277362, dtype=float32), 3.5202472645323724e-05)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">gd_with_ad</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="n">niters</span><span class="o">=</span><span class="mi">100</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array(-4.9335055, dtype=float32), -120.07894897460938)
+</pre></div>
+</div>
+</div>
+</div>
+<p><span class="math notranslate nohighlight">\(\unlhd\)</span></p>
+<p><strong>CHAT &amp; LEARN</strong> The section briefly mentions that automatic differentiation is distinct from symbolic differentiation and numerical differentiation. Ask your favorite AI chatbot to explain in more detail the differences between these three methods of computing derivatives. <span class="math notranslate nohighlight">\(\ddagger\)</span></p>
+<p><em><strong>Self-assessment quiz</strong></em> <em>(with help from Claude, Gemini, and ChatGPT)</em></p>
+<p><strong>1</strong> Let <span class="math notranslate nohighlight">\(A \in \mathbb{R}^{n \times m}\)</span> and <span class="math notranslate nohighlight">\(B \in \mathbb{R}^{p \times q}\)</span>. What are the dimensions of the Kronecker product <span class="math notranslate nohighlight">\(A \otimes B\)</span>?</p>
+<p>a) <span class="math notranslate nohighlight">\(n \times m\)</span></p>
+<p>b) <span class="math notranslate nohighlight">\(p \times q\)</span></p>
+<p>c) <span class="math notranslate nohighlight">\(np \times mq\)</span></p>
+<p>d) <span class="math notranslate nohighlight">\(nq \times mp\)</span></p>
+<p><strong>2</strong> If <span class="math notranslate nohighlight">\(f: \mathbb{R}^d \rightarrow \mathbb{R}^m\)</span> is a continuously differentiable function, what is its Jacobian <span class="math notranslate nohighlight">\(J_f(x_0)\)</span> at an interior point <span class="math notranslate nohighlight">\(x_0\)</span> of its domain?</p>
+<p>a) A scalar representing the rate of change of <span class="math notranslate nohighlight">\(f\)</span> at <span class="math notranslate nohighlight">\(x_0\)</span>.</p>
+<p>b) A vector in <span class="math notranslate nohighlight">\(\mathbb{R}^m\)</span> representing the direction of steepest ascent of <span class="math notranslate nohighlight">\(f\)</span> at <span class="math notranslate nohighlight">\(x_0\)</span>.</p>
+<p>c) An <span class="math notranslate nohighlight">\(m \times d\)</span> matrix of partial derivatives of the component functions of <span class="math notranslate nohighlight">\(f\)</span> at <span class="math notranslate nohighlight">\(x_0\)</span>.</p>
+<p>d) The Hessian matrix of <span class="math notranslate nohighlight">\(f\)</span> at <span class="math notranslate nohighlight">\(x_0\)</span>.</p>
+<p><strong>3</strong> In the context of the Chain Rule, if <span class="math notranslate nohighlight">\(f: \mathbb{R}^2 \to \mathbb{R}^3\)</span> and <span class="math notranslate nohighlight">\(g: \mathbb{R}^3 \to \mathbb{R}\)</span>, what is the dimension of the Jacobian matrix <span class="math notranslate nohighlight">\(J_{g \circ f}(x)\)</span>?</p>
+<p>a) <span class="math notranslate nohighlight">\(3 \times 2\)</span></p>
+<p>b) <span class="math notranslate nohighlight">\(1 \times 3\)</span></p>
+<p>c) <span class="math notranslate nohighlight">\(2 \times 3\)</span></p>
+<p>d) <span class="math notranslate nohighlight">\(1 \times 2\)</span></p>
+<p><strong>4</strong> Let <span class="math notranslate nohighlight">\(\mathbf{f} : D_1 \to \mathbb{R}^m\)</span>, where <span class="math notranslate nohighlight">\(D_1 \subseteq \mathbb{R}^d\)</span>, and let <span class="math notranslate nohighlight">\(\mathbf{g} : D_2 \to \mathbb{R}^p\)</span>, where <span class="math notranslate nohighlight">\(D_2 \subseteq \mathbb{R}^m\)</span>. Assume that <span class="math notranslate nohighlight">\(\mathbf{f}\)</span> is continuously differentiable at <span class="math notranslate nohighlight">\(\mathbf{x}_0\)</span>, an interior point of <span class="math notranslate nohighlight">\(D_1\)</span>, and that <span class="math notranslate nohighlight">\(\mathbf{g}\)</span> is continuously differentiable at <span class="math notranslate nohighlight">\(\mathbf{f}(\mathbf{x}_0)\)</span>, an interior point of <span class="math notranslate nohighlight">\(D_2\)</span>. Which of the following is correct according to the Chain Rule?</p>
+<p>a) <span class="math notranslate nohighlight">\(J_{\mathbf{g} \circ \mathbf{f}}(\mathbf{x}_0) = J_{\mathbf{f}}(\mathbf{x}_0) \, J_{\mathbf{g}}(\mathbf{f}(\mathbf{x}_0))\)</span></p>
+<p>b) <span class="math notranslate nohighlight">\(J_{\mathbf{g} \circ \mathbf{f}}(\mathbf{x}_0) = J_{\mathbf{g}}(\mathbf{f}(\mathbf{x}_0)) \, J_{\mathbf{f}}(\mathbf{x}_0)\)</span></p>
+<p>c) <span class="math notranslate nohighlight">\(J_{\mathbf{g} \circ \mathbf{f}}(\mathbf{x}_0) = J_{\mathbf{f}}(\mathbf{g}(\mathbf{x}_0)) \, J_{\mathbf{g}}(\mathbf{x}_0)\)</span></p>
+<p>d) <span class="math notranslate nohighlight">\(J_{\mathbf{g} \circ \mathbf{f}}(\mathbf{x}_0) = J_{\mathbf{g}}(\mathbf{x}_0) \, J_{\mathbf{f}}(\mathbf{g}(\mathbf{x}_0))\)</span></p>
+<p><strong>5</strong> Let <span class="math notranslate nohighlight">\(A \in \mathbb{R}^{m \times d}\)</span> and <span class="math notranslate nohighlight">\(\mathbf{b} \in \mathbb{R}^{m}\)</span>. Define the vector-valued function <span class="math notranslate nohighlight">\(\mathbf{f}  : \mathbb{R}^d \to \mathbb{R}^m\)</span> as <span class="math notranslate nohighlight">\(\mathbf{f}(\mathbf{x}) = A \mathbf{x} + \mathbf{b}\)</span>. What is the Jacobian of <span class="math notranslate nohighlight">\(\mathbf{f}\)</span> at <span class="math notranslate nohighlight">\(\mathbf{x}_0\)</span>?</p>
+<p>a) <span class="math notranslate nohighlight">\(J_{\mathbf{f}}(\mathbf{x}_0) = A^T\)</span></p>
+<p>b) <span class="math notranslate nohighlight">\(J_{\mathbf{f}}(\mathbf{x}_0) = A \mathbf{x}_0 + \mathbf{b}\)</span></p>
+<p>c) <span class="math notranslate nohighlight">\(J_{\mathbf{f}}(\mathbf{x}_0) = A\)</span></p>
+<p>d) <span class="math notranslate nohighlight">\(J_{\mathbf{f}}(\mathbf{x}_0) = \mathbf{b}\)</span></p>
+<p>Answer for 1: c. Justification: The text defines the Kronecker product as a matrix in block form with dimensions <span class="math notranslate nohighlight">\(np \times mq\)</span>.</p>
+<p>Answer for 2: c. Justification: The text defines the Jacobian of a vector-valued function as a matrix of partial derivatives.</p>
+<p>Answer for 3: d. Justification: The composition <span class="math notranslate nohighlight">\(g \circ f\)</span> maps <span class="math notranslate nohighlight">\(\mathbb{R}^2 \to \mathbb{R}\)</span>, hence the Jacobian matrix <span class="math notranslate nohighlight">\(J_{g \circ f}(x)\)</span> is <span class="math notranslate nohighlight">\(1 \times 2\)</span>.</p>
+<p>Answer for 4: b. Justification: The text states: “The Chain Rule gives a formula for the Jacobian of a composition. […] Assume that <span class="math notranslate nohighlight">\(\mathbf{f}\)</span> is continuously differentiable at <span class="math notranslate nohighlight">\(\mathbf{x}_0\)</span>, an interior point of <span class="math notranslate nohighlight">\(D_1\)</span>, and that <span class="math notranslate nohighlight">\(\mathbf{g}\)</span> is continuously differentiable at <span class="math notranslate nohighlight">\(\mathbf{f}(\mathbf{x}_0)\)</span>, an interior point of <span class="math notranslate nohighlight">\(D_2\)</span>. Then</p>
+<div class="math notranslate nohighlight">
+\[
+J_{\mathbf{g} \circ \mathbf{f}}(\mathbf{x}_0) = J_{\mathbf{g}}(\mathbf{f}(\mathbf{x}_0)) \,J_{\mathbf{f}}(\mathbf{x}_0)
+\]</div>
+<p>as a product of matrices.”</p>
+<p>Answer for 5: c. Justification: The text states: “Let <span class="math notranslate nohighlight">\(A \in \mathbb{R}^{m \times d}\)</span> and <span class="math notranslate nohighlight">\(\mathbf{b} = (b_1,\ldots,b_m)^T \in \mathbb{R}^{m}\)</span>. Define the vector-valued function <span class="math notranslate nohighlight">\(\mathbf{f} = (f_1, \ldots, f_m)  : \mathbb{R}^d \to \mathbb{R}^m\)</span> as <span class="math notranslate nohighlight">\(\mathbf{f}(\mathbf{x}) = A \mathbf{x} + \mathbf{b}\)</span>. […] So <span class="math notranslate nohighlight">\(J_{\mathbf{f}}(\mathbf{x}) = A.\)</span>”</p>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./chap08_nn/02_chain"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="../01_motiv/roch-mmids-nn-motiv.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title"><span class="section-number">8.1. </span>Motivating example:  classifying natural images</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="../03_backprop/roch-mmids-nn-backprop.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title"><span class="section-number">8.3. </span>Building blocks of AI 1: backpropagation</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#more-matrix-algebra-hadamard-and-kronecker-products">8.2.1. More matrix algebra: Hadamard and Kronecker products</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#jacobian">8.2.2. Jacobian</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#generalization-of-the-chain-rule">8.2.3. Generalization of the Chain Rule</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#brief-introduction-to-automatic-differentiation-in-pytorch">8.2.4. Brief introduction to automatic differentiation in PyTorch</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Sebastien Roch
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2024.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

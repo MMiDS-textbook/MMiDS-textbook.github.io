@@ -1,0 +1,1308 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>2.2. Background: review of vector spaces and matrix inverses &#8212; MMiDS Textbook</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.5.1/css/all.min.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.1/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.1/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.1/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b76e3c8a" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=384b581d" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css?v=be8a1c11" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=87e54e7c" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae" />
+  <script src="../../_static/vendor/fontawesome/6.5.1/js/all.min.js?digest=8d27b9dea8ad943066ae"></script>
+
+    <script src="../../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?v=efea14e4"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../_static/design-tabs.js?v=f930bc37"></script>
+    <script async="async" src="https://www.googletagmanager.com/gtag/js?id=G-P5E8DW088F"></script>
+    <script>
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){ dataLayer.push(arguments); }
+                gtag('js', new Date());
+                gtag('config', 'G-P5E8DW088F');
+            </script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){ dataLayer.push(arguments); }
+                gtag('js', new Date());
+                gtag('config', 'G-P5E8DW088F');
+            </script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'chap02_ls/02_spaces/roch-mmids-ls-spaces';</script>
+    <link rel="canonical" href="https://mmids-textbook.github.io/chap02_ls/02_spaces/roch-mmids-ls-spaces.html" />
+    <link rel="icon" href="https://mmids-textbook.github.io/favicon-32x32.png"/>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="2.3. Geometry of least squares: the orthogonal projection" href="../03_orthog/roch-mmids-ls-orthog.html" />
+    <link rel="prev" title="2.1. Motivating example: predicting sales" href="../01_motiv/roch-mmids-ls-motiv.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a id="pst-skip-link" class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+
+<a class="navbar-brand logo" href="../../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/mmids-cover-small.jpg" class="logo__image only-light" alt="MMiDS Textbook - Home"/>
+    <script>document.write(`<img src="../../_static/mmids-cover-small.jpg" class="logo__image only-dark" alt="MMiDS Textbook - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../index.html">
+                    <b>MATHEMATICAL METHODS in DATA SCIENCE (with Python)</b>
+                </a>
+            </li>
+        </ul>
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../chap01_intro/00_intro/roch-mmids-intro-intro.html">1. Introduction: a first data science problem</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../chap01_intro/01_motiv/roch-mmids-intro-motiv.html">1.1. Motivating example: identifying penguin species</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap01_intro/02_review/roch-mmids-intro-review.html">1.2. Background: quick refresher of matrix algebra, differential calculus, and elementary probability</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap01_intro/03_clustering/roch-mmids-intro-clustering.html">1.3. Clustering: an objective, an algorithm and a guarantee</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap01_intro/04_highdim/roch-mmids-intro-highdim.html">1.4. Some observations about high-dimensional data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap01_intro/exercises/roch-mmids-intro-exercises.html">1.5. Exercises</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap01_intro/supp/roch-mmids-intro-supp.html">1.6. Online suppplementary material</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="../00_intro/roch-mmids-ls-intro.html">2. Least squares: geometric, algebraic, and numerical aspects</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../01_motiv/roch-mmids-ls-motiv.html">2.1. Motivating example: predicting sales</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">2.2. Background: review of vector spaces and matrix inverses</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../03_orthog/roch-mmids-ls-orthog.html">2.3. Geometry of least squares: the orthogonal projection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../04_qr/roch-mmids-ls-qr.html">2.4. QR decomposition and Householder transformations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../05_regression/roch-mmids-ls-regression.html">2.5. Application: regression analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../exercises/roch-mmids-ls-exercises.html">2.6. Exercises</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../supp/roch-mmids-ls-supp.html">2.7. Online suppplementary material</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../chap03_opt/00_intro/roch-mmids-opt-intro.html">3. Optimization theory and algorithms</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-3"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../chap03_opt/01_motiv/roch-mmids-opt-motiv.html">3.1. Motivating example:  analyzing customer satisfaction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap03_opt/02_several/roch-mmids-opt-several.html">3.2. Background: review of differentiable functions of several variables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap03_opt/03_optimality/roch-mmids-opt-optimality.html">3.3. Optimality conditions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap03_opt/04_convexity/roch-mmids-opt-convexity.html">3.4. Convexity</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap03_opt/05_gd/roch-mmids-opt-gd.html">3.5. Gradient descent and its convergence analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap03_opt/06_logistic/roch-mmids-opt-logistic.html">3.6. Application: logistic regression</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap03_opt/exercises/roch-mmids-opt-exercises.html">3.7. Exercises</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap03_opt/supp/roch-mmids-opt-supp.html">3.8. Online suppplementary material</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../chap04_svd/00_intro/roch-mmids-svd-intro.html">4. Singular value decomposition</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-4"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../chap04_svd/01_motiv/roch-mmids-svd-motiv.html">4.1. Motivating example: visualizing viral evolution</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap04_svd/02_spectral/roch-mmids-svd-spectral.html">4.2. Background: review of matrix rank  and spectral decomposition</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap04_svd/03_svd/roch-mmids-svd-svd.html">4.3. Approximating subspaces and the SVD</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap04_svd/04_power/roch-mmids-svd-power.html">4.4. Power iteration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap04_svd/05_pca/roch-mmids-svd-pca.html">4.5. Application: principal components analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap04_svd/06_further/roch-mmids-svd-further.html">4.6. Further applications of the SVD: low-rank approximations and ridge regression</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap04_svd/exercises/roch-mmids-svd-exercises.html">4.7. Exercises</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap04_svd/supp/roch-mmids-svd-supp.html">4.8. Online suppplementary material</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../chap05_specgraph/00_intro/roch-mmids-specgraph-intro.html">5. Spectral graph theory</a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-5"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../chap05_specgraph/01_motiv/roch-mmids-specgraph-motiv.html">5.1. Motivating example: uncovering social groups</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap05_specgraph/02_graph/roch-mmids-specgraph-graph.html">5.2. Background: basic concepts in graph theory</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap05_specgraph/03_extremal/roch-mmids-specgraph-extremal.html">5.3. Variational characterization of eigenvalues</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap05_specgraph/04_laplacian/roch-mmids-specgraph-laplacian.html">5.4. Spectral properties of the Laplacian matrix</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap05_specgraph/05_partitioning/roch-mmids-specgraph-partitioning.html">5.5. Application: graph partitioning via spectral clustering</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap05_specgraph/06_sbm/roch-mmids-specgraph-sbm.html">5.6. Erdős-Rényi random graph and stochastic blockmodel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap05_specgraph/exercises/roch-mmids-specgraph-exercises.html">5.7. Exercises</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap05_specgraph/supp/roch-mmids-specgraph-supp.html">5.8. Online supplementary material</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../chap06_prob/00_intro/roch-mmids-prob-intro.html">6. Probabilistic models: from simple to complex</a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-6"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../chap06_prob/01_motiv/roch-mmids-prob-motiv.html">6.1. Motivating example: tracking location</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap06_prob/02_parametric/roch-mmids-prob-parametric.html">6.2. Background: introduction to parametric families and maximum likelihood estimation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap06_prob/03_joint/roch-mmids-prob-joint.html">6.3. Modeling more complex dependencies 1: using conditional independence</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap06_prob/04_em/roch-mmids-prob-em.html">6.4. Modeling more complex dependencies 2: marginalizing out an unobserved variable</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap06_prob/05_kalman/roch-mmids-prob-kalman.html">6.5. Application: linear-Gaussian models and Kalman filtering</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap06_prob/exercises/roch-mmids-prob-exercises.html">6.6. Exercises</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap06_prob/supp/roch-mmids-prob-supp.html">6.7. Online supplementary material</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../chap07_rwmc/00_intro/roch-mmids-rwmc-intro.html">7. Random walks on graphs and Markov chains</a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-7"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../chap07_rwmc/01_motiv/roch-mmids-rwmc-motiv.html">7.1. Motivating example: discovering mathematical topics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap07_rwmc/02_mcdefs/roch-mmids-rwmc-mcdefs.html">7.2. Background: elements of finite Markov chains</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap07_rwmc/03_stat/roch-mmids-rwmc-stat.html">7.3. Limit behavior 1: stationary distributions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap07_rwmc/04_mclimit/roch-mmids-rwmc-mclimit.html">7.4. Limit behavior 2: convergence to equilibrium</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap07_rwmc/05_pagerank/roch-mmids-rwmc-pagerank.html">7.5. Application: random walks on graphs and PageRank</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap07_rwmc/06_gibbs/roch-mmids-rwmc-gibbs.html">7.6. Further applications: Gibbs sampling and generating images</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap07_rwmc/exercises/roch-mmids-rwmc-exercises.html">7.7. Exercises</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap07_rwmc/supp/roch-mmids-rwmc-supp.html">7.8. Online supplementary material</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../chap08_nn/00_intro/roch-mmids-nn-intro.html">8. Neural networks, backpropagation and stochastic gradient descent</a><input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-8"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../chap08_nn/01_motiv/roch-mmids-nn-motiv.html">8.1. Motivating example:  classifying natural images</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap08_nn/02_chain/roch-mmids-nn-chain.html">8.2. Background: Jacobian, chain rule, and a brief introduction to automatic differentiation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap08_nn/03_backprop/roch-mmids-nn-backprop.html">8.3. Building blocks of AI 1: backpropagation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap08_nn/04_sgd/roch-mmids-nn-sgd.html">8.4. Building blocks of AI 2: stochastic gradient descent</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap08_nn/05_nn/roch-mmids-nn-nn.html">8.5. Building blocks of AI 3: neural networks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap08_nn/exercises/roch-mmids-nn-exercises.html">8.6. Exercises</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chap08_nn/supp/roch-mmids-nn-supp.html">8.7. Online supplementary material</a></li>
+</ul>
+</li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/MMiDS-textbook/MMiDS-textbook.github.io" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/MMiDS-textbook/MMiDS-textbook.github.io/issues/new?title=Issue%20on%20page%20%2Fchap02_ls/02_spaces/roch-mmids-ls-spaces.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/chap02_ls/02_spaces/roch-mmids-ls-spaces.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Background: review of vector spaces and matrix inverses</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#subspaces">2.2.1. Subspaces</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#linear-independence-and-bases">2.2.2. Linear independence and bases</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#inverses">2.2.3. Inverses</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <p><span class="math notranslate nohighlight">\(\newcommand{\bmu}{\boldsymbol{\mu}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bSigma}{\boldsymbol{\Sigma}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bfbeta}{\boldsymbol{\beta}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bflambda}{\boldsymbol{\lambda}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bgamma}{\boldsymbol{\gamma}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bsigma}{{\boldsymbol{\sigma}}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bpi}{\boldsymbol{\pi}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\btheta}{{\boldsymbol{\theta}}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bphi}{\boldsymbol{\phi}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\balpha}{\boldsymbol{\alpha}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\blambda}{\boldsymbol{\lambda}}\)</span>
+<span class="math notranslate nohighlight">\(\renewcommand{\P}{\mathbb{P}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\E}{\mathbb{E}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\indep}{\perp\!\!\!\perp} \newcommand{\bx}{\mathbf{x}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bp}{\mathbf{p}}\)</span>
+<span class="math notranslate nohighlight">\(\renewcommand{\bx}{\mathbf{x}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bX}{\mathbf{X}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\by}{\mathbf{y}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bY}{\mathbf{Y}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bz}{\mathbf{z}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bZ}{\mathbf{Z}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bw}{\mathbf{w}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bW}{\mathbf{W}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bv}{\mathbf{v}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bV}{\mathbf{V}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bfg}{\mathbf{g}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bfh}{\mathbf{h}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\horz}{\rule[.5ex]{2.5ex}{0.5pt}}\)</span>
+<span class="math notranslate nohighlight">\(\renewcommand{\S}{\mathcal{S}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\X}{\mathcal{X}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\var}{\mathrm{Var}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\pa}{\mathrm{pa}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\Z}{\mathcal{Z}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bh}{\mathbf{h}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bb}{\mathbf{b}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bc}{\mathbf{c}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\cE}{\mathcal{E}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\cP}{\mathcal{P}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bbeta}{\boldsymbol{\beta}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bLambda}{\boldsymbol{\Lambda}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\cov}{\mathrm{Cov}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\bfk}{\mathbf{k}}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\idx}[1]{}\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\xdi}{}\)</span></p>
+<section id="background-review-of-vector-spaces-and-matrix-inverses">
+<h1><span class="section-number">2.2. </span>Background: review of vector spaces and matrix inverses<a class="headerlink" href="#background-review-of-vector-spaces-and-matrix-inverses" title="Link to this heading">#</a></h1>
+<p>In this section, we introduce some basic linear algebra concepts that will be needed throughout this chapter and later on.</p>
+<section id="subspaces">
+<h2><span class="section-number">2.2.1. </span>Subspaces<a class="headerlink" href="#subspaces" title="Link to this heading">#</a></h2>
+<p>We work over the vector space <span class="math notranslate nohighlight">\(V = \mathbb{R}^n\)</span>. We begin with the concept of a linear subspace.</p>
+<p><strong>DEFINITION</strong> <strong>(Linear Subspace)</strong> <span class="math notranslate nohighlight">\(\idx{linear subspace}\xdi\)</span> A linear subspace of <span class="math notranslate nohighlight">\(\mathbb{R}^n\)</span> is a subset <span class="math notranslate nohighlight">\(U \subseteq \mathbb{R}^n\)</span> that is closed under vector addition and scalar multiplication. That is, for all <span class="math notranslate nohighlight">\(\mathbf{u}_1, \mathbf{u}_2 \in U\)</span> and <span class="math notranslate nohighlight">\(\alpha \in \mathbb{R}\)</span>, it holds that</p>
+<div class="math notranslate nohighlight">
+\[
+\mathbf{u}_1 + \mathbf{u}_2 \in U \quad \text{and} \quad \alpha \,\mathbf{u}_1 \in U.
+\]</div>
+<p>It follows from this condition that <span class="math notranslate nohighlight">\(\mathbf{0} \in U\)</span>. <span class="math notranslate nohighlight">\(\natural\)</span></p>
+<p>Alternatively, we can check these conditions by proving that (1) <span class="math notranslate nohighlight">\(\mathbf{0} \in U\)</span> and (2) <span class="math notranslate nohighlight">\(\mathbf{u}_1, \mathbf{u}_2 \in U\)</span> and <span class="math notranslate nohighlight">\(\alpha \in \mathbb{R}\)</span> imply that <span class="math notranslate nohighlight">\(\alpha \mathbf{u}_1 + \mathbf{u}_2 \in U\)</span>. Indeed, taking <span class="math notranslate nohighlight">\(\alpha = 1\)</span> gives the first condition above, while choosing <span class="math notranslate nohighlight">\(\mathbf{u}_2 = \mathbf{0}\)</span> gives the second one.</p>
+<p><strong>NUMERICAL CORNER:</strong> The plane <span class="math notranslate nohighlight">\(P\)</span> made of all points <span class="math notranslate nohighlight">\((x,y,z) \in \mathbb{R}^3\)</span> that satisfy <span class="math notranslate nohighlight">\(z = x+y\)</span> is a linear subspace. Indeed, <span class="math notranslate nohighlight">\(0 = 0 + 0\)</span> so <span class="math notranslate nohighlight">\((0,0,0) \in P\)</span>. And, for any <span class="math notranslate nohighlight">\(\mathbf{u}_1 = (x_1, y_1, z_1)\)</span> and <span class="math notranslate nohighlight">\(\mathbf{u}_2 = (x_2, y_2, z_2)\)</span> such that <span class="math notranslate nohighlight">\(z_1 = x_1 + y_1\)</span> and <span class="math notranslate nohighlight">\(z_2 = x_2 + y_2\)</span> and for any <span class="math notranslate nohighlight">\(\alpha \in \mathbb{R}\)</span>, we have</p>
+<div class="math notranslate nohighlight">
+\[
+\alpha z_1 + z_2 = \alpha (x_1 + y_1) + (x_2 + y_2) = (\alpha x_1 + x_2) + (\alpha y_1 + y_2).
+\]</div>
+<p>That is, <span class="math notranslate nohighlight">\(\alpha \mathbf{u}_1 + \mathbf{u}_2\)</span> satisfies the condition defining <span class="math notranslate nohighlight">\(P\)</span> and therefore is itself in <span class="math notranslate nohighlight">\(P\)</span>. Note also that <span class="math notranslate nohighlight">\(P\)</span> passes through the origin.</p>
+<p>In this example, the linear subspace <span class="math notranslate nohighlight">\(P\)</span> can be described alternatively as the collection of every vector of the form <span class="math notranslate nohighlight">\((x, y, x+y)\)</span>.</p>
+<p>We use <a class="reference external" href="https://matplotlib.org/stable/api/_as_gen/mpl_toolkits.mplot3d.axes3d.Axes3D.plot_surface.html#mpl_toolkits.mplot3d.axes3d.Axes3D.plot_surface"><code class="docutils literal notranslate"><span class="pre">plot_surface</span></code></a> to plot it over a grid of points created using <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.meshgrid.html"><code class="docutils literal notranslate"><span class="pre">numpy.meshgrid</span></code></a>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="n">num</span><span class="o">=</span><span class="mi">101</span><span class="p">)</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="n">num</span><span class="o">=</span><span class="mi">101</span><span class="p">)</span>
+<span class="n">X</span><span class="p">,</span> <span class="n">Y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">meshgrid</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[[0.   0.01 0.02 ... 0.98 0.99 1.  ]
+ [0.   0.01 0.02 ... 0.98 0.99 1.  ]
+ [0.   0.01 0.02 ... 0.98 0.99 1.  ]
+ ...
+ [0.   0.01 0.02 ... 0.98 0.99 1.  ]
+ [0.   0.01 0.02 ... 0.98 0.99 1.  ]
+ [0.   0.01 0.02 ... 0.98 0.99 1.  ]]
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">Y</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[[0.   0.   0.   ... 0.   0.   0.  ]
+ [0.01 0.01 0.01 ... 0.01 0.01 0.01]
+ [0.02 0.02 0.02 ... 0.02 0.02 0.02]
+ ...
+ [0.98 0.98 0.98 ... 0.98 0.98 0.98]
+ [0.99 0.99 0.99 ... 0.99 0.99 0.99]
+ [1.   1.   1.   ... 1.   1.   1.  ]]
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">Z</span> <span class="o">=</span> <span class="n">X</span> <span class="o">+</span> <span class="n">Y</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">Z</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[[0.   0.01 0.02 ... 0.98 0.99 1.  ]
+ [0.01 0.02 0.03 ... 0.99 1.   1.01]
+ [0.02 0.03 0.04 ... 1.   1.01 1.02]
+ ...
+ [0.98 0.99 1.   ... 1.96 1.97 1.98]
+ [0.99 1.   1.01 ... 1.97 1.98 1.99]
+ [1.   1.01 1.02 ... 1.98 1.99 2.  ]]
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">111</span><span class="p">,</span> <span class="n">projection</span><span class="o">=</span><span class="s1">&#39;3d&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot_surface</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">,</span> <span class="n">Z</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;viridis&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/4de151ba715b07481dc10ccb03213f013fc5adab2dddab2ce268b2afdfc9a5c8.png" src="../../_images/4de151ba715b07481dc10ccb03213f013fc5adab2dddab2ce268b2afdfc9a5c8.png" />
+</div>
+</div>
+<p><span class="math notranslate nohighlight">\(\unlhd\)</span></p>
+<p>Here is a key example of a linear subspace.</p>
+<p><strong>DEFINITION</strong> <strong>(Span)</strong> <span class="math notranslate nohighlight">\(\idx{span}\xdi\)</span> Let <span class="math notranslate nohighlight">\(\mathbf{w}_1, \ldots, \mathbf{w}_m \in \mathbb{R}^n\)</span>. The span of <span class="math notranslate nohighlight">\(\{\mathbf{w}_1, \ldots, \mathbf{w}_m\}\)</span>, denoted <span class="math notranslate nohighlight">\(\mathrm{span}(\mathbf{w}_1, \ldots, \mathbf{w}_m)\)</span>, is the set of all linear combinations of the <span class="math notranslate nohighlight">\(\mathbf{w}_j\)</span>’s. That is,</p>
+<div class="math notranslate nohighlight">
+\[
+\mathrm{span}(\mathbf{w}_1, \ldots, \mathbf{w}_m)
+= \left\{
+\sum_{j=1}^m \alpha_j \mathbf{w}_j\,:\, \alpha_1,\ldots, \alpha_m \in \mathbb{R}
+\right\}.
+\]</div>
+<p>By convention, we declare that the span of the empty list is <span class="math notranslate nohighlight">\(\{\mathbf{0}\}\)</span>. <span class="math notranslate nohighlight">\(\natural\)</span></p>
+<p><strong>EXAMPLE:</strong> <strong>(continued)</strong> In the example above, we noted that the plane <span class="math notranslate nohighlight">\(P\)</span> is the collection of every vector of the form <span class="math notranslate nohighlight">\((x, y, x+y)\)</span>. These can be written as <span class="math notranslate nohighlight">\(x \,\mathbf{w}_1 + y \,\mathbf{w}_2\)</span> where <span class="math notranslate nohighlight">\(\mathbf{w}_1 = (1,0,1)\)</span> and <span class="math notranslate nohighlight">\(\mathbf{w}_2 = (0,1,1)\)</span>, and vice versa. Hence <span class="math notranslate nohighlight">\(P = \mathrm{span}(\mathbf{w}_1,\mathbf{w}_2)\)</span>. <span class="math notranslate nohighlight">\(\lhd\)</span></p>
+<p>We check next that a span is indeed a linear subspace.</p>
+<p><strong>LEMMA</strong> Let <span class="math notranslate nohighlight">\(W=\mathrm{span}(\mathbf{w}_1, \ldots, \mathbf{w}_m)\)</span>. Then <span class="math notranslate nohighlight">\(W\)</span> is a linear subspace. <span class="math notranslate nohighlight">\(\flat\)</span></p>
+<p>We say that <span class="math notranslate nohighlight">\(\mathbf{w}_1, \ldots, \mathbf{w}_m\)</span> span <span class="math notranslate nohighlight">\(W\)</span>.</p>
+<p><em>Proof:</em> First, <span class="math notranslate nohighlight">\(\mathbf{0} = \sum_{j=1}^m 0\mathbf{w}_j \in W\)</span>. Second, let <span class="math notranslate nohighlight">\(\mathbf{u}_1, \mathbf{u}_2 \in W\)</span> and <span class="math notranslate nohighlight">\(\alpha \in \mathbb{R}\)</span>. For <span class="math notranslate nohighlight">\(i=1,2\)</span>, because <span class="math notranslate nohighlight">\(\mathbf{u}_i\)</span> is in the span of the <span class="math notranslate nohighlight">\(\mathbf{w}_j\)</span>’s, we can write</p>
+<div class="math notranslate nohighlight">
+\[
+\mathbf{u}_i = \sum_{j=1}^m \beta_{ij} \mathbf{w}_j
+\]</div>
+<p>for some <span class="math notranslate nohighlight">\(\beta_{ij} \in \mathbb{R}\)</span> for <span class="math notranslate nohighlight">\(j=1,\ldots,m\)</span>.</p>
+<p>Therefore</p>
+<div class="math notranslate nohighlight">
+\[
+\alpha \mathbf{u}_1 + \mathbf{u}_2 
+= \alpha \sum_{j=1}^m \beta_{1j} \mathbf{w}_j
++ \sum_{j=1}^m \beta_{2j} \mathbf{w}_j
+= \sum_{j=1}^m (\alpha \beta_{1j} + \beta_{2j}) \mathbf{w}_j.
+\]</div>
+<p>So <span class="math notranslate nohighlight">\(\alpha \,\mathbf{u}_1 + \mathbf{u}_2 \in W\)</span>.<span class="math notranslate nohighlight">\(\square\)</span></p>
+<p><strong>CHAT &amp; LEARN</strong> Consider the following problem:</p>
+<blockquote>
+<div><p>Prove that if <span class="math notranslate nohighlight">\(\{\mathbf{v}_1,\ldots,\mathbf{v}_n\}\)</span> spans <span class="math notranslate nohighlight">\(U\)</span>, then so does the list</p>
+<div class="math notranslate nohighlight">
+\[
+\{\mathbf{v}_1-\mathbf{v}_2, \mathbf{v}_2-\mathbf{v}_3,\ldots,\mathbf{v}_{n-1}-\mathbf{v}_n,\mathbf{v}_n\},
+\]</div>
+<p>obtained by subtracting from each vector (except the last one) the following vector.</p>
+</div></blockquote>
+<p>A popular AI chatbot (which shall remain nameless) provided the following solution:</p>
+<blockquote>
+<div><p>Suppose that <span class="math notranslate nohighlight">\(U = \text{span}(\mathbf{v}_1, \ldots, \mathbf{v}_n)\)</span>. Then for any vector <span class="math notranslate nohighlight">\(\mathbf{v} \in U\)</span>, there exist scalars <span class="math notranslate nohighlight">\(a_1, \ldots, a_n \in \mathbb{R}\)</span> such that:</p>
+<div class="math notranslate nohighlight">
+\[
+\mathbf{v} = a_1\mathbf{v}_1 + a_2\mathbf{v}_2 + \ldots + a_n\mathbf{v}_n
+\]</div>
+<p>Now let’s express each vector in the new list in terms of the given vectors:</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(\mathbf{v}_1-\mathbf{v}_2 = a_1(\mathbf{v}_1-\mathbf{v}_2)\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(\mathbf{v}_2-\mathbf{v}_3 = (a_1 + a_2)(\mathbf{v}_2-\mathbf{v}_3)\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(\mathbf{v}_3-\mathbf{v}_4 = (a_1 + a_2 + a_3)(\mathbf{v}_3-\mathbf{v}_4)\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(\ldots\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(\mathbf{v}_{n-1} - \mathbf{v}_n = (a_1 + a_2 + \ldots + a_{n-1})(\mathbf{v}_{n-1}-\mathbf{v}_n)\)</span></p></li>
+</ul>
+<p>Adding up all these expressions, we get:</p>
+<div class="math notranslate nohighlight">
+\[
+\mathbf{v} = a_1(\mathbf{v}_1-\mathbf{v}_2) + (a_1 + a_2)(\mathbf{v}_2-\mathbf{v}_3) + \ldots + (a_1 + a_2 + \ldots + a_{n-1})(\mathbf{v}_{n-1}-\mathbf{v}_n) + a_n\mathbf{v}_n
+\]</div>
+<p>This shows that <span class="math notranslate nohighlight">\(\mathbf{v}\)</span> can be expressed as a linear combination of the vectors in the new list, which means that the new list also spans <span class="math notranslate nohighlight">\(U\)</span>.
+Therefore, the list <span class="math notranslate nohighlight">\({\mathbf{v}_1-\mathbf{v}_2, \mathbf{v}_2-\mathbf{v}_3, \ldots, \mathbf{v}_{n-1}-\mathbf{v}_n, \mathbf{v}_n}\)</span> spans <span class="math notranslate nohighlight">\(U\)</span>, completing the proof.</p>
+</div></blockquote>
+<p>Explain everything that is wrong with this answer and provide a correct alternative proof. <span class="math notranslate nohighlight">\(\ddagger\)</span></p>
+<p>In matrix form, we talk about the column space of a (not necessarily square) matrix.</p>
+<p><strong>DEFINITION</strong> <strong>(Column Space)</strong> <span class="math notranslate nohighlight">\(\idx{column space}\xdi\)</span> Let <span class="math notranslate nohighlight">\(A \in \mathbb{R}^{n\times m}\)</span> be an <span class="math notranslate nohighlight">\(n\times m\)</span> matrix with columns <span class="math notranslate nohighlight">\(\mathbf{a}_1,\ldots, \mathbf{a}_m \in \mathbb{R}^n\)</span>. The column space of <span class="math notranslate nohighlight">\(A\)</span>, denoted <span class="math notranslate nohighlight">\(\mathrm{col}(A)\)</span>, is the span of the columns of <span class="math notranslate nohighlight">\(A\)</span>, that is, <span class="math notranslate nohighlight">\(\mathrm{col}(A) = \mathrm{span}(\mathbf{a}_1,\ldots, \mathbf{a}_m)\)</span>. <span class="math notranslate nohighlight">\(\natural\)</span></p>
+<p>When thinking of <span class="math notranslate nohighlight">\(A\)</span> as a linear map, that is, the vector-valued function <span class="math notranslate nohighlight">\(f(\mathbf{x}) = A \mathbf{x}\)</span> mapping inputs in <span class="math notranslate nohighlight">\(\mathbb{R}^{m}\)</span> to outputs in <span class="math notranslate nohighlight">\(\mathbb{R}^n\)</span>, the column space is referred to as the range or image.</p>
+<p>We will need another important linear subspace defined in terms of a matrix.</p>
+<p><strong>DEFINITION</strong> <strong>(Null Space)</strong> <span class="math notranslate nohighlight">\(\idx{null space}\xdi\)</span> Let <span class="math notranslate nohighlight">\(B \in \mathbb{R}^{n \times m}\)</span>. The null space of <span class="math notranslate nohighlight">\(B\)</span> is the linear subspace</p>
+<div class="math notranslate nohighlight">
+\[
+\mathrm{null}(B)
+= \left\{\mathbf{x} \in \mathbb{R}^m\,:\, B\mathbf{x} = \mathbf{0}\right\}.
+\]</div>
+<p><span class="math notranslate nohighlight">\(\natural\)</span></p>
+<p>It can be shown that the null space is a linear subspace. We give a simple example next.</p>
+<p><strong>EXAMPLE:</strong> <strong>(continued)</strong> Going back to the linear subspace <span class="math notranslate nohighlight">\(P = \{(x,y,z)^T \in \mathbb{R}^3 : z = x + y\}\)</span>,  the condition in the definition can be re-written as <span class="math notranslate nohighlight">\(x + y - z = 0\)</span>. Hence <span class="math notranslate nohighlight">\(P = \mathrm{null}(B)\)</span> for the single-row matrix <span class="math notranslate nohighlight">\(B = \begin{pmatrix} 1 &amp; 1 &amp; - 1\end{pmatrix}\)</span>. <span class="math notranslate nohighlight">\(\lhd\)</span></p>
+</section>
+<section id="linear-independence-and-bases">
+<h2><span class="section-number">2.2.2. </span>Linear independence and bases<a class="headerlink" href="#linear-independence-and-bases" title="Link to this heading">#</a></h2>
+<p>It is often desirable to avoid redundancy in the description of a linear subspace.</p>
+<p>We start with an example.</p>
+<p><strong>EXAMPLE:</strong> Consider the linear subspace <span class="math notranslate nohighlight">\(\mathrm{span}(\mathbf{w}_1,\mathbf{w}_2,\mathbf{w}_3)\)</span>, where <span class="math notranslate nohighlight">\(\mathbf{w}_1 = (1,0,1)\)</span>, <span class="math notranslate nohighlight">\(\mathbf{w}_2 = (0,1,1)\)</span>, and <span class="math notranslate nohighlight">\(\mathbf{w}_3 = (1,-1,0)\)</span>. We claim that</p>
+<div class="math notranslate nohighlight">
+\[
+\mathrm{span}(\mathbf{w}_1,\mathbf{w}_2,\mathbf{w}_3) = \mathrm{span}(\mathbf{w}_1,\mathbf{w_2}).
+\]</div>
+<p>Recall that to prove an equality between sets, it suffices to prove inclusion in both directions.</p>
+<p>First, it is immediate by definition of the span that</p>
+<div class="math notranslate nohighlight">
+\[
+\mathrm{span}(\mathbf{w}_1,\mathbf{w}_2) \subseteq \mathrm{span}(\mathbf{w}_1,\mathbf{w}_2,\mathbf{w}_3).
+\]</div>
+<p>To prove the other direction, let <span class="math notranslate nohighlight">\(\mathbf{u} 
+\in \mathrm{span}(\mathbf{w}_1,\mathbf{w}_2,\mathbf{w}_3)\)</span> so that</p>
+<div class="math notranslate nohighlight">
+\[
+\mathbf{u}
+= \beta_1\,(1,0,1) + \beta_2\,(0,1,1) + \beta_3\,(1,-1,0).
+\]</div>
+<p>Now observe that <span class="math notranslate nohighlight">\((1,-1,0) = (1,0,1) - (0,1,1)\)</span>. Put differently, <span class="math notranslate nohighlight">\(\mathbf{w}_3 \in \mathrm{span}(\mathbf{w}_1,\mathbf{w}_2)\)</span>. Replacing above gives</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+\mathbf{u}
+&amp;= \beta_1\,(1,0,1) + \beta_2\,(0,1,1) + \beta_3\,[(1,0,1) - (0,1,1)]\\
+&amp;= (\beta_1+\beta_3)\,(1,0,1) + (\beta_2-\beta_3)\,(0,1,1)
+\end{align*}\]</div>
+<p>which shows that <span class="math notranslate nohighlight">\(\mathbf{u} \in \mathrm{span}(\mathbf{w}_1,\mathbf{w_2})\)</span>.
+In words, <span class="math notranslate nohighlight">\((1,-1,0)^T\)</span> is redundant.
+Hence</p>
+<div class="math notranslate nohighlight">
+\[
+\mathrm{span}(\mathbf{w}_1,\mathbf{w}_2) \supseteq \mathrm{span}(\mathbf{w}_1,\mathbf{w}_2,\mathbf{w}_3)
+\]</div>
+<p>and that concludes the proof.<span class="math notranslate nohighlight">\(\lhd\)</span></p>
+<p><strong>DEFINITION</strong> <strong>(Linear Independence)</strong> <span class="math notranslate nohighlight">\(\idx{linear independence}\xdi\)</span> A list of nonzero vectors <span class="math notranslate nohighlight">\(\mathbf{u}_1,\ldots,\mathbf{u}_m\)</span> is linearly independent if none of them can be written as a linear combination of the others, that is,</p>
+<div class="math notranslate nohighlight">
+\[
+\forall i,\ \mathbf{u}_i \notin \mathrm{span}(\{\mathbf{u}_j:j\neq i\}).
+\]</div>
+<p>By convention, we declare the empty list to be linearly independent. A list of vectors is called linearly dependent if it is not linearly independent. <span class="math notranslate nohighlight">\(\natural\)</span></p>
+<p><strong>EXAMPLE:</strong> <strong>(continued)</strong> In the previous example, <span class="math notranslate nohighlight">\(\mathbf{w}_1,\mathbf{w}_2,\mathbf{w}_3\)</span> are <em>not</em> linearly independent, because we showed that <span class="math notranslate nohighlight">\(\mathbf{w}_3\)</span> can be written as a linear combination of <span class="math notranslate nohighlight">\(\mathbf{w}_1,\mathbf{w}_2\)</span>. On the other hand, <span class="math notranslate nohighlight">\(\mathbf{w}_1,\mathbf{w}_2\)</span> are linearly independent because there is no <span class="math notranslate nohighlight">\(\alpha, \beta  \in \mathbb{R}\)</span> such that <span class="math notranslate nohighlight">\((1,0,1) = \alpha\,(0,1,1)\)</span> or <span class="math notranslate nohighlight">\((0,1,1) = \beta\,(1,0,1)\)</span>. Indeed, the first equation requires <span class="math notranslate nohighlight">\(1 = \alpha \, 0\)</span> (first component) and the second one requires <span class="math notranslate nohighlight">\(1 = \beta \, 0\)</span> (second component) - both of which have no solution.
+<span class="math notranslate nohighlight">\(\lhd\)</span></p>
+<p><strong>KNOWLEDGE CHECK:</strong> Consider the <span class="math notranslate nohighlight">\(2 \times 2\)</span> matrix</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+A = \begin{pmatrix}
+a &amp; b\\
+c &amp; d
+\end{pmatrix},
+\end{split}\]</div>
+<p>where all entries are non-zero. Under what condition on the entries of <span class="math notranslate nohighlight">\(A\)</span> are its columns linearly independent? Explain your answer. <span class="math notranslate nohighlight">\(\checkmark\)</span></p>
+<p><strong>EXAMPLE:</strong> Consider the <span class="math notranslate nohighlight">\(2 \times 2\)</span> matrix</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+A = \begin{pmatrix}
+a &amp; b\\
+c &amp; d
+\end{pmatrix}.
+\end{split}\]</div>
+<p>We show that the columns</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\mathbf{u}_1
+= \begin{pmatrix}
+a\\
+c
+\end{pmatrix}
+\quad
+\text{and}
+\quad
+\mathbf{u}_2
+= \begin{pmatrix}
+b\\
+d
+\end{pmatrix}
+\end{split}\]</div>
+<p>are linearly dependent if <span class="math notranslate nohighlight">\(ad - bc = 0\)</span>. You may recognize the quantity <span class="math notranslate nohighlight">\(ad - bc\)</span> as the determinant of <span class="math notranslate nohighlight">\(A\)</span>, an important algebraic quantity which nevertheless plays only a small role in this book.</p>
+<p>We consider two cases.</p>
+<p><em>Suppose first that all entries of <span class="math notranslate nohighlight">\(A\)</span> are non-zero.</em> In that case, <span class="math notranslate nohighlight">\(ad = bc\)</span> implies <span class="math notranslate nohighlight">\(d/c = b/a =: \gamma\)</span>. Multiplying <span class="math notranslate nohighlight">\(\mathbf{u}_1\)</span> by <span class="math notranslate nohighlight">\(\gamma\)</span> gives</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\gamma \mathbf{u}_1
+= \gamma \begin{pmatrix}
+a\\
+c
+\end{pmatrix}
+= \begin{pmatrix}
+\gamma a\\
+\gamma c
+\end{pmatrix}
+= \begin{pmatrix}
+(b/a)a\\
+(d/c)c
+\end{pmatrix}
+= \begin{pmatrix}
+b\\
+d
+\end{pmatrix}
+= \mathbf{u}_2.
+\end{split}\]</div>
+<p>Hence <span class="math notranslate nohighlight">\(\mathbf{u}_2\)</span> is a multiple of <span class="math notranslate nohighlight">\(\mathbf{u_1}\)</span> and these vectors are therefore not linearly independent.</p>
+<p><em>Suppose instead that at least one entry of <span class="math notranslate nohighlight">\(A\)</span> is zero.</em> We detail the case <span class="math notranslate nohighlight">\(a = 0\)</span>, with all other cases being similar. By condition <span class="math notranslate nohighlight">\(ad = bc\)</span>, we get that <span class="math notranslate nohighlight">\(bc = 0\)</span>. That is, either <span class="math notranslate nohighlight">\(b=0\)</span> or <span class="math notranslate nohighlight">\(c=0\)</span>. Either way, the second column of <span class="math notranslate nohighlight">\(A\)</span> is then a multiple of the first one, establishing the claim. <span class="math notranslate nohighlight">\(\lhd\)</span></p>
+<p><strong>LEMMA</strong> <strong>(Equivalent Definition of Linear Independence)</strong> <span class="math notranslate nohighlight">\(\idx{equivalent definition of linear independence}\xdi\)</span> Vectors <span class="math notranslate nohighlight">\(\mathbf{u}_1,\ldots,\mathbf{u}_m\)</span> are linearly independent if and only if</p>
+<div class="math notranslate nohighlight">
+\[
+\sum_{j=1}^m \alpha_j \mathbf{u}_j = \mathbf{0} \implies \alpha_j = 0,\ \forall j.
+\]</div>
+<p>Equivalently, <span class="math notranslate nohighlight">\(\mathbf{u}_1,\ldots,\mathbf{u}_m\)</span> are linearly dependent if and only if there exist <span class="math notranslate nohighlight">\(\alpha_j\)</span>’s, not all zero, such that <span class="math notranslate nohighlight">\(\sum_{j=1}^m \alpha_j \mathbf{u}_j = \mathbf{0}\)</span>.</p>
+<p><span class="math notranslate nohighlight">\(\flat\)</span></p>
+<p><em>Proof:</em> We prove the second statement.</p>
+<ul class="simple">
+<li><p>Assume <span class="math notranslate nohighlight">\(\mathbf{u}_1,\ldots,\mathbf{u}_m\)</span> are linearly dependent. Then <span class="math notranslate nohighlight">\(\mathbf{u}_i = \sum_{j\neq i} \alpha_j \mathbf{u}_j\)</span> for some <span class="math notranslate nohighlight">\(i\)</span>. Taking <span class="math notranslate nohighlight">\(\alpha_i = -1\)</span> gives <span class="math notranslate nohighlight">\(\sum_{j=1}^m \alpha_j \mathbf{u}_j = \mathbf{0}\)</span>.</p></li>
+<li><p>Assume <span class="math notranslate nohighlight">\(\sum_{j=1}^m \alpha_j \mathbf{u}_j = \mathbf{0}\)</span> with <span class="math notranslate nohighlight">\(\alpha_j\)</span>’s not all zero. In particular <span class="math notranslate nohighlight">\(\alpha_i \neq 0\)</span> for some <span class="math notranslate nohighlight">\(i\)</span>. Then</p></li>
+</ul>
+<div class="math notranslate nohighlight">
+\[
+\mathbf{u}_i 
+= - \frac{1}{\alpha_i} \sum_{j\neq i} \alpha_j \mathbf{u}_j
+= \sum_{j\neq i} \left(- \frac{\alpha_j}{\alpha_i}\right) \mathbf{u}_j.
+\]</div>
+<p><span class="math notranslate nohighlight">\(\square\)</span></p>
+<p>In matrix form: let <span class="math notranslate nohighlight">\(\mathbf{a}_1,\ldots,\mathbf{a}_m \in \mathbb{R}^n\)</span> and form the matrix whose columns are the <span class="math notranslate nohighlight">\(\mathbf{a}_i\)</span>’s</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+A =
+\begin{pmatrix}
+| &amp;  &amp; | \\
+\mathbf{a}_1 &amp; \ldots &amp; \mathbf{a}_m \\
+| &amp;  &amp; | 
+\end{pmatrix}.
+\end{split}\]</div>
+<p>Note that <span class="math notranslate nohighlight">\(A\mathbf{x}\)</span> is the following linear combination of the columns of <span class="math notranslate nohighlight">\(A\)</span>: <span class="math notranslate nohighlight">\(\sum_{j=1}^m x_j \mathbf{a}_j\)</span>. Hence <span class="math notranslate nohighlight">\(\mathbf{a}_1,\ldots,\mathbf{a}_m\)</span> are linearly independent if and only if
+<span class="math notranslate nohighlight">\(A \mathbf{x} = \mathbf{0} \implies \mathbf{x} = \mathbf{0}\)</span>. In terms of the null space of <span class="math notranslate nohighlight">\(A\)</span>, this last condition translates into <span class="math notranslate nohighlight">\(\mathrm{null}(A) = \{\mathbf{0}\}\)</span>.</p>
+<p>Equivalently, <span class="math notranslate nohighlight">\(\mathbf{a}_1,\ldots,\mathbf{a}_m\)</span> are linearly dependent if and only if <span class="math notranslate nohighlight">\(\exists \mathbf{x}\neq \mathbf{0}\)</span> such that <span class="math notranslate nohighlight">\(A \mathbf{x} = \mathbf{0}\)</span>. Put differently, this last condition means that there is a nonzero vector in the null space of <span class="math notranslate nohighlight">\(A\)</span>.</p>
+<p>In this book, we will typically <em>not</em> be interested in checking these types of conditions by hand, but here is a simple example.</p>
+<p><strong>EXAMPLE:</strong> <strong>(Checking linear independence by hand)</strong> Suppose we have the following vectors</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\mathbf{v}_1 = \begin{pmatrix} 1 \\ 2 \\ 3 \end{pmatrix}, \quad \mathbf{v}_2 = \begin{pmatrix} 0 \\ 1 \\ 4 \end{pmatrix}, \quad \mathbf{v}_3 = \begin{pmatrix} 5 \\ 6 \\ 0 \end{pmatrix}.
+\end{split}\]</div>
+<p>To determine if these vectors are linearly independent, we need to check if the equation</p>
+<div class="math notranslate nohighlight">
+\[
+\alpha_1 \mathbf{v}_1 + \alpha_2 \mathbf{v}_2 + \alpha_3 \mathbf{v}_3 = \mathbf{0}
+\]</div>
+<p>implies <span class="math notranslate nohighlight">\(\alpha_1 = 0\)</span>, <span class="math notranslate nohighlight">\(\alpha_2 = 0\)</span>, and <span class="math notranslate nohighlight">\(\alpha_3 = 0\)</span>.</p>
+<p>Substituting the vectors, we get</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\alpha_1 \begin{pmatrix} 1 \\ 2 \\ 3 \end{pmatrix} + \alpha_2 \begin{pmatrix} 0 \\ 1 \\ 4 \end{pmatrix} + \alpha_3 \begin{pmatrix} 5 \\ 6 \\ 0 \end{pmatrix} = \begin{pmatrix} 0 \\ 0 \\ 0 \end{pmatrix}
+\end{split}\]</div>
+<p>This gives us the following system of equations</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{cases}
+\alpha_1 + 5\alpha_3 = 0 \\
+2\alpha_1 + \alpha_2 + 6\alpha_3 = 0 \\
+3\alpha_1 + 4\alpha_2 = 0
+\end{cases}.
+\end{split}\]</div>
+<p>We solve this system step-by-step.</p>
+<p>From the first equation, we have</p>
+<div class="math notranslate nohighlight">
+\[
+\alpha_1 + 5\alpha_3 = 0 \implies \alpha_1 = -5\alpha_3.
+\]</div>
+<p>Substitute <span class="math notranslate nohighlight">\(\alpha_1 = -5\alpha_3\)</span> into the second equation</p>
+<div class="math notranslate nohighlight">
+\[
+2(-5\alpha_3) + \alpha_2 + 6\alpha_3 = 0 \implies -10\alpha_3 + \alpha_2 + 6\alpha_3 = 0 \implies \alpha_2 - 4\alpha_3 = 0 \implies \alpha_2 = 4\alpha_3.
+\]</div>
+<p>Now, substitute <span class="math notranslate nohighlight">\(\alpha_1 = -5\alpha_3\)</span> and <span class="math notranslate nohighlight">\(\alpha_2 = 4\alpha_3\)</span> into the third equation</p>
+<div class="math notranslate nohighlight">
+\[
+3(-5\alpha_3) + 4(4\alpha_3) = 0 \implies -15\alpha_3 + 16\alpha_3 = 0 \implies \alpha_3 = 0.
+\]</div>
+<p>Since <span class="math notranslate nohighlight">\(\alpha_3 = 0\)</span>, we also have</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\alpha_1 = -5\alpha_3 = -5(0) = 0 \\
+\alpha_2 = 4\alpha_3 = 4(0) = 0.
+\end{split}\]</div>
+<p>Thus, <span class="math notranslate nohighlight">\(\alpha_1 = 0\)</span>, <span class="math notranslate nohighlight">\(\alpha_2 = 0\)</span>, and <span class="math notranslate nohighlight">\(\alpha_3 = 0\)</span>.</p>
+<p>Since the only solution to the system is the trivial solution where <span class="math notranslate nohighlight">\(\alpha_1 = \alpha_2 = \alpha_3 = 0\)</span>, the vectors <span class="math notranslate nohighlight">\(\mathbf{v}_1, \mathbf{v}_2, \mathbf{v}_3\)</span> are linearly independent. <span class="math notranslate nohighlight">\(\lhd\)</span></p>
+<p>Bases give a convenient – non-redundant – representation of a subspace.</p>
+<p><strong>DEFINITION</strong> <strong>(Basis)</strong> <span class="math notranslate nohighlight">\(\idx{basis}\xdi\)</span> Let <span class="math notranslate nohighlight">\(U\)</span> be a linear subspace of <span class="math notranslate nohighlight">\(\mathbb{R}^n\)</span>. A basis of <span class="math notranslate nohighlight">\(U\)</span> is a list of vectors <span class="math notranslate nohighlight">\(\mathbf{u}_1,\ldots,\mathbf{u}_m\)</span> in <span class="math notranslate nohighlight">\(U\)</span> that: (1) span <span class="math notranslate nohighlight">\(U\)</span>, that is, <span class="math notranslate nohighlight">\(U = \mathrm{span}(\mathbf{u}_1,\ldots,\mathbf{u}_m)\)</span>; and (2) are linearly independent. <span class="math notranslate nohighlight">\(\natural\)</span></p>
+<p>We denote by <span class="math notranslate nohighlight">\(\mathbf{e}_1, \ldots, \mathbf{e}_n\)</span> the standard basis of <span class="math notranslate nohighlight">\(\mathbb{R}^n\)</span>, where <span class="math notranslate nohighlight">\(\mathbf{e}_i\)</span> has a one in coordinate <span class="math notranslate nohighlight">\(i\)</span> and zeros in all other coordinates (see the example below). The basis of the linear subspace <span class="math notranslate nohighlight">\(\{\mathbf{0}\}\)</span> is the empty list (which, by convention, is independent and has span <span class="math notranslate nohighlight">\(\{\mathbf{0}\}\)</span>).</p>
+<p><strong>EXAMPLE:</strong> <strong>(continued)</strong> In the previous example, the vectors <span class="math notranslate nohighlight">\(\mathbf{w}_1,\mathbf{w}_2\)</span> are a basis of their span <span class="math notranslate nohighlight">\(U = \mathrm{span}(\mathbf{w}_1,\mathbf{w}_2)\)</span>. Indeed the first condition is trivially satisfied. Plus, we have shown above that <span class="math notranslate nohighlight">\(\mathbf{w}_1,\mathbf{w}_2\)</span> are linearly independent. <span class="math notranslate nohighlight">\(\lhd\)</span></p>
+<p><strong>EXAMPLE:</strong> For <span class="math notranslate nohighlight">\(i=1,\ldots,n\)</span>, recall that <span class="math notranslate nohighlight">\(\mathbf{e}_i \in \mathbb{R}^n\)</span> is the vector with entries</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+(\mathbf{e}_i)_j 
+= \begin{cases}
+1, &amp; \text{if $j = i$,}\\
+0, &amp; \text{o.w.}
+\end{cases}
+\end{split}\]</div>
+<p>Then <span class="math notranslate nohighlight">\(\mathbf{e}_1, \ldots, \mathbf{e}_n\)</span> form a basis of <span class="math notranslate nohighlight">\(\mathbb{R}^n\)</span>, as each vector is in <span class="math notranslate nohighlight">\(\mathbb{R}^n\)</span>. It is known as the standard basis of <span class="math notranslate nohighlight">\(\mathbb{R}^n\)</span>. Indeed, clearly <span class="math notranslate nohighlight">\(\mathrm{span}(\mathbf{e}_1, \ldots, \mathbf{e}_n) \subseteq \mathbb{R}^n\)</span>. Moreover, any vector <span class="math notranslate nohighlight">\(\mathbf{u} = (u_1,\ldots,u_n)^T \in \mathbb{R}^n\)</span> can be written as</p>
+<div class="math notranslate nohighlight">
+\[
+\mathbf{u}
+= \sum_{i=1}^{n} u_i \mathbf{e}_i.
+\]</div>
+<p>So <span class="math notranslate nohighlight">\(\mathbf{e}_1, \ldots, \mathbf{e}_n\)</span> spans <span class="math notranslate nohighlight">\(\mathbb{R}^n\)</span>. Furthermore,</p>
+<div class="math notranslate nohighlight">
+\[
+\mathbf{e}_i \notin \mathrm{span}(\{\mathbf{e}_j:j\neq i\}), \quad \forall i=1,\ldots,n,
+\]</div>
+<p>since <span class="math notranslate nohighlight">\(\mathbf{e}_i\)</span> has a non-zero <span class="math notranslate nohighlight">\(i\)</span>-th entry while all vectors on the right-hand side have a zero in entry <span class="math notranslate nohighlight">\(i\)</span>. Hence the vectors <span class="math notranslate nohighlight">\(\mathbf{e}_1, \ldots, \mathbf{e}_n\)</span> are linearly independent. <span class="math notranslate nohighlight">\(\lhd\)</span></p>
+<p>A key property of a basis is that it provides a <em>unique</em> representation of the vectors in the subspace. Indeed, let <span class="math notranslate nohighlight">\(U\)</span> be a linear subspace and <span class="math notranslate nohighlight">\(\mathbf{u}_1,\ldots,\mathbf{u}_m\)</span> be a basis of <span class="math notranslate nohighlight">\(U\)</span>. Suppose that <span class="math notranslate nohighlight">\(\mathbf{w} \in U\)</span> can be written as both <span class="math notranslate nohighlight">\(\mathbf{w} = \sum_{j=1}^m \alpha_j \mathbf{u}_j\)</span> and <span class="math notranslate nohighlight">\(\mathbf{w} = \sum_{j=1}^m \alpha_j' \mathbf{u}_j\)</span>. Then subtracting one equation from the other we arrive at <span class="math notranslate nohighlight">\(\sum_{j=1}^m (\alpha_j - \alpha_j') \,\mathbf{u}_j = \mathbf{0}\)</span>. By linear independence, we have <span class="math notranslate nohighlight">\(\alpha_j - \alpha_j' = 0\)</span> for each <span class="math notranslate nohighlight">\(j\)</span>. That is, there is only one way to express <span class="math notranslate nohighlight">\(\mathbf{w}\)</span> as a linear combination of the basis.</p>
+<p>The basis itself on the other hand is not unique.</p>
+<p>A second key property of a basis is that it always has the <em>same number of elements</em>, which is called the dimension of the subspace.</p>
+<p><strong>THEOREM</strong> <strong>(Dimension)</strong> <span class="math notranslate nohighlight">\(\idx{dimension theorem}\xdi\)</span> Let <span class="math notranslate nohighlight">\(U \neq \{\mathbf{0}\}\)</span> be a linear subspace of <span class="math notranslate nohighlight">\(\mathbb{R}^n\)</span>. Then all bases of <span class="math notranslate nohighlight">\(U\)</span> have the same number of elements. We call this number the dimension of <span class="math notranslate nohighlight">\(U\)</span> and denote it by <span class="math notranslate nohighlight">\(\mathrm{dim}(U)\)</span>. <span class="math notranslate nohighlight">\(\sharp\)</span></p>
+<p>The proof is provided below. It relies on the <em>Linear Dependence Lemma</em>. That fundamental lemma has many useful implications, some of which we state now.</p>
+<p>A list of linearly independent vectors in a subspace <span class="math notranslate nohighlight">\(U\)</span> is referred to as an independent list in <span class="math notranslate nohighlight">\(U\)</span>. A list of vectors whose span is <span class="math notranslate nohighlight">\(U\)</span> is referred to as a spanning list of <span class="math notranslate nohighlight">\(U\)</span>. In the lemmas below, <span class="math notranslate nohighlight">\(U\)</span> is a linear subspace of <span class="math notranslate nohighlight">\(\mathbb{R}^n\)</span>. The first and second lemmas are proved in a later section. The <em>Dimension Theorem</em> immediately follows from the first one (Why?).</p>
+<p><strong>LEMMA</strong> <strong>(Independent is Shorter than Spanning)</strong> <span class="math notranslate nohighlight">\(\idx{independent is shorter than spanning lemma}\xdi\)</span> The length of any independent list in <span class="math notranslate nohighlight">\(U\)</span> is less or equal than the length of any spanning list of <span class="math notranslate nohighlight">\(U\)</span>. <span class="math notranslate nohighlight">\(\flat\)</span></p>
+<p><strong>LEMMA</strong> <strong>(Completing an Independent List)</strong> <span class="math notranslate nohighlight">\(\idx{completing an independent list lemma}\xdi\)</span> Any independent list in <span class="math notranslate nohighlight">\(U\)</span> can be completed into a basis of <span class="math notranslate nohighlight">\(U\)</span>. <span class="math notranslate nohighlight">\(\flat\)</span></p>
+<p><strong>LEMMA</strong> <strong>(Reducing a Spanning List)</strong> <span class="math notranslate nohighlight">\(\idx{reducing a spanning list lemma}\xdi\)</span> Any spanning list of <span class="math notranslate nohighlight">\(U\)</span> can be reduced into a basis of <span class="math notranslate nohighlight">\(U\)</span>. <span class="math notranslate nohighlight">\(\flat\)</span></p>
+<p>We mention a few observations implied by the previous lemmas.</p>
+<p><strong>Observation D1:</strong> Any linear subspace <span class="math notranslate nohighlight">\(U\)</span> of <span class="math notranslate nohighlight">\(\mathbb{R}^n\)</span> has a basis. To show this, start with the empty list and use the <em>Completing an Independent List Lemma</em> to complete it into a basis of <span class="math notranslate nohighlight">\(U\)</span>. Observe further that, instead of an empty list, we could have initialized the process with a list containing any vector in <span class="math notranslate nohighlight">\(U\)</span>. That is, for any non-zero vector <span class="math notranslate nohighlight">\(\mathbf{u} \in U\)</span>, we can construct a basis of <span class="math notranslate nohighlight">\(U\)</span> that includes <span class="math notranslate nohighlight">\(\mathbf{u}\)</span>.</p>
+<p><strong>Observation D2:</strong> The dimension of any linear subspace <span class="math notranslate nohighlight">\(U\)</span> of <span class="math notranslate nohighlight">\(\mathbb{R}^n\)</span> is smaller or equal than <span class="math notranslate nohighlight">\(n\)</span>. Indeed, because a basis of <span class="math notranslate nohighlight">\(U\)</span> is an independent list in the full space <span class="math notranslate nohighlight">\(\mathbb{R}^n\)</span>, by the <em>Completing an Independent List Lemma</em> it can be completed into a basis of <span class="math notranslate nohighlight">\(\mathbb{R}^n\)</span>, which has <span class="math notranslate nohighlight">\(n\)</span> elements by <em>Dimension Theorem</em> (and the fact that the standard basis has <span class="math notranslate nohighlight">\(n\)</span> elements). A similar statement holds more generally for nested linear subspaces <span class="math notranslate nohighlight">\(U \subseteq V\)</span>, that is, <span class="math notranslate nohighlight">\(\mathrm{dim}(U) \leq \mathrm{dim}(V)\)</span> (prove it!).</p>
+<p><strong>Observation D3:</strong> The dimension of <span class="math notranslate nohighlight">\(\mathrm{span}(\mathbf{u}_1,\ldots,\mathbf{u}_m)\)</span> is at most <span class="math notranslate nohighlight">\(m\)</span>. Indeed, by the <em>Reducing a Spanning List Lemma</em>, the spanning list <span class="math notranslate nohighlight">\(\mathbf{u}_1,\ldots,\mathbf{u}_m\)</span> can be reduced into a basis, which therefore necessarily has fewer elements.</p>
+<p><strong>KNOWLEDGE CHECK:</strong> Does the matrix</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+B=\begin{bmatrix}1&amp; 2\\1 &amp; 3\\2 &amp; 4\end{bmatrix}
+\end{split}\]</div>
+<p>have linearly independent columns? Justify your answer. <span class="math notranslate nohighlight">\(\checkmark\)</span></p>
+<p>When applied to a matrix <span class="math notranslate nohighlight">\(A\)</span>, the dimension of the column space of <span class="math notranslate nohighlight">\(A\)</span> is called the column rank of <span class="math notranslate nohighlight">\(A\)</span>. A matrix <span class="math notranslate nohighlight">\(A\)</span> whose columns are linearly independent is said to have full column rank<span class="math notranslate nohighlight">\(\idx{full column rank}\xdi\)</span>. Similarly the row rank of <span class="math notranslate nohighlight">\(A\)</span> is the dimension of its row space.</p>
+<p><strong>DEFINITION</strong> <strong>(Row Space)</strong> <span class="math notranslate nohighlight">\(\idx{row space}\xdi\)</span> The row space of <span class="math notranslate nohighlight">\(A \in \mathbb{R}^{n \times m}\)</span>, denoted <span class="math notranslate nohighlight">\(\mathrm{row}(A)\)</span>, is the span of the rows of <span class="math notranslate nohighlight">\(A\)</span> as vectors in <span class="math notranslate nohighlight">\(\mathbb{R}^m\)</span>. <span class="math notranslate nohighlight">\(\natural\)</span></p>
+<p>Observe that the row space of <span class="math notranslate nohighlight">\(A\)</span> is equal to the column space of its transpose <span class="math notranslate nohighlight">\(A^T\)</span>. As it turns out, these two notions of rank are the same. Hence, we refer to the row rank and column rank of <span class="math notranslate nohighlight">\(A\)</span> simply as the rank, which we denote by <span class="math notranslate nohighlight">\(\mathrm{rk}(A)\)</span>.</p>
+<p><strong>THEOREM</strong> <strong>(Row Rank Equals Column Rank)</strong> <span class="math notranslate nohighlight">\(\idx{row rank equals column rank theorem}\xdi\)</span> For any <span class="math notranslate nohighlight">\(A \in \mathbb{R}^{n \times m}\)</span>, the row rank of <span class="math notranslate nohighlight">\(A\)</span> equals the column rank of <span class="math notranslate nohighlight">\(A\)</span>. Moreover, <span class="math notranslate nohighlight">\(\mathrm{rk}(A) \leq \min\{n,m\}\)</span>.<span class="math notranslate nohighlight">\(\idx{rank}\xdi\)</span> <span class="math notranslate nohighlight">\(\sharp\)</span></p>
+<p>We will come back to the concept of the rank of a matrix, and prove the above theorem, in a later chapter.</p>
+<p><strong>Linear Dependence Lemma and its implications</strong> We give a proof of the <em>Dimension Theorem</em>. The proof relies on a fundamental lemma. It states that we can always remove a vector from a list of linearly dependent ones without changing its span.</p>
+<p><strong>LEMMA</strong> <strong>(Linear Dependence)</strong> <span class="math notranslate nohighlight">\(\idx{linear dependence lemma}\xdi\)</span> Let <span class="math notranslate nohighlight">\(\mathbf{u}_1,\ldots,\mathbf{u}_m\)</span> be a list of linearly dependent vectors with <span class="math notranslate nohighlight">\(\mathbf{u}_1 \neq 0\)</span>. Then there is an <span class="math notranslate nohighlight">\(i\)</span> such that:</p>
+<ol class="arabic simple">
+<li><p><span class="math notranslate nohighlight">\(\mathbf{u}_i \in \mathrm{span}(\mathbf{u}_1,\ldots,\mathbf{u}_{i-1})\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(\mathrm{span}(\{\mathbf{u}_j:j \in [m]\}) = \mathrm{span}(\{\mathbf{u}_j:j \in [m],\  j\neq i\})\)</span></p></li>
+</ol>
+<p><span class="math notranslate nohighlight">\(\flat\)</span></p>
+<p><em>Proof idea:</em> <em>(Linear Dependence)</em> By linear dependence, <span class="math notranslate nohighlight">\(\mathbf{0}\)</span> can be written as a non-trivial linear combination of the <span class="math notranslate nohighlight">\(\mathbf{u}_j\)</span>’s. Then the index <span class="math notranslate nohighlight">\(i\)</span> in 1. is the largest index with non-zero coefficient.</p>
+<p><em>Proof:</em> <em>(Linear Dependence)</em> For 1., by linear dependence, <span class="math notranslate nohighlight">\(\sum_{j=1}^m \alpha_j \mathbf{u}_j = \mathbf{0}\)</span>, with <span class="math notranslate nohighlight">\(\alpha_j\)</span>’s not all zero. Further, because <span class="math notranslate nohighlight">\(\mathbf{u}_1 \neq \mathbf{0}\)</span>, not all <span class="math notranslate nohighlight">\(\alpha_2, \ldots, \alpha_m\)</span> are zero (why?). Take the largest index  among the <span class="math notranslate nohighlight">\(\alpha_j\)</span>’s that are non-zero, say <span class="math notranslate nohighlight">\(i\)</span>. Then rearranging the previous display and using the fact that <span class="math notranslate nohighlight">\(\alpha_j=0\)</span> for <span class="math notranslate nohighlight">\(j &gt; i\)</span> gives</p>
+<div class="math notranslate nohighlight">
+\[
+\mathbf{u}_i = - \sum_{j=1}^{i-1} \frac{\alpha_j}{\alpha_i} \mathbf{u}_j \in \mathrm{span}(\mathbf{u}_1,\ldots,\mathbf{u}_{i-1}).
+\]</div>
+<p>For 2., we note that for any <span class="math notranslate nohighlight">\(\mathbf{w} \in \mathrm{span}(\{\mathbf{u}_j:j \in [m]\})\)</span> we can write it as <span class="math notranslate nohighlight">\(\mathbf{w} = \sum_{j=1}^m \beta_j \mathbf{u}_j\)</span> and we can replace <span class="math notranslate nohighlight">\(\mathbf{u}_i\)</span> by the equation above, producing a representation of <span class="math notranslate nohighlight">\(\mathbf{w}\)</span> in terms of <span class="math notranslate nohighlight">\(\{\mathbf{u}_j:j \in [m], j\neq i\}\)</span>.<span class="math notranslate nohighlight">\(\square\)</span></p>
+<p>Before proving the <em>Dimension Theorem</em>, we use the <em>Linear Dependence Lemma</em> to prove a key claim.</p>
+<p><em>Proof:</em> <em>(Independent is Shorter than Spanning)</em> <span class="math notranslate nohighlight">\(\idx{independent is shorter than spanning lemma}\xdi\)</span> Let <span class="math notranslate nohighlight">\(\{\mathbf{u}_j:j\in[m]\}\)</span> be an independent list in <span class="math notranslate nohighlight">\(U\)</span> and let <span class="math notranslate nohighlight">\(\{\mathbf{w}_i:i\in [m']\}\)</span> be a spanning list of <span class="math notranslate nohighlight">\(U\)</span>. First consider the new list <span class="math notranslate nohighlight">\(\{\mathbf{u}_1,\mathbf{w}_1,\ldots,\mathbf{w}_{m'}\}\)</span>. Because the <span class="math notranslate nohighlight">\(\mathbf{w}_i\)</span>’s are spanning, adding <span class="math notranslate nohighlight">\(\mathbf{u}_1 \neq \mathbf{0}\)</span> to them necessarily produces a linearly dependent list. By the <em>Linear Dependence Lemma</em>, we can remove one of the <span class="math notranslate nohighlight">\(\mathbf{w}_i\)</span>’s without changing the span. The new list <span class="math notranslate nohighlight">\(B\)</span> has length <span class="math notranslate nohighlight">\(m'\)</span> again. Then we add <span class="math notranslate nohighlight">\(\mathbf{u}_2\)</span> to <span class="math notranslate nohighlight">\(B\)</span> immediately after <span class="math notranslate nohighlight">\(\mathbf{u}_1\)</span>. By the <em>Linear Dependence Lemma</em>, one of the vectors in this list is in the span of the previous ones. It cannot be <span class="math notranslate nohighlight">\(\mathbf{u}_2\)</span> as <span class="math notranslate nohighlight">\(\{\mathbf{u}_1, \mathbf{u}_2\}\)</span> are linearly independent by assumption. So it must be one of the remaining <span class="math notranslate nohighlight">\(\mathbf{w}_i\)</span>’s. We remove that one, without changing the span by the <em>Linear Dependence Lemma</em> again. This process can be continued until we have added all the <span class="math notranslate nohighlight">\(\mathbf{u}_j\)</span>’s, as otherwise we would have a contradiction in the argument above. Hence, there must be at least as many <span class="math notranslate nohighlight">\(\mathbf{w}_i\)</span>’s as there are <span class="math notranslate nohighlight">\(\mathbf{u}_j\)</span>’s.<span class="math notranslate nohighlight">\(\square\)</span></p>
+<p><em>Proof:</em> <em>(Dimension)</em> <span class="math notranslate nohighlight">\(\idx{dimension theorem}\xdi\)</span> Let <span class="math notranslate nohighlight">\(\{\mathbf{b}_j:j\in[m]\}\)</span> and <span class="math notranslate nohighlight">\(\{\mathbf{b}'_j:j\in[m']\}\)</span> be two bases of <span class="math notranslate nohighlight">\(U\)</span>. Because they both form independent and spanning lists, the <em>Independent is Shorter than Spanning Lemma</em> implies that each has a length smaller or equal than the other. So their lenghts must be equal. This proves the claim. <span class="math notranslate nohighlight">\(\square\)</span></p>
+<p><em>Proof:</em> <em>(Completing an Independent List)</em> <span class="math notranslate nohighlight">\(\idx{completing an independent list lemma}\xdi\)</span> Let <span class="math notranslate nohighlight">\(\{\mathbf{u}_j:j\in[\ell]\}\)</span> be an independent list in <span class="math notranslate nohighlight">\(U\)</span>. Let <span class="math notranslate nohighlight">\(\{\mathbf{w}_i : i \in [m]\}\)</span> be a spanning list of <span class="math notranslate nohighlight">\(U\)</span>, which exists by the <em>Existence of a Spanning List Lemma</em>. Add the vectors from the spanning list one by one to the independent list if they are not in the span of the previously constructed list (or discard them otherwise). By the <em>Linear Dependence Lemma</em>, the list remains independent at each step. After <span class="math notranslate nohighlight">\(m\)</span> steps, the resulting list spans all of the <span class="math notranslate nohighlight">\(\mathbf{w}_i\)</span>’s. Hence it spans <span class="math notranslate nohighlight">\(U\)</span> and is linearly independent - that is, it is a basis of <span class="math notranslate nohighlight">\(U\)</span>. <span class="math notranslate nohighlight">\(\square\)</span></p>
+<p>The <em>Reducing a Spanning List Lemma</em> is proved in a similar way (try it!).</p>
+</section>
+<section id="inverses">
+<h2><span class="section-number">2.2.3. </span>Inverses<a class="headerlink" href="#inverses" title="Link to this heading">#</a></h2>
+<p>Recall the following important definition.</p>
+<p><strong>DEFINITION</strong> <strong>(Nonsingular Matrix)</strong> <span class="math notranslate nohighlight">\(\idx{nonsingular matrix}\xdi\)</span> A square matrix <span class="math notranslate nohighlight">\(A \in \mathbb{R}^{n \times n}\)</span> is nonsingular if it has full column rank. <span class="math notranslate nohighlight">\(\natural\)</span></p>
+<p>An implication of this is that <span class="math notranslate nohighlight">\(A\)</span> is nonsingular if and only if its columns form a basis of <span class="math notranslate nohighlight">\(\mathbb{R}^n\)</span>. Indeed, suppose the columns of <span class="math notranslate nohighlight">\(A\)</span> form a basis of <span class="math notranslate nohighlight">\(\mathbb{R}^n\)</span>. Then the dimension of <span class="math notranslate nohighlight">\(\mathrm{col}(A)\)</span> is <span class="math notranslate nohighlight">\(n\)</span>. In the other direction, suppose <span class="math notranslate nohighlight">\(A\)</span> has full column rank.</p>
+<ol class="arabic simple">
+<li><p>We first prove a general statement: the columns of <span class="math notranslate nohighlight">\(Z \in \mathbb{R}^{k \times m}\)</span> form a basis of <span class="math notranslate nohighlight">\(\mathrm{col}(Z)\)</span> whenever <span class="math notranslate nohighlight">\(Z\)</span> is of full column rank. Indeed, the columns of <span class="math notranslate nohighlight">\(Z\)</span> by definition span <span class="math notranslate nohighlight">\(\mathrm{col}(Z)\)</span>. By the <em>Reducing a Spanning List Lemma</em>, they can be reduced into a basis of <span class="math notranslate nohighlight">\(\mathrm{col}(Z)\)</span>. If <span class="math notranslate nohighlight">\(Z\)</span> has full column rank, then the length of any basis of <span class="math notranslate nohighlight">\(\mathrm{col}(Z)\)</span> is equal to the number of columns of <span class="math notranslate nohighlight">\(Z\)</span>. So the columns of <span class="math notranslate nohighlight">\(Z\)</span> must already form a basis.</p></li>
+<li><p>Apply the previous claim to <span class="math notranslate nohighlight">\(Z = A\)</span>. Then, since the columns of <span class="math notranslate nohighlight">\(A\)</span> form an independent list in <span class="math notranslate nohighlight">\(\mathbb{R}^n\)</span>, by the <em>Completing an Independent List Lemma</em> they can be completed into a basis of <span class="math notranslate nohighlight">\(\mathbb{R}^n\)</span>. But there are already <span class="math notranslate nohighlight">\(n\)</span> of them, the dimension of <span class="math notranslate nohighlight">\(\mathbb{R}^n\)</span>, so they must already form a basis of <span class="math notranslate nohighlight">\(\mathbb{R}^n\)</span>. In other words, we have proved another general fact: an independent list of length <span class="math notranslate nohighlight">\(n\)</span> in <span class="math notranslate nohighlight">\(\mathbb{R}^n\)</span> is a basis of <span class="math notranslate nohighlight">\(\mathbb{R}^n\)</span>.</p></li>
+</ol>
+<p>Equivalently:</p>
+<p><strong>LEMMA</strong> <strong>(Invertibility)</strong> <span class="math notranslate nohighlight">\(\idx{invertibility lemma}\xdi\)</span> A square matrix <span class="math notranslate nohighlight">\(A \in \mathbb{R}^{n \times n}\)</span> is nonsingular if and only if there exists a unique <span class="math notranslate nohighlight">\(A^{-1}\)</span> such that</p>
+<div class="math notranslate nohighlight">
+\[
+A A^{-1} = A^{-1} A = I_{n \times n}.
+\]</div>
+<p>The matrix <span class="math notranslate nohighlight">\(A^{-1}\)</span> is referred to as the inverse of <span class="math notranslate nohighlight">\(A\)</span>. We also say that <span class="math notranslate nohighlight">\(A\)</span> is invertible<span class="math notranslate nohighlight">\(\idx{invertible matrix}\xdi\)</span>. <span class="math notranslate nohighlight">\(\flat\)</span></p>
+<p><em>Proof idea:</em> We use the nonsingularity of <span class="math notranslate nohighlight">\(A\)</span> to write the columns of the identity matrix as unique linear combinations of the columns of <span class="math notranslate nohighlight">\(A\)</span>.</p>
+<p><em>Proof:</em> Suppose first that <span class="math notranslate nohighlight">\(A\)</span> has full column rank. Then its columns are linearly independent and form a basis of <span class="math notranslate nohighlight">\(\mathbb{R}^n\)</span>. In particular, for any <span class="math notranslate nohighlight">\(i\)</span> the standard basis vector <span class="math notranslate nohighlight">\(\mathbf{e}_i\)</span> can be written as a unique linear combination of the columns of <span class="math notranslate nohighlight">\(A\)</span>, i.e., there is <span class="math notranslate nohighlight">\(\mathbf{b}_i\)</span> such that <span class="math notranslate nohighlight">\(A \mathbf{b}_i =\mathbf{e}_i\)</span>. Let <span class="math notranslate nohighlight">\(B\)</span> be the matrix with columns <span class="math notranslate nohighlight">\(\mathbf{b}_i\)</span>, <span class="math notranslate nohighlight">\(i=1,\ldots,n\)</span>. By construction, <span class="math notranslate nohighlight">\(A B = I_{n\times n}\)</span>. Applying the same idea to the rows of <span class="math notranslate nohighlight">\(A\)</span> (which by the <em>Row Rank Equals Column Rank Lemma</em> also form a basis of <span class="math notranslate nohighlight">\(\mathbb{R}^n\)</span>), there is a unique <span class="math notranslate nohighlight">\(C\)</span> such that <span class="math notranslate nohighlight">\(C A = I_{n\times n}\)</span>. Multiplying both sides by <span class="math notranslate nohighlight">\(B\)</span>, we get</p>
+<div class="math notranslate nohighlight">
+\[
+C = C A B = I_{n \times n} B = B.
+\]</div>
+<p>So we take <span class="math notranslate nohighlight">\(A^{-1} = B = C\)</span>.</p>
+<p>In the other direction, following the same argument, the equation <span class="math notranslate nohighlight">\(A A^{-1} = I_{n \times n}\)</span> implies that the standard basis of <span class="math notranslate nohighlight">\(\mathbb{R}^n\)</span> is in the column space of <span class="math notranslate nohighlight">\(A\)</span>. So the columns of <span class="math notranslate nohighlight">\(A\)</span> are a spanning list of all of <span class="math notranslate nohighlight">\(\mathbb{R}^n\)</span> and <span class="math notranslate nohighlight">\(\mathrm{rk}(A) = n\)</span>. That proves the claim. <span class="math notranslate nohighlight">\(\square\)</span></p>
+<p><strong>THEOREM</strong> <strong>(Inverting a Nonsingular System)</strong> <span class="math notranslate nohighlight">\(\idx{inverting a nonsingular system theorem}\xdi\)</span> Let <span class="math notranslate nohighlight">\(A \in \mathbb{R}^{n \times n}\)</span> be a nonsingular square matrix. Then for any <span class="math notranslate nohighlight">\(\mathbf{b} \in \mathbb{R}^n\)</span>, there exists a unique <span class="math notranslate nohighlight">\(\mathbf{x} \in \mathbb{R}^n\)</span> such that <span class="math notranslate nohighlight">\(A \mathbf{x} = \mathbf{b}\)</span>. Moreover <span class="math notranslate nohighlight">\(\mathbf{x} = A^{-1} \mathbf{b}\)</span>. <span class="math notranslate nohighlight">\(\sharp\)</span></p>
+<p><em>Proof:</em> The first claim follows immediately from the fact that the columns of <span class="math notranslate nohighlight">\(A\)</span> form a basis of <span class="math notranslate nohighlight">\(\mathbb{R}^n\)</span>. For the second claim, note that</p>
+<div class="math notranslate nohighlight">
+\[
+\mathbf{x} = A^{-1} A \mathbf{x} = A^{-1} \mathbf{b}.
+\]</div>
+<p><span class="math notranslate nohighlight">\(\square\)</span></p>
+<p><strong>EXAMPLE:</strong> Let <span class="math notranslate nohighlight">\(A \in \mathbb{R}^{n \times m}\)</span> with <span class="math notranslate nohighlight">\(n \geq m\)</span> have full column rank. We will show that the square matrix <span class="math notranslate nohighlight">\(B = A^T A\)</span> is then invertible.</p>
+<p>By a claim above, the columns of <span class="math notranslate nohighlight">\(A\)</span> form a basis of its column space. In particular they are linearly independent. We will use this below.</p>
+<p>Observe that <span class="math notranslate nohighlight">\(B\)</span> is an <span class="math notranslate nohighlight">\(m \times m\)</span> matrix. By definition, to show that it is nonsingular, we need to establish that it has full column rank, or put differently that its columns are also linearly independent. By the matrix version of the <em>Equivalent Definition of Linear Independence</em>, it suffices to show that</p>
+<div class="math notranslate nohighlight">
+\[
+B \mathbf{x} = \mathbf{0} \implies \mathbf{x} = \mathbf{0}.
+\]</div>
+<p>We establish this next.</p>
+<p>Since <span class="math notranslate nohighlight">\(B = A^T A\)</span>, the equation <span class="math notranslate nohighlight">\(B \mathbf{x} = \mathbf{0}\)</span> implies</p>
+<div class="math notranslate nohighlight">
+\[
+A^T A \mathbf{x} = \mathbf{0}.
+\]</div>
+<p>Now comes the key idea: we multiply both sides by <span class="math notranslate nohighlight">\(\mathbf{x}^T\)</span>. The left-hand side becomes</p>
+<div class="math notranslate nohighlight">
+\[
+\mathbf{x}^T (A^T A \mathbf{x}) 
+= (A \mathbf{x})^T (A \mathbf{x}) 
+= \|A \mathbf{x}\|^2,
+\]</div>
+<p>where we used that, for matrices <span class="math notranslate nohighlight">\(C, D\)</span>, we have <span class="math notranslate nohighlight">\((CD)^T = D^T C^T\)</span>. The right-hand side becomes <span class="math notranslate nohighlight">\(\mathbf{x}^T \mathbf{0} = 0\)</span>. Hence we have shown that <span class="math notranslate nohighlight">\(A^T A \mathbf{x} = \mathbf{0}\)</span> in fact implies <span class="math notranslate nohighlight">\(\|A \mathbf{x}\|^2 = 0\)</span>.</p>
+<p>By the point-separating property of the Euclidean norm, the condition <span class="math notranslate nohighlight">\(\|A \mathbf{x}\|^2 = 0\)</span> implies <span class="math notranslate nohighlight">\(A \mathbf{x} = \mathbf{0}\)</span>. Because <span class="math notranslate nohighlight">\(A\)</span> has linearly independent columns, the <em>Equivalent Definition of Linear Independence</em> in its matrix form again implies that <span class="math notranslate nohighlight">\(\mathbf{x} = \mathbf{0}\)</span>, which is what we needed to prove. <span class="math notranslate nohighlight">\(\lhd\)</span></p>
+<p><strong>EXAMPLE:</strong> <strong>(Deriving the general formula for the inverse of a <span class="math notranslate nohighlight">\(2 \times 2\)</span> matrix)</strong> Consider a <span class="math notranslate nohighlight">\(2 \times 2\)</span> matrix <span class="math notranslate nohighlight">\(A\)</span> given by</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+A = \begin{pmatrix}
+a &amp; b \\
+c &amp; d
+\end{pmatrix}.
+\end{split}\]</div>
+<p>We seek to find its inverse <span class="math notranslate nohighlight">\(A^{-1}\)</span> such that <span class="math notranslate nohighlight">\(A A^{-1} = I_{2 \times 2}\)</span>. We guess the form of the inverse <span class="math notranslate nohighlight">\(A^{-1}\)</span> to be</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+A^{-1} = \frac{1}{ad - bc} \begin{pmatrix}
+d &amp; -b \\
+-c &amp; a
+\end{pmatrix},
+\end{split}\]</div>
+<p>with the condition <span class="math notranslate nohighlight">\(ad - bc \neq 0\)</span> being necessary for the existence of the inverse, as we saw in a previous example.</p>
+<p>To check if this form is correct, we multiply <span class="math notranslate nohighlight">\(A\)</span> by <span class="math notranslate nohighlight">\(A^{-1}\)</span> and see if we get the identity matrix.</p>
+<p>We perform the matrix multiplication <span class="math notranslate nohighlight">\(A A^{-1}\)</span></p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+A A^{-1} 
+&amp;= \begin{pmatrix}
+a &amp; b \\
+c &amp; d
+\end{pmatrix} \frac{1}{ad - bc} \begin{pmatrix}
+d &amp; -b \\
+-c &amp; a
+\end{pmatrix}\\
+&amp;= \frac{1}{ad - bc} \begin{pmatrix}
+a &amp; b \\
+c &amp; d
+\end{pmatrix} \begin{pmatrix}
+d &amp; -b \\
+-c &amp; a
+\end{pmatrix} \\
+&amp;= \frac{1}{ad - bc} \begin{pmatrix}
+ad - bc &amp; -ab + ab \\
+cd - cd &amp; -bc + ad
+\end{pmatrix} \\
+&amp;= \frac{1}{ad - bc} \begin{pmatrix}
+ad - bc &amp; 0 \\
+0 &amp; ad - bc
+\end{pmatrix} \\
+&amp;= \begin{pmatrix}
+1 &amp; 0 \\
+0 &amp; 1
+\end{pmatrix}.
+\end{align*}\]</div>
+<p>Since the multiplication results in the identity matrix, our guessed form of the inverse is correct under the condition that <span class="math notranslate nohighlight">\(ad - bc \neq 0\)</span>.</p>
+<p>Here is a simple numerical example. Let</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+A = \begin{pmatrix}
+2 &amp; 3 \\
+1 &amp; 4
+\end{pmatrix}.
+\end{split}\]</div>
+<p>To find <span class="math notranslate nohighlight">\(A^{-1}\)</span>, we calculate</p>
+<div class="math notranslate nohighlight">
+\[
+ad - bc = 2 \cdot 4 - 3 \cdot 1 = 8 - 3 = 5 \neq 0.
+\]</div>
+<p>Using the formula derived, we have</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+A^{-1} = \frac{1}{5} \begin{pmatrix}
+4 &amp; -3 \\
+-1 &amp; 2
+\end{pmatrix} = \begin{pmatrix}
+0.8 &amp; -0.6 \\
+-0.2 &amp; 0.4
+\end{pmatrix}.
+\end{split}\]</div>
+<p>We can verify this by checking <span class="math notranslate nohighlight">\(A A^{-1}\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{pmatrix}
+2 &amp; 3 \\
+1 &amp; 4
+\end{pmatrix}
+\begin{pmatrix}
+0.8 &amp; -0.6 \\
+-0.2 &amp; 0.4
+\end{pmatrix}
+= \begin{pmatrix}
+2 \cdot 0.8 + 3 \cdot (-0.2) &amp; 2 \cdot (-0.6) + 3 \cdot 0.4 \\
+1 \cdot 0.8 + 4 \cdot (-0.2) &amp; 1 \cdot (-0.6) + 4 \cdot 0.4
+\end{pmatrix}
+= \begin{pmatrix}
+1 &amp; 0 \\
+0 &amp; 1
+\end{pmatrix}.
+\end{split}\]</div>
+<p>Finally, here is an example of using this formula to solve a linear system of two equations in two unknowns. Consider the linear system</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{cases}
+2x + 3y = 5, \\
+1x + 4y = 6.
+\end{cases}
+\end{split}\]</div>
+<p>We can represent this system as <span class="math notranslate nohighlight">\(A \mathbf{x} = \mathbf{b}\)</span>, where</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+A = \begin{pmatrix}
+2 &amp; 3 \\
+1 &amp; 4
+\end{pmatrix}, \quad \mathbf{x} = \begin{pmatrix}
+x \\
+y
+\end{pmatrix}, \quad \mathbf{b} = \begin{pmatrix}
+5 \\
+6
+\end{pmatrix}.
+\end{split}\]</div>
+<p>To solve for <span class="math notranslate nohighlight">\(\mathbf{x}\)</span>, we use <span class="math notranslate nohighlight">\(A^{-1}\)</span></p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\mathbf{x} = A^{-1} \mathbf{b} = \begin{pmatrix}
+0.8 &amp; -0.6 \\
+-0.2 &amp; 0.4
+\end{pmatrix} \begin{pmatrix}
+5 \\
+6
+\end{pmatrix}.
+\end{split}\]</div>
+<p>Performing the matrix multiplication, we get</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\mathbf{x} = \begin{pmatrix}
+0.8 \cdot 5 + (-0.6) \cdot 6 \\
+-0.2 \cdot 5 + 0.4 \cdot 6
+\end{pmatrix} = \begin{pmatrix}
+4 - 3.6 \\
+-1 + 2.4
+\end{pmatrix} = \begin{pmatrix}
+0.4 \\
+1.4
+\end{pmatrix}.
+\end{split}\]</div>
+<p>Thus, the solution to the system is <span class="math notranslate nohighlight">\(x = 0.4\)</span> and <span class="math notranslate nohighlight">\(y = 1.4\)</span>. <span class="math notranslate nohighlight">\(\lhd\)</span></p>
+<p><em><strong>Self-assessment quiz</strong></em> <em>(with help from Claude, Gemini, and ChatGPT)</em></p>
+<p><strong>1</strong> What is the span of the vectors <span class="math notranslate nohighlight">\(\mathbf{w}_1, \mathbf{w}_2, ..., \mathbf{w}_m \in \mathbb{R}^n\)</span>?</p>
+<p>a) The set of all linear combinations of the <span class="math notranslate nohighlight">\(\mathbf{w}_j\)</span>’s.</p>
+<p>b) The set of all vectors orthogonal to the <span class="math notranslate nohighlight">\(\mathbf{w}_j\)</span>’s.</p>
+<p>c) The set of all scalar multiples of the <span class="math notranslate nohighlight">\(\mathbf{w}_j\)</span>’s.</p>
+<p>d) The empty set.</p>
+<p><strong>2</strong> Which of the following is a necessary condition for a subset <span class="math notranslate nohighlight">\(U\)</span> of <span class="math notranslate nohighlight">\(\mathbb{R}^n\)</span> to be a linear subspace?</p>
+<p>a) <span class="math notranslate nohighlight">\(U\)</span> must contain only non-zero vectors.</p>
+<p>b) <span class="math notranslate nohighlight">\(U\)</span> must be closed under vector addition and scalar multiplication.</p>
+<p>c) <span class="math notranslate nohighlight">\(U\)</span> must be a finite set.</p>
+<p>d) <span class="math notranslate nohighlight">\(U\)</span> must be a proper subset of <span class="math notranslate nohighlight">\(\mathbb{R}^n\)</span>.</p>
+<p><strong>3</strong> If <span class="math notranslate nohighlight">\(\mathbf{v}_1, \mathbf{v}_2, \ldots, \mathbf{v}_m\)</span> are linearly independent vectors, which of the following is true?</p>
+<p>a) There exist scalars <span class="math notranslate nohighlight">\(\alpha_1, \alpha_2, \ldots, \alpha_m\)</span> such that <span class="math notranslate nohighlight">\(\sum_{i=1}^m \alpha_i \mathbf{v}_i = 0\)</span> with at least one <span class="math notranslate nohighlight">\(\alpha_i \neq 0\)</span>.</p>
+<p>b) There do not exist scalars <span class="math notranslate nohighlight">\(\alpha_1, \alpha_2, \ldots, \alpha_m\)</span> such that <span class="math notranslate nohighlight">\(\sum_{i=1}^m \alpha_i \mathbf{v}_i = 0\)</span> unless <span class="math notranslate nohighlight">\(\alpha_i = 0\)</span> for all <span class="math notranslate nohighlight">\(i\)</span>.</p>
+<p>c) The vectors <span class="math notranslate nohighlight">\(\mathbf{v}_1, \mathbf{v}_2, \ldots, \mathbf{v}_m\)</span> span <span class="math notranslate nohighlight">\(\mathbb{R}^n\)</span> for any <span class="math notranslate nohighlight">\(n\)</span>.</p>
+<p>d) The vectors <span class="math notranslate nohighlight">\(\mathbf{v}_1, \mathbf{v}_2, \ldots, \mathbf{v}_m\)</span> are orthogonal.</p>
+<p><strong>4</strong> Which of the following matrices has full column rank?</p>
+<p>a) <span class="math notranslate nohighlight">\(\begin{pmatrix} 1 &amp; 2 \\ 2 &amp; 4 \end{pmatrix}\)</span></p>
+<p>b) <span class="math notranslate nohighlight">\(\begin{pmatrix} 1 &amp; 0 \\ 1 &amp; 1 \end{pmatrix}\)</span></p>
+<p>c) <span class="math notranslate nohighlight">\(\begin{pmatrix} 1 &amp; 1 \\ 1 &amp; 1 \end{pmatrix}\)</span></p>
+<p>d) <span class="math notranslate nohighlight">\(\begin{pmatrix} 1 &amp; 2 &amp; 3 \\ 4 &amp; 5 &amp; 9 \\ 7 &amp; 8 &amp; 15 \end{pmatrix}\)</span></p>
+<p><strong>5</strong> What is the dimension of a linear subspace?</p>
+<p>a) The number of vectors in any spanning set of the subspace.</p>
+<p>b) The number of linearly independent vectors in the subspace.</p>
+<p>c) The number of vectors in any basis of the subspace.</p>
+<p>d) The number of orthogonal vectors in the subspace.</p>
+<p>Answer for 1: a. Justification: The text defines the span as “the set of all linear combinations of the <span class="math notranslate nohighlight">\(\mathbf{w}_j\)</span>’s.”</p>
+<p>Answer for 2: b. Justification: The text states, “A linear subspace <span class="math notranslate nohighlight">\(U \subseteq \mathbb{R}^n\)</span> is a subset that is closed under vector addition and scalar multiplication.”</p>
+<p>Answer for 3: b. Justification: The text states that a set of vectors is linearly independent if and only if the only solution to <span class="math notranslate nohighlight">\(\sum_{i=1}^m \alpha_i \mathbf{v}_i = 0\)</span> is <span class="math notranslate nohighlight">\(\alpha_i = 0\)</span> for all <span class="math notranslate nohighlight">\(i\)</span>.</p>
+<p>Answer for 4: b. Justification: The text explains that a matrix has full column rank if its columns are linearly independent, which is true for the matrix <span class="math notranslate nohighlight">\(\begin{pmatrix} 1 &amp; 0 \\ 1 &amp; 1 \end{pmatrix}\)</span>.</p>
+<p>Answer for 5: c. Justification: The text defines the dimension of a linear subspace as “the number of elements” in any basis, and states that “all bases of [a linear subspace] have the same number of elements.”</p>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./chap02_ls/02_spaces"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="../01_motiv/roch-mmids-ls-motiv.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title"><span class="section-number">2.1. </span>Motivating example: predicting sales</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="../03_orthog/roch-mmids-ls-orthog.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title"><span class="section-number">2.3. </span>Geometry of least squares: the orthogonal projection</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#subspaces">2.2.1. Subspaces</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#linear-independence-and-bases">2.2.2. Linear independence and bases</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#inverses">2.2.3. Inverses</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Sebastien Roch
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2024.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

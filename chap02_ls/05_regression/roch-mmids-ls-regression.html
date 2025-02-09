@@ -534,7 +534,7 @@ document.write(`
 <p>We return to our motivating example, the regression problem, and apply the least squares approach.</p>
 <section id="linear-regression">
 <h2><span class="section-number">2.5.1. </span>Linear regression<a class="headerlink" href="#linear-regression" title="Link to this heading">#</a></h2>
-<p><strong>Linear regression</strong> <span class="math notranslate nohighlight">\(\idx{linear regression}\xdi\)</span> We seek an affine function to fit input data points <span class="math notranslate nohighlight">\(\{(\mathbf{x}_i, y_i)\}_{i=1}^n\)</span>. The common approach involves finding coefficients <span class="math notranslate nohighlight">\(\beta_j\)</span>’s that minimize the criterion</p>
+<p><strong>Linear regression</strong> <span class="math notranslate nohighlight">\(\idx{linear regression}\xdi\)</span> We seek an affine function to fit input data points <span class="math notranslate nohighlight">\(\{(\mathbf{x}_i, y_i)\}_{i=1}^n\)</span>, where <span class="math notranslate nohighlight">\(\mathbf{x}_i = (x_{i,1}, \ldots, x_{i,d}) \in \mathbb{R}^d\)</span> and <span class="math notranslate nohighlight">\(y_i \in \mathbb{R}\)</span> for all <span class="math notranslate nohighlight">\(i\)</span>. The common approach involves finding coefficients <span class="math notranslate nohighlight">\(\beta_j\)</span>’s that minimize the criterion</p>
 <div class="math notranslate nohighlight">
 \[
 \sum_{i=1}^n \left(y_i - \left\{\beta_0 + \sum_{j=1}^d \beta_j x_{i,j}\right\}\right)^2.
@@ -576,7 +576,7 @@ A =
 <p>Then the problem is</p>
 <div class="math notranslate nohighlight">
 \[
-\min_{\boldsymbol{\beta}} 
+\min_{\boldsymbol{\beta} \in \mathbb{R}^{d+1}} 
 \|\mathbf{y} 
 - A \boldsymbol{\beta}\|^2.
 \]</div>
@@ -610,7 +610,7 @@ r_i = y_i - \hat{y}_i, \quad i = 1,\ldots,n
 <div class="math notranslate nohighlight">
 \[
 \sum_{i=1}^n r_i^2
-= \sum_{i=1}^n \left(y_i - \left\{\beta_0 + \sum_{j=1}^d \hat{\beta}_j x_{i,j}\right\}\right)^2
+= \sum_{i=1}^n \left(y_i - \left\{\hat{\beta}_0 + \sum_{j=1}^d \hat{\beta}_j x_{i,j}\right\}\right)^2
 \]</div>
 <p>or, in vector form,</p>
 <div class="math notranslate nohighlight">
@@ -633,7 +633,7 @@ r_i = y_i - \hat{y}_i, \quad i = 1,\ldots,n
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/3c94c66596b9f1dd87a918faee4e75d4ffe8ccc4764b0669dd4efef52aaf1f6a.png" src="../../_images/3c94c66596b9f1dd87a918faee4e75d4ffe8ccc4764b0669dd4efef52aaf1f6a.png" />
+<img alt="../../_images/b7534b4829e85e0392d88cd63283feab5152d865592acc624d093ad239193eea.png" src="../../_images/b7534b4829e85e0392d88cd63283feab5152d865592acc624d093ad239193eea.png" />
 </div>
 </div>
 <p>A perfect straight line is little too easy. So let’s add some noise. That is, to each <span class="math notranslate nohighlight">\(y_i\)</span> we add an independent random variable <span class="math notranslate nohighlight">\(\varepsilon_i\)</span> with a standard Normal distribution (mean <span class="math notranslate nohighlight">\(0\)</span>, variance <span class="math notranslate nohighlight">\(1\)</span>).</p>
@@ -650,7 +650,7 @@ r_i = y_i - \hat{y}_i, \quad i = 1,\ldots,n
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/4c25bc1a59ca327f1bf8ca832f004649c1fe87b0c66cb68685d371b2568ce282.png" src="../../_images/4c25bc1a59ca327f1bf8ca832f004649c1fe87b0c66cb68685d371b2568ce282.png" />
+<img alt="../../_images/b5adb381b022a250bc499f92a2c124a2d277fd2ff3dba90ad87b99b3a8ee4a0a.png" src="../../_images/b5adb381b022a250bc499f92a2c124a2d277fd2ff3dba90ad87b99b3a8ee4a0a.png" />
 </div>
 </div>
 <p>We form the matrix <span class="math notranslate nohighlight">\(A\)</span> and use our least-squares code to solve for <span class="math notranslate nohighlight">\(\boldsymbol{\hat\beta}\)</span>. The function <code class="docutils literal notranslate"><span class="pre">ls_by_qr</span></code>, which we implemented previously, is in <a class="reference external" href="https://raw.githubusercontent.com/MMiDS-textbook/MMiDS-textbook.github.io/main/utils/mmids.py">mmids.py</a>, which is available on the <a class="reference external" href="https://github.com/MMiDS-textbook/MMiDS-textbook.github.io/tree/main">GitHub of the book</a>.</p>
@@ -677,7 +677,7 @@ r_i = y_i - \hat{y}_i, \quad i = 1,\ldots,n
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/dc5bb847a9b91b42ce554a0b38de5ce922afcffed33f25c937b46e1ca94692d0.png" src="../../_images/dc5bb847a9b91b42ce554a0b38de5ce922afcffed33f25c937b46e1ca94692d0.png" />
+<img alt="../../_images/f3588b24516021d16ce7c2c1f232ecd770e8ed04ad3c889ad37d7d7e7e1f797d.png" src="../../_images/f3588b24516021d16ce7c2c1f232ecd770e8ed04ad3c889ad37d7d7e7e1f797d.png" />
 </div>
 </div>
 <p><span class="math notranslate nohighlight">\(\unlhd\)</span></p>
@@ -726,7 +726,7 @@ A =
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/d2d7c4b18c206afc81b2e7e403792da2ee091fa580a9c71c7bb313c738145728.png" src="../../_images/d2d7c4b18c206afc81b2e7e403792da2ee091fa580a9c71c7bb313c738145728.png" />
+<img alt="../../_images/eadda9bff35f63929d01806e5b558ed3350db0b9cbc7efd1b446b52ddff4ae34.png" src="../../_images/eadda9bff35f63929d01806e5b558ed3350db0b9cbc7efd1b446b52ddff4ae34.png" />
 </div>
 </div>
 <p>We form the matrix <span class="math notranslate nohighlight">\(A\)</span> and use our least-squares code to solve for <span class="math notranslate nohighlight">\(\boldsymbol{\hat\beta}\)</span>.</p>
@@ -759,7 +759,7 @@ A =
 </div>
 </details>
 <div class="cell_output docutils container">
-<img alt="../../_images/75d2f7f89ad339c1f0e68c5f9992622c21cb6b5c2560b60e3f2929a51469b60e.png" src="../../_images/75d2f7f89ad339c1f0e68c5f9992622c21cb6b5c2560b60e3f2929a51469b60e.png" />
+<img alt="../../_images/bbf5609a182e64df13441c79b85c74d9a49dbfbef9716ba956e2f13e70dea1d2.png" src="../../_images/bbf5609a182e64df13441c79b85c74d9a49dbfbef9716ba956e2f13e70dea1d2.png" />
 </div>
 </div>
 <p><span class="math notranslate nohighlight">\(\unlhd\)</span></p>
@@ -812,7 +812,7 @@ A =
 </div>
 </details>
 <div class="cell_output docutils container">
-<img alt="../../_images/8a6c7740b7c8e924a5cecaeada6f8d12227e4fbde0e7beb0a360ad8940e527c4.png" src="../../_images/8a6c7740b7c8e924a5cecaeada6f8d12227e4fbde0e7beb0a360ad8940e527c4.png" />
+<img alt="../../_images/8f726a7109f0d9b61448ef49928a680ed907765437c981ee6e04aeb275693a52.png" src="../../_images/8f726a7109f0d9b61448ef49928a680ed907765437c981ee6e04aeb275693a52.png" />
 </div>
 </div>
 <p>A degree-two polynomial might be a better fit.</p>
@@ -845,7 +845,7 @@ A =
 </div>
 </details>
 <div class="cell_output docutils container">
-<img alt="../../_images/e935313b6cd12ac77f1e6385a713178aeed75504c9f8059828627847f7661dc1.png" src="../../_images/e935313b6cd12ac77f1e6385a713178aeed75504c9f8059828627847f7661dc1.png" />
+<img alt="../../_images/bae314a4c6b951c24b56035f36157378a8272971c2861c45649e81183d6eb5ce.png" src="../../_images/bae314a4c6b951c24b56035f36157378a8272971c2861c45649e81183d6eb5ce.png" />
 </div>
 </div>
 <p>The fit looks slightly better than the linear one. This is not entirely surprising though given that the linear model is a subset of the quadratic one. But, as we mentioned earlier, when adding more parameters we must now worry about overfitting the data. To illustrate, let’s see what happens with a degree-<span class="math notranslate nohighlight">\(20\)</span> polynomial fit.</p>
@@ -880,7 +880,7 @@ A =
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/1aca119f2bc07cb7ec1dda08b7d6c9b3801d714f274da9339495851cad82d7c6.png" src="../../_images/1aca119f2bc07cb7ec1dda08b7d6c9b3801d714f274da9339495851cad82d7c6.png" />
+<img alt="../../_images/93ca62931e6172f1807be38a582a4ad5d64a7cd5553092a78c14a6ecc358c896.png" src="../../_images/93ca62931e6172f1807be38a582a4ad5d64a7cd5553092a78c14a6ecc358c896.png" />
 </div>
 </div>
 <p>The outcome now seems to vary wildly, seemingly driven by the randomness of the data.</p>

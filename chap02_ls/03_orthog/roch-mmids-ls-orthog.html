@@ -1226,12 +1226,12 @@ W^\perp
 A \mathbf{x} \approx \mathbf{b}.
 \]</div>
 <p>If <span class="math notranslate nohighlight">\(n=m\)</span>, we can use the matrix inverse to solve the system (provided <span class="math notranslate nohighlight">\(A\)</span> is nonsingular of course). But we are interested in the overdetermined case, i.e. when <span class="math notranslate nohighlight">\(n &gt; m\)</span>: there are more equations than variables. We cannot use the matrix inverse then. Indeed, because the columns do not span all of <span class="math notranslate nohighlight">\(\mathbb{R}^n\)</span>, there is a vector <span class="math notranslate nohighlight">\(\mathbf{b} \in \mathbb{R}^n\)</span> that is not in the column space of <span class="math notranslate nohighlight">\(A\)</span>.</p>
-<p>A natural way to make sense of the overdetermined problem is to cast it as the <a class="reference external" href="https://en.wikipedia.org/wiki/Least_squares">linear least squares problem</a><span class="math notranslate nohighlight">\(\idx{least squares problem}\xdi\)</span></p>
+<p>A natural way to make sense of the overdetermined problem is to cast it as the <a class="reference external" href="https://en.wikipedia.org/wiki/Least_squares">linear least-squares problem</a><span class="math notranslate nohighlight">\(\idx{least squares problem}\xdi\)</span></p>
 <div class="math notranslate nohighlight">
 \[
-\min_{\mathbf{x} \in \mathbb{R}^m} \|A \mathbf{x} - \mathbf{b}\|.
+\min_{\mathbf{x} \in \mathbb{R}^m} \|A \mathbf{x} - \mathbf{b}\|^2.
 \]</div>
-<p>In words, we look for the best-fitting solution under the Euclidean norm. Equivalently, writing</p>
+<p>In words, we look for the best-fitting solution under the squared Euclidean norm. Equivalently, writing</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}
 A =
@@ -1267,10 +1267,10 @@ b_n
 \right)^2.
 \]</div>
 <p>We have already solved a closely related problem when we introduced the orthogonal projection. We make the connection explicit next.</p>
-<p><strong>THEOREM</strong> <strong>(Normal Equations)</strong> <span class="math notranslate nohighlight">\(\idx{normal equations}\xdi\)</span> Let <span class="math notranslate nohighlight">\(A \in \mathbb{R}^{n\times m}\)</span> be an <span class="math notranslate nohighlight">\(n\times m\)</span> matrix with <span class="math notranslate nohighlight">\(n \geq m\)</span> and let <span class="math notranslate nohighlight">\(\mathbf{b} \in \mathbb{R}^n\)</span> be a vector. A solution <span class="math notranslate nohighlight">\(\mathbf{x}^*\)</span> to the linear least squares problem</p>
+<p><strong>THEOREM</strong> <strong>(Normal Equations)</strong> <span class="math notranslate nohighlight">\(\idx{normal equations}\xdi\)</span> Let <span class="math notranslate nohighlight">\(A \in \mathbb{R}^{n\times m}\)</span> be an <span class="math notranslate nohighlight">\(n\times m\)</span> matrix with <span class="math notranslate nohighlight">\(n \geq m\)</span> and let <span class="math notranslate nohighlight">\(\mathbf{b} \in \mathbb{R}^n\)</span> be a vector. A solution <span class="math notranslate nohighlight">\(\mathbf{x}^*\)</span> to the linear least-squares problem</p>
 <div class="math notranslate nohighlight">
 \[
-\min_{\mathbf{x} \in \mathbb{R}^m} \|A \mathbf{x} - \mathbf{b}\|
+\min_{\mathbf{x} \in \mathbb{R}^m} \|A \mathbf{x} - \mathbf{b}\|^2
 \]</div>
 <p>satisfies the normal equations</p>
 <div class="math notranslate nohighlight">
@@ -1282,9 +1282,9 @@ A^T A \mathbf{x}^* = A^T \mathbf{b}.
 <p><em>Proof:</em> Let <span class="math notranslate nohighlight">\(U = \mathrm{col}(A) = \mathrm{span}(\mathbf{a}_1,\ldots,\mathbf{a}_m)\)</span>. By the <em>Orthogonal Projection Theorem</em>, the orthogonal projection <span class="math notranslate nohighlight">\(\mathbf{p}^* = \mathrm{proj}_{U} \mathbf{b}\)</span> of <span class="math notranslate nohighlight">\(\mathbf{b}\)</span> onto <span class="math notranslate nohighlight">\(U\)</span> is the unique, closest vector to <span class="math notranslate nohighlight">\(\mathbf{b}\)</span> in <span class="math notranslate nohighlight">\(U\)</span>, that is,</p>
 <div class="math notranslate nohighlight">
 \[
-\mathbf{p}^* = \arg\min_{\mathbf{p} \in U} \|\mathbf{p} - \mathbf{b}\|. 
+\mathbf{p}^* = \arg\min_{\mathbf{p} \in U} \|\mathbf{p} - \mathbf{b}\| = \arg\min_{\mathbf{p} \in U} \|\mathbf{p} - \mathbf{b}\|^2,
 \]</div>
-<p>Because <span class="math notranslate nohighlight">\(\mathbf{p}^*\)</span> is in <span class="math notranslate nohighlight">\(U = \mathrm{col}(A)\)</span>, it must be of the form <span class="math notranslate nohighlight">\(\mathbf{p}^* = A \mathbf{x}^*\)</span>. This establishes that <span class="math notranslate nohighlight">\(\mathbf{x}^*\)</span> is a solution to the linear least squares problem in the statement. By the <em>Orthogonal Projection Theorem</em>, it must satisfy <span class="math notranslate nohighlight">\(\langle \mathbf{b} - A \mathbf{x}^*, \mathbf{u}\rangle = 0\)</span> for all <span class="math notranslate nohighlight">\(\mathbf{u} \in U\)</span>. Because the columns <span class="math notranslate nohighlight">\(\mathbf{a}_i\)</span> are in <span class="math notranslate nohighlight">\(U\)</span>, that implies that</p>
+<p>where we used the <em>Composing with a Non-Decreasing Function Lemma</em> to justify taking a square in the rightmost expression. Because <span class="math notranslate nohighlight">\(\mathbf{p}^*\)</span> is in <span class="math notranslate nohighlight">\(U = \mathrm{col}(A)\)</span>, it must be of the form <span class="math notranslate nohighlight">\(\mathbf{p}^* = A \mathbf{x}^*\)</span>. This establishes that <span class="math notranslate nohighlight">\(\mathbf{x}^*\)</span> is a solution to the linear least-squares problem in the statement. By the <em>Orthogonal Projection Theorem</em>, it must satisfy <span class="math notranslate nohighlight">\(\langle \mathbf{b} - A \mathbf{x}^*, \mathbf{u}\rangle = 0\)</span> for all <span class="math notranslate nohighlight">\(\mathbf{u} \in U\)</span>. Because the columns <span class="math notranslate nohighlight">\(\mathbf{a}_i\)</span> are in <span class="math notranslate nohighlight">\(U\)</span>, that implies that</p>
 <div class="math notranslate nohighlight">
 \[
 0 = \langle \mathbf{b} - A \mathbf{x}^*, \mathbf{a}_i\rangle 

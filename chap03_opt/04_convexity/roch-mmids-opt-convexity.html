@@ -548,19 +548,8 @@ document.write(`
 \]</div>
 <p>traces a line joining <span class="math notranslate nohighlight">\(\mathbf{x}\)</span> and <span class="math notranslate nohighlight">\(\mathbf{y}\)</span>. In words, a set is convex if all segments between pairs of points in the set also lie in it.</p>
 <p><strong>KNOWLEDGE CHECK:</strong> Is a banana a convex set? <span class="math notranslate nohighlight">\(\checkmark\)</span></p>
-<!--TEX
-
-**Figure:** A convex set ([Source](https://commons.wikimedia.org/wiki/File:Convex_polygon_illustration1.png))
-
-![A convex set ](https://upload.wikimedia.org/wikipedia/commons/thumb/0/06/Convex_polygon_illustration1.png/254px-Convex_polygon_illustration1.png)
-
-**Figure:** A set that is not convex ([Source](https://commons.wikimedia.org/wiki/File:Convex_polygon_illustration2.png))
-
-![A set that is not convex](https://upload.wikimedia.org/wikipedia/commons/thumb/1/11/Convex_polygon_illustration2.png/254px-Convex_polygon_illustration2.png)
-
-$\bowtie$
-
---><p><strong>EXAMPLE:</strong> An open ball in <span class="math notranslate nohighlight">\(\mathbb{R}^d\)</span> is convex. Indeed, let <span class="math notranslate nohighlight">\(\delta &gt; 0\)</span> and <span class="math notranslate nohighlight">\(\mathbf{x}_0 \in \mathbb{R}^d\)</span>. For any <span class="math notranslate nohighlight">\(\mathbf{x}, \mathbf{y} \in B_{\delta}(\mathbf{x}_0)\)</span> and any <span class="math notranslate nohighlight">\(\alpha \in [0,1]\)</span>, we have</p>
+<p><img alt="Left: a convex set. Right: a set that is not convex. (With help from ChatGPT.)" src="../../_images/not-convex-shape.png" /></p>
+<p><strong>EXAMPLE:</strong> An open ball in <span class="math notranslate nohighlight">\(\mathbb{R}^d\)</span> is convex. Indeed, let <span class="math notranslate nohighlight">\(\delta &gt; 0\)</span> and <span class="math notranslate nohighlight">\(\mathbf{x}_0 \in \mathbb{R}^d\)</span>. For any <span class="math notranslate nohighlight">\(\mathbf{x}, \mathbf{y} \in B_{\delta}(\mathbf{x}_0)\)</span> and any <span class="math notranslate nohighlight">\(\alpha \in [0,1]\)</span>, we have</p>
 <div class="amsmath math notranslate nohighlight">
 \[\begin{align*}
 \|[(1-\alpha) \mathbf{x} + \alpha \mathbf{y}] - \mathbf{x}_0\|_2
@@ -876,7 +865,7 @@ f(\mathbf{x}_0 + \alpha (\mathbf{y} - \mathbf{x}_0))
 <p>By continuity of the gradient, for <span class="math notranslate nohighlight">\(\alpha\)</span> small enough, we have by the assumption above that</p>
 <div class="math notranslate nohighlight">
 \[
-\nabla f (\mathbf{x}_0 + \xi_\alpha \alpha (\mathbf{y} - \mathbf{x}_0)) &lt; 0.
+\nabla f (\mathbf{x}_0 + \xi_\alpha \alpha (\mathbf{y} - \mathbf{x}_0))^T (\mathbf{y} - \mathbf{x}_0) &lt; 0.
 \]</div>
 <p>Plugging this back above, it follows that for all such <span class="math notranslate nohighlight">\(\alpha\)</span></p>
 <div class="math notranslate nohighlight">
@@ -906,7 +895,13 @@ f'(x) (y - x) \geq 0.
 \frac{\partial^2 f (\mathbf{x})}{\partial \mathbf{v}^2} = \mathbf{v}^T H_f(\mathbf{x}) \,\mathbf{v} \geq m
 \]</div>
 <p>for all <span class="math notranslate nohighlight">\(\mathbf{x} \in \mathbb{R}^d\)</span> and all unit vectors <span class="math notranslate nohighlight">\(\mathbf{v} \in \mathbb{R}^d\)</span>.</p>
-<p>We will use the following notation to state it formally. Let <span class="math notranslate nohighlight">\(A, B \in \mathbb{R}^{d \times d}\)</span> be symmetric matrices. Recall that <span class="math notranslate nohighlight">\(A \succeq 0\)</span> means that <span class="math notranslate nohighlight">\(A\)</span> is positive semidefinite. We write <span class="math notranslate nohighlight">\(A \preceq B\)</span> (respectively <span class="math notranslate nohighlight">\(A \succeq B\)</span>) to indicate that <span class="math notranslate nohighlight">\(B - A \succeq 0\)</span> (respectively <span class="math notranslate nohighlight">\(A - B \succeq 0\)</span>). A different, useful way to put this is the following. Recall that <span class="math notranslate nohighlight">\(B - A \succeq 0\)</span> means <span class="math notranslate nohighlight">\(\mathbf{z}^T B\mathbf{z} - \mathbf{z}^T A\mathbf{z} \geq 0\)</span> for all <span class="math notranslate nohighlight">\(\mathbf{z} \in \mathbb{R}^{d}\)</span>. Hence, rearranging,</p>
+<p>We will use the following notation to state it formally. Let <span class="math notranslate nohighlight">\(A, B \in \mathbb{R}^{d \times d}\)</span> be symmetric matrices. Recall that <span class="math notranslate nohighlight">\(A \succeq 0\)</span> means that <span class="math notranslate nohighlight">\(A\)</span> is positive semidefinite. We write <span class="math notranslate nohighlight">\(A \preceq B\)</span> (respectively <span class="math notranslate nohighlight">\(A \succeq B\)</span>) to indicate that <span class="math notranslate nohighlight">\(B - A \succeq 0\)</span> (respectively <span class="math notranslate nohighlight">\(A - B \succeq 0\)</span>). A different, useful way to put this is the following. Recall that <span class="math notranslate nohighlight">\(B - A \succeq 0\)</span> means</p>
+<div class="math notranslate nohighlight">
+\[
+\mathbf{z}^T (B - A)\mathbf{z} 
+= \mathbf{z}^T B\mathbf{z} - \mathbf{z}^T A\mathbf{z} \geq 0
+\]</div>
+<p>for all <span class="math notranslate nohighlight">\(\mathbf{z} \in \mathbb{R}^{d}\)</span>. Hence, rearranging,</p>
 <div class="math notranslate nohighlight">
 \[
 A \preceq B
@@ -925,7 +920,7 @@ H_f(\mathbf{x}) \succeq m I_{d \times d},
 \quad \forall \mathbf{x} \in \mathbb{R}^d.
 \]</div>
 <p><span class="math notranslate nohighlight">\(\natural\)</span></p>
-<p>By the observation above, noting that <span class="math notranslate nohighlight">\(\mathbf{z}^T I\mathbf{z} = \|\mathbf{z}\|^2\)</span>, we get that the condition above is equivalent to</p>
+<p>By the observation above, noting that <span class="math notranslate nohighlight">\(\mathbf{z}^T I_{d \times d} \mathbf{z} = \|\mathbf{z}\|^2\)</span>, we get that the condition above is equivalent to</p>
 <div class="math notranslate nohighlight">
 \[
 \mathbf{z}^T H_f(\mathbf{x}) \,\mathbf{z} \geq m \|\mathbf{z}\|^2,
@@ -970,7 +965,7 @@ f(\mathbf{x})
 \[
 H_f(\mathbf{x}) = \frac{1}{2}[P + P^T] = P.
 \]</div>
-<p>The expression <span class="math notranslate nohighlight">\(\mathbf{v}^T P \,\mathbf{v}\)</span>, viewed as a function of <span class="math notranslate nohighlight">\(\mathbf{v}\)</span> is continuous, it attains its minimum on <span class="math notranslate nohighlight">\(\mathbb{S}^{d-1}\)</span> by the <em>Extreme Value Theorem</em>. By our assumption that <span class="math notranslate nohighlight">\(P\)</span> is positive definite, that minimum must be strictly positive, say <span class="math notranslate nohighlight">\(\mu &gt; 0\)</span>. Then <span class="math notranslate nohighlight">\(f\)</span> is <span class="math notranslate nohighlight">\(\mu\)</span>-strongly convex. The <em>Global Minimizer of a Strongly Convex Function Theorem</em> then indicates that there is a unique global minimizer to the least-squares objective in that case. Using a previous calculation, it is obtained by computing <span class="math notranslate nohighlight">\(\mathbf{x}^* = - P^{-1} \mathbf{q}\)</span>. (Why is <span class="math notranslate nohighlight">\(P\)</span> invertible?) <span class="math notranslate nohighlight">\(\lhd\)</span></p>
+<p>The expression <span class="math notranslate nohighlight">\(\mathbf{v}^T P \,\mathbf{v}\)</span>, viewed as a function of <span class="math notranslate nohighlight">\(\mathbf{v}\)</span> is continuous, it attains its minimum on <span class="math notranslate nohighlight">\(\mathbb{S}^{d-1}\)</span> by the <em>Extreme Value Theorem</em>. By our assumption that <span class="math notranslate nohighlight">\(P\)</span> is positive definite, that minimum must be strictly positive, say <span class="math notranslate nohighlight">\(\mu &gt; 0\)</span>. Then <span class="math notranslate nohighlight">\(f\)</span> is <span class="math notranslate nohighlight">\(\mu\)</span>-strongly convex. The <em>Global Minimizer of a Strongly Convex Function Theorem</em> then indicates that there is a unique global minimizer in that case. Using a previous calculation, it is obtained by computing <span class="math notranslate nohighlight">\(\mathbf{x}^* = - P^{-1} \mathbf{q}\)</span>. (Why is <span class="math notranslate nohighlight">\(P\)</span> invertible?) <span class="math notranslate nohighlight">\(\lhd\)</span></p>
 <p><strong>EXAMPLE:</strong> Consider the least-squares objective function</p>
 <div class="math notranslate nohighlight">
 \[
@@ -1007,7 +1002,7 @@ H_f(\mathbf{x})
 \mathrm{proj}_{D}(\mathbf{x})
 = \arg\min\left\{\|\mathbf{x} - \mathbf{z}\| : \mathbf{z} \in D\right\}.
 \]</div>
-<p>Let <span class="math notranslate nohighlight">\(\mathbf{w} \in D\)</span>. By the <em>Extreme Value Theorem</em> applied to <span class="math notranslate nohighlight">\(\|\mathbf{x} - \mathbf{z}\|\)</span> on the closed, bonded set <span class="math notranslate nohighlight">\(\{\mathbf{z} \in D: \|\mathbf{x} - \mathbf{z}\| \leq \|\mathbf{x} - \mathbf{w}\|\}\)</span>, there is a global minimizer for this problem. Moreover, the problem is equivalent to minimizing the <em>squared</em> norm <span class="math notranslate nohighlight">\(\|\mathbf{x} - \mathbf{z}\|^2\)</span> which is strongly convex as a function of <span class="math notranslate nohighlight">\(\mathbf{z}\)</span> since</p>
+<p>Let <span class="math notranslate nohighlight">\(\mathbf{w} \in D\)</span>. By the <em>Extreme Value Theorem</em> applied to <span class="math notranslate nohighlight">\(\|\mathbf{x} - \mathbf{z}\|\)</span> on the closed, bounded set <span class="math notranslate nohighlight">\(\{\mathbf{z} \in D: \|\mathbf{x} - \mathbf{z}\| \leq \|\mathbf{x} - \mathbf{w}\|\}\)</span>, there is a global minimizer for this problem. Moreover, the problem is equivalent to minimizing the <em>squared</em> norm <span class="math notranslate nohighlight">\(\|\mathbf{x} - \mathbf{z}\|^2\)</span> which is strongly convex as a function of <span class="math notranslate nohighlight">\(\mathbf{z}\)</span> since</p>
 <div class="math notranslate nohighlight">
 \[
 \|\mathbf{x} - \mathbf{z}\|^2
@@ -1030,29 +1025,29 @@ H_f(\mathbf{x})
 <p>c) Taking the union of two convex sets.</p>
 <p>d) Taking the intersection of two convex sets.</p>
 <p><strong>2</strong> Let <span class="math notranslate nohighlight">\(f : \mathbb{R}^d \to \mathbb{R}\)</span> be twice continuously differentiable. Which of the following conditions is sufficient for <span class="math notranslate nohighlight">\(f\)</span> to be convex?</p>
-<p>a) <span class="math notranslate nohighlight">\(\nabla^2 f(x) \prec 0\)</span>, for all <span class="math notranslate nohighlight">\(x \in \mathbb{R}^d\)</span></p>
-<p>b) <span class="math notranslate nohighlight">\(\nabla^2 f(x) \preceq 0\)</span>, for all <span class="math notranslate nohighlight">\(x \in \mathbb{R}^d\)</span></p>
-<p>c) <span class="math notranslate nohighlight">\(\nabla^2 f(x) \succeq 0\)</span>, for all <span class="math notranslate nohighlight">\(x \in \mathbb{R}^d\)</span></p>
-<p>d) <span class="math notranslate nohighlight">\(\nabla^2 f(x) \succ 0\)</span>, for all <span class="math notranslate nohighlight">\(x \in \mathbb{R}^d\)</span></p>
-<p><strong>3</strong> Let <span class="math notranslate nohighlight">\(f : \mathbb{R}^d \to \mathbb{R}\)</span> be a continuously differentiable, convex function. Which of the following is a necessary and sufficient condition for <span class="math notranslate nohighlight">\(x_0\)</span> to be a global minimizer of <span class="math notranslate nohighlight">\(f\)</span>?</p>
-<p>a) <span class="math notranslate nohighlight">\(\nabla f(x_0) \neq 0\)</span></p>
-<p>b) <span class="math notranslate nohighlight">\(\nabla f(x_0) = 0\)</span></p>
-<p>c) <span class="math notranslate nohighlight">\(\nabla^2 f(x_0) \succeq 0\)</span></p>
-<p>d) <span class="math notranslate nohighlight">\(\nabla^2 f(x_0) \succ 0\)</span></p>
+<p>a) <span class="math notranslate nohighlight">\(\nabla^2 f(\mathbf{x}) \prec \mathbf{0}\)</span>, for all <span class="math notranslate nohighlight">\(\mathbf{x} \in \mathbb{R}^d\)</span></p>
+<p>b) <span class="math notranslate nohighlight">\(\nabla^2 f(\mathbf{x}) \preceq \mathbf{0}\)</span>, for all <span class="math notranslate nohighlight">\(\mathbf{x} \in \mathbb{R}^d\)</span></p>
+<p>c) <span class="math notranslate nohighlight">\(\nabla^2 f(\mathbf{x}) \succeq \mathbf{0}\)</span>, for all <span class="math notranslate nohighlight">\(\mathbf{x} \in \mathbb{R}^d\)</span></p>
+<p>d) <span class="math notranslate nohighlight">\(\nabla^2 f(\mathbf{x}) \succ \mathbf{0}\)</span>, for all <span class="math notranslate nohighlight">\(\mathbf{x} \in \mathbb{R}^d\)</span></p>
+<p><strong>3</strong> Let <span class="math notranslate nohighlight">\(f : \mathbb{R}^d \to \mathbb{R}\)</span> be a continuously differentiable, convex function. Which of the following is a necessary and sufficient condition for <span class="math notranslate nohighlight">\(\mathbf{x}_0\)</span> to be a global minimizer of <span class="math notranslate nohighlight">\(f\)</span>?</p>
+<p>a) <span class="math notranslate nohighlight">\(\nabla f(\mathbf{x}_0) \neq \mathbf{0}\)</span></p>
+<p>b) <span class="math notranslate nohighlight">\(\nabla f(\mathbf{x}_0) = \mathbf{0}\)</span></p>
+<p>c) <span class="math notranslate nohighlight">\(\nabla^2 f(\mathbf{x}_0) \succeq \mathbf{0}\)</span></p>
+<p>d) <span class="math notranslate nohighlight">\(\nabla^2 f(\mathbf{x}_0) \succ \mathbf{0}\)</span></p>
 <p><strong>4</strong> A function <span class="math notranslate nohighlight">\(f : \mathbb{R}^d \to \mathbb{R}\)</span> is <span class="math notranslate nohighlight">\(m\)</span>-strongly convex if:</p>
-<p>a) <span class="math notranslate nohighlight">\(\nabla^2 f(x) \succeq mI_{d \times d}\)</span>, for all <span class="math notranslate nohighlight">\(x \in \mathbb{R}^d\)</span> and some <span class="math notranslate nohighlight">\(m &gt; 0\)</span></p>
-<p>b) <span class="math notranslate nohighlight">\(\nabla^2 f(x) \preceq mI_{d \times d}\)</span>, for all <span class="math notranslate nohighlight">\(x \in \mathbb{R}^d\)</span> and some <span class="math notranslate nohighlight">\(m &gt; 0\)</span></p>
-<p>c) <span class="math notranslate nohighlight">\(\nabla^2 f(x) \succeq -mI_{d \times d}\)</span>, for all <span class="math notranslate nohighlight">\(x \in \mathbb{R}^d\)</span> and some <span class="math notranslate nohighlight">\(m &gt; 0\)</span></p>
-<p>d) <span class="math notranslate nohighlight">\(\nabla^2 f(x) \preceq -mI_{d \times d}\)</span>, for all <span class="math notranslate nohighlight">\(x \in \mathbb{R}^d\)</span> and some <span class="math notranslate nohighlight">\(m &gt; 0\)</span></p>
-<p><strong>5</strong> Which of the following statements is true about the least-squares objective function <span class="math notranslate nohighlight">\(f(x) = \|Ax - b\|_2^2\)</span>, where <span class="math notranslate nohighlight">\(A \in \mathbb{R}^{n \times d}\)</span> has full column rank and <span class="math notranslate nohighlight">\(b \in \mathbb{R}^n\)</span>?</p>
-<p>a) <span class="math notranslate nohighlight">\(f(x)\)</span> is convex but not necessarily strongly convex.</p>
-<p>b) <span class="math notranslate nohighlight">\(f(x)\)</span> is strongly convex.</p>
-<p>c) <span class="math notranslate nohighlight">\(f(x)\)</span> is convex if and only if <span class="math notranslate nohighlight">\(b = 0\)</span>.</p>
-<p>d) <span class="math notranslate nohighlight">\(f(x)\)</span> is strongly convex if and only if <span class="math notranslate nohighlight">\(b = 0\)</span>.</p>
+<p>a) <span class="math notranslate nohighlight">\(\nabla^2 f(\mathbf{x}) \succeq mI_{d \times d}\)</span>, for all <span class="math notranslate nohighlight">\(\mathbf{x} \in \mathbb{R}^d\)</span> and some <span class="math notranslate nohighlight">\(m &gt; 0\)</span></p>
+<p>b) <span class="math notranslate nohighlight">\(\nabla^2 f(\mathbf{x}) \preceq mI_{d \times d}\)</span>, for all <span class="math notranslate nohighlight">\(\mathbf{x} \in \mathbb{R}^d\)</span> and some <span class="math notranslate nohighlight">\(m &gt; 0\)</span></p>
+<p>c) <span class="math notranslate nohighlight">\(\nabla^2 f(\mathbf{x}) \succeq -mI_{d \times d}\)</span>, for all <span class="math notranslate nohighlight">\(\mathbf{x} \in \mathbb{R}^d\)</span> and some <span class="math notranslate nohighlight">\(m &gt; 0\)</span></p>
+<p>d) <span class="math notranslate nohighlight">\(\nabla^2 f(\mathbf{x}) \preceq -mI_{d \times d}\)</span>, for all <span class="math notranslate nohighlight">\(\mathbf{x} \in \mathbb{R}^d\)</span> and some <span class="math notranslate nohighlight">\(m &gt; 0\)</span></p>
+<p><strong>5</strong> Which of the following statements is true about the least-squares objective function <span class="math notranslate nohighlight">\(f(\mathbf{x}) = \|A\mathbf{x} - \mathbf{b}\|_2^2\)</span>, where <span class="math notranslate nohighlight">\(A \in \mathbb{R}^{n \times d}\)</span> has full column rank and <span class="math notranslate nohighlight">\(\mathbf{b} \in \mathbb{R}^n\)</span>?</p>
+<p>a) <span class="math notranslate nohighlight">\(f(\mathbf{x})\)</span> is convex but not necessarily strongly convex.</p>
+<p>b) <span class="math notranslate nohighlight">\(f(\mathbf{x})\)</span> is strongly convex.</p>
+<p>c) <span class="math notranslate nohighlight">\(f(\mathbf{x})\)</span> is convex if and only if <span class="math notranslate nohighlight">\(\mathbf{b} = \mathbf{0}\)</span>.</p>
+<p>d) <span class="math notranslate nohighlight">\(f(\mathbf{x})\)</span> is strongly convex if and only if <span class="math notranslate nohighlight">\(\mathbf{b} = \mathbf{0}\)</span>.</p>
 <p>Answer for 1: c. Justification: The text states that scaling, translation, addition, Cartesian product, projection, and intersection preserve convexity. It does not mention the union. In fact, the union of two convex sets is not necessarily convex (e.g., take the union of two distinct points).</p>
-<p>Answer for 2: c. Justification: The text states the second-order convexity condition: if <span class="math notranslate nohighlight">\(f : \mathbb{R}^d \to \mathbb{R}\)</span> is twice continuously differentiable, then <span class="math notranslate nohighlight">\(f\)</span> is convex if and only if <span class="math notranslate nohighlight">\(\nabla^2 f(x) \succeq 0\)</span>, for all <span class="math notranslate nohighlight">\(x \in \mathbb{R}^d\)</span>.</p>
-<p>Answer for 3: b. Justification: The text states and proves the first-order optimality condition for convex functions on <span class="math notranslate nohighlight">\(\mathbb{R}^d\)</span>: if <span class="math notranslate nohighlight">\(f : \mathbb{R}^d \to \mathbb{R}\)</span> is a continuously differentiable, convex function, then <span class="math notranslate nohighlight">\(x_0\)</span> is a global minimizer if and only if <span class="math notranslate nohighlight">\(\nabla f(x_0) = 0\)</span>.</p>
-<p>Answer for 4: a. Justification: The text defines an <span class="math notranslate nohighlight">\(m\)</span>-strongly convex function <span class="math notranslate nohighlight">\(f : \mathbb{R}^d \to \mathbb{R}\)</span> as one satisfying <span class="math notranslate nohighlight">\(\nabla^2 f(x) \succeq mI_{d \times d}\)</span>, for all <span class="math notranslate nohighlight">\(x \in \mathbb{R}^d\)</span> and some <span class="math notranslate nohighlight">\(m &gt; 0\)</span>.</p>
+<p>Answer for 2: c. Justification: The text states the second-order convexity condition: if <span class="math notranslate nohighlight">\(f : \mathbb{R}^d \to \mathbb{R}\)</span> is twice continuously differentiable, then <span class="math notranslate nohighlight">\(f\)</span> is convex if and only if <span class="math notranslate nohighlight">\(\nabla^2 f(\mathbf{x}) \succeq 0\)</span>, for all <span class="math notranslate nohighlight">\(\mathbf{x} \in \mathbb{R}^d\)</span>.</p>
+<p>Answer for 3: b. Justification: The text states and proves the first-order optimality condition for convex functions on <span class="math notranslate nohighlight">\(\mathbb{R}^d\)</span>: if <span class="math notranslate nohighlight">\(f : \mathbb{R}^d \to \mathbb{R}\)</span> is a continuously differentiable, convex function, then <span class="math notranslate nohighlight">\(\mathbf{x}_0\)</span> is a global minimizer if and only if <span class="math notranslate nohighlight">\(\nabla f(\mathbf{x}_0) = 0\)</span>.</p>
+<p>Answer for 4: a. Justification: The text defines an <span class="math notranslate nohighlight">\(m\)</span>-strongly convex function <span class="math notranslate nohighlight">\(f : \mathbb{R}^d \to \mathbb{R}\)</span> as one satisfying <span class="math notranslate nohighlight">\(\nabla^2 f(\mathbf{x}) \succeq mI_{d \times d}\)</span>, for all <span class="math notranslate nohighlight">\(\mathbf{x} \in \mathbb{R}^d\)</span> and some <span class="math notranslate nohighlight">\(m &gt; 0\)</span>.</p>
 <p>Answer for 5: b. Justification: The text shows that the Hessian of the least-squares objective function is <span class="math notranslate nohighlight">\(2A^TA\)</span>, which is positive definite when <span class="math notranslate nohighlight">\(A\)</span> has full column rank. Therefore, the least-squares objective function is strongly convex.</p>
 </section>
 </section>

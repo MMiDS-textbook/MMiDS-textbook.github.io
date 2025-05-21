@@ -566,16 +566,16 @@ p(\mathbf{x}; \boldsymbol{\alpha})
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/ba12b5dfa5a90d80712e509e287d87f3d7e26f2aa4ce888025d8cf9a32525c1c.png" src="../../_images/ba12b5dfa5a90d80712e509e287d87f3d7e26f2aa4ce888025d8cf9a32525c1c.png" />
+<img alt="../../_images/beb1329759d4211ded6c56cbd1366fe1f58d01d13f8f8dedb821b6c63b9982c9.png" src="../../_images/beb1329759d4211ded6c56cbd1366fe1f58d01d13f8f8dedb821b6c63b9982c9.png" />
 </div>
 </div>
 <p><span class="math notranslate nohighlight">\(\unlhd\)</span></p>
-<p>We seek to maximize the probability of observing the data (also known as <a class="reference external" href="https://en.wikipedia.org/wiki/Likelihood_function">likelihood function</a>) assuming the labels are independent given the features, which is given by</p>
+<p>We seek to maximize the probability of observing the data (also known as <a class="reference external" href="https://en.wikipedia.org/wiki/Likelihood_function">likelihood function</a>) assuming the labels are independent given the features, which is given by (see Chapter 6 for more details; for now we are merely setting up the relevant optimization problem)</p>
 <div class="math notranslate nohighlight">
 \[
 \mathcal{L}(\mathbf{x}; A, \mathbf{b})
 = \prod_{i=1}^n p(\boldsymbol{\alpha}_i; \mathbf{x})^{b_i} 
-(1- p(\boldsymbol{\alpha}_i; \mathbf{x}))^{1-b_i}
+(1- p(\boldsymbol{\alpha}_i; \mathbf{x}))^{1-b_i}.
 \]</div>
 <p>Taking a logarithm, multiplying by <span class="math notranslate nohighlight">\(-1/n\)</span> and substituting the sigmoid function, we want to minimize the <a class="reference external" href="https://en.wikipedia.org/wiki/Cross_entropy#Cross-entropy_loss_function_and_logistic_regression">cross-entropy loss</a><span class="math notranslate nohighlight">\(\idx{cross-entropy loss}\xdi\)</span></p>
 <div class="math notranslate nohighlight">
@@ -590,7 +590,7 @@ p(\mathbf{x}; \boldsymbol{\alpha})
 \[
 \min_{\mathbf{x} \in \mathbb{R}^d} \ell(\mathbf{x}; A, \mathbf{b}).
 \]</div>
-<p>We are implicitly using here that the logarithm is a strictly increasing function and therefore does not change the global maximum of a function. Multiplying by <span class="math notranslate nohighlight">\(-1\)</span> changes the global maximum into a global minimum.</p>
+<p>We are implicitly using here that the logarithm is a strictly increasing function and therefore does not change the global optimum of a function; multiplying by <span class="math notranslate nohighlight">\(-1/n\)</span> changed the global maximum into a global minimum.</p>
 <p>To use gradient descent, we need the gradient of <span class="math notranslate nohighlight">\(\ell\)</span>. We use the <em>Chain Rule</em> and first compute the derivative of <span class="math notranslate nohighlight">\(\sigma\)</span> which is</p>
 <div class="math notranslate nohighlight">
 \[
@@ -628,8 +628,8 @@ p(\mathbf{x}; \boldsymbol{\alpha})
 <div class="amsmath math notranslate nohighlight">
 \[\begin{align*}
 \nabla\ell(\mathbf{x}; A, \mathbf{b})
-&amp;= \nabla\left[\frac{1}{n} \sum_{i=1}^n \left\{- b_i \log(\sigma(\boldsymbol{\alpha_i}^T \mathbf{x}))
-- (1-b_i) \log(1- \sigma(\boldsymbol{\alpha_i}^T \mathbf{x}))\right\}\right]\\
+&amp;= \nabla\left[\frac{1}{n} \sum_{i=1}^n \left\{- b_i \log(\sigma(\boldsymbol{\alpha}_i^T \mathbf{x}))
+- (1-b_i) \log(1- \sigma(\boldsymbol{\alpha}_i^T \mathbf{x}))\right\}\right]\\
 &amp;= - \frac{1}{n} \sum_{i=1}^n \frac{b_i}{\sigma(\boldsymbol{\alpha}_i^T \mathbf{x})} \nabla\sigma(\boldsymbol{\alpha}_i^T \mathbf{x})
 - \frac{1}{n} \sum_{i=1}^n \frac{1-b_i}{1- \sigma(\boldsymbol{\alpha}_i^T \mathbf{x})} \nabla(1 - \sigma(\boldsymbol{\alpha}_i^T \mathbf{x}))\\
 &amp;= - \frac{1}{n} \sum_{i=1}^n \frac{b_i}{\sigma(\boldsymbol{\alpha}_i^T \mathbf{x})} \nabla\sigma(\boldsymbol{\alpha}_i^T \mathbf{x})
@@ -647,7 +647,7 @@ b_i (1 - \sigma(\boldsymbol{\alpha}_i^T \mathbf{x})) - (1-b_i)\sigma(\boldsymbol
 b_i - \sigma(\boldsymbol{\alpha}_i^T \mathbf{x}) 
 ) \,\boldsymbol{\alpha}_i.
 \end{align*}\]</div>
-<p>To implement this formula below, it will be useful to re-write it in terms of the matrix representation <span class="math notranslate nohighlight">\(A \in \mathbb{R}^{n \times d}\)</span> (which has rows <span class="math notranslate nohighlight">\(\boldsymbol{\alpha}_i^T\)</span>, <span class="math notranslate nohighlight">\(i = 1,\ldots, n\)</span>) and <span class="math notranslate nohighlight">\(\mathbf{b} = (b_1, \ldots, b_n) \in \{0,1\}^n\)</span>. Let <span class="math notranslate nohighlight">\(\bsigma : \mathbb{R}^n \to \mathbb{R}\)</span> be the vector-valued function that applies the sigmoid <span class="math notranslate nohighlight">\(\sigma\)</span> entry-wise, i.e., <span class="math notranslate nohighlight">\(\bsigma(\mathbf{z}) = (\sigma(z_1),\ldots,\sigma(z_n))\)</span> where <span class="math notranslate nohighlight">\(\mathbf{z} = (z_1,\ldots,z_n)\)</span>. Thinking of <span class="math notranslate nohighlight">\(\sum_{i=1}^n (b_i - \sigma(\boldsymbol{\alpha}_i^T \mathbf{x})\,\boldsymbol{\alpha}_i\)</span> as a linear combination of the columns of <span class="math notranslate nohighlight">\(A^T\)</span> with coefficients being the entries of the vector <span class="math notranslate nohighlight">\(\mathbf{b} - \bsigma(A \mathbf{x})\)</span>, we that</p>
+<p>To implement this formula, it will be useful to re-write it in terms of the matrix representation <span class="math notranslate nohighlight">\(A \in \mathbb{R}^{n \times d}\)</span> (which has rows <span class="math notranslate nohighlight">\(\boldsymbol{\alpha}_i^T\)</span>, <span class="math notranslate nohighlight">\(i = 1,\ldots, n\)</span>) and <span class="math notranslate nohighlight">\(\mathbf{b} = (b_1, \ldots, b_n) \in \{0,1\}^n\)</span>. Let <span class="math notranslate nohighlight">\(\bsigma : \mathbb{R}^n \to \mathbb{R}\)</span> be the vector-valued function that applies the sigmoid <span class="math notranslate nohighlight">\(\sigma\)</span> entry-wise, i.e., <span class="math notranslate nohighlight">\(\bsigma(\mathbf{z}) = (\sigma(z_1),\ldots,\sigma(z_n))\)</span> where <span class="math notranslate nohighlight">\(\mathbf{z} = (z_1,\ldots,z_n)\)</span>. Thinking of <span class="math notranslate nohighlight">\(\sum_{i=1}^n (b_i - \sigma(\boldsymbol{\alpha}_i^T \mathbf{x})\,\boldsymbol{\alpha}_i\)</span> as a linear combination of the columns of <span class="math notranslate nohighlight">\(A^T\)</span> with coefficients being the entries of the vector <span class="math notranslate nohighlight">\(\mathbf{b} - \bsigma(A \mathbf{x})\)</span>, we that</p>
 <div class="math notranslate nohighlight">
 \[
 \nabla\ell(\mathbf{x}; A, \mathbf{b})
@@ -731,7 +731,7 @@ b_i - \sigma(\boldsymbol{\alpha}_i^T \mathbf{x}^t)
 </div>
 </div>
 </div>
-<p>We are ready to implement GD. Our function takes as input a function <code class="docutils literal notranslate"><span class="pre">loss_fn</span></code> computing the objective, a function <code class="docutils literal notranslate"><span class="pre">grad_fn</span></code> computing the gradient, the dataset <code class="docutils literal notranslate"><span class="pre">A</span></code> and <code class="docutils literal notranslate"><span class="pre">b</span></code>, and an initial guess <code class="docutils literal notranslate"><span class="pre">init_x</span></code>. Optional parameters are the step size and the number of iterations.</p>
+<p>We are ready to implement gradient descent. Our function takes as input a function <code class="docutils literal notranslate"><span class="pre">loss_fn</span></code> computing the objective, a function <code class="docutils literal notranslate"><span class="pre">grad_fn</span></code> computing the gradient, the dataset <code class="docutils literal notranslate"><span class="pre">A</span></code> and <code class="docutils literal notranslate"><span class="pre">b</span></code>, and an initial guess <code class="docutils literal notranslate"><span class="pre">init_x</span></code>. Optional parameters are the step size and the number of iterations.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">gd_for_logreg</span><span class="p">(</span><span class="n">loss_fn</span><span class="p">,</span> <span class="n">grad_fn</span><span class="p">,</span> <span class="n">A</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">init_x</span><span class="p">,</span> <span class="n">beta</span><span class="o">=</span><span class="mf">1e-3</span><span class="p">,</span> <span class="n">niters</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="mf">1e5</span><span class="p">)):</span>
@@ -793,7 +793,7 @@ b_i - \sigma(\boldsymbol{\alpha}_i^T \mathbf{x}^t)
 </div>
 </div>
 </div>
-<p>Our goal will be to predict the first column, <code class="docutils literal notranslate"><span class="pre">Satisfied</span></code>, from the rest of the columns. For this, we transform our data into Numpy arrays. We also standardize the columns by subtracting their mean and dividing by their standard deviation. This will allow to compare the influence of different features on the prediction. And we add a column of 1s to to account for the intercept.</p>
+<p>Our goal will be to predict the first column, <code class="docutils literal notranslate"><span class="pre">Satisfied</span></code>, from the rest of the columns. For this, we transform our data into NumPy arrays. We also standardize the columns by subtracting their mean and dividing by their standard deviation. This will allow to compare the influence of different features on the prediction. And we add a column of 1s to account for the intercept.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">y</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;Satisfied&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">()</span>
@@ -844,10 +844,10 @@ b_i - \sigma(\boldsymbol{\alpha}_i^T \mathbf{x}^t)
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/9e72e6608b33365ee525c1a6c657539cc5be724e27adedc579bbfa623dc7bd63.png" src="../../_images/9e72e6608b33365ee525c1a6c657539cc5be724e27adedc579bbfa623dc7bd63.png" />
+<img alt="../../_images/4a66052e179e6e561e9711defd186394eac14fb13f59c0250fcce6f357c91144.png" src="../../_images/4a66052e179e6e561e9711defd186394eac14fb13f59c0250fcce6f357c91144.png" />
 </div>
 </div>
-<p>We see from the first ten bars or so that, as might be expected, higher ratings on various aspects of the flight generally contribute to a higher predicted likelihood of satisfaction (with one exception being <code class="docutils literal notranslate"><span class="pre">Gate</span> <span class="pre">location</span></code> whose coefficient is negative but may not be <a class="reference external" href="https://en.wikipedia.org/wiki/Statistical_significance">statistically significant</a>). <code class="docutils literal notranslate"><span class="pre">Inflight</span> <span class="pre">entertainment</span></code> seems particularly influential. <code class="docutils literal notranslate"><span class="pre">Age</span></code> also shows the same pattern, something we had noticed in the introductory section through a different analysis. On the other hand, departure delay and arrival delay contribute to a lower predicted likelihood of satisfaction, again an expected pattern. The most negative influence however appears to come from <code class="docutils literal notranslate"><span class="pre">Class_Eco</span></code>.</p>
+<p>We see from the first ten bars or so that, as might be expected, higher ratings on various aspects of the flight generally contribute to a higher predicted likelihood of satisfaction (with one exception being <code class="docutils literal notranslate"><span class="pre">Gate</span> <span class="pre">location</span></code> whose coefficient is negative but may not be <a class="reference external" href="https://en.wikipedia.org/wiki/Statistical_significance">statistically significant</a>). <code class="docutils literal notranslate"><span class="pre">Inflight</span> <span class="pre">entertainment</span></code> seems particularly influential. <code class="docutils literal notranslate"><span class="pre">Age</span></code> also shows the same pattern, something we had noticed in the introductory section through a different analysis. On the other hand, <code class="docutils literal notranslate"><span class="pre">Departure</span> <span class="pre">Delay</span> <span class="pre">in</span> <span class="pre">Minutes</span></code> and <code class="docutils literal notranslate"><span class="pre">Arrival</span> <span class="pre">Delay</span> <span class="pre">in</span> <span class="pre">Minutes</span></code> contribute to a lower predicted likelihood of satisfaction, again an expected pattern. The most negative influence however appears to come from <code class="docutils literal notranslate"><span class="pre">Class_Eco</span></code>.</p>
 <p><strong>CHAT &amp; LEARN</strong> There are faster methods for logistic regression. Ask your favorite AI chatbot for an explanation and implementation of the iteratively reweighted least squares method. Try it on this dataset. (<a class="reference external" href="https://colab.research.google.com/github/MMiDS-textbook/MMiDS-textbook.github.io/blob/main/just_the_code/roch_mmids_chap_opt_notebook.ipynb">Open In Colab</a>) <span class="math notranslate nohighlight">\(\ddagger\)</span></p>
 <p><strong>TRY IT!</strong> One can attempt to predict whether a new customer, whose feature vector is <span class="math notranslate nohighlight">\(\boldsymbol{\alpha}\)</span>, will be satisfied by using the prediction function <span class="math notranslate nohighlight">\(p(\mathbf{x}; \boldsymbol{\alpha}) = \sigma(\boldsymbol{\alpha}^T \mathbf{x})\)</span>, where <span class="math notranslate nohighlight">\(\mathbf{x}\)</span> is the fitted coefficients. Say a customer is predicted to be satisfied if <span class="math notranslate nohighlight">\(\sigma(\boldsymbol{\alpha}^T \mathbf{x}) &gt; 0.5\)</span>. Implement this predictor and compute its accuracy on this dataset. (<a class="reference external" href="https://colab.research.google.com/github/MMiDS-textbook/MMiDS-textbook.github.io/blob/main/just_the_code/roch_mmids_chap_opt_notebook.ipynb">Open In Colab</a>)</p>
 <p><strong>CHAT &amp; LEARN</strong> Because of the issue of overfitting, computing the accuracy of a predictor on a dataset used to estimate the coefficients is problematic. Ask your favorite AI chatbot about scikit-learn’s <code class="docutils literal notranslate"><span class="pre">train_test_split</span></code> function and how it helps resolve this issue. Implement it on this dataset. (<a class="reference external" href="https://colab.research.google.com/github/MMiDS-textbook/MMiDS-textbook.github.io/blob/main/just_the_code/roch_mmids_chap_opt_notebook.ipynb">Open In Colab</a>) <span class="math notranslate nohighlight">\(\ddagger\)</span></p>
@@ -864,10 +864,10 @@ b_i - \sigma(\boldsymbol{\alpha}_i^T \mathbf{x}^t)
 <p>c) Minimizing the cross-entropy loss is a first step towards maximizing the likelihood.</p>
 <p>d) Maximizing the likelihood is a special case of minimizing the cross-entropy loss.</p>
 <p><strong>3</strong> Which of the following is the correct formula for the logistic regression objective function (cross-entropy loss)?</p>
-<p>a) <span class="math notranslate nohighlight">\(\ell(x; A, b) = \frac{1}{n} \sum_{i=1}^n \log(1 + \exp(-b_i \alpha_i^T x))\)</span></p>
-<p>b) <span class="math notranslate nohighlight">\(\ell(x; A, b) = \frac{1}{n} \sum_{i=1}^n (b_i - \sigma(\alpha_i^T x))^2\)</span></p>
-<p>c) <span class="math notranslate nohighlight">\(\ell(x; A, b) = \frac{1}{n} \sum_{i=1}^n \{-b_i \log(\sigma(\alpha_i^T x)) - (1 - b_i) \log(1 - \sigma(\alpha_i^T x))\}\)</span></p>
-<p>d) <span class="math notranslate nohighlight">\(\ell(x; A, b) = \frac{1}{n} \sum_{i=1}^n b_i \alpha_i^T x\)</span></p>
+<p>a) <span class="math notranslate nohighlight">\(\ell(\mathbf{x}; A, \mathbf{b}) = \frac{1}{n} \sum_{i=1}^n \log(1 + \exp(-b_i \boldsymbol{\alpha}_i^T \mathbf{x}))\)</span></p>
+<p>b) <span class="math notranslate nohighlight">\(\ell(\mathbf{x}; A, \mathbf{b}) = \frac{1}{n} \sum_{i=1}^n (b_i - \sigma(\boldsymbol{\alpha}_i^T \mathbf{x}))^2\)</span></p>
+<p>c) <span class="math notranslate nohighlight">\(\ell(\mathbf{x}; A, \mathbf{b}) = \frac{1}{n} \sum_{i=1}^n \{-b_i \log(\sigma(\boldsymbol{\alpha}_i^T \mathbf{x})) - (1 - b_i) \log(1 - \sigma(\boldsymbol{\alpha}_i^T \mathbf{x}))\}\)</span></p>
+<p>d) <span class="math notranslate nohighlight">\(\ell(\mathbf{x}; A, \mathbf{b}) = \frac{1}{n} \sum_{i=1}^n b_i \boldsymbol{\alpha}_i^T \mathbf{x}\)</span></p>
 <p><strong>4</strong> What is the purpose of standardizing the input features in the airline customer satisfaction dataset example?</p>
 <p>a) To ensure the objective function is convex.</p>
 <p>b) To speed up the convergence of gradient descent.</p>
@@ -880,7 +880,7 @@ b_i - \sigma(\boldsymbol{\alpha}_i^T \mathbf{x}^t)
 <p>d) To handle missing data in the dataset.</p>
 <p>Answer for 1: c. Justification: The text states that the goal of logistic regression is to “find a function of the features that approximates the probability of the label.”</p>
 <p>Answer for 2: b. Justification: The text states: “We seek to maximize the probability of observing the data… which is given by… Taking a logarithm, multiplying by <span class="math notranslate nohighlight">\(-1/n\)</span> and substituting the sigmoid function, we want to minimize the cross-entropy loss.”</p>
-<p>Answer for 3: c. Justification: The text states: “Hence, we want to solve the minimization problem <span class="math notranslate nohighlight">\(\min_{x \in \mathbb{R}^d} \ell(x; A, b)\)</span>,” where <span class="math notranslate nohighlight">\(\ell(x; A, b) = \frac{1}{n} \sum_{i=1}^n \{-b_i \log(\sigma(\alpha_i^T x)) - (1 - b_i) \log(1 - \sigma(\alpha_i^T x))\}\)</span>.</p>
+<p>Answer for 3: c. Justification: The text states: “Hence, we want to solve the minimization problem <span class="math notranslate nohighlight">\(\min_{x \in \mathbb{R}^d} \ell(\mathbf{x}; A, \mathbf{b})\)</span>,” where <span class="math notranslate nohighlight">\(\ell(\mathbf{x}; A, \mathbf{b}) = \frac{1}{n} \sum_{i=1}^n \{-b_i \log(\sigma(\boldsymbol{\alpha}_i^T \mathbf{x})) - (1 - b_i) \log(1 - \sigma(\boldsymbol{\alpha}_i^T \mathbf{x}))\}\)</span>.</p>
 <p>Answer for 4: c. Justification: The text states: “We also standardize the columns by subtracting their mean and dividing by their standard deviation. This will allow to compare the influence of different features on the prediction.”</p>
 <p>Answer for 5: b. Justification: The text states: “To allow an affine function of the features, we add a column of 1’s as we have done before.”</p>
 </section>

@@ -547,19 +547,20 @@ L = \sum_{i=1}^n \mu_i \mathbf{y}_i \mathbf{y}_i^T
 \[
 0 \leq \mu_1 \leq \mu_2 \leq \cdots \leq \mu_n.
 \]</div>
+<p>Note that this is the opposite order to we used in the previous section.</p>
 <p>Another observation:</p>
 <p><strong>LEMMA</strong> Let <span class="math notranslate nohighlight">\(G = (V, E)\)</span> be a graph with <span class="math notranslate nohighlight">\(n = |V|\)</span> vertices and Laplacian matrix <span class="math notranslate nohighlight">\(L\)</span>. The constant unit vector</p>
 <div class="math notranslate nohighlight">
 \[
 \mathbf{y}_1 
 = 
-\frac{1}{\sqrt{n}} (1, \ldots, 1)^T
+\frac{1}{\sqrt{n}} (1, \ldots, 1)
 \]</div>
 <p>is an eigenvector of <span class="math notranslate nohighlight">\(L\)</span> with eigenvalue <span class="math notranslate nohighlight">\(0\)</span>. <span class="math notranslate nohighlight">\(\flat\)</span></p>
 <p><em>Proof:</em> Let <span class="math notranslate nohighlight">\(B\)</span> be an oriented incidence matrix of <span class="math notranslate nohighlight">\(G\)</span> recall that <span class="math notranslate nohighlight">\(L = B B^T\)</span>. By construction <span class="math notranslate nohighlight">\(B^T \mathbf{y}_1 = \mathbf{0}\)</span> since each column of <span class="math notranslate nohighlight">\(B\)</span> has exactly one <span class="math notranslate nohighlight">\(1\)</span> and one <span class="math notranslate nohighlight">\(-1\)</span>. So <span class="math notranslate nohighlight">\(L \mathbf{y}_1 = B B^T \mathbf{y}_1 = \mathbf{0}\)</span> as claimed. <span class="math notranslate nohighlight">\(\square\)</span></p>
 <p>In general, the constant vector may not be the only eigenvector with eigenvalue one.</p>
-<p><strong>NUMERICAL CORNER:</strong> One use of the spectral decomposition of the Laplacian matrix is in graph drawing<span class="math notranslate nohighlight">\(\idx{graph drawing}\xdi\)</span>. We illustrate this next. Given a graph <span class="math notranslate nohighlight">\(G = (V, E)\)</span>, it is not clear a priori how to draw it in the plane since the only information available are adjacencies of vertices. One approach is just to position the vertices at random. The function <a class="reference external" href="https://networkx.org/documentation/stable/reference/generated/networkx.drawing.nx_pylab.draw.html"><code class="docutils literal notranslate"><span class="pre">networkx.draw()</span></code></a> or <a class="reference external" href="https://networkx.org/documentation/stable/reference/generated/networkx.drawing.nx_pylab.draw_networkx.html#networkx.drawing.nx_pylab.draw_networkx"><code class="docutils literal notranslate"><span class="pre">networkx.draw_networkx()</span></code></a>can take as input different <a class="reference external" href="https://networkx.org/documentation/stable/reference/drawing.html#module-networkx.drawing.layout">graph layout</a> functions that return an <span class="math notranslate nohighlight">\(x\)</span> and <span class="math notranslate nohighlight">\(y\)</span>-coordinate for each vertex.</p>
-<p>We will test this on a grid graph. We use <a class="reference external" href="https://networkx.org/documentation/stable/reference/generated/networkx.generators.lattice.grid_2d_graph.html"><code class="docutils literal notranslate"><span class="pre">grid_2d_graph()</span></code></a> to construct such a graph.</p>
+<p><strong>NUMERICAL CORNER:</strong> One use of the spectral decomposition of the Laplacian matrix is in graph drawing<span class="math notranslate nohighlight">\(\idx{graph drawing}\xdi\)</span>. We illustrate this next. Given a graph <span class="math notranslate nohighlight">\(G = (V, E)\)</span>, it is not clear a priori how to draw it in the plane since the only information available are adjacencies of vertices. One approach is just to position the vertices at random. The function <a class="reference external" href="https://networkx.org/documentation/stable/reference/generated/networkx.drawing.nx_pylab.draw.html"><code class="docutils literal notranslate"><span class="pre">networkx.draw</span></code></a> or <a class="reference external" href="https://networkx.org/documentation/stable/reference/generated/networkx.drawing.nx_pylab.draw_networkx.html#networkx.drawing.nx_pylab.draw_networkx"><code class="docutils literal notranslate"><span class="pre">networkx.draw_networkx</span></code></a> can take as input different <a class="reference external" href="https://networkx.org/documentation/stable/reference/drawing.html#module-networkx.drawing.layout">graph layout</a> functions that return an <span class="math notranslate nohighlight">\(x\)</span> and <span class="math notranslate nohighlight">\(y\)</span>-coordinate for each vertex.</p>
+<p>We will test this on a grid graph. We use <a class="reference external" href="https://networkx.org/documentation/stable/reference/generated/networkx.generators.lattice.grid_2d_graph.html"><code class="docutils literal notranslate"><span class="pre">networkx.grid_2d_graph</span></code></a> to construct such a graph.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">G</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">grid_2d_graph</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span><span class="mi">7</span><span class="p">)</span>
@@ -578,11 +579,11 @@ L = \sum_{i=1}^n \mu_i \mathbf{y}_i \mathbf{y}_i^T
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/eacb128396fa1fa41e3c7b9398478b3e2f020fc67bd512a29eb57ab111bd3a59.png" src="../../_images/eacb128396fa1fa41e3c7b9398478b3e2f020fc67bd512a29eb57ab111bd3a59.png" />
+<img alt="../../_images/e71c11388af95019112c93563223107aea5d4aa3b91dbab26b654c57b7ad303b.png" src="../../_images/e71c11388af95019112c93563223107aea5d4aa3b91dbab26b654c57b7ad303b.png" />
 </div>
 </div>
 <p>Clearly, this is hard to read.</p>
-<p>Another approach is to map the vertices to two eigenvectors, similarly to what we did for dimensionality reduction. The eigenvector associated to <span class="math notranslate nohighlight">\(\mu_1\)</span> is constant and therefore not useful for drawing. We try the next two. We use the Laplacian matrix. This is done using <a class="reference external" href="https://networkx.org/documentation/stable/reference/generated/networkx.drawing.layout.spectral_layout.html#networkx.drawing.layout.spectral_layout"><code class="docutils literal notranslate"><span class="pre">spectral_layout()</span></code></a>.</p>
+<p>Another approach is to map the vertices to two eigenvectors, similarly to what we did for dimensionality reduction. The eigenvector associated to <span class="math notranslate nohighlight">\(\mu_1\)</span> is constant and therefore not useful for drawing. We try the next two. We use the Laplacian matrix. This is done using <a class="reference external" href="https://networkx.org/documentation/stable/reference/generated/networkx.drawing.layout.spectral_layout.html#networkx.drawing.layout.spectral_layout"><code class="docutils literal notranslate"><span class="pre">networkx.spectral_layout</span></code></a>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">nx</span><span class="o">.</span><span class="n">draw_networkx</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">pos</span><span class="o">=</span><span class="n">nx</span><span class="o">.</span><span class="n">spectral_layout</span><span class="p">(</span><span class="n">G</span><span class="p">),</span> <span class="n">with_labels</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> 
@@ -593,7 +594,7 @@ L = \sum_{i=1}^n \mu_i \mathbf{y}_i \mathbf{y}_i^T
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/310100670eaea5d1ddc0cd0bc340e826f633b07654a7a0f5e23d7e0a585b389f.png" src="../../_images/310100670eaea5d1ddc0cd0bc340e826f633b07654a7a0f5e23d7e0a585b389f.png" />
+<img alt="../../_images/d9f18189eb6a51676466d9a2ffe9aa688e95d0f15f8697b68ee0c7c9ae2ada45.png" src="../../_images/d9f18189eb6a51676466d9a2ffe9aa688e95d0f15f8697b68ee0c7c9ae2ada45.png" />
 </div>
 </div>
 <p>Interestingly, the outcome is provides a much more natural drawing of the graph, revealing its underlying structure as a grid. We will come back later to try to explain this, after we have developed further understanding of the spectral properties of the Laplacian matrix.</p>
@@ -608,8 +609,8 @@ L = \sum_{i=1}^n \mu_i \mathbf{y}_i \mathbf{y}_i^T
 \mathbf{x}^T L \mathbf{x}
 = \sum_{e = \{i,j\} \in E} (x_i - x_j)^2
 \]</div>
-<p>for any <span class="math notranslate nohighlight">\(\mathbf{x} = (x_1, \ldots, x_n)^T \in \mathbb{R}^n\)</span>. <span class="math notranslate nohighlight">\(\flat\)</span></p>
-<p>Here is an intuitive way of interpreting this lemma. If one thinks of <span class="math notranslate nohighlight">\(\mathbf{x} = (x_1, \ldots, x_n)^T \in \mathbb{R}^n\)</span> as a real-valued function over the vertices (i.e., it associates a real value <span class="math notranslate nohighlight">\(x_i\)</span> to vertex <span class="math notranslate nohighlight">\(i\)</span> for each <span class="math notranslate nohighlight">\(i\)</span>), then the Laplacian quadratic form measures how “smooth” the function is over the graph in the following sense. A small value of <span class="math notranslate nohighlight">\(\mathbf{x}^T L \mathbf{x}\)</span> indicates that adjacent vertices tend to get assigned close values.</p>
+<p>for any <span class="math notranslate nohighlight">\(\mathbf{x} = (x_1, \ldots, x_n) \in \mathbb{R}^n\)</span>. <span class="math notranslate nohighlight">\(\flat\)</span></p>
+<p>Here is an intuitive way of interpreting this lemma. If one thinks of <span class="math notranslate nohighlight">\(\mathbf{x} = (x_1, \ldots, x_n) \in \mathbb{R}^n\)</span> as a real-valued function over the vertices (i.e., it associates a real value <span class="math notranslate nohighlight">\(x_i\)</span> to vertex <span class="math notranslate nohighlight">\(i\)</span> for each <span class="math notranslate nohighlight">\(i\)</span>), then the Laplacian quadratic form measures how “smooth” the function is over the graph in the following sense. A small value of <span class="math notranslate nohighlight">\(\mathbf{x}^T L \mathbf{x}\)</span> indicates that adjacent vertices tend to get assigned close values.</p>
 <p><em>Proof:</em> Let <span class="math notranslate nohighlight">\(B\)</span> be an oriented incidence matrix of <span class="math notranslate nohighlight">\(G\)</span>. We have that <span class="math notranslate nohighlight">\(L = B B^T\)</span>. Thus, for any <span class="math notranslate nohighlight">\(\mathbf{x}\)</span>, we have <span class="math notranslate nohighlight">\((B^T \mathbf{x})_k = x_v - x_u\)</span> if the edge <span class="math notranslate nohighlight">\(e_k = \{u, v\}\)</span> is oriented as <span class="math notranslate nohighlight">\((u,v)\)</span> under <span class="math notranslate nohighlight">\(B\)</span>. That implies</p>
 <div class="math notranslate nohighlight">
 \[
@@ -621,7 +622,7 @@ L = \sum_{i=1}^n \mu_i \mathbf{y}_i \mathbf{y}_i^T
 <p>Since the latter is always nonnegative, it also implies that <span class="math notranslate nohighlight">\(L\)</span> is positive semidefinite. <span class="math notranslate nohighlight">\(\square\)</span></p>
 <p>We are now ready to derive connectivity consequences. Recall that, for any graph <span class="math notranslate nohighlight">\(G\)</span>, the Laplacian eigenvalue <span class="math notranslate nohighlight">\(\mu_1 = 0\)</span>.</p>
 <p><strong>LEMMA</strong> <strong>(Laplacian and Connectivity)</strong> <span class="math notranslate nohighlight">\(\idx{Laplacian and connectivity lemma}\xdi\)</span> If <span class="math notranslate nohighlight">\(G\)</span> is connected, then the Laplacian eigenvalue <span class="math notranslate nohighlight">\(\mu_2 &gt; 0\)</span>. <span class="math notranslate nohighlight">\(\flat\)</span></p>
-<p><em>Proof:</em> Let <span class="math notranslate nohighlight">\(G = (V, E)\)</span> with <span class="math notranslate nohighlight">\(n = |V|\)</span> and let <span class="math notranslate nohighlight">\(L = \sum_{i=1}^n \mu_i \mathbf{y}_i \mathbf{y}_i^T\)</span> be a spectral decomposition of its Laplacian <span class="math notranslate nohighlight">\(L\)</span> with <span class="math notranslate nohighlight">\(0 = \mu_1 \leq \cdots \leq \mu_n\)</span>. Suppose by way of contradiction that <span class="math notranslate nohighlight">\(\mu_2 = 0\)</span>. Any eigenvector <span class="math notranslate nohighlight">\(\mathbf{y} = (y_{1}, \ldots, y_{n})^T\)</span> with <span class="math notranslate nohighlight">\(0\)</span> eigenvalue satisfies <span class="math notranslate nohighlight">\(L \mathbf{y} = \mathbf{0}\)</span> by definition. By the <em>Laplacian Quadratic Form  Lemma</em> then</p>
+<p><em>Proof:</em> Let <span class="math notranslate nohighlight">\(G = (V, E)\)</span> with <span class="math notranslate nohighlight">\(n = |V|\)</span> and let <span class="math notranslate nohighlight">\(L = \sum_{i=1}^n \mu_i \mathbf{y}_i \mathbf{y}_i^T\)</span> be a spectral decomposition of its Laplacian <span class="math notranslate nohighlight">\(L\)</span> with <span class="math notranslate nohighlight">\(0 = \mu_1 \leq \cdots \leq \mu_n\)</span>. Suppose by way of contradiction that <span class="math notranslate nohighlight">\(\mu_2 = 0\)</span>. Any eigenvector <span class="math notranslate nohighlight">\(\mathbf{y} = (y_{1}, \ldots, y_{n})\)</span> with <span class="math notranslate nohighlight">\(0\)</span> eigenvalue satisfies <span class="math notranslate nohighlight">\(L \mathbf{y} = \mathbf{0}\)</span> by definition. By the <em>Laplacian Quadratic Form  Lemma</em> then</p>
 <div class="math notranslate nohighlight">
 \[
 0 
@@ -796,7 +797,7 @@ L \frac{\mathbf{z}}{\|\mathbf{z}\|}\right\rangle
 </div>
 </div>
 <p>Observe that (up to numerical error) there are two <span class="math notranslate nohighlight">\(0\)</span> eigenvalues and that the largest eigenvalue is greater or equal than the maximum degree plus one.</p>
-<p>To compute the Laplacian matrix, one can also use the function <code class="docutils literal notranslate"><span class="pre">laplacian_matrix()</span></code>. For example, the Laplacian of the Petersen graph is the following:</p>
+<p>To compute the Laplacian matrix, one can also use the function <a class="reference external" href="https://networkx.org/documentation/stable/reference/generated/networkx.linalg.laplacianmatrix.laplacian_matrix.html"><code class="docutils literal notranslate"><span class="pre">networkx.laplacian_matrix</span></code></a>. For example, the Laplacian of the Petersen graph is the following:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">G</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">petersen_graph</span><span class="p">()</span>
@@ -838,19 +839,19 @@ L \frac{\mathbf{z}}{\|\mathbf{z}\|}\right\rangle
 </section>
 <section id="variational-characterization-of-second-laplacian-eigenvalue">
 <h2><span class="section-number">5.4.3. </span>Variational characterization of second Laplacian eigenvalue<a class="headerlink" href="#variational-characterization-of-second-laplacian-eigenvalue" title="Link to this heading">#</a></h2>
-<p>The definition <span class="math notranslate nohighlight">\(A \mathbf{x} = \lambda \mathbf{x}\)</span> is perhaps not the best way to understand why the eigenvectors of the Laplacian matrix are useful. Instead the following application of the <em>Courant-Fischer theorem</em><span class="math notranslate nohighlight">\(\idx{Courant-Fischer theorem}\xdi\)</span> provides much insight, as we will see in the rest of this chapter.</p>
-<p><strong>THEOREM</strong> <strong>(Variational Characterization of <span class="math notranslate nohighlight">\(\mu_2\)</span>)</strong> <span class="math notranslate nohighlight">\(\idx{variational characterization of the algebraic connectivity}\xdi\)</span> Let <span class="math notranslate nohighlight">\(G = (V, E)\)</span> be a graph with <span class="math notranslate nohighlight">\(n = |V|\)</span> vertices. Assume the Laplacian <span class="math notranslate nohighlight">\(L\)</span> of <span class="math notranslate nohighlight">\(G\)</span> has spectral decomposition <span class="math notranslate nohighlight">\(L = \sum_{i=1}^n \mu_i \mathbf{y}_i \mathbf{y}_i^T\)</span> with <span class="math notranslate nohighlight">\(0 = \mu_1 \leq \mu_2 \leq \cdots \leq \mu_n\)</span> and <span class="math notranslate nohighlight">\(\mathbf{y}_1 = \frac{1}{\sqrt{n}}(1,\ldots,1)^T\)</span>. Then</p>
+<p>The definition <span class="math notranslate nohighlight">\(A \mathbf{x} = \lambda \mathbf{x}\)</span> is perhaps not the best way to understand why the eigenvectors of the Laplacian matrix are useful. Instead the following application of the <em>Courant-Fischer theorem</em><span class="math notranslate nohighlight">\(\idx{Courant-Fischer Theorem}\xdi\)</span> provides much insight, as we will see in the rest of this chapter.</p>
+<p><strong>THEOREM</strong> <strong>(Variational Characterization of <span class="math notranslate nohighlight">\(\mu_2\)</span>)</strong> <span class="math notranslate nohighlight">\(\idx{variational characterization of the algebraic connectivity}\xdi\)</span> Let <span class="math notranslate nohighlight">\(G = (V, E)\)</span> be a graph with <span class="math notranslate nohighlight">\(n = |V|\)</span> vertices. Assume the Laplacian <span class="math notranslate nohighlight">\(L\)</span> of <span class="math notranslate nohighlight">\(G\)</span> has spectral decomposition <span class="math notranslate nohighlight">\(L = \sum_{i=1}^n \mu_i \mathbf{y}_i \mathbf{y}_i^T\)</span> with <span class="math notranslate nohighlight">\(0 = \mu_1 \leq \mu_2 \leq \cdots \leq \mu_n\)</span> and <span class="math notranslate nohighlight">\(\mathbf{y}_1 = \frac{1}{\sqrt{n}}(1,\ldots,1)\)</span>. Then</p>
 <div class="amsmath math notranslate nohighlight">
 \[\begin{align*}
 \mu_2 
-= \min\Bigg\{
-&amp;\sum_{\{i, j\} \in E}(x_i - x_j)^2 \,: \\ 
-&amp;\,\mathbf{x} = (x_1, \ldots, x_n)^T \in \mathbb{R}^n, 
+= \min\left\{
+\sum_{\{i, j\} \in E}(x_i - x_j)^2 \,:
+\,\mathbf{x} = (x_1, \ldots, x_n) \in \mathbb{R}^n, 
 \sum_{i=1}^n x_i = 0, \sum_{j = 1}^n x_j^2=1
-\Bigg\}.
+\right\}.
 \end{align*}\]</div>
 <p>Taking <span class="math notranslate nohighlight">\(\mathbf{x} = \mathbf{y}_2\)</span> achieves this minimum. <span class="math notranslate nohighlight">\(\sharp\)</span></p>
-<p><em>Proof:</em> By the <em>Courant-Fischer theorem</em>,</p>
+<p><em>Proof:</em> By the <em>Courant-Fischer Theorem</em>,</p>
 <div class="math notranslate nohighlight">
 \[
 \mu_2 
@@ -889,15 +890,15 @@ L \frac{\mathbf{z}}{\|\mathbf{z}\|}\right\rangle
 = \langle \mathbf{x}, L \mathbf{x}\rangle.
 \]</div>
 <p>Moreover <span class="math notranslate nohighlight">\(\langle \mathbf{u}, \mathbf{y}_1\rangle = 0\)</span> if only if <span class="math notranslate nohighlight">\(\langle \mathbf{x}, \mathbf{y}_1\rangle = 0\)</span>. That establishes <span class="math notranslate nohighlight">\((*)\)</span>, since any objective value achieved in the original formulation can be achieved in the new one.</p>
-<p>Using that <span class="math notranslate nohighlight">\(\mathbf{y}_1 = \frac{1}{\sqrt{n}}(1,\ldots,1)^T\)</span>, the condition <span class="math notranslate nohighlight">\(\langle \mathbf{x}, \mathbf{y}_1 \rangle = 0\)</span>, i.e., <span class="math notranslate nohighlight">\(\sum_{i=1}^n (x_i/\sqrt{n}) = 0\)</span>, is equivalent to <span class="math notranslate nohighlight">\(\sum_{i=1}^n x_i = 0\)</span>. Similary, the condition <span class="math notranslate nohighlight">\(\|\mathbf{x}\|=1\)</span> is equivalent, after squaring each side, to <span class="math notranslate nohighlight">\(\sum_{j=1}^n x_j^2 = 1\)</span>.</p>
+<p>Using that <span class="math notranslate nohighlight">\(\mathbf{y}_1 = \frac{1}{\sqrt{n}}(1,\ldots,1)\)</span>, the condition <span class="math notranslate nohighlight">\(\langle \mathbf{x}, \mathbf{y}_1 \rangle = 0\)</span>, i.e., <span class="math notranslate nohighlight">\(\sum_{i=1}^n (x_i/\sqrt{n}) = 0\)</span>, is equivalent to <span class="math notranslate nohighlight">\(\sum_{i=1}^n x_i = 0\)</span>. Similary, the condition <span class="math notranslate nohighlight">\(\|\mathbf{x}\|=1\)</span> is equivalent, after squaring each side, to <span class="math notranslate nohighlight">\(\sum_{j=1}^n x_j^2 = 1\)</span>.</p>
 <p>Finally, the claim follows from the <em>Laplacian Quadratic Form Lemma</em>. <span class="math notranslate nohighlight">\(\square\)</span></p>
 <p>One application of this extremal characterization is the graph drawing heuristic we described previously. Consider the entries of the second Laplacian eigenvector <span class="math notranslate nohighlight">\(\mathbf{y}_2\)</span>. Its entries are centered around <span class="math notranslate nohighlight">\(0\)</span> by the condition <span class="math notranslate nohighlight">\(\langle \mathbf{y}_1, \mathbf{y}_2\rangle  = 0\)</span>. Because it minimizes the following quantity over all centered unit vectors,</p>
 <div class="math notranslate nohighlight">
 \[
 \sum_{\{i, j\} \in E} (x_i - x_j)^2
 \]</div>
-<p>the eigenvector <span class="math notranslate nohighlight">\(\mathbf{y}_2\)</span> tends to assign similar coordinates to adjacent vertices. A similar reasoning applies to the third Laplacian eigenvector, which in addition is orthogonal to the second one. So coordinates based on the second and third Laplacian eigenvectors should be expected to position adjacent vertices close-by and hence minimizing the need for long-range edges in the vizualization. In particular, it reveals some of the underlying Euclidean geometry of the graph, as the next example shows.</p>
-<p><strong>NUMERICAL CORNER:</strong> This is perhaps easiest to see on a path graph. Recall that <code class="docutils literal notranslate"><span class="pre">NetworkX</span></code> numbers vertices <span class="math notranslate nohighlight">\(0,\ldots,n-1\)</span>.</p>
+<p>the eigenvector <span class="math notranslate nohighlight">\(\mathbf{y}_2\)</span> tends to assign similar coordinates to adjacent vertices. A similar reasoning applies to the third Laplacian eigenvector, which in addition is orthogonal to the second one. So coordinates based on the second and third Laplacian eigenvectors should be expected to position adjacent vertices close-by and hence minimizing the need for long-range edges in the visualization. In particular, it reveals some of the underlying Euclidean geometry of the graph, as the next example shows.</p>
+<p><strong>NUMERICAL CORNER:</strong> This is perhaps easiest to see on a path graph. Recall that NetworkX numbers vertices <span class="math notranslate nohighlight">\(0,\ldots,n-1\)</span>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">G</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">path_graph</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
@@ -905,7 +906,7 @@ L \frac{\mathbf{z}}{\|\mathbf{z}\|}\right\rangle
 </div>
 </div>
 </div>
-<p>We plot the second Laplacian eigenvector (i.e., the eigenvector of the Laplacian matrix corresponding to the second smallest eigenvalue). We use <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.argsort.html"><code class="docutils literal notranslate"><span class="pre">numpy.argsort()</span></code></a> to find the index of the second smallest eigenvalue. Because indices start at <code class="docutils literal notranslate"><span class="pre">0</span></code>, we want entry <code class="docutils literal notranslate"><span class="pre">1</span></code> of the output of <code class="docutils literal notranslate"><span class="pre">np.argsort()</span></code>.</p>
+<p>We plot the second Laplacian eigenvector (i.e., the eigenvector of the Laplacian matrix corresponding to the second smallest eigenvalue). We use <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.argsort.html"><code class="docutils literal notranslate"><span class="pre">numpy.argsort</span></code></a> to find the index of the second smallest eigenvalue. Because indices start at <code class="docutils literal notranslate"><span class="pre">0</span></code>, we want entry <code class="docutils literal notranslate"><span class="pre">1</span></code> of the output.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">L</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">laplacian_matrix</span><span class="p">(</span><span class="n">G</span><span class="p">)</span><span class="o">.</span><span class="n">toarray</span><span class="p">()</span>
@@ -918,21 +919,21 @@ L \frac{\mathbf{z}}{\|\mathbf{z}\|}\right\rangle
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/ebf54cb000cff4cc7689ae9ba0d38be0b31de47c4ef844bc491220d0c8f6cc65.png" src="../../_images/ebf54cb000cff4cc7689ae9ba0d38be0b31de47c4ef844bc491220d0c8f6cc65.png" />
+<img alt="../../_images/c346aff858ca3853432ca68560966ff40a69ed45112737ae2d576de9ef3cebb7.png" src="../../_images/c346aff858ca3853432ca68560966ff40a69ed45112737ae2d576de9ef3cebb7.png" />
 </div>
 </div>
 <p><span class="math notranslate nohighlight">\(\unlhd\)</span></p>
-<p><strong>EXAMPLE:</strong> <strong>(Two-Component Graph)</strong> Let <span class="math notranslate nohighlight">\(G=(V,E)\)</span> be a graph with two connected components <span class="math notranslate nohighlight">\(\emptyset \neq V_1, V_2 \subseteq V\)</span>. By the properties of connected components, we have <span class="math notranslate nohighlight">\(V_1 \cap V_2 = \emptyset\)</span> and <span class="math notranslate nohighlight">\(V_1 \cup V_2 = V\)</span>. Assume the Laplacian <span class="math notranslate nohighlight">\(L\)</span> of <span class="math notranslate nohighlight">\(G\)</span> has spectral decomposition <span class="math notranslate nohighlight">\(L = \sum_{i=1}^n \mu_i \mathbf{y}_i \mathbf{y}_i^T\)</span> with <span class="math notranslate nohighlight">\(0 = \mu_1 \leq \mu_2 \leq \cdots \leq \mu_n\)</span> and <span class="math notranslate nohighlight">\(\mathbf{y}_1 = \frac{1}{\sqrt{n}}(1,\ldots,1)^T\)</span>. We claimed earlier that for such a graph <span class="math notranslate nohighlight">\(\mu_2 = 0\)</span>. We prove this here using the <em>Variational Characterization of <span class="math notranslate nohighlight">\(\mu_2\)</span></em></p>
+<p><strong>EXAMPLE:</strong> <strong>(Two-Component Graph)</strong> Let <span class="math notranslate nohighlight">\(G=(V,E)\)</span> be a graph with two connected components <span class="math notranslate nohighlight">\(\emptyset \neq V_1, V_2 \subseteq V\)</span>. By the properties of connected components, we have <span class="math notranslate nohighlight">\(V_1 \cap V_2 = \emptyset\)</span> and <span class="math notranslate nohighlight">\(V_1 \cup V_2 = V\)</span>. Assume the Laplacian <span class="math notranslate nohighlight">\(L\)</span> of <span class="math notranslate nohighlight">\(G\)</span> has spectral decomposition <span class="math notranslate nohighlight">\(L = \sum_{i=1}^n \mu_i \mathbf{y}_i \mathbf{y}_i^T\)</span> with <span class="math notranslate nohighlight">\(0 = \mu_1 \leq \mu_2 \leq \cdots \leq \mu_n\)</span> and <span class="math notranslate nohighlight">\(\mathbf{y}_1 = \frac{1}{\sqrt{n}}(1,\ldots,1)\)</span>. We claimed earlier that for such a graph <span class="math notranslate nohighlight">\(\mu_2 = 0\)</span>. We prove this here using the <em>Variational Characterization of <span class="math notranslate nohighlight">\(\mu_2\)</span></em></p>
 <div class="math notranslate nohighlight">
 \[
 \mu_2 
 = \min\left\{
 \sum_{\{u, v\} \in E} (x_u - x_v)^2 \,:\,
-\mathbf{x} = (x_1, \ldots, x_n)^T \in \mathbb{R}^n, \sum_{u=1}^n x_u = 0, \sum_{u = 1}^n x_u^2=1
+\mathbf{x} = (x_1, \ldots, x_n) \in \mathbb{R}^n, \sum_{u=1}^n x_u = 0, \sum_{u = 1}^n x_u^2=1
 \right\}.
 \]</div>
 <p>Based on this characterization, it suffices to find a vector <span class="math notranslate nohighlight">\(\mathbf{x}\)</span> satisfying <span class="math notranslate nohighlight">\(\sum_{u=1}^n x_u = 0\)</span> and <span class="math notranslate nohighlight">\(\sum_{u = 1}^n x_u^2=1\)</span> such that <span class="math notranslate nohighlight">\(\sum_{\{u, v\} \in E} (x_u - x_v)^2 = 0\)</span>. Indeed, since <span class="math notranslate nohighlight">\(\mu_2 \geq 0\)</span> and any such <span class="math notranslate nohighlight">\(\mathbf{x}\)</span> gives an upper bound on <span class="math notranslate nohighlight">\(\mu_2\)</span>, we then necessarily have that <span class="math notranslate nohighlight">\(\mu_2 = 0\)</span>.</p>
-<p>For <span class="math notranslate nohighlight">\(\sum_{\{u, v\} \in E} (x_u - x_v)^2\)</span> to be <span class="math notranslate nohighlight">\(0\)</span>, one might be tempted to take a constant vector <span class="math notranslate nohighlight">\(\mathbf{x}\)</span>. But then we could not satisfy <span class="math notranslate nohighlight">\(\sum_{u=1}^n x_u = 0\)</span> and <span class="math notranslate nohighlight">\(\sum_{u = 1}^n x_u^2=1\)</span> simultaneously. Instead, we modify this guess slightly. Because the graph has two connected components, there is no edge between <span class="math notranslate nohighlight">\(V_1\)</span> and <span class="math notranslate nohighlight">\(V_2\)</span>. Hence we can assign a different value to each component and still get <span class="math notranslate nohighlight">\(\sum_{\{u, v\} \in E} (x_u - x_v)^2 = 0\)</span>. So we look for a vector <span class="math notranslate nohighlight">\(\mathbf{x} = (x_1, \ldots, x_n)^T\)</span> of the form</p>
+<p>For <span class="math notranslate nohighlight">\(\sum_{\{u, v\} \in E} (x_u - x_v)^2\)</span> to be <span class="math notranslate nohighlight">\(0\)</span>, one might be tempted to take a constant vector <span class="math notranslate nohighlight">\(\mathbf{x}\)</span>. But then we could not satisfy <span class="math notranslate nohighlight">\(\sum_{u=1}^n x_u = 0\)</span> and <span class="math notranslate nohighlight">\(\sum_{u = 1}^n x_u^2=1\)</span> simultaneously. Instead, we modify this guess slightly. Because the graph has two connected components, there is no edge between <span class="math notranslate nohighlight">\(V_1\)</span> and <span class="math notranslate nohighlight">\(V_2\)</span>. Hence we can assign a different value to each component and still get <span class="math notranslate nohighlight">\(\sum_{\{u, v\} \in E} (x_u - x_v)^2 = 0\)</span>. So we look for a vector <span class="math notranslate nohighlight">\(\mathbf{x} = (x_1, \ldots, x_n)\)</span> of the form</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}
 x_u = \begin{cases}
@@ -982,7 +983,7 @@ x_u = \begin{cases}
 <p><strong>1</strong> Which of the following is NOT a property of the Laplacian matrix <span class="math notranslate nohighlight">\(L\)</span> of a graph <span class="math notranslate nohighlight">\(G\)</span>?</p>
 <p>a) <span class="math notranslate nohighlight">\(L\)</span> is symmetric.</p>
 <p>b) <span class="math notranslate nohighlight">\(L\)</span> is positive semidefinite.</p>
-<p>c) The constant unit vector <span class="math notranslate nohighlight">\(\frac{1}{\sqrt{n}}(1,\ldots,1)^T\)</span> is an eigenvector of <span class="math notranslate nohighlight">\(L\)</span> with eigenvalue 0.</p>
+<p>c) The constant unit vector <span class="math notranslate nohighlight">\(\frac{1}{\sqrt{n}}(1,\ldots,1)\)</span> is an eigenvector of <span class="math notranslate nohighlight">\(L\)</span> with eigenvalue 0.</p>
 <p>d) <span class="math notranslate nohighlight">\(L\)</span> is positive definite.</p>
 <p><strong>2</strong> Which vector is known as the Fiedler vector?</p>
 <p>a) The eigenvector corresponding to the largest eigenvalue of the Laplacian matrix.</p>
@@ -994,10 +995,10 @@ x_u = \begin{cases}
 <p>b) <span class="math notranslate nohighlight">\(\mu_2 &lt; 0\)</span></p>
 <p>c) <span class="math notranslate nohighlight">\(\mu_2 &gt; 0\)</span></p>
 <p>d) The value of <span class="math notranslate nohighlight">\(\mu_2\)</span> cannot be determined without additional information.</p>
-<p><strong>4</strong> The Laplacian quadratic form <span class="math notranslate nohighlight">\(x^T L x\)</span> for a graph <span class="math notranslate nohighlight">\(G\)</span> with Laplacian matrix <span class="math notranslate nohighlight">\(L\)</span> can be written as:</p>
+<p><strong>4</strong> The Laplacian quadratic form <span class="math notranslate nohighlight">\(\mathbf{x}^T L \mathbf{x}\)</span> for a graph <span class="math notranslate nohighlight">\(G\)</span> with Laplacian matrix <span class="math notranslate nohighlight">\(L\)</span> can be written as:</p>
 <div class="math notranslate nohighlight">
 \[
-x^T L x = \sum_{\{i,j\} \in E} (x_i - x_j)^2.
+\mathbf{x}^T L \mathbf{x} = \sum_{\{i,j\} \in E} (x_i - x_j)^2.
 \]</div>
 <p>What does this quadratic form measure?</p>
 <p>a) The average distance between vertices in the graph.</p>
@@ -1012,7 +1013,7 @@ x^T L x = \sum_{\{i,j\} \in E} (x_i - x_j)^2.
 <p>Answer for 1: d. Justification: The text states that “because <span class="math notranslate nohighlight">\(L\)</span> is positive semidefinite, the eigenvalues are nonnegative,” but it does not claim that <span class="math notranslate nohighlight">\(L\)</span> is positive definite.</p>
 <p>Answer for 2: c. Justification: The text refers to the eigenvector corresponding to <span class="math notranslate nohighlight">\(\mu_2\)</span> (the second smallest eigenvalue) as the Fiedler vector.</p>
 <p>Answer for 3: c. Justification: The text proves that “If <span class="math notranslate nohighlight">\(G\)</span> is connected, then the Laplacian eigenvalue <span class="math notranslate nohighlight">\(\mu_2 &gt; 0\)</span>.”</p>
-<p>Answer for 4: c. Justification: The text states that “the Laplacian quadratic form measures how ‘smooth’ the function <span class="math notranslate nohighlight">\(x\)</span> is over the graph in the following sense. A small value of <span class="math notranslate nohighlight">\(x^T L x\)</span> indicates that adjacent vertices tend to get assigned close values.”</p>
+<p>Answer for 4: c. Justification: The text states that “the Laplacian quadratic form measures how ‘smooth’ the function <span class="math notranslate nohighlight">\(\mathbf{x}\)</span> is over the graph in the following sense. A small value of <span class="math notranslate nohighlight">\(\mathbf{x}^T L \mathbf{x}\)</span> indicates that adjacent vertices tend to get assigned close values.”</p>
 <p>Answer for 5: b. Justification: The text states, “Let <span class="math notranslate nohighlight">\(B\)</span> be an oriented incidence matrix of <span class="math notranslate nohighlight">\(G\)</span>. By construction, <span class="math notranslate nohighlight">\(L = B B^T\)</span>. This implies that <span class="math notranslate nohighlight">\(L\)</span> is symmetric and positive semidefinite.”</p>
 </section>
 </section>

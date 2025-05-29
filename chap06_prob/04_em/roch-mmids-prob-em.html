@@ -544,14 +544,8 @@ p_\bX(\bx)
 &amp;= \sum_{\by \in \S_\bY} p_{\bX|\bY}(\bx|\by) \,p_\bY(\by)
 \end{align*}\]</div>
 <p>where we used that the events <span class="math notranslate nohighlight">\(\{\bY=\by\}\)</span>, <span class="math notranslate nohighlight">\(\by \in \S_\bY\)</span>, form a partition of the probability space. We interpret this equation as defining <span class="math notranslate nohighlight">\(p_\bX(\bx)\)</span> as a convex combination – a mixture – of the distributions <span class="math notranslate nohighlight">\(p_{\bX|\bY}(\bx|\by)\)</span>, <span class="math notranslate nohighlight">\(\by \in \S_\bY\)</span>, with mixing weights <span class="math notranslate nohighlight">\(p_\bY(\by)\)</span>. In general, we need to specify the full conditional probability distribution (CPD): <span class="math notranslate nohighlight">\(p_{\bX|\bY}(\bx|\by), \forall \bx \in \S_{\bX}, \by \in \S_\bY\)</span>. But assuming that the mixing weights and/or CPD come from parametric families can help reduce the complexity of the model.</p>
-<p>That can be represented in a digraph with a directed edge from a vertex for <span class="math notranslate nohighlight">\(Y\)</span> to a vertex for <span class="math notranslate nohighlight">\(X\)</span>. Further, we let the vertex for <span class="math notranslate nohighlight">\(X\)</span> be shaded to indicate that it is observed, while the vertex for <span class="math notranslate nohighlight">\(Y\)</span> is not shaded to indicate that it is not. Mathematically, that corresponds to applying the law of total probability as we did previously.</p>
-<!--TEX
-**Figure:** A mixture
-
-![A mixture](./figs/dgm-mixture-small.png)
-
-$\bowtie$
---><p><img alt="A mixture" src="../../_images/dgm_mixture_networkx.png" /></p>
+<p>That can be represented in a digraph with a directed edge from a vertex for <span class="math notranslate nohighlight">\(\mathbf{Y}\)</span> to a vertex for <span class="math notranslate nohighlight">\(\mathbf{X}\)</span>. Further, we let the vertex for <span class="math notranslate nohighlight">\(\mathbf{X}\)</span> be shaded to indicate that it is observed, while the vertex for <span class="math notranslate nohighlight">\(\mathbf{Y}\)</span> is not shaded to indicate that it is not. Mathematically, that corresponds to applying the law of total probability as we did previously.</p>
+<p><img alt="A mixture" src="../../_images/dgm_mixture_networkx.png" /></p>
 <p>In the parametric context, this gives rise to a fruitful approach to expanding distribution families. Suppose <span class="math notranslate nohighlight">\(\{p_{\btheta}:\btheta \in \Theta\}\)</span> is a parametric family of distributions. Let <span class="math notranslate nohighlight">\(K \geq 2\)</span>, <span class="math notranslate nohighlight">\(\btheta_1, \ldots, \btheta_K \in \Theta\)</span> and <span class="math notranslate nohighlight">\(\bpi = (\pi_1,\ldots,\pi_K) \in \Delta_K\)</span>. Suppose <span class="math notranslate nohighlight">\(Y \sim \mathrm{Cat}(\bpi)\)</span> and that the conditional distributions satisfy</p>
 <div class="math notranslate nohighlight">
 \[
@@ -642,11 +636,11 @@ f_\bX(\bx)
 </div>
 </details>
 <div class="cell_output docutils container">
-<img alt="../../_images/6b35d78bcab7c5bdbf302f30f40213579e80df7844e95cd7bfabfe5a9147d86f.png" src="../../_images/6b35d78bcab7c5bdbf302f30f40213579e80df7844e95cd7bfabfe5a9147d86f.png" />
+<img alt="../../_images/d96dada4644d3611a7cfa6aeaa7c3378d8e8cca7a04c6ffbc22bff283cfaa596.png" src="../../_images/d96dada4644d3611a7cfa6aeaa7c3378d8e8cca7a04c6ffbc22bff283cfaa596.png" />
 </div>
 </div>
 <p><span class="math notranslate nohighlight">\(\unlhd\)</span></p>
-<p>In Numpy, as we have seen before, the module <a class="reference external" href="https://numpy.org/doc/stable/reference/random/index.html">numpy.random</a> also provides a way to sample from mixture models by using <a class="reference external" href="https://numpy.org/doc/stable/reference/random/generated/numpy.random.Generator.choice.html">numpy.random.Generator.choice</a>.</p>
+<p>In NumPy, as we have seen before, the module <a class="reference external" href="https://numpy.org/doc/stable/reference/random/index.html"><code class="docutils literal notranslate"><span class="pre">numpy.random</span></code></a> also provides a way to sample from mixture models by using <a class="reference external" href="https://numpy.org/doc/stable/reference/random/generated/numpy.random.Generator.choice.html"><code class="docutils literal notranslate"><span class="pre">numpy.random.Generator.choice</span></code></a>.</p>
 <p>For instance, we consider mixtures of multivariate Gaussians. We chage the notation slightly to track Python’s indexing. For <span class="math notranslate nohighlight">\(i=0,1\)</span>, we have a mean <span class="math notranslate nohighlight">\(\bmu_i \in \mathbb{R}^d\)</span> and a positive definite covariance matrix <span class="math notranslate nohighlight">\(\bSigma_i \in \mathbb{R}^{d \times d}\)</span>. We also have mixture weights <span class="math notranslate nohighlight">\(\phi_0, \phi_1 \in (0,1)\)</span> such that <span class="math notranslate nohighlight">\(\phi_0 + \phi_1 = 1\)</span>. Suppose we want to generate a total of <span class="math notranslate nohighlight">\(n\)</span> samples.</p>
 <p>For each sample <span class="math notranslate nohighlight">\(j=1,\ldots, n\)</span>, independently from everything else:</p>
 <ol class="arabic simple">
@@ -733,7 +727,7 @@ f_\bX(\bx)
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/30b10e0fd8a24e151551a23c3887a6318a574037a25c9bb8f3ba634e47bc2579.png" src="../../_images/30b10e0fd8a24e151551a23c3887a6318a574037a25c9bb8f3ba634e47bc2579.png" />
+<img alt="../../_images/d22c61780e13a73ecc8364cd91c45d25951b009b2ea42174ad8643880d716bc6.png" src="../../_images/d22c61780e13a73ecc8364cd91c45d25951b009b2ea42174ad8643880d716bc6.png" />
 </div>
 </div>
 <p><span class="math notranslate nohighlight">\(\unlhd\)</span></p>
@@ -750,14 +744,8 @@ f_\bX(\bx)
 &amp;= \sum_{k=1}^K \pi_k \prod_{m=1}^M p_{k,m}^{x_m} (1-p_{k,m})^{1-x_m}.
 \end{align*}\]</div>
 <p>Graphically, this is the same are the Naive Bayes model, except that <span class="math notranslate nohighlight">\(C\)</span> is not observed and therefore is not shaded.</p>
-<!--TEX
-**Figure:** Mixture of multivariate Bernoullis
-
-![Mixture of multivariate Bernoullis](./figs/dgm-em-small.png)
-
-$\bowtie$
---><p><img alt="Mixture of multivariate Bernoullis" src="../../_images/dgm-em-networkx.png" /></p>
-<p>This type of model is useful in particular for clustering tasks, where the <span class="math notranslate nohighlight">\(c_k\)</span>s can be thought of as different clusters. Similarly to what we did in the previous sub-section, our goal is to infer the parameters from samples and then predict the class of an old or new sample given its features. The main – substantial – difference is that the true labels of the samples are not observed. As we will see, that complicates the task considerably.</p>
+<p><img alt="Mixture of multivariate Bernoullis" src="../../_images/dgm-em-networkx.png" /></p>
+<p>This type of model is useful in particular for clustering tasks, where the <span class="math notranslate nohighlight">\(c_k\)</span>s can be thought of as different clusters. Similarly to what we did in the previous section, our goal is to infer the parameters from samples and then predict the class of an old or new sample given its features. The main – substantial – difference is that the true labels of the samples are not observed. As we will see, that complicates the task considerably.</p>
 <p><strong>Model fitting</strong> We first fit the model from training data <span class="math notranslate nohighlight">\(\{\bx_i\}_{i=1}^n\)</span>. Recall that the corresponding class labels <span class="math notranslate nohighlight">\(c_i\)</span>s are not observed. In this type of model, they are referred to as hidden or latent variables and we will come back to their inference below.</p>
 <p>We would like to use maximum likelihood estimation, that is, maximize the probability of observing the data</p>
 <div class="math notranslate nohighlight">
@@ -785,15 +773,7 @@ U_\mathbf{x}(\mathbf{z}) \geq f(\mathbf{z}), \quad \forall \mathbf{z} \in \mathb
 U_\mathbf{x}(\mathbf{x}) = f(\mathbf{x}).
 \]</div>
 <p>We say that <span class="math notranslate nohighlight">\(U_\mathbf{x}\)</span> majorizes <span class="math notranslate nohighlight">\(f\)</span> at <span class="math notranslate nohighlight">\(\mathbf{x}\)</span>. Then we prove in the next lemma that <span class="math notranslate nohighlight">\(U_\mathbf{x}\)</span> can be used to make progress towards minimizing <span class="math notranslate nohighlight">\(f\)</span>, that is, find a point <span class="math notranslate nohighlight">\(\mathbf{x}'\)</span> such that <span class="math notranslate nohighlight">\(f(\mathbf{x}') \leq f(\mathbf{x})\)</span>. If in addition <span class="math notranslate nohighlight">\(U_\mathbf{x}\)</span> is easier to minimize than <span class="math notranslate nohighlight">\(f\)</span> itself, say because an explicit minimum can be computed, then this observation naturally leads to an iterative algorithm.</p>
-<!--TEX
-
-**Figure:** Majorization ([Source](https://www.researchgate.net/figure/Illustration-of-the-basic-majorization-minimization-principle-The-objective-function-f_fig3_268227141))
-
-![Majorization](https://www.researchgate.net/profile/Francis_Bach/publication/268227141/figure/fig3/AS:613912244400128@1523379493092/Illustration-of-the-basic-majorization-minimization-principle-The-objective-function-f.png)
-
-$\bowtie$
-
---><p><img alt="A majorizing function (with help from ChatGPT; inspired by Source)" src="../../_images/majorize.png" /></p>
+<p><img alt="A majorizing function (with help from ChatGPT; inspired by Source)" src="../../_images/majorize.png" /></p>
 <p><strong>LEMMA</strong> <strong>(Majorization-Minimization)</strong> <span class="math notranslate nohighlight">\(\idx{majorization-minimization lemma}\xdi\)</span> Let <span class="math notranslate nohighlight">\(f : \mathbb{R}^d \to \mathbb{R}\)</span> and suppose <span class="math notranslate nohighlight">\(U_{\mathbf{x}}\)</span> majorizes <span class="math notranslate nohighlight">\(f\)</span> at <span class="math notranslate nohighlight">\(\mathbf{x}\)</span>. Let <span class="math notranslate nohighlight">\(\mathbf{x}'\)</span> be a global minimum of <span class="math notranslate nohighlight">\(U_\mathbf{x}\)</span>. Then</p>
 <div class="math notranslate nohighlight">
 \[
@@ -873,7 +853,7 @@ f(\bmu_1',\ldots,\bmu_K')
 <p>This argument is equivalent to our previous analysis of the <span class="math notranslate nohighlight">\(k\)</span>-means algorithm. <span class="math notranslate nohighlight">\(\lhd\)</span></p>
 <p><strong>CHAT &amp; LEARN</strong> The mixture of multivariate Bernoullis model assumes a fixed number of clusters. Ask your favorite AI chatbot to discuss Bayesian nonparametric extensions of this model, such as the Dirichlet process mixture model, which can automatically infer the number of clusters from the data. <span class="math notranslate nohighlight">\(\ddagger\)</span></p>
 <p><strong>EM algorithm</strong> The <a class="reference external" href="https://en.wikipedia.org/wiki/Expectation%E2%80%93maximization_algorithm">Expectation-Maximization (EM) algorithm</a><span class="math notranslate nohighlight">\(\idx{EM algorithm}\xdi\)</span> is an instantiation of the majorization-minimization principle that applies widely to parameter estimation of mixtures. Here we focus on the mixture of multivariate Bernoullis.</p>
-<p>Here recall that the objective to be minimized is</p>
+<p>Recall that the objective to be minimized is</p>
 <div class="amsmath math notranslate nohighlight">
 \[\begin{align*}
 L_n(\bpi, \{\bp_k\}; \{\bx_i\})
@@ -1148,7 +1128,7 @@ p_{k,m}^{t+1} = \frac{\eta_{k,m}^t}{\eta_k^t}.
 <p><strong>Figure:</strong> MNIST sample images (<a class="reference external" href="https://commons.wikimedia.org/wiki/File:MnistExamples.png">Source</a>)</p>
 <p><img alt="MNIST sample images" src="https://upload.wikimedia.org/wikipedia/commons/2/27/MnistExamples.png" /></p>
 <p><span class="math notranslate nohighlight">\(\bowtie\)</span></p>
-<p><strong>NUMERICAL CORNER:</strong> We load it from PyTorch. The data can be accessed with <a class="reference external" href="https://pytorch.org/vision/stable/generated/torchvision.datasets.MNIST.html"><code class="docutils literal notranslate"><span class="pre">torchvision.datasets.MNIST</span></code></a>. The <a class="reference external" href="https://pytorch.org/docs/stable/generated/torch.Tensor.squeeze.html"><code class="docutils literal notranslate"><span class="pre">squeeze()</span></code></a> below removes the color dimension in the image, which is grayscale. The <a class="reference external" href="https://pytorch.org/docs/stable/generated/torch.Tensor.numpy.html"><code class="docutils literal notranslate"><span class="pre">numpy()</span></code></a> converts the PyTorch tensors into Numpy arrays. See <a class="reference external" href="https://pytorch.org/docs/stable/data.html#torch.utils.data.DataLoader"><code class="docutils literal notranslate"><span class="pre">torch.utils.data.DataLoader</span></code></a> for details on the data loading. We will say more about PyTorch in a later chapter.</p>
+<p><strong>NUMERICAL CORNER:</strong> We load it from PyTorch. The data can be accessed with <a class="reference external" href="https://pytorch.org/vision/stable/generated/torchvision.datasets.MNIST.html"><code class="docutils literal notranslate"><span class="pre">torchvision.datasets.MNIST</span></code></a>. The <a class="reference external" href="https://pytorch.org/docs/stable/generated/torch.Tensor.squeeze.html"><code class="docutils literal notranslate"><span class="pre">squeeze()</span></code></a> below removes the color dimension in the image, which is grayscale. The <a class="reference external" href="https://pytorch.org/docs/stable/generated/torch.Tensor.numpy.html"><code class="docutils literal notranslate"><span class="pre">numpy()</span></code></a> converts the PyTorch tensors into NumPy arrays. See <a class="reference external" href="https://pytorch.org/docs/stable/data.html#torch.utils.data.DataLoader"><code class="docutils literal notranslate"><span class="pre">torch.utils.data.DataLoader</span></code></a> for details on the data loading. We will say more about PyTorch in a later chapter.</p>
 <div class="cell tag_hide-input docutils container">
 <details class="hide above-input">
 <summary aria-label="Toggle hidden content">
@@ -1171,7 +1151,7 @@ p_{k,m}^{t+1} = \frac{\eta_{k,m}^t}{\eta_k^t}.
 </div>
 </details>
 </div>
-<p>We turn the grayscale images (more precisely, each pixel is an integer between <span class="math notranslate nohighlight">\(0\)</span> and <span class="math notranslate nohighlight">\(255\)</span>) into a black-and-white images by rounding the pixels (after dividing by <span class="math notranslate nohighlight">\(255\)</span>)</p>
+<p>We turn the grayscale images into a black-and-white images by rounding the pixels.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">imgs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">imgs</span><span class="p">)</span>
@@ -1204,10 +1184,10 @@ p_{k,m}^{t+1} = \frac{\eta_{k,m}^t}{\eta_k^t}.
 </div>
 </details>
 <div class="cell_output docutils container">
-<img alt="../../_images/c37ba97f43e27751ae2e4288af774f2535164bee341b9bcd46116ca1b8deed0f.png" src="../../_images/c37ba97f43e27751ae2e4288af774f2535164bee341b9bcd46116ca1b8deed0f.png" />
+<img alt="../../_images/09f5ba1d22597b26a8db0ef902985cfc9e10b9c5d6781e9341a9055390573fe8.png" src="../../_images/09f5ba1d22597b26a8db0ef902985cfc9e10b9c5d6781e9341a9055390573fe8.png" />
 </div>
 </div>
-<p>Next, we transform the images into vectors and convert into black and white by rounding.</p>
+<p>Next, we transform the images into vectors.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">X</span> <span class="o">=</span> <span class="n">imgs2</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">imgs2</span><span class="p">),</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
@@ -1248,9 +1228,9 @@ p_{k,m}^{t+1} = \frac{\eta_{k,m}^t}{\eta_k^t}.
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/var/folders/k0/7k0fxl7j54q4k8dyqnrc6sz00000gr/T/ipykernel_79544/2844323350.py:10: RuntimeWarning: underflow encountered in exp
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/var/folders/k0/7k0fxl7j54q4k8dyqnrc6sz00000gr/T/ipykernel_48609/2844323350.py:10: RuntimeWarning: underflow encountered in exp
   r_k = np.exp(-score_k)/(np.sum(np.exp(-score_k)))
-/var/folders/k0/7k0fxl7j54q4k8dyqnrc6sz00000gr/T/ipykernel_79544/2844323350.py:10: RuntimeWarning: invalid value encountered in divide
+/var/folders/k0/7k0fxl7j54q4k8dyqnrc6sz00000gr/T/ipykernel_48609/2844323350.py:10: RuntimeWarning: invalid value encountered in divide
   r_k = np.exp(-score_k)/(np.sum(np.exp(-score_k)))
 </pre></div>
 </div>
@@ -1264,7 +1244,7 @@ r_{k,i}^t
 = \frac{\pi_k^t \prod_{m=1}^M (p_{k,m}^t)^{x_{i,m}} (1-p_{k,m}^t)^{1-x_{i,m}}}
 {\sum_{k'=1}^K \pi_{k'}^t \prod_{m=1}^M (p_{k',m}^t)^{x_{i,m}} (1-p_{k',m}^t)^{1-x_{i,m}}},
 \]</div>
-<p>we first compute the negative logarithm of each term in the numerator as we did in the Naive Bayes case. But then we applied the function <span class="math notranslate nohighlight">\(e^{-x}\)</span>, because this time we are not simply computing an optimal score. When all scores are high, this last step may result in underflow, that is, produces numbers so small that they get rounded down to zero by Numpy. Then the ratio defining <code class="docutils literal notranslate"><span class="pre">r_k</span></code> is not well-defined.</p>
+<p>we first compute the negative logarithm of each term in the numerator as we did in the Naive Bayes case. But then we apply the function <span class="math notranslate nohighlight">\(e^{-x}\)</span>, because this time we are not simply computing an optimal score. When all scores are high, this last step may result in underflow, that is, produces numbers so small that they get rounded down to zero by NumPy. Then the ratio defining <code class="docutils literal notranslate"><span class="pre">r_k</span></code> is not well-defined.</p>
 <p>To deal with this, we introduce a technique called the log-sum-exp trick<span class="math notranslate nohighlight">\(\idx{log-sum-exp trick}\xdi\)</span> (with some help from ChatGPT). Consider the computation of a function of <span class="math notranslate nohighlight">\(\mathbf{a} = (a_1, \ldots, a_n)\)</span> of the form</p>
 <div class="math notranslate nohighlight">
 \[
@@ -1294,14 +1274,14 @@ h(\mathbf{a}) = \log \left( \sum_{i=1}^{n} e^{-a_i} \right).
 </li>
 </ol>
 <p>Why does this help with underflow? By subtracting <span class="math notranslate nohighlight">\(M\)</span>, the smallest value in the set, from each <span class="math notranslate nohighlight">\(a_i\)</span>:
-(i) the largest term in <span class="math notranslate nohighlight">\(\{e^{-(a_i - M)} : = 1,\ldots,n\}\)</span> becomes <span class="math notranslate nohighlight">\(e^0 = 1\)</span>; and (ii)
-all other terms are between 0 and 1, as they are exponentiations of negative numbers or zero. This manipulation avoids terms underflowing to zero because even very large values, when shifted by <span class="math notranslate nohighlight">\(M\)</span>, are less likely to hit the underflow threshold.</p>
-<p>Here is an example. Imagine you have <span class="math notranslate nohighlight">\(\mathbf{a} = (-1000, -1001, -1002)\)</span>.</p>
+(i) the largest term in <span class="math notranslate nohighlight">\(\{e^{-(a_i - M)} :  i = 1,\ldots,n\}\)</span> becomes <span class="math notranslate nohighlight">\(e^0 = 1\)</span>; and (ii)
+all other terms are between 0 and 1, as they are exponentiations of nonpositive numbers. This manipulation avoids terms underflowing to zero because even very large values, when shifted by <span class="math notranslate nohighlight">\(M\)</span>, are less likely to hit the underflow threshold.</p>
+<p>Here is an example. Imagine you have <span class="math notranslate nohighlight">\(\mathbf{a} = (1000, 1001, 1002)\)</span>.</p>
 <ul class="simple">
 <li><p>Direct computation: <span class="math notranslate nohighlight">\(e^{-1000}\)</span>, <span class="math notranslate nohighlight">\(e^{-1001}\)</span>, and <span class="math notranslate nohighlight">\(e^{-1002}\)</span> might all underflow to zero.</p></li>
 <li><p>With the log-sum-exp trick: Subtract <span class="math notranslate nohighlight">\(M = 1000\)</span>, leading to <span class="math notranslate nohighlight">\(e^{0}\)</span>, <span class="math notranslate nohighlight">\(e^{-1}\)</span>, and <span class="math notranslate nohighlight">\(e^{-2}\)</span>, all meaningful, non-zero results that accurately contribute to the sum.</p></li>
 </ul>
-<p>We implement in Numpy.</p>
+<p>We implement in NumPy.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">log_sum_exp_trick</span><span class="p">(</span><span class="n">a</span><span class="p">):</span>
@@ -1327,9 +1307,9 @@ all other terms are between 0 and 1, as they are exponentiations of negative num
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/var/folders/k0/7k0fxl7j54q4k8dyqnrc6sz00000gr/T/ipykernel_79544/214275762.py:1: RuntimeWarning: underflow encountered in exp
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/var/folders/k0/7k0fxl7j54q4k8dyqnrc6sz00000gr/T/ipykernel_48609/214275762.py:1: RuntimeWarning: underflow encountered in exp
   np.log(np.sum(np.exp(-a)))
-/var/folders/k0/7k0fxl7j54q4k8dyqnrc6sz00000gr/T/ipykernel_79544/214275762.py:1: RuntimeWarning: divide by zero encountered in log
+/var/folders/k0/7k0fxl7j54q4k8dyqnrc6sz00000gr/T/ipykernel_48609/214275762.py:1: RuntimeWarning: divide by zero encountered in log
   np.log(np.sum(np.exp(-a)))
 </pre></div>
 </div>
@@ -1381,7 +1361,7 @@ all other terms are between 0 and 1, as they are exponentiations of negative num
 </div>
 </div>
 </div>
-<p>Here is one of them.</p>
+<p>Here are the parameters for one cluster.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
@@ -1391,7 +1371,7 @@ all other terms are between 0 and 1, as they are exponentiations of negative num
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/bac86b54a58d608062f48100cdaf4d3fda557220492df4e71afa9fe36895580d.png" src="../../_images/bac86b54a58d608062f48100cdaf4d3fda557220492df4e71afa9fe36895580d.png" />
+<img alt="../../_images/140b9ccf2e31df7febe808141c26d248ff25b7748bcf7be623f2bd60365c407b.png" src="../../_images/140b9ccf2e31df7febe808141c26d248ff25b7748bcf7be623f2bd60365c407b.png" />
 </div>
 </div>
 <p>Here is the other one.</p>
@@ -1404,7 +1384,7 @@ all other terms are between 0 and 1, as they are exponentiations of negative num
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/a6d35a4d85c72936f72c60aa966abff31d13754c7dee616db784ec30a2ea10b4.png" src="../../_images/a6d35a4d85c72936f72c60aa966abff31d13754c7dee616db784ec30a2ea10b4.png" />
+<img alt="../../_images/123b40b50b0c6ee77988c143d5de20e5dc96e914b6fdf3634b015b34143479ee.png" src="../../_images/123b40b50b0c6ee77988c143d5de20e5dc96e914b6fdf3634b015b34143479ee.png" />
 </div>
 </div>
 <p>Now that the model is trained, we compute the probability that an example image is in each cluster. We use the first image in the dataset that we plotted earlier.</p>
@@ -1426,22 +1406,22 @@ all other terms are between 0 and 1, as they are exponentiations of negative num
 <p><strong>CHAT &amp; LEARN</strong> The mixture of multivariate Bernoullis model is a simple example of a latent variable model. Ask your favorite AI chatbot to discuss more complex latent variable models, such as the variational autoencoder or the Gaussian process latent variable model, and their applications in unsupervised learning. <span class="math notranslate nohighlight">\(\ddagger\)</span></p>
 <p><em><strong>Self-assessment quiz</strong></em> <em>(with help from Claude, Gemini, and ChatGPT)</em></p>
 <p><strong>1</strong> In the mixture of multivariate Bernoullis model, the joint distribution is given by:</p>
-<p>a) <span class="math notranslate nohighlight">\(P[X = x] = \prod_{k=1}^K P[C = k, X = x]\)</span></p>
-<p>b) <span class="math notranslate nohighlight">\(P[X = x] = \sum_{k=1}^K P[X = x|C = k] P[C = k]\)</span></p>
-<p>c) <span class="math notranslate nohighlight">\(P[X = x] = \prod_{k=1}^K P[X = x|C = k] P[C = k]\)</span></p>
-<p>d) <span class="math notranslate nohighlight">\(P[X = x] = \sum_{k=1}^K P[C = k, X = x]\)</span></p>
+<p>a) <span class="math notranslate nohighlight">\(P[\mathbf{X} = \mathbf{x}] = \prod_{k=1}^K P[C = k, \mathbf{X} = \mathbf{x}]\)</span></p>
+<p>b) <span class="math notranslate nohighlight">\(P[\mathbf{X} = \mathbf{x}] = \sum_{k=1}^K P[\mathbf{X} = \mathbf{x}|C = k] P[C = k]\)</span></p>
+<p>c) <span class="math notranslate nohighlight">\(P[\mathbf{X} = \mathbf{x}] = \prod_{k=1}^K P[\mathbf{X} = \mathbf{x}|C = k] P[C = k]\)</span></p>
+<p>d) <span class="math notranslate nohighlight">\(P[\mathbf{X} = \mathbf{x}] = \sum_{\mathbf{x}} P[C = k, \mathbf{X} = \mathbf{x}]\)</span></p>
 <p><strong>2</strong> The majorization-minimization principle states that:</p>
-<p>a) If <span class="math notranslate nohighlight">\(U_x\)</span> majorizes <span class="math notranslate nohighlight">\(f\)</span> at <span class="math notranslate nohighlight">\(x\)</span>, then a global minimum <span class="math notranslate nohighlight">\(x'\)</span> of <span class="math notranslate nohighlight">\(U_x\)</span> satisfies <span class="math notranslate nohighlight">\(f(x') \geq f(x)\)</span>.</p>
-<p>b) If <span class="math notranslate nohighlight">\(U_x\)</span> majorizes <span class="math notranslate nohighlight">\(f\)</span> at <span class="math notranslate nohighlight">\(x\)</span>, then a global minimum <span class="math notranslate nohighlight">\(x'\)</span> of <span class="math notranslate nohighlight">\(U_x\)</span> satisfies <span class="math notranslate nohighlight">\(f(x') \leq f(x)\)</span>.</p>
-<p>c) If <span class="math notranslate nohighlight">\(U_x\)</span> minorizes <span class="math notranslate nohighlight">\(f\)</span> at <span class="math notranslate nohighlight">\(x\)</span>, then a global minimum <span class="math notranslate nohighlight">\(x'\)</span> of <span class="math notranslate nohighlight">\(U_x\)</span> satisfies <span class="math notranslate nohighlight">\(f(x') \geq f(x)\)</span>.</p>
-<p>d) If <span class="math notranslate nohighlight">\(U_x\)</span> minorizes <span class="math notranslate nohighlight">\(f\)</span> at <span class="math notranslate nohighlight">\(x\)</span>, then a global minimum <span class="math notranslate nohighlight">\(x'\)</span> of <span class="math notranslate nohighlight">\(U_x\)</span> satisfies <span class="math notranslate nohighlight">\(f(x') \leq f(x)\)</span>.</p>
+<p>a) If <span class="math notranslate nohighlight">\(U_{\mathbf{x}}\)</span> majorizes <span class="math notranslate nohighlight">\(f\)</span> at <span class="math notranslate nohighlight">\(\mathbf{x}\)</span>, then a global minimum <span class="math notranslate nohighlight">\(\mathbf{x}'\)</span> of <span class="math notranslate nohighlight">\(U_{\mathbf{x}}\)</span> satisfies <span class="math notranslate nohighlight">\(f(\mathbf{x}') \geq f(\mathbf{x})\)</span>.</p>
+<p>b) If <span class="math notranslate nohighlight">\(U_{\mathbf{x}}\)</span> majorizes <span class="math notranslate nohighlight">\(f\)</span> at <span class="math notranslate nohighlight">\(\mathbf{x}\)</span>, then a global minimum <span class="math notranslate nohighlight">\(\mathbf{x}'\)</span> of <span class="math notranslate nohighlight">\(U_{\mathbf{x}}\)</span> satisfies <span class="math notranslate nohighlight">\(f(\mathbf{x}') \leq f(\mathbf{x})\)</span>.</p>
+<p>c) If <span class="math notranslate nohighlight">\(U_{\mathbf{x}}\)</span> minorizes <span class="math notranslate nohighlight">\(f\)</span> at <span class="math notranslate nohighlight">\(\mathbf{x}\)</span>, then a global minimum <span class="math notranslate nohighlight">\(\mathbf{x}'\)</span> of <span class="math notranslate nohighlight">\(U_{\mathbf{x}}\)</span> satisfies <span class="math notranslate nohighlight">\(f(\mathbf{x}') \geq f(\mathbf{x})\)</span>.</p>
+<p>d) If <span class="math notranslate nohighlight">\(U_{\mathbf{x}}\)</span> minorizes <span class="math notranslate nohighlight">\(f\)</span> at <span class="math notranslate nohighlight">\(\mathbf{x}\)</span>, then a global minimum <span class="math notranslate nohighlight">\(\mathbf{x}'\)</span> of <span class="math notranslate nohighlight">\(U_{\mathbf{x}}\)</span> satisfies <span class="math notranslate nohighlight">\(f(\mathbf{x}') \leq f(\mathbf{x})\)</span>.</p>
 <p><strong>3</strong> In the EM algorithm for mixtures of multivariate Bernoullis, the M-step involves:</p>
 <p>a) Updating the parameters <span class="math notranslate nohighlight">\(\pi_k\)</span> and <span class="math notranslate nohighlight">\(p_{k,m}\)</span></p>
 <p>b) Computing the responsibilities <span class="math notranslate nohighlight">\(r_{k,i}^t\)</span></p>
 <p>c) Minimizing the negative log-likelihood</p>
 <p>d) Applying the log-sum-exp trick</p>
-<p><strong>4</strong> The mixture of multivariate Bernoullis model is represented by the following graphical model:
-a)</p>
+<p><strong>4</strong> The mixture of multivariate Bernoullis model is represented by the following graphical model:</p>
+<p>a)</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">G</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">DiGraph</span><span class="p">()</span>
 <span class="n">G</span><span class="o">.</span><span class="n">add_node</span><span class="p">(</span><span class="s2">&quot;X&quot;</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="s2">&quot;circle&quot;</span><span class="p">,</span> <span class="n">style</span><span class="o">=</span><span class="s2">&quot;filled&quot;</span><span class="p">,</span> <span class="n">fillcolor</span><span class="o">=</span><span class="s2">&quot;gray&quot;</span><span class="p">)</span>
 <span class="n">G</span><span class="o">.</span><span class="n">add_node</span><span class="p">(</span><span class="s2">&quot;C&quot;</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="s2">&quot;circle&quot;</span><span class="p">,</span> <span class="n">style</span><span class="o">=</span><span class="s2">&quot;filled&quot;</span><span class="p">,</span> <span class="n">fillcolor</span><span class="o">=</span><span class="s2">&quot;white&quot;</span><span class="p">)</span>
@@ -1474,9 +1454,9 @@ a)</p>
 <p>b) They indicate the probability of each data point belonging to each cluster.</p>
 <p>c) They determine the optimal number of clusters.</p>
 <p>d) They are used to initialize the cluster centers in the M-step.</p>
-<p>Answer for 1: b. Justification: The text states, “<span class="math notranslate nohighlight">\(P[X = x] = \sum_{k=1}^K P[C = k, X = x] = \sum_{k=1}^K P[X = x|C = k] P[C = k]\)</span>.”</p>
-<p>Answer for 2: b. Justification: The Majorization-Minimization Lemma in the text states, “Let <span class="math notranslate nohighlight">\(f: \mathbb{R}^d \to \mathbb{R}\)</span> and suppose <span class="math notranslate nohighlight">\(U_x\)</span> majorizes <span class="math notranslate nohighlight">\(f\)</span> at <span class="math notranslate nohighlight">\(x\)</span>. Let <span class="math notranslate nohighlight">\(x'\)</span> be a global minimizer of <span class="math notranslate nohighlight">\(U_x(\tilde{\theta})\)</span> as a function of <span class="math notranslate nohighlight">\(\tilde{\theta}\)</span>, provided it exists. Then <span class="math notranslate nohighlight">\(f(x') \leq f(x)\)</span>.”</p>
-<p>Answer for 3: a. Justification: In the summary of the EM algorithm, the M-step is described as updating the parameters: “<span class="math notranslate nohighlight">\(\pi_k^{t+1} = \frac{\eta_k^t}{n}\)</span> and <span class="math notranslate nohighlight">\(p_{k,m}^{t+1} = \frac{\eta_{k,m}^t}{\eta_k^t}\)</span>.”</p>
+<p>Answer for 1: b. Justification: The text states, “<span class="math notranslate nohighlight">\(P[\mathbf{X} = \mathbf{x}] = \sum_{k=1}^K P[C = k, \mathbf{X} = \mathbf{x}] = \sum_{k=1}^K P[\mathbf{X} = \mathbf{x}|C = k] P[C = k]\)</span>.”</p>
+<p>Answer for 2: b. Justification: “Let <span class="math notranslate nohighlight">\(f: \mathbb{R}^d \to \mathbb{R}\)</span> and suppose <span class="math notranslate nohighlight">\(U_{\mathbf{x}}\)</span> majorizes <span class="math notranslate nohighlight">\(f\)</span> at <span class="math notranslate nohighlight">\(\mathbf{x}\)</span>. Let <span class="math notranslate nohighlight">\(\mathbf{x}'\)</span> be a global minimizer of <span class="math notranslate nohighlight">\(U_{\mathbf{x}}(\mathbf{z})\)</span> as a function of <span class="math notranslate nohighlight">\(\mathbf{z}\)</span>, provided it exists. Then <span class="math notranslate nohighlight">\(f(\mathbf{x}') \leq f(\mathbf{x})\)</span>.”</p>
+<p>Answer for 3: a. Justification: In the summary of the EM algorithm, the M-step is described as updating the parameters: “<span class="math notranslate nohighlight">\(\pi_k^{t+1} = \frac{\eta_k^t}{n}\)</span> and <span class="math notranslate nohighlight">\(p_{k,m}^{t+1} = \frac{\eta_{k,m}^t}{\eta_k^t}\)</span>,” which require the responsibilities.</p>
 <p>Answer for 4: b. Justification: The text states, “Mathematically, that corresponds to applying the law of total probability as we did previously. Further, we let the vertex for <span class="math notranslate nohighlight">\(X\)</span> be shaded to indicate that it is observed, while the vertex for <span class="math notranslate nohighlight">\(Y\)</span> is not shaded to indicate that it is not.”</p>
 <p>Answer for 5: b. Justification: The text refers to responsibilities as “our estimate – under the current parameter – of the probability that the sample comes from cluster <span class="math notranslate nohighlight">\(k\)</span>.”</p>
 </section>

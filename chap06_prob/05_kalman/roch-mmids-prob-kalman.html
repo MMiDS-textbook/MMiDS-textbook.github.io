@@ -535,9 +535,8 @@ document.write(`
 <p>In this section, we illustrate the use of linear-Gaussian models for object tracking. We first give some background.</p>
 <section id="multivariate-gaussians-marginals-and-conditionals">
 <h2><span class="section-number">6.5.1. </span>Multivariate Gaussians: marginals and conditionals<a class="headerlink" href="#multivariate-gaussians-marginals-and-conditionals" title="Link to this heading">#</a></h2>
-<p>We will need the marginal and conditional densities of a multivariate Gaussian. We first need various formulas and results about block matrices.</p>
-<p><strong>Properties of block matrices</strong> Block matrices will play an important role. Recall that block matrices have a convenient algebra that mimics the usual matrix algebra.</p>
-<p>Consider a square block matrix with the same partitioning of the rows and columns, that is,</p>
+<p>We will need the marginal and conditional densities of a multivariate Gaussian. For this purpose, we require various formulas and results about block matrices.</p>
+<p><strong>Properties of block matrices</strong> Recall that block matrices have a convenient algebra that mimics the usual matrix algebra. Consider a square block matrix with the same partitioning of the rows and columns, that is,</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}
 A 
@@ -547,7 +546,7 @@ A_{11} &amp; A_{12}\\
 A_{21} &amp; A_{22}
 \end{pmatrix}
 \end{split}\]</div>
-<p>where <span class="math notranslate nohighlight">\(A \in \mathbb{R}^{n \times n}\)</span>, <span class="math notranslate nohighlight">\(A_{ij} \in \mathbb{R}^{n_i \times n_i}\)</span> for <span class="math notranslate nohighlight">\(i = 1, 2\)</span> with the condition <span class="math notranslate nohighlight">\(n_1 + n_2 = n\)</span>. Then it is straightforward to check (try it!) that the transpose can be written as</p>
+<p>where <span class="math notranslate nohighlight">\(A \in \mathbb{R}^{n \times n}\)</span>, <span class="math notranslate nohighlight">\(A_{ij} \in \mathbb{R}^{n_i \times n_j}\)</span> for <span class="math notranslate nohighlight">\(i, j = 1, 2\)</span> with the condition <span class="math notranslate nohighlight">\(n_1 + n_2 = n\)</span>. Then it is straightforward to check (try it!) that the transpose can be written as</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}
 A^T 
@@ -747,7 +746,7 @@ B/B_{22} &amp; \mathbf{0}\\
 B_{21} &amp; B_{22}
 \end{pmatrix}.
 \end{align*}\]</div>
-<p>2- Next we get a zero block in the bottom left corner. Then, starting from the final matrix in the last display,</p>
+<p>2- Next we get a zero block in the bottom left corner. Starting from the final matrix in the last display,</p>
 <div class="amsmath math notranslate nohighlight">
 \[\begin{align*}
 &amp; \begin{pmatrix}
@@ -864,7 +863,7 @@ I_{n_1 \times n_1} &amp; \mathbf{0}\\
 \end{align*}\]</div>
 <p>as claimed. <span class="math notranslate nohighlight">\(\square\)</span></p>
 <p><strong>The positive definite case</strong> In applying the inversion formula, it will be enough to restrict ourselves to the positive definite case, where the lemmas that follow guarantee the required invertibility conditions.</p>
-<p>First, recall:</p>
+<p>First:</p>
 <p><strong>LEMMA</strong> <strong>(Invertibility of Positive Definite Matrices)</strong> <span class="math notranslate nohighlight">\(\idx{invertibility of positive definite matrices}\xdi\)</span> Let <span class="math notranslate nohighlight">\(B \in \mathbb{R}^{n \times n}\)</span> be symmetric, positive definite. Then <span class="math notranslate nohighlight">\(B\)</span> is invertible. <span class="math notranslate nohighlight">\(\flat\)</span></p>
 <p><em>Proof:</em> For any <span class="math notranslate nohighlight">\(\mathbf{x} \neq \mathbf{0}\)</span>, it holds by positive definiteness that <span class="math notranslate nohighlight">\(\mathbf{x}^T B \mathbf{x} &gt; 0\)</span>. In particular, it must be that <span class="math notranslate nohighlight">\(\mathbf{x}^T B \mathbf{x} \neq 0\)</span> and therefore, by contradiction, <span class="math notranslate nohighlight">\(B \mathbf{x} \neq \mathbf{0}\)</span> (since for any <span class="math notranslate nohighlight">\(\mathbf{z}\)</span>, it holds that <span class="math notranslate nohighlight">\(\mathbf{z}^T \mathbf{0} = 0\)</span>). The claim follows from the <em>Equivalent Definition of Linear Independence</em>. <span class="math notranslate nohighlight">\(\square\)</span></p>
 <p>A principal submatrix is a square submatrix obtained by removing some rows and columns. Moreover we require that the set of row indices that remain is the same as the set of column indices that remain.</p>
@@ -1079,7 +1078,7 @@ I_{d_1 \times d_1} &amp; - \bSigma_{12} \bSigma_{22}^{-1}\\
 + (\mathbf{x}_2 - \bmu_2)^T \bSigma_{22}^{-1} (\mathbf{x}_2 - \bmu_2).
 \end{align*}\]</div>
 <p>Note that both terms have the same form as the original quadratic function.</p>
-<p>3- Going back to the density, we use <span class="math notranslate nohighlight">\(\propto\)</span> to indicate that the expression holds up to a constant not depending on <span class="math notranslate nohighlight">\(\mathbf{x}\)</span>. Using that exponential of a sum is the product of exponentials, we obtain</p>
+<p>3- Going back to the density, we use <span class="math notranslate nohighlight">\(\propto\)</span> to indicate that the expression holds up to a constant not depending on <span class="math notranslate nohighlight">\(\mathbf{x}\)</span>. Using that the exponential of a sum is the product of exponentials, we obtain</p>
 <div class="amsmath math notranslate nohighlight">
 \[\begin{align*}
 &amp;f_{\mathbf{X}_1,\mathbf{X}_2}(\mathbf{x}_1,\mathbf{x}_2)\\
@@ -1270,16 +1269,9 @@ f_{\bX_0}(\bx_0) \prod_{t=1}^{T} f_{\bX_{t}|\bX_{t-1}}(\bx_{t}|\bx_{t-1}) f_{\bY
 \bY_t|\bX_t \sim N_d(H\,\bX_t, R)
 \]</div>
 <p>for all <span class="math notranslate nohighlight">\(t \geq 1\)</span> and <span class="math notranslate nohighlight">\(\bX_0 \sim N_{d_0}(\bmu_0, \bSigma_0)\)</span>. We assume that <span class="math notranslate nohighlight">\(\bmu_0\)</span> and <span class="math notranslate nohighlight">\(\bSigma_0\)</span> are known. Applying the <em>Linear-Gaussian System Lemma</em>  inductively shows that the full process <span class="math notranslate nohighlight">\((\bX_{0:T}, \bY_{1:T})\)</span> is jointly multivariate Gaussian (try it!). In particular, all marginals and conditionals are multivariate Gaussians.</p>
-<p>Graphically, it can be represented as follows, where as before each variable is node and its conditional distribution depends only on its parent nodes.</p>
-<!--TEX
-
-**Figure:** Linear-Gaussian system ([Source](https://commons.wikimedia.org/wiki/File:Hmm_temporal_bayesian_net.svg))
-
-![HMM](https://upload.wikimedia.org/wikipedia/commons/thumb/8/83/Hmm_temporal_bayesian_net.svg/640px-Hmm_temporal_bayesian_net.svg.png)
-
-$\bowtie$
-
---><p><strong>Conditional independence</strong> The stipulated form of the joint density of the full process implies many conditional independence relations. We will need the following two:</p>
+<p>Graphically, it can be represented as follows, where as before each variable is a node and its conditional distribution depends only on its parent nodes.</p>
+<p><img alt="HMM (with help from Claude)" src="../../_images/hmm_diagram.png" /></p>
+<p><strong>Conditional independence</strong> The stipulated form of the joint density of the full process implies many conditional independence relations. We will need the following two:</p>
 <p>1- <span class="math notranslate nohighlight">\(\bX_t\)</span> is conditionally independent of <span class="math notranslate nohighlight">\(\bY_{1:t-1}\)</span> given <span class="math notranslate nohighlight">\(\bX_{t-1}\)</span></p>
 <p>2- <span class="math notranslate nohighlight">\(\bY_t\)</span> is conditionally independent of <span class="math notranslate nohighlight">\(\bY_{1:t-1}\)</span> given <span class="math notranslate nohighlight">\(\bX_{t}\)</span>.</p>
 <p>We prove the first one and leave the second one as an exercise. In fact, we prove something stronger: <span class="math notranslate nohighlight">\(\bX_t\)</span> is conditionally independent of <span class="math notranslate nohighlight">\(\bX_{0:t-2}, \bY_{1:t-1}\)</span> given <span class="math notranslate nohighlight">\(\bX_{t-1}\)</span>.</p>
@@ -1440,7 +1432,7 @@ z_{2,t} + \Delta \dot{z}_{2,t} + W_{2,t}\\
 \end{pmatrix}
 \end{split}\]</div>
 <p>where the <span class="math notranslate nohighlight">\(\bW_t = (W_{1,t}, W_{2,t}, \dot{W}_{1,t}, \dot{W}_{2,t}) \sim N_{d_0}(\mathbf{0}, Q)\)</span> with <span class="math notranslate nohighlight">\(Q\)</span> known.</p>
-<p>In words, the velocity is unchanged, up to Gaussian perturbation. The position changes proportionally to the velocity in the corresponding dimension.</p>
+<p>In words, the velocity is unchanged, up to Gaussian perturbation. The position changes proportionally to the velocity in the corresponding dimension, again up to Gaussian perturbation.</p>
 <p>The observations <span class="math notranslate nohighlight">\((\tilde{z}_{1,t}, \tilde{z}_{2,t})_t\)</span> are modeled as</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}
@@ -1462,11 +1454,11 @@ H = \begin{pmatrix}
 = H\,\bX_t + \bV_t
 = 
 \begin{pmatrix}
-\tilde{z}_{1,t} + \tilde{V}_{1,t}\\ 
-\tilde{z}_{2,t} + \tilde{V}_{2,t}
+z_{1,t} + V_{1,t}\\ 
+z_{2,t} + V_{2,t}
 \end{pmatrix}
 \end{split}\]</div>
-<p>where the <span class="math notranslate nohighlight">\(\bV_t = (\tilde{V}_{1,t}, \tilde{V}_{2,t}) \sim N_d(\mathbf{0}, R)\)</span> with <span class="math notranslate nohighlight">\(R\)</span> known.</p>
+<p>where the <span class="math notranslate nohighlight">\(\bV_t = (V_{1,t}, V_{2,t}) \sim N_d(\mathbf{0}, R)\)</span> with <span class="math notranslate nohighlight">\(R\)</span> known.</p>
 <p>In words, we only observe the positions, up to Gaussian noise.</p>
 <p><strong>Implementing the Kalman filter</strong> We implement the Kalman filter as described above with known covariance matrices. We take <span class="math notranslate nohighlight">\(\Delta = 1\)</span> for simplicity. The code is adapted from [<a class="reference external" href="https://github.com/probml/pmtk3/blob/master/demos/kalmanTrackingDemo.m">Mur0</a>].</p>
 <p>We will test Kalman filtering on a simulated path drawn from the linear-Gaussian model above. The following function creates such a path and its noisy observations.</p>
@@ -1486,7 +1478,7 @@ H = \begin{pmatrix}
 </div>
 </div>
 </div>
-<p><strong>NUMERICAL CORNER:</strong> Here is an example. In the plots, the red dots are the noisy observations and the green crosses are the unobserved true path.</p>
+<p><strong>NUMERICAL CORNER:</strong> Here is an example.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">seed</span> <span class="o">=</span> <span class="mi">535</span>
@@ -1527,7 +1519,7 @@ H = \begin{pmatrix}
 </div>
 </details>
 <div class="cell_output docutils container">
-<img alt="../../_images/95709e6e4833c0770655703d818e52d7686cca0e40d628be8db50dbd8562280a.png" src="../../_images/95709e6e4833c0770655703d818e52d7686cca0e40d628be8db50dbd8562280a.png" />
+<img alt="../../_images/7887a8a25f3bbd2d4c1cc1b809a24f2aa031c84a10f4cd5ed5f0ae71eff0253c.png" src="../../_images/7887a8a25f3bbd2d4c1cc1b809a24f2aa031c84a10f4cd5ed5f0ae71eff0253c.png" />
 </div>
 </div>
 <p><span class="math notranslate nohighlight">\(\unlhd\)</span></p>
@@ -1590,7 +1582,7 @@ H = \begin{pmatrix}
 </div>
 </details>
 <div class="cell_output docutils container">
-<img alt="../../_images/e02f0b6f60d62184a55abac5acad7e7095782240ac114f41b4bfb141cb45fc62.png" src="../../_images/e02f0b6f60d62184a55abac5acad7e7095782240ac114f41b4bfb141cb45fc62.png" />
+<img alt="../../_images/046beb4acdf4c61da2a5de4c6dbb7d32ca2d7b4e8416651030b3f49747fcac9a.png" src="../../_images/046beb4acdf4c61da2a5de4c6dbb7d32ca2d7b4e8416651030b3f49747fcac9a.png" />
 </div>
 </div>
 <p>To quantify the improvement in the inferred means compared to the observations, we compute the mean squared error in both cases.</p>
@@ -1636,15 +1628,15 @@ H = \begin{pmatrix}
 <p>b) It is always positive definite.</p>
 <p>c) Both a and b.</p>
 <p>d) Neither a nor b.</p>
-<p><strong>3</strong> What is the conditional distribution of <span class="math notranslate nohighlight">\(X_1\)</span> given <span class="math notranslate nohighlight">\(X_2\)</span> in a multivariate Gaussian distribution?</p>
-<p>a) <span class="math notranslate nohighlight">\(X_1 | X_2 \sim \mathcal{N}(\mu_1 + \Sigma_{12}\Sigma_{22}^{-1}(X_2 - \mu_2), \Sigma_{11} - \Sigma_{12}\Sigma_{22}^{-1}\Sigma_{12}^T)\)</span></p>
-<p>b) <span class="math notranslate nohighlight">\(X_1 | X_2 \sim \mathcal{N}(\mu_1 - \Sigma_{12}\Sigma_{22}^{-1}(X_2 - \mu_2), \Sigma_{11} + \Sigma_{12}\Sigma_{22}^{-1}\Sigma_{12}^T)\)</span></p>
-<p>c) <span class="math notranslate nohighlight">\(X_1 | X_2 \sim \mathcal{N}(\mu_1 + \Sigma_{12}\Sigma_{22}^{-1}(X_2 - \mu_2), \Sigma_{11} + \Sigma_{12}\Sigma_{22}^{-1}\Sigma_{12}^T)\)</span></p>
-<p>d) <span class="math notranslate nohighlight">\(X_1 | X_2 \sim \mathcal{N}(\mu_1 - \Sigma_{12}\Sigma_{22}^{-1}(X_2 - \mu_2), \Sigma_{11} - \Sigma_{12}\Sigma_{22}^{-1}\Sigma_{12}^T)\)</span></p>
+<p><strong>3</strong> What is the conditional distribution of <span class="math notranslate nohighlight">\(\mathbf{X}_1\)</span> given <span class="math notranslate nohighlight">\(\mathbf{X}_2\)</span> in a multivariate Gaussian distribution?</p>
+<p>a) <span class="math notranslate nohighlight">\(\mathbf{X}_1 | \mathbf{X}_2 \sim N_{d_1}(\boldsymbol{\mu}_1 + \Sigma_{12}\Sigma_{22}^{-1}(\mathbf{X}_2 - \boldsymbol{\mu}_2), \Sigma_{11} - \Sigma_{12}\Sigma_{22}^{-1}\Sigma_{12}^T)\)</span></p>
+<p>b) <span class="math notranslate nohighlight">\(\mathbf{X}_1 | \mathbf{X}_2 \sim N_{d_1}(\boldsymbol{\mu}_1 - \Sigma_{12}\Sigma_{22}^{-1}(\mathbf{X}_2 - \boldsymbol{\mu}_2), \Sigma_{11} + \Sigma_{12}\Sigma_{22}^{-1}\Sigma_{12}^T)\)</span></p>
+<p>c) <span class="math notranslate nohighlight">\(\mathbf{X}_1 | \mathbf{X}_2 \sim N_{d_1}(\boldsymbol{\mu}_1 + \Sigma_{12}\Sigma_{22}^{-1}(\mathbf{X}_2 - \boldsymbol{\mu}_2), \Sigma_{11} + \Sigma_{12}\Sigma_{22}^{-1}\Sigma_{12}^T)\)</span></p>
+<p>d) <span class="math notranslate nohighlight">\(\mathbf{X}_1 | \mathbf{X}_2 \sim N_{d_1}(\boldsymbol{\mu}_1 - \Sigma_{12}\Sigma_{22}^{-1}(\mathbf{X}_2 - \boldsymbol{\mu}_2), \Sigma_{11} - \Sigma_{12}\Sigma_{22}^{-1}\Sigma_{12}^T)\)</span></p>
 <p><strong>4</strong> In a linear-Gaussian system, which of the following is true about the conditional independence relationships?</p>
-<p>a) <span class="math notranslate nohighlight">\(X_t\)</span> is conditionally independent of <span class="math notranslate nohighlight">\(Y_{1:t-1}\)</span> given <span class="math notranslate nohighlight">\(X_{t-1}\)</span>.</p>
-<p>b) <span class="math notranslate nohighlight">\(Y_t\)</span> is conditionally independent of <span class="math notranslate nohighlight">\(Y_{1:t-1}\)</span> given <span class="math notranslate nohighlight">\(X_t\)</span>.</p>
-<p>c) <span class="math notranslate nohighlight">\(X_t\)</span> is conditionally independent of <span class="math notranslate nohighlight">\(X_{t-2}\)</span> given <span class="math notranslate nohighlight">\(X_{t-1}\)</span>.</p>
+<p>a) <span class="math notranslate nohighlight">\(\mathbf{X}_t\)</span> is conditionally independent of <span class="math notranslate nohighlight">\(\mathbf{Y}_{1:t-1}\)</span> given <span class="math notranslate nohighlight">\(\mathbf{X}_{t-1}\)</span>.</p>
+<p>b) <span class="math notranslate nohighlight">\(\mathbf{Y}_t\)</span> is conditionally independent of <span class="math notranslate nohighlight">\(\mathbf{Y}_{1:t-1}\)</span> given <span class="math notranslate nohighlight">\(\mathbf{X}_t\)</span>.</p>
+<p>c) <span class="math notranslate nohighlight">\(\mathbf{X}_t\)</span> is conditionally independent of <span class="math notranslate nohighlight">\(\mathbf{X}_{t-2}\)</span> given <span class="math notranslate nohighlight">\(\mathbf{X}_{t-1}\)</span>.</p>
 <p>d) All of the above.</p>
 <p><strong>5</strong> In the Kalman filter, what does the Kalman gain matrix <span class="math notranslate nohighlight">\(K_t\)</span> represent?</p>
 <p>a) The covariance matrix of the state estimate at time <span class="math notranslate nohighlight">\(t\)</span>.</p>
@@ -1653,9 +1645,9 @@ H = \begin{pmatrix}
 <p>d) The weight given to the previous state estimate when predicting the current state.</p>
 <p>Answer for 1: a. Justification: The text defines the Schur complement of <span class="math notranslate nohighlight">\(B_{11}\)</span> as <span class="math notranslate nohighlight">\(B / B_{11} := B_{22} - B_{12}^T B_{11}^{-1} B_{12}\)</span>.</p>
 <p>Answer for 2: c. Justification: The text states “the Schur complement of the block <span class="math notranslate nohighlight">\(B_{11}\)</span>, i.e., the matrix <span class="math notranslate nohighlight">\(B/B_{11} := B_{22} - B_{12}^T B_{11}^{-1} B_{12}\)</span>, is symmetric and positive definite.”</p>
-<p>Answer for 3: a. Justification: The conditional distribution of <span class="math notranslate nohighlight">\(X_1\)</span> given <span class="math notranslate nohighlight">\(X_2\)</span> is derived in the text as <span class="math notranslate nohighlight">\(X_1 | X_2 \sim \mathcal{N}(\mu_1 + \Sigma_{12}\Sigma_{22}^{-1}(X_2 - \mu_2), \Sigma_{11} - \Sigma_{12}\Sigma_{22}^{-1}\Sigma_{12}^T)\)</span>.</p>
+<p>Answer for 3: a. Justification: The conditional distribution of <span class="math notranslate nohighlight">\(\mathbf{X}_1\)</span> given <span class="math notranslate nohighlight">\(\mathbf{X}_2\)</span> is derived in the text as <span class="math notranslate nohighlight">\(\mathbf{X}_1 | \mathbf{X}_2 \sim N_{d_1}(\boldsymbol{\mu}_1 + \Sigma_{12}\Sigma_{22}^{-1}(\mathbf{X}_2 - \boldsymbol{\mu}_2), \Sigma_{11} - \Sigma_{12}\Sigma_{22}^{-1}\Sigma_{12}^T)\)</span>.</p>
 <p>Answer for 4: d. Justification: The text explicitly states these conditional independence relationships.</p>
-<p>Answer for 5: c. Justification: The text defines <span class="math notranslate nohighlight">\(K_t := P_{t-1} H^T (H P_{t-1} H^T + R)^{-1}\)</span> as the Kalman gain matrix, which is used to update the state estimate as <span class="math notranslate nohighlight">\(\mu_t := F \mu_{t-1} + K_t (Y_t - H F \mu_{t-1})\)</span>, where <span class="math notranslate nohighlight">\(K_t\)</span> weighs the innovation <span class="math notranslate nohighlight">\((Y_t - H F \mu_{t-1})\)</span>.</p>
+<p>Answer for 5: c. Justification: The text defines <span class="math notranslate nohighlight">\(K_t := P_{t-1} H^T (H P_{t-1} H^T + R)^{-1}\)</span> as the Kalman gain matrix, which is used to update the state estimate as <span class="math notranslate nohighlight">\(\boldsymbol{\mu}_t := F \boldsymbol{\mu}_{t-1} + K_t (\mathbf{Y}_t - H F \boldsymbol{\mu}_{t-1})\)</span>, where <span class="math notranslate nohighlight">\(K_t\)</span> weighs the innovation <span class="math notranslate nohighlight">\((\mathbf{Y}_t - H F \boldsymbol{\mu}_{t-1})\)</span>.</p>
 </section>
 </section>
 

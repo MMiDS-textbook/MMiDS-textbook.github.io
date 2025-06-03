@@ -532,7 +532,7 @@ document.write(`
 <section id="building-blocks-of-ai-2-stochastic-gradient-descent">
 <h1><span class="section-number">8.4. </span>Building blocks of AI 2: stochastic gradient descent<a class="headerlink" href="#building-blocks-of-ai-2-stochastic-gradient-descent" title="Link to this heading">#</a></h1>
 <p>Having shown how to compute the gradient, we can now apply gradient descent to fit the data.</p>
-<p>To get the full gradient, we now consider <span class="math notranslate nohighlight">\(n\)</span> samples <span class="math notranslate nohighlight">\((\mathbf{x}_i,y_i)\)</span>, <span class="math notranslate nohighlight">\(i=1,\ldots,n\)</span>. At this point, we make the dependence on <span class="math notranslate nohighlight">\((\mathbf{x}_i, y_i)\)</span> explicit. The loss function can be taken as the average of the individual sample contributions, so the gradient is obtained by linearity</p>
+<p>To get the full gradient, we consider <span class="math notranslate nohighlight">\(n\)</span> samples <span class="math notranslate nohighlight">\((\mathbf{x}_i,y_i)\)</span>, <span class="math notranslate nohighlight">\(i=1,\ldots,n\)</span>. At this point, we make the dependence on <span class="math notranslate nohighlight">\((\mathbf{x}_i, y_i)\)</span> explicit. The loss function can be taken as the average of the individual sample contributions, so the gradient is obtained by linearity</p>
 <div class="math notranslate nohighlight">
 \[
 \nabla \left(\frac{1}{n} \sum_{i=1}^n f_{\mathbf{x}_i,y_i}(\mathbf{w})\right)
@@ -575,12 +575,12 @@ document.write(`
 \mathbb{P}[\mathcal{B} = B]
 = \frac{1}{\binom{n}{b}}.
 \]</div>
-<p>So, so summing over all such sub-samples, we obtain</p>
+<p>So, summing over all such sub-samples, we obtain</p>
 <div class="amsmath math notranslate nohighlight">
 \[\begin{align*}
 \mathbb{E}\left[\frac{1}{b} \sum_{i\in \mathcal{B}} \nabla f_{\mathbf{x}_i,y_i}(\mathbf{w})\right]
-&amp;= \frac{1}{b} \sum_{B \subseteq \{1,\ldots,n\}} \mathbb{P}[\mathcal{B} = B] \sum_{i\in \mathcal{B}} \nabla f_{\mathbf{x}_i,y_i}(\mathbf{w})\\
-&amp;= \frac{1}{b} \sum_{B \subseteq \{1,\ldots,n\}} \frac{1}{\binom{n}{b}} \sum_{i=1}^n \mathbf{1}\{i \in B\} \nabla f_{\mathbf{x}_i,y_i}(\mathbf{w})\\
+&amp;= \sum_{B \subseteq \{1,\ldots,n\}} \mathbb{P}[\mathcal{B} = B] \frac{1}{b} \sum_{i\in B} \nabla f_{\mathbf{x}_i,y_i}(\mathbf{w})\\
+&amp;= \sum_{B \subseteq \{1,\ldots,n\}} \frac{1}{\binom{n}{b}} \frac{1}{b} \sum_{i=1}^n \mathbf{1}\{i \in B\} \nabla f_{\mathbf{x}_i,y_i}(\mathbf{w})\\
 &amp;= \sum_{i=1}^n \nabla f_{\mathbf{x}_i,y_i}(\mathbf{w}) \frac{1}{b \binom{n}{b}} \sum_{B \subseteq \{1,\ldots,n\}} \mathbf{1}\{i \in B\}.
 \end{align*}\]</div>
 <p>Computing the internal sum requires a combinatorial argument. Indeed, <span class="math notranslate nohighlight">\(\sum_{B \subseteq \{1,\ldots,n\}} \mathbf{1}\{i \in B\}\)</span> counts the number of ways that <span class="math notranslate nohighlight">\(i\)</span> can be picked in a sub-sample of size <span class="math notranslate nohighlight">\(b\)</span> without repeats. That is <span class="math notranslate nohighlight">\(\binom{n-1}{b-1}\)</span>, which is the number of ways of picking the remaining <span class="math notranslate nohighlight">\(b-1\)</span> elements of <span class="math notranslate nohighlight">\(B\)</span> from the other <span class="math notranslate nohighlight">\(n-1\)</span> possible elements. By definition of the binomial coefficient and the properties of factorials,</p>
@@ -836,7 +836,7 @@ b_i - \sigma(\boldsymbol{\alpha}_i^T \mathbf{x}^t)
 <section id="example-multinomial-logistic-regression">
 <h2><span class="section-number">8.4.2. </span>Example: multinomial logistic regression<a class="headerlink" href="#example-multinomial-logistic-regression" title="Link to this heading">#</a></h2>
 <p>We give a concrete example of progressive functions and of the application of backpropagation and SGD.</p>
-<p>Recall that a classifier <span class="math notranslate nohighlight">\(h\)</span> takes an input in <span class="math notranslate nohighlight">\(\mathbb{R}^d\)</span> and predicts one of <span class="math notranslate nohighlight">\(K\)</span> possible labels. It will be convenient for reasons that will become clear below to use <a class="reference external" href="https://en.wikipedia.org/wiki/One-hot">one-hot encoding</a><span class="math notranslate nohighlight">\(\idx{one-hot encoding}\xdi\)</span> of the labels. That is, we encode label <span class="math notranslate nohighlight">\(i\)</span> as the <span class="math notranslate nohighlight">\(K\)</span>-dimensional vector <span class="math notranslate nohighlight">\(\mathbf{e}_i\)</span>. Here, as usual, <span class="math notranslate nohighlight">\(\mathbf{e}_i\)</span> the canonical basis of <span class="math notranslate nohighlight">\(\mathbb{R}^K\)</span>, i.e., the vector with a <span class="math notranslate nohighlight">\(1\)</span> in entry <span class="math notranslate nohighlight">\(i\)</span> and a <span class="math notranslate nohighlight">\(0\)</span> elsewhere. Furthermore, we allow the output of the classifier to be a probability distribution over the labels <span class="math notranslate nohighlight">\(\{1,\ldots,K\}\)</span>, that is, a vector in</p>
+<p>Recall that a classifier <span class="math notranslate nohighlight">\(h\)</span> takes an input in <span class="math notranslate nohighlight">\(\mathbb{R}^d\)</span> and predicts one of <span class="math notranslate nohighlight">\(K\)</span> possible labels. It will be convenient for reasons that will become clear below to use <a class="reference external" href="https://en.wikipedia.org/wiki/One-hot">one-hot encoding</a><span class="math notranslate nohighlight">\(\idx{one-hot encoding}\xdi\)</span> of the labels. That is, we encode label <span class="math notranslate nohighlight">\(i\)</span> as the <span class="math notranslate nohighlight">\(K\)</span>-dimensional vector <span class="math notranslate nohighlight">\(\mathbf{e}_i\)</span>. Here, as usual, <span class="math notranslate nohighlight">\(\mathbf{e}_i\)</span> the standard basis of <span class="math notranslate nohighlight">\(\mathbb{R}^K\)</span>, i.e., the vector with a <span class="math notranslate nohighlight">\(1\)</span> in entry <span class="math notranslate nohighlight">\(i\)</span> and a <span class="math notranslate nohighlight">\(0\)</span> elsewhere. Furthermore, we allow the output of the classifier to be a probability distribution over the labels <span class="math notranslate nohighlight">\(\{1,\ldots,K\}\)</span>, that is, a vector in</p>
 <div class="math notranslate nohighlight">
 \[
 \Delta_K 
@@ -844,8 +844,8 @@ b_i - \sigma(\boldsymbol{\alpha}_i^T \mathbf{x}^t)
 (p_1,\ldots,p_K) \in [0,1]^K \,:\, \sum_{k=1}^K p_k = 1 
 \right\}.
 \]</div>
-<p><strong>Background on multinomial logistic regression</strong> We turn to <a class="reference external" href="https://en.wikipedia.org/wiki/Multinomial_logistic_regression">multinomial logistic regression</a><span class="math notranslate nohighlight">\(\idx{multinomial logistic regression}\xdi\)</span> to learn a classifier over <span class="math notranslate nohighlight">\(K\)</span> labels. Recall that we encode label <span class="math notranslate nohighlight">\(i\)</span> as the <span class="math notranslate nohighlight">\(K\)</span>-dimensional vector <span class="math notranslate nohighlight">\(\mathbf{e}_i\)</span>. We allow the output of the classifier to be a probability distribution over the labels <span class="math notranslate nohighlight">\(\{1,\ldots,K\}\)</span>. Observe that <span class="math notranslate nohighlight">\(\mathbf{e}_i\)</span> can itself be thought of as a probability distribution, one that assigns probability one to <span class="math notranslate nohighlight">\(i\)</span>.</p>
-<p>In multinomial logistic regression, we once again use an affine function of the input data.</p>
+<p>Observe that <span class="math notranslate nohighlight">\(\mathbf{e}_i\)</span> can itself be thought of as a probability distribution, one that assigns probability one to <span class="math notranslate nohighlight">\(i\)</span>.</p>
+<p><strong>Background on multinomial logistic regression</strong> We use <a class="reference external" href="https://en.wikipedia.org/wiki/Multinomial_logistic_regression">multinomial logistic regression</a><span class="math notranslate nohighlight">\(\idx{multinomial logistic regression}\xdi\)</span> to learn a classifier over <span class="math notranslate nohighlight">\(K\)</span> labels. In multinomial logistic regression, we once again use an affine function of the input data.</p>
 <p>This time, we have <span class="math notranslate nohighlight">\(K\)</span> functions that output a score associated to each label. We then transform these scores into a probability distribution over the <span class="math notranslate nohighlight">\(K\)</span> labels. There are many ways of doing this. A standard approach is the <a class="reference external" href="https://en.wikipedia.org/wiki/Softmax_function">softmax function</a><span class="math notranslate nohighlight">\(\idx{softmax}\xdi\)</span> <span class="math notranslate nohighlight">\(\bgamma = (\gamma_1,\ldots,\gamma_K)\)</span>: for <span class="math notranslate nohighlight">\(\mathbf{z} \in \mathbb{R}^K\)</span></p>
 <div class="math notranslate nohighlight">
 \[
@@ -858,7 +858,7 @@ b_i - \sigma(\boldsymbol{\alpha}_i^T \mathbf{x}^t)
 <p>For each <span class="math notranslate nohighlight">\(k\)</span>, we have a regression function</p>
 <div class="math notranslate nohighlight">
 \[
-\sum_{j=1}^d w^{(k)}_{1,j} x_{j}
+\sum_{j=1}^d w^{(k)}_{j} x_{j}
 = \mathbf{x}_1^T \mathbf{w}^{(k)},
 \quad k=1,\ldots,K
 \]</div>
@@ -870,7 +870,7 @@ b_i - \sigma(\boldsymbol{\alpha}_i^T \mathbf{x}^t)
 &amp;= \bgamma\left(\mathcal{W} \mathbf{x}\right),
 \end{align*}\]</div>
 <p>for <span class="math notranslate nohighlight">\(i=1,\ldots,K\)</span>, where <span class="math notranslate nohighlight">\(\bgamma\)</span> is the softmax function. Note that the latter has no associated parameter.</p>
-<p>It remains to define a loss function. To quantify the fit, it is natural to use a notion of distance between probability measures, here between the output <span class="math notranslate nohighlight">\(\mathbf{h}_{\mathbf{x}}(\mathbf{w}) \in \Delta_K\)</span> and the correct label <span class="math notranslate nohighlight">\(\mathbf{y} \in \{\mathbf{e}_1,\ldots,\mathbf{e}_{K}\} \subseteq \Delta_K\)</span>. There are many such measures. In multinomial logistic regression, we use the Kullback-Leibler divergence, which we have encountered in the context of maximum likelihood estimation. Recall that, for two probability distributions <span class="math notranslate nohighlight">\(\mathbf{p}, \mathbf{q} \in \Delta_K\)</span>, it is defined as</p>
+<p>It remains to define a loss function. To quantify the fit, it is natural to use a notion of distance between probability measures, here between the output <span class="math notranslate nohighlight">\(\mathbf{h}(\mathbf{w}) \in \Delta_K\)</span> and the correct label <span class="math notranslate nohighlight">\(\mathbf{y} \in \{\mathbf{e}_1,\ldots,\mathbf{e}_{K}\} \subseteq \Delta_K\)</span>. There are many such measures. In multinomial logistic regression, we use the Kullback-Leibler divergence, which we have encountered in the context of maximum likelihood estimation. Recall that, for two probability distributions <span class="math notranslate nohighlight">\(\mathbf{p}, \mathbf{q} \in \Delta_K\)</span>, it is defined as</p>
 <div class="math notranslate nohighlight">
 \[
 \mathrm{KL}(\mathbf{p} \| \mathbf{q})
@@ -1043,7 +1043,7 @@ z_3
 \]</div>
 <p>where recall that <span class="math notranslate nohighlight">\(\mathbf{w} := \mathbf{w}_0\)</span>.</p>
 <p>Explicit formulas can be derived from the previous recursion.</p>
-<p>We first compute <span class="math notranslate nohighlight">\(\mathbf{p}_1\)</span>. We use the <em>Properties of the Hadamard Product</em>. We get for <span class="math notranslate nohighlight">\(1 \leq j \leq K\)</span></p>
+<p>We first compute <span class="math notranslate nohighlight">\(\mathbf{p}_1\)</span>. We use the <em>Properties of the Hadamard Product</em>. We get</p>
 <div class="amsmath math notranslate nohighlight">
 \[\begin{align*}
 \mathbf{p}_1
@@ -1073,7 +1073,7 @@ z_3
 = (\bgamma\left(\mathcal{W} \mathbf{x}\right) - \mathbf{y}) \otimes \mathbf{x}.
 \]</div>
 <p>It can be shown that the objective function <span class="math notranslate nohighlight">\(f(\mathbf{w})\)</span> is convex in <span class="math notranslate nohighlight">\(\mathbf{w}\)</span>.</p>
-<p><strong>NUMERICAL CORNER:</strong> We will use the Fashion MNIST dataset. This example is inspired by <a class="reference external" href="https://pytorch.org/tutorials/beginner/basics/quickstart_tutorial.html">these</a> <a class="reference external" href="https://www.tensorflow.org/tutorials/keras/classification">tutorials</a>. We first check for the availability of GPUs and load the data.</p>
+<p><strong>NUMERICAL CORNER:</strong> We will use the Fashion-MNIST dataset. This example is inspired by <a class="reference external" href="https://pytorch.org/tutorials/beginner/basics/quickstart_tutorial.html">these</a> <a class="reference external" href="https://www.tensorflow.org/tutorials/keras/classification">tutorials</a>. We first check for the availability of GPUs and load the data.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">device</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">device</span><span class="p">(</span><span class="s2">&quot;cuda&quot;</span> <span class="k">if</span> <span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">is_available</span><span class="p">()</span> 
@@ -1134,7 +1134,7 @@ z_3
 </pre></div>
 </div>
 <p><span class="math notranslate nohighlight">\(\ddagger\)</span></p>
-<p>We implement multinomial logistic regression to learn a classifier for the MNIST data. In PyTorch, composition of functions can be achieved with <a class="reference external" href="https://pytorch.org/docs/stable/generated/torch.nn.Sequential.html"><code class="docutils literal notranslate"><span class="pre">torch.nn.Sequential</span></code></a>. Our model is:</p>
+<p>We implement multinomial logistic regression to learn a classifier for the Fashion-MNIST data. In PyTorch, composition of functions can be achieved with <a class="reference external" href="https://pytorch.org/docs/stable/generated/torch.nn.Sequential.html"><code class="docutils literal notranslate"><span class="pre">torch.nn.Sequential</span></code></a>. Our model is:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">model</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Sequential</span><span class="p">(</span>
@@ -1146,7 +1146,7 @@ z_3
 </div>
 </div>
 <p>The <a class="reference external" href="https://pytorch.org/docs/stable/generated/torch.nn.Flatten.html"><code class="docutils literal notranslate"><span class="pre">torch.nn.Flatten</span></code></a> layer turns each input image into a vector of size <span class="math notranslate nohighlight">\(784\)</span> (where <span class="math notranslate nohighlight">\(784 = 28^2\)</span> is the number of pixels in each image). After the flattening, we have an affine map from <span class="math notranslate nohighlight">\(\mathbb{R}^{784}\)</span> to <span class="math notranslate nohighlight">\(\mathbb{R}^{10}\)</span>. Note that there is no need to pre-process the inputs by adding <span class="math notranslate nohighlight">\(1\)</span>s. A constant term (or “bias variable”) is automatically added by PyTorch (unless one chooses the option <a class="reference external" href="https://pytorch.org/docs/stable/generated/torch.nn.Linear.html"><code class="docutils literal notranslate"><span class="pre">bias=False</span></code></a>). The final output is <span class="math notranslate nohighlight">\(10\)</span>-dimensional.</p>
-<p>Finally, we are ready to run an optimization method of our choice on the loss function, which are specified next. There are many <a class="reference external" href="https://pytorch.org/docs/stable/optim.html#algorithms">optimizers</a> available. (See this <a class="reference external" href="https://hackernoon.com/demystifying-different-variants-of-gradient-descent-optimization-algorithm-19ae9ba2e9bc">post</a> for a brief explanation of many common optimizers.) Here we use SGD as the optimizer. A quick tutorial is <a class="reference external" href="https://pytorch.org/tutorials/beginner/basics/optimization_tutorial.html">here</a>. The loss function is the <a class="reference external" href="https://en.wikipedia.org/wiki/Cross_entropy">cross-entropy</a>, as implemented by <a class="reference external" href="https://pytorch.org/docs/stable/generated/torch.nn.CrossEntropyLoss.html"><code class="docutils literal notranslate"><span class="pre">torch.nn.CrossEntropyLoss</span></code></a>, which first takes the softmax and expects the labels to be class names rather than their one-hot encoding.</p>
+<p>Finally, we are ready to run an optimization method of our choice on the loss function, which are specified next. There are many <a class="reference external" href="https://pytorch.org/docs/stable/optim.html#algorithms">optimizers</a> available. (See this <a class="reference external" href="https://hackernoon.com/demystifying-different-variants-of-gradient-descent-optimization-algorithm-19ae9ba2e9bc">post</a> for a brief explanation of many common optimizers.) Here we use SGD as the optimizer. A quick tutorial is <a class="reference external" href="https://pytorch.org/tutorials/beginner/basics/optimization_tutorial.html">here</a>. The loss function is the <a class="reference external" href="https://en.wikipedia.org/wiki/Cross_entropy">cross-entropy</a>, as implemented by <a class="reference external" href="https://pytorch.org/docs/stable/generated/torch.nn.CrossEntropyLoss.html"><code class="docutils literal notranslate"><span class="pre">torch.nn.CrossEntropyLoss</span></code></a>, which first takes the softmax and expects the labels to be the actual class labels rather than their one-hot encoding.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">loss_fn</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">CrossEntropyLoss</span><span class="p">()</span>
@@ -1156,7 +1156,7 @@ z_3
 </div>
 </div>
 <p>We implement special functions for training.</p>
-<div class="cell tag_hide-output docutils container">
+<div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">train</span><span class="p">(</span><span class="n">dataloader</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span> <span class="n">loss_fn</span><span class="p">,</span> <span class="n">optimizer</span><span class="p">,</span> <span class="n">device</span><span class="p">):</span>
     <span class="n">size</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">dataloader</span><span class="o">.</span><span class="n">dataset</span><span class="p">)</span>
@@ -1178,9 +1178,41 @@ z_3
 </div>
 </div>
 <p>An epoch is one training iteration where all samples are iterated once (in a randomly shuffled order). In the interest of time, we train for 10 epochs only. But it does better if you train it longer (try it!). On each pass, we compute the output of the current model, use <code class="docutils literal notranslate"><span class="pre">backward()</span></code> to obtain the gradient, and then perform a descent update with <code class="docutils literal notranslate"><span class="pre">step()</span></code>. We also have to reset the gradients first (otherwise they add up by default).</p>
-<div class="cell tag_remove-output docutils container">
+<div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">training_loop</span><span class="p">(</span><span class="n">train_loader</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span> <span class="n">loss_fn</span><span class="p">,</span> <span class="n">optimizer</span><span class="p">,</span> <span class="n">device</span><span class="p">,</span> <span class="n">epochs</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch 1/10
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch 2/10
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch 3/10
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch 4/10
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch 5/10
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch 6/10
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch 7/10
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch 8/10
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch 9/10
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch 10/10
 </pre></div>
 </div>
 </div>
@@ -1296,12 +1328,12 @@ z_3
 <p>b) It reduces the variance of the gradient estimate at each iteration.</p>
 <p>c) It eliminates the need for computing gradients altogether.</p>
 <p>d) It increases the computational cost per iteration.</p>
-<p><strong>3</strong> Which of the following statements is true about the expected update step in stochastic gradient descent?</p>
+<p><strong>3</strong> Which of the following statements is true about the update step in stochastic gradient descent?</p>
 <p>a) It is always equal to the full gradient descent update.</p>
 <p>b) It is always in the opposite direction of the full gradient descent update.</p>
-<p>c) It is, on average, equivalent to the full gradient descent update.</p>
+<p>c) It is, on average, equal to the full gradient descent update.</p>
 <p>d) It has no relationship to the full gradient descent update.</p>
-<p><strong>4</strong> In multinomial logistic regression, what is the role of the softmax function (<span class="math notranslate nohighlight">\(\gamma\)</span>)?</p>
+<p><strong>4</strong> In multinomial logistic regression, what is the role of the softmax function <span class="math notranslate nohighlight">\(\boldsymbol{\gamma}\)</span>?</p>
 <p>a) To compute the gradient of the loss function.</p>
 <p>b) To normalize the input features.</p>
 <p>c) To transform scores into a probability distribution over labels.</p>
@@ -1311,7 +1343,7 @@ z_3
 <p>b) To normalize the input features.</p>
 <p>c) To update the model parameters during gradient descent.</p>
 <p>d) To compute the gradient of the loss function.</p>
-<p>Answer for 1: c. Justification: The text states that in SGD, “we pick a sample uniformly at random in <span class="math notranslate nohighlight">\(\{1, ..., n\}\)</span> and update as follows <span class="math notranslate nohighlight">\(w^{t+1} = w^t - \alpha_t \nabla f_{x_{I_t}, y_{I_t}}(w^t).\)</span>”</p>
+<p>Answer for 1: c. Justification: The text states that in SGD, “we pick a sample uniformly at random in <span class="math notranslate nohighlight">\(\{1, ..., n\}\)</span> and update as follows <span class="math notranslate nohighlight">\(\mathbf{w}^{t+1} = \mathbf{w}^t - \alpha_t \nabla f_{\mathbf{x}_{I_t}, y_{I_t}}(\mathbf{w}^t).\)</span>”</p>
 <p>Answer for 2: b. Justification: The text implies that mini-batch SGD reduces the variance of the gradient estimate compared to standard SGD, which only uses a single sample.</p>
 <p>Answer for 3: c. Justification: The text proves a lemma stating that “in expectation, they [stochastic updates] perform a step of gradient descent.”</p>
 <p>Answer for 4: c. Justification: The text defines the softmax function and states that it is used to “transform these scores into a probability distribution over the labels.”</p>

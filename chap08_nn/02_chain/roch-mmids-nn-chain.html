@@ -533,10 +533,9 @@ document.write(`
 <span class="math notranslate nohighlight">\(\newcommand{\xdi}{}\)</span></p>
 <section id="background-jacobian-chain-rule-and-a-brief-introduction-to-automatic-differentiation">
 <h1><span class="section-number">8.2. </span>Background: Jacobian, chain rule, and a brief introduction to automatic differentiation<a class="headerlink" href="#background-jacobian-chain-rule-and-a-brief-introduction-to-automatic-differentiation" title="Link to this heading">#</a></h1>
-<p>We introduce the Jacobian of a vector-valued function of several variables as well as the <em>Chain Rule</em> for this more general setting. We also give a brief introduction to automatic differentiation. Some required matrix algebra is also discussed.</p>
+<p>We introduce the Jacobian of a vector-valued function of several variables as well as the <em>Chain Rule</em> for this more general setting. We also give a brief introduction to automatic differentiation. We begin with some additional matrix algebra.</p>
 <section id="more-matrix-algebra-hadamard-and-kronecker-products">
 <h2><span class="section-number">8.2.1. </span>More matrix algebra: Hadamard and Kronecker products<a class="headerlink" href="#more-matrix-algebra-hadamard-and-kronecker-products" title="Link to this heading">#</a></h2>
-<p>It will be convenient to introduce more matrix notation.</p>
 <p>First, we introduce the Hadamard product<span class="math notranslate nohighlight">\(\idx{Hadamard product}\xdi\)</span> and division<span class="math notranslate nohighlight">\(\idx{Hadamard division}\xdi\)</span>. The Hadamard product of two matrices (or vectors) of the same dimension, <span class="math notranslate nohighlight">\(A = (a_{i,j})_{i \in [n], j \in [m]}, B = (b_{i,j})_{i\in [n], j \in [m]} \in \mathbb{R}^{n \times m}\)</span>, is defined as the element-wise product</p>
 <div class="math notranslate nohighlight">
 \[
@@ -550,7 +549,7 @@ A \oslash B
 = (a_{i,j} / b_{i,j})_{i\in [n], j \in [m]}
 \]</div>
 <p>where we assume that <span class="math notranslate nohighlight">\(b_{i,j} \neq 0\)</span> for all <span class="math notranslate nohighlight">\(i,j\)</span>.</p>
-<p><strong>EXAMPLE:</strong> <strong>(Illustration, continued)</strong> Continuing our previous illustrative example</p>
+<p><strong>EXAMPLE:</strong> As an illustrative example,</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}
   \begin{bmatrix}
@@ -798,7 +797,7 @@ f(x + h)
 <p>The matrix <span class="math notranslate nohighlight">\(\mathbf{f}'(\mathbf{x}) = A\)</span>
 is called the differential<span class="math notranslate nohighlight">\(\idx{differential}\xdi\)</span> of <span class="math notranslate nohighlight">\(\mathbf{f}\)</span> at <span class="math notranslate nohighlight">\(\mathbf{x}\)</span>, and we see that the affine map <span class="math notranslate nohighlight">\(\mathbf{f}(\mathbf{x}) + A \mathbf{h}\)</span> provides an approximation of <span class="math notranslate nohighlight">\(\mathbf{f}\)</span> in the neighborhood of <span class="math notranslate nohighlight">\(\mathbf{x}\)</span>.</p>
 <p>We will not derive the full theory here. In the case where each component of <span class="math notranslate nohighlight">\(\mathbf{f}\)</span> has continuous partial derivatives in a neighborhood of <span class="math notranslate nohighlight">\(\mathbf{x}\)</span>, then the differential exists and is equal to the Jacobian, as defined next.</p>
-<p><strong>DEFINITION</strong> <strong>(Jacobian)</strong> <span class="math notranslate nohighlight">\(\idx{Jacobian}\xdi\)</span> Let <span class="math notranslate nohighlight">\(\mathbf{f} = (f_1, \ldots, f_m)  : D \to \mathbb{R}^m\)</span> where <span class="math notranslate nohighlight">\(D \subseteq \mathbb{R}^d\)</span> and let <span class="math notranslate nohighlight">\(\mathbf{x}_0 \in D\)</span> be an interior point of <span class="math notranslate nohighlight">\(D\)</span> where <span class="math notranslate nohighlight">\(\frac{\partial f_j (\mathbf{x}_0)}{\partial x_i}\)</span> exists for all <span class="math notranslate nohighlight">\(i, j\)</span>. The Jacobian of <span class="math notranslate nohighlight">\(\mathbf{f}\)</span> at <span class="math notranslate nohighlight">\(\mathbf{x}_0\)</span> is the <span class="math notranslate nohighlight">\(d \times m\)</span> matrix</p>
+<p><strong>DEFINITION</strong> <strong>(Jacobian)</strong> <span class="math notranslate nohighlight">\(\idx{Jacobian}\xdi\)</span> Let <span class="math notranslate nohighlight">\(\mathbf{f} = (f_1, \ldots, f_m)  : D \to \mathbb{R}^m\)</span> where <span class="math notranslate nohighlight">\(D \subseteq \mathbb{R}^d\)</span> and let <span class="math notranslate nohighlight">\(\mathbf{x}_0 \in D\)</span> be an interior point of <span class="math notranslate nohighlight">\(D\)</span> where <span class="math notranslate nohighlight">\(\frac{\partial f_j (\mathbf{x}_0)}{\partial x_i}\)</span> exists for all <span class="math notranslate nohighlight">\(i, j\)</span>. The Jacobian of <span class="math notranslate nohighlight">\(\mathbf{f}\)</span> at <span class="math notranslate nohighlight">\(\mathbf{x}_0\)</span> is the <span class="math notranslate nohighlight">\(m \times d\)</span> matrix</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}
 J_{\mathbf{f}}(\mathbf{x}_0)
@@ -912,8 +911,8 @@ J_{\nabla f}(\mathbf{x}_0)
 &amp; \frac{\partial^2 f(\mathbf{x}_0)}{\partial x_d^2}
 \end{pmatrix},
 \end{split}\]</div>
-<p>that is, the Hessian of <span class="math notranslate nohighlight">\(f\)</span> at <span class="math notranslate nohighlight">\(\mathbf{x}_0\)</span>. <span class="math notranslate nohighlight">\(\lhd\)</span></p>
-<p><strong>EXAMPLE:</strong> <strong>(Parametric Curve and Jacobian)</strong> Consider the parametric curve <span class="math notranslate nohighlight">\(\mathbf{g}(t) = (g_1(t), \ldots, g_d(t))^T \in \mathbb{R}^d\)</span> for <span class="math notranslate nohighlight">\(t\)</span> in some closed interval of <span class="math notranslate nohighlight">\(\mathbb{R}\)</span>. Assume that <span class="math notranslate nohighlight">\(\mathbf{g}(t)\)</span> is continuously differentiable at <span class="math notranslate nohighlight">\(t\)</span>, that is, each of its component is.</p>
+<p>that is, the Hessian (tranposed, but that makes no difference; why?) of <span class="math notranslate nohighlight">\(f\)</span> at <span class="math notranslate nohighlight">\(\mathbf{x}_0\)</span>. <span class="math notranslate nohighlight">\(\lhd\)</span></p>
+<p><strong>EXAMPLE:</strong> <strong>(Parametric Curve and Jacobian)</strong> Consider the parametric curve <span class="math notranslate nohighlight">\(\mathbf{g}(t) = (g_1(t), \ldots, g_d(t)) \in \mathbb{R}^d\)</span> for <span class="math notranslate nohighlight">\(t\)</span> in some closed interval of <span class="math notranslate nohighlight">\(\mathbb{R}\)</span>. Assume that <span class="math notranslate nohighlight">\(\mathbf{g}(t)\)</span> is continuously differentiable at <span class="math notranslate nohighlight">\(t\)</span>, that is, each of its component is.</p>
 <p>Then</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}
@@ -926,7 +925,7 @@ g_m'(t)
 = \mathbf{g}'(t).
 \end{split}\]</div>
 <p><span class="math notranslate nohighlight">\(\lhd\)</span></p>
-<p><strong>EXAMPLE:</strong> <strong>(Affine Map)</strong> Let <span class="math notranslate nohighlight">\(A \in \mathbb{R}^{m \times d}\)</span> and <span class="math notranslate nohighlight">\(\mathbf{b} = (b_1,\ldots,b_m)^T \in \mathbb{R}^{m}\)</span>. Define the vector-valued function <span class="math notranslate nohighlight">\(\mathbf{f} = (f_1, \ldots, f_m)  : \mathbb{R}^d \to \mathbb{R}^m\)</span> as</p>
+<p><strong>EXAMPLE:</strong> <strong>(Affine Map)</strong> Let <span class="math notranslate nohighlight">\(A = (a_{i,j})_{i,j} \in \mathbb{R}^{m \times d}\)</span> and <span class="math notranslate nohighlight">\(\mathbf{b} = (b_1,\ldots,b_m) \in \mathbb{R}^{m}\)</span>. Define the vector-valued function <span class="math notranslate nohighlight">\(\mathbf{f} = (f_1, \ldots, f_m)  : \mathbb{R}^d \to \mathbb{R}^m\)</span> as</p>
 <div class="math notranslate nohighlight">
 \[
 \mathbf{f}(\mathbf{x})
@@ -940,12 +939,12 @@ g_m'(t)
 = A\mathbf{x} + A\mathbf{y} 
 = \mathbf{f}(\mathbf{x}) + \mathbf{f}(\mathbf{y}).
 \]</div>
-<p>Denote the rows of <span class="math notranslate nohighlight">\(A\)</span> by <span class="math notranslate nohighlight">\(\mathbf{a}_1^T,\ldots,\mathbf{a}_m^T\)</span>.</p>
+<p>Denote the rows of <span class="math notranslate nohighlight">\(A\)</span> by <span class="math notranslate nohighlight">\(\boldsymbol{\alpha}_1^T,\ldots,\boldsymbol{\alpha}_m^T\)</span>.</p>
 <p>We compute the Jacobian of <span class="math notranslate nohighlight">\(\mathbf{f}\)</span> at <span class="math notranslate nohighlight">\(\mathbf{x}\)</span>. Note that</p>
 <div class="amsmath math notranslate nohighlight">
 \[\begin{align*}
 \frac{\partial f_i (\mathbf{x})}{\partial x_j}
-&amp;= \frac{\partial}{\partial x_j}[\mathbf{a}_i^T \mathbf{x} + b_i]\\
+&amp;= \frac{\partial}{\partial x_j}[\boldsymbol{\alpha}_i^T \mathbf{x} + b_i]\\
 &amp;= \frac{\partial}{\partial x_j}\left[\sum_{\ell=1}^m a_{i,\ell} x_{\ell} + b_i\right]\\
 &amp;= a_{i,j}.
 \end{align*}\]</div>
@@ -982,7 +981,7 @@ J_{\mathbf{f}}(\mathbf{x}) = A.
 \end{split}\]</div>
 <p>where <span class="math notranslate nohighlight">\(\mathbf{x} = \mathrm{vec}(X^T) = (\mathbf{x}^{(1)}, \ldots, \mathbf{x}^{(n)})\)</span>.</p>
 <p>To compute the Jacobian, let us look at its columns that correspond to the variables in <span class="math notranslate nohighlight">\(\mathbf{x}^{(k)}\)</span>, that is, columns <span class="math notranslate nohighlight">\(\alpha_k = (k-1) m + 1\)</span> to <span class="math notranslate nohighlight">\(\beta_k = k m\)</span>. Note that only the <span class="math notranslate nohighlight">\(k\)</span>-th component of <span class="math notranslate nohighlight">\(\mathbf{f}\)</span> depends on <span class="math notranslate nohighlight">\(\mathbf{x}^{(k)}\)</span>, so the rows <span class="math notranslate nohighlight">\(\neq k\)</span> of <span class="math notranslate nohighlight">\(J_{\mathbf{f}}(\mathbf{x})\)</span> are <span class="math notranslate nohighlight">\(0\)</span> for the corresponding columns.</p>
-<p>Row <span class="math notranslate nohighlight">\(k\)</span> on the other hand is <span class="math notranslate nohighlight">\(\mathbf{z}^T\)</span> from our previous formula for the gradient of an affine map. Hence one way to write the columns <span class="math notranslate nohighlight">\(\alpha_k\)</span> to <span class="math notranslate nohighlight">\(\beta_k\)</span> of <span class="math notranslate nohighlight">\(J_{\mathbf{f}}(\mathbf{x})\)</span> is <span class="math notranslate nohighlight">\(\mathbf{e}_k \mathbf{z}^T\)</span>, where here <span class="math notranslate nohighlight">\(\mathbf{e}_k \in \mathbb{R}^{n}\)</span> is the standard basis of <span class="math notranslate nohighlight">\(\mathbb{R}^{n}\)</span>.</p>
+<p>Row <span class="math notranslate nohighlight">\(k\)</span> on the other hand is <span class="math notranslate nohighlight">\(\mathbf{z}^T\)</span> from our previous formula for the gradient of an affine map. Hence one way to write the columns <span class="math notranslate nohighlight">\(\alpha_k\)</span> to <span class="math notranslate nohighlight">\(\beta_k\)</span> of <span class="math notranslate nohighlight">\(J_{\mathbf{f}}(\mathbf{x})\)</span> is <span class="math notranslate nohighlight">\(\mathbf{e}_k \mathbf{z}^T\)</span>, where here <span class="math notranslate nohighlight">\(\mathbf{e}_k \in \mathbb{R}^{n}\)</span> is the <span class="math notranslate nohighlight">\(k\)</span>-th standard basis vector of <span class="math notranslate nohighlight">\(\mathbb{R}^{n}\)</span>.</p>
 <p>So <span class="math notranslate nohighlight">\(J_{\mathbf{f}}(\mathbf{x})\)</span> can be written in block form as</p>
 <div class="math notranslate nohighlight">
 \[
@@ -1114,7 +1113,7 @@ h_i(\mathbf{x})
 {\partial y_k}\)</span> indicates the partial derivative of <span class="math notranslate nohighlight">\(g_i\)</span> with respect to its <span class="math notranslate nohighlight">\(k\)</span>-th component. In matrix form, the claim follows. <span class="math notranslate nohighlight">\(\square\)</span></p>
 <p><strong>EXAMPLE:</strong> <strong>(Affine Map continued)</strong> Let <span class="math notranslate nohighlight">\(A \in \mathbb{R}^{m \times d}\)</span> and <span class="math notranslate nohighlight">\(\mathbf{b} \in \mathbb{R}^{m}\)</span>. Define again the vector-valued function <span class="math notranslate nohighlight">\(\mathbf{f}  : \mathbb{R}^d \to \mathbb{R}^m\)</span> as
 <span class="math notranslate nohighlight">\(\mathbf{f}(\mathbf{x}) = A \mathbf{x} + \mathbf{b}\)</span>.
-In addition, let <span class="math notranslate nohighlight">\(C \in \mathbb{R}^{p \times m}\)</span> and <span class="math notranslate nohighlight">\(\mathbf{d} \in \mathbb{R}^{p}\)</span>, define <span class="math notranslate nohighlight">\(\mathbf{g}  : \mathbb{R}^m \to \mathbb{R}^p\)</span> as
+In addition, for <span class="math notranslate nohighlight">\(C \in \mathbb{R}^{p \times m}\)</span> and <span class="math notranslate nohighlight">\(\mathbf{d} \in \mathbb{R}^{p}\)</span>, define <span class="math notranslate nohighlight">\(\mathbf{g}  : \mathbb{R}^m \to \mathbb{R}^p\)</span> as
 <span class="math notranslate nohighlight">\(\mathbf{g}(\mathbf{y}) = C \mathbf{y} + \mathbf{d}\)</span>.</p>
 <p>Then</p>
 <div class="math notranslate nohighlight">
@@ -1259,7 +1258,7 @@ x_2
 <blockquote>
 <div><p>In mathematics and computer algebra, automatic differentiation (AD), also called algorithmic differentiation or computational differentiation, is a set of techniques to numerically evaluate the derivative of a function specified by a computer program. AD exploits the fact that every computer program, no matter how complicated, executes a sequence of elementary arithmetic operations (addition, subtraction, multiplication, division, etc.) and elementary functions (exp, log, sin, cos, etc.). By applying the chain rule repeatedly to these operations, derivatives of arbitrary order can be computed automatically, accurately to working precision, and using at most a small constant factor more arithmetic operations than the original program. Automatic differentiation is distinct from symbolic differentiation and numerical differentiation (the method of finite differences). Symbolic differentiation can lead to inefficient code and faces the difficulty of converting a computer program into a single expression, while numerical differentiation can introduce round-off errors in the discretization process and cancellation.</p>
 </div></blockquote>
-<p><strong>Automatic differentiation in PyTorch</strong> We will use <a class="reference external" href="https://pytorch.org/tutorials/">PyTorch</a>. It uses <a class="reference external" href="https://pytorch.org/tutorials/beginner/basics/tensorqs_tutorial.html">tensors</a><span class="math notranslate nohighlight">\(\idx{tensor}\xdi\)</span>, which in many ways behave similarly to Numpy arrays. See <a class="reference external" href="https://pytorch.org/tutorials/beginner/basics/autogradqs_tutorial.html">here</a> for a quick introduction. We first initialize the tensors. Here each tensor corresponds to a single real variable. With the option <a class="reference external" href="https://pytorch.org/docs/stable/generated/torch.Tensor.requires_grad.html#torch.Tensor.requires_grad"><code class="docutils literal notranslate"><span class="pre">requires_grad=True</span></code></a>, we indicate that these are variables with respect to which a gradient will be taken later. We initialize the tensors at the values where the derivatives will be computed. If derivatives need to be computed at different values, we need to repeat this process. The function <a class="reference external" href="https://pytorch.org/docs/stable/generated/torch.Tensor.backward.html"><code class="docutils literal notranslate"><span class="pre">.backward()</span></code></a> computes the gradient using backpropagation, to which we will return later. The partial derivatives are accessed with <a class="reference external" href="https://pytorch.org/docs/stable/generated/torch.Tensor.grad.html"><code class="docutils literal notranslate"><span class="pre">.grad</span></code></a>.</p>
+<p><strong>Automatic differentiation in PyTorch</strong> We will use <a class="reference external" href="https://pytorch.org/tutorials/">PyTorch</a>. It uses <a class="reference external" href="https://pytorch.org/tutorials/beginner/basics/tensorqs_tutorial.html">tensors</a><span class="math notranslate nohighlight">\(\idx{tensor}\xdi\)</span>, which in many ways behave similarly to NumPy arrays. See <a class="reference external" href="https://pytorch.org/tutorials/beginner/basics/autogradqs_tutorial.html">here</a> for a quick introduction. We first initialize the tensors. Here each tensor corresponds to a single real variable. With the option <a class="reference external" href="https://pytorch.org/docs/stable/generated/torch.Tensor.requires_grad.html#torch.Tensor.requires_grad"><code class="docutils literal notranslate"><span class="pre">requires_grad=True</span></code></a>, we indicate that these are variables with respect to which a gradient will be taken later. We initialize the tensors at the values where the derivatives will be computed. If derivatives need to be computed at different values, we need to repeat this process. The function <a class="reference external" href="https://pytorch.org/docs/stable/generated/torch.Tensor.backward.html"><code class="docutils literal notranslate"><span class="pre">.backward()</span></code></a> computes the gradient using backpropagation, to which we will return later. The partial derivatives are accessed with <a class="reference external" href="https://pytorch.org/docs/stable/generated/torch.Tensor.grad.html"><code class="docutils literal notranslate"><span class="pre">.grad</span></code></a>.</p>
 <p><strong>NUMERICAL CORNER:</strong> This is better understood through an example.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1277,8 +1276,8 @@ x_2
 
 <span class="n">f</span><span class="o">.</span><span class="n">backward</span><span class="p">()</span>
 
-<span class="nb">print</span><span class="p">(</span><span class="n">x1</span><span class="o">.</span><span class="n">grad</span><span class="p">)</span>  <span class="c1"># df/dx</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">x2</span><span class="o">.</span><span class="n">grad</span><span class="p">)</span>  <span class="c1"># df/dy</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">x1</span><span class="o">.</span><span class="n">grad</span><span class="p">)</span>  <span class="c1"># df/dx1</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">x2</span><span class="o">.</span><span class="n">grad</span><span class="p">)</span>  <span class="c1"># df/dx2</span>
 </pre></div>
 </div>
 </div>
@@ -1323,15 +1322,15 @@ tensor(8.3891)
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>tensor([[-0.0837],
-        [16.2010]])
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>tensor([[50.4947],
+        [16.8029]])
 </pre></div>
 </div>
 </div>
 </div>
 <p><strong>CHAT &amp; LEARN</strong> Ask your favorite AI chatbot to explain how to compute a second derivative using PyTorch (it’s bit tricky). Ask for code that you can apply to the previous examples. (<a class="reference external" href="https://colab.research.google.com/github/MMiDS-textbook/MMiDS-textbook.github.io/blob/main/just_the_code/roch_mmids_chap_nn_notebook.ipynb">Open In Colab</a>) <span class="math notranslate nohighlight">\(\ddagger\)</span></p>
 <p><span class="math notranslate nohighlight">\(\unlhd\)</span></p>
-<p><strong>Implementing gradient descent in PyTorch</strong> Rather than explicitly specifying the gradient function, we could use PyTorch to compute it automatically. This is done next. Note that the descent update is done within <a class="reference external" href="https://pytorch.org/docs/stable/generated/torch.no_grad.html"><code class="docutils literal notranslate"><span class="pre">with</span> <span class="pre">torch.no_grad()</span></code></a>, which ensures that the update operation itself is not tracked for gradient computation. Here the input <code class="docutils literal notranslate"><span class="pre">x0</span></code> as well as the output <code class="docutils literal notranslate"><span class="pre">xk.numpy(force=True)</span></code> are Numpy arrays. The function <a class="reference external" href="https://pytorch.org/docs/stable/generated/torch.Tensor.numpy.html"><code class="docutils literal notranslate"><span class="pre">torch.Tensor.numpy()</span></code></a> converts a PyTorch tensor to a Numpy array (see the documentation for an explanation of the <code class="docutils literal notranslate"><span class="pre">force=True</span></code> option). Also, quoting ChatGPT:</p>
+<p><strong>Implementing gradient descent in PyTorch</strong> Rather than explicitly specifying the gradient function, we could use PyTorch to compute it automatically. This is done next. Note that the descent update is done within <a class="reference external" href="https://pytorch.org/docs/stable/generated/torch.no_grad.html"><code class="docutils literal notranslate"><span class="pre">with</span> <span class="pre">torch.no_grad()</span></code></a>, which ensures that the update operation itself is not tracked for gradient computation. Here the input <code class="docutils literal notranslate"><span class="pre">x0</span></code> as well as the output <code class="docutils literal notranslate"><span class="pre">xk.numpy(force=True)</span></code> are NumPy arrays. The function <a class="reference external" href="https://pytorch.org/docs/stable/generated/torch.Tensor.numpy.html"><code class="docutils literal notranslate"><span class="pre">torch.Tensor.numpy()</span></code></a> converts a PyTorch tensor to a NumPy array (see the documentation for an explanation of the <code class="docutils literal notranslate"><span class="pre">force=True</span></code> option). Also, quoting ChatGPT:</p>
 <blockquote>
 <div><p>In the given code, <code class="docutils literal notranslate"><span class="pre">.item()</span></code> is used to extract the scalar value from a tensor. In PyTorch, when you perform operations on tensors, you get back tensors as results, even if the result is a single scalar value. <code class="docutils literal notranslate"><span class="pre">.item()</span></code> is used to extract this scalar value from the tensor.</p>
 </div></blockquote>
@@ -1419,7 +1418,7 @@ tensor(8.3891)
 J_{\mathbf{g} \circ \mathbf{f}}(\mathbf{x}_0) = J_{\mathbf{g}}(\mathbf{f}(\mathbf{x}_0)) \,J_{\mathbf{f}}(\mathbf{x}_0)
 \]</div>
 <p>as a product of matrices.”</p>
-<p>Answer for 5: c. Justification: The text states: “Let <span class="math notranslate nohighlight">\(A \in \mathbb{R}^{m \times d}\)</span> and <span class="math notranslate nohighlight">\(\mathbf{b} = (b_1,\ldots,b_m)^T \in \mathbb{R}^{m}\)</span>. Define the vector-valued function <span class="math notranslate nohighlight">\(\mathbf{f} = (f_1, \ldots, f_m)  : \mathbb{R}^d \to \mathbb{R}^m\)</span> as <span class="math notranslate nohighlight">\(\mathbf{f}(\mathbf{x}) = A \mathbf{x} + \mathbf{b}\)</span>. […] So <span class="math notranslate nohighlight">\(J_{\mathbf{f}}(\mathbf{x}) = A.\)</span>”</p>
+<p>Answer for 5: c. Justification: The text states: “Let <span class="math notranslate nohighlight">\(A \in \mathbb{R}^{m \times d}\)</span> and <span class="math notranslate nohighlight">\(\mathbf{b} = (b_1,\ldots,b_m) \in \mathbb{R}^{m}\)</span>. Define the vector-valued function <span class="math notranslate nohighlight">\(\mathbf{f} = (f_1, \ldots, f_m)  : \mathbb{R}^d \to \mathbb{R}^m\)</span> as <span class="math notranslate nohighlight">\(\mathbf{f}(\mathbf{x}) = A \mathbf{x} + \mathbf{b}\)</span>. […] So <span class="math notranslate nohighlight">\(J_{\mathbf{f}}(\mathbf{x}) = A.\)</span>”</p>
 </section>
 </section>
 

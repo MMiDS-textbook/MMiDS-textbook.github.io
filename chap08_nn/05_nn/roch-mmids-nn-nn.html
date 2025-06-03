@@ -532,10 +532,8 @@ document.write(`
 <span class="math notranslate nohighlight">\(\newcommand{\xdi}{}\)</span></p>
 <section id="building-blocks-of-ai-3-neural-networks">
 <h1><span class="section-number">8.5. </span>Building blocks of AI 3: neural networks<a class="headerlink" href="#building-blocks-of-ai-3-neural-networks" title="Link to this heading">#</a></h1>
-<!--TEX
-<blockquote class="twitter-tweet"><p lang="en" dir="ltr">Today&#39;s paper shows that it is possible to implement John Von Neumann&#39;s claim: &quot;With 4 parameters I can ﬁt an elephant, and with 5 I can make him wiggle his trunk&quot;<br><br>Paper here: <a href="https://t.co/SvVrLuRFNy">https://t.co/SvVrLuRFNy</a> <a href="https://t.co/VG37439vE7">pic.twitter.com/VG37439vE7</a></p>&mdash; Fermat&#39;s Library (@fermatslibrary) <a href="https://twitter.com/fermatslibrary/status/965971333422120962?ref_src=twsrc%5Etfw">February 20, 2018</a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
---><p>In this section, we introduce neural networks. Unlike the previous examples we encountered, this one is not convex. Based on the theory we developed in this chapter, finding a local minimizer is the best we can hope for in general from descent methods. Yet, in many application settings, stochastic gradient descent (and some variants) have proven very effective at computing a good model to fit the data. Why that is remains an open question.</p>
-<p>We describe the basic setup and apply it to classification on the MNIST dataset. As we will see, we will get a significant improvement over multinomial logistic regression. We use a particular architecture referred as a multilayer perceptron (MLP)<span class="math notranslate nohighlight">\(\idx{multilayer perceptron}\xdi\)</span>. These are a special class of progressive functions.</p>
+<blockquote class="twitter-tweet"><p lang="en" dir="ltr">Today&#39;s paper shows that it is possible to implement John Von Neumann&#39;s claim: &quot;With 4 parameters I can ﬁt an elephant, and with 5 I can make him wiggle his trunk&quot;<br><br>Paper here: <a href="https://t.co/SvVrLuRFNy">https://t.co/SvVrLuRFNy</a> <a href="https://t.co/VG37439vE7">pic.twitter.com/VG37439vE7</a></p>&mdash; Fermat&#39;s Library (@fermatslibrary) <a href="https://twitter.com/fermatslibrary/status/965971333422120962?ref_src=twsrc%5Etfw">February 20, 2018</a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script><p>In this section, we introduce neural networks. Unlike the previous examples we encountered, this one is not convex. Based on the theory we developed in Chapter 3, finding a local minimizer is the best we can hope for in general from descent methods. Yet, in many application settings, stochastic gradient descent (and some variants) have proven very effective at computing a good model to fit the data. Why that is remains an open question.</p>
+<p>We describe the basic setup and apply it to classification on the Fashion-MNIST dataset. As we will see, we will get an improvement over multinomial logistic regression (with some help from a different optimization method). We use a particular architecture referred as a multilayer perceptron (MLP)<span class="math notranslate nohighlight">\(\idx{multilayer perceptron}\xdi\)</span>. These are a special class of progressive functions.</p>
 <section id="multilayer-perceptron">
 <h2><span class="section-number">8.5.1. </span>Multilayer perceptron<a class="headerlink" href="#multilayer-perceptron" title="Link to this heading">#</a></h2>
 <p>Each of the main layers of a feedforward neural network<span class="math notranslate nohighlight">\(\idx{neural network}\xdi\)</span> has two components, an affine map and a nonlinear activation function<span class="math notranslate nohighlight">\(\idx{activation function}\xdi\)</span>. For the latter, we restrict ourselves here to the sigmoid function<span class="math notranslate nohighlight">\(\idx{sigmoid}\xdi\)</span> (although there are many <a class="reference external" href="https://pytorch.org/docs/stable/nn.html#non-linear-activations-weighted-sum-nonlinearity">other choices of activation functions</a>).</p>
@@ -593,13 +591,7 @@ J_{\bsigma}(\mathbf{t})
 = \bfg_{L}(\bfg_{L-1}(\cdots \bfg_1(\bfg_0(\mathbf{x},\mathbf{w}_0),\mathbf{w}_1), \cdots, \mathbf{w}_{L-1}), \mathbf{w}_{L}).
 \]</div>
 <p>What makes this an MLP is that, on each layer, all outputs feed into the input of the next layer. In graphical terms, the edges between consecutive layers form a complete bipartite graph.</p>
-<!--TEX
-**Figure:** A feedforward neural network ([Source](https://towardsdatascience.com/machine-learning-fundamentals-ii-neural-networks-f1e7b2cb3eef))
-
-![Feedforward neural network](https://miro.medium.com/max/1166/1*DW0Ccmj1hZ0OvSXi7Kz5MQ.jpeg)
-
-$\bowtie$
---><p><img alt="Feedforward neural network (with help from Claude; inspired by (Source))" src="../../_images/feedforward.png" /></p>
+<p><img alt="Feedforward neural network (with help from Claude; inspired by (Source))" src="../../_images/feedforward.png" /></p>
 <p>We again use cross-entropy<span class="math notranslate nohighlight">\(\idx{cross-entropy}\xdi\)</span> as the loss function (although there are many <a class="reference external" href="https://pytorch.org/docs/stable/nn.html#loss-functions">other choices of loss functions</a>). That is, we set</p>
 <div class="math notranslate nohighlight">
 \[
@@ -864,18 +856,12 @@ I_{2\times 2} \otimes \mathbf{z}_1^T
 </div>
 </div>
 </div>
-<div class="cell tag_hide-input docutils container">
-<details class="hide above-input">
-<summary aria-label="Toggle hidden content">
-<span class="collapsed">Show code cell source</span>
-<span class="expanded">Hide code cell source</span>
-</summary>
+<div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
-</details>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>tensor(0.2084, grad_fn=&lt;NegBackward0&gt;)
 </pre></div>
@@ -897,18 +883,12 @@ I_{2\times 2} \otimes \mathbf{z}_1^T
 </div>
 </div>
 </div>
-<div class="cell tag_hide-input docutils container">
-<details class="hide above-input">
-<summary aria-label="Toggle hidden content">
-<span class="collapsed">Show code cell source</span>
-<span class="expanded">Hide code cell source</span>
-</summary>
+<div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">W1</span><span class="o">.</span><span class="n">grad</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
-</details>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>tensor([[ 0.1375,  0.1375],
         [-0.1375, -0.1375]])
@@ -933,18 +913,12 @@ I_{2\times 2} \otimes \mathbf{z}_1^T
 </div>
 </div>
 </div>
-<div class="cell tag_hide-input docutils container">
-<details class="hide above-input">
-<summary aria-label="Toggle hidden content">
-<span class="collapsed">Show code cell source</span>
-<span class="expanded">Hide code cell source</span>
-</summary>
+<div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">grad_W1</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
-</details>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>tensor([[ 0.1375,  0.1375, -0.1375, -0.1375]])
 </pre></div>
@@ -1001,7 +975,7 @@ J_{\bfk_i}(\mathbf{z}_i,\mathbf{w}_i)
 = I_{n_{i+1}\times n_{i+1}} \otimes \mathbf{z}_i^T,
 \]</div>
 <p>where here <span class="math notranslate nohighlight">\(\mathbf{e}_{j}\)</span> is the <span class="math notranslate nohighlight">\(j\)</span>-th standard basis vector in <span class="math notranslate nohighlight">\(\mathbb{R}^{n_{i+1}}\)</span>.</p>
-<p>From a previous example, the Jacobian of</p>
+<p>From a previous calculation, the Jacobian of</p>
 <div class="math notranslate nohighlight">
 \[
 \bsigma(\mathbf{t})
@@ -1140,7 +1114,7 @@ A_i &amp; B_i
 > This, the way of backpropagation is. Simple, yet profound.
 
 $\ddagger$
---><p><strong>NUMERICAL CORNER:</strong> We implement the training of a neural network in PyTorch. We use the Fashion MNIST dataset again. We first load it again. We also check for the availability of GPUs.</p>
+--><p><strong>NUMERICAL CORNER:</strong> We implement the training of a neural network in PyTorch. We use the Fashion-MNIST dataset again. We first load it again. We also check for the availability of GPUs.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">device</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">device</span><span class="p">(</span><span class="s1">&#39;cuda&#39;</span> <span class="k">if</span> <span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">is_available</span><span class="p">()</span> 
@@ -1202,7 +1176,7 @@ $\ddagger$
 </div>
 </div>
 </div>
-<p>As we did for multinomial logistic regression, we use the Adam optimizer and the cross-entropy loss (which in PyTorch includes the softmax function and expects labels to be class names rather than one-hot encoding).</p>
+<p>As we did for multinomial logistic regression, we use the SGD optimizer and the cross-entropy loss (which in PyTorch includes the softmax function and expects labels to be actual class labels rather than one-hot encoding).</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">loss_fn</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">CrossEntropyLoss</span><span class="p">()</span>  
@@ -1232,12 +1206,12 @@ $\ddagger$
 </div>
 </div>
 </div>
-<p>Disappointingly, this is significantly less accurate model than what we obtained using multinomial logistic regression. It turns out that using a different optimizer gives much better results.</p>
+<p>Disappointingly, this is significantly less accurate than what we obtained using multinomial logistic regression. It turns out that using a different optimizer gives much better results.</p>
 <div class="cell tag_remove-output docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">loss_fn</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">CrossEntropyLoss</span><span class="p">()</span>  
 <span class="n">optimizer</span> <span class="o">=</span> <span class="n">optim</span><span class="o">.</span><span class="n">Adam</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">parameters</span><span class="p">())</span>
-<span class="n">mmids</span><span class="o">.</span><span class="n">training_loop</span><span class="p">(</span><span class="n">train_loader</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span> <span class="n">loss_fn</span><span class="p">,</span> <span class="n">optimizer</span><span class="p">,</span> <span class="n">device</span><span class="p">)</span>
+<span class="n">mmids</span><span class="o">.</span><span class="n">training_loop</span><span class="p">(</span><span class="n">train_loader</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span> <span class="n">loss_fn</span><span class="p">,</span> <span class="n">optimizer</span><span class="p">,</span> <span class="n">device</span><span class="p">,</span> <span class="n">epochs</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -1249,12 +1223,12 @@ $\ddagger$
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Test error: 85.0% accuracy
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Test error: 87.1% accuracy
 </pre></div>
 </div>
 </div>
 </div>
-<p><strong>CHAT &amp; LEARN</strong> The text mentions that there are many optimizers available in PyTorch besides SGD. Ask your favorite AI chatbot to explain and implement a different optimizer, such as Adam, Adagrad or RMSprop, for the linear regression problem. Compare the results with those obtained using SGD. <span class="math notranslate nohighlight">\(\ddagger\)</span></p>
+<p><strong>CHAT &amp; LEARN</strong> We mentioned that there are many optimizers available in PyTorch besides SGD and Adam. Ask your favorite AI chatbot to explain and implement a different optimizer, such as Adagrad or RMSprop, for the MLP. Compare the results with those obtained using SGD and Adam. (<a class="reference external" href="https://colab.research.google.com/github/MMiDS-textbook/MMiDS-textbook.github.io/blob/main/just_the_code/roch_mmids_chap_nn_notebook.ipynb">Open In Colab</a>) <span class="math notranslate nohighlight">\(\ddagger\)</span></p>
 <p><span class="math notranslate nohighlight">\(\unlhd\)</span></p>
 <p><strong>CHAT &amp; LEARN</strong> Regularization techniques are often used to prevent overfitting in neural networks. Ask your favorite AI chatbot about <span class="math notranslate nohighlight">\(L_1\)</span> and <span class="math notranslate nohighlight">\(L_2\)</span> regularization, dropout, and early stopping. Discuss how these techniques can be incorporated into the training process and their effects on the learned model. <span class="math notranslate nohighlight">\(\ddagger\)</span></p>
 <p><em><strong>Self-assessment quiz</strong></em> <em>(with help from Claude, Gemini, and ChatGPT)</em></p>
@@ -1268,16 +1242,16 @@ $\ddagger$
 <p>b) To normalize the outputs into a probability distribution.</p>
 <p>c) To compute the gradient of the loss function.</p>
 <p>d) To reduce the dimensionality of the output.</p>
-<p><strong>3</strong> What is the Jacobian matrix of the elementwise sigmoid function <span class="math notranslate nohighlight">\(\sigma(t) = (\sigma(t_1), \dots, \sigma(t_n))\)</span>?</p>
-<p>a) <span class="math notranslate nohighlight">\(J_\sigma(t) = \mathrm{diag}(\sigma(t))\)</span></p>
-<p>b) <span class="math notranslate nohighlight">\(J_\sigma(t) = \sigma(t) \odot (1-\sigma(t))\)</span></p>
-<p>c) <span class="math notranslate nohighlight">\(J_\sigma(t) = \mathrm{diag}(\sigma(t) \odot (1 - \sigma(t)))\)</span></p>
-<p>d) <span class="math notranslate nohighlight">\(J_\sigma(t) = \sigma(t)(1 - \sigma(t))^T\)</span></p>
+<p><strong>3</strong> What is the Jacobian matrix of the elementwise sigmoid function <span class="math notranslate nohighlight">\(\boldsymbol{\sigma}(\mathbf{t}) = (\sigma(t_1), \dots, \sigma(t_n))\)</span>?</p>
+<p>a) <span class="math notranslate nohighlight">\(J_{\boldsymbol{\sigma}}(\mathbf{t}) = \mathrm{diag}(\boldsymbol{\sigma}(\mathbf{t}))\)</span></p>
+<p>b) <span class="math notranslate nohighlight">\(J_{\boldsymbol{\sigma}}(\mathbf{t}) = \boldsymbol{\sigma}(\mathbf{t}) \odot (1-\boldsymbol{\sigma}(\mathbf{t}))\)</span></p>
+<p>c) <span class="math notranslate nohighlight">\(J_{\boldsymbol{\sigma}}(\mathbf{t}) = \mathrm{diag}(\boldsymbol{\sigma}(\mathbf{t}) \odot (1 - \boldsymbol{\sigma}(\mathbf{t})))\)</span></p>
+<p>d) <span class="math notranslate nohighlight">\(J_{\boldsymbol{\sigma}}(\mathbf{t}) = \boldsymbol{\sigma}(\mathbf{t})(1 - \boldsymbol{\sigma}(\mathbf{t}))^T\)</span></p>
 <p><strong>4</strong> In the forward phase of computing the gradient of the loss function in an MLP, what is the output of the <span class="math notranslate nohighlight">\(i\)</span>-th hidden layer?</p>
-<p>a) <span class="math notranslate nohighlight">\(z_{i+1} := g_i(z_i, w_i) = \sigma(W_i z_i)\)</span></p>
-<p>b) <span class="math notranslate nohighlight">\(z_{i+1} := g_i(z_i, w_i) = W_i z_i\)</span></p>
-<p>c) <span class="math notranslate nohighlight">\(z_{i+1} := g_i(z_i, w_i) = \gamma(W_i z_i)\)</span></p>
-<p>d) <span class="math notranslate nohighlight">\(z_{i+1} := g_i(z_i, w_i) = W_i \sigma(z_i)\)</span></p>
+<p>a) <span class="math notranslate nohighlight">\(\mathbf{z}_{i+1} := \mathbf{g}_i(\mathbf{z}_i, \mathbf{w}_i) = \boldsymbol{\sigma}(\mathcal{W}_i \mathbf{z}_i)\)</span></p>
+<p>b) <span class="math notranslate nohighlight">\(\mathbf{z}_{i+1} := \mathbf{g}_i(\mathbf{z}_i, \mathbf{w}_i) = \mathcal{W}_i \mathbf{z}_i\)</span></p>
+<p>c) <span class="math notranslate nohighlight">\(\mathbf{z}_{i+1} := \mathbf{g}_i(\mathbf{z}_i, \mathbf{w}_i) = \boldsymbol{\gamma}(\mathcal{W}_i \mathbf{z}_i)\)</span></p>
+<p>d) <span class="math notranslate nohighlight">\(\mathbf{z}_{i+1} := \mathbf{g}_i(\mathbf{z}_i, \mathbf{w}_i) = \mathcal{W}_i \boldsymbol{\sigma}(\mathbf{z}_i)\)</span></p>
 <p><strong>5</strong> What is the output of the backward loop in computing the gradient of the loss function in an MLP?</p>
 <p>a) The gradient of the loss function with respect to the activations of each layer.</p>
 <p>b) The gradient of the loss function with respect to the weights of each layer.</p>
@@ -1288,21 +1262,21 @@ $\ddagger$
 <p>Answer for 3: c. Justification: The text states that the Jacobian of the elementwise sigmoid function is:</p>
 <div class="math notranslate nohighlight">
 \[
-J_\sigma(t) = \mathrm{diag}(\sigma'(t)) = \mathrm{diag}(\sigma(t) \odot (1 - \sigma(t)))
+J_{\boldsymbol{\sigma}}(t) = \mathrm{diag}(\boldsymbol{\sigma}'(t)) = \mathrm{diag}(\boldsymbol{\sigma}(t) \odot (1 - \boldsymbol{\sigma}(t)))
 \]</div>
 <p>where <span class="math notranslate nohighlight">\(\odot\)</span> denotes the Hadamard (elementwise) product.</p>
 <p>Answer for 4: a. Justification: The text defines the output of the <span class="math notranslate nohighlight">\(i\)</span>-th hidden layer as:</p>
 <div class="math notranslate nohighlight">
 \[
-z_{i+1} := g_i(z_i, w_i) = \sigma(W_i z_i)
+\mathbf{z}_{i+1} := \mathbf{g}_i(\mathbf{z}_i, \mathbf{w}_i) = \boldsymbol{\sigma}(\mathcal{W}_i \mathbf{z}_i)
 \]</div>
-<p>where <span class="math notranslate nohighlight">\(\sigma\)</span> is the sigmoid activation function and <span class="math notranslate nohighlight">\(W_i\)</span> is the weight matrix for the <span class="math notranslate nohighlight">\(i\)</span>-th layer.</p>
+<p>where <span class="math notranslate nohighlight">\(\boldsymbol{\sigma}\)</span> is the sigmoid activation function and <span class="math notranslate nohighlight">\(\mathcal{W}_i\)</span> is the weight matrix for the <span class="math notranslate nohighlight">\(i\)</span>-th layer.</p>
 <p>Answer for 5: b. Justification: The text states that the output of the backward loop is the gradient of the loss function with respect to the weights of each layer:</p>
 <div class="math notranslate nohighlight">
 \[
-\nabla f(w) = (q_0, q_1, \dots, q_L)
+\nabla f(\mathbf{w}) = (\mathbf{q}_0, \mathbf{q}_1, \dots, \mathbf{q}_L)
 \]</div>
-<p>where <span class="math notranslate nohighlight">\(q_i := B_i^T p_{i+1} = \tilde{B}_{n_{i+1}}[z_i, w_i]^T p_{i+1}\)</span> is the gradient with respect to the weights of the <span class="math notranslate nohighlight">\(i\)</span>-th layer.</p>
+<p>where <span class="math notranslate nohighlight">\(\mathbf{q}_i := B_i^T \mathbf{p}_{i+1} = \widetilde{\mathbb{B}}_{n_{i+1}}[\mathbf{z}_i, \mathbf{w}_i]^T \mathbf{p}_{i+1}\)</span> is the gradient with respect to the weights of the <span class="math notranslate nohighlight">\(i\)</span>-th layer.</p>
 </section>
 </section>
 

@@ -855,12 +855,13 @@ def make_surface_plot(X, Y, Z):
 
 
 
-def nb_fit_table(N_km, alpha=1., beta=1.):
+def nb_fit_table(N_km, N_k, alpha=1., beta=1.):
     """
-    Fits a Naive Bayes model to a contingency table.
+    Fits a Naive Bayes model from pre-computed counts.
 
     Parameters:
     - N_km (ndarray): Contingency table of shape (K, M) where K is the number of classes and M is the number of features.
+    - N_k (ndarray): Total number of documents in each class, of shape (K,).
     - alpha (float): Smoothing parameter for the class probabilities. Default is 1.
     - beta (float): Smoothing parameter for the feature probabilities. Default is 1.
 
@@ -870,14 +871,13 @@ def nb_fit_table(N_km, alpha=1., beta=1.):
     """
     
     K, M = N_km.shape
-    N_k = np.sum(N_km,axis=-1)
     N = np.sum(N_k)
     
     # MLE for pi_k's
-    pi_k = (N_k+alpha) / (N+K*alpha)
+    pi_k = (N_k + alpha) / (N + K * alpha)
     
     # MLE for p_km's
-    p_km = (N_km+beta) / (N_k[:,None]+2*beta)
+    p_km = (N_km + beta) / (N_k[:, None] + 2 * beta)
 
     return pi_k, p_km
 

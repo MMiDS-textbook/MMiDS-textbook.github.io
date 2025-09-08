@@ -786,7 +786,7 @@ e_t = Y_t - H \mu_{\text{pred}} = 3 - \begin{pmatrix} 1 &amp; 0 \end{pmatrix} \b
 <h2><span class="section-number">6.7.2. </span>Additional sections<a class="headerlink" href="#additional-sections" title="Link to this heading">#</a></h2>
 <section id="sentiment-analysis">
 <h3><span class="section-number">6.7.2.1. </span>Sentiment analysis<a class="headerlink" href="#sentiment-analysis" title="Link to this heading">#</a></h3>
-<p>As an application of the Naive Bayes model, we consider the task of sentiment analysis, which is a classification problem. We use a dataset from <a class="reference external" href="https://data.world/crowdflower/airline-twitter-sentiment">Crowdflower</a>. The full datatset is available <a class="reference external" href="https://www.kaggle.com/crowdflower/twitter-airline-sentiment">here</a>. Quoting <a class="reference external" href="https://data.world/crowdflower/airline-twitter-sentiment">Crowdflower</a>:</p>
+<p>As an application of the Naive Bayes model, we consider the task of sentiment analysis, which is a classification problem. We use a dataset available <a class="reference external" href="https://www.kaggle.com/crowdflower/twitter-airline-sentiment">here</a>. Quoting from there:</p>
 <blockquote>
 <div><p>A sentiment analysis job about the problems of each major U.S. airline. Twitter data was scraped from February of 2015 and contributors were asked to first classify positive, negative, and neutral tweets, followed by categorizing negative reasons (such as “late flight” or “rude service”).</p>
 </div></blockquote>
@@ -1012,28 +1012,31 @@ Name: text, Length: 14640, dtype: object
 </div>
 </div>
 </div>
-<p>We use the Naive Bayes method. We first construct the matrix <span class="math notranslate nohighlight">\(N_{k,m}\)</span>.</p>
+<p>We use the Naive Bayes method. We first construct the matrix <span class="math notranslate nohighlight">\(N_{k,m}\)</span> and the vector <span class="math notranslate nohighlight">\(N_k\)</span>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">label_set</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;positive&#39;</span><span class="p">,</span> <span class="s1">&#39;negative&#39;</span><span class="p">,</span> <span class="s1">&#39;neutral&#39;</span><span class="p">]</span>
 <span class="n">N_km</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="n">label_set</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">terms</span><span class="p">)))</span>
+<span class="n">N_k</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">label_set</span><span class="p">))</span>
 <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">label_set</span><span class="p">):</span>
     <span class="n">k_rows</span> <span class="o">=</span> <span class="p">(</span><span class="n">y_train</span> <span class="o">==</span> <span class="n">k</span><span class="p">)</span>
     <span class="n">N_km</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="p">:]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">X_train</span><span class="p">[</span><span class="n">k_rows</span><span class="p">,</span> <span class="p">:]</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+    <span class="n">N_k</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">k_rows</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 </div>
+<p>Above, the <a class="reference external" href="https://docs.python.org/3/library/functions.html#enumerate"><code class="docutils literal notranslate"><span class="pre">enumerate</span></code></a> function provides both the index and the value for each item in the <code class="docutils literal notranslate"><span class="pre">label_set</span></code> list during the loop. This allows the code to use the label’s value (<code class="docutils literal notranslate"><span class="pre">k</span></code>) and its numerical position (<code class="docutils literal notranslate"><span class="pre">i</span></code>) at the same time.</p>
 <p>We are ready to train on the dataset.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pi_k</span><span class="p">,</span> <span class="n">p_km</span> <span class="o">=</span> <span class="n">mmids</span><span class="o">.</span><span class="n">nb_fit_table</span><span class="p">(</span><span class="n">N_km</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pi_k</span><span class="p">,</span> <span class="n">p_km</span> <span class="o">=</span> <span class="n">mmids</span><span class="o">.</span><span class="n">nb_fit_table</span><span class="p">(</span><span class="n">N_km</span><span class="p">,</span> <span class="n">N_k</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">pi_k</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[0.13066681 0.69345935 0.17587385]
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[0.16071022 0.62849989 0.21078989]
 </pre></div>
 </div>
 </div>
@@ -1045,12 +1048,9 @@ Name: text, Length: 14640, dtype: object
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[[3.61089045e-05 2.52762331e-04 3.61089045e-05 ... 7.22178089e-05
-  7.22178089e-05 3.61089045e-05]
- [8.16493162e-05 1.29278084e-04 6.80410968e-06 ... 6.80410968e-06
-  6.80410968e-06 1.36082194e-05]
- [5.36552649e-05 1.07310530e-04 5.36552649e-05 ... 2.68276325e-05
-  2.68276325e-05 5.36552649e-05]]
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[[0.00047192 0.00330345 0.00047192 ... 0.00094384 0.00094384 0.00047192]
+ [0.00144858 0.00229358 0.00012071 ... 0.00012071 0.00012071 0.00024143]
+ [0.00071968 0.00143937 0.00071968 ... 0.00035984 0.00035984 0.00071968]]
 </pre></div>
 </div>
 </div>
@@ -1067,7 +1067,7 @@ Name: text, Length: 14640, dtype: object
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/56c6566bc2c7638e248aed0a24cf120e13398204f5fb15b43908adf2aba02909.png" src="../../_images/56c6566bc2c7638e248aed0a24cf120e13398204f5fb15b43908adf2aba02909.png" />
+<img alt="../../_images/e75f50e0059a06f686e844c95d499bf2dbc3ef78367a3fc95c0ed8f7df2202b1.png" src="../../_images/e75f50e0059a06f686e844c95d499bf2dbc3ef78367a3fc95c0ed8f7df2202b1.png" />
 </div>
 </div>
 <p>We can compute a prediction on the test tweets. For example, for the 5th test tweet:</p>
@@ -1095,40 +1095,44 @@ Name: text, Length: 14640, dtype: object
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.7219945355191257
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.7670765027322405
 </pre></div>
 </div>
 </div>
 </div>
-<p>To get a better understanding of the differences uncovered by Naive Bayes between the different labels, we identify words that are particularly common in one label, but on the other. Recall that label <code class="docutils literal notranslate"><span class="pre">1</span></code> corresponds to <code class="docutils literal notranslate"><span class="pre">positive</span></code> while label <code class="docutils literal notranslate"><span class="pre">2</span></code> corresponds to <code class="docutils literal notranslate"><span class="pre">negative</span></code>.</p>
+<p>To get a better understanding of the differences uncovered by Naive Bayes between the different labels, we identify words that are particularly common in one label, but not on the other. Recall that label <code class="docutils literal notranslate"><span class="pre">1</span></code> corresponds to <code class="docutils literal notranslate"><span class="pre">positive</span></code> while label <code class="docutils literal notranslate"><span class="pre">2</span></code> corresponds to <code class="docutils literal notranslate"><span class="pre">negative</span></code>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pos_terms</span> <span class="o">=</span> <span class="p">(</span><span class="n">p_km</span><span class="p">[</span><span class="mi">0</span><span class="p">,:]</span> <span class="o">&gt;</span> <span class="mf">0.002</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">p_km</span><span class="p">[</span><span class="mi">1</span><span class="p">,:]</span> <span class="o">&lt;</span> <span class="mf">0.002</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pos_terms</span> <span class="o">=</span> <span class="p">(</span><span class="n">p_km</span><span class="p">[</span><span class="mi">0</span><span class="p">,:]</span> <span class="o">&gt;</span> <span class="mf">0.02</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">p_km</span><span class="p">[</span><span class="mi">1</span><span class="p">,:]</span> <span class="o">&lt;</span> <span class="mf">0.02</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">terms</span><span class="p">[</span><span class="n">pos_terms</span><span class="p">])</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&#39;_ù&#39; &#39;airline&#39; &#39;amazing&#39; &#39;awesome&#39; &#39;best&#39; &#39;crew&#39; &#39;fly&#39; &#39;flying&#39; &#39;good&#39;
- &#39;got&#39; &#39;great&#39; &#39;guys&#39; &#39;love&#39; &#39;much&#39; &#39;please&#39; &#39;see&#39; &#39;thank&#39; &#39;thanks&#39;
- &#39;today&#39; &#39;very&#39; &#39;virginamerica&#39;]
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&#39;_ù&#39; &#39;amazing&#39; &#39;appreciate&#39; &#39;awesome&#39; &#39;best&#39; &#39;crew&#39; &#39;first&#39; &#39;flying&#39;
+ &#39;good&#39; &#39;great&#39; &#39;ll&#39; &#39;love&#39; &#39;made&#39; &#39;much&#39; &#39;new&#39; &#39;response&#39; &#39;see&#39; &#39;thank&#39;
+ &#39;thx&#39; &#39;very&#39; &#39;well&#39; &#39;work&#39;]
 </pre></div>
 </div>
 </div>
 </div>
-<p>One notices that many positive words do appear in this list: <code class="docutils literal notranslate"><span class="pre">awesome</span></code>, <code class="docutils literal notranslate"><span class="pre">best</span></code>, <code class="docutils literal notranslate"><span class="pre">great</span></code>, <code class="docutils literal notranslate"><span class="pre">love</span></code>, <code class="docutils literal notranslate"><span class="pre">thanks</span></code>.</p>
+<p>One notices that many positive words do appear in this list: <code class="docutils literal notranslate"><span class="pre">awesome</span></code>, <code class="docutils literal notranslate"><span class="pre">best</span></code>, <code class="docutils literal notranslate"><span class="pre">great</span></code>, <code class="docutils literal notranslate"><span class="pre">love</span></code>, <code class="docutils literal notranslate"><span class="pre">thank</span></code>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">neg_terms</span> <span class="o">=</span> <span class="p">(</span><span class="n">p_km</span><span class="p">[</span><span class="mi">1</span><span class="p">,:]</span> <span class="o">&gt;</span> <span class="mf">0.002</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">p_km</span><span class="p">[</span><span class="mi">0</span><span class="p">,:]</span> <span class="o">&lt;</span> <span class="mf">0.002</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">neg_terms</span> <span class="o">=</span> <span class="p">(</span><span class="n">p_km</span><span class="p">[</span><span class="mi">1</span><span class="p">,:]</span> <span class="o">&gt;</span> <span class="mf">0.02</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">p_km</span><span class="p">[</span><span class="mi">0</span><span class="p">,:]</span> <span class="o">&lt;</span> <span class="mf">0.02</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">terms</span><span class="p">[</span><span class="n">neg_terms</span><span class="p">])</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&#39;about&#39; &#39;after&#39; &#39;bag&#39; &#39;been&#39; &#39;call&#39; &#39;cancelled&#39; &#39;delayed&#39; &#39;don&#39;
- &#39;flightled&#39; &#39;flights&#39; &#39;had&#39; &#39;has&#39; &#39;hold&#39; &#39;hour&#39; &#39;hours&#39; &#39;how&#39; &#39;if&#39; &#39;late&#39;
- &#39;need&#39; &#39;one&#39; &#39;or&#39; &#39;over&#39; &#39;phone&#39; &#39;plane&#39; &#39;still&#39; &#39;there&#39; &#39;ve&#39; &#39;what&#39;
- &#39;when&#39; &#39;why&#39; &#39;would&#39;]
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&#39;about&#39; &#39;after&#39; &#39;again&#39; &#39;agent&#39; &#39;airport&#39; &#39;am&#39; &#39;another&#39; &#39;any&#39; &#39;bag&#39;
+ &#39;bags&#39; &#39;because&#39; &#39;by&#39; &#39;call&#39; &#39;cancelled&#39; &#39;change&#39; &#39;check&#39; &#39;days&#39; &#39;delay&#39;
+ &#39;delayed&#39; &#39;did&#39; &#39;don&#39; &#39;due&#39; &#39;even&#39; &#39;ever&#39; &#39;flighted&#39; &#39;flightled&#39; &#39;go&#39;
+ &#39;going&#39; &#39;has&#39; &#39;here&#39; &#39;hold&#39; &#39;hour&#39; &#39;hours&#39; &#39;how&#39; &#39;hrs&#39; &#39;if&#39; &#39;last&#39; &#39;late&#39;
+ &#39;lost&#39; &#39;luggage&#39; &#39;make&#39; &#39;minutes&#39; &#39;more&#39; &#39;need&#39; &#39;never&#39; &#39;off&#39; &#39;only&#39; &#39;or&#39;
+ &#39;over&#39; &#39;people&#39; &#39;phone&#39; &#39;really&#39; &#39;should&#39; &#39;sitting&#39; &#39;someone&#39; &#39;still&#39;
+ &#39;take&#39; &#39;than&#39; &#39;them&#39; &#39;then&#39; &#39;told&#39; &#39;trying&#39; &#39;ve&#39; &#39;wait&#39; &#39;waiting&#39; &#39;want&#39;
+ &#39;weather&#39; &#39;what&#39; &#39;when&#39; &#39;why&#39; &#39;worst&#39;]
 </pre></div>
 </div>
 </div>

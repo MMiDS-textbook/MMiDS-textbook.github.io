@@ -151,10 +151,10 @@
         <div class="question">
             <p>In the backpropagation algorithm, what does the 'forward pass' compute?</p>
             <ul class="options">
-                <li><label><input type="radio" name="q1" value="0"> a) The adjoints \( p_i \) for each layer \( i \).</label></li>
-                <li><label><input type="radio" name="q1" value="1"> b) The gradients \( q_i \) for the parameters of each layer \( i \).</label></li>
-                <li><label><input type="radio" name="q1" value="2"> c) The function values \( z_i \) and the Jacobians \( A_i, B_i \) for each layer \( i \).</label></li>
-                <li><label><input type="radio" name="q1" value="3"> d) The final gradient \( \nabla f(w) \) with respect to all parameters.</label></li>
+                <li><label><input type="radio" name="q1" value="0"> a) The adjoints \( \mathbf{p}_i \) for each layer \( i \).</label></li>
+                <li><label><input type="radio" name="q1" value="1"> b) The gradients \( \mathbf{q}_i \) for the parameters of each layer \( i \).</label></li>
+                <li><label><input type="radio" name="q1" value="2"> c) The function values \( \mathbf{z}_i \) and the Jacobians \( A_i, B_i \) for each layer \( i \).</label></li>
+                <li><label><input type="radio" name="q1" value="3"> d) The final gradient \( \nabla f(\mathbf{w}) \) with respect to all parameters.</label></li>
             </ul>
             <div class="feedback" id="feedback1"></div>
         </div>
@@ -162,10 +162,10 @@
         <div class="question">
             <p>What is the purpose of the 'backward pass' in the backpropagation algorithm?</p>
             <ul class="options">
-                <li><label><input type="radio" name="q2" value="0"> a) To compute the function values \( z_i \) for each layer \( i \) from the input \( x \).</label></li>
+                <li><label><input type="radio" name="q2" value="0"> a) To compute the function values \( \mathbf{z}_i \) for each layer \( i \) from the input \( \mathbf{x} \).</label></li>
                 <li><label><input type="radio" name="q2" value="1"> b) To compute the Jacobians \( A_i, B_i \) for each layer \( i \) using the fundamental recursion.</label></li>
-                <li><label><input type="radio" name="q2" value="2"> c) To compute the adjoints \( p_i \) and the gradients \( q_i \) for each layer \( i \) using the fundamental recursion.</label></li>
-                <li><label><input type="radio" name="q2" value="3"> d) To compute the final output \( \ell(z_{L+1}) \) of the progressive function.</label></li>
+                <li><label><input type="radio" name="q2" value="2"> c) To compute the adjoints \( \mathbf{p}_i \) and the gradients \( \mathbf{q}_i \) for each layer \( i \) using the fundamental recursion.</label></li>
+                <li><label><input type="radio" name="q2" value="3"> d) To compute the final output \( \ell(\mathbf{z}_{L+1}) \) of the progressive function.</label></li>
             </ul>
             <div class="feedback" id="feedback2"></div>
         </div>
@@ -193,7 +193,7 @@
         </div>
 
         <div class="question">
-            <p>In the context of progressive functions, which of the following best describes the role of the vector \( w_i \)?</p>
+            <p>In the context of progressive functions, which of the following best describes the role of the vector \( \mathbf{w}_i \)?</p>
             <ul class="options">
                 <li><label><input type="radio" name="q5" value="0"> a) The input to the \( i \)-th layer.</label></li>
                 <li><label><input type="radio" name="q5" value="1"> b) The output of the \( i \)-th layer.</label></li>
@@ -204,11 +204,11 @@
         </div>
 
         <div class="question">
-            <p>What is the significance of the vectors \( p_i \) computed in the backward pass of backpropagation?</p>
+            <p>What is the significance of the vectors \( \mathbf{p}_i \) computed in the backward pass of backpropagation?</p>
             <ul class="options">
-                <li><label><input type="radio" name="q6" value="0"> a) They represent the gradients of the loss function with respect to the parameters \( w_i \).</label></li>
-                <li><label><input type="radio" name="q6" value="1"> b) They represent the Jacobians of the \( i \)-th layer with respect to its input \( z_i \).</label></li>
-                <li><label><input type="radio" name="q6" value="2"> c) They represent the partial derivatives of the loss function with respect to the layer inputs \( z_i \).</label></li>
+                <li><label><input type="radio" name="q6" value="0"> a) They represent the gradients of the loss function with respect to the parameters \( \mathbf{w}_i \).</label></li>
+                <li><label><input type="radio" name="q6" value="1"> b) They represent the Jacobians of the \( i \)-th layer with respect to its input \( \mathbf{z}_i \).</label></li>
+                <li><label><input type="radio" name="q6" value="2"> c) They represent the partial derivatives of the loss function with respect to the layer inputs \( \mathbf{z}_i \).</label></li>
                 <li><label><input type="radio" name="q6" value="3"> d) They represent the concatenation of all parameter gradients up to layer \( i \).</label></li>
             </ul>
             <div class="feedback" id="feedback6"></div>
@@ -246,17 +246,17 @@
                 case 0:
                     return "Justification: The concatenation of vectors \\( \\mathbf{v}_1 \\) and \\( \\mathbf{v}_2 \\) is denoted by \\((\\mathbf{v}_1, \\mathbf{v}_2)\\).";
                 case 1:
-                    return "Justification: The section presents the forward propagation step which computes 'the following: Initialization: \\( z_0 := x \\) Forward layer loop: For \\( i=0,1,\\dots,L \\), \\( z_{i+1} := g_i(z_i, w_i) \\) \\((A_i,B_i) := J_{g_i}(z_i, w_i)\\) Loss: \\( z_{L+2} := \\ell(z_{L+1}) \\)'.";
+                    return "Justification: The section presents the forward propagation step which computes 'the following: Initialization: \\( \\mathbf{z}_0 := \\mathbf{x} \\) Forward layer loop: For \\( i=0,1,\\dots,L \\), \\( \\mathbf{z}_{i+1} := \\mathbf{g}_i(\\mathbf{z}_i, \\mathbf{w}_i) \\) \\((A_i,B_i) := J_{\\mathbf{g}_i}(\\mathbf{z}_i, \\mathbf{w}_i)\\) Loss: \\( z_{L+2} := \\ell(\\mathbf{z}_{L+1}) \\)'.";
                 case 2:
-                    return "Justification: The backward pass is described as follows: 'Backward layer loop: For \\( i=L,\\dots,1,0 \\), \\( p_i := A_i^T p_{i+1} \\) \\( q_i := B_i^T p_{i+1} \\) Output: \\( \\nabla f(w) = (q_0, q_1, \\dots, q_L) \\).";
+                    return "Justification: The backward pass is described as follows: 'Backward layer loop: For \\( i=L,\\dots,1,0 \\), \\( \\mathbf{p}_i := A_i^T \\mathbf{p}_{i+1} \\) \\( \\mathbf{q}_i := B_i^T \\mathbf{p}_{i+1} \\) Output: \\( \\nabla f(\\mathbf{w}) = (\\mathbf{q}_0, \\mathbf{q}_1, \\dots, \\mathbf{q}_L) \\).";
                 case 3:
                     return "Justification: The text derives that the number of operations in the reverse mode is approximately \\( 2Lm^2 \\), stating 'This is approximately \\( 2Lm^2 \\) – which can be much smaller than \\( 2Lm^2d \\)'.";
                 case 4:
-                    return "Justification: The text defines \\( A_i \\) and \\( B_i \\) as the blocks of the Jacobian \\( J_{g_i}(z_i, w_i) \\) corresponding to the partial derivatives with respect to \\( z_i \\) and \\( w_i \\), respectively.";
+                    return "Justification: The text defines \\( A_i \\) and \\( B_i \\) as the blocks of the Jacobian \\( J_{\\mathbf{g}_i}(\\mathbf{z}_i, \\mathbf{w}_i) \\) corresponding to the partial derivatives with respect to \\( \\mathbf{z}_i \\) and \\( \\mathbf{w}_i \\), respectively.";
                 case 5:
-                    return "Justification: The text explains: 'In the machine learning context, each \"layer\" \\( g_i \\) has parameters (in our running example, there were the entries of \\( W_i \\)) and we seek to optimize with respect to those parameters.'";
+                    return "Justification: The text explains: 'In the machine learning context, each \"layer\" \\( \\mathbf{g}_i \\) has parameters (in our running example, there were the entries of \\( W_i \\)) and we seek to optimize with respect to those parameters.'";
                 case 6:
-                    return "Justification: The section states: 'The \\( p_i \\)'s are referred to as adjoints; they correspond to the vectors of partial derivatives of \\( f \\) with respect to the \\( z_i \\)'s.'";
+                    return "Justification: The section states: 'The \\( \\mathbf{p}_i \\)'s are referred to as adjoints; they correspond to the vectors of partial derivatives of \\( f \\) with respect to the \\( \\mathbf{z}_i \\)'s.'";
                 default:
                     return "";
             }

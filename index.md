@@ -4,7 +4,7 @@
 
 **Full title:** Mathematical Methods in Data Science: Bridging Theory and Applications with Python
 
-**Print copy:** A [print version](https://www.cambridge.org/highereducation/books/mathematical-methods-in-data-science/6CB866F77A7CA33109EF99910CFA40BC) of this book will be published by Cambridge University Press in September 2025. It is available for [pre-order](https://www.amazon.com/Mathematical-Methods-Data-Science-Applications/dp/1009509403). The online version will remain available and continue to be maintained. 
+**Print copy:** A print version of this book has been published by Cambridge University Press. It is available to order [here](https://www.amazon.com/Mathematical-Methods-Data-Science-Applications/dp/1009509403). The online version will remain available and maintained. Additional resources are available on the [publisher's website](https://www.cambridge.org/highereducation/books/mathematical-methods-in-data-science/6CB866F77A7CA33109EF99910CFA40BC#overview).
 
 **Description:** This textbook on the **mathematics of data** has several intended audiences:
 

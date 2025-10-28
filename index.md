@@ -8,7 +8,8 @@
 :width: 125px
 :align: right
 ```
-**Print copy:** A print version of this textbook has been published by Cambridge University Press. It is available to order [here](https://www.amazon.com/Mathematical-Methods-Data-Science-Applications/dp/1009509403). This online version will remain available and maintained. Additional resources can be found on the [publisher's website](https://www.cambridge.org/highereducation/books/mathematical-methods-in-data-science/6CB866F77A7CA33109EF99910CFA40BC#overview).
+**Print copy:** A print version of this textbook has been published by Cambridge University Press. It is available to order [here](https://www.amazon.com/Mathematical-Methods-Data-Science-Applications/dp/1009509403). This online version will remain available and maintained. Additional resources can be found on the [publisher's website](https://www.cambridge.org/highereducation/books/mathematical-methods-in-data-science/6CB866F77A7CA33109EF99910CFA40BC#overview). See [here](MMiDS_Errata.pdf) for a list of typos.
+
 
 
 **Description:** This textbook on the **mathematics of data** has several intended audiences:

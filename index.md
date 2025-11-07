@@ -11,7 +11,7 @@
 **Print copy:** A print version of this textbook has been published by Cambridge University Press. It is available to order [here](https://www.amazon.com/Mathematical-Methods-Data-Science-Applications/dp/1009509403). This online version will remain available and maintained. Additional resources can be found on the [publisher's website](https://www.cambridge.org/highereducation/books/mathematical-methods-in-data-science/6CB866F77A7CA33109EF99910CFA40BC#overview). See [here](MMiDS_Errata.pdf) for a list of typos. The book is based on Jupyter notebooks that were developed for
 [MATH 535: Mathematical Methods in Data Science](https://people.math.wisc.edu/~roch/mmids/), a one-semester advanced undergraduate and master's level course offered at [UW-Madison](https://math.wisc.edu/). The online version was generated using [Jupyter Book](https://jupyterbook.org/stable/). See [here](https://executablebooks.org/en/latest/gallery/) for a collection of other such books.
 
-**Description:** This textbook on the **mathematics of data** has several intended audiences:
+**Description:** This textbook on the **mathematics of data and AI** has several intended audiences:
 
 - *For students majoring in math or other quantitative fields like physics, economics, engineering, etc.*: it is meant as an invitation to data science and AI from a rigorous mathematical perspective.
 
